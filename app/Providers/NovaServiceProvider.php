@@ -1,0 +1,213 @@
+<?php
+
+namespace App\Providers;
+
+use App\Nova\ActionEvent;
+use App\Nova\Award;
+use App\Nova\Dashboards\Admin;
+use App\Nova\Dashboards\Main;
+use App\Nova\Document;
+use App\Nova\Domain;
+use App\Nova\Field;
+use App\Nova\Forms\Form;
+use App\Nova\Forms\Submission;
+use App\Nova\Permission;
+use App\Nova\Person;
+use App\Nova\Position;
+use App\Nova\Qualification;
+use App\Nova\Rank;
+use App\Nova\Records\Assignment as AssignmentRecords;
+use App\Nova\Records\Award as AwardRecords;
+use App\Nova\Records\Combat as CombatRecords;
+use App\Nova\Records\Qualification as QualificationRecords;
+use App\Nova\Records\Rank as RankRecords;
+use App\Nova\Records\Service as ServiceRecords;
+use App\Nova\Role;
+use App\Nova\Specialty;
+use App\Nova\Status;
+use App\Nova\Subscription;
+use App\Nova\Tenant;
+use App\Nova\Unit;
+use App\Nova\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Menu\Menu;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
+use Laravel\Nova\Menu\MenuSeparator;
+use Laravel\Nova\Nova;
+use Laravel\Nova\NovaApplicationServiceProvider;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
+
+class NovaServiceProvider extends NovaApplicationServiceProvider
+{
+	/**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        parent::boot();
+
+        // Tenant request
+	    if (!\Illuminate\Support\Facades\Request::isCentralRequest()) {
+	        Nova::mainMenu(function (Request $request) {
+		        return [
+			        MenuSection::dashboard(Main::class)->icon('chart-bar'),
+			        MenuSection::make('Organization', [
+				        MenuItem::resource(Award::class),
+				        MenuItem::resource(Document::class),
+				        MenuItem::resource(Position::class),
+				        MenuItem::resource(Qualification::class),
+				        MenuItem::resource(Rank::class),
+				        MenuItem::resource(Specialty::class),
+				        MenuItem::resource(Status::class),
+				        MenuItem::resource(Unit::class),
+				        MenuItem::resource(User::class),
+			        ])->icon('office-building')->collapsable(),
+
+			        MenuSection::make('Forms', [
+				        MenuItem::resource(Form::class),
+				        MenuItem::resource(Submission::class),
+			        ])->icon('pencil-alt')->collapsable(),
+
+			        MenuSection::make('Personnel', [
+				        MenuItem::resource(Person::class),
+			        ])->icon('user')->collapsable(),
+
+			        MenuSection::make('Records', [
+				        MenuItem::resource(AwardRecords::class),
+				        MenuItem::resource(AssignmentRecords::class),
+				        MenuItem::resource(CombatRecords::class),
+				        MenuItem::resource(QualificationRecords::class),
+				        MenuItem::resource(RankRecords::class),
+				        MenuItem::resource(ServiceRecords::class),
+			        ])->icon('document-text')->collapsable(),
+
+			        MenuSection::make('Users', [
+				        MenuItem::resource(User::class),
+				        MenuItem::resource(Permission::class),
+				        MenuItem::resource(Role::class)
+			        ])->icon('user')->collapsable(),
+
+			        MenuSection::make('Settings', [
+				        MenuItem::resource(Field::class),
+				        MenuItem::resource(ActionEvent::class),
+			        ])->icon('cog')->collapsable(),
+
+			        MenuSection::make('Support', [
+				        MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
+				        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
+				        MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
+			        ])->icon('support'),
+		        ];
+	        });
+
+        // Admin request
+        } else {
+	        Nova::mainMenu(function (Request $request) {
+		        return [
+			        MenuSection::dashboard(Admin::class)->icon('chart-bar'),
+			        MenuSection::make('Application', [
+				        MenuItem::resource(Tenant::class),
+				        MenuItem::resource(Domain::class),
+				        MenuItem::resource(Subscription::class),
+				        MenuItem::resource(User::class),
+			        ])->icon('office-building')->collapsable()
+		        ];
+	        });
+        }
+
+	    if (!\Illuminate\Support\Facades\Request::isCentralRequest()) {
+		    Nova::userMenu(function (Request $request, Menu $menu) {
+			    $menu->append([
+				    MenuItem::externalLink('Billing', route('spark.portal')),
+				    MenuSeparator::make(),
+			    ]);
+			    return $menu;
+		    });
+	    }
+
+	    Nova::footer(function ($request) {
+		    return Blade::render('
+	            <div class="mt-8 leading-normal text-xs text-gray-500 space-y-1"><p class="text-center">PERSCOM Soldier Management System</a> · v{{ config("app.version") }} ({{ \Illuminate\Support\Str::ucfirst(config("app.env")) }})</p>
+            		<p class="text-center">© 2022 Deschutes Design Group LLC</p>
+        		</div>
+	        ');
+	    });
+    }
+
+    /**
+     * Register the Nova routes.
+     *
+     * @return void
+     */
+    protected function routes()
+    {
+        Nova::routes()
+                ->withAuthenticationRoutes([
+                	'universal',
+	                InitializeTenancyByDomain::class,
+	                'nova'
+                ])
+                ->withPasswordResetRoutes([
+	                'universal',
+	                InitializeTenancyByDomain::class,
+	                'nova'
+                ])
+                ->register();
+    }
+
+    /**
+     * Register the Nova gate.
+     *
+     * This gate determines who can access Nova in non-local environments.
+     *
+     * @return void
+     */
+    protected function gate()
+    {
+        Gate::define('viewNova', function ($user) {
+            return true;
+        });
+    }
+
+    /**
+     * Get the dashboards that should be listed in the Nova sidebar.
+     *
+     * @return array
+     */
+    protected function dashboards()
+    {
+	    if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
+		    return [
+			    new Admin
+		    ];
+	    }
+        return [
+            new Main
+        ];
+    }
+
+    /**
+     * Get the tools that should be listed in the Nova sidebar.
+     *
+     * @return array
+     */
+    public function tools()
+    {
+        return [];
+    }
+
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //
+    }
+}

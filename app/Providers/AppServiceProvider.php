@@ -1,0 +1,46 @@
+<?php
+
+namespace App\Providers;
+
+use App\Models\Tenant;
+use App\Observers\TenantObserver;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Request;
+use Illuminate\Support\ServiceProvider;
+use Laravel\Cashier\Cashier;
+use Spatie\Permission\PermissionRegistrar;
+use Stancl\Tenancy\Events\TenancyBootstrapped;
+
+class AppServiceProvider extends ServiceProvider
+{
+    /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+
+    }
+
+    /**
+     * Bootstrap any application services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+	    Request::macro('isCentralRequest', function () {
+		    return collect(config('tenancy.central_domains'))->contains(\request()->getHost());
+	    });
+
+	    if (Request::isCentralRequest()) {
+		    config()->set('nova.path', '/admin');
+	    }
+
+	    // Prefix the permission cache key with the tenant identifier
+	    Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
+		    PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
+	    });
+    }
+}

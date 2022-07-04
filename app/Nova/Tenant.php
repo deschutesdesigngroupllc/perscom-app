@@ -1,0 +1,125 @@
+<?php
+
+namespace App\Nova;
+
+use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Email;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Heading;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\URL;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+
+class Tenant extends Resource
+{
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = \App\Models\Tenant::class;
+
+    /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'name';
+
+    /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = [
+        'id', 'name', 'website'
+    ];
+
+	/**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function fields(NovaRequest $request)
+    {
+        return [
+            ID::make()->sortable(),
+	        Text::make('Name')->sortable()->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)]),
+	        Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
+	        Text::make('Website')->sortable(),
+	        URL::make('Domain', function ($model) {
+	        	if ($model->domains()->count()) {
+			        return \Spatie\Url\Url::fromString($model->domains()->first()->domain)->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString();
+		        }
+	        	return null;
+	        })->exceptOnForms(),
+	        HasMany::make('Domains'),
+	        Heading::make('Meta')->onlyOnDetail(),
+	        DateTime::make('Created At')->sortable()->exceptOnForms(),
+	        DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
+	        new Panel('Subscription', [
+		        Boolean::make('Customer', function ($model) {
+			        return $model->hasStripeId();
+		        }),
+		        Boolean::make('On Trial', function ($model) {
+			        return $model->onGenericTrial();
+		        }),
+	        	Text::make('Stripe ID')->onlyOnDetail()->readonly(),
+		        Text::make('Card Brand')->onlyOnDetail()->readonly(),
+		        Text::make('Card Last Four')->onlyOnDetail()->readonly(),
+				DateTime::make('Trial Ends At')->onlyOnDetail()->readonly(),
+	        ]),
+	        HasMany::make('Subscriptions'),
+	        HasMany::make('Receipts', 'localReceipts', Receipt::class)
+        ];
+    }
+
+    /**
+     * Get the cards available for the request.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function cards(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the filters available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function filters(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the lenses available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function lenses(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the actions available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function actions(NovaRequest $request)
+    {
+        return [];
+    }
+}

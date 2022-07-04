@@ -1,0 +1,6 @@
+{
+    "scripts": {
+        "build-resource-custom-field": "cd nova-components/ResourceCustomField && npm run dev",
+        "build-resource-custom-field-prod": "cd nova-components/ResourceCustomField && npm run prod"
+    }
+}
