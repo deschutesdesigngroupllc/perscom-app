@@ -177,6 +177,7 @@ return [
         App\Providers\SparkServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\TelescopeServiceProvider::class,
 		App\Providers\TenancyServiceProvider::class
     ],
 
