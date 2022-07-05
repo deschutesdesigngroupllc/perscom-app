@@ -38,6 +38,7 @@ use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Menu\MenuSeparator;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Spatie\Url\Url;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -115,7 +116,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 				        MenuItem::resource(Domain::class),
 				        MenuItem::resource(Subscription::class),
 				        MenuItem::resource(User::class),
-			        ])->icon('office-building')->collapsable()
+			        ])->icon('office-building')->collapsable(),
+
+			        MenuSection::make('Tools', [
+			        	MenuItem::externalLink('Horizon', Url::fromString(config('app.url') . '/' . config('horizon.path'))->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString()),
+				        MenuItem::externalLink('Telescope', Url::fromString(config('app.url') . '/' . config('telescope.path'))->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString())
+			        ])->icon('external-link')->collapsable()
 		        ];
 	        });
         }
