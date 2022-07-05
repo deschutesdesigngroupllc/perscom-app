@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Domain extends Resource
@@ -44,11 +45,16 @@ class Domain extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Domain')->sortable(),
 	        BelongsTo::make('Tenant')->showCreateRelationButton(),
+	        Text::make('Domain')->sortable()->onlyOnForms()->required(),
+	        URL::make('Domain', function () {
+		        return \Spatie\Url\Url::fromString($this->domain)->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString();
+	        })->sortable()->displayUsing(function () {
+		        return \Spatie\Url\Url::fromString($this->domain)->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString();
+	        })->exceptOnForms(),
 	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->sortable(),
-	        DateTime::make('Updated At')->sortable(),
+	        DateTime::make('Created At')->onlyOnDetail(),
+	        DateTime::make('Updated At')->onlyOnDetail(),
         ];
     }
 

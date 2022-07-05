@@ -16,6 +16,15 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     use HasDatabase;
 
 	/**
+	 * The attributes that should be cast.
+	 *
+	 * @var array<string, string>
+	 */
+	protected $casts = [
+		'trial_ends_at' => 'datetime',
+	];
+
+	/**
 	 * @return string[]
 	 */
 	public static function getCustomColumns(): array
@@ -38,7 +47,9 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
 			'billing_postal_code',
 			'billing_country',
 			'vat_id',
-			'receipt_emails'
+			'receipt_emails',
+			'created_at',
+			'updated_at'
 		];
 	}
 
