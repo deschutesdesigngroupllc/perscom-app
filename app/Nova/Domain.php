@@ -54,8 +54,8 @@ class Domain extends Resource
 		        return \Spatie\Url\Url::fromString($this->domain)->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString();
 	        })->exceptOnForms(),
 	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->onlyOnDetail(),
-	        DateTime::make('Updated At')->onlyOnDetail(),
+	        DateTime::make('Created At')->sortable()->exceptOnForms(),
+	        DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
         ];
     }
 
