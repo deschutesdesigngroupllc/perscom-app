@@ -12,7 +12,7 @@ import logoGithub from '../../images/logos/github.png'
 export function Hero() {
     return (
         <Container className="pt-20 pb-16 text-center lg:pt-26">
-            <h1 className="mx-auto max-w-4xl font-display text-3xl font-medium tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="mx-auto max-w-4xl font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl">
                 Providing cutting-edge{' '}
                 <span className="relative whitespace-nowrap text-blue-600">
           <svg aria-hidden="true" viewBox="0 0 418 42" className="absolute top-2/3 left-0 h-[0.58em] w-full fill-blue-300/70" preserveAspectRatio="none">
