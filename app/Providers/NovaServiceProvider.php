@@ -66,7 +66,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 				        MenuItem::resource(Specialty::class),
 				        MenuItem::resource(Status::class),
 				        MenuItem::resource(Unit::class),
-				        MenuItem::resource(User::class),
 			        ])->icon('office-building')->collapsable(),
 
 			        MenuSection::make('Forms', [
@@ -116,7 +115,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 				        MenuItem::resource(Domain::class),
 				        MenuItem::resource(Subscription::class),
 				        MenuItem::resource(User::class),
-			        ])->icon('office-building')->collapsable(),
+			        ])->icon('terminal')->collapsable(),
 
 			        MenuSection::make('Tools', [
 			        	MenuItem::externalLink('Horizon', Url::fromString(config('app.url') . '/' . config('horizon.path'))->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString()),
