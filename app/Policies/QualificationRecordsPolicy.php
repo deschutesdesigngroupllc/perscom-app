@@ -19,7 +19,6 @@ class QualificationRecordsPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class QualificationRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:qualificationrecord');
     }
 
     /**
@@ -42,7 +41,7 @@ class QualificationRecordsPolicy
      */
     public function view(User $user, Qualification $qualification)
     {
-        //
+	    return $user->hasPermissionTo('view:qualificationrecord');
     }
 
     /**
@@ -53,7 +52,7 @@ class QualificationRecordsPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:qualificationrecord');
     }
 
     /**
@@ -65,7 +64,7 @@ class QualificationRecordsPolicy
      */
     public function update(User $user, Qualification $qualification)
     {
-        //
+	    return $user->hasPermissionTo('update:qualificationrecord');
     }
 
     /**
@@ -77,7 +76,7 @@ class QualificationRecordsPolicy
      */
     public function delete(User $user, Qualification $qualification)
     {
-        //
+	    return $user->hasPermissionTo('delete:qualificationrecord');
     }
 
     /**

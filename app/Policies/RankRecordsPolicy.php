@@ -19,7 +19,6 @@ class RankRecordsPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class RankRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:rankrecord');
     }
 
     /**
@@ -42,7 +41,7 @@ class RankRecordsPolicy
      */
     public function view(User $user, Rank $rank)
     {
-        //
+	    return $user->hasPermissionTo('view:rankrecord');
     }
 
     /**
@@ -53,7 +52,7 @@ class RankRecordsPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:rankrecord');
     }
 
     /**
@@ -65,7 +64,7 @@ class RankRecordsPolicy
      */
     public function update(User $user, Rank $rank)
     {
-        //
+	    return $user->hasPermissionTo('update:rankrecord');
     }
 
     /**
@@ -77,7 +76,7 @@ class RankRecordsPolicy
      */
     public function delete(User $user, Rank $rank)
     {
-        //
+	    return $user->hasPermissionTo('delete:rankrecord');
     }
 
     /**

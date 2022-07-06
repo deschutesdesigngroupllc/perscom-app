@@ -19,7 +19,6 @@ class AssignmentRecordsPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class AssignmentRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:assignmentrecord');
     }
 
     /**
@@ -42,7 +41,7 @@ class AssignmentRecordsPolicy
      */
     public function view(User $user, Assignment $assignment)
     {
-        //
+	    return $user->hasPermissionTo('view:assignmentrecord');
     }
 
     /**
@@ -53,7 +52,7 @@ class AssignmentRecordsPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:assignmentrecord');
     }
 
     /**
@@ -65,7 +64,7 @@ class AssignmentRecordsPolicy
      */
     public function update(User $user, Assignment $assignment)
     {
-        //
+	    return $user->hasPermissionTo('update:assignmentrecord');
     }
 
     /**
@@ -77,7 +76,7 @@ class AssignmentRecordsPolicy
      */
     public function delete(User $user, Assignment $assignment)
     {
-        //
+	    return $user->hasPermissionTo('delete:assignmentrecord');
     }
 
     /**

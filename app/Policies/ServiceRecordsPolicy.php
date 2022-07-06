@@ -19,7 +19,6 @@ class ServiceRecordsPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class ServiceRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:servicerecord');
     }
 
     /**
@@ -42,7 +41,7 @@ class ServiceRecordsPolicy
      */
     public function view(User $user, Service $service)
     {
-        //
+	    return $user->hasPermissionTo('view:servicerecord');
     }
 
     /**
@@ -53,7 +52,7 @@ class ServiceRecordsPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:servicerecord');
     }
 
     /**
@@ -65,7 +64,7 @@ class ServiceRecordsPolicy
      */
     public function update(User $user, Service $service)
     {
-        //
+	    return $user->hasPermissionTo('update:servicerecord');
     }
 
     /**
@@ -77,7 +76,7 @@ class ServiceRecordsPolicy
      */
     public function delete(User $user, Service $service)
     {
-        //
+	    return $user->hasPermissionTo('delete:servicerecord');
     }
 
     /**
