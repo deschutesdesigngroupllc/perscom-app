@@ -32,8 +32,7 @@ class Main extends Dashboard
         	new NewPersonnel,
 	        new UpdatesPerformed,
 	        new UsersOnline,
-	        new DashboardQuickActions,
-	        new LatestFormSubmissions
+	        new DashboardQuickActions
         ];
     }
 }

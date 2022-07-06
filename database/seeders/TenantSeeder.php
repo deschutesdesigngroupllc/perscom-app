@@ -1,0 +1,22 @@
+<?php
+
+namespace Database\Seeders;
+
+use Database\Seeders\Forms\FormSeeder;
+use Illuminate\Database\Seeder;
+
+class TenantSeeder extends Seeder
+{
+    /**
+     * Seed the application's database.
+     *
+     * @return void
+     */
+    public function run()
+    {
+        $this->call([
+        	PermissionSeeder::class,
+	        RoleSeeder::class
+        ]);
+    }
+}

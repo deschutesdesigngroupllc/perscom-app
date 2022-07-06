@@ -19,7 +19,6 @@ class RankPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class RankPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:rank');
     }
 
     /**
@@ -42,7 +41,7 @@ class RankPolicy
      */
     public function view(User $user, Rank $rank)
     {
-        //
+	    return $user->hasPermissionTo('view:rank');
     }
 
     /**
@@ -53,7 +52,7 @@ class RankPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:rank');
     }
 
     /**
@@ -65,7 +64,7 @@ class RankPolicy
      */
     public function update(User $user, Rank $rank)
     {
-        //
+	    return $user->hasPermissionTo('update:rank');
     }
 
     /**
@@ -77,7 +76,7 @@ class RankPolicy
      */
     public function delete(User $user, Rank $rank)
     {
-        //
+	    return $user->hasPermissionTo('delete:rank');
     }
 
     /**

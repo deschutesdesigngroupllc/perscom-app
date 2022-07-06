@@ -2,12 +2,13 @@
 
 namespace App\Policies;
 
-use App\Models\Qualification;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class QualificationPolicy
+class PermissionPolicy
 {
     use HandlesAuthorization;
 
@@ -29,19 +30,19 @@ class QualificationPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:qualification');
+	    return $user->hasPermissionTo('view:permission');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Qualification  $qualification
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Qualification $qualification)
+    public function view(User $user, Permission $permission)
     {
-	    return $user->hasPermissionTo('view:qualification');
+	    return $user->hasPermissionTo('view:permission');
     }
 
     /**
@@ -52,41 +53,63 @@ class QualificationPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:qualification');
+	    return $user->hasPermissionTo('create:permission');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Qualification  $qualification
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Qualification $qualification)
+    public function update(User $user, Permission $permission)
     {
-	    return $user->hasPermissionTo('update:qualification');
+    	if (collect(config('permissions.permissions'))->has($permission->name)) {
+    		return false;
+	    }
+	    return $user->hasPermissionTo('update:permission');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Qualification  $qualification
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Qualification $qualification)
+    public function delete(User $user, Permission $permission)
     {
-	    return $user->hasPermissionTo('delete:qualification');
+	    if (collect(config('permissions.permissions'))->has($permission->name)) {
+		    return false;
+	    }
+	    return $user->hasPermissionTo('delete:permission');
     }
+
+	/**
+	 * Determine whether the user can detach the model.
+	 *
+	 * @param  \App\Models\User  $user
+	 * @param  \App\Models\Permission  $permission
+	 * @param  \App\Models\Role  $role
+	 * @return \Illuminate\Auth\Access\Response|bool
+	 */
+	public function detachRole(User $user, Permission $permission, Role $role)
+	{
+		if (collect(config('permissions.roles'))->has($role->name)) {
+			return false;
+		}
+		return $user->hasPermissionTo('update:permission');
+	}
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Qualification  $qualification
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Qualification $qualification)
+    public function restore(User $user, Permission $permission)
     {
         //
     }
@@ -95,10 +118,10 @@ class QualificationPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Qualification  $qualification
+     * @param  \App\Models\Permission  $permission
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Qualification $qualification)
+    public function forceDelete(User $user, Permission $permission)
     {
         //
     }

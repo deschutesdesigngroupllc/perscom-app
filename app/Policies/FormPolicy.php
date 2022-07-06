@@ -19,7 +19,6 @@ class FormPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class FormPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:form');
     }
 
     /**
@@ -42,7 +41,7 @@ class FormPolicy
      */
     public function view(User $user, Form $form)
     {
-        //
+	    return $user->hasPermissionTo('view:form');
     }
 
     /**
@@ -53,7 +52,7 @@ class FormPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:form');
     }
 
     /**
@@ -65,7 +64,7 @@ class FormPolicy
      */
     public function update(User $user, Form $form)
     {
-        //
+	    return $user->hasPermissionTo('update:form');
     }
 
     /**
@@ -77,7 +76,7 @@ class FormPolicy
      */
     public function delete(User $user, Form $form)
     {
-        //
+	    return $user->hasPermissionTo('delete:form');
     }
 
     /**

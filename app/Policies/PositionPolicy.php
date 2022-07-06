@@ -19,7 +19,6 @@ class PositionPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class PositionPolicy
      */
     public function viewAny(User $user)
     {
-	    return true;
+	    return $user->hasPermissionTo('view:position');
     }
 
     /**
@@ -42,7 +41,7 @@ class PositionPolicy
      */
     public function view(User $user, Position $position)
     {
-        //
+	    return $user->hasPermissionTo('view:position');
     }
 
     /**
@@ -53,7 +52,7 @@ class PositionPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:position');
     }
 
     /**
@@ -65,7 +64,7 @@ class PositionPolicy
      */
     public function update(User $user, Position $position)
     {
-        //
+	    return $user->hasPermissionTo('update:position');
     }
 
     /**
@@ -77,7 +76,7 @@ class PositionPolicy
      */
     public function delete(User $user, Position $position)
     {
-        //
+	    return $user->hasPermissionTo('delete:position');
     }
 
     /**

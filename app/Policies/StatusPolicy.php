@@ -19,7 +19,6 @@ class StatusPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class StatusPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:status');
     }
 
     /**
@@ -42,7 +41,7 @@ class StatusPolicy
      */
     public function view(User $user, Status $status)
     {
-        //
+	    return $user->hasPermissionTo('view:status');
     }
 
     /**
@@ -53,7 +52,7 @@ class StatusPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:status');
     }
 
     /**
@@ -65,7 +64,7 @@ class StatusPolicy
      */
     public function update(User $user, Status $status)
     {
-        //
+	    return $user->hasPermissionTo('update:status');
     }
 
     /**
@@ -77,7 +76,7 @@ class StatusPolicy
      */
     public function delete(User $user, Status $status)
     {
-        //
+	    return $user->hasPermissionTo('delete:status');
     }
 
     /**

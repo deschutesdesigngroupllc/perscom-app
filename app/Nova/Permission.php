@@ -2,11 +2,14 @@
 
 namespace App\Nova;
 
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Spatie\Permission\PermissionRegistrar;
 
 class Permission extends Resource
 {
@@ -15,7 +18,7 @@ class Permission extends Resource
      *
      * @var string
      */
-    public static $model = \Spatie\Permission\Models\Permission::class;
+    public static $model = \App\Models\Permission::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -52,6 +55,15 @@ class Permission extends Resource
             ID::make()->sortable(),
 	        Text::make('Name')->sortable()->rules(['required']),
 	        Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
+	        Text::make('Description', function ($model) {
+		        return $model->description;
+	        })->onlyOnIndex(),
+	        Boolean::make('Custom Permission', function ($permission) {
+	        	return !collect(config('permissions.permissions'))->has($permission->name);
+	        }),
+	        Boolean::make('Application Permission', function ($permission) {
+		        return collect(config('permissions.permissions'))->has($permission->name);
+	        }),
 	        BelongsToMany::make('Roles')->showCreateRelationButton(),
 //	        Panel::make('Organization', [
 //		        BooleanGroup::make('Awards')->options([
@@ -117,6 +129,45 @@ class Permission extends Resource
 //	        ])->collapsable(),
         ];
     }
+
+	/**
+	 * Register a callback to be called after the resource is created.
+	 *
+	 * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
+	 * @return void
+	 */
+	public static function afterCreate(NovaRequest $request, Model $model)
+	{
+		// Reset permission cache
+		app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
+	}
+
+	/**
+	 * Register a callback to be called after the resource is updated.
+	 *
+	 * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
+	 * @return void
+	 */
+	public static function afterUpdate(NovaRequest $request, Model $model)
+	{
+		// Reset permission cache
+		app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
+	}
+
+	/**
+	 * Register a callback to be called after the resource is deleted.
+	 *
+	 * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+	 * @param  \Illuminate\Database\Eloquent\Model  $model
+	 * @return void
+	 */
+	public static function afterDelete(NovaRequest $request, Model $model)
+	{
+		// Reset permission cache
+		app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
+	}
 
     /**
      * Get the cards available for the request.

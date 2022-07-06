@@ -19,7 +19,6 @@ class DocumentPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class DocumentPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:document');
     }
 
     /**
@@ -42,7 +41,7 @@ class DocumentPolicy
      */
     public function view(User $user, Document $document)
     {
-        //
+	    return $user->hasPermissionTo('view:document');
     }
 
     /**
@@ -53,7 +52,7 @@ class DocumentPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:document');
     }
 
     /**
@@ -65,7 +64,7 @@ class DocumentPolicy
      */
     public function update(User $user, Document $document)
     {
-        //
+	    return $user->hasPermissionTo('update:document');
     }
 
     /**
@@ -77,7 +76,7 @@ class DocumentPolicy
      */
     public function delete(User $user, Document $document)
     {
-        //
+	    return $user->hasPermissionTo('delete:document');
     }
 
     /**

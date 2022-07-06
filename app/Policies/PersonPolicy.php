@@ -19,7 +19,6 @@ class PersonPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class PersonPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:soldier');
     }
 
     /**
@@ -42,7 +41,7 @@ class PersonPolicy
      */
     public function view(User $user, Person $person)
     {
-        //
+	    return $user->hasPermissionTo('view:soldier');
     }
 
     /**
@@ -53,7 +52,7 @@ class PersonPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:soldier');
     }
 
     /**
@@ -65,7 +64,7 @@ class PersonPolicy
      */
     public function update(User $user, Person $person)
     {
-        //
+	    return $user->hasPermissionTo('update:soldier');
     }
 
     /**
@@ -77,7 +76,7 @@ class PersonPolicy
      */
     public function delete(User $user, Person $person)
     {
-        //
+	    return $user->hasPermissionTo('delete:soldier');
     }
 
     /**

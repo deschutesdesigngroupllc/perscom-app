@@ -19,7 +19,6 @@ class AwardPolicy
 		if (Request::isCentralRequest()) {
 			return false;
 		}
-		return true;
 	}
 
     /**
@@ -30,7 +29,7 @@ class AwardPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:award');
     }
 
     /**
@@ -42,7 +41,7 @@ class AwardPolicy
      */
     public function view(User $user, Award $award)
     {
-        //
+	    return $user->hasPermissionTo('view:award');
     }
 
     /**
@@ -53,7 +52,7 @@ class AwardPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:award');
     }
 
     /**
@@ -65,7 +64,7 @@ class AwardPolicy
      */
     public function update(User $user, Award $award)
     {
-        //
+	    return $user->hasPermissionTo('update:award');
     }
 
     /**
@@ -77,7 +76,7 @@ class AwardPolicy
      */
     public function delete(User $user, Award $award)
     {
-        //
+	    return $user->hasPermissionTo('delete:award');
     }
 
     /**

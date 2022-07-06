@@ -2,12 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Specialty;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class SpecialtyPolicy
+class UserPolicy
 {
     use HandlesAuthorization;
 
@@ -17,7 +16,7 @@ class SpecialtyPolicy
 	public function before()
 	{
 		if (Request::isCentralRequest()) {
-			return false;
+			return true;
 		}
 	}
 
@@ -29,20 +28,19 @@ class SpecialtyPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:specialty');
+	    return $user->hasPermissionTo('view:user');
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User       $user
-     * @param  \App\Models\Specialty  $mos
-     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Specialty $mos)
+    public function view(User $user, User $model)
     {
-	    return $user->hasPermissionTo('view:specialty');
+	    return $user->hasPermissionTo('view:user');
     }
 
     /**
@@ -53,44 +51,41 @@ class SpecialtyPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:specialty');
+	    return $user->hasPermissionTo('create:user');
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User       $user
-     * @param  \App\Models\Specialty  $mos
-     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Specialty $mos)
+    public function update(User $user, User $model)
     {
-	    return $user->hasPermissionTo('update:specialty');
+	    return $user->hasPermissionTo('update:user');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User       $user
-     * @param  \App\Models\Specialty  $mos
-     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Specialty $mos)
+    public function delete(User $user, User $model)
     {
-	    return $user->hasPermissionTo('delete:specialty');
+	    return $user->hasPermissionTo('delete:user');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User       $user
-     * @param  \App\Models\Specialty  $mos
-     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Specialty $mos)
+    public function restore(User $user, User $model)
     {
         //
     }
@@ -99,11 +94,10 @@ class SpecialtyPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Specialty  $mos
-     *
+     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Specialty $mos)
+    public function forceDelete(User $user, User $model)
     {
         //
     }
