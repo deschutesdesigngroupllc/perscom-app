@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
@@ -46,7 +47,7 @@ class Domain extends Resource
         return [
             ID::make()->sortable(),
 	        BelongsTo::make('Tenant')->showCreateRelationButton(),
-	        Text::make('Domain')->sortable()->onlyOnForms()->required(),
+	        Text::make('Domain')->sortable()->onlyOnForms()->rules(['required', Rule::unique('domains', 'domain')->ignore($this->id)]),
 	        URL::make('Domain', function () {
 		        return \Spatie\Url\Url::fromString($this->domain)->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString();
 	        })->sortable()->displayUsing(function () {
