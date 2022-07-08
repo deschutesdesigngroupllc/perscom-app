@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
 
-import { Header } from '../components/Header'
-import { Footer } from '../components/Footer'
-import { AuthLayout } from '../components/AuthLayout'
-import { Input } from '../components/Input'
-import { Logo } from '../components/Logo'
+import { Header } from '../Components/Header'
+import { Footer } from '../Components/Footer'
+import { AuthLayout } from '../Components/AuthLayout'
+import { Input } from '../Components/Input'
+import { Logo } from '../Components/Logo'
 
 export default function Register() {
     const { errors } = usePage().props

@@ -1,15 +1,15 @@
 import React from 'react'
 
-import { Header } from '../components/Header'
-import { Hero } from '../components/Hero'
-import { PrimaryFeatures } from '../components/PrimaryFeatures'
-import { SecondaryFeatures } from '../components/SecondaryFeatures'
-import { CallToAction } from '../components/CallToAction'
-import { Footer } from '../components/Footer'
-import { Testimonials } from '../components/Testimonials'
-import { Pricing } from '../components/Pricing'
-import { Faqs } from '../components/Faqs'
-import { OpenBetaBanner } from '../components/OpenBetaBanner'
+import { Header } from '../Components/Header'
+import { Hero } from '../Components/Hero'
+import { PrimaryFeatures } from '../Components/PrimaryFeatures'
+import { SecondaryFeatures } from '../Components/SecondaryFeatures'
+import { CallToAction } from '../Components/CallToAction'
+import { Footer } from '../Components/Footer'
+import { Testimonials } from '../Components/Testimonials'
+import { Pricing } from '../Components/Pricing'
+import { Faqs } from '../Components/Faqs'
+import { OpenBetaBanner } from '../Components/OpenBetaBanner'
 
 export default function Home() {
     return (
