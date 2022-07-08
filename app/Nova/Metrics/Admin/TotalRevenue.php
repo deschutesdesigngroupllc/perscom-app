@@ -8,10 +8,10 @@ use Spark\Receipt;
 
 class TotalRevenue extends Value
 {
-	/**
-	 * @var string
-	 */
-	public $icon = 'currency-dollar';
+    /**
+     * @var string
+     */
+    public $icon = 'currency-dollar';
 
     /**
      * Calculate the value of the metric.
@@ -21,7 +21,9 @@ class TotalRevenue extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Receipt::class, 'amount', 'paid_at')->currency()->format('0,0.00');
+        return $this->count($request, Receipt::class, 'amount', 'paid_at')
+            ->currency()
+            ->format('0,0.00');
     }
 
     /**

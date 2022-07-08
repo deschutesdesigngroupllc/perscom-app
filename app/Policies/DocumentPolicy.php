@@ -11,15 +11,15 @@ class DocumentPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class DocumentPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:document');
+        return $user->hasPermissionTo('view:document');
     }
 
     /**
@@ -41,7 +41,7 @@ class DocumentPolicy
      */
     public function view(User $user, Document $document)
     {
-	    return $user->hasPermissionTo('view:document');
+        return $user->hasPermissionTo('view:document');
     }
 
     /**
@@ -52,7 +52,7 @@ class DocumentPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:document');
+        return $user->hasPermissionTo('create:document');
     }
 
     /**
@@ -64,7 +64,7 @@ class DocumentPolicy
      */
     public function update(User $user, Document $document)
     {
-	    return $user->hasPermissionTo('update:document');
+        return $user->hasPermissionTo('update:document');
     }
 
     /**
@@ -76,7 +76,7 @@ class DocumentPolicy
      */
     public function delete(User $user, Document $document)
     {
-	    return $user->hasPermissionTo('delete:document');
+        return $user->hasPermissionTo('delete:document');
     }
 
     /**

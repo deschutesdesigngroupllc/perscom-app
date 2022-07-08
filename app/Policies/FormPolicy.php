@@ -11,15 +11,15 @@ class FormPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class FormPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:form');
+        return $user->hasPermissionTo('view:form');
     }
 
     /**
@@ -41,7 +41,7 @@ class FormPolicy
      */
     public function view(User $user, Form $form)
     {
-	    return $user->hasPermissionTo('view:form');
+        return $user->hasPermissionTo('view:form');
     }
 
     /**
@@ -52,7 +52,7 @@ class FormPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:form');
+        return $user->hasPermissionTo('create:form');
     }
 
     /**
@@ -64,7 +64,7 @@ class FormPolicy
      */
     public function update(User $user, Form $form)
     {
-	    return $user->hasPermissionTo('update:form');
+        return $user->hasPermissionTo('update:form');
     }
 
     /**
@@ -76,7 +76,7 @@ class FormPolicy
      */
     public function delete(User $user, Form $form)
     {
-	    return $user->hasPermissionTo('delete:form');
+        return $user->hasPermissionTo('delete:form');
     }
 
     /**

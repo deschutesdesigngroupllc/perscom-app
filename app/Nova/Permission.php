@@ -27,21 +27,19 @@ class Permission extends Resource
      */
     public static $title = 'name';
 
-	/**
-	 * Indicates if the resource should be globally searchable.
-	 *
-	 * @var bool
-	 */
-	public static $globallySearchable = false;
+    /**
+     * Indicates if the resource should be globally searchable.
+     *
+     * @var bool
+     */
+    public static $globallySearchable = false;
 
     /**
      * The columns that should be searched.
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name'
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * Get the fields displayed by the resource.
@@ -53,121 +51,136 @@ class Permission extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Name')->sortable()->rules(['required']),
-	        Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-	        Text::make('Description', function ($model) {
-		        return $model->description;
-	        })->onlyOnIndex(),
-	        Boolean::make('Custom Permission', function ($permission) {
-	        	return !collect(config('permissions.permissions'))->has($permission->name);
-	        }),
-	        Boolean::make('Application Permission', function ($permission) {
-		        return collect(config('permissions.permissions'))->has($permission->name);
-	        }),
-	        BelongsToMany::make('Roles')->showCreateRelationButton(),
-//	        Panel::make('Organization', [
-//		        BooleanGroup::make('Awards')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Documents')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Permissions')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Positions')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Qualifications')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Specialties')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Ranks')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Roles')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Units')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//		        BooleanGroup::make('Users')->options([
-//			        'create' => 'Create',
-//			        'read' => 'Read',
-//			        'update' => 'Update',
-//			        'delete' => 'Delete',
-//		        ]),
-//	        ])->collapsable(),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required']),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
+            Text::make('Description', function ($model) {
+                return $model->description;
+            })->onlyOnIndex(),
+            Boolean::make('Custom Permission', function ($permission) {
+                return !collect(config('permissions.permissions'))->has(
+                    $permission->name
+                );
+            }),
+            Boolean::make('Application Permission', function ($permission) {
+                return collect(config('permissions.permissions'))->has(
+                    $permission->name
+                );
+            }),
+            BelongsToMany::make('Roles')->showCreateRelationButton(),
+            //	        Panel::make('Organization', [
+            //		        BooleanGroup::make('Awards')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Documents')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Permissions')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Positions')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Qualifications')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Specialties')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Ranks')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Roles')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Units')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //		        BooleanGroup::make('Users')->options([
+            //			        'create' => 'Create',
+            //			        'read' => 'Read',
+            //			        'update' => 'Update',
+            //			        'delete' => 'Delete',
+            //		        ]),
+            //	        ])->collapsable(),
         ];
     }
 
-	/**
-	 * Register a callback to be called after the resource is created.
-	 *
-	 * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-	 * @param  \Illuminate\Database\Eloquent\Model  $model
-	 * @return void
-	 */
-	public static function afterCreate(NovaRequest $request, Model $model)
-	{
-		// Reset permission cache
-		app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
-	}
+    /**
+     * Register a callback to be called after the resource is created.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return void
+     */
+    public static function afterCreate(NovaRequest $request, Model $model)
+    {
+        // Reset permission cache
+        app()
+            ->make(PermissionRegistrar::class)
+            ->forgetCachedPermissions();
+    }
 
-	/**
-	 * Register a callback to be called after the resource is updated.
-	 *
-	 * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-	 * @param  \Illuminate\Database\Eloquent\Model  $model
-	 * @return void
-	 */
-	public static function afterUpdate(NovaRequest $request, Model $model)
-	{
-		// Reset permission cache
-		app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
-	}
+    /**
+     * Register a callback to be called after the resource is updated.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return void
+     */
+    public static function afterUpdate(NovaRequest $request, Model $model)
+    {
+        // Reset permission cache
+        app()
+            ->make(PermissionRegistrar::class)
+            ->forgetCachedPermissions();
+    }
 
-	/**
-	 * Register a callback to be called after the resource is deleted.
-	 *
-	 * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-	 * @param  \Illuminate\Database\Eloquent\Model  $model
-	 * @return void
-	 */
-	public static function afterDelete(NovaRequest $request, Model $model)
-	{
-		// Reset permission cache
-		app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
-	}
+    /**
+     * Register a callback to be called after the resource is deleted.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return void
+     */
+    public static function afterDelete(NovaRequest $request, Model $model)
+    {
+        // Reset permission cache
+        app()
+            ->make(PermissionRegistrar::class)
+            ->forgetCachedPermissions();
+    }
 
     /**
      * Get the cards available for the request.

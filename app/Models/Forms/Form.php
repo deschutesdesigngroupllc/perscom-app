@@ -10,15 +10,13 @@ class Form extends Model
 {
     use HasFactory;
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-	 */
-	public function fields()
-	{
-		return $this->morphToMany(Field::class, 'model','model_has_fields')
-			->withPivot([
-				'order'
-			])
-			->withTimestamps();
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function fields()
+    {
+        return $this->morphToMany(Field::class, 'model', 'model_has_fields')
+            ->withPivot(['order'])
+            ->withTimestamps();
+    }
 }

@@ -17,17 +17,17 @@ class RankRecordsByType extends Partition
     public function calculate(NovaRequest $request)
     {
         return $this->count($request, Rank::class, 'type')
-	        ->label(function ($value) {
-	        	$labels = [
-	        		Rank::RECORD_RANK_PROMOTION => 'Promotion',
-			        Rank::RECORD_RANK_DEMOTION => 'Demotion'
-		        ];
-	        	return $labels[$value];
-	        })
-	        ->colors([
-		        Rank::RECORD_RANK_PROMOTION => '#16A34A',
-		        Rank::RECORD_RANK_DEMOTION => '#DC2626'
-	        ]);
+            ->label(function ($value) {
+                $labels = [
+                    Rank::RECORD_RANK_PROMOTION => 'Promotion',
+                    Rank::RECORD_RANK_DEMOTION => 'Demotion',
+                ];
+                return $labels[$value];
+            })
+            ->colors([
+                Rank::RECORD_RANK_PROMOTION => '#16A34A',
+                Rank::RECORD_RANK_DEMOTION => '#DC2626',
+            ]);
     }
 
     /**

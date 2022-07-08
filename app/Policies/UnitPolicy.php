@@ -11,15 +11,15 @@ class UnitPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class UnitPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:unit');
+        return $user->hasPermissionTo('view:unit');
     }
 
     /**
@@ -41,7 +41,7 @@ class UnitPolicy
      */
     public function view(User $user, Unit $unit)
     {
-	    return $user->hasPermissionTo('view:unit');
+        return $user->hasPermissionTo('view:unit');
     }
 
     /**
@@ -52,7 +52,7 @@ class UnitPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:unit');
+        return $user->hasPermissionTo('create:unit');
     }
 
     /**
@@ -64,7 +64,7 @@ class UnitPolicy
      */
     public function update(User $user, Unit $unit)
     {
-	    return $user->hasPermissionTo('update:unit');
+        return $user->hasPermissionTo('update:unit');
     }
 
     /**
@@ -76,7 +76,7 @@ class UnitPolicy
      */
     public function delete(User $user, Unit $unit)
     {
-	    return $user->hasPermissionTo('delete:unit');
+        return $user->hasPermissionTo('delete:unit');
     }
 
     /**

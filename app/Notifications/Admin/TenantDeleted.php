@@ -14,20 +14,20 @@ class TenantDeleted extends Notification
 {
     use Queueable;
 
-	/**
-	 * @var
-	 */
-	protected $tenant;
+    /**
+     * @var
+     */
+    protected $tenant;
 
-	/**
-	 * Create a new notification instance.
-	 *
-	 * @return void
-	 */
-	public function __construct(Tenant $tenant)
-	{
-		$this->tenant = $tenant;
-	}
+    /**
+     * Create a new notification instance.
+     *
+     * @return void
+     */
+    public function __construct(Tenant $tenant)
+    {
+        $this->tenant = $tenant;
+    }
 
     /**
      * Get the notification's delivery channels.
@@ -48,29 +48,39 @@ class TenantDeleted extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-	        ->subject('Tenant Deleted')
+        return (new MailMessage())
+            ->subject('Tenant Deleted')
             ->line('A tenant has been deleted.')
-	        ->action('View Tenant', URL::remote(route('nova.pages.detail', [
-		        'resource' => 'tenants',
-		        'resourceId' => $this->tenant->getTenantKey()
-	        ])));
+            ->action(
+                'View Tenant',
+                URL::remote(
+                    route('nova.pages.detail', [
+                        'resource' => 'tenants',
+                        'resourceId' => $this->tenant->getTenantKey(),
+                    ])
+                )
+            );
     }
 
-	/**
-	 * Get the nova representation of the notification
-	 *
-	 * @return array
-	 */
-	public function toNova()
-	{
-		return (new NovaNotification())
-			->message('A tenant has been deleted.')
-			->action('View Tenant', URL::remote(route('nova.pages.detail', [
-				'resource' => 'tenants',
-				'resourceId' => $this->tenant->getTenantKey()
-			])))
-			->icon('user-remove')
-			->type('danger');
-	}
+    /**
+     * Get the nova representation of the notification
+     *
+     * @return array
+     */
+    public function toNova()
+    {
+        return (new NovaNotification())
+            ->message('A tenant has been deleted.')
+            ->action(
+                'View Tenant',
+                URL::remote(
+                    route('nova.pages.detail', [
+                        'resource' => 'tenants',
+                        'resourceId' => $this->tenant->getTenantKey(),
+                    ])
+                )
+            )
+            ->icon('user-remove')
+            ->type('danger');
+    }
 }

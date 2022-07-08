@@ -11,15 +11,15 @@ use Perscom\LatestFormSubmissions\LatestFormSubmissions;
 
 class Main extends Dashboard
 {
-	/**
-	 * Get the displayable name of the dashboard.
-	 *
-	 * @return string
-	 */
-	public function name()
-	{
-		return 'Dashboard';
-	}
+    /**
+     * Get the displayable name of the dashboard.
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'Dashboard';
+    }
 
     /**
      * Get the cards for the dashboard.
@@ -29,10 +29,10 @@ class Main extends Dashboard
     public function cards()
     {
         return [
-        	new NewPersonnel,
-	        new UpdatesPerformed,
-	        new UsersOnline,
-	        new DashboardQuickActions
+            new NewPersonnel(),
+            new UpdatesPerformed(),
+            new UsersOnline(),
+            new DashboardQuickActions(),
         ];
     }
 }

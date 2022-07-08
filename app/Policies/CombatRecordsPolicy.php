@@ -11,15 +11,15 @@ class CombatRecordsPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class CombatRecordsPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:combatrecord');
+        return $user->hasPermissionTo('view:combatrecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class CombatRecordsPolicy
      */
     public function view(User $user, Combat $combat)
     {
-	    return $user->hasPermissionTo('view:combatrecord');
+        return $user->hasPermissionTo('view:combatrecord');
     }
 
     /**
@@ -52,7 +52,7 @@ class CombatRecordsPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:combatrecord');
+        return $user->hasPermissionTo('create:combatrecord');
     }
 
     /**
@@ -64,7 +64,7 @@ class CombatRecordsPolicy
      */
     public function update(User $user, Combat $combat)
     {
-	    return $user->hasPermissionTo('update:combatrecord');
+        return $user->hasPermissionTo('update:combatrecord');
     }
 
     /**
@@ -76,7 +76,7 @@ class CombatRecordsPolicy
      */
     public function delete(User $user, Combat $combat)
     {
-	    return $user->hasPermissionTo('delete:combatrecord');
+        return $user->hasPermissionTo('delete:combatrecord');
     }
 
     /**

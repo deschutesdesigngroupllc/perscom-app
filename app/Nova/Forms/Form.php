@@ -36,9 +36,7 @@ class Form extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name'
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * Get the fields displayed by the resource.
@@ -50,18 +48,26 @@ class Form extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-	        Slug::make('Slug')->from('Name')->rules(['required', 'unique:forms,slug']),
-	        Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-	        Markdown::make('Instructions'),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->onlyOnDetail(),
-	        DateTime::make('Updated At')->onlyOnDetail(),
-	        MorphToMany::make('Fields', 'fields', Field::class)->fields(function ($request, $relatedModel) {
-		        return [
-			        Number::make('Order')->sortable()
-		        ];
-	        })
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required'])
+                ->showOnPreview(),
+            Slug::make('Slug')
+                ->from('Name')
+                ->rules(['required', 'unique:forms,slug']),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
+            Markdown::make('Instructions'),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')->onlyOnDetail(),
+            DateTime::make('Updated At')->onlyOnDetail(),
+            MorphToMany::make('Fields', 'fields', Field::class)->fields(
+                function ($request, $relatedModel) {
+                    return [Number::make('Order')->sortable()];
+                }
+            ),
         ];
     }
 

@@ -35,35 +35,33 @@ class Assignment extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id'];
 
-	/**
-	 * Get the URI key for the resource.
-	 *
-	 * @return string
-	 */
-	public static function uriKey()
-	{
-		return 'assignment-records';
-	}
+    /**
+     * Get the URI key for the resource.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return 'assignment-records';
+    }
 
-	/**
-	 * @return string
-	 */
-	public static function label()
-	{
-		return 'Assignment Records';
-	}
+    /**
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Assignment Records';
+    }
 
-	/**
-	 * @return string
-	 */
-	public function title()
-	{
-		return $this->person->full_name;
-	}
+    /**
+     * @return string
+     */
+    public function title()
+    {
+        return $this->person->full_name;
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -75,22 +73,28 @@ class Assignment extends Resource
     {
         return [
             ID::make()->sortable(),
-	        BelongsTo::make('Person')->sortable(),
-	        BelongsTo::make('Unit')->sortable(),
-	        BelongsTo::make('Position')->sortable(),
-	        BelongsTo::make('Specialty')->sortable(),
-	        Textarea::make('Text')->alwaysShow(),
-	        Text::make('Text', function ($model) {
-		        return $model->text;
-	        })->onlyOnIndex(),
-	        new Panel('History', [
-		        BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-		        DateTime::make('Created At')->sortable()->exceptOnForms(),
-		        DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
-	        ]),
-	        new Panel('Attachments', [
-		        BelongsTo::make('Document')->nullable()
-	        ])
+            BelongsTo::make('Person')->sortable(),
+            BelongsTo::make('Unit')->sortable(),
+            BelongsTo::make('Position')->sortable(),
+            BelongsTo::make('Specialty')->sortable(),
+            Textarea::make('Text')->alwaysShow(),
+            Text::make('Text', function ($model) {
+                return $model->text;
+            })->onlyOnIndex(),
+            new Panel('History', [
+                BelongsTo::make(
+                    'Author',
+                    'author',
+                    User::class
+                )->onlyOnDetail(),
+                DateTime::make('Created At')
+                    ->sortable()
+                    ->exceptOnForms(),
+                DateTime::make('Updated At')
+                    ->exceptOnForms()
+                    ->hideFromIndex(),
+            ]),
+            new Panel('Attachments', [BelongsTo::make('Document')->nullable()]),
         ];
     }
 
@@ -102,10 +106,7 @@ class Assignment extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-        	new TotalAssignmentRecords,
-	        new NewAssignmentRecords
-        ];
+        return [new TotalAssignmentRecords(), new NewAssignmentRecords()];
     }
 
     /**

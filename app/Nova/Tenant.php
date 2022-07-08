@@ -39,11 +39,9 @@ class Tenant extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name', 'website'
-    ];
+    public static $search = ['id', 'name', 'website'];
 
-	/**
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -53,79 +51,129 @@ class Tenant extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Name')->sortable()->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)]),
-	        Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
-	        Text::make('Website')->sortable(),
-	        URL::make('Domain', function ($model) {
-	        	if ($model->domains()->count()) {
-			        return \Spatie\Url\Url::fromString($model->domains()->first()->domain)->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString();
-		        }
-	        	return null;
-	        })->sortable()->displayUsing(function ($url) {
-		        return $url;
-	        })->exceptOnForms(),
-	        new Panel('Domain', [
-		        Text::make('Domain', 'domain')->rules(['required'])->onlyOnForms()->hideWhenUpdating()->fillUsing(function ($request) {
-		        	return null;
-		        })
-	        ]),
-	        new Panel('Administrative User', [
-	        	Text::make('Name', 'admin_name')->rules(['required'])->onlyOnForms()->hideWhenUpdating()->fillUsing(function () {
-	        		return null;
-		        }),
-		        Email::make('Email', 'admin_email')->rules(['required'])->onlyOnForms()->hideWhenUpdating()->fillUsing(function () {
-		        	return null;
-		        }),
-		        Password::make('Password', 'admin_password')->rules(['required'])->onlyOnForms()->hideWhenUpdating()->fillUsing(function () {
-		        	return null;
-		        })
-	        ]),
-	        HasMany::make('Domains'),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->sortable()->exceptOnForms(),
-	        DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
-	        new Panel('Subscription', [
-		        Boolean::make('Customer', function ($model) {
-			        return $model->hasStripeId();
-		        }),
-		        Boolean::make('On Trial', function ($model) {
-			        return $model->onGenericTrial();
-		        }),
-	        	Text::make('Stripe ID')->onlyOnDetail()->readonly(),
-		        Text::make('Card Brand')->onlyOnDetail()->readonly(),
-		        Text::make('Card Last Four')->onlyOnDetail()->readonly(),
-				DateTime::make('Trial Ends At')->onlyOnDetail()->readonly(),
-	        ]),
-	        HasMany::make('Subscriptions'),
-	        HasMany::make('Receipts', 'localReceipts', Receipt::class)
+            Text::make('Name')
+                ->sortable()
+                ->rules([
+                    'required',
+                    Rule::unique('tenants', 'name')->ignore($this->id),
+                ]),
+            Email::make('Email')
+                ->sortable()
+                ->rules([
+                    'required',
+                    Rule::unique('tenants', 'email')->ignore($this->id),
+                ]),
+            Text::make('Website')->sortable(),
+            URL::make('Domain', function ($model) {
+                if ($model->domains()->count()) {
+                    return \Spatie\Url\Url::fromString(
+                        $model->domains()->first()->domain
+                    )
+                        ->withScheme(
+                            app()->environment() === 'production'
+                                ? 'https'
+                                : 'http'
+                        )
+                        ->__toString();
+                }
+                return null;
+            })
+                ->sortable()
+                ->displayUsing(function ($url) {
+                    return $url;
+                })
+                ->exceptOnForms(),
+            new Panel('Domain', [
+                Text::make('Domain', 'domain')
+                    ->rules(['required'])
+                    ->onlyOnForms()
+                    ->hideWhenUpdating()
+                    ->fillUsing(function ($request) {
+                        return null;
+                    }),
+            ]),
+            new Panel('Administrative User', [
+                Text::make('Name', 'admin_name')
+                    ->rules(['required'])
+                    ->onlyOnForms()
+                    ->hideWhenUpdating()
+                    ->fillUsing(function () {
+                        return null;
+                    }),
+                Email::make('Email', 'admin_email')
+                    ->rules(['required'])
+                    ->onlyOnForms()
+                    ->hideWhenUpdating()
+                    ->fillUsing(function () {
+                        return null;
+                    }),
+                Password::make('Password', 'admin_password')
+                    ->rules(['required'])
+                    ->onlyOnForms()
+                    ->hideWhenUpdating()
+                    ->fillUsing(function () {
+                        return null;
+                    }),
+            ]),
+            HasMany::make('Domains'),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Updated At')
+                ->sortable()
+                ->exceptOnForms()
+                ->onlyOnDetail(),
+            new Panel('Subscription', [
+                Boolean::make('Customer', function ($model) {
+                    return $model->hasStripeId();
+                }),
+                Boolean::make('On Trial', function ($model) {
+                    return $model->onGenericTrial();
+                }),
+                Text::make('Stripe ID')
+                    ->onlyOnDetail()
+                    ->readonly(),
+                Text::make('Card Brand')
+                    ->onlyOnDetail()
+                    ->readonly(),
+                Text::make('Card Last Four')
+                    ->onlyOnDetail()
+                    ->readonly(),
+                DateTime::make('Trial Ends At')
+                    ->onlyOnDetail()
+                    ->readonly(),
+            ]),
+            HasMany::make('Subscriptions'),
+            HasMany::make('Receipts', 'localReceipts', Receipt::class),
         ];
     }
 
-	/**
-	 * Register a callback to be called after the resource is created.
-	 *
-	 * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-	 * @param  \Illuminate\Database\Eloquent\Model  $model
-	 * @return void
-	 */
-	public static function afterCreate(NovaRequest $request, Model $model)
-	{
-		if ($model instanceof \App\Models\Tenant) {
-			$values = $request->all();
+    /**
+     * Register a callback to be called after the resource is created.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return void
+     */
+    public static function afterCreate(NovaRequest $request, Model $model)
+    {
+        if ($model instanceof \App\Models\Tenant) {
+            $values = $request->all();
 
-			$model->domains()->create([
-				'domain' => $values['domain']
-			]);
+            $model->domains()->create([
+                'domain' => $values['domain'],
+            ]);
 
-			$model->run(function () use ($values) {
-				\App\Models\User::create([
-					'name' => $values['admin_name'],
-					'email' => $values['admin_email'],
-					'password' => Hash::make($values['admin_password'])
-				]);
-			});
-		}
-	}
+            $model->run(function () use ($values) {
+                \App\Models\User::create([
+                    'name' => $values['admin_name'],
+                    'email' => $values['admin_email'],
+                    'password' => Hash::make($values['admin_password']),
+                ]);
+            });
+        }
+    }
 
     /**
      * Get the cards available for the request.

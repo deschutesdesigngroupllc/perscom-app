@@ -11,15 +11,15 @@ class AwardPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class AwardPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:award');
+        return $user->hasPermissionTo('view:award');
     }
 
     /**
@@ -41,7 +41,7 @@ class AwardPolicy
      */
     public function view(User $user, Award $award)
     {
-	    return $user->hasPermissionTo('view:award');
+        return $user->hasPermissionTo('view:award');
     }
 
     /**
@@ -52,7 +52,7 @@ class AwardPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:award');
+        return $user->hasPermissionTo('create:award');
     }
 
     /**
@@ -64,7 +64,7 @@ class AwardPolicy
      */
     public function update(User $user, Award $award)
     {
-	    return $user->hasPermissionTo('update:award');
+        return $user->hasPermissionTo('update:award');
     }
 
     /**
@@ -76,7 +76,7 @@ class AwardPolicy
      */
     public function delete(User $user, Award $award)
     {
-	    return $user->hasPermissionTo('delete:award');
+        return $user->hasPermissionTo('delete:award');
     }
 
     /**

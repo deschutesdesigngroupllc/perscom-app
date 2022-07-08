@@ -29,21 +29,19 @@ class Submission extends Resource
      */
     public static $title = 'id';
 
-	/**
-	 * Indicates if the resource should be globally searchable.
-	 *
-	 * @var bool
-	 */
-	public static $globallySearchable = false;
+    /**
+     * Indicates if the resource should be globally searchable.
+     *
+     * @var bool
+     */
+    public static $globallySearchable = false;
 
     /**
      * The columns that should be searched.
      *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id'];
 
     /**
      * Get the fields displayed by the resource.
@@ -55,22 +53,30 @@ class Submission extends Resource
     {
         return [
             ID::make()->sortable(),
-	        BelongsTo::make('User')->showOnPreview(),
-	        BelongsTo::make('Form')->showOnPreview(),
-	        Badge::make('Status', function ($model) {
-	        	return $this->status->name ?? null;
-	        })->map([
-	        	 $this->status->name ?? null => 'info'
-	        ])->showOnPreview(),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->exceptOnForms(),
-	        DateTime::make('Updated At')->onlyOnDetail(),
-	        MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
-	        	return [
-			        Textarea::make('Text'),
-			        DateTime::make('Updated At')->sortable()->onlyOnIndex()
-		        ];
-	        })
+            BelongsTo::make('User')->showOnPreview(),
+            BelongsTo::make('Form')->showOnPreview(),
+            Badge::make('Status', function ($model) {
+                return $this->status->name ?? null;
+            })
+                ->map([
+                    $this->status->name ?? null => 'info',
+                ])
+                ->showOnPreview(),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')->exceptOnForms(),
+            DateTime::make('Updated At')->onlyOnDetail(),
+            MorphToMany::make(
+                'Status History',
+                'statuses',
+                Status::class
+            )->fields(function () {
+                return [
+                    Textarea::make('Text'),
+                    DateTime::make('Updated At')
+                        ->sortable()
+                        ->onlyOnIndex(),
+                ];
+            }),
         ];
     }
 

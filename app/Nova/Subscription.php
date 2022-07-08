@@ -35,9 +35,7 @@ class Subscription extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'stripe_id', 'stripe_plan', 'stripe_status'
-    ];
+    public static $search = ['id', 'stripe_id', 'stripe_plan', 'stripe_status'];
 
     /**
      * Get the fields displayed by the resource.
@@ -49,27 +47,33 @@ class Subscription extends Resource
     {
         return [
             ID::make()->sortable(),
-	        BelongsTo::make('Tenant', 'owner', Tenant::class),
-	        Text::make('Name')->rules(['required'])->placeholder('default'),
-	        Text::make('Stripe ID')->readonly(function ($request) {
-		        return $request->isUpdateOrUpdateAttachedRequest();
-	        })->rules(['required']),
-	        Badge::make('Stripe Status')->map([
-	        	'active' => 'success',
-		        'incomplete' => 'warning',
-		        'incomplete_expired' => 'danger',
-		        'trialing' => 'info',
-		        'past_due' => 'warning',
-		        'canceled' => 'danger',
-		        'unpaid' => 'danger'
-	        ]),
-	        Text::make('Stripe Plan')->readonly(function ($request) {
-		        return $request->isUpdateOrUpdateAttachedRequest();
-	        })->rules(['required']),
-	        Number::make('Quantity')->rules(['required']),
-	        DateTime::make('Trial Ends At'),
-	        DateTime::make('Ends At'),
-	        HasMany::make('Items', 'items', SubscriptionItem::class)
+            BelongsTo::make('Tenant', 'owner', Tenant::class),
+            Text::make('Name')
+                ->rules(['required'])
+                ->placeholder('default'),
+            Text::make('Stripe ID')
+                ->readonly(function ($request) {
+                    return $request->isUpdateOrUpdateAttachedRequest();
+                })
+                ->rules(['required']),
+            Badge::make('Stripe Status')->map([
+                'active' => 'success',
+                'incomplete' => 'warning',
+                'incomplete_expired' => 'danger',
+                'trialing' => 'info',
+                'past_due' => 'warning',
+                'canceled' => 'danger',
+                'unpaid' => 'danger',
+            ]),
+            Text::make('Stripe Plan')
+                ->readonly(function ($request) {
+                    return $request->isUpdateOrUpdateAttachedRequest();
+                })
+                ->rules(['required']),
+            Number::make('Quantity')->rules(['required']),
+            DateTime::make('Trial Ends At'),
+            DateTime::make('Ends At'),
+            HasMany::make('Items', 'items', SubscriptionItem::class),
         ];
     }
 
@@ -117,15 +121,18 @@ class Subscription extends Resource
         return [];
     }
 
-	/**
-	 * Register a callback to be called after the resource is created.
-	 *
-	 * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-	 * @param  \Illuminate\Database\Eloquent\Model  $model
-	 * @return void
-	 */
-	public static function afterCreate(NovaRequest $request, Model $model)
-	{
-		Notification::send(\App\Models\User::all(), new NewSubscription($model));
-	}
+    /**
+     * Register a callback to be called after the resource is created.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $model
+     * @return void
+     */
+    public static function afterCreate(NovaRequest $request, Model $model)
+    {
+        Notification::send(
+            \App\Models\User::all(),
+            new NewSubscription($model)
+        );
+    }
 }

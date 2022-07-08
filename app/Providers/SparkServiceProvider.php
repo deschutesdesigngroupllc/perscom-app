@@ -23,12 +23,17 @@ class SparkServiceProvider extends ServiceProvider
             return \tenant();
         });
 
-        Spark::billable(Tenant::class)->authorize(function (Tenant $billable, Request $request) {
-            return \tenant() &&
-                   \tenant()->getTenantKey() === $billable->id;
+        Spark::billable(Tenant::class)->authorize(function (
+            Tenant $billable,
+            Request $request
+        ) {
+            return \tenant() && \tenant()->getTenantKey() === $billable->id;
         });
 
-        Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {
+        Spark::billable(Tenant::class)->checkPlanEligibility(function (
+            Tenant $billable,
+            Plan $plan
+        ) {
             // if ($billable->projects > 5 && $plan->name == 'Basic') {
             //     throw ValidationException::withMessages([
             //         'plan' => 'You have too many projects for the selected plan.'

@@ -31,9 +31,7 @@ class Rank extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name'
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * Get the fields displayed by the resource.
@@ -45,14 +43,26 @@ class Rank extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-	        Text::make('Abbreviation')->sortable()->nullable()->showOnPreview(),
-	        Text::make('Paygrade')->sortable()->nullable()->showOnPreview(),
-	        File::make('Image')->disk('public'),
-	        Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->onlyOnDetail(),
-	        DateTime::make('Updated At')->onlyOnDetail()
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required'])
+                ->showOnPreview(),
+            Text::make('Abbreviation')
+                ->sortable()
+                ->nullable()
+                ->showOnPreview(),
+            Text::make('Paygrade')
+                ->sortable()
+                ->nullable()
+                ->showOnPreview(),
+            File::make('Image')->disk('public'),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')->onlyOnDetail(),
+            DateTime::make('Updated At')->onlyOnDetail(),
         ];
     }
 

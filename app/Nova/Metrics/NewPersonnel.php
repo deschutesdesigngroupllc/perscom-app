@@ -26,11 +26,11 @@ class NewPersonnel extends Trend
      */
     public function ranges()
     {
-	    return [
-		    30 => __('30 Days'),
-		    60 => __('60 Days'),
-		    90 => __('90 Days'),
-	    ];
+        return [
+            30 => __('30 Days'),
+            60 => __('60 Days'),
+            90 => __('90 Days'),
+        ];
     }
 
     /**
@@ -53,13 +53,13 @@ class NewPersonnel extends Trend
         return 'new-personnel';
     }
 
-	/**
-	 * Get the displayable name of the metric
-	 *
-	 * @return string
-	 */
-	public function name()
-	{
-		return 'New Soldiers';
-	}
+    /**
+     * Get the displayable name of the metric
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'New Soldiers';
+    }
 }

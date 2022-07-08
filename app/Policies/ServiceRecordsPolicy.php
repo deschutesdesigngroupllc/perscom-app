@@ -11,15 +11,15 @@ class ServiceRecordsPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class ServiceRecordsPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:servicerecord');
+        return $user->hasPermissionTo('view:servicerecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class ServiceRecordsPolicy
      */
     public function view(User $user, Service $service)
     {
-	    return $user->hasPermissionTo('view:servicerecord');
+        return $user->hasPermissionTo('view:servicerecord');
     }
 
     /**
@@ -52,7 +52,7 @@ class ServiceRecordsPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:servicerecord');
+        return $user->hasPermissionTo('create:servicerecord');
     }
 
     /**
@@ -64,7 +64,7 @@ class ServiceRecordsPolicy
      */
     public function update(User $user, Service $service)
     {
-	    return $user->hasPermissionTo('update:servicerecord');
+        return $user->hasPermissionTo('update:servicerecord');
     }
 
     /**
@@ -76,7 +76,7 @@ class ServiceRecordsPolicy
      */
     public function delete(User $user, Service $service)
     {
-	    return $user->hasPermissionTo('delete:servicerecord');
+        return $user->hasPermissionTo('delete:servicerecord');
     }
 
     /**

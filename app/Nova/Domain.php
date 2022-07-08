@@ -32,9 +32,7 @@ class Domain extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'domain'
-    ];
+    public static $search = ['id', 'domain'];
 
     /**
      * Get the fields displayed by the resource.
@@ -46,16 +44,40 @@ class Domain extends Resource
     {
         return [
             ID::make()->sortable(),
-	        BelongsTo::make('Tenant')->showCreateRelationButton(),
-	        Text::make('Domain')->sortable()->onlyOnForms()->rules(['required', Rule::unique('domains', 'domain')->ignore($this->id)]),
-	        URL::make('Domain', function () {
-		        return \Spatie\Url\Url::fromString($this->domain)->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString();
-	        })->sortable()->displayUsing(function () {
-		        return \Spatie\Url\Url::fromString($this->domain)->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString();
-	        })->exceptOnForms(),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->sortable()->exceptOnForms(),
-	        DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
+            BelongsTo::make('Tenant')->showCreateRelationButton(),
+            Text::make('Domain')
+                ->sortable()
+                ->onlyOnForms()
+                ->rules([
+                    'required',
+                    Rule::unique('domains', 'domain')->ignore($this->id),
+                ]),
+            URL::make('Domain', function () {
+                return \Spatie\Url\Url::fromString($this->domain)
+                    ->withScheme(
+                        app()->environment() === 'production' ? 'https' : 'http'
+                    )
+                    ->__toString();
+            })
+                ->sortable()
+                ->displayUsing(function () {
+                    return \Spatie\Url\Url::fromString($this->domain)
+                        ->withScheme(
+                            app()->environment() === 'production'
+                                ? 'https'
+                                : 'http'
+                        )
+                        ->__toString();
+                })
+                ->exceptOnForms(),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Updated At')
+                ->sortable()
+                ->exceptOnForms()
+                ->onlyOnDetail(),
         ];
     }
 

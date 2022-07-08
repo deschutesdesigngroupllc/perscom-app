@@ -11,15 +11,15 @@ class RankRecordsPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class RankRecordsPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:rankrecord');
+        return $user->hasPermissionTo('view:rankrecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class RankRecordsPolicy
      */
     public function view(User $user, Rank $rank)
     {
-	    return $user->hasPermissionTo('view:rankrecord');
+        return $user->hasPermissionTo('view:rankrecord');
     }
 
     /**
@@ -52,7 +52,7 @@ class RankRecordsPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:rankrecord');
+        return $user->hasPermissionTo('create:rankrecord');
     }
 
     /**
@@ -64,7 +64,7 @@ class RankRecordsPolicy
      */
     public function update(User $user, Rank $rank)
     {
-	    return $user->hasPermissionTo('update:rankrecord');
+        return $user->hasPermissionTo('update:rankrecord');
     }
 
     /**
@@ -76,7 +76,7 @@ class RankRecordsPolicy
      */
     public function delete(User $user, Rank $rank)
     {
-	    return $user->hasPermissionTo('delete:rankrecord');
+        return $user->hasPermissionTo('delete:rankrecord');
     }
 
     /**

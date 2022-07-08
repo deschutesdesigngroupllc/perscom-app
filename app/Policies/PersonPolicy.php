@@ -11,15 +11,15 @@ class PersonPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class PersonPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:soldier');
+        return $user->hasPermissionTo('view:soldier');
     }
 
     /**
@@ -41,7 +41,7 @@ class PersonPolicy
      */
     public function view(User $user, Person $person)
     {
-	    return $user->hasPermissionTo('view:soldier');
+        return $user->hasPermissionTo('view:soldier');
     }
 
     /**
@@ -52,7 +52,7 @@ class PersonPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:soldier');
+        return $user->hasPermissionTo('create:soldier');
     }
 
     /**
@@ -64,7 +64,7 @@ class PersonPolicy
      */
     public function update(User $user, Person $person)
     {
-	    return $user->hasPermissionTo('update:soldier');
+        return $user->hasPermissionTo('update:soldier');
     }
 
     /**
@@ -76,7 +76,7 @@ class PersonPolicy
      */
     public function delete(User $user, Person $person)
     {
-	    return $user->hasPermissionTo('delete:soldier');
+        return $user->hasPermissionTo('delete:soldier');
     }
 
     /**

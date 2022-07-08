@@ -8,12 +8,12 @@ use Laravel\Nova\Metrics\Value;
 
 class TotalPersonnel extends Value
 {
-	/**
-	 * The element's icon.
-	 *
-	 * @var string
-	 */
-	public $icon = 'user';
+    /**
+     * The element's icon.
+     *
+     * @var string
+     */
+    public $icon = 'user';
 
     /**
      * Calculate the value of the metric.
@@ -64,13 +64,13 @@ class TotalPersonnel extends Value
         return 'total-personnel';
     }
 
-	/**
-	 * Get the displayable name of the metric
-	 *
-	 * @return string
-	 */
-	public function name()
-	{
-		return 'Total Soldiers';
-	}
+    /**
+     * Get the displayable name of the metric
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'Total Soldiers';
+    }
 }

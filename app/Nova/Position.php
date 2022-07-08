@@ -30,9 +30,7 @@ class Position extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name'
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * Get the fields displayed by the resource.
@@ -44,11 +42,17 @@ class Position extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-	        Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->onlyOnDetail(),
-	        DateTime::make('Updated At')->onlyOnDetail()
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required'])
+                ->showOnPreview(),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')->onlyOnDetail(),
+            DateTime::make('Updated At')->onlyOnDetail(),
         ];
     }
 

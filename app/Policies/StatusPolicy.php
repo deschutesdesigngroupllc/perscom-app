@@ -11,15 +11,15 @@ class StatusPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class StatusPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:status');
+        return $user->hasPermissionTo('view:status');
     }
 
     /**
@@ -41,7 +41,7 @@ class StatusPolicy
      */
     public function view(User $user, Status $status)
     {
-	    return $user->hasPermissionTo('view:status');
+        return $user->hasPermissionTo('view:status');
     }
 
     /**
@@ -52,7 +52,7 @@ class StatusPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:status');
+        return $user->hasPermissionTo('create:status');
     }
 
     /**
@@ -64,7 +64,7 @@ class StatusPolicy
      */
     public function update(User $user, Status $status)
     {
-	    return $user->hasPermissionTo('update:status');
+        return $user->hasPermissionTo('update:status');
     }
 
     /**
@@ -76,7 +76,7 @@ class StatusPolicy
      */
     public function delete(User $user, Status $status)
     {
-	    return $user->hasPermissionTo('delete:status');
+        return $user->hasPermissionTo('delete:status');
     }
 
     /**

@@ -18,10 +18,10 @@ class TenantObserver
      */
     public function created(Tenant $tenant)
     {
-	    Notification::sendNow(User::all(), new NewTenant($tenant));
+        Notification::sendNow(User::all(), new NewTenant($tenant));
     }
 
-	    /**
+    /**
      * Handle the Tenant "updated" event.
      *
      * @param  \App\Models\Tenant  $tenant
@@ -40,7 +40,7 @@ class TenantObserver
      */
     public function deleted(Tenant $tenant)
     {
-	    Notification::sendNow(User::all(), new TenantDeleted($tenant));
+        Notification::sendNow(User::all(), new TenantDeleted($tenant));
     }
 
     /**

@@ -32,9 +32,7 @@ class User extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name', 'email',
-    ];
+    public static $search = ['id', 'name', 'email'];
 
     /**
      * Get the fields displayed by the resource.
@@ -52,25 +50,25 @@ class User extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255')
-	            ->showOnPreview(),
+                ->showOnPreview(),
 
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
-	            ->showOnPreview(),
+                ->showOnPreview(),
 
-	        Boolean::make('Email Verified', function () {
-	        	return $this->email_verified_at !== null;
-	        }),
+            Boolean::make('Email Verified', function () {
+                return $this->email_verified_at !== null;
+            }),
 
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
-	        MorphedByMany::make('Roles'),
-	        MorphedByMany::make('Permissions')
+            MorphedByMany::make('Roles'),
+            MorphedByMany::make('Permissions'),
         ];
     }
 

@@ -43,7 +43,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
-	/**
+    /**
      * Bootstrap any application services.
      *
      * @return void
@@ -53,96 +53,145 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         // Tenant request
-	    if (!\Illuminate\Support\Facades\Request::isCentralRequest()) {
-	        Nova::mainMenu(function (Request $request) {
-		        return [
-			        MenuSection::dashboard(Main::class)->icon('chart-bar'),
-			        MenuSection::make('Organization', [
-				        MenuItem::resource(Award::class),
-				        MenuItem::resource(Document::class),
-				        MenuItem::resource(Position::class),
-				        MenuItem::resource(Qualification::class),
-				        MenuItem::resource(Rank::class),
-				        MenuItem::resource(Specialty::class),
-				        MenuItem::resource(Status::class),
-				        MenuItem::resource(Unit::class),
-			        ])->icon('office-building')->collapsable(),
+        if (!\Illuminate\Support\Facades\Request::isCentralRequest()) {
+            Nova::mainMenu(function (Request $request) {
+                return [
+                    MenuSection::dashboard(Main::class)->icon('chart-bar'),
+                    MenuSection::make('Organization', [
+                        MenuItem::resource(Award::class),
+                        MenuItem::resource(Document::class),
+                        MenuItem::resource(Position::class),
+                        MenuItem::resource(Qualification::class),
+                        MenuItem::resource(Rank::class),
+                        MenuItem::resource(Specialty::class),
+                        MenuItem::resource(Status::class),
+                        MenuItem::resource(Unit::class),
+                    ])
+                        ->icon('office-building')
+                        ->collapsable(),
 
-			        MenuSection::make('Forms', [
-				        MenuItem::resource(Form::class),
-				        MenuItem::resource(Submission::class),
-			        ])->icon('pencil-alt')->collapsable(),
+                    MenuSection::make('Forms', [
+                        MenuItem::resource(Form::class),
+                        MenuItem::resource(Submission::class),
+                    ])
+                        ->icon('pencil-alt')
+                        ->collapsable(),
 
-			        MenuSection::make('Personnel', [
-				        MenuItem::resource(Person::class),
-			        ])->icon('user')->collapsable(),
+                    MenuSection::make('Personnel', [
+                        MenuItem::resource(Person::class),
+                    ])
+                        ->icon('user')
+                        ->collapsable(),
 
-			        MenuSection::make('Records', [
-				        MenuItem::resource(AwardRecords::class),
-				        MenuItem::resource(AssignmentRecords::class),
-				        MenuItem::resource(CombatRecords::class),
-				        MenuItem::resource(QualificationRecords::class),
-				        MenuItem::resource(RankRecords::class),
-				        MenuItem::resource(ServiceRecords::class),
-			        ])->icon('document-text')->collapsable(),
+                    MenuSection::make('Records', [
+                        MenuItem::resource(AwardRecords::class),
+                        MenuItem::resource(AssignmentRecords::class),
+                        MenuItem::resource(CombatRecords::class),
+                        MenuItem::resource(QualificationRecords::class),
+                        MenuItem::resource(RankRecords::class),
+                        MenuItem::resource(ServiceRecords::class),
+                    ])
+                        ->icon('document-text')
+                        ->collapsable(),
 
-			        MenuSection::make('Users', [
-				        MenuItem::resource(User::class),
-				        MenuItem::resource(Permission::class),
-				        MenuItem::resource(Role::class)
-			        ])->icon('user')->collapsable(),
+                    MenuSection::make('Users', [
+                        MenuItem::resource(User::class),
+                        MenuItem::resource(Permission::class),
+                        MenuItem::resource(Role::class),
+                    ])
+                        ->icon('user')
+                        ->collapsable(),
 
-			        MenuSection::make('Settings', [
-				        MenuItem::resource(Field::class),
-				        MenuItem::resource(ActionEvent::class),
-			        ])->icon('cog')->collapsable(),
+                    MenuSection::make('Settings', [
+                        MenuItem::resource(Field::class),
+                        MenuItem::resource(ActionEvent::class),
+                    ])
+                        ->icon('cog')
+                        ->collapsable(),
 
-			        MenuSection::make('Support', [
-				        MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
-				        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
-				        MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
-			        ])->icon('support'),
-		        ];
-	        });
+                    MenuSection::make('Support', [
+                        MenuItem::externalLink(
+                            'Community Forums',
+                            'https://community.deschutesdesigngroup.com'
+                        ),
+                        MenuItem::externalLink(
+                            'Help Desk',
+                            'https://support.deschutesdesigngroup.com'
+                        ),
+                        MenuItem::externalLink(
+                            'Submit A Ticket',
+                            'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
+                        ),
+                    ])->icon('support'),
+                ];
+            });
 
-        // Admin request
+            // Admin request
         } else {
-	        Nova::mainMenu(function (Request $request) {
-		        return [
-			        MenuSection::dashboard(Admin::class)->icon('chart-bar'),
-			        MenuSection::make('Application', [
-				        MenuItem::resource(Tenant::class),
-				        MenuItem::resource(Domain::class),
-				        MenuItem::resource(Subscription::class),
-				        MenuItem::resource(User::class),
-			        ])->icon('terminal')->collapsable(),
+            Nova::mainMenu(function (Request $request) {
+                return [
+                    MenuSection::dashboard(Admin::class)->icon('chart-bar'),
+                    MenuSection::make('Application', [
+                        MenuItem::resource(Tenant::class),
+                        MenuItem::resource(Domain::class),
+                        MenuItem::resource(Subscription::class),
+                        MenuItem::resource(User::class),
+                    ])
+                        ->icon('terminal')
+                        ->collapsable(),
 
-			        MenuSection::make('Tools', [
-			        	MenuItem::externalLink('Horizon', Url::fromString(config('app.url') . '/' . config('horizon.path'))->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString()),
-				        MenuItem::externalLink('Telescope', Url::fromString(config('app.url') . '/' . config('telescope.path'))->withScheme(app()->environment() === 'production' ? 'https' : 'http')->__toString())
-			        ])->icon('external-link')->collapsable()
-		        ];
-	        });
+                    MenuSection::make('Tools', [
+                        MenuItem::externalLink(
+                            'Horizon',
+                            Url::fromString(
+                                config('app.url') . '/' . config('horizon.path')
+                            )
+                                ->withScheme(
+                                    app()->environment() === 'production'
+                                        ? 'https'
+                                        : 'http'
+                                )
+                                ->__toString()
+                        ),
+                        MenuItem::externalLink(
+                            'Telescope',
+                            Url::fromString(
+                                config('app.url') .
+                                    '/' .
+                                    config('telescope.path')
+                            )
+                                ->withScheme(
+                                    app()->environment() === 'production'
+                                        ? 'https'
+                                        : 'http'
+                                )
+                                ->__toString()
+                        ),
+                    ])
+                        ->icon('external-link')
+                        ->collapsable(),
+                ];
+            });
         }
 
-	    if (!\Illuminate\Support\Facades\Request::isCentralRequest()) {
-		    Nova::userMenu(function (Request $request, Menu $menu) {
-			    $menu->append([
-				    MenuItem::externalLink('Billing', route('spark.portal')),
-				    MenuSeparator::make(),
-				    MenuItem::make('Logout', 'logout')->method('POST')
-			    ]);
-			    return $menu;
-		    });
-	    }
+        if (!\Illuminate\Support\Facades\Request::isCentralRequest()) {
+            Nova::userMenu(function (Request $request, Menu $menu) {
+                $menu->append([
+                    MenuItem::externalLink('Billing', route('spark.portal')),
+                    MenuSeparator::make(),
+                    MenuItem::make('Logout', 'logout')->method('POST'),
+                ]);
+                return $menu;
+            });
+        }
 
-	    Nova::footer(function ($request) {
-		    return Blade::render('
+        Nova::footer(function ($request) {
+            return Blade::render('
 	            <div class="mt-8 leading-normal text-xs text-gray-500 space-y-1"><p class="text-center">PERSCOM Soldier Management System</a> · v{{ config("app.version") }} ({{ \Illuminate\Support\Str::ucfirst(config("app.env")) }})</p>
             		<p class="text-center">© 2022 Deschutes Design Group LLC</p>
         		</div>
 	        ');
-	    });
+        });
     }
 
     /**
@@ -176,14 +225,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function dashboards()
     {
-	    if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
-		    return [
-			    new Admin
-		    ];
-	    }
-        return [
-            new Main
-        ];
+        if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
+            return [new Admin()];
+        }
+        return [new Main()];
     }
 
     /**

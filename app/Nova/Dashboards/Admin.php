@@ -12,25 +12,25 @@ use Laravel\Nova\Dashboard;
 
 class Admin extends Dashboard
 {
-	/**
-	 * Get the displayable name of the dashboard.
-	 *
-	 * @return string
-	 */
-	public function name()
-	{
-		return 'Dashboard';
-	}
+    /**
+     * Get the displayable name of the dashboard.
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'Dashboard';
+    }
 
-	/**
-	 * Get the URI key of the dashboard.
-	 *
-	 * @return string
-	 */
-	public function uriKey()
-	{
-		return 'main';
-	}
+    /**
+     * Get the URI key of the dashboard.
+     *
+     * @return string
+     */
+    public function uriKey()
+    {
+        return 'main';
+    }
 
     /**
      * Get the cards for the dashboard.
@@ -40,12 +40,12 @@ class Admin extends Dashboard
     public function cards()
     {
         return [
-            new NewTenants,
-	        new TotalRevenue,
-	        new AverageRevenue,
-	        new UsersOnline,
-	        new SubscriptionsByPlan,
-	        new SubscriptionByStatus
+            new NewTenants(),
+            new TotalRevenue(),
+            new AverageRevenue(),
+            new UsersOnline(),
+            new SubscriptionsByPlan(),
+            new SubscriptionByStatus(),
         ];
     }
 }

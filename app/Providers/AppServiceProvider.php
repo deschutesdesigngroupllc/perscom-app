@@ -20,7 +20,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
     }
 
     /**
@@ -30,17 +29,22 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-	    Request::macro('isCentralRequest', function () {
-		    return collect(config('tenancy.central_domains'))->contains(\request()->getHost());
-	    });
+        Request::macro('isCentralRequest', function () {
+            return collect(config('tenancy.central_domains'))->contains(
+                \request()->getHost()
+            );
+        });
 
-	    if (Request::isCentralRequest()) {
-		    config()->set('nova.path', '/admin');
-	    }
+        if (Request::isCentralRequest()) {
+            config()->set('nova.path', '/admin');
+        }
 
-	    // Prefix the permission cache key with the tenant identifier
-	    Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
-		    PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
-	    });
+        // Prefix the permission cache key with the tenant identifier
+        Event::listen(TenancyBootstrapped::class, function (
+            TenancyBootstrapped $event
+        ) {
+            PermissionRegistrar::$cacheKey =
+                'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
+        });
     }
 }

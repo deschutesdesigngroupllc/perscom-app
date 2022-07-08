@@ -35,51 +35,54 @@ class Field extends Resource
      */
     public static $title = 'name';
 
-	/**
-	 * Indicates if the resource should be globally searchable.
-	 *
-	 * @var bool
-	 */
-	public static $globallySearchable = false;
+    /**
+     * Indicates if the resource should be globally searchable.
+     *
+     * @var bool
+     */
+    public static $globallySearchable = false;
 
-	/**
-	 * @var array
-	 */
-	protected $fields = [];
+    /**
+     * @var array
+     */
+    protected $fields = [];
 
     /**
      * The columns that should be searched.
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name'
-    ];
+    public static $search = ['id', 'name'];
 
-	/**
-	 * @return string
-	 */
-	public static function label()
-	{
-		return 'Custom Fields';
-	}
+    /**
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Custom Fields';
+    }
 
-	/**
-	 * @param  null  $resource
-	 *
-	 * @throws \ReflectionException
-	 */
-	public function __construct($resource = NULL)
-	{
-		$this->fields = collect(ClassFinder::getClassesInNamespace('Laravel\Nova\Fields'))->mapWithKeys(function ($className) {
-			$reflection = new \ReflectionClass($className);
-			return [$className => $reflection->getShortName()];
-		})->sort()->toArray();
+    /**
+     * @param  null  $resource
+     *
+     * @throws \ReflectionException
+     */
+    public function __construct($resource = null)
+    {
+        $this->fields = collect(
+            ClassFinder::getClassesInNamespace('Laravel\Nova\Fields')
+        )
+            ->mapWithKeys(function ($className) {
+                $reflection = new \ReflectionClass($className);
+                return [$className => $reflection->getShortName()];
+            })
+            ->sort()
+            ->toArray();
 
-		parent::__construct($resource);
-	}
+        parent::__construct($resource);
+    }
 
-	/**
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -89,14 +92,22 @@ class Field extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Name')->sortable()->rules(['required']),
-	        Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-	        Select::make('Type')->options($this->fields)->searchable()->displayUsingLabels(),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required']),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
+            Select::make('Type')
+                ->options($this->fields)
+                ->searchable()
+                ->displayUsingLabels(),
 
-	        Boolean::make('Required'),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->onlyOnDetail(),
-	        DateTime::make('Updated At')->onlyOnDetail(),
+            Boolean::make('Required'),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')->onlyOnDetail(),
+            DateTime::make('Updated At')->onlyOnDetail(),
         ];
     }
 

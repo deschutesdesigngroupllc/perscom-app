@@ -43,23 +43,23 @@ class NewSubscription extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+        return (new MailMessage())
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
-	/**
-	 * Get the nova representation of the notification
-	 *
-	 * @return array
-	 */
-	public function toNova()
-	{
-		return (new NovaNotification)
-			->message('Your report is ready to download.')
-			->action('Download', URL::remote('https://example.com/report.pdf'))
-			->icon('download')
-			->type('info');
-	}
+    /**
+     * Get the nova representation of the notification
+     *
+     * @return array
+     */
+    public function toNova()
+    {
+        return (new NovaNotification())
+            ->message('Your report is ready to download.')
+            ->action('Download', URL::remote('https://example.com/report.pdf'))
+            ->icon('download')
+            ->type('info');
+    }
 }

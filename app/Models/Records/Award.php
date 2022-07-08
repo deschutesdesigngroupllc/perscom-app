@@ -11,30 +11,30 @@ use Illuminate\Database\Eloquent\Model;
 
 class Award extends Model
 {
-	use HasAuthor;
-	use HasDocument;
-	use HasFactory;
+    use HasAuthor;
+    use HasDocument;
+    use HasFactory;
 
-	/**
-	 * The table associated with the model.
-	 *
-	 * @var string
-	 */
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'records_awards';
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function person()
-	{
-		return $this->belongsTo(Person::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function award()
-	{
-		return $this->belongsTo(AwardModel::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function award()
+    {
+        return $this->belongsTo(AwardModel::class);
+    }
 }

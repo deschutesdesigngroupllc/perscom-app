@@ -10,15 +10,15 @@ class UserPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return true;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -28,7 +28,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:user');
+        return $user->hasPermissionTo('view:user');
     }
 
     /**
@@ -40,7 +40,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-	    return $user->hasPermissionTo('view:user');
+        return $user->hasPermissionTo('view:user');
     }
 
     /**
@@ -51,7 +51,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:user');
+        return $user->hasPermissionTo('create:user');
     }
 
     /**
@@ -63,7 +63,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-	    return $user->hasPermissionTo('update:user');
+        return $user->hasPermissionTo('update:user');
     }
 
     /**
@@ -75,7 +75,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-	    return $user->hasPermissionTo('delete:user');
+        return $user->hasPermissionTo('delete:user');
     }
 
     /**

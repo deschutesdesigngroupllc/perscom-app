@@ -21,29 +21,27 @@ class ActionEvent extends Resource
      */
     public static $title = 'id';
 
-	/**
-	 * Indicates if the resource should be globally searchable.
-	 *
-	 * @var bool
-	 */
-	public static $globallySearchable = false;
+    /**
+     * Indicates if the resource should be globally searchable.
+     *
+     * @var bool
+     */
+    public static $globallySearchable = false;
 
     /**
      * The columns that should be searched.
      *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id'];
 
-	/**
-	 * @return string
-	 */
-	public static function label()
-	{
-		return 'Logs';
-	}
+    /**
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Logs';
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -53,9 +51,7 @@ class ActionEvent extends Resource
      */
     public function fields(NovaRequest $request)
     {
-        return [
-            ID::make()->sortable(),
-        ];
+        return [ID::make()->sortable()];
     }
 
     /**

@@ -11,16 +11,16 @@ class SubscriptionItemPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return true;
-		}
-		return false;
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * Determine whether the user can view any models.

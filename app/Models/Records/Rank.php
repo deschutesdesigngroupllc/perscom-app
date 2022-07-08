@@ -11,36 +11,36 @@ use Illuminate\Database\Eloquent\Model;
 
 class Rank extends Model
 {
-	use HasAuthor;
-	use HasDocument;
-	use HasFactory;
+    use HasAuthor;
+    use HasDocument;
+    use HasFactory;
 
-	/**
-	 * Record types
-	 */
+    /**
+     * Record types
+     */
     public const RECORD_RANK_PROMOTION = 0;
-	public const RECORD_RANK_DEMOTION = 1;
+    public const RECORD_RANK_DEMOTION = 1;
 
-	/**
-	 * The table associated with the model.
-	 *
-	 * @var string
-	 */
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'records_ranks';
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function person()
-	{
-		return $this->belongsTo(Person::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
+    }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function rank()
-	{
-		return $this->belongsTo(RankModel::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function rank()
+    {
+        return $this->belongsTo(RankModel::class);
+    }
 }

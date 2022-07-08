@@ -37,35 +37,33 @@ class Rank extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id'];
 
-	/**
-	 * Get the URI key for the resource.
-	 *
-	 * @return string
-	 */
-	public static function uriKey()
-	{
-		return 'rank-records';
-	}
+    /**
+     * Get the URI key for the resource.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return 'rank-records';
+    }
 
-	/**
-	 * @return string
-	 */
-	public static function label()
-	{
-		return 'Rank Records';
-	}
+    /**
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Rank Records';
+    }
 
-	/**
-	 * @return string
-	 */
-	public function title()
-	{
-		return $this->person->full_name;
-	}
+    /**
+     * @return string
+     */
+    public function title()
+    {
+        return $this->person->full_name;
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -77,24 +75,36 @@ class Rank extends Resource
     {
         return [
             ID::make()->sortable(),
-	        BelongsTo::make('Person')->sortable(),
-	        BelongsTo::make('Rank')->searchable()->sortable(),
-	        Select::make('Type')->options([
-	        	\App\Models\Records\Rank::RECORD_RANK_PROMOTION => 'Promotion',
-		        \App\Models\Records\Rank::RECORD_RANK_DEMOTION => 'Demotion'
-	        ])->displayUsingLabels(),
-	        Textarea::make('Text')->alwaysShow(),
-	        Text::make('Text', function ($model) {
-		        return $model->text;
-	        })->onlyOnIndex(),
-	        new Panel('History', [
-		        BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-		        DateTime::make('Created At')->sortable()->exceptOnForms(),
-		        DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
-	        ]),
-	        new Panel('Attachments', [
-		        BelongsTo::make('Document')->nullable()
-	        ])
+            BelongsTo::make('Person')->sortable(),
+            BelongsTo::make('Rank')
+                ->searchable()
+                ->sortable(),
+            Select::make('Type')
+                ->options([
+                    \App\Models\Records\Rank::RECORD_RANK_PROMOTION =>
+                        'Promotion',
+                    \App\Models\Records\Rank::RECORD_RANK_DEMOTION =>
+                        'Demotion',
+                ])
+                ->displayUsingLabels(),
+            Textarea::make('Text')->alwaysShow(),
+            Text::make('Text', function ($model) {
+                return $model->text;
+            })->onlyOnIndex(),
+            new Panel('History', [
+                BelongsTo::make(
+                    'Author',
+                    'author',
+                    User::class
+                )->onlyOnDetail(),
+                DateTime::make('Created At')
+                    ->sortable()
+                    ->exceptOnForms(),
+                DateTime::make('Updated At')
+                    ->exceptOnForms()
+                    ->hideFromIndex(),
+            ]),
+            new Panel('Attachments', [BelongsTo::make('Document')->nullable()]),
         ];
     }
 
@@ -107,9 +117,9 @@ class Rank extends Resource
     public function cards(NovaRequest $request)
     {
         return [
-        	new TotalRankRecords,
-	        new NewRankRecords,
-	        new RankRecordsByType
+            new TotalRankRecords(),
+            new NewRankRecords(),
+            new RankRecordsByType(),
         ];
     }
 

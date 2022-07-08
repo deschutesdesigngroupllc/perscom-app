@@ -28,9 +28,7 @@ class SubscriptionItem extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id'];
 
     /**
      * Get the fields displayed by the resource.
@@ -42,13 +40,17 @@ class SubscriptionItem extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Stripe ID')->readonly(function ($request) {
-				return $request->isUpdateOrUpdateAttachedRequest();
-	        })->rules(['required']),
-	        Text::make('Stripe Plan')->readonly(function ($request) {
-		        return $request->isUpdateOrUpdateAttachedRequest();
-	        })->rules(['required']),
-	        Number::make('Quantity')->rules(['required'])
+            Text::make('Stripe ID')
+                ->readonly(function ($request) {
+                    return $request->isUpdateOrUpdateAttachedRequest();
+                })
+                ->rules(['required']),
+            Text::make('Stripe Plan')
+                ->readonly(function ($request) {
+                    return $request->isUpdateOrUpdateAttachedRequest();
+                })
+                ->rules(['required']),
+            Number::make('Quantity')->rules(['required']),
         ];
     }
 

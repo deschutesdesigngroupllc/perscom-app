@@ -12,15 +12,15 @@ class PermissionPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -30,7 +30,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:permission');
+        return $user->hasPermissionTo('view:permission');
     }
 
     /**
@@ -42,7 +42,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission)
     {
-	    return $user->hasPermissionTo('view:permission');
+        return $user->hasPermissionTo('view:permission');
     }
 
     /**
@@ -53,7 +53,7 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:permission');
+        return $user->hasPermissionTo('create:permission');
     }
 
     /**
@@ -65,10 +65,12 @@ class PermissionPolicy
      */
     public function update(User $user, Permission $permission)
     {
-    	if (collect(config('permissions.permissions'))->has($permission->name)) {
-    		return false;
-	    }
-	    return $user->hasPermissionTo('update:permission');
+        if (
+            collect(config('permissions.permissions'))->has($permission->name)
+        ) {
+            return false;
+        }
+        return $user->hasPermissionTo('update:permission');
     }
 
     /**
@@ -80,27 +82,29 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $permission)
     {
-	    if (collect(config('permissions.permissions'))->has($permission->name)) {
-		    return false;
-	    }
-	    return $user->hasPermissionTo('delete:permission');
+        if (
+            collect(config('permissions.permissions'))->has($permission->name)
+        ) {
+            return false;
+        }
+        return $user->hasPermissionTo('delete:permission');
     }
 
-	/**
-	 * Determine whether the user can detach the model.
-	 *
-	 * @param  \App\Models\User  $user
-	 * @param  \App\Models\Permission  $permission
-	 * @param  \App\Models\Role  $role
-	 * @return \Illuminate\Auth\Access\Response|bool
-	 */
-	public function detachRole(User $user, Permission $permission, Role $role)
-	{
-		if (collect(config('permissions.roles'))->has($role->name)) {
-			return false;
-		}
-		return $user->hasPermissionTo('update:permission');
-	}
+    /**
+     * Determine whether the user can detach the model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Permission  $permission
+     * @param  \App\Models\Role  $role
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function detachRole(User $user, Permission $permission, Role $role)
+    {
+        if (collect(config('permissions.roles'))->has($role->name)) {
+            return false;
+        }
+        return $user->hasPermissionTo('update:permission');
+    }
 
     /**
      * Determine whether the user can restore the model.

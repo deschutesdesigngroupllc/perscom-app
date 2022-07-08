@@ -14,9 +14,9 @@ class NewTenant extends Notification
 {
     use Queueable;
 
-	/**
-	 * @var
-	 */
+    /**
+     * @var
+     */
     protected $tenant;
 
     /**
@@ -48,29 +48,39 @@ class NewTenant extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-	        ->subject('New Tenant Created')
+        return (new MailMessage())
+            ->subject('New Tenant Created')
             ->line('A new tenant has been created.')
-	        ->action('View Tenant', URL::remote(route('nova.pages.detail', [
-		        'resource' => 'tenants',
-		        'resourceId' => $this->tenant->getTenantKey()
-	        ])));
+            ->action(
+                'View Tenant',
+                URL::remote(
+                    route('nova.pages.detail', [
+                        'resource' => 'tenants',
+                        'resourceId' => $this->tenant->getTenantKey(),
+                    ])
+                )
+            );
     }
 
-	/**
-	 * Get the nova representation of the notification
-	 *
-	 * @return array
-	 */
-	public function toNova()
-	{
-		return (new NovaNotification())
-			->message('A new tenant has been created.')
-			->action('View Tenant', URL::remote(route('nova.pages.detail', [
-				'resource' => 'tenants',
-				'resourceId' => $this->tenant->getTenantKey()
-			])))
-			->icon('user-add')
-			->type('success');
-	}
+    /**
+     * Get the nova representation of the notification
+     *
+     * @return array
+     */
+    public function toNova()
+    {
+        return (new NovaNotification())
+            ->message('A new tenant has been created.')
+            ->action(
+                'View Tenant',
+                URL::remote(
+                    route('nova.pages.detail', [
+                        'resource' => 'tenants',
+                        'resourceId' => $this->tenant->getTenantKey(),
+                    ])
+                )
+            )
+            ->icon('user-add')
+            ->type('success');
+    }
 }

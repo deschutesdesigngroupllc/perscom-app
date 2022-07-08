@@ -8,12 +8,12 @@ use Laravel\Nova\Metrics\Trend;
 
 class NewCombatRecords extends Trend
 {
-	/**
-	 * The width of the card (1/3, 2/3, 1/2, 1/4, 3/4, or full).
-	 *
-	 * @var string
-	 */
-	public $width = '1/2';
+    /**
+     * The width of the card (1/3, 2/3, 1/2, 1/4, 3/4, or full).
+     *
+     * @var string
+     */
+    public $width = '1/2';
 
     /**
      * Calculate the value of the metric.

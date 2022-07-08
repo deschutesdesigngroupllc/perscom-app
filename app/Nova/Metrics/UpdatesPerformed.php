@@ -8,12 +8,12 @@ use Laravel\Nova\Metrics\Trend;
 
 class UpdatesPerformed extends Trend
 {
-	/**
-	 * Indicates whether the metric should be refreshed when actions run.
-	 *
-	 * @var bool
-	 */
-	public $refreshWhenActionRuns = true;
+    /**
+     * Indicates whether the metric should be refreshed when actions run.
+     *
+     * @var bool
+     */
+    public $refreshWhenActionRuns = true;
 
     /**
      * Calculate the value of the metric.

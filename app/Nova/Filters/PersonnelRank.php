@@ -36,8 +36,10 @@ class PersonnelRank extends Filter
      */
     public function options(NovaRequest $request)
     {
-	    return Rank::all()->mapWithKeys(function ($status, $key) {
-		    return [$status->name => $status->id];
-	    })->toArray();
+        return Rank::all()
+            ->mapWithKeys(function ($status, $key) {
+                return [$status->name => $status->id];
+            })
+            ->toArray();
     }
 }

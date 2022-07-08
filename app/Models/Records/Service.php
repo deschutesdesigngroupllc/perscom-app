@@ -10,22 +10,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
-	use HasAuthor;
-	use HasDocument;
-	use HasFactory;
+    use HasAuthor;
+    use HasDocument;
+    use HasFactory;
 
-	/**
-	 * The table associated with the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'records_service';
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
+    protected $table = 'records_service';
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
-	public function person()
-	{
-		return $this->belongsTo(Person::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function person()
+    {
+        return $this->belongsTo(Person::class);
+    }
 }

@@ -16,7 +16,12 @@ class AverageRevenue extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->averageByMonths($request, Receipt::class, 'amount', 'paid_at')->format('$0,0.00');
+        return $this->averageByMonths(
+            $request,
+            Receipt::class,
+            'amount',
+            'paid_at'
+        )->format('$0,0.00');
     }
 
     /**

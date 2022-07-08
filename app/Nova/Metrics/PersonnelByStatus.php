@@ -16,12 +16,16 @@ class PersonnelByStatus extends Partition
     public function calculate(NovaRequest $request)
     {
         return $this->count($request, Status::class, 'status_id')
-	        ->label(function ($value) {
-				return \App\Models\Status::find($value)->name;
-	        })
-	        ->colors(\App\Models\Status::all()->mapWithKeys(function ($status, $key) {
-		        return [$status->name => $status->color];
-	        })->toArray());
+            ->label(function ($value) {
+                return \App\Models\Status::find($value)->name;
+            })
+            ->colors(
+                \App\Models\Status::all()
+                    ->mapWithKeys(function ($status, $key) {
+                        return [$status->name => $status->color];
+                    })
+                    ->toArray()
+            );
     }
 
     /**
@@ -44,13 +48,13 @@ class PersonnelByStatus extends Partition
         return 'personnel-per-status';
     }
 
-	/**
-	 * Get the displayable name of the metric
-	 *
-	 * @return string
-	 */
-	public function name()
-	{
-		return 'Soldiers By Status';
-	}
+    /**
+     * Get the displayable name of the metric
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'Soldiers By Status';
+    }
 }

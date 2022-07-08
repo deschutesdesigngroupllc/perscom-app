@@ -35,35 +35,33 @@ class Award extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id'];
 
-	/**
-	 * Get the URI key for the resource.
-	 *
-	 * @return string
-	 */
-	public static function uriKey()
-	{
-		return 'award-records';
-	}
+    /**
+     * Get the URI key for the resource.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return 'award-records';
+    }
 
-	/**
-	 * @return string
-	 */
-	public static function label()
-	{
-		return 'Award Records';
-	}
+    /**
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Award Records';
+    }
 
-	/**
-	 * @return string
-	 */
-	public function title()
-	{
-		return $this->person->full_name;
-	}
+    /**
+     * @return string
+     */
+    public function title()
+    {
+        return $this->person->full_name;
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -74,21 +72,29 @@ class Award extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-	        ID::make()->sortable(),
-	        BelongsTo::make('Person')->sortable(),
-	        BelongsTo::make('Award')->searchable()->sortable(),
-	        Textarea::make('Text')->alwaysShow(),
-	        Text::make('Text', function ($model) {
-		        return $model->text;
-	        })->onlyOnIndex(),
-	        new Panel('History', [
-		        BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-		        DateTime::make('Created At')->sortable()->exceptOnForms(),
-		        DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
-	        ]),
-	        new Panel('Attachments', [
-		        BelongsTo::make('Document')->nullable()
-	        ])
+            ID::make()->sortable(),
+            BelongsTo::make('Person')->sortable(),
+            BelongsTo::make('Award')
+                ->searchable()
+                ->sortable(),
+            Textarea::make('Text')->alwaysShow(),
+            Text::make('Text', function ($model) {
+                return $model->text;
+            })->onlyOnIndex(),
+            new Panel('History', [
+                BelongsTo::make(
+                    'Author',
+                    'author',
+                    User::class
+                )->onlyOnDetail(),
+                DateTime::make('Created At')
+                    ->sortable()
+                    ->exceptOnForms(),
+                DateTime::make('Updated At')
+                    ->exceptOnForms()
+                    ->hideFromIndex(),
+            ]),
+            new Panel('Attachments', [BelongsTo::make('Document')->nullable()]),
         ];
     }
 
@@ -100,10 +106,7 @@ class Award extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-        	new TotalAwardRecords,
-	        new NewAwardRecords
-        ];
+        return [new TotalAwardRecords(), new NewAwardRecords()];
     }
 
     /**

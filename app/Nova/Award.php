@@ -31,9 +31,7 @@ class Award extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name'
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * Get the fields displayed by the resource.
@@ -44,13 +42,21 @@ class Award extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-	        ID::make()->sortable(),
-	        Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-	        Image::make('Image')->disk('public')->hideFromIndex(),
-	        Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->onlyOnDetail(),
-	        DateTime::make('Updated At')->onlyOnDetail()
+            ID::make()->sortable(),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required'])
+                ->showOnPreview(),
+            Image::make('Image')
+                ->disk('public')
+                ->hideFromIndex(),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')->onlyOnDetail(),
+            DateTime::make('Updated At')->onlyOnDetail(),
         ];
     }
 

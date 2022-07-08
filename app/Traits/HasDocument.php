@@ -7,22 +7,22 @@ use Illuminate\Support\Facades\Auth;
 
 trait HasDocument
 {
-	/**
-	 * @param Builder $query
-	 * @param Document    $user
-	 *
-	 * @return Builder
-	 */
-	public function scopeForDocument($query, $document)
-	{
-		return $query->whereBelongsTo($document);
-	}
+    /**
+     * @param Builder $query
+     * @param Document    $user
+     *
+     * @return Builder
+     */
+    public function scopeForDocument($query, $document)
+    {
+        return $query->whereBelongsTo($document);
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function document()
-	{
-		return $this->belongsTo(Document::class);
-	}
+    /**
+     * @return mixed
+     */
+    public function document()
+    {
+        return $this->belongsTo(Document::class);
+    }
 }

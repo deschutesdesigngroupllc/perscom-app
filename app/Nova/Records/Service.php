@@ -35,35 +35,33 @@ class Service extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'text'
-    ];
+    public static $search = ['id', 'text'];
 
-	/**
-	 * Get the URI key for the resource.
-	 *
-	 * @return string
-	 */
-	public static function uriKey()
-	{
-		return 'service-records';
-	}
+    /**
+     * Get the URI key for the resource.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return 'service-records';
+    }
 
-	/**
-	 * @return string
-	 */
-	public static function label()
-	{
-		return 'Service Records';
-	}
+    /**
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Service Records';
+    }
 
-	/**
-	 * @return string
-	 */
-	public function title()
-	{
-		return $this->person->full_name;
-	}
+    /**
+     * @return string
+     */
+    public function title()
+    {
+        return $this->person->full_name;
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -75,19 +73,28 @@ class Service extends Resource
     {
         return [
             ID::make()->sortable(),
-	        BelongsTo::make('Person')->sortable(),
-	        Textarea::make('Text')->rules(['required'])->hideFromIndex()->alwaysShow(),
-	        Text::make('Text', function ($model) {
-	        	return $model->text;
-	        })->onlyOnIndex(),
-	        new Panel('History', [
-		        BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-		        DateTime::make('Created At')->sortable()->exceptOnForms(),
-		        DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
-	        ]),
-	        new Panel('Attachments', [
-		        BelongsTo::make('Document')->nullable()
-	        ])
+            BelongsTo::make('Person')->sortable(),
+            Textarea::make('Text')
+                ->rules(['required'])
+                ->hideFromIndex()
+                ->alwaysShow(),
+            Text::make('Text', function ($model) {
+                return $model->text;
+            })->onlyOnIndex(),
+            new Panel('History', [
+                BelongsTo::make(
+                    'Author',
+                    'author',
+                    User::class
+                )->onlyOnDetail(),
+                DateTime::make('Created At')
+                    ->sortable()
+                    ->exceptOnForms(),
+                DateTime::make('Updated At')
+                    ->exceptOnForms()
+                    ->hideFromIndex(),
+            ]),
+            new Panel('Attachments', [BelongsTo::make('Document')->nullable()]),
         ];
     }
 
@@ -99,10 +106,7 @@ class Service extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-        	new TotalServiceRecords,
-	        new NewServiceRecords
-        ];
+        return [new TotalServiceRecords(), new NewServiceRecords()];
     }
 
     /**

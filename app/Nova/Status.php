@@ -11,7 +11,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Status extends Resource
 {
-	/**
+    /**
      * The model the resource corresponds to.
      *
      * @var string
@@ -30,21 +30,19 @@ class Status extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name'
-    ];
+    public static $search = ['id', 'name'];
 
-	/**
-	 * Get the text for the create resource button.
-	 *
-	 * @return string|null
-	 */
-	public static function createButtonLabel()
-	{
-		return 'Create A Status';
-	}
+    /**
+     * Get the text for the create resource button.
+     *
+     * @return string|null
+     */
+    public static function createButtonLabel()
+    {
+        return 'Create A Status';
+    }
 
-	/**
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -54,11 +52,16 @@ class Status extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-	        Color::make('Color')->rules(['required'])->showOnPreview(),
-	        Heading::make('Meta')->onlyOnDetail(),
-	        DateTime::make('Created At')->onlyOnDetail(),
-	        DateTime::make('Updated At')->onlyOnDetail()
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required'])
+                ->showOnPreview(),
+            Color::make('Color')
+                ->rules(['required'])
+                ->showOnPreview(),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')->onlyOnDetail(),
+            DateTime::make('Updated At')->onlyOnDetail(),
         ];
     }
 

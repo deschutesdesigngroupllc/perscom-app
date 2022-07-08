@@ -36,8 +36,10 @@ class PersonnelStatus extends Filter
      */
     public function options(NovaRequest $request)
     {
-        return Status::all()->mapWithKeys(function ($status, $key) {
-        	return [$status->name => $status->id];
-        })->toArray();
+        return Status::all()
+            ->mapWithKeys(function ($status, $key) {
+                return [$status->name => $status->id];
+            })
+            ->toArray();
     }
 }

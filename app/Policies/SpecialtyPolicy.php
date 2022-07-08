@@ -11,15 +11,15 @@ class SpecialtyPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class SpecialtyPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:specialty');
+        return $user->hasPermissionTo('view:specialty');
     }
 
     /**
@@ -42,7 +42,7 @@ class SpecialtyPolicy
      */
     public function view(User $user, Specialty $mos)
     {
-	    return $user->hasPermissionTo('view:specialty');
+        return $user->hasPermissionTo('view:specialty');
     }
 
     /**
@@ -53,7 +53,7 @@ class SpecialtyPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:specialty');
+        return $user->hasPermissionTo('create:specialty');
     }
 
     /**
@@ -66,7 +66,7 @@ class SpecialtyPolicy
      */
     public function update(User $user, Specialty $mos)
     {
-	    return $user->hasPermissionTo('update:specialty');
+        return $user->hasPermissionTo('update:specialty');
     }
 
     /**
@@ -79,7 +79,7 @@ class SpecialtyPolicy
      */
     public function delete(User $user, Specialty $mos)
     {
-	    return $user->hasPermissionTo('delete:specialty');
+        return $user->hasPermissionTo('delete:specialty');
     }
 
     /**
