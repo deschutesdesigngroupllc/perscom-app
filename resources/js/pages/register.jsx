@@ -37,7 +37,7 @@ export default function Register() {
     return (
         <AuthLayout>
             <div className="flex flex-col items-start justify-start">
-                <div class="flex items-center justify-center w-full">
+                <div className="flex items-center justify-center w-full">
                     <a href="/">
                         <Logo className="mb-2 h-16 sm:h-18 md:h-20 w-auto" />
                     </a>
