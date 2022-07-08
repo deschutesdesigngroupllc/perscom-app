@@ -7,7 +7,7 @@ import {
     PencilAltIcon,
 } from '@heroicons/react/outline'
 
-import { Container } from '../components/Container'
+import { Container } from '../Components/Container'
 import customFieldsImage from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
 import searchImage from '../../images/features/secondary3.png'

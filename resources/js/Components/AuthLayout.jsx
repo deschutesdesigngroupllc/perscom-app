@@ -1,7 +1,7 @@
 import React from 'react'
 
 import backgroundImage from '../../images/register1.jpeg'
-import { OpenBetaWarning } from '@/components/OpenBetaWarning'
+import { OpenBetaWarning } from '../Components/OpenBetaWarning'
 
 export function AuthLayout({ children }) {
     return (

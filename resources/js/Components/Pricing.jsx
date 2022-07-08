@@ -1,8 +1,8 @@
 import React from 'react'
 import clsx from 'clsx'
 
-import { ButtonLink } from '../components/Button'
-import { Container } from '../components/Container'
+import { ButtonLink } from '../Components/Button'
+import { Container } from '../Components/Container'
 
 function Plan({ name, price, description, href, features, featured = false }) {
     return (
