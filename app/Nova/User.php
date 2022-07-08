@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphedByMany;
@@ -59,6 +60,10 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
 	            ->showOnPreview(),
+
+	        Boolean::make('Email Verified', function () {
+	        	return $this->email_verified_at !== null;
+	        }),
 
             Password::make('Password')
                 ->onlyOnForms()

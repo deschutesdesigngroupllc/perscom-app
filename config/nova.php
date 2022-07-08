@@ -73,7 +73,7 @@ return [
     |
     */
 
-    'guard' => env('NOVA_GUARD', null),
+    'guard' => env('NOVA_GUARD', 'web'),
 
     /*
     |--------------------------------------------------------------------------
@@ -103,16 +103,15 @@ return [
     	'universal',
 	    InitializeTenancyByDomain::class,
         'web',
-        HandleInertiaRequests::class,
+	    'verified',
+	    HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
     ],
 
     'api_middleware' => [
-    	'universal',
-	    InitializeTenancyByDomain::class,
         'nova',
-        Authenticate::class,
+	    Authenticate::class,
         Authorize::class,
     ],
 

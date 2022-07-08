@@ -130,6 +130,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 			    $menu->append([
 				    MenuItem::externalLink('Billing', route('spark.portal')),
 				    MenuSeparator::make(),
+				    MenuItem::make('Logout', 'logout')->method('POST')
 			    ]);
 			    return $menu;
 		    });
@@ -151,18 +152,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function routes()
     {
-        Nova::routes()
-                ->withAuthenticationRoutes([
-                	'universal',
-	                InitializeTenancyByDomain::class,
-	                'nova'
-                ])
-                ->withPasswordResetRoutes([
-	                'universal',
-	                InitializeTenancyByDomain::class,
-	                'nova'
-                ])
-                ->register();
+        Nova::routes()->register();
     }
 
     /**

@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import { createInertiaApp } from '@inertiajs/inertia-react'
 
 createInertiaApp({
-    resolve: name => require(`./pages/${name}`),
+    resolve: name => require(`./Pages/${name}`),
     setup({ el, App, props }) {
         render(<App {...props} />, el)
     },

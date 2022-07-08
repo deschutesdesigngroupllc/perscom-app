@@ -15,7 +15,7 @@ class RegisterController extends Controller
 	 */
 	public function index()
 	{
-		return Inertia::render('register');
+		return Inertia::render('Register');
 	}
 
 	/**
