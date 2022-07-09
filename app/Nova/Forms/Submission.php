@@ -65,11 +65,7 @@ class Submission extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            MorphToMany::make(
-                'Status History',
-                'statuses',
-                Status::class
-            )->fields(function () {
+            MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),
                     DateTime::make('Updated At')

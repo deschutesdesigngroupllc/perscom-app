@@ -69,9 +69,7 @@ class Field extends Resource
      */
     public function __construct($resource = null)
     {
-        $this->fields = collect(
-            ClassFinder::getClassesInNamespace('Laravel\Nova\Fields')
-        )
+        $this->fields = collect(ClassFinder::getClassesInNamespace('Laravel\Nova\Fields'))
             ->mapWithKeys(function ($className) {
                 $reflection = new \ReflectionClass($className);
                 return [$className => $reflection->getShortName()];

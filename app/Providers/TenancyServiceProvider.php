@@ -69,14 +69,10 @@ class TenancyServiceProvider extends ServiceProvider
 
             // Tenancy events
             Events\InitializingTenancy::class => [],
-            Events\TenancyInitialized::class => [
-                Listeners\BootstrapTenancy::class,
-            ],
+            Events\TenancyInitialized::class => [Listeners\BootstrapTenancy::class],
 
             Events\EndingTenancy::class => [],
-            Events\TenancyEnded::class => [
-                Listeners\RevertToCentralContext::class,
-            ],
+            Events\TenancyEnded::class => [Listeners\RevertToCentralContext::class],
 
             Events\BootstrappingTenancy::class => [],
             Events\TenancyBootstrapped::class => [],
@@ -84,9 +80,7 @@ class TenancyServiceProvider extends ServiceProvider
             Events\RevertedToCentralContext::class => [],
 
             // Resource syncing
-            Events\SyncedResourceSaved::class => [
-                Listeners\UpdateSyncedResource::class,
-            ],
+            Events\SyncedResourceSaved::class => [Listeners\UpdateSyncedResource::class],
 
             // Fired only when a synced resource is changed in a different DB than the origin DB (to avoid infinite loops)
             Events\SyncedResourceChangedInForeignDatabase::class => [],
@@ -122,9 +116,7 @@ class TenancyServiceProvider extends ServiceProvider
     protected function mapRoutes()
     {
         if (file_exists(base_path('routes/tenant.php'))) {
-            Route::namespace(static::$controllerNamespace)->group(
-                base_path('routes/tenant.php')
-            );
+            Route::namespace(static::$controllerNamespace)->group(base_path('routes/tenant.php'));
         }
     }
 
@@ -142,9 +134,7 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[
-                \Illuminate\Contracts\Http\Kernel::class
-            ]->prependToMiddlewarePriority($middleware);
+            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
         }
     }
 }

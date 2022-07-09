@@ -65,9 +65,7 @@ class PermissionPolicy
      */
     public function update(User $user, Permission $permission)
     {
-        if (
-            collect(config('permissions.permissions'))->has($permission->name)
-        ) {
+        if (collect(config('permissions.permissions'))->has($permission->name)) {
             return false;
         }
         return $user->hasPermissionTo('update:permission');
@@ -82,9 +80,7 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $permission)
     {
-        if (
-            collect(config('permissions.permissions'))->has($permission->name)
-        ) {
+        if (collect(config('permissions.permissions'))->has($permission->name)) {
             return false;
         }
         return $user->hasPermissionTo('delete:permission');

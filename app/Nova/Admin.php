@@ -1,28 +1,24 @@
 <?php
 
-namespace App\Nova\Forms;
+namespace App\Nova;
 
-use App\Nova\Field;
-use App\Nova\Resource;
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Heading;
+use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Markdown;
-use Laravel\Nova\Fields\MorphToMany;
-use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Slug;
+use Laravel\Nova\Fields\MorphedByMany;
+use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Form extends Resource
+class Admin extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Forms\Form::class;
+    public static $model = \App\Models\Admin::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -36,7 +32,7 @@ class Form extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = ['id', 'name', 'email'];
 
     /**
      * Get the fields displayed by the resource.
@@ -48,24 +44,31 @@ class Form extends Resource
     {
         return [
             ID::make()->sortable(),
+
+            Gravatar::make()->maxWidth(50),
+
             Text::make('Name')
                 ->sortable()
-                ->rules(['required'])
+                ->rules('required', 'max:255')
                 ->showOnPreview(),
-            Slug::make('Slug')
-                ->from('Name')
-                ->rules(['required', 'unique:forms,slug']),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
+
+            Text::make('Email')
+                ->sortable()
+                ->rules('required', 'email', 'max:254')
+                ->creationRules('unique:admins,email')
+                ->updateRules('unique:admins,email,{{resourceId}}')
                 ->showOnPreview(),
-            Markdown::make('Instructions'),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
-            MorphToMany::make('Fields', 'fields', Field::class)->fields(function ($request, $relatedModel) {
-                return [Number::make('Order')->sortable()];
+
+            Boolean::make('Email Verified', function () {
+                return $this->email_verified_at !== null;
             }),
+
+            Password::make('Password')
+                ->onlyOnForms()
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults()),
+            MorphedByMany::make('Roles'),
+            MorphedByMany::make('Permissions'),
         ];
     }
 

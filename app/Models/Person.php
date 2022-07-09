@@ -88,10 +88,7 @@ class Person extends Model
      */
     public function qualifications()
     {
-        return $this->belongsToMany(
-            Qualification::class,
-            'records_qualifications'
-        )
+        return $this->belongsToMany(Qualification::class, 'records_qualifications')
             ->withPivot(['text'])
             ->as('record');
     }

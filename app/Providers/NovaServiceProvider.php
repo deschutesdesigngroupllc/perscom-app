@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Nova\ActionEvent;
+use App\Nova\Admin as AdminResource;
 use App\Nova\Award;
 use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
@@ -44,6 +45,20 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
     /**
+     * Register any application services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        if (Request::isCentralRequest()) {
+            config()->set('nova.path', '/admin');
+            config()->set('nova.guard', 'admin');
+            config()->set('nova.passwords', 'admins');
+        }
+    }
+
+    /**
      * Bootstrap any application services.
      *
      * @return void
@@ -70,16 +85,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->icon('office-building')
                         ->collapsable(),
 
-                    MenuSection::make('Forms', [
-                        MenuItem::resource(Form::class),
-                        MenuItem::resource(Submission::class),
-                    ])
+                    MenuSection::make('Forms', [MenuItem::resource(Form::class), MenuItem::resource(Submission::class)])
                         ->icon('pencil-alt')
                         ->collapsable(),
 
-                    MenuSection::make('Personnel', [
-                        MenuItem::resource(Person::class),
-                    ])
+                    MenuSection::make('Personnel', [MenuItem::resource(Person::class)])
                         ->icon('user')
                         ->collapsable(),
 
@@ -110,14 +120,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->collapsable(),
 
                     MenuSection::make('Support', [
-                        MenuItem::externalLink(
-                            'Community Forums',
-                            'https://community.deschutesdesigngroup.com'
-                        ),
-                        MenuItem::externalLink(
-                            'Help Desk',
-                            'https://support.deschutesdesigngroup.com'
-                        ),
+                        MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
+                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
                         MenuItem::externalLink(
                             'Submit A Ticket',
                             'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
@@ -132,10 +136,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 return [
                     MenuSection::dashboard(Admin::class)->icon('chart-bar'),
                     MenuSection::make('Application', [
-                        MenuItem::resource(Tenant::class),
+                        MenuItem::resource(AdminResource::class),
                         MenuItem::resource(Domain::class),
                         MenuItem::resource(Subscription::class),
-                        MenuItem::resource(User::class),
+                        MenuItem::resource(Tenant::class),
                     ])
                         ->icon('terminal')
                         ->collapsable(),
@@ -143,28 +147,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Tools', [
                         MenuItem::externalLink(
                             'Horizon',
-                            Url::fromString(
-                                config('app.url') . '/' . config('horizon.path')
-                            )
-                                ->withScheme(
-                                    app()->environment() === 'production'
-                                        ? 'https'
-                                        : 'http'
-                                )
+                            Url::fromString(config('app.url') . '/' . config('horizon.path'))
+                                ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
                                 ->__toString()
                         ),
                         MenuItem::externalLink(
                             'Telescope',
-                            Url::fromString(
-                                config('app.url') .
-                                    '/' .
-                                    config('telescope.path')
-                            )
-                                ->withScheme(
-                                    app()->environment() === 'production'
-                                        ? 'https'
-                                        : 'http'
-                                )
+                            Url::fromString(config('app.url') . '/' . config('telescope.path'))
+                                ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
                                 ->__toString()
                         ),
                     ])
@@ -225,7 +215,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     protected function dashboards()
     {
-        if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
+        if (Request::isCentralRequest()) {
             return [new Admin()];
         }
         return [new Main()];
@@ -239,15 +229,5 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function tools()
     {
         return [];
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

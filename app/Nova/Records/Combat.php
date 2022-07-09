@@ -82,11 +82,7 @@ class Combat extends Resource
                 return $model->text;
             })->onlyOnIndex(),
             new Panel('History', [
-                BelongsTo::make(
-                    'Author',
-                    'author',
-                    User::class
-                )->onlyOnDetail(),
+                BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
                 DateTime::make('Created At')
                     ->sortable()
                     ->exceptOnForms(),

@@ -62,14 +62,10 @@ class Permission extends Resource
                 return $model->description;
             })->onlyOnIndex(),
             Boolean::make('Custom Permission', function ($permission) {
-                return !collect(config('permissions.permissions'))->has(
-                    $permission->name
-                );
+                return !collect(config('permissions.permissions'))->has($permission->name);
             }),
             Boolean::make('Application Permission', function ($permission) {
-                return collect(config('permissions.permissions'))->has(
-                    $permission->name
-                );
+                return collect(config('permissions.permissions'))->has($permission->name);
             }),
             BelongsToMany::make('Roles')->showCreateRelationButton(),
             //	        Panel::make('Organization', [

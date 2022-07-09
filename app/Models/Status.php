@@ -15,11 +15,7 @@ class Status extends Model
      */
     public function people()
     {
-        return $this->morphedByMany(
-            Person::class,
-            'model',
-            'model_has_statuses'
-        );
+        return $this->morphedByMany(Person::class, 'model', 'model_has_statuses');
     }
 
     /**
@@ -27,10 +23,6 @@ class Status extends Model
      */
     public function submissions()
     {
-        return $this->morphedByMany(
-            Submission::class,
-            'model',
-            'model_has_statuses'
-        );
+        return $this->morphedByMany(Submission::class, 'model', 'model_has_statuses');
     }
 }

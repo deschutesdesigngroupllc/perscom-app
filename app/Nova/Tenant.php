@@ -53,27 +53,15 @@ class Tenant extends Resource
             ID::make()->sortable(),
             Text::make('Name')
                 ->sortable()
-                ->rules([
-                    'required',
-                    Rule::unique('tenants', 'name')->ignore($this->id),
-                ]),
+                ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)]),
             Email::make('Email')
                 ->sortable()
-                ->rules([
-                    'required',
-                    Rule::unique('tenants', 'email')->ignore($this->id),
-                ]),
+                ->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
             Text::make('Website')->sortable(),
             URL::make('Domain', function ($model) {
                 if ($model->domains()->count()) {
-                    return \Spatie\Url\Url::fromString(
-                        $model->domains()->first()->domain
-                    )
-                        ->withScheme(
-                            app()->environment() === 'production'
-                                ? 'https'
-                                : 'http'
-                        )
+                    return \Spatie\Url\Url::fromString($model->domains()->first()->domain)
+                        ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
                         ->__toString();
                 }
                 return null;
@@ -166,11 +154,12 @@ class Tenant extends Resource
             ]);
 
             $model->run(function () use ($values) {
-                \App\Models\User::create([
+                $user = \App\Models\User::create([
                     'name' => $values['admin_name'],
                     'email' => $values['admin_email'],
                     'password' => Hash::make($values['admin_password']),
                 ]);
+                $user->assignRole('Admin');
             });
         }
     }

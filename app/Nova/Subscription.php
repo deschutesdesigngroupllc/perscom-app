@@ -130,9 +130,6 @@ class Subscription extends Resource
      */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
-        Notification::send(
-            \App\Models\User::all(),
-            new NewSubscription($model)
-        );
+        Notification::send(\App\Models\User::all(), new NewSubscription($model));
     }
 }

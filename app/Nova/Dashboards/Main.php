@@ -28,11 +28,6 @@ class Main extends Dashboard
      */
     public function cards()
     {
-        return [
-            new NewPersonnel(),
-            new UpdatesPerformed(),
-            new UsersOnline(),
-            new DashboardQuickActions(),
-        ];
+        return [new NewPersonnel(), new UpdatesPerformed(), new UsersOnline(), new DashboardQuickActions()];
     }
 }

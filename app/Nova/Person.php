@@ -158,11 +158,7 @@ class Person extends Resource
                     return $model->assignment->unit->name ?? null;
                 })->onlyOnDetail(),
             ]),
-            MorphToMany::make(
-                'Status History',
-                'statuses',
-                Status::class
-            )->fields(function () {
+            MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),
                     DateTime::make('Created At')
@@ -175,32 +171,12 @@ class Person extends Resource
                 //			        return Carbon::now()->diffForHumans($model->rank->record->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3);
                 //		        })->onlyOnDetail(),
             ]),
-            HasMany::make(
-                'Assignment Records',
-                'assignment_records',
-                AssignmentRecords::class
-            ),
-            HasMany::make(
-                'Award Records',
-                'award_records',
-                AwardRecords::class
-            ),
-            HasMany::make(
-                'Combat Records',
-                'combat_records',
-                CombatRecords::class
-            ),
+            HasMany::make('Assignment Records', 'assignment_records', AssignmentRecords::class),
+            HasMany::make('Award Records', 'award_records', AwardRecords::class),
+            HasMany::make('Combat Records', 'combat_records', CombatRecords::class),
             HasMany::make('Rank Records', 'rank_records', RankRecords::class),
-            HasMany::make(
-                'Service Records',
-                'service_records',
-                ServiceRecords::class
-            ),
-            HasMany::make(
-                'Qualification Records',
-                'qualification_records',
-                QualificationRecords::class
-            ),
+            HasMany::make('Service Records', 'service_records', ServiceRecords::class),
+            HasMany::make('Qualification Records', 'qualification_records', QualificationRecords::class),
         ];
     }
 

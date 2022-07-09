@@ -81,10 +81,8 @@ class Rank extends Resource
                 ->sortable(),
             Select::make('Type')
                 ->options([
-                    \App\Models\Records\Rank::RECORD_RANK_PROMOTION =>
-                        'Promotion',
-                    \App\Models\Records\Rank::RECORD_RANK_DEMOTION =>
-                        'Demotion',
+                    \App\Models\Records\Rank::RECORD_RANK_PROMOTION => 'Promotion',
+                    \App\Models\Records\Rank::RECORD_RANK_DEMOTION => 'Demotion',
                 ])
                 ->displayUsingLabels(),
             Textarea::make('Text')->alwaysShow(),
@@ -92,11 +90,7 @@ class Rank extends Resource
                 return $model->text;
             })->onlyOnIndex(),
             new Panel('History', [
-                BelongsTo::make(
-                    'Author',
-                    'author',
-                    User::class
-                )->onlyOnDetail(),
+                BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
                 DateTime::make('Created At')
                     ->sortable()
                     ->exceptOnForms(),
@@ -116,11 +110,7 @@ class Rank extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new TotalRankRecords(),
-            new NewRankRecords(),
-            new RankRecordsByType(),
-        ];
+        return [new TotalRankRecords(), new NewRankRecords(), new RankRecordsByType()];
     }
 
     /**

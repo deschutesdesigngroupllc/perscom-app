@@ -8,8 +8,7 @@ use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 
-class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements
-    TenantWithDatabase
+class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase
 {
     use Billable;
     use HasFactory;

@@ -86,7 +86,7 @@ return [
     |
     */
 
-    'passwords' => env('NOVA_PASSWORDS', null),
+    'passwords' => env('NOVA_PASSWORDS', 'users'),
 
     /*
     |--------------------------------------------------------------------------
@@ -100,16 +100,17 @@ return [
     */
 
     'middleware' => [
-    	'universal',
+	    'universal',
 	    InitializeTenancyByDomain::class,
         'web',
-	    'verified',
 	    HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
     ],
 
     'api_middleware' => [
+	    'universal',
+	    InitializeTenancyByDomain::class,
         'nova',
 	    Authenticate::class,
         Authorize::class,

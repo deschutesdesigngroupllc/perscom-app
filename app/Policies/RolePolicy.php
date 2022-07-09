@@ -94,14 +94,9 @@ class RolePolicy
      * @param  \App\Models\Permission  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function detachPermission(
-        User $user,
-        Role $role,
-        Permission $permission
-    ) {
-        if (
-            collect(config('permissions.permissions'))->has($permission->name)
-        ) {
+    public function detachPermission(User $user, Role $role, Permission $permission)
+    {
+        if (collect(config('permissions.permissions'))->has($permission->name)) {
             return false;
         }
         return $user->hasPermissionTo('update:role');
