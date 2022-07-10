@@ -1,32 +1,32 @@
-import React, { useState } from 'react'
+import React  from 'react'
 import { Inertia } from '@inertiajs/inertia'
-import { usePage } from '@inertiajs/inertia-react'
+import {useForm} from '@inertiajs/inertia-react'
 
 import { AuthLayout } from '../Components/AuthLayout'
+import { Button } from '../Components/Button'
 import { Input } from '../Components/Input'
 import { Logo } from '../Components/Logo'
+import {ValidationErrors} from "@/Components/ValidationErrors";
 
 export default function Register() {
-    const { errors } = usePage().props
-
-    const [values, setValues] = useState({
+    const { data, setData, post, processing, errors, reset } = useForm({
         organization: '',
         email: '',
-        domain: '',
+        domain: ''
     })
 
-    function handleChange(e) {
-        const key = e.target.id
-        const value = e.target.value
-        setValues((values) => ({
-            ...values,
-            [key]: value,
-        }))
+    const onHandleChange = (event) => {
+        setData(
+            event.target.name,
+            event.target.type === 'checkbox'
+                ? event.target.checked
+                : event.target.value
+        )
     }
 
-    function handleSubmit(e) {
+    const submit = (e) => {
         e.preventDefault()
-        Inertia.post('/register', values)
+        post(route('register.store'))
     }
 
     return (
@@ -46,10 +46,11 @@ export default function Register() {
                 </p>
             </div>
             <div className="mt-5">
+                <ValidationErrors errors={errors} />
                 <form
                     action="#"
                     method=""
-                    onSubmit={handleSubmit}
+                    onSubmit={submit}
                     className="space-y-4"
                 >
                     <div>
@@ -59,17 +60,9 @@ export default function Register() {
                             name="organization"
                             type="text"
                             required
-                            value={values.organization}
-                            onChange={handleChange}
+                            value={data.organization}
+                            onChange={onHandleChange}
                         />
-                        {errors.organization && (
-                            <p
-                                className="mt-2 text-sm text-red-600"
-                                id="organization-error"
-                            >
-                                {errors.organization}
-                            </p>
-                        )}
                     </div>
                     <div>
                         <Input
@@ -79,17 +72,9 @@ export default function Register() {
                             type="email"
                             autoComplete="email"
                             required
-                            value={values.email}
-                            onChange={handleChange}
+                            value={data.email}
+                            onChange={onHandleChange}
                         />
-                        {errors.email && (
-                            <p
-                                className="mt-2 text-sm text-red-600"
-                                id="email-error"
-                            >
-                                {errors.email}
-                            </p>
-                        )}
                     </div>
                     <div>
                         <Input
@@ -98,26 +83,20 @@ export default function Register() {
                             append=".perscom.io"
                             name="domain"
                             type="text"
-                            value={values.domain}
-                            onChange={handleChange}
+                            value={data.domain}
+                            onChange={onHandleChange}
                         />
-                        {errors.domain && (
-                            <p
-                                className="mt-2 text-sm text-red-600"
-                                id="domain-error"
-                            >
-                                {errors.domain}
-                            </p>
-                        )}
                     </div>
                     <div className="pt-5">
-                        <button
+                        <Button
                             type="submit"
-                            className="w-full rounded-full border border-transparent bg-blue-600 py-2 px-4 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                            processing={processing}
+                            color="blue"
+                            className="w-full"
                         >
                             Start free trial{' '}
                             <span aria-hidden="true">&rarr;</span>
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </div>
