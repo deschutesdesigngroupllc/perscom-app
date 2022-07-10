@@ -27,11 +27,10 @@ class RegisterController extends Controller
 	/**
 	 * @param  Request          $request
 	 * @param  CreateNewTenant  $createNewTenant
-	 * @param  CreatesNewUsers  $createsNewUsers
 	 *
 	 * @return \Illuminate\Http\RedirectResponse
 	 */
-    public function store(Request $request, CreateNewTenant $createNewTenant, CreatesNewUsers $createsNewUsers)
+    public function store(Request $request, CreateNewTenant $createNewTenant)
     {
     	$tenant = $createNewTenant->create($request->all());
 
