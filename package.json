@@ -8,6 +8,7 @@
         "hot": "mix watch --hot",
         "prod": "npm run production",
         "production": "mix --production",
+        "prettier": "prettier 'resources/js/**/*.{js,jsx,json}' 'app/**/*.php' --write --list-different --ignore-unknown --print-width 120",
         "build-dashboard-quick-actions": "cd nova-components/DashboardQuickActions && npm run dev",
         "build-dashboard-quick-actions-prod": "cd nova-components/DashboardQuickActions && npm run prod",
         "build-latest-form-submissions": "cd nova-components/LatestFormSubmissions && npm run dev",

@@ -4,10 +4,7 @@ export function Input({ id, label, type = 'text', append, ...props }) {
     return (
         <div>
             {label && (
-                <label
-                    htmlFor={id}
-                    className="mb-3 block text-sm font-medium text-gray-700"
-                >
+                <label htmlFor={id} className="mb-3 block text-sm font-medium text-gray-700">
                     {label}
                 </label>
             )}

@@ -24,24 +24,24 @@ class RegisterController extends Controller
         return Inertia::render('Register');
     }
 
-	/**
-	 * @param  Request          $request
-	 * @param  CreateNewTenant  $createNewTenant
-	 *
-	 * @return \Illuminate\Http\RedirectResponse
-	 */
+    /**
+     * @param  Request          $request
+     * @param  CreateNewTenant  $createNewTenant
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function store(Request $request, CreateNewTenant $createNewTenant)
     {
-    	$tenant = $createNewTenant->create($request->all());
+        $tenant = $createNewTenant->create($request->all());
 
         return redirect()->route('register.complete');
     }
 
-	/**
-	 * @return \Inertia\Response
-	 */
-	public function complete()
-	{
-		return Inertia::render('Complete');
-	}
+    /**
+     * @return \Inertia\Response
+     */
+    public function complete()
+    {
+        return Inertia::render('Complete');
+    }
 }

@@ -13,19 +13,19 @@ class NewTenantMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-	/**
-	 * @var Tenant
-	 */
+    /**
+     * @var Tenant
+     */
     protected $tenant;
 
-	/**
-	 * @var User
-	 */
+    /**
+     * @var User
+     */
     protected $user;
 
-	/**
-	 * @var
-	 */
+    /**
+     * @var
+     */
     protected $password;
 
     /**
@@ -48,11 +48,11 @@ class NewTenantMail extends Mailable
     public function build()
     {
         return $this->markdown('emails.tenant.new')
-	        ->subject('Your Organization Is Now Ready')
-	        ->with([
-	        	'url' => $this->tenant->url,
-		        'email' => $this->user->email,
-		        'password' => $this->password
-	        ]);
+            ->subject('Your Organization Is Now Ready')
+            ->with([
+                'url' => $this->tenant->url,
+                'email' => $this->user->email,
+                'password' => $this->password,
+            ]);
     }
 }

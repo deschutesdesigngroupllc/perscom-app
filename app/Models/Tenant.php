@@ -25,12 +25,12 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
         'trial_ends_at' => 'datetime',
     ];
 
-	/**
-	 * The accessors to append to the model's array form.
-	 *
-	 * @var array
-	 */
-	protected $appends = ['domain', 'url'];
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['domain', 'url'];
 
     /**
      * @return string[]
@@ -61,25 +61,25 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
         ];
     }
 
-	/**
-	 * @return mixed|null
-	 */
+    /**
+     * @return mixed|null
+     */
     public function getDomainAttribute()
     {
-    	return optional($this->domains()->first())->domain;
+        return optional($this->domains()->first())->domain;
     }
 
-	/**
-	 * @return mixed|null
-	 */
-	public function getUrlAttribute()
-	{
-		return optional($this->domain, function () {
-			return Url::fromString($this->domain)
-				->withScheme(app()->environment() === 'production' ? 'https' : 'http')
-				->__toString();
-		});
-	}
+    /**
+     * @return mixed|null
+     */
+    public function getUrlAttribute()
+    {
+        return optional($this->domain, function () {
+            return Url::fromString($this->domain)
+                ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
+                ->__toString();
+        });
+    }
 
     /**
      * Get the customer name that should be synced to Stripe.

@@ -73,22 +73,18 @@ const testimonials = [
 
 export function Testimonials() {
     return (
-        <section
-            id="testimonials"
-            aria-labelledby="testimonials-title"
-            className="bg-slate-50 py-20 sm:py-32"
-        >
+        <section id="testimonials" aria-labelledby="testimonials-title" className="bg-slate-50 py-20 sm:py-32">
             <Container>
                 <div className="mx-auto max-w-2xl md:text-center">
                     <h2
                         id="testimonials-title"
-                        className="font-display font-bold text-3xl tracking-tight text-slate-900 sm:text-4xl"
+                        className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"
                     >
                         Loved by organizations worldwide.
                     </h2>
                     <p className="mt-4 text-lg tracking-tight text-slate-700">
-                        Our software is so simple that people can’t help but
-                        fall in love with it. Take a chance and let us prove it.
+                        Our software is so simple that people can’t help but fall in love with it. Take a chance and let
+                        us prove it.
                     </p>
                 </div>
                 <ul className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-6 sm:gap-8 lg:mt-20 lg:max-w-none lg:grid-cols-3">
@@ -114,26 +110,14 @@ export function Testimonials() {
                                             <figcaption className="relative mt-6 flex items-center justify-between border-t border-slate-100 pt-6">
                                                 <div>
                                                     <div className="font-display text-base text-slate-900">
-                                                        {
-                                                            testimonial.author
-                                                                .name
-                                                        }
+                                                        {testimonial.author.name}
                                                     </div>
                                                     <div className="mt-1 text-sm text-slate-500">
-                                                        {
-                                                            testimonial.author
-                                                                .role
-                                                        }
+                                                        {testimonial.author.role}
                                                     </div>
                                                 </div>
                                                 <div className="h-14 w-14 overflow-hidden rounded-full bg-slate-50">
-                                                    <img
-                                                        src={
-                                                            testimonial.author
-                                                                .image
-                                                        }
-                                                        alt=""
-                                                    />
+                                                    <img src={testimonial.author.image} alt="" />
                                                 </div>
                                             </figcaption>
                                         </figure>

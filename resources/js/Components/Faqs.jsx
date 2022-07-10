@@ -24,13 +24,11 @@ const faqs = [
             answer: 'TaxPal is just a software application, ultimately your books are your responsibility.',
         },
         {
-            question:
-                'TaxPal sounds horrible but why do I still feel compelled to purchase?',
+            question: 'TaxPal sounds horrible but why do I still feel compelled to purchase?',
             answer: 'This is the power of excellent visual design. You just can’t resist it, no matter how poorly it actually functions.',
         },
         {
-            question:
-                'I found other companies called TaxPal, are you sure you can use this name?',
+            question: 'I found other companies called TaxPal, are you sure you can use this name?',
             answer: 'Honestly not sure at all. We haven’t actually incorporated or anything, we just thought it sounded cool and made this website.',
         },
     ],
@@ -52,11 +50,7 @@ const faqs = [
 
 export function Faqs() {
     return (
-        <section
-            id="faq"
-            aria-labelledby="faq-title"
-            className="relative overflow-hidden bg-slate-50 py-20 sm:py-32"
-        >
+        <section id="faq" aria-labelledby="faq-title" className="relative overflow-hidden bg-slate-50 py-20 sm:py-32">
             <h2 id="faq-title" className="sr-only">
                 Frequently asked questions.
             </h2>
@@ -69,9 +63,8 @@ export function Faqs() {
                         Frequently asked questions
                     </p>
                     <p className="mt-4 text-lg tracking-tight text-slate-700">
-                        If you can’t find what you’re looking for, email our
-                        support team and we will get back to you as soon as
-                        possible.
+                        If you can’t find what you’re looking for, email our support team and we will get back to you as
+                        soon as possible.
                     </p>
                 </div>
                 <ul className="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3">
@@ -83,9 +76,7 @@ export function Faqs() {
                                         <h3 className="font-display text-lg leading-7 text-slate-900">
                                             {faq.question}
                                         </h3>
-                                        <p className="mt-4 text-sm text-slate-700">
-                                            {faq.answer}
-                                        </p>
+                                        <p className="mt-4 text-sm text-slate-700">{faq.answer}</p>
                                     </li>
                                 ))}
                             </ul>

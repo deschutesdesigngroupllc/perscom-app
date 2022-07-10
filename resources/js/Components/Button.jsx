@@ -3,8 +3,7 @@ import clsx from 'clsx'
 
 const baseStyles = {
     solid: 'group inline-flex items-center justify-center rounded-full py-2 px-4 text-sm font-semibold focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2',
-    outline:
-        'group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-none',
+    outline: 'group inline-flex ring-1 items-center justify-center rounded-full py-2 px-4 text-sm focus:outline-none',
 }
 
 const variantStyles = {
@@ -19,43 +18,16 @@ const variantStyles = {
     },
 }
 
-export function Button({
-    variant = 'solid',
-    color = 'slate',
-    className,
-    processing = false,
-    ...props
-}) {
+export function Button({ variant = 'solid', color = 'slate', className, processing = false, ...props }) {
     return (
         <button
-            className={clsx(
-                baseStyles[variant],
-                variantStyles[variant][color],
-                className,
-                processing && 'opacity-25'
-            )}
+            className={clsx(baseStyles[variant], variantStyles[variant][color], className, processing && 'opacity-25')}
             disabled={processing}
             {...props}
         />
     )
 }
 
-export function ButtonLink({
-    variant = 'solid',
-    color = 'slate',
-    href,
-    className,
-    ...props
-}) {
-    return (
-        <a
-            href={href}
-            className={clsx(
-                baseStyles[variant],
-                variantStyles[variant][color],
-                className
-            )}
-            {...props}
-        />
-    )
+export function ButtonLink({ variant = 'solid', color = 'slate', href, className, ...props }) {
+    return <a href={href} className={clsx(baseStyles[variant], variantStyles[variant][color], className)} {...props} />
 }

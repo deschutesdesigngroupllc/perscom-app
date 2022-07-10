@@ -28,18 +28,12 @@ export function Hero() {
                 tools for para-military organizations.
             </h1>
             <p className="mx-auto mt-6 max-w-3xl text-lg text-base tracking-tight text-slate-700 sm:text-xl">
-                We've built the tools you've always been looking for.
-                Specifically catered to para-military organizations, but fully
-                customizable to support any organization.
+                We've built the tools you've always been looking for. Specifically catered to para-military
+                organizations, but fully customizable to support any organization.
             </p>
             <div className="mt-10 flex justify-center space-x-6">
-                <ButtonLink href={route('register.index')}>
-                    Get 1 week free
-                </ButtonLink>
-                <ButtonLink
-                    href="mailto:sales@deschutesdesigngroup.com"
-                    variant="outline"
-                >
+                <ButtonLink href={route('register.index')}>Get 1 week free</ButtonLink>
+                <ButtonLink href="mailto:sales@deschutesdesigngroup.com" variant="outline">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         className="h-4 w-4 flex-none"
@@ -58,9 +52,7 @@ export function Hero() {
                 </ButtonLink>
             </div>
             <div className="mt-16 lg:mt-20">
-                <p className="font-display text-base text-slate-900">
-                    Powered and backed by leading technology.
-                </p>
+                <p className="font-display text-base text-slate-900">Powered and backed by leading technology.</p>
                 <ul className="mt-8 flex items-center justify-center space-x-8 sm:flex-col sm:space-x-0 sm:space-y-10 xl:flex-row xl:space-y-0 xl:space-x-12">
                     <li>
                         <ul className="flex flex-col items-center space-y-8 sm:flex-row sm:space-y-0 sm:space-x-12">
@@ -68,39 +60,23 @@ export function Hero() {
                                 <img src={logoAws} alt="AWS" className="h-20" />
                             </li>
                             <li className="flex">
-                                <img
-                                    src={logoReact}
-                                    alt="React"
-                                    className="h-16"
-                                />
+                                <img src={logoReact} alt="React" className="h-16" />
                             </li>
                             <li className="flex">
-                                <img
-                                    src={logoGithub}
-                                    alt="Github"
-                                    className="h-20"
-                                />
+                                <img src={logoGithub} alt="Github" className="h-20" />
                             </li>
                         </ul>
                     </li>
                     <li>
                         <ul className="flex flex-col items-center space-y-8 sm:flex-row sm:space-y-0 sm:space-x-12">
                             <li className="flex">
-                                <img
-                                    src={logoDocker}
-                                    alt="Docker"
-                                    className="h-20"
-                                />
+                                <img src={logoDocker} alt="Docker" className="h-20" />
                             </li>
                             <li className="flex">
                                 <img src={logoLaravel} alt="Laravel" />
                             </li>
                             <li className="flex">
-                                <img
-                                    src={logoVue}
-                                    alt="Vue.js"
-                                    className="h-20"
-                                />
+                                <img src={logoVue} alt="Vue.js" className="h-20" />
                             </li>
                         </ul>
                     </li>

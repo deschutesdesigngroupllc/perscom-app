@@ -61,29 +61,17 @@ function MobileNavigation() {
                                 className="absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
                             >
                                 <li>
-                                    <a
-                                        href="#features"
-                                        className="block w-full"
-                                        onClick={() => close()}
-                                    >
+                                    <a href="#features" className="block w-full" onClick={() => close()}>
                                         Features
                                     </a>
                                 </li>
                                 <li>
-                                    <a
-                                        href="#testimonials"
-                                        className="block w-full"
-                                        onClick={() => close()}
-                                    >
+                                    <a href="#testimonials" className="block w-full" onClick={() => close()}>
                                         Testimonials
                                     </a>
                                 </li>
                                 <li>
-                                    <a
-                                        href="#pricing"
-                                        className="block w-full"
-                                        onClick={() => close()}
-                                    >
+                                    <a href="#pricing" className="block w-full" onClick={() => close()}>
                                         Pricing
                                     </a>
                                 </li>
@@ -133,16 +121,10 @@ export function Header() {
                             </a>
                         </li>
                         <li className="ml-auto">
-                            <ButtonLink
-                                href={route('register.index')}
-                                color="blue"
-                            >
+                            <ButtonLink href={route('register.index')} color="blue">
                                 <span>
                                     Get started
-                                    <span className="hidden lg:inline">
-                                        {' '}
-                                        today
-                                    </span>
+                                    <span className="hidden lg:inline"> today</span>
                                 </span>
                             </ButtonLink>
                         </li>

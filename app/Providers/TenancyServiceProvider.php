@@ -29,7 +29,7 @@ class TenancyServiceProvider extends ServiceProvider
                     Jobs\CreateDatabase::class,
                     Jobs\MigrateDatabase::class,
                     Jobs\SeedDatabase::class,
-	                CreateInitialTenantUser::class,
+                    CreateInitialTenantUser::class,
                 ])
                     ->send(function (Events\TenantCreated $event) {
                         return $event->tenant;

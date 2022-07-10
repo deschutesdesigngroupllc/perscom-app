@@ -57,8 +57,8 @@ export function Footer() {
                     {/*    </a>*/}
                     {/*</div>*/}
                     <p className="mt-6 text-center text-sm text-slate-500 sm:mt-0">
-                        Copyright &copy; {new Date().getFullYear()} Deschutes
-                        Design Group LLC. All rights reserved. reserved.
+                        Copyright &copy; {new Date().getFullYear()} Deschutes Design Group LLC. All rights reserved.
+                        reserved.
                     </p>
                 </div>
             </Container>

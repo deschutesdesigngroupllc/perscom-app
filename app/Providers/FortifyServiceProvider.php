@@ -60,11 +60,11 @@ class FortifyServiceProvider extends ServiceProvider
                 'status' => session('status'),
             ]);
         });
-	    Fortify::registerView(function () {
-		    return Inertia::render('Auth/Register', [
-			    'status' => session('status'),
-		    ]);
-	    });
+        Fortify::registerView(function () {
+            return Inertia::render('Auth/Register', [
+                'status' => session('status'),
+            ]);
+        });
 
         Fortify::createUsersUsing(CreateNewUser::class);
         Fortify::updateUserProfileInformationUsing(UpdateUserProfileInformation::class);

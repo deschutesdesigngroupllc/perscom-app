@@ -22,12 +22,7 @@ export default function Login({ status, canResetPassword }) {
     }, [])
 
     const onHandleChange = (event) => {
-        setData(
-            event.target.name,
-            event.target.type === 'checkbox'
-                ? event.target.checked
-                : event.target.value
-        )
+        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
     }
 
     const submit = (e) => {
@@ -39,11 +34,7 @@ export default function Login({ status, canResetPassword }) {
         <Guest>
             <Head title="Log in" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
+            {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             <ValidationErrors errors={errors} />
             <form onSubmit={submit}>
@@ -71,14 +62,8 @@ export default function Login({ status, canResetPassword }) {
                 </div>
                 <div className="mt-4 block">
                     <label className="flex items-center">
-                        <Checkbox
-                            name="remember"
-                            value={data.remember}
-                            onChange={onHandleChange}
-                        />
-                        <span className="ml-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
+                        <Checkbox name="remember" value={data.remember} onChange={onHandleChange} />
+                        <span className="ml-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
                 <div className="mt-4 flex items-center justify-end">
@@ -91,11 +76,7 @@ export default function Login({ status, canResetPassword }) {
                             Forgot your password?{' '}
                         </Link>
                     )}
-                    <Button
-                        className="ml-4"
-                        processing={processing}
-                        color="blue"
-                    >
+                    <Button className="ml-4" processing={processing} color="blue">
                         {' '}
                         Log in{' '}
                     </Button>

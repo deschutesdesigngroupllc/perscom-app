@@ -8,12 +8,10 @@ export function OpenBetaWarning() {
                 <div className="pr-16 sm:px-16 sm:text-center">
                     <p className="flex flex-col font-medium text-white">
                         <span className="inline">
-                            By signing up for our Open Beta, you agree to our
-                            Terms and Services.
+                            By signing up for our Open Beta, you agree to our Terms and Services.
                         </span>
                         <span className="mt-1 inline text-xs text-gray-200">
-                            Be aware, data could be deleted without prior
-                            warning.
+                            Be aware, data could be deleted without prior warning.
                         </span>
                     </p>
                 </div>

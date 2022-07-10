@@ -1,27 +1,22 @@
-import React  from 'react'
+import React from 'react'
 import { Inertia } from '@inertiajs/inertia'
-import {useForm} from '@inertiajs/inertia-react'
+import { useForm } from '@inertiajs/inertia-react'
 
 import { AuthLayout } from '../Components/AuthLayout'
 import { Button } from '../Components/Button'
 import { Input } from '../Components/Input'
 import { Logo } from '../Components/Logo'
-import {ValidationErrors} from "@/Components/ValidationErrors";
+import { ValidationErrors } from '@/Components/ValidationErrors'
 
 export default function Register() {
     const { data, setData, post, processing, errors, reset } = useForm({
         organization: '',
         email: '',
-        domain: ''
+        domain: '',
     })
 
     const onHandleChange = (event) => {
-        setData(
-            event.target.name,
-            event.target.type === 'checkbox'
-                ? event.target.checked
-                : event.target.value
-        )
+        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
     }
 
     const submit = (e) => {
@@ -37,22 +32,14 @@ export default function Register() {
                         <Logo className="sm:h-18 mb-2 h-16 w-auto md:h-20" />
                     </a>
                 </div>
-                <h1 className="mt-10 text-xl font-bold tracking-tight text-gray-900">
-                    Get started for free.
-                </h1>
+                <h1 className="mt-10 text-xl font-bold tracking-tight text-gray-900">Get started for free.</h1>
                 <p className="mt-2 text-sm text-gray-700">
-                    No upfront costs or credit card requirements. Cancel at
-                    anytime with no questions asked.
+                    No upfront costs or credit card requirements. Cancel at anytime with no questions asked.
                 </p>
             </div>
             <div className="mt-5">
                 <ValidationErrors errors={errors} />
-                <form
-                    action="#"
-                    method=""
-                    onSubmit={submit}
-                    className="space-y-4"
-                >
+                <form action="#" method="" onSubmit={submit} className="space-y-4">
                     <div>
                         <Input
                             label="Organization"
@@ -88,14 +75,8 @@ export default function Register() {
                         />
                     </div>
                     <div className="pt-5">
-                        <Button
-                            type="submit"
-                            processing={processing}
-                            color="blue"
-                            className="w-full"
-                        >
-                            Start free trial{' '}
-                            <span aria-hidden="true">&rarr;</span>
+                        <Button type="submit" processing={processing} color="blue" className="w-full">
+                            Start free trial <span aria-hidden="true">&rarr;</span>
                         </Button>
                     </div>
                 </form>

@@ -22,12 +22,7 @@ export default function Register() {
     }, [])
 
     const onHandleChange = (event) => {
-        setData(
-            event.target.name,
-            event.target.type === 'checkbox'
-                ? event.target.checked
-                : event.target.value
-        )
+        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
     }
 
     const submit = (e) => {
@@ -77,10 +72,7 @@ export default function Register() {
                     />
                 </div>
                 <div className="mt-4">
-                    <Label
-                        forInput="password_confirmation"
-                        value="Confirm Password"
-                    />
+                    <Label forInput="password_confirmation" value="Confirm Password" />
                     <Input
                         type="password"
                         name="password_confirmation"
@@ -91,18 +83,11 @@ export default function Register() {
                     />
                 </div>
                 <div className="mt-4 flex items-center justify-end">
-                    <Link
-                        href={route('login')}
-                        className="text-sm text-gray-600 underline hover:text-gray-900"
-                    >
+                    <Link href={route('login')} className="text-sm text-gray-600 underline hover:text-gray-900">
                         Already registered?
                     </Link>
 
-                    <Button
-                        className="ml-4"
-                        processing={processing}
-                        color="blue"
-                    >
+                    <Button className="ml-4" processing={processing} color="blue">
                         Register
                     </Button>
                 </div>

@@ -25,9 +25,7 @@ class AppServiceProvider extends ServiceProvider
         });
 
         if (app()->environment() === 'local') {
-	        config()->set('tenancy.central_domains', [
-		        'localhost'
-	        ]);
+            config()->set('tenancy.central_domains', ['localhost']);
         }
     }
 
@@ -38,7 +36,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-	    // Prefix the permission cache key with the tenant identifier
+        // Prefix the permission cache key with the tenant identifier
         Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
             PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
         });

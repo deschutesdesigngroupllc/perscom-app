@@ -58,10 +58,7 @@ export default function ResetPassword({ token, email }) {
                     />
                 </div>
                 <div className="mt-4">
-                    <Label
-                        forInput="password_confirmation"
-                        value="Confirm Password"
-                    />
+                    <Label forInput="password_confirmation" value="Confirm Password" />
                     <Input
                         type="password"
                         name="password_confirmation"
@@ -72,11 +69,7 @@ export default function ResetPassword({ token, email }) {
                     />
                 </div>
                 <div className="mt-4 flex items-center justify-end">
-                    <Button
-                        className="ml-4"
-                        processing={processing}
-                        color="blue"
-                    >
+                    <Button className="ml-4" processing={processing} color="blue">
                         {' '}
                         Reset Password{' '}
                     </Button>

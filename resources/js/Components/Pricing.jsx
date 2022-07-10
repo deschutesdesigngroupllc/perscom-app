@@ -21,9 +21,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
             >
                 {description}
             </p>
-            <p className="order-first font-display text-5xl font-light tracking-tight text-white">
-                {price}
-            </p>
+            <p className="order-first font-display text-5xl font-light tracking-tight text-white">{price}</p>
             <ul
                 className={clsx('order-last mt-10 space-y-3 text-sm', {
                     'text-white': featured,
@@ -73,17 +71,13 @@ function Plan({ name, price, description, href, features, featured = false }) {
 
 export function Pricing() {
     return (
-        <section
-            id="pricing"
-            aria-labelledby="pricing-title"
-            className="bg-slate-900 py-20 sm:py-32"
-        >
+        <section id="pricing" aria-labelledby="pricing-title" className="bg-slate-900 py-20 sm:py-32">
             <h2 id="pricing-title" className="sr-only">
                 Pricing
             </h2>
             <Container>
                 <div className="md:text-center">
-                    <p className="font-display font-bold text-3xl tracking-tight text-white sm:text-4xl">
+                    <p className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
                         <span className="relative whitespace-nowrap">
                             <svg
                                 aria-hidden="true"
@@ -102,8 +96,7 @@ export function Pricing() {
                         for everyone.
                     </p>
                     <p className="mt-4 text-lg text-slate-400">
-                        We have pricing options for all organizations. Scale up
-                        and down as your needs change.
+                        We have pricing options for all organizations. Scale up and down as your needs change.
                     </p>
                 </div>
                 <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">

@@ -68,13 +68,12 @@ export function PrimaryFeatures() {
                 <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
                     <h2
                         id="features-title"
-                        className="font-display font-bold text-3xl tracking-tight text-white sm:text-4xl md:text-5xl"
+                        className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl"
                     >
                         Everything you need to manage your personnel.
                     </h2>
                     <p className="mt-6 text-lg tracking-tight text-blue-100">
-                        Packed with powerful features and backed by years of
-                        experience.
+                        Packed with powerful features and backed by years of experience.
                     </p>
                 </div>
                 <Tab.Group
@@ -93,11 +92,9 @@ export function PrimaryFeatures() {
                                                 'group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-6',
                                                 {
                                                     'bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10':
-                                                        selectedIndex ===
-                                                        featureIndex,
+                                                        selectedIndex === featureIndex,
                                                     'hover:bg-white/10 lg:hover:bg-white/5':
-                                                        selectedIndex !==
-                                                        featureIndex,
+                                                        selectedIndex !== featureIndex,
                                                 }
                                             )}
                                         >
@@ -107,11 +104,9 @@ export function PrimaryFeatures() {
                                                         'font-display text-lg [&:not(:focus-visible)]:focus:outline-none',
                                                         {
                                                             'text-blue-600 lg:text-white':
-                                                                selectedIndex ===
-                                                                featureIndex,
+                                                                selectedIndex === featureIndex,
                                                             'text-blue-100 hover:text-white lg:text-white':
-                                                                selectedIndex !==
-                                                                featureIndex,
+                                                                selectedIndex !== featureIndex,
                                                         }
                                                     )}
                                                 >
@@ -120,17 +115,11 @@ export function PrimaryFeatures() {
                                                 </Tab>
                                             </h3>
                                             <p
-                                                className={clsx(
-                                                    'mt-2 hidden text-sm lg:block',
-                                                    {
-                                                        'text-white':
-                                                            selectedIndex ===
-                                                            featureIndex,
-                                                        'text-blue-100 group-hover:text-white':
-                                                            selectedIndex !==
-                                                            featureIndex,
-                                                    }
-                                                )}
+                                                className={clsx('mt-2 hidden text-sm lg:block', {
+                                                    'text-white': selectedIndex === featureIndex,
+                                                    'text-blue-100 group-hover:text-white':
+                                                        selectedIndex !== featureIndex,
+                                                })}
                                             >
                                                 {feature.description}
                                             </p>
@@ -140,10 +129,7 @@ export function PrimaryFeatures() {
                             </div>
                             <Tab.Panels className="lg:col-span-7">
                                 {features.map((feature) => (
-                                    <Tab.Panel
-                                        key={feature.title}
-                                        unmount={false}
-                                    >
+                                    <Tab.Panel key={feature.title} unmount={false}>
                                         <div className="relative sm:px-6 lg:hidden">
                                             <div className="absolute -inset-x-4 -top-[6.5rem] -bottom-[4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl" />
                                             <p className="relative mx-auto max-w-2xl text-base text-white sm:text-center">

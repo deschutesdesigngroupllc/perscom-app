@@ -14,21 +14,10 @@ const s2Style = {
 
 export function Logo(props) {
     return (
-        <svg
-            version="1.2"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 215 50"
-            width="215"
-            height="50"
-            {...props}
-        >
+        <svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 215 50" width="215" height="50" {...props}>
             <title>PERSCOM</title>
             <g id="background-logo">
-                <path
-                    id="Layer"
-                    style={s0Style}
-                    d="m-45-102.3h366.9v292.6h-366.9z"
-                />
+                <path id="Layer" style={s0Style} d="m-45-102.3h366.9v292.6h-366.9z" />
             </g>
             <g id="text-logo-path-group">
                 <g id="Layer">
