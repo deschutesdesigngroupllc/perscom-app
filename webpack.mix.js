@@ -1,5 +1,6 @@
 const mix = require('laravel-mix');
 const webpackConfig = require('./webpack.config');
+let path = require('path')
 
 /*
  |--------------------------------------------------------------------------
@@ -16,8 +17,15 @@ mix
     .js('resources/js/app.js', 'public/js')
     .copy('resources/images', 'public/images')
     .copy('resources/svg', 'public/svg')
+    .alias({ '@': path.join(__dirname, 'resources/js/') })
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss')
     ])
-    .webpackConfig(webpackConfig);
+    .extract()
+    .webpackConfig(webpackConfig)
+
+if (mix.inProduction()) {
+    mix.sourceMaps()
+    mix.version()
+}
