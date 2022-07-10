@@ -16,7 +16,7 @@ export function OpenBetaBanner() {
                         </span>
                         <span className="block sm:ml-2 sm:inline-block">
                             <a
-                                href="/register"
+                                href={route('register.index')}
                                 className="font-bold text-white underline"
                             >
                                 {' '}

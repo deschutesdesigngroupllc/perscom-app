@@ -111,7 +111,7 @@ export function Pricing() {
                         name="Platoon"
                         price="$9"
                         description="For small organizations with less than 25 personnel."
-                        href="/register"
+                        href={route('register.index')}
                         features={[
                             'Up to 25 personnel files',
                             'Social login support',
@@ -124,7 +124,7 @@ export function Pricing() {
                         name="Company"
                         price="$15"
                         description="For growing organizations with less than 100 personnel."
-                        href="/register"
+                        href={route('register.index')}
                         features={[
                             'Up to 100 personnel files',
                             'Access to powerful API',
@@ -136,7 +136,7 @@ export function Pricing() {
                         name="Battalion"
                         price="$39"
                         description="For large organizations that have more than 100 personnel."
-                        href="/register"
+                        href={route('register.index')}
                         features={[
                             'Unlimited personnel files',
                             'Export and backup personnel data',

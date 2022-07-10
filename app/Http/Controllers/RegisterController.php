@@ -35,6 +35,14 @@ class RegisterController extends Controller
     {
     	$tenant = $createNewTenant->create($request->all());
 
-        return redirect()->to($tenant->url);
+        return redirect()->route('register.complete');
     }
+
+	/**
+	 * @return \Inertia\Response
+	 */
+	public function complete()
+	{
+		return Inertia::render('Complete');
+	}
 }

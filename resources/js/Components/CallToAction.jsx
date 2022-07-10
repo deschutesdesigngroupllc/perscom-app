@@ -23,7 +23,7 @@ export function CallToAction() {
                         soon as you're ready to start.
                     </p>
                     <ButtonLink
-                        href="/register"
+                        href={route('register.index')}
                         color="white"
                         className="mt-10"
                     >

@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { Inertia } from '@inertiajs/inertia'
 import { usePage } from '@inertiajs/inertia-react'
 
-import { Header } from '../Components/Header'
-import { Footer } from '../Components/Footer'
 import { AuthLayout } from '../Components/AuthLayout'
 import { Input } from '../Components/Input'
 import { Logo } from '../Components/Logo'
@@ -32,16 +30,16 @@ export default function Register() {
     }
 
     return (
-        <AuthLayout>
+        <AuthLayout position="justify-start">
             <div className="flex flex-col items-start justify-start">
                 <div className="flex w-full items-center justify-center">
-                    <a href="/">
+                    <a href={route('landing.home')}>
                         <Logo className="sm:h-18 mb-2 h-16 w-auto md:h-20" />
                     </a>
                 </div>
-                <h2 className="mt-10 text-lg font-semibold text-gray-900">
+                <h1 className="mt-10 text-xl font-bold tracking-tight text-gray-900">
                     Get started for free.
-                </h2>
+                </h1>
                 <p className="mt-2 text-sm text-gray-700">
                     No upfront costs or credit card requirements. Cancel at
                     anytime with no questions asked.

@@ -12,7 +12,7 @@ import logoGithub from '../../images/logos/github.png'
 export function Hero() {
     return (
         <Container className="lg:pt-26 pt-20 pb-16 text-center">
-            <h1 className="mx-auto max-w-4xl font-display text-4xl font-medium tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl">
+            <h1 className="mx-auto max-w-6xl font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl">
                 Providing cutting-edge{' '}
                 <span className="relative whitespace-nowrap text-blue-600">
                     <svg
@@ -27,13 +27,15 @@ export function Hero() {
                 </span>{' '}
                 tools for para-military organizations.
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg tracking-tight text-slate-700">
+            <p className="mx-auto mt-6 max-w-3xl text-lg text-base tracking-tight text-slate-700 sm:text-xl">
                 We've built the tools you've always been looking for.
                 Specifically catered to para-military organizations, but fully
                 customizable to support any organization.
             </p>
             <div className="mt-10 flex justify-center space-x-6">
-                <ButtonLink href="/register">Get 1 week free</ButtonLink>
+                <ButtonLink href={route('register.index')}>
+                    Get 1 week free
+                </ButtonLink>
                 <ButtonLink
                     href="mailto:sales@deschutesdesigngroup.com"
                     variant="outline"

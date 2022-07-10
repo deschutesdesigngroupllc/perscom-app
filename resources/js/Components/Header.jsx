@@ -103,7 +103,7 @@ export function Header() {
                 <nav className="relative z-50 text-sm">
                     <ul className="flex items-center">
                         <li>
-                            <a href="#">
+                            <a href={route('landing.home')}>
                                 <span className="sr-only">Home</span>
                                 <Logo className="h-8 w-auto sm:h-10 md:h-12" />
                             </a>
@@ -133,7 +133,10 @@ export function Header() {
                             </a>
                         </li>
                         <li className="ml-auto">
-                            <ButtonLink href={route('register.index')} color="blue">
+                            <ButtonLink
+                                href={route('register.index')}
+                                color="blue"
+                            >
                                 <span>
                                     Get started
                                     <span className="hidden lg:inline">
