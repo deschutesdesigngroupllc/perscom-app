@@ -68,7 +68,7 @@ export function PrimaryFeatures() {
                 <div className="max-w-2xl md:mx-auto md:text-center xl:max-w-none">
                     <h2
                         id="features-title"
-                        className="font-display text-3xl tracking-tight text-white sm:text-4xl md:text-5xl"
+                        className="font-display font-bold text-3xl tracking-tight text-white sm:text-4xl md:text-5xl"
                     >
                         Everything you need to manage your personnel.
                     </h2>

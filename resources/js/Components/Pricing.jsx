@@ -83,7 +83,7 @@ export function Pricing() {
             </h2>
             <Container>
                 <div className="md:text-center">
-                    <p className="font-display text-3xl tracking-tight text-white sm:text-4xl">
+                    <p className="font-display font-bold text-3xl tracking-tight text-white sm:text-4xl">
                         <span className="relative whitespace-nowrap">
                             <svg
                                 aria-hidden="true"

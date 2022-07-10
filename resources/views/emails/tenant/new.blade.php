@@ -1,7 +1,7 @@
 @component('mail::message')
 # Your Organization Is Now Ready
 
-{{__('Your organizaton has been successfully set up and your account details are included below. Please reach out if you have any questions are need help getting started.')}}
+{{__('Your organizaton has been successfully set up and your account details are included below. Please reach out if you have any questions or need help getting started.')}}
 
 **Dashboard URL**: [{{ $url }}]({{ $url }})<br>
 **Email**: {{ $email }}<br>
