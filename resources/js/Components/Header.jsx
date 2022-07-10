@@ -133,7 +133,7 @@ export function Header() {
                             </a>
                         </li>
                         <li className="ml-auto">
-                            <ButtonLink href="/register" color="blue">
+                            <ButtonLink href={route('register.index')} color="blue">
                                 <span>
                                     Get started
                                     <span className="hidden lg:inline">
