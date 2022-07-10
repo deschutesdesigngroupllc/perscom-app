@@ -2,11 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\Fortify\CreateNewTenant;
 use App\Models\Tenant;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Spatie\Url\Url;
+use Stancl\Tenancy\Events\DatabaseCreated;
 
 class RegisterController extends Controller
 {
@@ -18,39 +24,17 @@ class RegisterController extends Controller
         return Inertia::render('Register');
     }
 
-    /**
-     * @param  Request  $request
-     */
-    public function store(Request $request)
+	/**
+	 * @param  Request          $request
+	 * @param  CreateNewTenant  $createNewTenant
+	 * @param  CreatesNewUsers  $createsNewUsers
+	 *
+	 * @return \Illuminate\Http\RedirectResponse
+	 */
+    public function store(Request $request, CreateNewTenant $createNewTenant, CreatesNewUsers $createsNewUsers)
     {
-        $validated = Request::validate([
-            'first_name' => ['required'],
-            'last_name' => ['required'],
-            'email' => ['required', 'email', 'unique:tenants,email'],
-            'password' => ['required'],
-            'organization' => ['required', 'unique:tenants,name'],
-            'subdomain' => ['required'],
-        ]);
+    	$tenant = $createNewTenant->create($request->all());
 
-        $tenant = Tenant::create([
-            'name' => $validated['organization'],
-            'email' => $validated['email'],
-        ]);
-
-        $domain = $tenant->domains()->create([
-            'domain' => $validated['subdomain'] . '.perscom.io',
-        ]);
-
-        $tenant->run(function ($tenant) use ($validated) {
-            return tap($validated, static function ($values) {
-                User::create([
-                    'name' => "{$values['first_name']} {$values['last_name']}",
-                    'email' => $values['email'],
-                    'password' => Hash::make($values['password']),
-                ]);
-            });
-        });
-
-        return redirect()->to(tenant_route($domain->domain, 'nova.pages.home'));
+        return redirect()->to($tenant->url);
     }
 }

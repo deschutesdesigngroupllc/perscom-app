@@ -7,6 +7,7 @@ use App\Nova\Metrics\Admin\NewTenants;
 use App\Nova\Metrics\Admin\SubscriptionByStatus;
 use App\Nova\Metrics\Admin\SubscriptionsByPlan;
 use App\Nova\Metrics\Admin\TotalRevenue;
+use App\Nova\Metrics\AdminsOnline;
 use App\Nova\Metrics\UsersOnline;
 use Laravel\Nova\Dashboard;
 
@@ -43,7 +44,7 @@ class Admin extends Dashboard
             new NewTenants(),
             new TotalRevenue(),
             new AverageRevenue(),
-            new UsersOnline(),
+            new AdminsOnline(),
             new SubscriptionsByPlan(),
             new SubscriptionByStatus(),
         ];

@@ -3,7 +3,9 @@
 namespace App\Nova;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -134,6 +136,16 @@ class Tenant extends Resource
             ]),
             HasMany::make('Subscriptions'),
             HasMany::make('Receipts', 'localReceipts', Receipt::class),
+	        new Panel('Database', [
+		        Text::make('Database Name', function ($model) {
+		        	return $model->tenancy_db_name;
+		        })->readonly()->onlyOnDetail(),
+		        Boolean::make('Database Created', function ($model) {
+			        return $model->run(function () {
+			        	return Schema::hasTable('users');
+			        });
+		        }),
+	        ]),
         ];
     }
 
@@ -144,25 +156,25 @@ class Tenant extends Resource
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
-    public static function afterCreate(NovaRequest $request, Model $model)
-    {
-        if ($model instanceof \App\Models\Tenant) {
-            $values = $request->all();
-
-            $model->domains()->create([
-                'domain' => $values['domain'],
-            ]);
-
-            $model->run(function () use ($values) {
-                $user = \App\Models\User::create([
-                    'name' => $values['admin_name'],
-                    'email' => $values['admin_email'],
-                    'password' => Hash::make($values['admin_password']),
-                ]);
-                $user->assignRole('Admin');
-            });
-        }
-    }
+//    public static function afterCreate(NovaRequest $request, Model $model)
+//    {
+//        if ($model instanceof \App\Models\Tenant) {
+//            $values = $request->all();
+//
+//            $model->domains()->create([
+//                'domain' => $values['domain'],
+//            ]);
+//
+//            $model->run(function () use ($values) {
+//                $user = \App\Models\User::create([
+//                    'name' => $values['admin_name'],
+//                    'email' => $values['admin_email'],
+//                    'password' => Hash::make($values['admin_password']),
+//                ]);
+//                $user->assignRole('Admin');
+//            });
+//        }
+//    }
 
     /**
      * Get the cards available for the request.

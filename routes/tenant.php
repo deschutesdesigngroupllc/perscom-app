@@ -14,18 +14,7 @@ declare(strict_types=1);
 |
 */
 
-use App\Models\Person;
-use App\Models\Status;
-use HaydenPierce\ClassFinder\ClassFinder;
-use Mako\CustomTableCard\CustomTableCard;
-
-
-Route::get('/test', function () {
+\Illuminate\Support\Facades\Route::get('/test', function () {
 	tenancy()->initialize(\App\Models\Tenant::first());
-	$test = tenant()->run(function () {
-		return Person::query()->whereHas('statuses')->get()->mapWithKeys(function ($person, $key) {
-			return [$person->status->name => $person->status->id];
-		})->toArray();
-	});
-	return $test;
+	return new \App\Mail\NewTenantMail(tenant(), \App\Models\User::first(), \Illuminate\Support\Str::random());
 });

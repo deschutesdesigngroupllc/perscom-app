@@ -12,12 +12,9 @@ export default function Register() {
     const { errors } = usePage().props
 
     const [values, setValues] = useState({
-        first_name: '',
-        last_name: '',
-        email: '',
-        password: '',
         organization: '',
-        subdomain: '',
+        email: '',
+        domain: '',
     })
 
     function handleChange(e) {
@@ -57,47 +54,24 @@ export default function Register() {
                     onSubmit={handleSubmit}
                     className="space-y-4"
                 >
-                    <div className="flex flex-col space-y-4 sm:flex-row sm:space-y-0 sm:space-x-6">
-                        <div>
-                            <Input
-                                label="First Name"
-                                id="first_name"
-                                name="first_name"
-                                type="text"
-                                autoComplete="given-name"
-                                required
-                                value={values.first_name}
-                                onChange={handleChange}
-                            />
-                            {errors.first_name && (
-                                <p
-                                    className="mt-2 text-sm text-red-600"
-                                    id="first-name-error"
-                                >
-                                    {errors.first_name}
-                                </p>
-                            )}
-                        </div>
-                        <div>
-                            <Input
-                                label="Last Name"
-                                id="last_name"
-                                name="last_name"
-                                type="text"
-                                autoComplete="family-name"
-                                required
-                                value={values.last_name}
-                                onChange={handleChange}
-                            />
-                            {errors.last_name && (
-                                <p
-                                    className="mt-2 text-sm text-red-600"
-                                    id="last-name-error"
-                                >
-                                    {errors.last_name}
-                                </p>
-                            )}
-                        </div>
+                    <div>
+                        <Input
+                            label="Organization"
+                            id="organization"
+                            name="organization"
+                            type="text"
+                            required
+                            value={values.organization}
+                            onChange={handleChange}
+                        />
+                        {errors.organization && (
+                            <p
+                                className="mt-2 text-sm text-red-600"
+                                id="organization-error"
+                            >
+                                {errors.organization}
+                            </p>
+                        )}
                     </div>
                     <div>
                         <Input
@@ -121,60 +95,20 @@ export default function Register() {
                     </div>
                     <div>
                         <Input
-                            label="Password"
-                            id="password"
-                            name="password"
-                            type="password"
-                            autoComplete="new-password"
-                            required
-                            value={values.password}
-                            onChange={handleChange}
-                        />
-                        {errors.password && (
-                            <p
-                                className="mt-2 text-sm text-red-600"
-                                id="password-error"
-                            >
-                                {errors.password}
-                            </p>
-                        )}
-                    </div>
-                    <div>
-                        <Input
-                            label="Organization"
-                            id="organization"
-                            name="organization"
-                            type="text"
-                            required
-                            value={values.organization}
-                            onChange={handleChange}
-                        />
-                        {errors.organization && (
-                            <p
-                                className="mt-2 text-sm text-red-600"
-                                id="organization-error"
-                            >
-                                {errors.organization}
-                            </p>
-                        )}
-                    </div>
-                    <div>
-                        <Input
-                            label="Subdomain"
-                            id="subdomain"
+                            label="Domain"
+                            id="domain"
                             append=".perscom.io"
-                            name="subdomain"
+                            name="domain"
                             type="text"
-                            required
-                            value={values.subdomain}
+                            value={values.domain}
                             onChange={handleChange}
                         />
-                        {errors.subdomain && (
+                        {errors.domain && (
                             <p
                                 className="mt-2 text-sm text-red-600"
-                                id="subdomain-error"
+                                id="domain-error"
                             >
-                                {errors.subdomain}
+                                {errors.domain}
                             </p>
                         )}
                     </div>
