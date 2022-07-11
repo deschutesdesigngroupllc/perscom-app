@@ -3,7 +3,19 @@
 namespace App\Providers;
 
 use App\Listeners\TenantCouldNotBeIdentified;
+use App\Models\Records\Assignment;
+use App\Models\Records\Award;
+use App\Models\Records\Combat;
+use App\Models\Records\Qualification;
+use App\Models\Records\Rank;
+use App\Models\Records\Service;
 use App\Models\Tenant;
+use App\Observers\Records\AssignmentRecordObserver;
+use App\Observers\Records\AwardRecordObserver;
+use App\Observers\Records\CombatRecordObserver;
+use App\Observers\Records\QualificationRecordObserver;
+use App\Observers\Records\RankRecordObserver;
+use App\Observers\Records\ServiceRecordObserver;
 use App\Observers\TenantObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -28,9 +40,7 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $observers = [
-        Tenant::class => TenantObserver::class,
-    ];
+    protected $observers = [];
 
     /**
      * Register any events for your application.
@@ -39,6 +49,12 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+    	Assignment::observe(AssignmentRecordObserver::class);
+    	Award::observe(AwardRecordObserver::class);
+    	Combat::observe(CombatRecordObserver::class);
+    	Qualification::observe(QualificationRecordObserver::class);
+    	Rank::observe(RankRecordObserver::class);
+        Service::observe(ServiceRecordObserver::class);
+        Tenant::observe(TenantObserver::class);
     }
 }

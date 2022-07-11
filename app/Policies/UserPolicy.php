@@ -40,7 +40,8 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return $user->hasPermissionTo('view:user');
+        return $user->hasPermissionTo('view:user') ||
+	        $user->id === $model->id;
     }
 
     /**

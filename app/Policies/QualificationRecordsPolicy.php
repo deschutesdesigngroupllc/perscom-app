@@ -41,7 +41,8 @@ class QualificationRecordsPolicy
      */
     public function view(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('view:qualificationrecord');
+        return $user->hasPermissionTo('view:qualificationrecord') ||
+	        $qualification->person->users->contains($user->id);
     }
 
     /**

@@ -14,6 +14,7 @@ use App\Nova\Records\Rank as RankRecords;
 use App\Nova\Records\Service as ServiceRecords;
 use Carbon\CarbonInterface;
 use Illuminate\Support\Carbon;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\HasMany;
@@ -158,7 +159,8 @@ class Person extends Resource
                     return $model->assignment->unit->name ?? null;
                 })->onlyOnDetail(),
             ]),
-            MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
+	        BelongsToMany::make('User Accounts', 'users', User::class),
+	        MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),
                     DateTime::make('Created At')

@@ -76,7 +76,8 @@ class Qualification extends Resource
             BelongsTo::make('Person')->sortable(),
             BelongsTo::make('Qualification')
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+	            ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;

@@ -76,7 +76,8 @@ class Award extends Resource
             BelongsTo::make('Person')->sortable(),
             BelongsTo::make('Award')
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+	            ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;

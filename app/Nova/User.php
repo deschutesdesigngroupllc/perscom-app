@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Validation\Rules;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
@@ -44,29 +45,25 @@ class User extends Resource
     {
         return [
             ID::make()->sortable(),
-
             Gravatar::make()->maxWidth(50),
-
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255')
                 ->showOnPreview(),
-
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->showOnPreview(),
-
             Boolean::make('Email Verified', function () {
                 return $this->email_verified_at !== null;
             }),
-
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
+	        BelongsToMany::make('Personnel Files', 'people', Person::class),
             MorphedByMany::make('Roles'),
             MorphedByMany::make('Permissions'),
         ];

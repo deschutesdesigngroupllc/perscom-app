@@ -41,7 +41,8 @@ class RankRecordsPolicy
      */
     public function view(User $user, Rank $rank)
     {
-        return $user->hasPermissionTo('view:rankrecord');
+        return $user->hasPermissionTo('view:rankrecord') ||
+	        $rank->person->users->contains($user->id);
     }
 
     /**

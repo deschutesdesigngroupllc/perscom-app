@@ -168,15 +168,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 	    Nova::userMenu(function (Request $request, Menu $menu) {
 		    if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
 			    $menu->append([
-				    MenuItem::externalLink('Account', route('nova.pages.edit', [
-					    'resource' => 'admins',
+				    MenuItem::externalLink('Account', route('nova.pages.detail', [
+					    'resource' => \App\Nova\Admin::uriKey(),
 					    'resourceId' => Auth::user()->getAuthIdentifier()
 				    ]))
 			    ]);
 		    } else {
 			    $menu->append([
-				    MenuItem::externalLink('Account', route('nova.pages.edit', [
-					    'resource' => 'users',
+				    MenuItem::externalLink('Account', route('nova.pages.detail', [
+					    'resource' => \App\Nova\User::uriKey(),
 					    'resourceId' => Auth::user()->getAuthIdentifier()
 				    ])),
 				    MenuItem::externalLink('Billing', route('spark.portal')),

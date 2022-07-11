@@ -74,9 +74,9 @@ class Assignment extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Person')->sortable(),
-            BelongsTo::make('Unit')->sortable(),
-            BelongsTo::make('Position')->sortable(),
-            BelongsTo::make('Specialty')->sortable(),
+            BelongsTo::make('Unit')->searchable()->sortable()->showCreateRelationButton(),
+            BelongsTo::make('Position')->searchable()->sortable()->showCreateRelationButton(),
+            BelongsTo::make('Specialty')->searchable()->sortable()->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;

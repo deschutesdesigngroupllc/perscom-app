@@ -78,7 +78,8 @@ class Rank extends Resource
             BelongsTo::make('Person')->sortable(),
             BelongsTo::make('Rank')
                 ->searchable()
-                ->sortable(),
+                ->sortable()
+	            ->showCreateRelationButton(),
             Select::make('Type')
                 ->options([
                     \App\Models\Records\Rank::RECORD_RANK_PROMOTION => 'Promotion',
