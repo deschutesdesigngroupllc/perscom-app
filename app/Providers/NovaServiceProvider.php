@@ -165,22 +165,30 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             });
         }
 
-        if (!\Illuminate\Support\Facades\Request::isCentralRequest()) {
-            Nova::userMenu(function (Request $request, Menu $menu) {
-                $menu->append([
-	                MenuItem::externalLink('Account', route('nova.pages.edit', [
-	                	'resource' => 'users',
-		                'resourceId' => Auth::user()->getAuthIdentifier()
-	                ])),
-	                MenuItem::externalLink('Billing', route('spark.portal')),
-                    MenuSeparator::make(),
-                    MenuItem::make('Logout', 'logout')->method('POST', [
-                    	'_token' => csrf_token()
-                    ]),
-                ]);
-                return $menu;
-            });
-        }
+	    Nova::userMenu(function (Request $request, Menu $menu) {
+		    if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
+			    $menu->append([
+				    MenuItem::externalLink('Account', route('nova.pages.edit', [
+					    'resource' => 'admins',
+					    'resourceId' => Auth::user()->getAuthIdentifier()
+				    ]))
+			    ]);
+		    } else {
+			    $menu->append([
+				    MenuItem::externalLink('Account', route('nova.pages.edit', [
+					    'resource' => 'users',
+					    'resourceId' => Auth::user()->getAuthIdentifier()
+				    ])),
+				    MenuItem::externalLink('Billing', route('spark.portal')),
+			    ]);
+		    }
+		    $menu->append([
+			    MenuItem::make('Logout', 'logout')->method('POST', [
+				    '_token' => csrf_token()
+			    ])
+		    ]);
+		    return $menu;
+	    });
 
         Nova::footer(function ($request) {
             return Blade::render('
