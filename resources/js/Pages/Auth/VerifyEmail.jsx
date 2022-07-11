@@ -30,7 +30,7 @@ export default function VerifyEmail({ status }) {
             <form onSubmit={submit}>
                 <div className="mt-4 flex items-center justify-between">
                     <Button processing={processing} color="blue">
-                        Resend Verification Email
+                        Resend verification email
                     </Button>
 
                     <Link
@@ -40,7 +40,7 @@ export default function VerifyEmail({ status }) {
                         className="text-sm text-gray-600 underline hover:text-gray-900"
                     >
                         {' '}
-                        Log Out{' '}
+                        Log out{' '}
                     </Link>
                 </div>
             </form>

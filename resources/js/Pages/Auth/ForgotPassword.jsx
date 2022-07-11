@@ -42,7 +42,7 @@ export default function ForgotPassword({ status }) {
                 <div className="mt-4 flex items-center justify-end">
                     <Button className="ml-4" processing={processing} color="blue">
                         {' '}
-                        Email Password Reset Link{' '}
+                        Email password reset link{' '}
                     </Button>
                 </div>
             </form>

@@ -71,7 +71,7 @@ export default function ResetPassword({ token, email }) {
                 <div className="mt-4 flex items-center justify-end">
                     <Button className="ml-4" processing={processing} color="blue">
                         {' '}
-                        Reset Password{' '}
+                        Reset password{' '}
                     </Button>
                 </div>
             </form>

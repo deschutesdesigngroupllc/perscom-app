@@ -31,6 +31,7 @@ use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Menu\Menu;
@@ -167,9 +168,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         if (!\Illuminate\Support\Facades\Request::isCentralRequest()) {
             Nova::userMenu(function (Request $request, Menu $menu) {
                 $menu->append([
-                    MenuItem::externalLink('Billing', route('spark.portal')),
+	                MenuItem::externalLink('Account', route('nova.pages.edit', [
+	                	'resource' => 'users',
+		                'resourceId' => Auth::user()->getAuthIdentifier()
+	                ])),
+	                MenuItem::externalLink('Billing', route('spark.portal')),
                     MenuSeparator::make(),
-                    MenuItem::make('Logout', 'logout')->method('POST'),
+                    MenuItem::make('Logout', 'logout')->method('POST', [
+                    	'_token' => csrf_token()
+                    ]),
                 ]);
                 return $menu;
             });
