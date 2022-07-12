@@ -2,6 +2,7 @@
 
 namespace App\Nova\Records;
 
+use App\Nova\Lenses\CurrentUsersRecords;
 use App\Nova\Metrics\NewRankRecords;
 use App\Nova\Metrics\RankRecordsByType;
 use App\Nova\Metrics\TotalRankRecords;
@@ -79,7 +80,7 @@ class Rank extends Resource
             BelongsTo::make('Rank')
                 ->searchable()
                 ->sortable()
-	            ->showCreateRelationButton(),
+                ->showCreateRelationButton(),
             Select::make('Type')
                 ->options([
                     \App\Models\Records\Rank::RECORD_RANK_PROMOTION => 'Promotion',
@@ -133,7 +134,7 @@ class Rank extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [new CurrentUsersRecords()];
     }
 
     /**

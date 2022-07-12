@@ -41,6 +41,14 @@ return [
 		'create:form' => 'Can create a form',
 		'update:form' => 'Can update a form',
 		'delete:form' => 'Can delete a form',
+		'view:field' => 'Can view a custom field',
+		'create:field' => 'Can create a custom field',
+		'update:field' => 'Can update a custom field',
+		'delete:field' => 'Can delete a custom field',
+		'view:submission' => 'Can view a form submission',
+		'create:submission' => 'Can create a form submission',
+		'update:submission' => 'Can update a form submission',
+		'delete:submission' => 'Can delete a form submission',
 		'view:soldier' => 'Can view a soldier',
 		'create:soldier' => 'Can create a soldier',
 		'update:soldier' => 'Can update a soldier',
@@ -81,5 +89,7 @@ return [
 		'create:servicerecord' => 'Can create a service record',
 		'update:servicerecord' => 'Can update a service record',
 		'delete:servicerecord' => 'Can delete a service record',
+		'view:log' => 'Can view application logs',
+		'manage:billing' => 'Can manage billing and subscription'
 	]
 ];

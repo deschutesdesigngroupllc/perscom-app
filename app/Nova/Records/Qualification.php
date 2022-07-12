@@ -2,6 +2,7 @@
 
 namespace App\Nova\Records;
 
+use App\Nova\Lenses\CurrentUsersRecords;
 use App\Nova\Metrics\NewQualificationRecords;
 use App\Nova\Metrics\TotalQualificationRecords;
 use App\Nova\Resource;
@@ -77,7 +78,7 @@ class Qualification extends Resource
             BelongsTo::make('Qualification')
                 ->searchable()
                 ->sortable()
-	            ->showCreateRelationButton(),
+                ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
@@ -125,7 +126,7 @@ class Qualification extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [new CurrentUsersRecords()];
     }
 
     /**

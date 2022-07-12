@@ -2,6 +2,7 @@
 
 namespace App\Nova\Records;
 
+use App\Nova\Lenses\CurrentUsersRecords;
 use App\Nova\Metrics\NewAssignmentRecords;
 use App\Nova\Metrics\TotalAssignmentRecords;
 use App\Nova\Resource;
@@ -74,9 +75,18 @@ class Assignment extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Person')->sortable(),
-            BelongsTo::make('Unit')->searchable()->sortable()->showCreateRelationButton(),
-            BelongsTo::make('Position')->searchable()->sortable()->showCreateRelationButton(),
-            BelongsTo::make('Specialty')->searchable()->sortable()->showCreateRelationButton(),
+            BelongsTo::make('Unit')
+                ->searchable()
+                ->sortable()
+                ->showCreateRelationButton(),
+            BelongsTo::make('Position')
+                ->searchable()
+                ->sortable()
+                ->showCreateRelationButton(),
+            BelongsTo::make('Specialty')
+                ->searchable()
+                ->sortable()
+                ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
@@ -124,7 +134,7 @@ class Assignment extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [new CurrentUsersRecords()];
     }
 
     /**

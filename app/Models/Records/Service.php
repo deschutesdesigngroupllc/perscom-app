@@ -3,6 +3,7 @@
 namespace App\Models\Records;
 
 use App\Models\Person;
+use App\Models\User;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

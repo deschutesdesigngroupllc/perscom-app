@@ -49,11 +49,11 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-    	Assignment::observe(AssignmentRecordObserver::class);
-    	Award::observe(AwardRecordObserver::class);
-    	Combat::observe(CombatRecordObserver::class);
-    	Qualification::observe(QualificationRecordObserver::class);
-    	Rank::observe(RankRecordObserver::class);
+        Assignment::observe(AssignmentRecordObserver::class);
+        Award::observe(AwardRecordObserver::class);
+        Combat::observe(CombatRecordObserver::class);
+        Qualification::observe(QualificationRecordObserver::class);
+        Rank::observe(RankRecordObserver::class);
         Service::observe(ServiceRecordObserver::class);
         Tenant::observe(TenantObserver::class);
     }

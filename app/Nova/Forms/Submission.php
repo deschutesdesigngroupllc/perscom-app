@@ -2,6 +2,7 @@
 
 namespace App\Nova\Forms;
 
+use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Resource;
 use App\Nova\Status;
 use Laravel\Nova\Fields\Badge;
@@ -106,7 +107,9 @@ class Submission extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [
+        	new CurrentUsersSubmissions()
+        ];
     }
 
     /**

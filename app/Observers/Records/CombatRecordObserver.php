@@ -16,7 +16,7 @@ class CombatRecordObserver
      */
     public function created(Combat $combat)
     {
-	    Notification::send($combat->person->users, new NewCombatRecord($combat));
+        Notification::send($combat->person->users, new NewCombatRecord($combat));
     }
 
     /**

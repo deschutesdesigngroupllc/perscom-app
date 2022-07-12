@@ -29,7 +29,7 @@ class CombatRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:combatrecord');
+        return true;
     }
 
     /**
@@ -41,8 +41,7 @@ class CombatRecordsPolicy
      */
     public function view(User $user, Combat $combat)
     {
-        return $user->hasPermissionTo('view:combatrecord') ||
-	        $combat->person->users->contains($user->id);
+        return $user->hasPermissionTo('view:combatrecord') || $combat->person->users->contains($user->id);
     }
 
     /**

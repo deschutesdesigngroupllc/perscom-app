@@ -63,7 +63,7 @@ class User extends Resource
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults()),
-	        BelongsToMany::make('Personnel Files', 'people', Person::class),
+            BelongsToMany::make('Personnel Files', 'people', Person::class),
             MorphedByMany::make('Roles'),
             MorphedByMany::make('Permissions'),
         ];

@@ -29,7 +29,7 @@ class AssignmentRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:assignmentrecord');
+        return true;
     }
 
     /**
@@ -41,8 +41,7 @@ class AssignmentRecordsPolicy
      */
     public function view(User $user, Assignment $assignment)
     {
-        return $user->hasPermissionTo('view:assignmentrecord') ||
-	        $assignment->person->users->contains($user->id);
+        return $user->hasPermissionTo('view:assignmentrecord') || $assignment->person->users->contains($user->id);
     }
 
     /**

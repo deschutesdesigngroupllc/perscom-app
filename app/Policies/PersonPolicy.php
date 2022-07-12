@@ -29,7 +29,7 @@ class PersonPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:soldier');
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class PersonPolicy
      */
     public function view(User $user, Person $person)
     {
-        return $user->hasPermissionTo('view:soldier');
+        return $user->hasPermissionTo('view:soldier') || $person->users->contains($user->id);
     }
 
     /**

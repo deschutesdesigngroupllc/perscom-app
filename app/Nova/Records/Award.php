@@ -2,6 +2,7 @@
 
 namespace App\Nova\Records;
 
+use App\Nova\Lenses\CurrentUsersRecords;
 use App\Nova\Metrics\NewAwardRecords;
 use App\Nova\Metrics\TotalAwardRecords;
 use App\Nova\Resource;
@@ -77,7 +78,7 @@ class Award extends Resource
             BelongsTo::make('Award')
                 ->searchable()
                 ->sortable()
-	            ->showCreateRelationButton(),
+                ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
@@ -125,7 +126,7 @@ class Award extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [new CurrentUsersRecords()];
     }
 
     /**

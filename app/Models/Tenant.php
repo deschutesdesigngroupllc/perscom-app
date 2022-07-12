@@ -33,6 +33,13 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     protected $appends = ['domain', 'url'];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['domains'];
+
+    /**
      * @return string[]
      */
     public static function getCustomColumns(): array
@@ -66,7 +73,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     public function getDomainAttribute()
     {
-        return optional($this->domains()->first())->domain;
+        return optional($this->domains->first())->domain;
     }
 
     /**

@@ -41,11 +41,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-	 */
-	public function people()
-	{
-		return $this->belongsToMany(Person::class, 'people_users');
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function people()
+    {
+        return $this->belongsToMany(Person::class, 'people_users');
+    }
 }

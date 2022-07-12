@@ -19,7 +19,6 @@ class FieldPolicy
         if (Request::isCentralRequest()) {
             return false;
         }
-        return true;
     }
 
     /**
@@ -30,7 +29,7 @@ class FieldPolicy
      */
     public function viewAny(User $user)
     {
-        //
+	    return $user->hasPermissionTo('view:field');
     }
 
     /**
@@ -42,7 +41,7 @@ class FieldPolicy
      */
     public function view(User $user, Field $field)
     {
-        //
+	    return $user->hasPermissionTo('view:field');
     }
 
     /**
@@ -53,7 +52,7 @@ class FieldPolicy
      */
     public function create(User $user)
     {
-        //
+	    return $user->hasPermissionTo('create:field');
     }
 
     /**
@@ -65,7 +64,7 @@ class FieldPolicy
      */
     public function update(User $user, Field $field)
     {
-        //
+	    return $user->hasPermissionTo('update:field');
     }
 
     /**
@@ -77,7 +76,7 @@ class FieldPolicy
      */
     public function delete(User $user, Field $field)
     {
-        //
+	    return $user->hasPermissionTo('delete:field');
     }
 
     /**

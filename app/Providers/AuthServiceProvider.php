@@ -21,6 +21,7 @@ use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
+use App\Policies\ActionEventPolicy;
 use App\Policies\AssignmentRecordsPolicy;
 use App\Policies\AwardPolicy;
 use App\Policies\AwardRecordsPolicy;
@@ -45,6 +46,7 @@ use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Cashier\Subscription;
 use Laravel\Cashier\SubscriptionItem;
+use Laravel\Nova\Actions\ActionEvent;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -54,6 +56,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
+    	ActionEvent::class => ActionEventPolicy::class,
         Award::class => AwardPolicy::class,
         AwardRecords::class => AwardRecordsPolicy::class,
         AssignmentRecords::class => AssignmentRecordsPolicy::class,

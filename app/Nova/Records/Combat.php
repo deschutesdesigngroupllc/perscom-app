@@ -2,6 +2,7 @@
 
 namespace App\Nova\Records;
 
+use App\Nova\Lenses\CurrentUsersRecords;
 use App\Nova\Metrics\NewCombatRecords;
 use App\Nova\Metrics\TotalCombatRecords;
 use App\Nova\Resource;
@@ -124,7 +125,7 @@ class Combat extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [new CurrentUsersRecords()];
     }
 
     /**

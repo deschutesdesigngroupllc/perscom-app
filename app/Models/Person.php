@@ -128,11 +128,11 @@ class Person extends Model
         return $this->hasMany(ServiceRecords::class);
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function users()
     {
-    	return $this->belongsToMany(User::class, 'people_users');
+        return $this->belongsToMany(User::class, 'people_users');
     }
 }

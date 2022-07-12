@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Filters\PersonnelRank;
 use App\Nova\Filters\PersonnelStatus;
+use App\Nova\Lenses\CurrentUsersPersonnelFiles;
 use App\Nova\Metrics\NewPersonnel;
 use App\Nova\Metrics\TotalPersonnel;
 use App\Nova\Records\Assignment as AssignmentRecords;
@@ -78,7 +79,6 @@ class Person extends Resource
     {
         return [
             new Panel('Demographics', [
-                ResourceCustomField::make('Test'),
                 ID::make()->sortable(),
                 Text::make('First Name')
                     ->sortable()
@@ -159,8 +159,8 @@ class Person extends Resource
                     return $model->assignment->unit->name ?? null;
                 })->onlyOnDetail(),
             ]),
-	        BelongsToMany::make('User Accounts', 'users', User::class),
-	        MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
+            BelongsToMany::make('User Accounts', 'users', User::class),
+            MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),
                     DateTime::make('Created At')
@@ -216,7 +216,7 @@ class Person extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [];
+        return [new CurrentUsersPersonnelFiles()];
     }
 
     /**

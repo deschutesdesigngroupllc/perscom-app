@@ -16,7 +16,7 @@ class AwardRecordObserver
      */
     public function created(Award $award)
     {
-	    Notification::send($award->person->users, new NewAwardRecord($award));
+        Notification::send($award->person->users, new NewAwardRecord($award));
     }
 
     /**

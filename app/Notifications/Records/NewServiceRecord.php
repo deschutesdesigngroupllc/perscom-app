@@ -16,14 +16,14 @@ class NewServiceRecord extends Notification implements ShouldQueue
 {
     use Queueable;
 
-	/**
-	 * @var Service
-	 */
+    /**
+     * @var Service
+     */
     protected $record;
 
-	/**
-	 * @var array|string|string[]
-	 */
+    /**
+     * @var array|string|string[]
+     */
     protected $url;
 
     /**
@@ -35,8 +35,8 @@ class NewServiceRecord extends Notification implements ShouldQueue
     {
         $this->record = $record;
         $this->url = tenant_route(tenant()->domain, 'nova.pages.detail', [
-	        'resource' => \App\Nova\Records\Service::uriKey(),
-	        'resourceId' => $this->record->id
+            'resource' => \App\Nova\Records\Service::uriKey(),
+            'resourceId' => $this->record->id,
         ]);
     }
 
@@ -59,23 +59,23 @@ class NewServiceRecord extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-	        ->subject('New Service Record Added')
+        return (new MailMessage())
+            ->subject('New Service Record Added')
             ->line('A new service record has been added to your personnel file.')
             ->action('View Record', $this->url);
     }
 
-	/**
-	 * Get the nova representation of the notification
-	 *
-	 * @return array
-	 */
-	public function toNova()
-	{
-		return (new NovaNotification())
-			->message('A new service record has been added to your personnel file.')
-			->action('View Record', URL::remote($this->url))
-			->icon('document-text')
-			->type('info');
-	}
+    /**
+     * Get the nova representation of the notification
+     *
+     * @return array
+     */
+    public function toNova()
+    {
+        return (new NovaNotification())
+            ->message('A new service record has been added to your personnel file.')
+            ->action('View Record', URL::remote($this->url))
+            ->icon('document-text')
+            ->type('info');
+    }
 }
