@@ -28,6 +28,7 @@ class FortifyServiceProvider extends ServiceProvider
             config()->set('fortify.features', []);
             config()->set('fortify.guard', 'admin');
             config()->set('fortify.passwords', 'admins');
+            config()->set('fortify.home', '/admin' . RouteServiceProvider::HOME);
         }
     }
 

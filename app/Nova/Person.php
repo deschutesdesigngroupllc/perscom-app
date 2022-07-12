@@ -193,7 +193,6 @@ class Person extends Resource
         return [
             (new TotalPersonnel())->width('1/2'),
             (new NewPersonnel())->width('1/2'),
-            //	        new PersonnelByStatus
         ];
     }
 
