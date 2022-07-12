@@ -2,12 +2,12 @@
 
 namespace Database\Factories\Records;
 
+use App\Models\Award;
 use App\Models\Person;
-use App\Models\Qualification;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class QualificationFactory extends Factory
+class AwardFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -20,7 +20,7 @@ class QualificationFactory extends Factory
 	        'text' => $this->faker->sentence(),
 	        'author_id' => User::factory(),
 	        'person_id' => Person::factory(),
-	        'qualification_id' => Qualification::factory()
+	        'award_id' => Award::factory()
         ];
     }
 }

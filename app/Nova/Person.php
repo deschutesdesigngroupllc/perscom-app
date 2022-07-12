@@ -26,7 +26,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Perscom\ResourceCustomField\ResourceCustomField;
 
 class Person extends Resource
 {
@@ -190,10 +189,7 @@ class Person extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            (new TotalPersonnel())->width('1/2'),
-            (new NewPersonnel())->width('1/2'),
-        ];
+        return [(new TotalPersonnel())->width('1/2'), (new NewPersonnel())->width('1/2')];
     }
 
     /**

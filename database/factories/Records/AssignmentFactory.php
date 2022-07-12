@@ -2,6 +2,12 @@
 
 namespace Database\Factories\Records;
 
+use App\Models\Document;
+use App\Models\Person;
+use App\Models\Position;
+use App\Models\Specialty;
+use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class AssignmentFactory extends Factory
@@ -14,7 +20,13 @@ class AssignmentFactory extends Factory
     public function definition()
     {
         return [
-            //
+	        'text' => $this->faker->sentence(),
+	        'author_id' => User::factory(),
+	        'person_id' => Person::factory(),
+	        'unit_id' => Unit::factory(),
+	        'position_id' => Position::factory(),
+	        'specialty_id' => Specialty::factory(),
+	        'document_id' => Document::factory()
         ];
     }
 }

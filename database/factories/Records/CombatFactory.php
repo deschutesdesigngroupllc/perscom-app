@@ -2,6 +2,8 @@
 
 namespace Database\Factories\Records;
 
+use App\Models\Person;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CombatFactory extends Factory
@@ -14,7 +16,9 @@ class CombatFactory extends Factory
     public function definition()
     {
         return [
-            //
+	        'text' => $this->faker->sentence(),
+	        'author_id' => User::factory(),
+	        'person_id' => Person::factory(),
         ];
     }
 }
