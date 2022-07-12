@@ -12,13 +12,13 @@ use Laravel\Nova\Lenses\Lens;
 
 class CurrentUsersSubmissions extends Lens
 {
-	/**
-	 * @return string
-	 */
-	public function name()
-	{
-		return 'My Form Submissions';
-	}
+    /**
+     * @return string
+     */
+    public function name()
+    {
+        return 'My Form Submissions';
+    }
 
     /**
      * Get the query builder / paginator for the lens.
@@ -29,15 +29,15 @@ class CurrentUsersSubmissions extends Lens
      */
     public static function query(LensRequest $request, $query)
     {
-	    return $request->withOrdering(
-		    $request->withFilters(
-			    $query->whereHas('person', function (Builder $query) {
-				    $query->whereHas('users', function (Builder $query) {
-					    $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
-				    });
-			    })
-		    )
-	    );
+        return $request->withOrdering(
+            $request->withFilters(
+                $query->whereHas('person', function (Builder $query) {
+                    $query->whereHas('users', function (Builder $query) {
+                        $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
+                    });
+                })
+            )
+        );
     }
 
     /**
@@ -48,9 +48,7 @@ class CurrentUsersSubmissions extends Lens
      */
     public function fields(NovaRequest $request)
     {
-        return [
-            ID::make(__('ID'), 'id')->sortable(),
-        ];
+        return [ID::make(__('ID'), 'id')->sortable()];
     }
 
     /**

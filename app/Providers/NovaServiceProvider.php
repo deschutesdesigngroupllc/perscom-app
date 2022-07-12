@@ -81,7 +81,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             MenuSection::make('Account', [
                 MenuItem::lens(Person::class, CurrentUsersPersonnelFiles::class),
                 MenuItem::lens(ServiceRecords::class, CurrentUsersRecords::class),
-	            MenuItem::lens(Submission::class, CurrentUsersSubmissions::class),
+                MenuItem::lens(Submission::class, CurrentUsersSubmissions::class),
             ])->icon('user-circle'),
         ];
 
@@ -100,12 +100,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->collapsable(),
 
             MenuSection::make('Forms', [
-            	MenuItem::resource(Form::class)->canSee(function (NovaRequest $request) {
-		            return $request->user()->hasPermissionTo('view:form');
-	            }),
-	            MenuItem::resource(Submission::class)->canSee(function (NovaRequest $request) {
-		            return $request->user()->hasPermissionTo('view:submission');
-	            }),
+                MenuItem::resource(Form::class)->canSee(function (NovaRequest $request) {
+                    return $request->user()->hasPermissionTo('view:form');
+                }),
+                MenuItem::resource(Submission::class)->canSee(function (NovaRequest $request) {
+                    return $request->user()->hasPermissionTo('view:submission');
+                }),
             ])
                 ->icon('pencil-alt')
                 ->collapsable(),
@@ -120,22 +120,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
             MenuSection::make('Records', [
                 MenuItem::resource(AssignmentRecords::class)->canSee(function (NovaRequest $request) {
-	                return $request->user()->hasPermissionTo('view:assignmentrecord');
+                    return $request->user()->hasPermissionTo('view:assignmentrecord');
                 }),
                 MenuItem::resource(AwardRecords::class)->canSee(function (NovaRequest $request) {
-	                return $request->user()->hasPermissionTo('view:awardrecord');
+                    return $request->user()->hasPermissionTo('view:awardrecord');
                 }),
                 MenuItem::resource(CombatRecords::class)->canSee(function (NovaRequest $request) {
-	                return $request->user()->hasPermissionTo('view:combatrecord');
+                    return $request->user()->hasPermissionTo('view:combatrecord');
                 }),
                 MenuItem::resource(QualificationRecords::class)->canSee(function (NovaRequest $request) {
-	                return $request->user()->hasPermissionTo('view:qualificationrecord');
+                    return $request->user()->hasPermissionTo('view:qualificationrecord');
                 }),
                 MenuItem::resource(RankRecords::class)->canSee(function (NovaRequest $request) {
-	                return $request->user()->hasPermissionTo('view:rankrecord');
+                    return $request->user()->hasPermissionTo('view:rankrecord');
                 }),
                 MenuItem::resource(ServiceRecords::class)->canSee(function (NovaRequest $request) {
-	                return $request->user()->hasPermissionTo('view:servicerecord');
+                    return $request->user()->hasPermissionTo('view:servicerecord');
                 }),
             ])
                 ->icon('document-text')
@@ -221,7 +221,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ])
                     ),
                     MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
-	                    return $request->user()->hasPermissionTo('manage:billing');
+                        return $request->user()->hasPermissionTo('manage:billing');
                     }),
                 ]);
             }

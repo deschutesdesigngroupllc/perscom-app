@@ -107,9 +107,7 @@ class Submission extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [
-        	new CurrentUsersSubmissions()
-        ];
+        return [new CurrentUsersSubmissions()];
     }
 
     /**

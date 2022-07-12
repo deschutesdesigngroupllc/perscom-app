@@ -29,7 +29,7 @@ class SubmissionPolicy
      */
     public function viewAny(User $user)
     {
-	    return true;
+        return true;
     }
 
     /**
@@ -41,7 +41,7 @@ class SubmissionPolicy
      */
     public function view(User $user, Submission $submission)
     {
-	    return $user->hasPermissionTo('view:submission');
+        return $user->hasPermissionTo('view:submission');
     }
 
     /**
@@ -52,7 +52,7 @@ class SubmissionPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('create:submission');
+        return $user->hasPermissionTo('create:submission');
     }
 
     /**
@@ -64,7 +64,7 @@ class SubmissionPolicy
      */
     public function update(User $user, Submission $submission)
     {
-	    return $user->hasPermissionTo('update:submission');
+        return $user->hasPermissionTo('update:submission');
     }
 
     /**
@@ -76,7 +76,7 @@ class SubmissionPolicy
      */
     public function delete(User $user, Submission $submission)
     {
-	    return $user->hasPermissionTo('delete:submission');
+        return $user->hasPermissionTo('delete:submission');
     }
 
     /**
