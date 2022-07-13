@@ -1,5 +1,4 @@
 import React from 'react'
-import { XIcon } from '@heroicons/react/outline'
 
 export function OpenBetaWarning() {
     return (

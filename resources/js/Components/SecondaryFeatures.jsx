@@ -1,10 +1,15 @@
 import React from 'react'
-import { Tab } from '@headlessui/react'
+import {Tab} from '@headlessui/react'
 import clsx from 'clsx'
-import { SearchIcon, CollectionIcon, PencilAltIcon } from '@heroicons/react/outline'
+import {
+    CollectionIcon,
+    PencilAltIcon,
+    SearchIcon
+} from '@heroicons/react/outline'
 
-import { Container } from '../Components/Container'
-import customFieldsImage from '../../images/features/secondary1.png'
+import {Container} from '../Components/Container'
+import customFieldsImage
+    from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
 import searchImage from '../../images/features/secondary3.png'
 
@@ -154,10 +159,10 @@ export function SecondaryFeatures() {
                         id="secondary-features-title"
                         className="font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl"
                     >
-                        Simplify your organization's tasks.
+                        Simplify your organization&apos;s tasks.
                     </h2>
                     <p className="mt-4 text-lg tracking-tight text-slate-700">
-                        We've focused on making your life easier. Let our software show you how.
+                        We&apos;ve focused on making your life easier. Let our software show you how.
                     </p>
                 </div>
                 <FeaturesMobile /> <FeaturesDesktop />

@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { ButtonLink } from '../Components/Button'
-import { Container } from '../Components/Container'
+import {ButtonLink} from '../Components/Button'
+import {Container} from '../Components/Container'
 import logoLaravel from '../../images/logos/laravel.svg'
 import logoDocker from '../../images/logos/docker.png'
 import logoVue from '../../images/logos/vue.png'
@@ -28,7 +28,7 @@ export function Hero() {
                 tools for para-military organizations.
             </h1>
             <p className="mx-auto mt-6 max-w-3xl text-lg text-base tracking-tight text-slate-700 sm:text-xl">
-                We've built the tools you've always been looking for. Specifically catered to para-military
+                We&apos;ve built the tools you&apos;ve always been looking for. Specifically catered to para-military
                 organizations, but fully customizable to support any organization.
             </p>
             <div className="mt-10 flex justify-center space-x-6">

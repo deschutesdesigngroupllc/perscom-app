@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class Submission extends Resource
 {
@@ -44,6 +45,37 @@ class Submission extends Resource
      */
     public static $search = ['id'];
 
+    protected $customFields = [];
+
+    public function __construct($resource = null)
+    {
+        parent::__construct($resource);
+
+        $fields = [
+            [
+                'field' => 'Text',
+                'name' => 'Test',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+        ];
+
+        foreach ($fields as $field) {
+            $novaField = \call_user_func(["Laravel\\Nova\\Fields\\{$field['field']}", 'make'], $field['name'], 'data');
+            if ($field['required'] && method_exists($novaField, 'required')) {
+                $novaField->required();
+            }
+            if ($field['placeholder'] && method_exists($novaField, 'placeholder')) {
+                $novaField->placeholder($field['placeholder']);
+            }
+            if ($field['help'] && method_exists($novaField, 'help')) {
+                $novaField->help($field['help']);
+            }
+            $this->customFields[] = $novaField;
+        }
+    }
+
     /**
      * Get the fields displayed by the resource.
      *
@@ -66,6 +98,7 @@ class Submission extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
+            new Panel('Form', $this->customFields),
             MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),

@@ -2,10 +2,10 @@
 
 namespace App\Nova\Lenses;
 
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
@@ -30,13 +30,7 @@ class CurrentUsersSubmissions extends Lens
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering(
-            $request->withFilters(
-                $query->whereHas('person', function (Builder $query) {
-                    $query->whereHas('users', function (Builder $query) {
-                        $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
-                    });
-                })
-            )
+            $request->withFilters($query->where('user_id', '=', Auth::user()->getAuthIdentifier()))
         );
     }
 
@@ -48,7 +42,17 @@ class CurrentUsersSubmissions extends Lens
      */
     public function fields(NovaRequest $request)
     {
-        return [ID::make(__('ID'), 'id')->sortable()];
+        return [
+            ID::make(__('ID'), 'id')->sortable(),
+            //	        BelongsTo::make('Form'),
+            Badge::make('Status', function ($model) {
+                return $this->status->name ?? null;
+            })->map([
+                $this->status->name ?? null => 'info',
+            ]),
+            DateTime::make('Created At')->sortable(),
+            DateTime::make('Updated At')->sortable(),
+        ];
     }
 
     /**

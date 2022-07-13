@@ -17,7 +17,9 @@ mix
     .js('resources/js/app.js', 'public/js')
     .copy('resources/images', 'public/images')
     .copy('resources/svg', 'public/svg')
-    .alias({ '@': path.join(__dirname, 'resources/js/') })
+    .alias({
+        '@': path.join(__dirname, 'resources/js/')
+    })
     .postCss('resources/css/app.css', 'public/css', [
         require('postcss-import'),
         require('tailwindcss')

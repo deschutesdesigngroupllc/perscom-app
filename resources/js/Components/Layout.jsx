@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react'
-import { Link } from '@inertiajs/inertia-react'
+import React from 'react'
 import 'focus-visible'
 import '../styles/tailwind.css'
 

@@ -1,5 +1,4 @@
 import React from 'react'
-import { XIcon } from '@heroicons/react/outline'
 
 export function OpenBetaBanner() {
     return (
@@ -9,8 +8,8 @@ export function OpenBetaBanner() {
                     <p className="font-medium text-white">
                         <span className="md:hidden">Sign up for our Open Beta!</span>
                         <span className="hidden md:inline">
-                            Big news! We're excited to announce our Open Beta has opened for public use. Get signed up
-                            today.
+                            Big news! We&apos;re excited to announce our Open Beta has opened for public use. Get signed
+                            up today.
                         </span>
                         <span className="block sm:ml-2 sm:inline-block">
                             <a href={route('register.index')} className="font-bold text-white underline">

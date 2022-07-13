@@ -1,8 +1,8 @@
 import React from 'react'
 
-import { Button } from '../../Components/Button'
-import { Guest } from '../../Layouts/Guest'
-import { Head, Link, useForm } from '@inertiajs/inertia-react'
+import {Button} from '../../Components/Button'
+import {Guest} from '../../Layouts/Guest'
+import {Head, Link, useForm} from '@inertiajs/inertia-react'
 
 export default function VerifyEmail({ status }) {
     const { post, processing } = useForm()
@@ -18,7 +18,7 @@ export default function VerifyEmail({ status }) {
 
             <div className="mb-4 text-sm text-gray-600">
                 Thanks for signing up! Before getting started, could you verify your email address by clicking on the
-                link we just emailed to you? If you didn't receive the email, we will gladly send you another.
+                link we just emailed to you? If you didn&apos;t receive the email, we will gladly send you another.
             </div>
 
             {status === 'verification-link-sent' && (
