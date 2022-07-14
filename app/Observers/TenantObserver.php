@@ -2,8 +2,8 @@
 
 namespace App\Observers;
 
+use App\Models\Admin;
 use App\Models\Tenant;
-use App\Models\User;
 use App\Notifications\Admin\NewTenant;
 use App\Notifications\Admin\TenantDeleted;
 use Illuminate\Support\Facades\Notification;
@@ -18,7 +18,7 @@ class TenantObserver
      */
     public function created(Tenant $tenant)
     {
-        Notification::sendNow(User::all(), new NewTenant($tenant));
+        Notification::sendNow(Admin::all(), new NewTenant($tenant));
     }
 
     /**
@@ -40,7 +40,7 @@ class TenantObserver
      */
     public function deleted(Tenant $tenant)
     {
-        Notification::sendNow(User::all(), new TenantDeleted($tenant));
+        Notification::sendNow(Admin::all(), new TenantDeleted($tenant));
     }
 
     /**

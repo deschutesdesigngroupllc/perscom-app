@@ -1,59 +1,61 @@
-import React from 'react'
-import { useEffect, useState } from 'react'
-import { Tab } from '@headlessui/react'
-import clsx from 'clsx'
+import React, {useEffect, useState} from "react";
+import {Tab} from "@headlessui/react";
+import clsx from "clsx";
 
-import { Container } from '../Components/Container'
-import backgroundImage from '../../images/background-features.jpg'
-import featureDashboard from '../../images/features/feature1.png'
-import featurePersonnelFiles from '../../images/features/feature2.png'
-import featureForms from '../../images/features/feature3.png'
-import featureLogs from '../../images/features/feature4.png'
+import {Container} from "../Components/Container";
+import backgroundImage
+    from "../../images/background-features.jpg";
+import featureDashboard
+    from "../../images/features/feature1.png";
+import featurePersonnelFiles
+    from "../../images/features/feature2.png";
+import featureForms from "../../images/features/feature3.png";
+import featureLogs from "../../images/features/feature4.png";
 
 const features = [
     {
-        title: 'Dashboard Statistics',
+        title: "Dashboard Statistics",
         description:
-            'Get an overview of everything happening within your organization and quick access to the most popular features.',
+            "Get an overview of everything happening within your organization and quick access to the most popular features.",
         image: featureDashboard,
     },
     {
-        title: 'Advanced Personnel Files',
+        title: "Advanced Personnel Files",
         description:
-            'As the backbone of PERSCOM, Personnel Files provide a powerful and complete history of everyone in your organization.',
+            "As the backbone of PERSCOM, Personnel Files provide a powerful and complete history of everyone in your organization.",
         image: featurePersonnelFiles,
     },
     {
-        title: 'Custom Forms',
+        title: "Custom Forms",
         description:
-            'Build custom forms allowing you to collect specific data needed to run your organization. Forms can be public or private.',
+            "Build custom forms allowing you to collect specific data needed to run your organization. Forms can be public or private.",
         image: featureForms,
     },
     {
-        title: 'Transparent Logs',
+        title: "Transparent Logs",
         description:
-            'Every transaction that happens within PERSCOM can be viewed allowing you to audit every update and trace every action.',
+            "Every transaction that happens within PERSCOM can be viewed allowing you to audit every update and trace every action.",
         image: featureLogs,
     },
-]
+];
 
 export function PrimaryFeatures() {
-    let [tabOrientation, setTabOrientation] = useState('horizontal')
+    let [tabOrientation, setTabOrientation] = useState("horizontal");
 
     useEffect(() => {
-        let lgMediaQuery = window.matchMedia('(min-width: 1024px)')
+        let lgMediaQuery = window.matchMedia("(min-width: 1024px)");
 
         function onMediaQueryChange({ matches }) {
-            setTabOrientation(matches ? 'vertical' : 'horizontal')
+            setTabOrientation(matches ? "vertical" : "horizontal");
         }
 
-        onMediaQueryChange(lgMediaQuery)
-        lgMediaQuery.addEventListener('change', onMediaQueryChange)
+        onMediaQueryChange(lgMediaQuery);
+        lgMediaQuery.addEventListener("change", onMediaQueryChange);
 
         return () => {
-            lgMediaQuery.removeEventListener('change', onMediaQueryChange)
-        }
-    }, [])
+            lgMediaQuery.removeEventListener("change", onMediaQueryChange);
+        };
+    }, []);
 
     return (
         <section
@@ -79,7 +81,7 @@ export function PrimaryFeatures() {
                 <Tab.Group
                     as="div"
                     className="mt-16 grid grid-cols-1 items-center gap-y-2 pt-10 sm:gap-y-6 md:mt-20 lg:grid-cols-12 lg:pt-0"
-                    vertical={tabOrientation === 'vertical'}
+                    vertical={tabOrientation === "vertical"}
                 >
                     {({ selectedIndex }) => (
                         <>
@@ -89,11 +91,11 @@ export function PrimaryFeatures() {
                                         <div
                                             key={feature.title}
                                             className={clsx(
-                                                'group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-6',
+                                                "group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-6",
                                                 {
-                                                    'bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10':
+                                                    "bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10":
                                                         selectedIndex === featureIndex,
-                                                    'hover:bg-white/10 lg:hover:bg-white/5':
+                                                    "hover:bg-white/10 lg:hover:bg-white/5":
                                                         selectedIndex !== featureIndex,
                                                 }
                                             )}
@@ -101,11 +103,11 @@ export function PrimaryFeatures() {
                                             <h3>
                                                 <Tab
                                                     className={clsx(
-                                                        'font-display text-lg [&:not(:focus-visible)]:focus:outline-none',
+                                                        "font-display text-lg [&:not(:focus-visible)]:focus:outline-none",
                                                         {
-                                                            'text-blue-600 lg:text-white':
+                                                            "text-blue-600 lg:text-white":
                                                                 selectedIndex === featureIndex,
-                                                            'text-blue-100 hover:text-white lg:text-white':
+                                                            "text-blue-100 hover:text-white lg:text-white":
                                                                 selectedIndex !== featureIndex,
                                                         }
                                                     )}
@@ -115,9 +117,9 @@ export function PrimaryFeatures() {
                                                 </Tab>
                                             </h3>
                                             <p
-                                                className={clsx('mt-2 hidden text-sm lg:block', {
-                                                    'text-white': selectedIndex === featureIndex,
-                                                    'text-blue-100 group-hover:text-white':
+                                                className={clsx("mt-2 hidden text-sm lg:block", {
+                                                    "text-white": selectedIndex === featureIndex,
+                                                    "text-blue-100 group-hover:text-white":
                                                         selectedIndex !== featureIndex,
                                                 })}
                                             >
@@ -151,5 +153,5 @@ export function PrimaryFeatures() {
                 </Tab.Group>
             </Container>
         </section>
-    )
+    );
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export function ValidationErrors({ errors }) {
     return (
@@ -8,10 +8,10 @@ export function ValidationErrors({ errors }) {
 
                 <ul className="mt-3 list-inside list-disc text-sm text-red-600">
                     {Object.keys(errors).map(function (key, index) {
-                        return <li key={index}>{errors[key]}</li>
+                        return <li key={index}>{errors[key]}</li>;
                     })}
                 </ul>
             </div>
         )
-    )
+    );
 }

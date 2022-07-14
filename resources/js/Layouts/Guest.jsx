@@ -1,6 +1,6 @@
-import React from 'react'
-import { Logo } from '../Components/Logo'
-import { Link } from '@inertiajs/inertia-react'
+import React from "react";
+import {Logo} from "../Components/Logo";
+import {Link} from "@inertiajs/inertia-react";
 
 export function Guest({ children }) {
     return (
@@ -14,5 +14,5 @@ export function Guest({ children }) {
                 {children}
             </div>
         </div>
-    )
+    );
 }

@@ -1,17 +1,17 @@
-import React from 'react'
-import clsx from 'clsx'
+import React from "react";
+import clsx from "clsx";
 
-import backgroundImage from '../../images/register1.jpeg'
-import { OpenBetaWarning } from '../Components/OpenBetaWarning'
+import backgroundImage from "../../images/register1.jpeg";
+import {OpenBetaWarning} from "../Components/OpenBetaWarning";
 
-export function AuthLayout({ children, position = 'justify-center' }) {
+export function AuthLayout({ children, position = "justify-center" }) {
     return (
         <>
             <OpenBetaWarning />
-            <div className={clsx('relative flex min-h-full md:px-12 lg:px-0', position)}>
+            <div className={clsx("relative flex min-h-full md:px-12 lg:px-0", position)}>
                 <div
                     className={clsx(
-                        'relative z-10 flex max-h-full flex-1 flex-col bg-white py-16 px-4 shadow-2xl md:flex-none md:px-28',
+                        "relative z-10 flex max-h-full flex-1 flex-col bg-white py-16 px-4 shadow-2xl md:flex-none md:px-28",
                         position
                     )}
                 >
@@ -28,5 +28,5 @@ export function AuthLayout({ children, position = 'justify-center' }) {
                 </div>
             </div>
         </>
-    )
+    );
 }

@@ -1,24 +1,24 @@
-import React from 'react'
+import React from "react";
 
-import { Button } from '../../Components/Button'
-import { Guest } from '../../Layouts/Guest'
-import { Input } from '../../Components/Input'
-import { ValidationErrors } from '../../Components/ValidationErrors'
-import { Head, useForm } from '@inertiajs/inertia-react'
+import {Button} from "../../Components/Button";
+import {Guest} from "../../Layouts/Guest";
+import {Input} from "../../Components/Input";
+import {ValidationErrors} from "../../Components/ValidationErrors";
+import {Head, useForm} from "@inertiajs/inertia-react";
 
 export default function ForgotPassword({ status }) {
     const { data, setData, post, processing, errors } = useForm({
-        email: '',
-    })
+        email: "",
+    });
 
     const onHandleChange = (event) => {
-        setData(event.target.name, event.target.value)
-    }
+        setData(event.target.name, event.target.value);
+    };
 
     const submit = (e) => {
-        e.preventDefault()
-        post(route('password.email'))
-    }
+        e.preventDefault();
+        post(route("password.email"));
+    };
 
     return (
         <Guest>
@@ -41,11 +41,11 @@ export default function ForgotPassword({ status }) {
                 />
                 <div className="mt-4 flex items-center justify-end">
                     <Button className="ml-4" processing={processing} color="blue">
-                        {' '}
-                        Email password reset link{' '}
+                        {" "}
+                        Email password reset link{" "}
                     </Button>
                 </div>
             </form>
         </Guest>
-    )
+    );
 }

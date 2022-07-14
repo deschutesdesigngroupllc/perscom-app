@@ -1,11 +1,10 @@
-import React from 'react'
-import { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
-import clsx from 'clsx'
+import React, {Fragment} from "react";
+import {Popover, Transition} from "@headlessui/react";
+import clsx from "clsx";
 
-import { ButtonLink } from '../Components/Button'
-import { Container } from '../Components/Container'
-import { Logo } from '../Components/Logo'
+import {ButtonLink} from "../Components/Button";
+import {Container} from "../Components/Container";
+import {Logo} from "../Components/Logo";
 
 function MobileNavigation() {
     return (
@@ -23,14 +22,14 @@ function MobileNavigation() {
                         >
                             <path
                                 d="M0 1H14M0 7H14M0 13H14"
-                                className={clsx('origin-center transition', {
-                                    'scale-90 opacity-0': open,
+                                className={clsx("origin-center transition", {
+                                    "scale-90 opacity-0": open,
                                 })}
                             />
                             <path
                                 d="M2 2L12 12M12 2L2 12"
-                                className={clsx('origin-center transition', {
-                                    'scale-90 opacity-0': !open,
+                                className={clsx("origin-center transition", {
+                                    "scale-90 opacity-0": !open,
                                 })}
                             />
                         </svg>
@@ -81,7 +80,7 @@ function MobileNavigation() {
                 </>
             )}
         </Popover>
-    )
+    );
 }
 
 export function Header() {
@@ -91,7 +90,7 @@ export function Header() {
                 <nav className="relative z-50 text-sm">
                     <ul className="flex items-center">
                         <li>
-                            <a href={route('landing.home')}>
+                            <a href={route("landing.home")}>
                                 <span className="sr-only">Home</span>
                                 <Logo className="h-8 w-auto sm:h-10 md:h-12" />
                             </a>
@@ -121,7 +120,7 @@ export function Header() {
                             </a>
                         </li>
                         <li className="ml-auto">
-                            <ButtonLink href={route('register.index')} color="blue">
+                            <ButtonLink href={route("register.index")} color="blue">
                                 <span>
                                     Get started
                                     <span className="hidden lg:inline"> today</span>
@@ -135,5 +134,5 @@ export function Header() {
                 </nav>
             </Container>
         </header>
-    )
+    );
 }

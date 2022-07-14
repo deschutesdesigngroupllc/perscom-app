@@ -1,33 +1,33 @@
-import React from 'react'
-import {useForm} from '@inertiajs/inertia-react'
+import React from "react";
+import {useForm} from "@inertiajs/inertia-react";
 
-import {AuthLayout} from '../Components/AuthLayout'
-import {Button} from '../Components/Button'
-import {Input} from '../Components/Input'
-import {Logo} from '../Components/Logo'
-import {ValidationErrors} from '@/Components/ValidationErrors'
+import {AuthLayout} from "../Components/AuthLayout";
+import {Button} from "../Components/Button";
+import {Input} from "../Components/Input";
+import {Logo} from "../Components/Logo";
+import {ValidationErrors} from "@/Components/ValidationErrors";
 
 export default function Register() {
     const { data, setData, post, processing, errors } = useForm({
-        organization: '',
-        email: '',
-        domain: '',
-    })
+        organization: "",
+        email: "",
+        domain: "",
+    });
 
     const onHandleChange = (event) => {
-        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
-    }
+        setData(event.target.name, event.target.type === "checkbox" ? event.target.checked : event.target.value);
+    };
 
     const submit = (e) => {
-        e.preventDefault()
-        post(route('register.store'))
-    }
+        e.preventDefault();
+        post(route("register.store"));
+    };
 
     return (
         <AuthLayout position="justify-start">
             <div className="flex flex-col items-start justify-start">
                 <div className="flex w-full items-center justify-center">
-                    <a href={route('landing.home')}>
+                    <a href={route("landing.home")}>
                         <Logo className="sm:h-18 mb-2 h-16 w-auto md:h-20" />
                     </a>
                 </div>
@@ -81,5 +81,5 @@ export default function Register() {
                 </form>
             </div>
         </AuthLayout>
-    )
+    );
 }

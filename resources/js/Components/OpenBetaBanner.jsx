@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export function OpenBetaBanner() {
     return (
@@ -12,8 +12,8 @@ export function OpenBetaBanner() {
                             up today.
                         </span>
                         <span className="block sm:ml-2 sm:inline-block">
-                            <a href={route('register.index')} className="font-bold text-white underline">
-                                {' '}
+                            <a href={route("register.index")} className="font-bold text-white underline">
+                                {" "}
                                 Sign up <span aria-hidden="true">&rarr;</span>
                             </a>
                         </span>
@@ -21,5 +21,5 @@ export function OpenBetaBanner() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

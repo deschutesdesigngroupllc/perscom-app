@@ -1,70 +1,70 @@
-import React from 'react'
-import {Tab} from '@headlessui/react'
-import clsx from 'clsx'
+import React from "react";
+import {Tab} from "@headlessui/react";
+import clsx from "clsx";
 import {
     CollectionIcon,
     PencilAltIcon,
     SearchIcon
-} from '@heroicons/react/outline'
+} from "@heroicons/react/outline";
 
-import {Container} from '../Components/Container'
+import {Container} from "../Components/Container";
 import customFieldsImage
-    from '../../images/features/secondary1.png'
-import recordsImage from '../../images/features/secondary2.png'
-import searchImage from '../../images/features/secondary3.png'
+    from "../../images/features/secondary1.png";
+import recordsImage from "../../images/features/secondary2.png";
+import searchImage from "../../images/features/secondary3.png";
 
 const features = [
     {
-        name: 'Custom Fields',
-        summary: 'Advanced customazability without the headache.',
+        name: "Custom Fields",
+        summary: "Advanced customazability without the headache.",
         description:
-            'Nearly every module allows for the implementation of Custom Fields which enables you to collect the data you need.',
+            "Nearly every module allows for the implementation of Custom Fields which enables you to collect the data you need.",
         image: customFieldsImage,
         icon: function Icon() {
-            return <PencilAltIcon className="h-8 w-8" />
+            return <PencilAltIcon className="h-8 w-8" />;
         },
     },
     {
-        name: 'Records Management',
-        summary: 'Keep track of every action and update that happens to your people.',
+        name: "Records Management",
+        summary: "Keep track of every action and update that happens to your people.",
         description:
-            'The advanced RMS system provides a historical timeline of every update applied to a personnel file keeping everyone on the same page.',
+            "The advanced RMS system provides a historical timeline of every update applied to a personnel file keeping everyone on the same page.",
         image: recordsImage,
         icon: function Icon() {
-            return <CollectionIcon className="h-8 w-8" />
+            return <CollectionIcon className="h-8 w-8" />;
         },
     },
     {
-        name: 'Advanced Searching',
-        summary: 'Backed by Algolia, the leader in AI-Powered searching.',
+        name: "Advanced Searching",
+        summary: "Backed by Algolia, the leader in AI-Powered searching.",
         description: "We've gone the extra mile to make sure access to your data is quick and accurate.",
         image: searchImage,
         icon: function Icon() {
-            return <SearchIcon className="h-8 w-8" />
+            return <SearchIcon className="h-8 w-8" />;
         },
     },
-]
+];
 
 function Feature({ feature, isActive, className, ...props }) {
     return (
         <div
             className={clsx(className, {
-                'opacity-75 hover:opacity-100': !isActive,
+                "opacity-75 hover:opacity-100": !isActive,
             })}
             {...props}
         >
             <div
                 className={clsx(className, {
-                    'text-blue-600': isActive,
-                    'text-slate-600': !isActive,
+                    "text-blue-600": isActive,
+                    "text-slate-600": !isActive,
                 })}
             >
                 <feature.icon />
             </div>
             <h3
-                className={clsx('mt-2 text-sm font-medium', {
-                    'text-blue-600': isActive,
-                    'text-slate-600': !isActive,
+                className={clsx("mt-2 text-sm font-medium", {
+                    "text-blue-600": isActive,
+                    "text-slate-600": !isActive,
                 })}
             >
                 {feature.name}
@@ -72,7 +72,7 @@ function Feature({ feature, isActive, className, ...props }) {
             <p className="mt-2 font-display text-xl text-slate-900">{feature.summary}</p>
             <p className="mt-4 text-sm text-slate-600">{feature.description}</p>
         </div>
-    )
+    );
 }
 
 function FeaturesMobile() {
@@ -90,7 +90,7 @@ function FeaturesMobile() {
                 </div>
             ))}
         </div>
-    )
+    );
 }
 
 function FeaturesDesktop() {
@@ -122,9 +122,9 @@ function FeaturesDesktop() {
                                     static
                                     key={feature.name}
                                     className={clsx(
-                                        'px-5 transition duration-500 ease-in-out [&:not(:focus-visible)]:focus:outline-none',
+                                        "px-5 transition duration-500 ease-in-out [&:not(:focus-visible)]:focus:outline-none",
                                         {
-                                            'opacity-60': featureIndex !== selectedIndex,
+                                            "opacity-60": featureIndex !== selectedIndex,
                                         }
                                     )}
                                     style={{
@@ -143,7 +143,7 @@ function FeaturesDesktop() {
                 </>
             )}
         </Tab.Group>
-    )
+    );
 }
 
 export function SecondaryFeatures() {
@@ -168,5 +168,5 @@ export function SecondaryFeatures() {
                 <FeaturesMobile /> <FeaturesDesktop />
             </Container>
         </section>
-    )
+    );
 }

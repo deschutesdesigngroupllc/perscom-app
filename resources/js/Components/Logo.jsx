@@ -1,16 +1,16 @@
-import React from 'react'
+import React from "react";
 
 const s0Style = {
-    fill: 'none',
-}
+    fill: "none",
+};
 const s1Style = {
-    fill: '#646464',
-    stroke: '#ffffff',
+    fill: "#646464",
+    stroke: "#ffffff",
     strokeWidth: 0,
-}
+};
 const s2Style = {
-    fill: '#d9d9d9',
-}
+    fill: "#d9d9d9",
+};
 
 export function Logo(props) {
     return (
@@ -51,5 +51,5 @@ export function Logo(props) {
                 </g>
             </g>
         </svg>
-    )
+    );
 }
