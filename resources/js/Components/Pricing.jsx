@@ -1,40 +1,40 @@
-import React from 'react'
-import clsx from 'clsx'
+import React from "react";
+import clsx from "clsx";
 
-import { ButtonLink } from '../Components/Button'
-import { Container } from '../Components/Container'
+import {ButtonLink} from "../Components/Button";
+import {Container} from "../Components/Container";
 
 function Plan({ name, price, description, href, features, featured = false }) {
     return (
         <section
-            className={clsx('flex flex-col rounded-3xl px-6 sm:px-8', {
-                'order-first bg-blue-600 py-8 lg:order-none': featured,
-                'lg:py-8': !featured,
+            className={clsx("flex flex-col rounded-3xl px-6 sm:px-8", {
+                "order-first bg-blue-600 py-8 lg:order-none": featured,
+                "lg:py-8": !featured,
             })}
         >
             <h3 className="mt-5 font-display text-lg text-white">{name}</h3>
             <p
-                className={clsx('mt-2 text-base', {
-                    'text-white': featured,
-                    'text-slate-400': !featured,
+                className={clsx("mt-2 text-base", {
+                    "text-white": featured,
+                    "text-slate-400": !featured,
                 })}
             >
                 {description}
             </p>
             <p className="order-first font-display text-5xl font-light tracking-tight text-white">{price}</p>
             <ul
-                className={clsx('order-last mt-10 space-y-3 text-sm', {
-                    'text-white': featured,
-                    'text-slate-200': !featured,
+                className={clsx("order-last mt-10 space-y-3 text-sm", {
+                    "text-white": featured,
+                    "text-slate-200": !featured,
                 })}
             >
                 {features.map((feature) => (
                     <li key={feature} className="flex">
                         <svg
                             aria-hidden="true"
-                            className={clsx('h-6 w-6 flex-none', {
-                                'fill-white stroke-white': featured,
-                                'fill-slate-400 stroke-slate-400': !featured,
+                            className={clsx("h-6 w-6 flex-none", {
+                                "fill-white stroke-white": featured,
+                                "fill-slate-400 stroke-slate-400": !featured,
                             })}
                         >
                             <path
@@ -57,16 +57,16 @@ function Plan({ name, price, description, href, features, featured = false }) {
             </ul>
             <ButtonLink
                 href={href}
-                variant={featured ? 'solid' : 'outline'}
+                variant={featured ? "solid" : "outline"}
                 color="white"
                 className="mt-8"
                 aria-label={`Get started with ${name} plan for ${price}`}
             >
-                {' '}
-                Get started{' '}
+                {" "}
+                Get started{" "}
             </ButtonLink>
         </section>
-    )
+    );
 }
 
 export function Pricing() {
@@ -92,7 +92,7 @@ export function Pricing() {
                                 />
                             </svg>
                             <span className="relative">Simple pricing,</span>
-                        </span>{' '}
+                        </span>{" "}
                         for everyone.
                     </p>
                     <p className="mt-4 text-lg text-slate-400">
@@ -104,41 +104,41 @@ export function Pricing() {
                         name="Platoon"
                         price="$9"
                         description="For small organizations with less than 25 personnel."
-                        href={route('register.index')}
+                        href={route("register.index")}
                         features={[
-                            'Up to 25 personnel files',
-                            'Social login support',
-                            'Application provided subdomain',
-                            'Community support',
+                            "Up to 25 personnel files",
+                            "Social login support",
+                            "Application provided subdomain",
+                            "Community support",
                         ]}
-                    />{' '}
+                    />{" "}
                     <Plan
                         featured
                         name="Company"
                         price="$15"
                         description="For growing organizations with less than 100 personnel."
-                        href={route('register.index')}
+                        href={route("register.index")}
                         features={[
-                            'Up to 100 personnel files',
-                            'Access to powerful API',
-                            'Custom subdomain',
-                            'Ticket and email support',
+                            "Up to 100 personnel files",
+                            "Access to powerful API",
+                            "Custom subdomain",
+                            "Ticket and email support",
                         ]}
-                    />{' '}
+                    />{" "}
                     <Plan
                         name="Battalion"
                         price="$39"
                         description="For large organizations that have more than 100 personnel."
-                        href={route('register.index')}
+                        href={route("register.index")}
                         features={[
-                            'Unlimited personnel files',
-                            'Export and backup personnel data',
-                            'Single sign-on integration',
-                            'Priority support',
+                            "Unlimited personnel files",
+                            "Export and backup personnel data",
+                            "Single sign-on integration",
+                            "Priority support",
                         ]}
                     />
                 </div>
             </Container>
         </section>
-    )
+    );
 }

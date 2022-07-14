@@ -1,9 +1,9 @@
-import React from 'react'
+import React from "react";
 
-import {ButtonLink} from '../Components/Button'
-import {Container} from '../Components/Container'
+import {ButtonLink} from "../Components/Button";
+import {Container} from "../Components/Container";
 import backgroundImage
-    from '../../images/background-call-to-action.jpg'
+    from "../../images/background-call-to-action.jpg";
 
 export function CallToAction() {
     return (
@@ -19,12 +19,12 @@ export function CallToAction() {
                     <p className="mt-4 text-lg tracking-tight text-white">
                         Our platform requires no setup and is ready-to-use as soon as you&apos;re ready to start.
                     </p>
-                    <ButtonLink href={route('register.index')} color="white" className="mt-10">
-                        {' '}
-                        Get 1 week free{' '}
+                    <ButtonLink href={route("register.index")} color="white" className="mt-10">
+                        {" "}
+                        Get 1 week free{" "}
                     </ButtonLink>
                 </div>
             </Container>
         </section>
-    )
+    );
 }

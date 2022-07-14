@@ -1,7 +1,7 @@
-import React from 'react'
+import React from "react";
 
-import { Container } from '../Components/Container'
-import { Logo } from '../Components/Logo'
+import {Container} from "../Components/Container";
+import {Logo} from "../Components/Logo";
 
 export function Footer() {
     return (
@@ -16,8 +16,8 @@ export function Footer() {
                                     href="#features"
                                     className="rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                                 >
-                                    {' '}
-                                    Features{' '}
+                                    {" "}
+                                    Features{" "}
                                 </a>
                             </li>
                             <li>
@@ -25,8 +25,8 @@ export function Footer() {
                                     href="#testimonials"
                                     className="rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                                 >
-                                    {' '}
-                                    Testimonials{' '}
+                                    {" "}
+                                    Testimonials{" "}
                                 </a>
                             </li>
                             <li>
@@ -34,8 +34,8 @@ export function Footer() {
                                     href="#pricing"
                                     className="rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                                 >
-                                    {' '}
-                                    Pricing{' '}
+                                    {" "}
+                                    Pricing{" "}
                                 </a>
                             </li>
                         </ul>
@@ -63,5 +63,5 @@ export function Footer() {
                 </div>
             </Container>
         </footer>
-    )
+    );
 }

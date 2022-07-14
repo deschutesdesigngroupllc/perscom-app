@@ -1,0 +1,17 @@
+{
+  "printWidth": 120,
+  "overrides": [
+    {
+      "files": "*.php",
+      "options": {
+        "singleQuote": true
+      }
+    },
+    {
+      "files": ["*.js", "*.jsx"],
+      "options": {
+        "singleQuote": false
+      }
+    }
+  ]
+}

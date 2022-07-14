@@ -1,6 +1,6 @@
-import React from 'react'
+import React from "react";
 
-export function Input({ id, label, type = 'text', append, ...props }) {
+export function Input({ id, label, type = "text", append, ...props }) {
     return (
         <div>
             {label && (
@@ -29,5 +29,5 @@ export function Input({ id, label, type = 'text', append, ...props }) {
                 />
             )}
         </div>
-    )
+    );
 }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 
 export function OpenBetaWarning() {
     return (
@@ -16,5 +16,5 @@ export function OpenBetaWarning() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

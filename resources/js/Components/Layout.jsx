@@ -1,6 +1,6 @@
-import React from 'react'
-import 'focus-visible'
-import '../styles/tailwind.css'
+import React from "react";
+import "focus-visible";
+import "../styles/tailwind.css";
 
 export default function Layout({ children }) {
     return (
@@ -15,5 +15,5 @@ export default function Layout({ children }) {
             </head>
             <body className="flex h-full flex-col">{children}</body>
         </html>
-    )
+    );
 }

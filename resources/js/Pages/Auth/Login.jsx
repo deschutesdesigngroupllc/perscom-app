@@ -1,34 +1,34 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from "react";
 
-import { Button } from '../../Components/Button'
-import { Checkbox } from '../../Components/Checkbox'
-import { Guest } from '../../Layouts/Guest'
-import { Input } from '../../Components/Input'
-import { Label } from '../../Components/Label'
-import { ValidationErrors } from '../../Components/ValidationErrors'
-import { Head, Link, useForm } from '@inertiajs/inertia-react'
+import {Button} from "../../Components/Button";
+import {Checkbox} from "../../Components/Checkbox";
+import {Guest} from "../../Layouts/Guest";
+import {Input} from "../../Components/Input";
+import {Label} from "../../Components/Label";
+import {ValidationErrors} from "../../Components/ValidationErrors";
+import {Head, Link, useForm} from "@inertiajs/inertia-react";
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
-        email: '',
-        password: '',
-        remember: '',
-    })
+        email: "",
+        password: "",
+        remember: "",
+    });
 
     useEffect(() => {
         return () => {
-            reset('password')
-        }
-    }, [])
+            reset("password");
+        };
+    }, []);
 
     const onHandleChange = (event) => {
-        setData(event.target.name, event.target.type === 'checkbox' ? event.target.checked : event.target.value)
-    }
+        setData(event.target.name, event.target.type === "checkbox" ? event.target.checked : event.target.value);
+    };
 
     const submit = (e) => {
-        e.preventDefault()
-        post(route('login'))
-    }
+        e.preventDefault();
+        post(route("login"));
+    };
 
     return (
         <Guest>
@@ -69,19 +69,19 @@ export default function Login({ status, canResetPassword }) {
                 <div className="mt-4 flex items-center justify-end">
                     {canResetPassword && (
                         <Link
-                            href={route('password.request')}
+                            href={route("password.request")}
                             className="text-sm text-gray-600 underline hover:text-gray-900"
                         >
-                            {' '}
-                            Forgot your password?{' '}
+                            {" "}
+                            Forgot your password?{" "}
                         </Link>
                     )}
                     <Button className="ml-4" processing={processing} color="blue">
-                        {' '}
-                        Log in{' '}
+                        {" "}
+                        Log in{" "}
                     </Button>
                 </div>
             </form>
         </Guest>
-    )
+    );
 }
