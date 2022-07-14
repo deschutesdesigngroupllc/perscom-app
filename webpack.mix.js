@@ -1,6 +1,7 @@
-const mix = require('laravel-mix');
-const webpackConfig = require('./webpack.config');
-let path = require('path')
+const mix = require('laravel-mix')
+const webpackConfig = require('./webpack.config')
+const path = require('path')
+require('laravel-mix-eslint')
 
 /*
  |--------------------------------------------------------------------------
@@ -24,10 +25,15 @@ mix
         require('postcss-import'),
         require('tailwindcss')
     ])
+    .eslint({
+        fix: true,
+        extensions: ['js', 'jsx']
+    })
     .extract()
     .webpackConfig(webpackConfig)
 
 if (mix.inProduction()) {
-    mix.sourceMaps()
-    mix.version()
+    mix
+        .sourceMaps()
+        .version()
 }
