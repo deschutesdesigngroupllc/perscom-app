@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Laravel\Nova\Actions\Actionable;
 use Spark\Billable;
 use Spatie\Url\Url;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
@@ -11,6 +12,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
 
 class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase
 {
+	use Actionable;
     use Billable;
     use HasFactory;
     use HasDomains;
