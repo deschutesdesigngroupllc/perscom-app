@@ -49,9 +49,7 @@ class NewTenantMail extends Mailable
         return $this->markdown('emails.tenant.new')
             ->subject('Your Organization Is Now Ready')
             ->with([
-                'url' => optional($this->tenant->url, static function () {
-                    return 'Please contact an administrator to receive your Dashboard URL.';
-                }),
+                'url' => $this->tenant->url,
                 'email' => $this->user->email,
                 'password' => $this->password,
             ]);
