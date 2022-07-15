@@ -4,12 +4,9 @@ namespace App\Actions\Fortify;
 
 use App\Models\Domain;
 use App\Models\Tenant;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use Laravel\Fortify\Contracts\CreatesNewUsers;
 
 class CreateNewTenant
 {
