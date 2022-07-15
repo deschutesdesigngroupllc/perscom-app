@@ -12,7 +12,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
 
 class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase
 {
-	use Actionable;
+    use Actionable;
     use Billable;
     use HasFactory;
     use HasDomains;
@@ -32,7 +32,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      *
      * @var array
      */
-    protected $appends = ['domain', 'url'];
+    protected $appends = ['domain', 'url', 'database_status'];
 
     /**
      * The relations to eager load on every query.
@@ -68,6 +68,14 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
             'created_at',
             'updated_at',
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getDatabaseStatusAttribute()
+    {
+        return $this->tenancy_db_name ? 'created' : 'creating';
     }
 
     /**

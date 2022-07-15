@@ -2,7 +2,7 @@
 
 namespace App\Nova;
 
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -10,7 +10,7 @@ use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Status;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -78,29 +78,6 @@ class Tenant extends Resource
                         return null;
                     }),
             ]),
-            new Panel('Administrative User', [
-                Text::make('Name', 'admin_name')
-                    ->rules(['required'])
-                    ->onlyOnForms()
-                    ->hideWhenUpdating()
-                    ->fillUsing(function () {
-                        return null;
-                    }),
-                Email::make('Email', 'admin_email')
-                    ->rules(['required'])
-                    ->onlyOnForms()
-                    ->hideWhenUpdating()
-                    ->fillUsing(function () {
-                        return null;
-                    }),
-                Password::make('Password', 'admin_password')
-                    ->rules(['required'])
-                    ->onlyOnForms()
-                    ->hideWhenUpdating()
-                    ->fillUsing(function () {
-                        return null;
-                    }),
-            ]),
             HasMany::make('Domains'),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')
@@ -138,11 +115,10 @@ class Tenant extends Resource
                 })
                     ->readonly()
                     ->onlyOnDetail(),
-                Boolean::make('Database Created', function ($model) {
-                    return $model->run(function () {
-                        return Schema::hasTable('users');
-                    });
-                }),
+                Status::make('Database Status')
+                    ->loadingWhen(['creating'])
+                    ->failedWhen([])
+                    ->readonly(),
             ]),
         ];
     }
@@ -154,25 +130,15 @@ class Tenant extends Resource
      * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
-    //    public static function afterCreate(NovaRequest $request, Model $model)
-    //    {
-    //        if ($model instanceof \App\Models\Tenant) {
-    //            $values = $request->all();
-    //
-    //            $model->domains()->create([
-    //                'domain' => $values['domain'],
-    //            ]);
-    //
-    //            $model->run(function () use ($values) {
-    //                $user = \App\Models\User::create([
-    //                    'name' => $values['admin_name'],
-    //                    'email' => $values['admin_email'],
-    //                    'password' => Hash::make($values['admin_password']),
-    //                ]);
-    //                $user->assignRole('Admin');
-    //            });
-    //        }
-    //    }
+    public static function afterCreate(NovaRequest $request, Model $model)
+    {
+        if ($model instanceof \App\Models\Tenant) {
+            $values = $request->all();
+            $model->domains()->create([
+                'domain' => $values['domain'],
+            ]);
+        }
+    }
 
     /**
      * Get the cards available for the request.
