@@ -2,13 +2,12 @@
 
 namespace App\Nova\Dashboards;
 
+use App\Nova\Metrics\Admin\AdminsOnline;
 use App\Nova\Metrics\Admin\AverageRevenue;
 use App\Nova\Metrics\Admin\NewTenants;
 use App\Nova\Metrics\Admin\SubscriptionByStatus;
 use App\Nova\Metrics\Admin\SubscriptionsByPlan;
 use App\Nova\Metrics\Admin\TotalRevenue;
-use App\Nova\Metrics\AdminsOnline;
-use App\Nova\Metrics\UsersOnline;
 use Laravel\Nova\Dashboard;
 
 class Admin extends Dashboard

@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Nova\Metrics;
+namespace App\Nova\Metrics\Admin;
 
 use App\Models\Admin;
-use App\Models\User;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 
