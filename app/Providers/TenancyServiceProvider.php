@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Http\Middleware\CheckUniversalRouteForTenantOrAdmin;
 use App\Jobs\CreateInitialTenantUser;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
@@ -88,7 +89,6 @@ class TenancyServiceProvider extends ServiceProvider
 
     public function register()
     {
-        //
     }
 
     public function boot()
@@ -124,12 +124,12 @@ class TenancyServiceProvider extends ServiceProvider
         $tenancyMiddleware = [
             // Even higher priority than the initialization middleware
             Middleware\PreventAccessFromCentralDomains::class,
-
             Middleware\InitializeTenancyByDomain::class,
             Middleware\InitializeTenancyBySubdomain::class,
             Middleware\InitializeTenancyByDomainOrSubdomain::class,
             Middleware\InitializeTenancyByPath::class,
             Middleware\InitializeTenancyByRequestData::class,
+	        CheckUniversalRouteForTenantOrAdmin::class
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {

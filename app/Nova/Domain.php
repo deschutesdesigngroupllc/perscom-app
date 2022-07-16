@@ -49,16 +49,10 @@ class Domain extends Resource
                 ->sortable()
                 ->onlyOnForms()
                 ->rules(['required', Rule::unique('domains', 'domain')->ignore($this->id)]),
-            URL::make('Domain', function () {
-                return \Spatie\Url\Url::fromString($this->domain)
-                    ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
-                    ->__toString();
-            })
+            URL::make('Domain', 'url')
                 ->sortable()
-                ->displayUsing(function () {
-                    return \Spatie\Url\Url::fromString($this->domain)
-                        ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
-                        ->__toString();
+                ->displayUsing(function ($url) {
+                    return $url;
                 })
                 ->exceptOnForms(),
             Heading::make('Meta')->onlyOnDetail(),

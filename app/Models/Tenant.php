@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Nova\Actions\Actionable;
 use Spark\Billable;
-use Spatie\Url\Url;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
@@ -32,7 +31,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      *
      * @var array
      */
-    protected $appends = ['domain', 'url', 'database_status'];
+    protected $appends = ['domain', 'database_status'];
 
     /**
      * The relations to eager load on every query.
@@ -83,7 +82,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     public function getDomainAttribute()
     {
-        return optional($this->domains->first())->domain;
+        return $this->domains->first();
     }
 
     /**
@@ -91,11 +90,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     public function getUrlAttribute()
     {
-        return optional($this->domain, function () {
-            return Url::fromString($this->domain)
-                ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
-                ->__toString();
-        });
+        return optional($this->domain)->url;
     }
 
     /**

@@ -5,7 +5,6 @@ namespace App\Actions\Fortify;
 use App\Models\Domain;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class CreateNewTenant
@@ -18,13 +17,6 @@ class CreateNewTenant
      */
     public function create(array $input)
     {
-        if (isset($input['domain'])) {
-            $domain = app()->environment() === 'production' ? '.perscom.io' : '.localhost';
-            if (!Str::contains($input['domain'], $domain)) {
-                $input['domain'] = "{$input['domain']}$domain";
-            }
-        }
-
         Validator::make($input, [
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],

@@ -33,7 +33,7 @@ class NewRankRecord extends Notification implements ShouldQueue
     public function __construct(Rank $record)
     {
         $this->record = $record;
-        $this->url = tenant_route(tenant()->domain, 'nova.pages.detail', [
+        $this->url = tenant_route(tenant()->domain->domain, 'nova.pages.detail', [
             'resource' => \App\Nova\Records\Rank::uriKey(),
             'resourceId' => $this->record->id,
         ]);

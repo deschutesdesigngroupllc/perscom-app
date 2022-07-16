@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Records\Assignment;
 use App\Nova\ActionEvent;
 use App\Nova\Admin as AdminResource;
 use App\Nova\Award;
@@ -43,11 +42,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
-use Laravel\Nova\Menu\MenuSeparator;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Spatie\Url\Url;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {

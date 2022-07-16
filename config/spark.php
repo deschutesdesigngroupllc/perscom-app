@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\User;
 use Spark\Features;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 return [
 
@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'middleware' => ['web', 'auth', \Stancl\Tenancy\Middleware\InitializeTenancyByDomain::class],
+    'middleware' => ['web', 'auth', InitializeTenancyByDomainOrSubdomain::class],
 
     /*
     |--------------------------------------------------------------------------

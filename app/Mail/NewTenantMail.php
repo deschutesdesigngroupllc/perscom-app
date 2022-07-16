@@ -5,22 +5,23 @@ namespace App\Mail;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NewTenantMail extends Mailable
+class NewTenantMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * @var Tenant
-     */
-    protected $tenant;
+	/**
+	 * @var mixed
+	 */
+    protected $url;
 
-    /**
-     * @var User
-     */
-    protected $user;
+	/**
+	 * @var mixed
+	 */
+    protected $email;
 
     /**
      * @var
@@ -34,8 +35,8 @@ class NewTenantMail extends Mailable
      */
     public function __construct(Tenant $tenant, User $user, $password)
     {
-        $this->tenant = $tenant;
-        $this->user = $user;
+        $this->url = $tenant->url;
+        $this->email = $user->email;
         $this->password = $password;
     }
 
@@ -49,8 +50,8 @@ class NewTenantMail extends Mailable
         return $this->markdown('emails.tenant.new')
             ->subject('Your Organization Is Now Ready')
             ->with([
-                'url' => $this->tenant->url,
-                'email' => $this->user->email,
+                'url' => $this->url,
+                'email' => $this->email,
                 'password' => $this->password,
             ]);
     }

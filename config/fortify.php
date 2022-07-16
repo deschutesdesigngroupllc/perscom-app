@@ -1,8 +1,8 @@
 <?php
 
 use App\Providers\RouteServiceProvider;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomain;
 use Laravel\Fortify\Features;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 return [
 
@@ -90,7 +90,7 @@ return [
     |
     */
 
-    'middleware' => ['web', 'universal', InitializeTenancyByDomain::class],
+    'middleware' => ['web', 'universal', InitializeTenancyByDomainOrSubdomain::class],
 
     /*
     |--------------------------------------------------------------------------
@@ -137,12 +137,12 @@ return [
         Features::resetPasswords(),
         Features::emailVerification(),
 //        Features::updateProfileInformation(),
-        Features::updatePasswords(),
-        Features::twoFactorAuthentication([
-            'confirm' => true,
-            'confirmPassword' => true,
-            // 'window' => 0,
-        ]),
+//        Features::updatePasswords(),
+//        Features::twoFactorAuthentication([
+//            'confirm' => true,
+//            'confirmPassword' => true,
+//            // 'window' => 0,
+//        ]),
     ],
 
 ];

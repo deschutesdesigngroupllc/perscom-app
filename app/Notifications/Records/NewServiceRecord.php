@@ -3,7 +3,6 @@
 namespace App\Notifications\Records;
 
 use App\Models\Records\Service;
-use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -33,8 +32,9 @@ class NewServiceRecord extends Notification implements ShouldQueue
      */
     public function __construct(Service $record)
     {
+    	// TODO: Fix tenant route
         $this->record = $record;
-        $this->url = tenant_route(tenant()->domain, 'nova.pages.detail', [
+        $this->url = tenant_route(tenant()->domain->domain, 'nova.pages.detail', [
             'resource' => \App\Nova\Records\Service::uriKey(),
             'resourceId' => $this->record->id,
         ]);

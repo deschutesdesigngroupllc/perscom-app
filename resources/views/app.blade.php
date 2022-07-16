@@ -6,7 +6,6 @@
 
         <title>PERSCOM Soldier Management System</title>
 
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link href="{{ mix('/css/app.css') }}" rel="stylesheet" />
 
         <script src="{{ mix('/js/manifest.js') }}" defer></script>

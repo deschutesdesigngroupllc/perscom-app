@@ -56,14 +56,7 @@ class Tenant extends Resource
                 ->sortable()
                 ->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
             Text::make('Website')->sortable(),
-            URL::make('Domain', function ($model) {
-                if ($model->domains()->count()) {
-                    return \Spatie\Url\Url::fromString($model->domains()->first()->domain)
-                        ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
-                        ->__toString();
-                }
-                return null;
-            })
+            URL::make('Domain', 'url')
                 ->sortable()
                 ->displayUsing(function ($url) {
                     return $url;
