@@ -2,7 +2,7 @@ import React from "react";
 import clsx from "clsx";
 
 import backgroundImage from "../../images/register1.jpeg";
-import {OpenBetaWarning} from "../Components/OpenBetaWarning";
+import { OpenBetaWarning } from "../Components/OpenBetaWarning";
 
 export function AuthLayout({ children, position = "justify-center" }) {
     return (

@@ -1,11 +1,11 @@
-import React, {useEffect} from "react";
+import React, { useEffect } from "react";
 
-import {Button} from "../../Components/Button";
-import {Guest} from "../../Layouts/Guest";
-import {Input} from "../../Components/Input";
-import {Label} from "../../Components/Label";
-import {ValidationErrors} from "../../Components/ValidationErrors";
-import {Head, useForm} from "@inertiajs/inertia-react";
+import { Button } from "../../Components/Button";
+import { Guest } from "../../Layouts/Guest";
+import { Input } from "../../Components/Input";
+import { Label } from "../../Components/Label";
+import { ValidationErrors } from "../../Components/ValidationErrors";
+import { Head, useForm } from "@inertiajs/inertia-react";
 
 export default function ResetPassword({ token, email }) {
     const { data, setData, post, processing, errors, reset } = useForm({

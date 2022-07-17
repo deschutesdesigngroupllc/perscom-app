@@ -1,14 +1,11 @@
-import React, {useEffect, useState} from "react";
-import {Tab} from "@headlessui/react";
+import React, { useEffect, useState } from "react";
+import { Tab } from "@headlessui/react";
 import clsx from "clsx";
 
-import {Container} from "../Components/Container";
-import backgroundImage
-    from "../../images/background-features.jpg";
-import featureDashboard
-    from "../../images/features/feature1.png";
-import featurePersonnelFiles
-    from "../../images/features/feature2.png";
+import { Container } from "../Components/Container";
+import backgroundImage from "../../images/background-features.jpg";
+import featureDashboard from "../../images/features/feature1.png";
+import featurePersonnelFiles from "../../images/features/feature2.png";
 import featureForms from "../../images/features/feature3.png";
 import featureLogs from "../../images/features/feature4.png";
 

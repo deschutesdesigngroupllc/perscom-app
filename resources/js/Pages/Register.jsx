@@ -1,11 +1,11 @@
 import React from "react";
-import {useForm} from "@inertiajs/inertia-react";
+import { useForm } from "@inertiajs/inertia-react";
 
-import {AuthLayout} from "../Components/AuthLayout";
-import {Button} from "../Components/Button";
-import {Input} from "../Components/Input";
-import {Logo} from "../Components/Logo";
-import {ValidationErrors} from "@/Components/ValidationErrors";
+import { AuthLayout } from "../Components/AuthLayout";
+import { Button } from "../Components/Button";
+import { Input } from "../Components/Input";
+import { Logo } from "../Components/Logo";
+import { ValidationErrors } from "@/Components/ValidationErrors";
 
 export default function Register() {
     const { data, setData, post, processing, errors } = useForm({

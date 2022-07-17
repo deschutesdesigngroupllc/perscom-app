@@ -1,10 +1,10 @@
-import React, {Fragment} from "react";
-import {Popover, Transition} from "@headlessui/react";
+import React, { Fragment } from "react";
+import { Popover, Transition } from "@headlessui/react";
 import clsx from "clsx";
 
-import {ButtonLink} from "../Components/Button";
-import {Container} from "../Components/Container";
-import {Logo} from "../Components/Logo";
+import { ButtonLink } from "../Components/Button";
+import { Container } from "../Components/Container";
+import { Logo } from "../Components/Logo";
 
 function MobileNavigation() {
     return (

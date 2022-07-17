@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Container} from "../Components/Container";
+import { Container } from "../Components/Container";
 import backgroundImage from "../../images/background-faqs.jpg";
 
 const faqs = [
