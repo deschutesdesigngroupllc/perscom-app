@@ -1,0 +1,77 @@
+name: PERSCOM CI/CD
+
+on:
+  push:
+    branches:
+      - master
+      - prerelease
+
+jobs:
+  build-application:
+    name: Build Application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+
+      - name: Configure Composer Authentication
+        run: |
+          composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
+          composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_API_TOKEN }}
+
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+
+      - name: Cache Dependencies
+        uses: actions/cache@v1
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Require Forge CLI
+        run: composer global require laravel/forge-cli
+
+      - name: Install Composer Dependencies
+        run: composer install --no-interaction --prefer-dist
+
+      - name: Install Javascript Dependencies
+        run: npm ci
+
+      - name: Build Application
+        run: npm run prod
+
+      - name: Deploy Application to Laravel Forge
+        run: |
+          forge server:${{ secrets.FORGE_SERVER_NAME }}
+          forge deploy ${{ secrets.FORGE_SERVER_SITE }}
+        env:
+          FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+
+      - name: Bump Application Version and Tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          default_prerelease_bump: prerelease
+          release_branches: master
+          pre_release_branches: prerelease
+          append_to_pre_release_tag: prerelease
+
+      - name: Create Release
+        uses: ncipollo/release-action@v1
+        if: github.ref == 'refs/heads/master'
+        with:
+          tag: ${{ steps.tag_version.outputs.new_tag }}
+          name: ${{ steps.tag_version.outputs.new_tag }}
+          body: ${{ steps.tag_version.outputs.changelog }}
