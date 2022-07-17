@@ -17,7 +17,11 @@ class CheckUniversalRouteForTenantOrAdmin
      */
     public function handle(Request $request, Closure $next)
     {
-        throw_if(!tenant() && !$request->is(['admin', 'admin/*', 'nova-api/*']), TenantCouldNotBeIdentifiedOnDomainException::class, $request->getHost());
+        throw_if(
+            !tenant() && !$request->is(['admin', 'admin/*', 'nova-api/*']),
+            TenantCouldNotBeIdentifiedOnDomainException::class,
+            $request->getHost()
+        );
 
         return $next($request);
     }

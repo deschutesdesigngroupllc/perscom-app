@@ -15,7 +15,7 @@ use Laravel\Nova\Actions\Actionable;
 
 class Person extends Model
 {
-	use Actionable;
+    use Actionable;
     use HasFactory;
     use HasStatuses;
 

@@ -19,7 +19,7 @@ export default function Login() {
                 </p>
                 <div className="mt-6">
                     <a
-                        href="#"
+                        href={route("landing.home")}
                         className="inline-flex items-center rounded-md border border-transparent bg-white bg-opacity-75 px-4 py-2 text-sm font-medium text-black text-opacity-75 sm:bg-opacity-25 sm:hover:bg-opacity-50"
                     >
                         {" "}

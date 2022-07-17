@@ -10,26 +10,26 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
 {
     use HasFactory;
 
-	/**
-	 * The accessors to append to the model's array form.
-	 *
-	 * @var array
-	 */
-	protected $appends = ['url'];
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['url'];
 
-	/**
-	 * @return mixed|null
-	 */
-	public function getUrlAttribute()
-	{
-		return optional($this->domain, function () {
-			return Url::fromString(
-				Str::endsWith($this->domain, config('tenancy.central_domains'))
-					? $this->domain
-					: $this->domain . (app()->environment() === 'production' ? '.perscom.io' : '.localhost')
-			)
-				->withScheme(app()->environment() === 'production' ? 'https' : 'http')
-				->__toString();
-		});
-	}
+    /**
+     * @return mixed|null
+     */
+    public function getUrlAttribute()
+    {
+        return optional($this->domain, function () {
+            return Url::fromString(
+                Str::endsWith($this->domain, config('tenancy.central_domains'))
+                    ? $this->domain
+                    : $this->domain . (app()->environment() === 'production' ? '.perscom.io' : '.localhost')
+            )
+                ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
+                ->__toString();
+        });
+    }
 }

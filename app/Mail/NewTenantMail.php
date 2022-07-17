@@ -13,14 +13,14 @@ class NewTenantMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var mixed
+     */
     protected $url;
 
-	/**
-	 * @var mixed
-	 */
+    /**
+     * @var mixed
+     */
     protected $email;
 
     /**
