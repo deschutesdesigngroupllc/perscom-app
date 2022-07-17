@@ -18,7 +18,7 @@ use Laravel\Nova\Http\Middleware\Authorize;
 
 Route::get('/routes', function (Request $request) {
 	return [
-		'person' => \route('nova.pages.create', 'soldiers'),
+		'person' => \route('nova.pages.create', 'users'),
 		'assignment' => \route('nova.pages.create', 'assignment-records'),
 		'service' => \route('nova.pages.create', 'service-records'),
 		'combat' => \route('nova.pages.create', 'combat-records'),

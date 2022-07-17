@@ -8,12 +8,15 @@ use App\Nova\Status;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Nova;
 use Laravel\Nova\Panel;
+use ThinkStudio\HtmlField\Html;
 
 class Submission extends Resource
 {
@@ -59,6 +62,90 @@ class Submission extends Resource
                 'placeholder' => 'This is some placeholder text.',
                 'help' => 'This is some help text.',
             ],
+            [
+                'field' => 'Textarea',
+                'name' => 'Test 2',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Datetime',
+                'name' => 'Test 3',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Date',
+                'name' => 'Test 7',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Email',
+                'name' => 'Test 4',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Heading',
+                'name' => 'Heading 1',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Boolean',
+                'name' => 'Test 5',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Country',
+                'name' => 'Test 6',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'KeyValue',
+                'name' => 'Test 7',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Line',
+                'name' => 'Test 8',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Markdown',
+                'name' => 'Test 9',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Number',
+                'name' => 'Test 9',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
+            [
+                'field' => 'Password',
+                'name' => 'Test 9',
+                'required' => true,
+                'placeholder' => 'This is some placeholder text.',
+                'help' => 'This is some help text.',
+            ],
         ];
 
         foreach ($fields as $field) {
@@ -88,6 +175,21 @@ class Submission extends Resource
             ID::make()->sortable(),
             BelongsTo::make('User')->showOnPreview(),
             BelongsTo::make('Form')->showOnPreview(),
+	        Html::make('Instructions', function () {
+	        	return view('fields.test')->render();
+	        })->showOnCreating(),
+	        Textarea::make('Description')
+                ->hide()
+                ->alwaysShow()
+                ->readonly()
+                ->dependsOn('form', function (Textarea $field, NovaRequest $request, FormData $formData) {
+                    if ($formId = $formData->form) {
+                        $form = \App\Models\Forms\Form::find($formId);
+                        $field->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($form) {
+	                        $model->{$attribute} = $form->description;
+                        })->show();
+                    }
+                }),
             Badge::make('Status', function ($model) {
                 return $this->status->name ?? null;
             })
@@ -98,7 +200,6 @@ class Submission extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            new Panel('Form', $this->customFields),
             MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),

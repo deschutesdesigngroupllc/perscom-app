@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Records;
 
-use App\Models\Person;
 use App\Models\Rank;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -20,7 +19,7 @@ class RankFactory extends Factory
 	        'text' => $this->faker->sentence(),
 	        'type' => $this->faker->boolean(),
 	        'author_id' => User::factory(),
-	        'person_id' => Person::factory(),
+	        'user_id' => User::factory(),
 	        'rank_id' => Rank::factory()
         ];
     }

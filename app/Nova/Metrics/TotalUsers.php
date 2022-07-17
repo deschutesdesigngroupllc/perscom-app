@@ -2,11 +2,11 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Person;
+use App\Models\User;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
-class TotalPersonnel extends Value
+class TotalUsers extends Value
 {
     /**
      * The element's icon.
@@ -23,7 +23,7 @@ class TotalPersonnel extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Person::class);
+        return $this->count($request, User::class);
     }
 
     /**
@@ -61,7 +61,7 @@ class TotalPersonnel extends Value
      */
     public function uriKey()
     {
-        return 'total-personnel';
+        return 'total-users';
     }
 
     /**
@@ -71,6 +71,6 @@ class TotalPersonnel extends Value
      */
     public function name()
     {
-        return 'Total Soldiers';
+        return 'Total Users';
     }
 }

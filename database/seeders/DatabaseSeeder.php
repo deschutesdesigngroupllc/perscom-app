@@ -26,7 +26,6 @@ class DatabaseSeeder extends Seeder
         	CombatRecordSeeder::class,
         	FormSeeder::class,
         	PermissionSeeder::class,
-        	PersonSeeder::class,
 	        QualificationRecordSeeder::class,
 	        RankRecordSeeder::class,
 	        RoleSeeder::class,

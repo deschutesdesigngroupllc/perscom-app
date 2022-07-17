@@ -22,7 +22,7 @@ class CreateRecordsAwardsTable extends Migration
     {
         Schema::create('records_awards', function (Blueprint $table) {
 	        $table->id();
-	        $table->unsignedBigInteger('person_id');
+	        $table->unsignedBigInteger('user_id');
 	        $table->unsignedBigInteger('award_id');
 	        $table->unsignedBigInteger('document_id')->nullable();
 	        $table->unsignedBigInteger('author_id')->nullable();

@@ -2,7 +2,7 @@
 
 namespace App\Nova\Dashboards;
 
-use App\Nova\Metrics\NewPersonnel;
+use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\UpdatesPerformed;
 use App\Nova\Metrics\UsersOnline;
 use Laravel\Nova\Dashboards\Main as Dashboard;
@@ -28,6 +28,6 @@ class Main extends Dashboard
      */
     public function cards()
     {
-        return [new NewPersonnel(), new UpdatesPerformed(), new UsersOnline(), new DashboardQuickActions()];
+        return [new NewUsers(), new UpdatesPerformed(), new UsersOnline(), new DashboardQuickActions()];
     }
 }

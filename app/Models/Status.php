@@ -13,9 +13,9 @@ class Status extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    public function people()
+    public function users()
     {
-        return $this->morphedByMany(Person::class, 'model', 'model_has_statuses');
+        return $this->morphedByMany(User::class, 'model', 'model_has_statuses');
     }
 
     /**

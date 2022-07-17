@@ -16,7 +16,7 @@ class RankRecordObserver
      */
     public function created(Rank $rank)
     {
-        Notification::send($rank->person->users, new NewRankRecord($rank));
+        Notification::send($rank->user, new NewRankRecord($rank));
     }
 
     /**

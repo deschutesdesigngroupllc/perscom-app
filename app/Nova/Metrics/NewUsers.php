@@ -2,11 +2,11 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Person;
+use App\Models\User;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 
-class NewPersonnel extends Trend
+class NewUsers extends Trend
 {
     /**
      * Calculate the value of the metric.
@@ -16,7 +16,7 @@ class NewPersonnel extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->countByDays($request, Person::class);
+        return $this->countByDays($request, User::class);
     }
 
     /**
@@ -50,7 +50,7 @@ class NewPersonnel extends Trend
      */
     public function uriKey()
     {
-        return 'new-personnel';
+        return 'new-users';
     }
 
     /**
@@ -60,6 +60,6 @@ class NewPersonnel extends Trend
      */
     public function name()
     {
-        return 'New Soldiers';
+        return 'New Users';
     }
 }

@@ -2,10 +2,10 @@
 
 namespace App\Models\Records;
 
-use App\Models\Person;
 use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\Unit;
+use App\Models\User;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -27,9 +27,9 @@ class Assignment extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function person()
+    public function user()
     {
-        return $this->belongsTo(Person::class);
+        return $this->belongsTo(User::class);
     }
 
     /**

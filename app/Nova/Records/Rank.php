@@ -63,7 +63,7 @@ class Rank extends Resource
      */
     public function title()
     {
-        return $this->person->full_name;
+        return $this->user->name;
     }
 
     /**
@@ -76,7 +76,7 @@ class Rank extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Person')->sortable(),
+            BelongsTo::make('User')->sortable(),
             BelongsTo::make('Rank')
                 ->searchable()
                 ->sortable()

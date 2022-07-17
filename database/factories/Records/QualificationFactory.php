@@ -2,7 +2,6 @@
 
 namespace Database\Factories\Records;
 
-use App\Models\Person;
 use App\Models\Qualification;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,7 +18,7 @@ class QualificationFactory extends Factory
         return [
 	        'text' => $this->faker->sentence(),
 	        'author_id' => User::factory(),
-	        'person_id' => Person::factory(),
+	        'user_id' => User::factory(),
 	        'qualification_id' => Qualification::factory()
         ];
     }

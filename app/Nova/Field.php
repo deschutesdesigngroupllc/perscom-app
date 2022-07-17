@@ -9,11 +9,13 @@
 
 namespace App\Nova;
 
+use App\Nova\Forms\Form;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
@@ -63,24 +65,6 @@ class Field extends Resource
     }
 
     /**
-     * @param  null  $resource
-     *
-     * @throws \ReflectionException
-     */
-    public function __construct($resource = null)
-    {
-        $this->fields = collect(ClassFinder::getClassesInNamespace('Laravel\Nova\Fields'))
-            ->mapWithKeys(function ($className) {
-                $reflection = new \ReflectionClass($className);
-                return [$className => $reflection->getShortName()];
-            })
-            ->sort()
-            ->toArray();
-
-        parent::__construct($resource);
-    }
-
-    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -98,14 +82,20 @@ class Field extends Resource
                 ->alwaysShow()
                 ->showOnPreview(),
             Select::make('Type')
-                ->options($this->fields)
+                ->options(\App\Models\Field::fieldTypes)
                 ->searchable()
                 ->displayUsingLabels(),
-
             Boolean::make('Required'),
+            Text::make('Placeholder')
+                ->hideFromIndex()
+                ->help('If a text type field, this text will fill the field when no value is present.'),
+            Text::make('Help')
+                ->hideFromIndex()
+                ->help('Like this text, this is a short description that should help the user fill out the field.'),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
+            MorphedByMany::make('Assigned Forms', 'forms', Form::class),
         ];
     }
 

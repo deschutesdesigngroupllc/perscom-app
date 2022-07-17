@@ -17,7 +17,7 @@ class AssignmentRecordObserver
      */
     public function created(Assignment $assignment)
     {
-        Notification::send($assignment->person->users, new NewAssignmentRecord($assignment));
+        Notification::send($assignment->user, new NewAssignmentRecord($assignment));
     }
 
     /**

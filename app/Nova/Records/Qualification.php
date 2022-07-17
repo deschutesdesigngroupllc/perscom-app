@@ -61,7 +61,7 @@ class Qualification extends Resource
      */
     public function title()
     {
-        return $this->person->full_name;
+        return $this->user->name;
     }
 
     /**
@@ -74,7 +74,7 @@ class Qualification extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Person')->sortable(),
+            BelongsTo::make('User')->sortable(),
             BelongsTo::make('Qualification')
                 ->searchable()
                 ->sortable()

@@ -12,11 +12,9 @@ use App\Nova\Domain;
 use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
-use App\Nova\Lenses\CurrentUsersPersonnelFiles;
 use App\Nova\Lenses\CurrentUsersRecords;
 use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Permission;
-use App\Nova\Person;
 use App\Nova\Position;
 use App\Nova\Qualification;
 use App\Nova\Rank;
@@ -76,7 +74,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         $menu[] = [
             MenuSection::make('Account', [
-                MenuItem::lens(Person::class, CurrentUsersPersonnelFiles::class),
                 MenuItem::lens(ServiceRecords::class, CurrentUsersRecords::class),
                 MenuItem::lens(Submission::class, CurrentUsersSubmissions::class),
             ])->icon('user-circle'),
@@ -92,6 +89,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(Specialty::class),
                 MenuItem::resource(Status::class),
                 MenuItem::resource(Unit::class),
+	            MenuItem::resource(User::class),
             ])
                 ->icon('office-building')
                 ->collapsable(),
@@ -105,14 +103,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 }),
             ])
                 ->icon('pencil-alt')
-                ->collapsable(),
-
-            MenuSection::make('Personnel', [
-                MenuItem::resource(Person::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:soldier');
-                }),
-            ])
-                ->icon('user')
                 ->collapsable(),
 
             MenuSection::make('Records', [
@@ -138,15 +128,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->icon('document-text')
                 ->collapsable(),
 
-            MenuSection::make('Users', [
-                MenuItem::resource(User::class),
-                MenuItem::resource(Permission::class),
-                MenuItem::resource(Role::class),
+            MenuSection::make('Settings', [
+            	MenuItem::resource(Field::class),
+	            MenuItem::resource(ActionEvent::class),
+	            MenuItem::resource(Permission::class),
+	            MenuItem::resource(Role::class)
             ])
-                ->icon('user')
-                ->collapsable(),
-
-            MenuSection::make('Settings', [MenuItem::resource(Field::class), MenuItem::resource(ActionEvent::class)])
                 ->icon('cog')
                 ->collapsable(),
 
@@ -211,7 +198,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             } else {
                 $menu->append([
                     MenuItem::externalLink(
-                        'Account',
+                        'My Personnel File',
                         route('nova.pages.detail', [
                             'resource' => \App\Nova\User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),

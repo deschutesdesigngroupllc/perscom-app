@@ -2,7 +2,6 @@
 
 namespace App\Models\Records;
 
-use App\Models\Person;
 use App\Models\User;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
@@ -25,8 +24,8 @@ class Service extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
-    public function person()
+    public function user()
     {
-        return $this->belongsTo(Person::class);
+        return $this->belongsTo(User::class);
     }
 }

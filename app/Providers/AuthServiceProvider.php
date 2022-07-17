@@ -6,7 +6,6 @@ use App\Models\Award;
 use App\Models\Document;
 use App\Models\Forms\Form;
 use App\Models\Permission;
-use App\Models\Person;
 use App\Models\Position;
 use App\Models\Qualification;
 use App\Models\Rank;
@@ -29,7 +28,6 @@ use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
 use App\Policies\FormPolicy;
 use App\Policies\PermissionPolicy;
-use App\Policies\PersonPolicy;
 use App\Policies\PositionPolicy;
 use App\Policies\QualificationPolicy;
 use App\Policies\QualificationRecordsPolicy;
@@ -64,7 +62,6 @@ class AuthServiceProvider extends ServiceProvider
         Document::class => DocumentPolicy::class,
         Form::class => FormPolicy::class,
         Permission::class => PermissionPolicy::class,
-        Person::class => PersonPolicy::class,
         Position::class => PositionPolicy::class,
         Qualification::class => QualificationPolicy::class,
         QualificationRecords::class => QualificationRecordsPolicy::class,

@@ -29,7 +29,7 @@ class Service extends Resource
      *
      * @var string
      */
-    public static $title = 'person.name';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -61,7 +61,7 @@ class Service extends Resource
      */
     public function title()
     {
-        return $this->person->full_name;
+        return $this->user->full_name;
     }
 
     /**
@@ -74,7 +74,7 @@ class Service extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Person')->sortable(),
+            BelongsTo::make('User')->sortable(),
             Textarea::make('Text')
                 ->rules(['required'])
                 ->hideFromIndex()

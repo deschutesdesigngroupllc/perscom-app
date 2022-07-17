@@ -24,7 +24,9 @@ class CreateFieldsTable extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
-            $table->boolean('required')->default(false);
+	        $table->text('placeholder')->nullable();
+	        $table->text('help')->nullable();
+	        $table->boolean('required')->default(false);
             $table->text('type');
             $table->timestamps();
         });

@@ -23,7 +23,7 @@ class CreateDocumentsTable extends Migration
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-	        $table->string('description')->nullable();
+	        $table->text('description')->nullable();
 	        $table->text('content');
             $table->timestamps();
         });

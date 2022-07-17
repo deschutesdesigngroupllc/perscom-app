@@ -41,7 +41,7 @@ class AwardRecordsPolicy
      */
     public function view(User $user, Award $award)
     {
-        return $user->hasPermissionTo('view:awardrecord') || $award->person->users->contains($user->id);
+        return $user->hasPermissionTo('view:awardrecord') || $award->user->id === $user->id;
     }
 
     /**

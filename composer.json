@@ -13,7 +13,6 @@
         "fakerphp/faker": "^1.9.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "haydenpierce/class-finder": "^0.4.3",
         "laravel/fortify": "^1.13",
         "laravel/framework": "^8.75",
         "laravel/horizon": "^5.9",
@@ -28,9 +27,12 @@
         "spatie/laravel-permission": "^5.5",
         "spatie/url": "^2.1.0",
         "stancl/tenancy": "^3.5",
-        "tightenco/ziggy": "^1.4"
+        "tightenco/ziggy": "^1.4",
+        "yaroslawww/nova-html-field": "^2.0"
     },
     "require-dev": {
+        "roave/security-advisories": "dev-latest"
+        ,
         "facade/ignition": "^2.5",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",

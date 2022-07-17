@@ -41,7 +41,7 @@ class ServiceRecordsPolicy
      */
     public function view(User $user, Service $service)
     {
-        return $user->hasPermissionTo('view:servicerecord') || $service->person->users->contains($user->id);
+        return $user->hasPermissionTo('view:servicerecord') || $service->user->id === $user->id;
     }
 
     /**

@@ -37,52 +37,28 @@ class CurrentUsersRecords extends Lens
     public static function query(LensRequest $request, $query)
     {
         $serviceRecordsQuery = Service::query()
-            ->select(['text', 'created_at', 'updated_at', 'person_id'])
-            ->whereHas('person', function (Builder $query) {
-                $query->whereHas('users', function (Builder $query) {
-                    $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
-                });
-            });
+            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $assignmentRecordQuery = Assignment::query()
-            ->select(['text', 'created_at', 'updated_at', 'person_id'])
-            ->whereHas('person', function (Builder $query) {
-                $query->whereHas('users', function (Builder $query) {
-                    $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
-                });
-            });
+            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $awardsRecordQuery = Award::query()
-            ->select(['text', 'created_at', 'updated_at', 'person_id'])
-            ->whereHas('person', function (Builder $query) {
-                $query->whereHas('users', function (Builder $query) {
-                    $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
-                });
-            });
+            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $combatRecordQuery = Combat::query()
-            ->select(['text', 'created_at', 'updated_at', 'person_id'])
-            ->whereHas('person', function (Builder $query) {
-                $query->whereHas('users', function (Builder $query) {
-                    $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
-                });
-            });
+            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $qualificationRecordQuery = Qualification::query()
-            ->select(['text', 'created_at', 'updated_at', 'person_id'])
-            ->whereHas('person', function (Builder $query) {
-                $query->whereHas('users', function (Builder $query) {
-                    $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
-                });
-            });
+            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $rankRecordQuery = Rank::query()
-            ->select(['text', 'created_at', 'updated_at', 'person_id'])
-            ->whereHas('person', function (Builder $query) {
-                $query->whereHas('users', function (Builder $query) {
-                    $query->where('user_id', '=', Auth::user()->getAuthIdentifier());
-                });
-            });
+            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         return $request->withOrdering(
             $request->withFilters(

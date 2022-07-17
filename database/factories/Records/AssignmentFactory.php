@@ -3,7 +3,6 @@
 namespace Database\Factories\Records;
 
 use App\Models\Document;
-use App\Models\Person;
 use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\Unit;
@@ -22,7 +21,7 @@ class AssignmentFactory extends Factory
         return [
 	        'text' => $this->faker->sentence(),
 	        'author_id' => User::factory(),
-	        'person_id' => Person::factory(),
+	        'user_id' => User::factory(),
 	        'unit_id' => Unit::factory(),
 	        'position_id' => Position::factory(),
 	        'specialty_id' => Specialty::factory(),

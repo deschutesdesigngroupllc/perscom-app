@@ -16,7 +16,7 @@ class ServiceRecordObserver
      */
     public function created(Service $service)
     {
-        Notification::send($service->person->users, new NewServiceRecord($service));
+        Notification::send($service->user, new NewServiceRecord($service));
     }
 
     /**

@@ -15,7 +15,7 @@ class CreateRecordsRanksTable extends Migration
     {
         Schema::create('records_ranks', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('person_id');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('rank_id');
 	        $table->unsignedBigInteger('document_id')->nullable();
 	        $table->unsignedBigInteger('author_id')->nullable();

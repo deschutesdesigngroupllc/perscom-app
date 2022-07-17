@@ -16,7 +16,7 @@ class QualificationRecordObserver
      */
     public function created(Qualification $qualification)
     {
-        Notification::send($qualification->person->users, new NewQualificationRecord($qualification));
+        Notification::send($qualification->user, new NewQualificationRecord($qualification));
     }
 
     /**
