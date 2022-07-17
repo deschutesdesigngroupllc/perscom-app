@@ -57,7 +57,7 @@ jobs:
 
       - name: Copy Build Files to Server
         uses: appleboy/scp-action@master
-          with:
+        with:
           host: ${{ secrets.FORGE_HOST }}
           username: ${{ secrets.FORGE_USERNAME }}
           key: ${{ secrets.FORGE_SSH_PRIVATE_KEY }}
