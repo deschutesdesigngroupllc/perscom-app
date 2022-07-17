@@ -52,12 +52,10 @@ jobs:
 
       - name: Deploy Application to Laravel Forge
         run: |
-          forge server:${{ secrets.FORGE_SERVER_NAME }}
+          forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
           forge deploy ${{ secrets.FORGE_SERVER_SITE }}
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
-          FORGE_SERVER_NAME: ${{ secrets.FORGE_SERVER_NAME }}
-          FORGE_SERVER_SITE: ${{ secrets.FORGE_SERVER_SITE }}
 
       - name: Bump Application Version and Tag
         id: tag_version
