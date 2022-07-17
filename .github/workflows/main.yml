@@ -63,6 +63,7 @@ jobs:
           key: ${{ secrets.FORGE_SSH_PRIVATE_KEY }}
           source: ${{ github.workspace }}
           target: ${{ secrets.FORGE_DESTINATION_PATH }}
+          rm: true
 
       - name: Deploy Application
         run: |
@@ -70,6 +71,12 @@ jobs:
           forge deploy ${{ secrets.FORGE_SERVER_SITE }}
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: path/to/artifact/world.txt
 
       - name: Bump Application Version and Tag
         id: tag_version
