@@ -89,7 +89,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::resource(Specialty::class),
                 MenuItem::resource(Status::class),
                 MenuItem::resource(Unit::class),
-	            MenuItem::resource(User::class),
+                MenuItem::resource(User::class),
             ])
                 ->icon('office-building')
                 ->collapsable(),
@@ -129,10 +129,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ->collapsable(),
 
             MenuSection::make('Settings', [
-            	MenuItem::resource(Field::class),
-	            MenuItem::resource(ActionEvent::class),
-	            MenuItem::resource(Permission::class),
-	            MenuItem::resource(Role::class)
+                MenuItem::resource(Field::class),
+                MenuItem::resource(ActionEvent::class),
+                MenuItem::resource(Permission::class),
+                MenuItem::resource(Role::class),
             ])
                 ->icon('cog')
                 ->collapsable(),

@@ -2,12 +2,24 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\User;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Redis;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Metrics\Trend;
+use Laravel\Nova\Metrics\Value;
+use Laravel\Nova\Metrics\ValueResult;
 
-class UsersOnline extends Trend
+class UsersOnline extends Value
 {
+    /**
+     * @var string
+     */
+    public $icon = 'user';
+
+    /**
+     * @var string
+     */
+    public $helpText = 'Current online users is checked every two minutes.';
+
     /**
      * Calculate the value of the metric.
      *
@@ -16,7 +28,19 @@ class UsersOnline extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->countByDays($request, User::class);
+        $keys = \App\Models\User::all()
+            ->map(function ($user) {
+                return "user.online.$user->id";
+            })
+            ->toArray();
+
+        $count = collect(\Illuminate\Support\Facades\Cache::tags('user.online')->many($keys))
+            ->filter(function ($value) {
+                return $value === true;
+            })
+            ->count();
+
+        return new ValueResult($count);
     }
 
     /**
@@ -26,11 +50,7 @@ class UsersOnline extends Trend
      */
     public function ranges()
     {
-        return [
-            30 => __('30 Days'),
-            60 => __('60 Days'),
-            90 => __('90 Days'),
-        ];
+        return [];
     }
 
     /**
@@ -40,16 +60,14 @@ class UsersOnline extends Trend
      */
     public function cacheFor()
     {
-        return now()->addMinutes(5);
+        return now()->addMinutes(2);
     }
 
     /**
-     * Get the URI key for the metric.
-     *
      * @return string
      */
-    public function uriKey()
+    public function name()
     {
-        return 'users-online';
+        return 'Current Users Online';
     }
 }

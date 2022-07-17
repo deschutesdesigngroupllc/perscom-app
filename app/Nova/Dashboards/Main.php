@@ -5,6 +5,7 @@ namespace App\Nova\Dashboards;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\UpdatesPerformed;
 use App\Nova\Metrics\UsersOnline;
+use App\Nova\Metrics\UsersOnlineByDay;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 use Perscom\DashboardQuickActions\DashboardQuickActions;
 use Perscom\LatestFormSubmissions\LatestFormSubmissions;
@@ -28,6 +29,6 @@ class Main extends Dashboard
      */
     public function cards()
     {
-        return [new NewUsers(), new UpdatesPerformed(), new UsersOnline(), new DashboardQuickActions()];
+        return [new NewUsers(), new UsersOnline(), new UpdatesPerformed(), new DashboardQuickActions()];
     }
 }

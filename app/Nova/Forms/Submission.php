@@ -48,120 +48,120 @@ class Submission extends Resource
      */
     public static $search = ['id'];
 
-//    protected $customFields = [];
-//
-//    public function __construct($resource = null)
-//    {
-//        parent::__construct($resource);
-//
-//        $fields = [
-//            [
-//                'field' => 'Text',
-//                'name' => 'Test',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Textarea',
-//                'name' => 'Test 2',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Datetime',
-//                'name' => 'Test 3',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Date',
-//                'name' => 'Test 7',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Email',
-//                'name' => 'Test 4',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Heading',
-//                'name' => 'Heading 1',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Boolean',
-//                'name' => 'Test 5',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Country',
-//                'name' => 'Test 6',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'KeyValue',
-//                'name' => 'Test 7',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Line',
-//                'name' => 'Test 8',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Markdown',
-//                'name' => 'Test 9',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Number',
-//                'name' => 'Test 9',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//            [
-//                'field' => 'Password',
-//                'name' => 'Test 9',
-//                'required' => true,
-//                'placeholder' => 'This is some placeholder text.',
-//                'help' => 'This is some help text.',
-//            ],
-//        ];
-//
-//        foreach ($fields as $field) {
-//            $novaField = \call_user_func(["Laravel\\Nova\\Fields\\{$field['field']}", 'make'], $field['name'], 'data');
-//            if ($field['required'] && method_exists($novaField, 'required')) {
-//                $novaField->required();
-//            }
-//            if ($field['placeholder'] && method_exists($novaField, 'placeholder')) {
-//                $novaField->placeholder($field['placeholder']);
-//            }
-//            if ($field['help'] && method_exists($novaField, 'help')) {
-//                $novaField->help($field['help']);
-//            }
-//            $this->customFields[] = $novaField;
-//        }
-//    }
+    //    protected $customFields = [];
+    //
+    //    public function __construct($resource = null)
+    //    {
+    //        parent::__construct($resource);
+    //
+    //        $fields = [
+    //            [
+    //                'field' => 'Text',
+    //                'name' => 'Test',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Textarea',
+    //                'name' => 'Test 2',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Datetime',
+    //                'name' => 'Test 3',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Date',
+    //                'name' => 'Test 7',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Email',
+    //                'name' => 'Test 4',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Heading',
+    //                'name' => 'Heading 1',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Boolean',
+    //                'name' => 'Test 5',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Country',
+    //                'name' => 'Test 6',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'KeyValue',
+    //                'name' => 'Test 7',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Line',
+    //                'name' => 'Test 8',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Markdown',
+    //                'name' => 'Test 9',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Number',
+    //                'name' => 'Test 9',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //            [
+    //                'field' => 'Password',
+    //                'name' => 'Test 9',
+    //                'required' => true,
+    //                'placeholder' => 'This is some placeholder text.',
+    //                'help' => 'This is some help text.',
+    //            ],
+    //        ];
+    //
+    //        foreach ($fields as $field) {
+    //            $novaField = \call_user_func(["Laravel\\Nova\\Fields\\{$field['field']}", 'make'], $field['name'], 'data');
+    //            if ($field['required'] && method_exists($novaField, 'required')) {
+    //                $novaField->required();
+    //            }
+    //            if ($field['placeholder'] && method_exists($novaField, 'placeholder')) {
+    //                $novaField->placeholder($field['placeholder']);
+    //            }
+    //            if ($field['help'] && method_exists($novaField, 'help')) {
+    //                $novaField->help($field['help']);
+    //            }
+    //            $this->customFields[] = $novaField;
+    //        }
+    //    }
 
     /**
      * Get the fields displayed by the resource.
@@ -175,21 +175,21 @@ class Submission extends Resource
             ID::make()->sortable(),
             BelongsTo::make('User')->showOnPreview(),
             BelongsTo::make('Form')->showOnPreview(),
-//	        Html::make('Instructions', function () {
-//	        	return view('fields.test')->render();
-//	        })->showOnCreating(),
-//	        Textarea::make('Description')
-//                ->hide()
-//                ->alwaysShow()
-//                ->readonly()
-//                ->dependsOn('form', function (Textarea $field, NovaRequest $request, FormData $formData) {
-//                    if ($formId = $formData->form) {
-//                        $form = \App\Models\Forms\Form::find($formId);
-//                        $field->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($form) {
-//	                        $model->{$attribute} = $form->description;
-//                        })->show();
-//                    }
-//                }),
+            //	        Html::make('Instructions', function () {
+            //	        	return view('fields.test')->render();
+            //	        })->showOnCreating(),
+            //	        Textarea::make('Description')
+            //                ->hide()
+            //                ->alwaysShow()
+            //                ->readonly()
+            //                ->dependsOn('form', function (Textarea $field, NovaRequest $request, FormData $formData) {
+            //                    if ($formId = $formData->form) {
+            //                        $form = \App\Models\Forms\Form::find($formId);
+            //                        $field->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($form) {
+            //	                        $model->{$attribute} = $form->description;
+            //                        })->show();
+            //                    }
+            //                }),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),

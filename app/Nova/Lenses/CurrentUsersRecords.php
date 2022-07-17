@@ -38,27 +38,27 @@ class CurrentUsersRecords extends Lens
     {
         $serviceRecordsQuery = Service::query()
             ->select(['text', 'created_at', 'updated_at', 'user_id'])
-	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $assignmentRecordQuery = Assignment::query()
             ->select(['text', 'created_at', 'updated_at', 'user_id'])
-	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $awardsRecordQuery = Award::query()
             ->select(['text', 'created_at', 'updated_at', 'user_id'])
-	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $combatRecordQuery = Combat::query()
             ->select(['text', 'created_at', 'updated_at', 'user_id'])
-	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $qualificationRecordQuery = Qualification::query()
             ->select(['text', 'created_at', 'updated_at', 'user_id'])
-	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $rankRecordQuery = Rank::query()
             ->select(['text', 'created_at', 'updated_at', 'user_id'])
-	        ->where('user_id', '=', Auth::user()->getAuthIdentifier());
+            ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         return $request->withOrdering(
             $request->withFilters(
