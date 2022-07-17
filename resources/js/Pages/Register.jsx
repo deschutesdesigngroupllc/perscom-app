@@ -1,10 +1,10 @@
 import React from "react";
 import { useForm } from "@inertiajs/inertia-react";
 
-import { AuthLayout } from "../Components/AuthLayout";
-import { Button } from "../Components/Button";
-import { Input } from "../Components/Input";
-import { Logo } from "../Components/Logo";
+import { AuthLayout } from "@/Components/AuthLayout";
+import { Button } from "@/Components/Button";
+import { Input } from "@/Components/Input";
+import { Logo } from "@/Components/Logo";
 import { ValidationErrors } from "@/Components/ValidationErrors";
 
 export default function Register() {

@@ -30,7 +30,6 @@ mix
         extensions: ['js', 'jsx']
     })
     .extract()
-    .webpackConfig(webpackConfig)
 
 if (mix.inProduction()) {
     mix

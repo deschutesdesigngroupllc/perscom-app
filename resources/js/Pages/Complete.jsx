@@ -1,7 +1,7 @@
 import React from "react";
 
-import { AuthLayout } from "../Components/AuthLayout";
-import { Logo } from "../Components/Logo";
+import { AuthLayout } from "@/Components/AuthLayout";
+import { Logo } from "@/Components/Logo";
 
 export default function Complete() {
     return (
