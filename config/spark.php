@@ -94,7 +94,7 @@ return [
 
     'receipt_data' => [
         'vendor' => 'Deschutes Design Group LLC',
-        'product' => 'PERSCOM Soldier Management System',
+        'product' => 'PERSCOM Personnel Management System',
         'street' => '111 Example St.',
         'location' => 'Los Angeles, CA',
         'phone' => '555-555-5555',
