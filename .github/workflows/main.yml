@@ -55,7 +55,16 @@ jobs:
       - name: Build Application
         run: npm run prod
 
-      - name: Deploy Application to Laravel Forge
+      - name: Copy Build Files to Server
+        uses: appleboy/scp-action@master
+          with:
+          host: ${{ secrets.FORGE_HOST }}
+          username: ${{ secrets.FORGE_USERNAME }}
+          key: ${{ secrets.FORGE_SSH_PRIVATE_KEY }}
+          source: ${{ github.workspace }}
+          target: ${{ secrets.FORGE_DESTINATION_PATH }}
+
+      - name: Deploy Application
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
           forge deploy ${{ secrets.FORGE_SERVER_SITE }}

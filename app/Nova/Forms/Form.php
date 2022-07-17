@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Form extends Resource
@@ -55,6 +56,11 @@ class Form extends Resource
             Slug::make('Slug')
                 ->from('Name')
                 ->rules(['required', 'unique:forms,slug']),
+            URL::make('URL')
+                ->displayUsing(function ($url) {
+                    return $url;
+                })
+                ->readonly(),
             Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()

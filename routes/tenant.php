@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,6 +16,10 @@ use Inertia\Inertia;
 |
 */
 
-Route::get('/not-found', function () {
-	return Inertia::render('Auth/NoTenantFound');
+// Initialize tenancy
+Route::group(['middleware' => InitializeTenancyByDomainOrSubdomain::class], function () {
+	Route::get('/forms/{slug}', function ($slug) {
+		$form = \App\Models\Forms\Form::where('slug', $slug)->firstOrFail();
+		return $form->name;
+	})->name('form');
 });
