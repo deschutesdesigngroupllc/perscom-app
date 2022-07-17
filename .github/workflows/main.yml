@@ -61,7 +61,7 @@ jobs:
           host: ${{ secrets.FORGE_HOST }}
           username: ${{ secrets.FORGE_USERNAME }}
           key: ${{ secrets.FORGE_SSH_PRIVATE_KEY }}
-          source: ${{ github.workspace }}
+          source: '*'
           target: ${{ secrets.FORGE_DESTINATION_PATH }}
           rm: true
 
