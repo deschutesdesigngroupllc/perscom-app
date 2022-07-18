@@ -68,15 +68,10 @@ jobs:
       - name: Deploy Application
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
+          forge env:pull ${{ secrets.FORGE_SERVER_SITE }} .env
           forge deploy ${{ secrets.FORGE_SERVER_SITE }}
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
-
-      - name: Upload Build Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: path/to/artifact/world.txt
 
       - name: Bump Application Version and Tag
         id: tag_version

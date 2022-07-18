@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 
 class CreateInitialTenantUser implements ShouldQueue
@@ -40,12 +41,14 @@ class CreateInitialTenantUser implements ShouldQueue
      */
     public function handle()
     {
-        $password = Str::random('16');
+        $password = Str::random();
         $user = $this->tenant->run(function () use ($password) {
-            $user = User::create([
+            $createsNewUser = app()->make(CreatesNewUsers::class);
+            $user = $createsNewUser->create([
                 'name' => 'Admin',
                 'email' => $this->tenant->email,
-                'password' => Hash::make($password),
+	            'password' => $password,
+	            'password_confirmation' => $password,
             ]);
             $user->assignRole('Admin');
             return $user;

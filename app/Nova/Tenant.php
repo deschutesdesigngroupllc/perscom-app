@@ -2,6 +2,10 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\CreateTenantDatabase;
+use App\Nova\Actions\CreateTenantUser;
+use App\Nova\Actions\DeleteTenantDatabase;
+use App\Nova\Actions\ResetTenantDatabaseFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
@@ -51,7 +55,8 @@ class Tenant extends Resource
             ID::make()->sortable(),
             Text::make('Name')
                 ->sortable()
-                ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)]),
+                ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
+                ->copyable(),
             Email::make('Email')
                 ->sortable()
                 ->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
@@ -62,6 +67,17 @@ class Tenant extends Resource
                     return $url;
                 })
                 ->exceptOnForms(),
+            new Panel('Database', [
+                Text::make('Database Name', function ($model) {
+                    return $model->tenancy_db_name;
+                })
+                    ->readonly()
+                    ->onlyOnDetail(),
+                Status::make('Database Status')
+                    ->loadingWhen(['creating'])
+                    ->failedWhen([])
+                    ->readonly(),
+            ]),
             new Panel('Domain', [
                 Text::make('Domain', 'domain')
                     ->rules(['required'])
@@ -89,7 +105,8 @@ class Tenant extends Resource
                 }),
                 Text::make('Stripe ID')
                     ->onlyOnDetail()
-                    ->readonly(),
+                    ->readonly()
+                    ->copyable(),
                 Text::make('Card Brand')
                     ->onlyOnDetail()
                     ->readonly(),
@@ -102,17 +119,6 @@ class Tenant extends Resource
             ]),
             HasMany::make('Subscriptions'),
             HasMany::make('Receipts', 'localReceipts', Receipt::class),
-            new Panel('Database', [
-                Text::make('Database Name', function ($model) {
-                    return $model->tenancy_db_name;
-                })
-                    ->readonly()
-                    ->onlyOnDetail(),
-                Status::make('Database Status')
-                    ->loadingWhen(['creating'])
-                    ->failedWhen([])
-                    ->readonly(),
-            ]),
         ];
     }
 
@@ -174,6 +180,11 @@ class Tenant extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            new CreateTenantUser(),
+            new CreateTenantDatabase(),
+            new DeleteTenantDatabase(),
+            new ResetTenantDatabaseFactory(),
+        ];
     }
 }
