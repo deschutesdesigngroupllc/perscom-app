@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewTenant;
-use App\Models\Tenant;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Event;
 use Inertia\Inertia;
-use Stancl\Tenancy\Events\TenantCreated;
 
 class RegisterController extends Controller
 {
@@ -27,11 +24,7 @@ class RegisterController extends Controller
      */
     public function store(Request $request, CreateNewTenant $createNewTenant)
     {
-        $tenant = Tenant::withoutEvents(static function () use ($createNewTenant, $request) {
-            return $createNewTenant->create($request->all());
-        });
-
-        Event::dispatch(new TenantCreated($tenant));
+        $createNewTenant->create($request->all());
 
         return redirect()->route('register.complete');
     }

@@ -3,8 +3,6 @@
 namespace App\Traits;
 
 use App\Models\Status;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Facades\Auth;
 
 trait HasStatuses
 {

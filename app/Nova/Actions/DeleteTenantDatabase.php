@@ -7,17 +7,16 @@ use Illuminate\Support\Facades\Event;
 use Laravel\Nova\Actions\DestructiveAction;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Stancl\Tenancy\Events\TenantCreated;
 use Stancl\Tenancy\Events\TenantDeleted;
 
 class DeleteTenantDatabase extends DestructiveAction
 {
-	/**
-	 * The displayable name of the action.
-	 *
-	 * @var string
-	 */
-	public $name = 'Delete Database';
+    /**
+     * The displayable name of the action.
+     *
+     * @var string
+     */
+    public $name = 'Delete Database';
 
     /**
      * Perform the action on the given models.

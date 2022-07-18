@@ -3,16 +3,12 @@
 namespace App\Jobs;
 
 use App\Mail\NewTenantMail;
-use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
@@ -47,8 +43,8 @@ class CreateInitialTenantUser implements ShouldQueue
             $user = $createsNewUser->create([
                 'name' => 'Admin',
                 'email' => $this->tenant->email,
-	            'password' => $password,
-	            'password_confirmation' => $password,
+                'password' => $password,
+                'password_confirmation' => $password,
             ]);
             $user->assignRole('Admin');
             return $user;

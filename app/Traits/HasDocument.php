@@ -3,7 +3,6 @@
 namespace App\Traits;
 
 use App\Models\Document;
-use Illuminate\Support\Facades\Auth;
 
 trait HasDocument
 {

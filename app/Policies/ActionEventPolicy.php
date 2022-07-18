@@ -3,9 +3,9 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Laravel\Nova\Actions\ActionEvent;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
+use Laravel\Nova\Actions\ActionEvent;
 
 class ActionEventPolicy
 {

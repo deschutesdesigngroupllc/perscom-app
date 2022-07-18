@@ -3,7 +3,10 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Events\NullDispatcher;
 use Laravel\Nova\Actions\Actionable;
+use Laravel\Nova\Nova;
 use Spark\Billable;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -16,6 +19,34 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     use HasFactory;
     use HasDomains;
     use HasDatabase;
+
+    /**
+     * @var null
+     */
+    protected static $eventDispatcher = null;
+
+    /**
+     * Booted method
+     */
+    protected static function booted()
+    {
+        parent::booted();
+
+        static::creating(function ($tenant) {
+            Nova::whenServing(function () use ($tenant) {
+                self::$eventDispatcher = $tenant::getEventDispatcher();
+                $tenant::unsetEventDispatcher();
+            });
+        });
+
+        static::created(function ($tenant) {
+            Nova::whenServing(function () use ($tenant) {
+                if ($dispatcher = self::$eventDispatcher) {
+                    $tenant::setEventDispatcher(new NullDispatcher($dispatcher));
+                }
+            });
+        });
+    }
 
     /**
      * The attributes that should be cast.

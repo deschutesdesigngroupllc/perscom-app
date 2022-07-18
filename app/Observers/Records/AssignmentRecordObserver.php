@@ -4,7 +4,6 @@ namespace App\Observers\Records;
 
 use App\Models\Records\Assignment;
 use App\Notifications\Records\NewAssignmentRecord;
-use App\Notifications\Records\NewAwardRecord;
 use Illuminate\Support\Facades\Notification;
 
 class AssignmentRecordObserver

@@ -5,10 +5,8 @@ namespace App\Nova\Dashboards;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\UpdatesPerformed;
 use App\Nova\Metrics\UsersOnline;
-use App\Nova\Metrics\UsersOnlineByDay;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 use Perscom\DashboardQuickActions\DashboardQuickActions;
-use Perscom\LatestFormSubmissions\LatestFormSubmissions;
 
 class Main extends Dashboard
 {

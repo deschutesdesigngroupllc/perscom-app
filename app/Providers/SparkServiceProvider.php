@@ -3,10 +3,8 @@
 namespace App\Providers;
 
 use App\Models\Tenant;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
-use Illuminate\Validation\ValidationException;
 use Spark\Plan;
 use Spark\Spark;
 

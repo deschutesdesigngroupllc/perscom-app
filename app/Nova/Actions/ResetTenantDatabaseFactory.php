@@ -15,14 +15,14 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
 {
     use Queueable, InteractsWithQueue;
 
-	/**
-	 * The displayable name of the action.
-	 *
-	 * @var string
-	 */
-	public $name = 'Reset Database To Factory';
+    /**
+     * The displayable name of the action.
+     *
+     * @var string
+     */
+    public $name = 'Reset Database To Factory';
 
-	/**
+    /**
      * Perform the action on the given models.
      *
      * @param  \Laravel\Nova\Fields\ActionFields  $fields
@@ -33,12 +33,12 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
     {
         foreach ($models as $model) {
             Artisan::call('tenants:migrate-fresh', [
-            	'--tenants' => $model->getTenantKey()
+                '--tenants' => $model->getTenantKey(),
             ]);
 
-	        Artisan::call('tenants:seed', [
-		        '--tenants' => $model->getTenantKey()
-	        ]);
+            Artisan::call('tenants:seed', [
+                '--tenants' => $model->getTenantKey(),
+            ]);
         }
     }
 

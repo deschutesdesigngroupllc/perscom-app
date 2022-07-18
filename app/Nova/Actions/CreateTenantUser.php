@@ -2,11 +2,9 @@
 
 namespace App\Nova\Actions;
 
-use App\Mail\NewTenantMail;
 use App\Mail\NewUserLoginInformationMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
@@ -16,8 +14,6 @@ use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Email;
-use Laravel\Nova\Fields\Password;
-use Laravel\Nova\Fields\PasswordConfirmation;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -25,12 +21,12 @@ class CreateTenantUser extends Action
 {
     use InteractsWithQueue, Queueable;
 
-	/**
-	 * The displayable name of the action.
-	 *
-	 * @var string
-	 */
-	public $name = 'Create New User';
+    /**
+     * The displayable name of the action.
+     *
+     * @var string
+     */
+    public $name = 'Create New User';
 
     /**
      * Perform the action on the given models.

@@ -2,11 +2,16 @@
 
 namespace App\Nova;
 
+use App\Models\Domain;
+use App\Models\Tenant as TenantModel;
+use App\Jobs\CreateInitialTenantUser;
 use App\Nova\Actions\CreateTenantDatabase;
 use App\Nova\Actions\CreateTenantUser;
 use App\Nova\Actions\DeleteTenantDatabase;
 use App\Nova\Actions\ResetTenantDatabaseFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -19,6 +24,8 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Stancl\Tenancy\Events\DomainCreated;
+use Stancl\Tenancy\Events\TenantCreated;
 
 class Tenant extends Resource
 {
@@ -80,7 +87,7 @@ class Tenant extends Resource
             ]),
             new Panel('Domain', [
                 Text::make('Domain', 'domain')
-                    ->rules(['required'])
+                    ->rules(['required', 'string', 'max:255', Rule::unique(Domain::class, 'domain')])
                     ->onlyOnForms()
                     ->hideWhenUpdating()
                     ->fillUsing(function ($request) {
@@ -131,12 +138,20 @@ class Tenant extends Resource
      */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
-        if ($model instanceof \App\Models\Tenant) {
-            $values = $request->all();
-            $model->domains()->create([
+        $values = $request->all();
+
+        $domain = Domain::withoutEvents(function () use ($model, $values) {
+            return $model->domains()->create([
                 'domain' => $values['domain'],
             ]);
-        }
+        });
+
+        $model->load('domains');
+
+        Event::dispatch(new TenantCreated($model));
+        event('eloquent.created: ' . TenantModel::class, $model);
+        Event::dispatch(new DomainCreated($domain));
+        event('eloquent.created: ' . Domain::class, $domain);
     }
 
     /**

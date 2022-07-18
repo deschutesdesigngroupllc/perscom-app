@@ -2,8 +2,6 @@
 
 namespace App\Nova\Metrics;
 
-use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Redis;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Metrics\ValueResult;
