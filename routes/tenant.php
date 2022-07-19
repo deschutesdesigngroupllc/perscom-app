@@ -20,19 +20,8 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 Route::group(['middleware' => InitializeTenancyByDomainOrSubdomain::class], function () {
 	Route::get('/forms/{slug}', function ($slug) {
 		$form = \App\Models\Forms\Form::where('slug', $slug)->firstOrFail();
-		return $form->name;
-	})->name('form');
-
-	Route::get('/test', function () {
-		$submission = \App\Models\Forms\Submission::make([
-			'user_id' => 1,
-			'form_id' => 1,
-			'data.1' => 'test 1',
-			'data.2' => 'test 2',
-			'data.3' => 'test 3'
+		return redirect()->route('nova.pages.create', [
+			'resource' => \App\Nova\Forms\Submission::uriKey()
 		]);
-//		$submission = \App\Models\Forms\Submission::first();
-//		echo "<pre>"; debug_backtrace();
-		dd($submission);
-	});
+	})->name('form');
 });

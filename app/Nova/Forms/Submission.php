@@ -21,6 +21,7 @@ use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -119,6 +120,12 @@ class Submission extends Resource
 	                // Display as
 	                $novaField->displayUsingLabels();
                 }
+	            if ($novaField instanceof Select) {
+		            // Display as
+		            $novaField
+			            ->options(collect($field->options)->toArray())
+			            ->displayUsingLabels();
+	            }
 
                 // Configure which fields are shown depending on the form
                 $novaField->hide();

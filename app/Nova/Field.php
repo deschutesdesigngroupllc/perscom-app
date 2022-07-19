@@ -11,10 +11,13 @@ namespace App\Nova;
 
 use App\Nova\Forms\Form;
 use HaydenPierce\ClassFinder\ClassFinder;
+use Illuminate\Support\Arr;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
@@ -87,6 +90,7 @@ class Field extends Resource
                         return [$key => $key];
                     })
                 )
+	            ->sortable()
                 ->searchable()
                 ->displayUsingLabels(),
             Boolean::make('Required'),
@@ -96,6 +100,13 @@ class Field extends Resource
             Text::make('Help')
                 ->hideFromIndex()
                 ->help('Like this text, this is a short description that should help the user fill out the field.'),
+	        KeyValue::make('Options')
+		        ->hide()
+	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+	            	if ($formData->type === 'Select') {
+	            		$field->show();
+		            }
+	            }),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
