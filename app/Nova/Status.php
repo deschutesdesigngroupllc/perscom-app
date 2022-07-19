@@ -2,10 +2,12 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -33,6 +35,18 @@ class Status extends Resource
     public static $search = ['id', 'name'];
 
     /**
+     * @var string[]
+     */
+    public static $colors = [
+        'bg-sky-100 text-sky-600' => 'Blue',
+        'bg-gray-100 text-gray-600' => 'Gray',
+        'bg-green-100 text-green-600' => 'Green',
+        'bg-red-100 text-red-600' => 'Red',
+        'bg-white-100 text-black-600' => 'White',
+        'bg-yellow-100 text-yellow-600' => 'Yellow',
+    ];
+
+    /**
      * Get the text for the create resource button.
      *
      * @return string|null
@@ -56,9 +70,25 @@ class Status extends Resource
                 ->sortable()
                 ->rules(['required'])
                 ->showOnPreview(),
-            Color::make('Color')
+            Badge::make('Color', function ($model) {
+                return $model->color;
+            })
+                ->types(
+                    collect(self::$colors)
+                        ->mapWithKeys(function ($value, $key) {
+                            return [$key => $key];
+                        })
+                        ->toArray()
+                )
+                ->label(function ($value) {
+                    return self::$colors[$value];
+                }),
+            Select::make('Color')
                 ->rules(['required'])
-                ->showOnPreview(),
+                ->showOnPreview()
+                ->displayUsingLabels()
+                ->onlyOnForms()
+                ->options(self::$colors),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

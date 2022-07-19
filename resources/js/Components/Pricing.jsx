@@ -8,11 +8,11 @@ function Plan({ name, price, description, href, features, featured = false }) {
     return (
         <section
             className={clsx("flex flex-col rounded-3xl px-6 sm:px-8", {
-                "order-first bg-blue-600 py-8 lg:order-none": featured,
+                "bg-blue-600 order-first py-8 lg:order-none": featured,
                 "lg:py-8": !featured,
             })}
         >
-            <h3 className="mt-5 font-display text-lg text-white">{name}</h3>
+            <h3 className="text-white mt-5 font-display text-lg">{name}</h3>
             <p
                 className={clsx("mt-2 text-base", {
                     "text-white": featured,
@@ -21,7 +21,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
             >
                 {description}
             </p>
-            <p className="order-first font-display text-5xl font-light tracking-tight text-white">{price}</p>
+            <p className="text-white order-first font-display text-5xl font-light tracking-tight">{price}</p>
             <ul
                 className={clsx("order-last mt-10 space-y-3 text-sm", {
                     "text-white": featured,
@@ -77,12 +77,12 @@ export function Pricing() {
             </h2>
             <Container>
                 <div className="md:text-center">
-                    <p className="font-display text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                    <p className="text-white font-display text-3xl font-bold tracking-tight sm:text-4xl">
                         <span className="relative whitespace-nowrap">
                             <svg
                                 aria-hidden="true"
                                 viewBox="0 0 281 40"
-                                className="absolute top-1/2 left-0 h-[1em] w-full fill-blue-400"
+                                className="fill-blue-400 absolute top-1/2 left-0 h-[1em] w-full"
                                 preserveAspectRatio="none"
                             >
                                 <path
@@ -95,7 +95,7 @@ export function Pricing() {
                         </span>{" "}
                         for everyone.
                     </p>
-                    <p className="mt-4 text-lg text-slate-400">
+                    <p className="text-slate-400 mt-4 text-lg">
                         We have pricing options for all organizations. Scale up and down as your needs change.
                     </p>
                 </div>

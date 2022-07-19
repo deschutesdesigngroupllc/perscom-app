@@ -12,8 +12,8 @@ export default function Complete() {
                         <Logo className="sm:h-18 mb-2 h-16 w-auto md:h-20" />
                     </a>
                 </div>
-                <h2 className="mt-10 text-xl font-bold tracking-tight text-gray-900">Registration complete.</h2>
-                <p className="mt-2 text-sm text-gray-700">
+                <h2 className="text-gray-900 mt-10 text-xl font-bold tracking-tight">Registration complete.</h2>
+                <p className="text-gray-700 mt-2 text-sm">
                     Plese check your email with instructions on how to access your account.
                 </p>
             </div>

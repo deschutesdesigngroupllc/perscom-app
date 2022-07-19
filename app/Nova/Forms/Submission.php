@@ -156,15 +156,20 @@ class Submission extends Resource
             ID::make()->sortable(),
             BelongsTo::make('User')->showOnPreview(),
             BelongsTo::make('Form')->showOnPreview(),
+            Badge::make('Status', function () {
+                return $this->status->name ?? 'none';
+            })
+                ->types([
+                    'none' => 'bg-gray-100 text-gray-600',
+                    $this->status?->name => $this->status?->color,
+                ])
+                ->label(function () {
+                    return $this->status->name ?? 'No Current Status';
+                }),
             new Panel('Form', $this->customFields),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->exceptOnForms(),
-            Badge::make('Status', function ($model) {
-                return $this->status->name ?? null;
-            })->map([
-                $this->status->name ?? null => 'info',
-            ]),
             MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),

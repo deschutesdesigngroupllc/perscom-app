@@ -1,8 +1,10 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require("tailwindcss/colors");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
+      './app/Nova/**/*.{js,jsx,php}',
       './resources/**/*.{js,jsx,php}',
       './nova-components/**/*.{vue,php}'
   ],

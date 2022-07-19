@@ -15,7 +15,7 @@ function MobileNavigation() {
                         <span className="sr-only">Toggle Navigation</span>
                         <svg
                             aria-hidden="true"
-                            className="h-3.5 w-3.5 overflow-visible stroke-slate-700"
+                            className="stroke-slate-700 h-3.5 w-3.5 overflow-visible"
                             fill="none"
                             strokeWidth={2}
                             strokeLinecap="round"
@@ -44,7 +44,7 @@ function MobileNavigation() {
                             leaveFrom="opacity-100"
                             leaveTo="opacity-0"
                         >
-                            <Popover.Overlay className="fixed inset-0 bg-slate-300/50" />
+                            <Popover.Overlay className="bg-slate-300/50 fixed inset-0" />
                         </Transition.Child>
                         <Transition.Child
                             as={Fragment}
@@ -57,7 +57,7 @@ function MobileNavigation() {
                         >
                             <Popover.Panel
                                 as="ul"
-                                className="absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
+                                className="bg-white text-slate-900 ring-slate-900/5 absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl p-6 text-lg tracking-tight shadow-xl ring-1"
                             >
                                 <li>
                                     <a href="#features" className="block w-full" onClick={() => close()}>
@@ -98,7 +98,7 @@ export function Header() {
                         <li className="ml-12 hidden md:block">
                             <a
                                 href="#features"
-                                className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                className="text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg py-1 px-2"
                             >
                                 Features
                             </a>
@@ -106,7 +106,7 @@ export function Header() {
                         <li className="ml-6 hidden md:block">
                             <a
                                 href="#testimonials"
-                                className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                className="text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg py-1 px-2"
                             >
                                 Testimonials
                             </a>
@@ -114,7 +114,7 @@ export function Header() {
                         <li className="ml-6 hidden md:block">
                             <a
                                 href="#pricing"
-                                className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                className="text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg py-1 px-2"
                             >
                                 Pricing
                             </a>

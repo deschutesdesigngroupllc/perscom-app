@@ -4,7 +4,7 @@ import "../styles/tailwind.css";
 
 export default function Layout({ children }) {
     return (
-        <html className="h-full scroll-smooth bg-white antialiased [font-feature-settings:'ss01']" lang="en">
+        <html className="bg-white h-full scroll-smooth antialiased [font-feature-settings:'ss01']" lang="en">
             <head>
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
                 <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

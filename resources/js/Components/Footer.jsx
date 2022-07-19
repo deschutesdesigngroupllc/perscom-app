@@ -14,7 +14,7 @@ export function Footer() {
                             <li>
                                 <a
                                     href="#features"
-                                    className="rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                    className="text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg px-2 py-1"
                                 >
                                     {" "}
                                     Features{" "}
@@ -23,7 +23,7 @@ export function Footer() {
                             <li>
                                 <a
                                     href="#testimonials"
-                                    className="rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                    className="text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg px-2 py-1"
                                 >
                                     {" "}
                                     Testimonials{" "}
@@ -32,7 +32,7 @@ export function Footer() {
                             <li>
                                 <a
                                     href="#pricing"
-                                    className="rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                    className="text-slate-700 hover:bg-slate-100 hover:text-slate-900 rounded-lg px-2 py-1"
                                 >
                                     {" "}
                                     Pricing{" "}
@@ -41,7 +41,7 @@ export function Footer() {
                         </ul>
                     </nav>
                 </div>
-                <div className="flex flex-col items-center border-t border-slate-400/10 py-10">
+                <div className="border-slate-400/10 flex flex-col items-center border-t py-10">
                     {/*<div className="flex space-x-6">*/}
                     {/*    <a href="#" className="group">*/}
                     {/*        <span className="sr-only">TaxPal on Twitter</span>*/}
@@ -56,7 +56,7 @@ export function Footer() {
                     {/*        </svg>*/}
                     {/*    </a>*/}
                     {/*</div>*/}
-                    <p className="mt-6 text-center text-sm text-slate-500 sm:mt-0">
+                    <p className="text-slate-500 mt-6 text-center text-sm sm:mt-0">
                         Copyright &copy; {new Date().getFullYear()} Deschutes Design Group LLC. All rights reserved.
                         reserved.
                     </p>

@@ -82,9 +82,16 @@ class User extends Resource
                     ->onlyOnForms()
                     ->creationRules('required', Rules\Password::defaults())
                     ->updateRules('nullable', Rules\Password::defaults()),
-                Text::make('Status', function ($model) {
-                    return $model->status->name ?? null;
-                })->showOnPreview(),
+                Badge::make('Status', function () {
+                    return $this->status->name ?? 'none';
+                })
+                    ->types([
+                        'none' => 'bg-gray-100 text-gray-600',
+                        $this->status?->name => $this->status?->color,
+                    ])
+                    ->label(function () {
+                        return $this->status->name ?? 'No Current Status';
+                    }),
                 Text::make('Rank', function ($model) {
                     return $model->rank->name ?? null;
                 })
