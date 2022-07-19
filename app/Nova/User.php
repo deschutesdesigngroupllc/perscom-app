@@ -156,9 +156,9 @@ class User extends Resource
             MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),
-	                Text::make('Text', function ($model) {
-		                return $model->text;
-	                }),
+                    Text::make('Text', function ($model) {
+                        return $model->text;
+                    }),
                     DateTime::make('Created At')
                         ->sortable()
                         ->onlyOnIndex(),

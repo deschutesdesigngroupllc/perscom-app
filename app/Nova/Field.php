@@ -67,7 +67,7 @@ class Field extends Resource
         return 'Custom Fields';
     }
 
-	/**
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -90,38 +90,37 @@ class Field extends Resource
                         return [$key => $key];
                     })
                 )
-	            ->sortable()
+                ->sortable()
                 ->searchable()
                 ->displayUsingLabels(),
-            Boolean::make('Required')
-	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-		            if ($formData->type === 'Heading' || $formData->type === 'Line') {
-			            $field->hide();
-		            }
-	            }),
+            Boolean::make('Required')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                if ($formData->type === 'Heading' || $formData->type === 'Line') {
+                    $field->hide();
+                }
+            }),
             Text::make('Placeholder')
                 ->hideFromIndex()
                 ->help('If a text type field, this text will fill the field when no value is present.')
-	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-		            if ($formData->type === 'Heading' || $formData->type === 'Line') {
-			            $field->hide();
-		            }
-	            }),
+                ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                    if ($formData->type === 'Heading' || $formData->type === 'Line') {
+                        $field->hide();
+                    }
+                }),
             Text::make('Help')
                 ->hideFromIndex()
                 ->help('Like this text, this is a short description that should help the user fill out the field.')
-	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-		            if ($formData->type === 'Heading' || $formData->type === 'Line') {
-			            $field->hide();
-		            }
-	            }),
-	        KeyValue::make('Options')
-		        ->hide()
-	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-	            	if ($formData->type === 'Select') {
-	            		$field->show();
-		            }
-	            }),
+                ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                    if ($formData->type === 'Heading' || $formData->type === 'Line') {
+                        $field->hide();
+                    }
+                }),
+            KeyValue::make('Options')
+                ->hide()
+                ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                    if ($formData->type === 'Select') {
+                        $field->show();
+                    }
+                }),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

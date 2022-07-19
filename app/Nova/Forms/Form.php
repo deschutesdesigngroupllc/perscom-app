@@ -39,7 +39,7 @@ class Form extends Resource
      */
     public static $search = ['id', 'name'];
 
-	/**
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request

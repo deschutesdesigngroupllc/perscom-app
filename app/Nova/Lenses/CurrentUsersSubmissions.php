@@ -48,15 +48,15 @@ class CurrentUsersSubmissions extends Lens
         return [
             ID::make(__('ID'), 'id')->sortable(),
             Text::make('Form', function ($model) {
-            	return $model->form->name ?? null;
+                return $model->form->name ?? null;
             }),
             DateTime::make('Created At')->sortable(),
             DateTime::make('Updated At')->sortable(),
-	        Badge::make('Status', function ($model) {
-		        return $this->status->name ?? null;
-	        })->map([
-		        $this->status->name ?? null => 'info',
-	        ])
+            Badge::make('Status', function ($model) {
+                return $this->status->name ?? null;
+            })->map([
+                $this->status->name ?? null => 'info',
+            ]),
         ];
     }
 

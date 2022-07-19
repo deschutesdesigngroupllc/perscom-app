@@ -58,34 +58,35 @@ class Submission extends Resource
      */
     public static $search = ['id'];
 
-	/**
-	 * @var array
-	 */
+    /**
+     * @var array
+     */
     protected $customFields = [];
 
-	/**
-	 * Get the text for the create resource button.
-	 *
-	 * @return string|null
-	 */
-	public static function createButtonLabel()
-	{
-		return 'New Form Submission';
-	}
+    /**
+     * Get the text for the create resource button.
+     *
+     * @return string|null
+     */
+    public static function createButtonLabel()
+    {
+        return 'New Form Submission';
+    }
 
-	/**
-	 * @param  null  $resource
-	 */
+    /**
+     * @param  null  $resource
+     */
     public function __construct($resource = null)
     {
         parent::__construct($resource);
 
         // Get the fields we will be using for the submission
-		$resourceId = Route::current()->parameter('resourceId');
-		$submission = SubmissionModel::find($resourceId);
-		$fields = $submission?->form->fields->sortBy(function ($field) {
-			return $field->pivot->order;
-		}) ?? CustomField::all();
+        $resourceId = Route::current()->parameter('resourceId');
+        $submission = SubmissionModel::find($resourceId);
+        $fields =
+            $submission?->form->fields->sortBy(function ($field) {
+                return $field->pivot->order;
+            }) ?? CustomField::all();
 
         // Load all possible custom fields
         foreach ($fields as $field) {
@@ -117,23 +118,24 @@ class Submission extends Resource
 
                 // Custom changes for specific fields
                 if ($novaField instanceof Country) {
-	                // Display as
-	                $novaField->displayUsingLabels();
+                    // Display as
+                    $novaField->displayUsingLabels();
                 }
-	            if ($novaField instanceof Select) {
-		            // Display as
-		            $novaField
-			            ->options(collect($field->options)->toArray())
-			            ->displayUsingLabels();
-	            }   
+                if ($novaField instanceof Select) {
+                    // Display as
+                    $novaField->options(collect($field->options)->toArray())->displayUsingLabels();
+                }
 
                 // Configure which fields are shown depending on the form
                 $novaField->hide();
-                $novaField->dependsOn(['form'], function ($resource, NovaRequest $request, FormData $formData) use ($field, $novaField) {
-	                $form = Form::find($formData->form);
-                	if ($form && $form->fields->pluck('id')->search($field->id) !== false) {
-                		$novaField->show();
-	                }
+                $novaField->dependsOn(['form'], function ($resource, NovaRequest $request, FormData $formData) use (
+                    $field,
+                    $novaField
+                ) {
+                    $form = Form::find($formData->form);
+                    if ($form && $form->fields->pluck('id')->search($field->id) !== false) {
+                        $novaField->show();
+                    }
                 });
 
                 // Save the fields to our array
@@ -158,17 +160,17 @@ class Submission extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->exceptOnForms(),
-	        Badge::make('Status', function ($model) {
-		        return $this->status->name ?? null;
-	        })->map([
-		        $this->status->name ?? null => 'info',
-	        ]),
+            Badge::make('Status', function ($model) {
+                return $this->status->name ?? null;
+            })->map([
+                $this->status->name ?? null => 'info',
+            ]),
             MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),
-	                Text::make('Text', function ($model) {
-		                return $model->text;
-	                }),
+                    Text::make('Text', function ($model) {
+                        return $model->text;
+                    }),
                     DateTime::make('Updated At')
                         ->sortable()
                         ->onlyOnIndex(),

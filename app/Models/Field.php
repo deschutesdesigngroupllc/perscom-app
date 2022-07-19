@@ -10,14 +10,14 @@ class Field extends Model
 {
     use HasFactory;
 
-	/**
-	 * The attributes that should be cast to native types.
-	 *
-	 * @var array
-	 */
-	protected $casts = [
-		'options' => 'array',
-	];
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'options' => 'array',
+    ];
 
     /**
      * Available field types
