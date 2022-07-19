@@ -93,13 +93,28 @@ class Field extends Resource
 	            ->sortable()
                 ->searchable()
                 ->displayUsingLabels(),
-            Boolean::make('Required'),
+            Boolean::make('Required')
+	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+		            if ($formData->type === 'Heading' || $formData->type === 'Line') {
+			            $field->hide();
+		            }
+	            }),
             Text::make('Placeholder')
                 ->hideFromIndex()
-                ->help('If a text type field, this text will fill the field when no value is present.'),
+                ->help('If a text type field, this text will fill the field when no value is present.')
+	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+		            if ($formData->type === 'Heading' || $formData->type === 'Line') {
+			            $field->hide();
+		            }
+	            }),
             Text::make('Help')
                 ->hideFromIndex()
-                ->help('Like this text, this is a short description that should help the user fill out the field.'),
+                ->help('Like this text, this is a short description that should help the user fill out the field.')
+	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+		            if ($formData->type === 'Heading' || $formData->type === 'Line') {
+			            $field->hide();
+		            }
+	            }),
 	        KeyValue::make('Options')
 		        ->hide()
 	            ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {

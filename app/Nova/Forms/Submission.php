@@ -125,7 +125,7 @@ class Submission extends Resource
 		            $novaField
 			            ->options(collect($field->options)->toArray())
 			            ->displayUsingLabels();
-	            }
+	            }   
 
                 // Configure which fields are shown depending on the form
                 $novaField->hide();
