@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
         	AssignmentRecordSeeder::class,
         	AwardRecordSeeder::class,
         	CombatRecordSeeder::class,
+        	FieldSeeder::class,
         	FormSeeder::class,
         	PermissionSeeder::class,
 	        QualificationRecordSeeder::class,

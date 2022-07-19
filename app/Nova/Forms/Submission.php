@@ -2,16 +2,30 @@
 
 namespace App\Nova\Forms;
 
+use App\Models\Forms\Submission as SubmissionModel;
+use App\Models\Forms\Form;
+use App\Models\Field as CustomField;
 use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Resource;
 use App\Nova\Status;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Field;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
+use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+use ThinkStudio\HtmlField\Html;
 
 class Submission extends Resource
 {
@@ -43,120 +57,83 @@ class Submission extends Resource
      */
     public static $search = ['id'];
 
-    //    protected $customFields = [];
-    //
-    //    public function __construct($resource = null)
-    //    {
-    //        parent::__construct($resource);
-    //
-    //        $fields = [
-    //            [
-    //                'field' => 'Text',
-    //                'name' => 'Test',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Textarea',
-    //                'name' => 'Test 2',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Datetime',
-    //                'name' => 'Test 3',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Date',
-    //                'name' => 'Test 7',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Email',
-    //                'name' => 'Test 4',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Heading',
-    //                'name' => 'Heading 1',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Boolean',
-    //                'name' => 'Test 5',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Country',
-    //                'name' => 'Test 6',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'KeyValue',
-    //                'name' => 'Test 7',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Line',
-    //                'name' => 'Test 8',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Markdown',
-    //                'name' => 'Test 9',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Number',
-    //                'name' => 'Test 9',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //            [
-    //                'field' => 'Password',
-    //                'name' => 'Test 9',
-    //                'required' => true,
-    //                'placeholder' => 'This is some placeholder text.',
-    //                'help' => 'This is some help text.',
-    //            ],
-    //        ];
-    //
-    //        foreach ($fields as $field) {
-    //            $novaField = \call_user_func(["Laravel\\Nova\\Fields\\{$field['field']}", 'make'], $field['name'], 'data');
-    //            if ($field['required'] && method_exists($novaField, 'required')) {
-    //                $novaField->required();
-    //            }
-    //            if ($field['placeholder'] && method_exists($novaField, 'placeholder')) {
-    //                $novaField->placeholder($field['placeholder']);
-    //            }
-    //            if ($field['help'] && method_exists($novaField, 'help')) {
-    //                $novaField->help($field['help']);
-    //            }
-    //            $this->customFields[] = $novaField;
-    //        }
-    //    }
+	/**
+	 * @var array
+	 */
+    protected $customFields = [];
+
+	/**
+	 * Get the text for the create resource button.
+	 *
+	 * @return string|null
+	 */
+	public static function createButtonLabel()
+	{
+		return 'New Form Submission';
+	}
+
+	/**
+	 * @param  null  $resource
+	 */
+    public function __construct($resource = null)
+    {
+        parent::__construct($resource);
+
+        // Get the fields we will be using for the submission
+		$resourceId = Route::current()->parameter('resourceId');
+		$submission = SubmissionModel::find($resourceId);
+		$fields = $submission?->form->fields->sortBy(function ($field) {
+			return $field->pivot->order;
+		}) ?? CustomField::all();
+
+        // Load all possible custom fields
+        foreach ($fields as $field) {
+            // Build our nova field
+            $novaField = \call_user_func(
+                ["Laravel\\Nova\\Fields\\{$field->type}", 'make'],
+                $field->name,
+                "field_{$field->id}"
+            );
+            if ($novaField instanceof Field) {
+                // Required
+                if ($field->required && method_exists($novaField, 'required')) {
+                    $novaField->required();
+                }
+
+                // Placeholder
+                if ($field->placeholder && method_exists($novaField, 'placeholder')) {
+                    $novaField->placeholder($field->placeholder);
+                }
+
+                // Help
+                if ($field->help && method_exists($novaField, 'help')) {
+                    $novaField->help($field->help);
+                }
+
+                // Display properties
+                $novaField->hideFromIndex();
+                $novaField->showOnPreview();
+
+                // Custom changes for specific fields
+                if ($novaField instanceof Country) {
+	                // Display as
+	                $novaField->displayUsingLabels();
+                }
+
+                // Configure which fields are shown depending on the form
+                $novaField->hide();
+                $novaField->dependsOn(['form'], function ($resource, NovaRequest $request, FormData $formData) use ($field, $novaField) {
+	                $form = Form::find($formData->form);
+                	if ($form && $form->fields->pluck('id')->search($field->id) !== false) {
+                		$novaField->show();
+	                }
+                });
+
+                // Save the fields to our array
+                $this->customFields[] = $novaField;
+            }
+        }
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -170,27 +147,21 @@ class Submission extends Resource
             ID::make()->sortable(),
             BelongsTo::make('User')->showOnPreview(),
             BelongsTo::make('Form')->showOnPreview(),
-            //	        Html::make('Instructions', function () {
-            //	        	return view('fields.test')->render();
-            //	        })->showOnCreating(),
-            //	        Textarea::make('Description')
-            //                ->hide()
-            //                ->alwaysShow()
-            //                ->readonly()
-            //                ->dependsOn('form', function (Textarea $field, NovaRequest $request, FormData $formData) {
-            //                    if ($formId = $formData->form) {
-            //                        $form = \App\Models\Forms\Form::find($formId);
-            //                        $field->fillUsing(function ($request, $model, $attribute, $requestAttribute) use ($form) {
-            //	                        $model->{$attribute} = $form->description;
-            //                        })->show();
-            //                    }
-            //                }),
+            new Panel('Form', $this->customFields),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            DateTime::make('Updated At')->exceptOnForms(),
+	        Badge::make('Status', function ($model) {
+		        return $this->status->name ?? null;
+	        })->map([
+		        $this->status->name ?? null => 'info',
+	        ]),
             MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
                 return [
                     Textarea::make('Text'),
+	                Text::make('Text', function ($model) {
+		                return $model->text;
+	                }),
                     DateTime::make('Updated At')
                         ->sortable()
                         ->onlyOnIndex(),

@@ -4,8 +4,11 @@ namespace App\Nova\Lenses;
 
 use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasOne;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
@@ -44,14 +47,16 @@ class CurrentUsersSubmissions extends Lens
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            //	        BelongsTo::make('Form'),
-            Badge::make('Status', function ($model) {
-                return $this->status->name ?? null;
-            })->map([
-                $this->status->name ?? null => 'info',
-            ]),
+            Text::make('Form', function ($model) {
+            	return $model->form->name ?? null;
+            }),
             DateTime::make('Created At')->sortable(),
             DateTime::make('Updated At')->sortable(),
+	        Badge::make('Status', function ($model) {
+		        return $this->status->name ?? null;
+	        })->map([
+		        $this->status->name ?? null => 'info',
+	        ])
         ];
     }
 

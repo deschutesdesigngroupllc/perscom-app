@@ -39,7 +39,7 @@ class Form extends Resource
      */
     public static $search = ['id', 'name'];
 
-    /**
+	/**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -60,6 +60,7 @@ class Form extends Resource
                 ->displayUsing(function ($url) {
                     return $url;
                 })
+                ->exceptOnForms()
                 ->readonly(),
             Textarea::make('Description')
                 ->nullable()
@@ -70,7 +71,11 @@ class Form extends Resource
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
             MorphToMany::make('Fields', 'fields', Field::class)->fields(function ($request, $relatedModel) {
-                return [Number::make('Order')->sortable()];
+                return [
+                    Number::make('Order')
+                        ->sortable()
+                        ->required(),
+                ];
             }),
         ];
     }

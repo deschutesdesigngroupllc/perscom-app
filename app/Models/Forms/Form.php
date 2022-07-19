@@ -18,13 +18,22 @@ class Form extends Model
     protected $appends = ['url'];
 
     /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['fields'];
+
+    /**
      * @return string
      */
     public function getUrlAttribute()
     {
-        return route('form', [
-            'slug' => $this->slug,
-        ]);
+        return $this->slug
+            ? route('form', [
+                'slug' => $this->slug,
+            ])
+            : null;
     }
 
     /**

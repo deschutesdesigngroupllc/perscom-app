@@ -13,7 +13,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\Actionable;
+use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
@@ -26,6 +28,7 @@ class User extends Authenticatable implements MustVerifyEmail
     use HasPermissions;
     use HasRoles;
     use HasStatuses;
+    use Impersonatable;
     use Notifiable;
 
     /**
@@ -58,6 +61,16 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
     ];
+
+    /**
+     * Determine if the user can impersonate another user.
+     *
+     * @return bool
+     */
+    public function canImpersonate()
+    {
+        return $this->hasPermissionTo('impersonate:user');
+    }
 
     /**
      * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null

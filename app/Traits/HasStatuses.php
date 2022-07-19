@@ -30,7 +30,7 @@ trait HasStatuses
     public function statuses()
     {
         return $this->morphToMany(Status::class, 'model', 'model_has_statuses')
-            ->withPivot(['text'])
+            ->withPivot('text')
             ->withTimestamps()
             ->as('record');
     }

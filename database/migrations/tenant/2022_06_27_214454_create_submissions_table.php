@@ -24,6 +24,7 @@ class CreateSubmissionsTable extends Migration
             $table->id();
             $table->unsignedInteger('form_id');
 	        $table->unsignedInteger('user_id')->nullable();
+	        $table->json('data')->nullable();
             $table->timestamps();
         });
     }

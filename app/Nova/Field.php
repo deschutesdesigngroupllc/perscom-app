@@ -64,7 +64,7 @@ class Field extends Resource
         return 'Custom Fields';
     }
 
-    /**
+	/**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -82,7 +82,11 @@ class Field extends Resource
                 ->alwaysShow()
                 ->showOnPreview(),
             Select::make('Type')
-                ->options(\App\Models\Field::fieldTypes)
+                ->options(
+                    collect(\App\Models\Field::fieldTypes)->mapWithKeys(function ($value, $key) {
+                        return [$key => $key];
+                    })
+                )
                 ->searchable()
                 ->displayUsingLabels(),
             Boolean::make('Required'),
