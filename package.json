@@ -10,12 +10,9 @@
         "production": "mix --production",
         "lint": "eslint --ext .js,.jsx --ignore-path .gitignore --fix resources/js",
         "format": "prettier 'resources/js/**/*.{js,jsx,json}' 'app/**/*.php' --write --list-different --ignore-unknown",
-        "build-dashboard-quick-actions": "cd nova-components/DashboardQuickActions && npm run dev",
-        "build-dashboard-quick-actions-prod": "cd nova-components/DashboardQuickActions && npm run prod",
-        "build-latest-form-submissions": "cd nova-components/LatestFormSubmissions && npm run dev",
-        "build-latest-form-submissions-prod": "cd nova-components/LatestFormSubmissions && npm run prod",
-        "build-resource-custom-field": "cd nova-components/ResourceCustomField && npm run dev",
-        "build-resource-custom-field-prod": "cd nova-components/ResourceCustomField && npm run prod"
+        "build-dashboard-quick-actions-install": "cd nova-components/DashboardQuickActions && npm install",
+        "build-dashboard-quick-actions-dev": "cd nova-components/DashboardQuickActions && npm run dev",
+        "build-dashboard-quick-actions-prod": "cd nova-components/DashboardQuickActions && npm run prod"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",

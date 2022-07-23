@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "91b2902cd349262cfa2c4cdc3d767524",
+    "content-hash": "d9353c67d6d7117ef60bf7ec51d6fc4f",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -114,16 +114,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.231.7",
+            "version": "3.231.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "25f7cf72a1d7cf3075436cfbfdc4caed201df3ec"
+                "reference": "8f8742caa42b260950320c98ddc5da4926e2373d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/25f7cf72a1d7cf3075436cfbfdc4caed201df3ec",
-                "reference": "25f7cf72a1d7cf3075436cfbfdc4caed201df3ec",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/8f8742caa42b260950320c98ddc5da4926e2373d",
+                "reference": "8f8742caa42b260950320c98ddc5da4926e2373d",
                 "shasum": ""
             },
             "require": {
@@ -200,9 +200,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.231.7"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.231.12"
             },
-            "time": "2022-07-15T18:16:42+00:00"
+            "time": "2022-07-22T18:19:47+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -1338,16 +1338,16 @@
         },
         {
             "name": "fakerphp/faker",
-            "version": "v1.19.0",
+            "version": "v1.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/FakerPHP/Faker.git",
-                "reference": "d7f08a622b3346766325488aa32ddc93ccdecc75"
+                "reference": "37f751c67a5372d4e26353bd9384bc03744ec77b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/d7f08a622b3346766325488aa32ddc93ccdecc75",
-                "reference": "d7f08a622b3346766325488aa32ddc93ccdecc75",
+                "url": "https://api.github.com/repos/FakerPHP/Faker/zipball/37f751c67a5372d4e26353bd9384bc03744ec77b",
+                "reference": "37f751c67a5372d4e26353bd9384bc03744ec77b",
                 "shasum": ""
             },
             "require": {
@@ -1374,7 +1374,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "v1.19-dev"
+                    "dev-main": "v1.20-dev"
                 }
             },
             "autoload": {
@@ -1399,9 +1399,9 @@
             ],
             "support": {
                 "issues": "https://github.com/FakerPHP/Faker/issues",
-                "source": "https://github.com/FakerPHP/Faker/tree/v1.19.0"
+                "source": "https://github.com/FakerPHP/Faker/tree/v1.20.0"
             },
-            "time": "2022-02-02T17:38:57+00:00"
+            "time": "2022-07-20T13:12:54+00:00"
         },
         {
             "name": "fruitcake/laravel-cors",
@@ -2080,16 +2080,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v8.83.19",
+            "version": "v8.83.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "4264f2ee12330bdb1be050998f58ba7271236395"
+                "reference": "96aecced5126d48e277e5339193c376fe82b6565"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/4264f2ee12330bdb1be050998f58ba7271236395",
-                "reference": "4264f2ee12330bdb1be050998f58ba7271236395",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/96aecced5126d48e277e5339193c376fe82b6565",
+                "reference": "96aecced5126d48e277e5339193c376fe82b6565",
                 "shasum": ""
             },
             "require": {
@@ -2249,7 +2249,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2022-07-13T13:23:09+00:00"
+            "time": "2022-07-22T14:16:24+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -2330,17 +2330,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.12.6",
+            "version": "4.12.12",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "65b9c6e4d8a3c5b4234a2005a42db9c8f83eb4f3"
+                "reference": "31be6c6d7b1cc47ca85a1a693d0ed201236e84d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-65b9c6e4d8a3c5b4234a2005a42db9c8f83eb4f3-zip-39bdd6.zip",
-                "reference": "65b9c6e4d8a3c5b4234a2005a42db9c8f83eb4f3",
-                "shasum": "62a4cc8266a63b3ea4dc5d6b6dc5120ba9548320"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-31be6c6d7b1cc47ca85a1a693d0ed201236e84d6-zip-780595.zip",
+                "reference": "31be6c6d7b1cc47ca85a1a693d0ed201236e84d6",
+                "shasum": "10b687b3ca048c3c04ff2a5edb52682f1780c771"
             },
             "require": {
                 "brick/money": "^0.5.0",
@@ -2434,9 +2434,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/nova/tree/v4.12.6"
+                "source": "https://github.com/laravel/nova/tree/v4.12.12"
             },
-            "time": "2022-07-13T15:31:53+00:00"
+            "time": "2022-07-21T21:14:05+00:00"
         },
         {
             "name": "laravel/sanctum",
@@ -2639,16 +2639,16 @@
         },
         {
             "name": "laravel/telescope",
-            "version": "v4.9.0",
+            "version": "v4.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/telescope.git",
-                "reference": "d0cf8d6a54a1831dbe189a1f194e8271a4a5435a"
+                "reference": "93d6a2f7b7e39407389a505abdfeceda09709f71"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/telescope/zipball/d0cf8d6a54a1831dbe189a1f194e8271a4a5435a",
-                "reference": "d0cf8d6a54a1831dbe189a1f194e8271a4a5435a",
+                "url": "https://api.github.com/repos/laravel/telescope/zipball/93d6a2f7b7e39407389a505abdfeceda09709f71",
+                "reference": "93d6a2f7b7e39407389a505abdfeceda09709f71",
                 "shasum": ""
             },
             "require": {
@@ -2701,9 +2701,9 @@
             ],
             "support": {
                 "issues": "https://github.com/laravel/telescope/issues",
-                "source": "https://github.com/laravel/telescope/tree/v4.9.0"
+                "source": "https://github.com/laravel/telescope/tree/v4.9.1"
             },
-            "time": "2022-04-19T15:48:51+00:00"
+            "time": "2022-07-18T14:49:11+00:00"
         },
         {
             "name": "laravel/tinker",
@@ -2836,16 +2836,16 @@
         },
         {
             "name": "league/commonmark",
-            "version": "2.3.3",
+            "version": "2.3.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/commonmark.git",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc"
+                "reference": "155ec1c95626b16fda0889cf15904d24890a60d5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/0da1dca5781dd3cfddbe328224d9a7a62571addc",
-                "reference": "0da1dca5781dd3cfddbe328224d9a7a62571addc",
+                "url": "https://api.github.com/repos/thephpleague/commonmark/zipball/155ec1c95626b16fda0889cf15904d24890a60d5",
+                "reference": "155ec1c95626b16fda0889cf15904d24890a60d5",
                 "shasum": ""
             },
             "require": {
@@ -2938,7 +2938,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-06-07T21:28:26+00:00"
+            "time": "2022-07-17T16:25:47+00:00"
         },
         {
             "name": "league/config",
@@ -4039,78 +4039,6 @@
                 "MIT"
             ],
             "description": "A Laravel Nova card.",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "perscom/latest-form-submissions",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "./nova-components/LatestFormSubmissions",
-                "reference": "6332799d1665658246fb3ffdafe548c2c192ba51"
-            },
-            "require": {
-                "php": "^7.3|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Perscom\\LatestFormSubmissions\\CardServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Perscom\\LatestFormSubmissions\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A Laravel Nova card.",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "perscom/resource-custom-field",
-            "version": "dev-master",
-            "dist": {
-                "type": "path",
-                "url": "./nova-components/ResourceCustomField",
-                "reference": "3a3408c6b6f024ba892d1bbc934038f5cf1f07c6"
-            },
-            "require": {
-                "php": "^7.3|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Perscom\\ResourceCustomField\\ToolServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Perscom\\ResourceCustomField\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A Laravel Nova resource tool.",
             "keywords": [
                 "laravel",
                 "nova"
@@ -5452,16 +5380,16 @@
         },
         {
             "name": "stancl/tenancy",
-            "version": "v3.5.7",
+            "version": "v3.5.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/archtechx/tenancy.git",
-                "reference": "51228defc68a6362e31f486a04e3117105abf3e0"
+                "reference": "747c192979aa03907824e5481edb6b152edc3462"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/archtechx/tenancy/zipball/51228defc68a6362e31f486a04e3117105abf3e0",
-                "reference": "51228defc68a6362e31f486a04e3117105abf3e0",
+                "url": "https://api.github.com/repos/archtechx/tenancy/zipball/747c192979aa03907824e5481edb6b152edc3462",
+                "reference": "747c192979aa03907824e5481edb6b152edc3462",
                 "shasum": ""
             },
             "require": {
@@ -5518,7 +5446,7 @@
             ],
             "support": {
                 "issues": "https://github.com/archtechx/tenancy/issues",
-                "source": "https://github.com/archtechx/tenancy/tree/v3.5.7"
+                "source": "https://github.com/archtechx/tenancy/tree/v3.5.8"
             },
             "funding": [
                 {
@@ -5530,7 +5458,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-05-26T09:51:27+00:00"
+            "time": "2022-07-20T19:35:33+00:00"
         },
         {
             "name": "stancl/virtualcolumn",
@@ -8717,16 +8645,16 @@
         },
         {
             "name": "laravel/sail",
-            "version": "v1.15.0",
+            "version": "v1.15.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/sail.git",
-                "reference": "676e1ff33c1b8af657779f62f57360c376cba666"
+                "reference": "2fe64c0b45a3af56cac0af638c8020a8adc860d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/sail/zipball/676e1ff33c1b8af657779f62f57360c376cba666",
-                "reference": "676e1ff33c1b8af657779f62f57360c376cba666",
+                "url": "https://api.github.com/repos/laravel/sail/zipball/2fe64c0b45a3af56cac0af638c8020a8adc860d7",
+                "reference": "2fe64c0b45a3af56cac0af638c8020a8adc860d7",
                 "shasum": ""
             },
             "require": {
@@ -8773,7 +8701,7 @@
                 "issues": "https://github.com/laravel/sail/issues",
                 "source": "https://github.com/laravel/sail"
             },
-            "time": "2022-06-24T13:56:11+00:00"
+            "time": "2022-07-21T14:33:56+00:00"
         },
         {
             "name": "mockery/mockery",
@@ -9757,12 +9685,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/Roave/SecurityAdvisories.git",
-                "reference": "0144c1225b5e4da02cf2c27a0e2cb2705168c47c"
+                "reference": "4bc2609bf9e2c2146d25465546bb10651cce47ac"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/0144c1225b5e4da02cf2c27a0e2cb2705168c47c",
-                "reference": "0144c1225b5e4da02cf2c27a0e2cb2705168c47c",
+                "url": "https://api.github.com/repos/Roave/SecurityAdvisories/zipball/4bc2609bf9e2c2146d25465546bb10651cce47ac",
+                "reference": "4bc2609bf9e2c2146d25465546bb10651cce47ac",
                 "shasum": ""
             },
             "conflict": {
@@ -9924,6 +9852,7 @@
                 "in2code/femanager": "<5.5.1|>=6,<6.3.1",
                 "in2code/lux": "<17.6.1|>=18,<24.0.2",
                 "intelliants/subrion": "<=4.2.1",
+                "islandora/islandora": ">=2,<2.4.1",
                 "ivankristianto/phpwhois": "<=4.3",
                 "jackalope/jackalope-doctrine-dbal": "<1.7.4",
                 "james-heinrich/getid3": "<1.9.21",
@@ -10090,7 +10019,7 @@
                 "simplito/elliptic-php": "<1.0.6",
                 "slim/slim": "<2.6",
                 "smarty/smarty": "<3.1.45|>=4,<4.1.1",
-                "snipe/snipe-it": "<5.4.4|>= 6.0.0-RC-1, <= 6.0.0-RC-5",
+                "snipe/snipe-it": "<=6.0.2|>= 6.0.0-RC-1, <= 6.0.0-RC-5",
                 "socalnick/scn-social-auth": "<1.15.2",
                 "socialiteproviders/steam": "<1.1",
                 "spipu/html2pdf": "<5.2.4",
@@ -10181,6 +10110,7 @@
                 "wikimedia/parsoid": "<0.12.2",
                 "willdurand/js-translation-bundle": "<2.1.1",
                 "wintercms/winter": "<1.0.475|>=1.1,<1.1.9",
+                "woocommerce/woocommerce": "<6.6",
                 "wp-cli/wp-cli": "<2.5",
                 "wp-graphql/wp-graphql": "<0.3.5",
                 "wpanel/wpanel4-cms": "<=4.3.1",
@@ -10260,7 +10190,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2022-07-15T22:04:13+00:00"
+            "time": "2022-07-21T23:04:29+00:00"
         },
         {
             "name": "sebastian/cli-parser",

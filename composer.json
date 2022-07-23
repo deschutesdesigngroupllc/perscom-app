@@ -22,8 +22,6 @@
         "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.5",
         "perscom/dashboard-quick-actions": "*",
-        "perscom/latest-form-submissions": "*",
-        "perscom/resource-custom-field": "*",
         "spatie/laravel-permission": "^5.5",
         "spatie/url": "^2.1.0",
         "stancl/tenancy": "^3.5",
@@ -51,14 +49,6 @@
         {
             "type": "path",
             "url": "./nova-components/DashboardQuickActions"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/LatestFormSubmissions"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/ResourceCustomField"
         }
     ],
     "autoload": {
