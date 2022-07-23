@@ -20,7 +20,7 @@ class FieldFactory extends Factory
 		    'required' => $this->faker->boolean,
 		    'help' => $this->faker->sentence,
 		    'placeholder' => $this->faker->sentence(3),
-		    'type' => $this->faker->randomElement(collect(Field::fieldTypes)->keys())
+		    'type' => $this->faker->randomElement(collect(Field::$fieldTypes)->keys())
         ];
     }
 }

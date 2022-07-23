@@ -93,8 +93,8 @@ class Submission extends Model
 
             $field = $this->form?->fields->where('id', $fieldId)->first();
 
-            if ($field && Arr::exists(Field::fieldTypes, $field->type)) {
-                return Arr::get(Field::fieldTypes, $field->type);
+            if ($field && Arr::exists(Field::$fieldTypes, $field->type)) {
+                return Arr::get(Field::$fieldTypes, $field->type);
             }
             return 'string';
         }

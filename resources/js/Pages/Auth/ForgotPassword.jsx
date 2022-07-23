@@ -23,12 +23,12 @@ export default function ForgotPassword({ status }) {
     return (
         <Guest>
             <Head title="Forgot Password" />
-            <div className="text-gray-500 mb-4 text-sm leading-normal">
+            <div className="mb-4 text-sm leading-normal text-gray-500">
                 Forgot your password? No problem. Just let us know your email address and we will email you a password
                 reset link that will allow you to choose a new one.
             </div>
 
-            {status && <div className="text-green-600 mb-4 text-sm font-medium">{status}</div>}
+            {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             <ValidationErrors errors={errors} />
             <form onSubmit={submit}>

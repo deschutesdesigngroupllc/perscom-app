@@ -4,9 +4,9 @@ export function ValidationErrors({ errors }) {
     return (
         Object.keys(errors).length > 0 && (
             <div className="mb-4">
-                <div className="text-red-600 font-medium">Whoops! Something went wrong.</div>
+                <div className="font-medium text-red-600">Whoops! Something went wrong.</div>
 
-                <ul className="text-red-600 mt-3 list-inside list-disc text-sm">
+                <ul className="mt-3 list-inside list-disc text-sm text-red-600">
                     {Object.keys(errors).map(function (key, index) {
                         return <li key={index}>{errors[key]}</li>;
                     })}

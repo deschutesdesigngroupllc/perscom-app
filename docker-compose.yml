@@ -3,7 +3,7 @@ version: '3'
 services:
     laravel.test:
         build:
-            context: ./vendor/laravel/sail/runtimes/8.1
+            context: ./docker/8.1
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
@@ -19,6 +19,7 @@ services:
             XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
         volumes:
             - '.:/var/www/html'
+            - './php/conf.d/php.ini:/etc/php/8.1/cli/conf.d/99-perscom.ini'
         networks:
             - sail
         depends_on:

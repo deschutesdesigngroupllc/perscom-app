@@ -34,7 +34,7 @@ export default function Login({ status, canResetPassword }) {
         <Guest>
             <Head title="Log in" />
 
-            {status && <div className="text-green-600 mb-4 text-sm font-medium">{status}</div>}
+            {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             <ValidationErrors errors={errors} />
             <form onSubmit={submit}>
@@ -63,14 +63,14 @@ export default function Login({ status, canResetPassword }) {
                 <div className="mt-4 block">
                     <label className="flex items-center">
                         <Checkbox name="remember" value={data.remember} onChange={onHandleChange} />
-                        <span className="text-gray-600 ml-2 text-sm">Remember me</span>
+                        <span className="ml-2 text-sm text-gray-600">Remember me</span>
                     </label>
                 </div>
                 <div className="mt-4 flex items-center justify-end">
                     {canResetPassword && (
                         <Link
                             href={route("password.request")}
-                            className="text-gray-600 hover:text-gray-900 text-sm underline"
+                            className="text-sm text-gray-600 underline hover:text-gray-900"
                         >
                             {" "}
                             Forgot your password?{" "}

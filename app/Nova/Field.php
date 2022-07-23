@@ -86,7 +86,7 @@ class Field extends Resource
                 ->showOnPreview(),
             Select::make('Type')
                 ->options(
-                    collect(\App\Models\Field::fieldTypes)->mapWithKeys(function ($value, $key) {
+                    collect(\App\Models\Field::$fieldTypes)->mapWithKeys(function ($value, $key) {
                         return [$key => $key];
                     })
                 )

@@ -11,6 +11,18 @@ class Status extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    public static $colors = [
+        'bg-sky-100 text-sky-600' => 'Blue',
+        'bg-gray-100 text-gray-600' => 'Gray',
+        'bg-green-100 text-green-600' => 'Green',
+        'bg-red-100 text-red-600' => 'Red',
+        'bg-white-100 text-black-600' => 'White',
+        'bg-yellow-100 text-yellow-600' => 'Yellow',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
     public function users()

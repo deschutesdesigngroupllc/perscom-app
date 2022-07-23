@@ -50,7 +50,7 @@ const faqs = [
 
 export function Faqs() {
     return (
-        <section id="faq" aria-labelledby="faq-title" className="bg-slate-50 relative overflow-hidden py-20 sm:py-32">
+        <section id="faq" aria-labelledby="faq-title" className="relative overflow-hidden bg-slate-50 py-20 sm:py-32">
             <h2 id="faq-title" className="sr-only">
                 Frequently asked questions.
             </h2>
@@ -59,10 +59,10 @@ export function Faqs() {
             </div>
             <Container className="relative">
                 <div className="mx-auto max-w-2xl lg:mx-0">
-                    <p className="text-slate-900 font-display text-3xl tracking-tight sm:text-4xl">
+                    <p className="font-display text-3xl tracking-tight text-slate-900 sm:text-4xl">
                         Frequently asked questions
                     </p>
-                    <p className="text-slate-700 mt-4 text-lg tracking-tight">
+                    <p className="mt-4 text-lg tracking-tight text-slate-700">
                         If you can’t find what you’re looking for, email our support team and we will get back to you as
                         soon as possible.
                     </p>
@@ -73,10 +73,10 @@ export function Faqs() {
                             <ul className="space-y-8">
                                 {column.map((faq, faqIndex) => (
                                     <li key={faqIndex}>
-                                        <h3 className="text-slate-900 font-display text-lg leading-7">
+                                        <h3 className="font-display text-lg leading-7 text-slate-900">
                                             {faq.question}
                                         </h3>
-                                        <p className="text-slate-700 mt-4 text-sm">{faq.answer}</p>
+                                        <p className="mt-4 text-sm text-slate-700">{faq.answer}</p>
                                     </li>
                                 ))}
                             </ul>

@@ -35,18 +35,6 @@ class Status extends Resource
     public static $search = ['id', 'name'];
 
     /**
-     * @var string[]
-     */
-    public static $colors = [
-        'bg-sky-100 text-sky-600' => 'Blue',
-        'bg-gray-100 text-gray-600' => 'Gray',
-        'bg-green-100 text-green-600' => 'Green',
-        'bg-red-100 text-red-600' => 'Red',
-        'bg-white-100 text-black-600' => 'White',
-        'bg-yellow-100 text-yellow-600' => 'Yellow',
-    ];
-
-    /**
      * Get the text for the create resource button.
      *
      * @return string|null
@@ -74,21 +62,21 @@ class Status extends Resource
                 return $model->color;
             })
                 ->types(
-                    collect(self::$colors)
+                    collect(\App\Models\Status::$colors)
                         ->mapWithKeys(function ($value, $key) {
                             return [$key => $key];
                         })
                         ->toArray()
                 )
                 ->label(function ($value) {
-                    return self::$colors[$value];
+                    return \App\Models\Status::$colors[$value];
                 }),
             Select::make('Color')
                 ->rules(['required'])
                 ->showOnPreview()
                 ->displayUsingLabels()
                 ->onlyOnForms()
-                ->options(self::$colors),
+                ->options(\App\Models\Status::$colors),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

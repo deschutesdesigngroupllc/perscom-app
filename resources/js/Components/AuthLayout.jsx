@@ -11,7 +11,7 @@ export function AuthLayout({ children, position = "justify-center" }) {
             <div className={clsx("relative flex min-h-full md:px-12 lg:px-0", position)}>
                 <div
                     className={clsx(
-                        "bg-white relative z-10 flex max-h-full flex-1 flex-col py-16 px-4 shadow-2xl md:flex-none md:px-28",
+                        "relative z-10 flex max-h-full flex-1 flex-col bg-white py-16 px-4 shadow-2xl md:flex-none md:px-28",
                         position
                     )}
                 >

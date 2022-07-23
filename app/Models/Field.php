@@ -22,7 +22,7 @@ class Field extends Model
     /**
      * Available field types
      */
-    public const fieldTypes = [
+    public static $fieldTypes = [
         'Boolean' => 'boolean',
         'Code' => 'string',
         'Color' => 'string',
