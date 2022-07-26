@@ -4,14 +4,16 @@ namespace App\Nova;
 
 use App\Models\Domain;
 use App\Models\Tenant as TenantModel;
-use App\Jobs\CreateInitialTenantUser;
 use App\Nova\Actions\CreateTenantDatabase;
 use App\Nova\Actions\CreateTenantUser;
 use App\Nova\Actions\DeleteTenantDatabase;
 use App\Nova\Actions\ResetTenantDatabaseFactory;
+use Eminiarts\Tabs\Tab;
+use Eminiarts\Tabs\Tabs;
+use Eminiarts\Tabs\Traits\HasActionsInTabs;
+use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -23,12 +25,14 @@ use Laravel\Nova\Fields\Status;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
 use Stancl\Tenancy\Events\DomainCreated;
 use Stancl\Tenancy\Events\TenantCreated;
 
 class Tenant extends Resource
 {
+	use HasTabs;
+	use HasActionsInTabs;
+
     /**
      * The model the resource corresponds to.
      *
@@ -74,58 +78,67 @@ class Tenant extends Resource
                     return $url;
                 })
                 ->exceptOnForms(),
-            new Panel('Database', [
-                Text::make('Database Name', function ($model) {
-                    return $model->tenancy_db_name;
-                })
-                    ->readonly()
-                    ->onlyOnDetail(),
-                Status::make('Database Status')
-                    ->loadingWhen(['creating'])
-                    ->failedWhen([])
-                    ->readonly(),
-            ]),
-            new Panel('Domain', [
-                Text::make('Domain', 'domain')
-                    ->rules(['required', 'string', 'max:255', Rule::unique(Domain::class, 'domain')])
-                    ->onlyOnForms()
-                    ->hideWhenUpdating()
-                    ->fillUsing(function ($request) {
-                        return null;
-                    }),
-            ]),
-            HasMany::make('Domains'),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->sortable()
-                ->exceptOnForms(),
-            DateTime::make('Updated At')
-                ->sortable()
-                ->exceptOnForms()
-                ->onlyOnDetail(),
-            new Panel('Subscription', [
-                Boolean::make('Customer', function ($model) {
-                    return $model->hasStripeId();
-                }),
-                Boolean::make('On Trial', function ($model) {
-                    return $model->onGenericTrial();
-                }),
-                Text::make('Stripe ID')
-                    ->onlyOnDetail()
-                    ->readonly()
-                    ->copyable(),
-                Text::make('Card Brand')
-                    ->onlyOnDetail()
-                    ->readonly(),
-                Text::make('Card Last Four')
-                    ->onlyOnDetail()
-                    ->readonly(),
-                DateTime::make('Trial Ends At')
-                    ->onlyOnDetail()
-                    ->readonly(),
-            ]),
-            HasMany::make('Subscriptions'),
-            HasMany::make('Receipts', 'localReceipts', Receipt::class),
+	        Text::make('Domain', 'domain')
+		        ->rules(['required', 'string', 'max:255', Rule::unique(Domain::class, 'domain')])
+		        ->onlyOnForms()
+		        ->hideWhenUpdating()
+		        ->fillUsing(function ($request) {
+			        return null;
+		        }),
+	        Heading::make('Meta')->onlyOnDetail(),
+	        DateTime::make('Created At')
+		        ->sortable()
+		        ->exceptOnForms(),
+	        DateTime::make('Updated At')
+		        ->sortable()
+		        ->exceptOnForms()
+		        ->onlyOnDetail(),
+	        Tabs::make('Relations', [
+	        	Tab::make('Database', [
+			        Text::make('Database Name', function ($model) {
+				        return $model->tenancy_db_name;
+			        })
+				        ->readonly()
+				        ->onlyOnDetail(),
+			        Status::make('Database Status')
+				        ->loadingWhen(['creating'])
+				        ->failedWhen([])
+				        ->readonly(),
+		        ]),
+		        Tab::make('Domains', [
+			        HasMany::make('Domains'),
+		        ]),
+		        Tab::make('Current Subscription', [
+			        Boolean::make('Customer', function ($model) {
+				        return $model->hasStripeId();
+			        }),
+			        Boolean::make('On Trial', function ($model) {
+				        return $model->onGenericTrial();
+			        }),
+			        Text::make('Stripe ID')
+				        ->onlyOnDetail()
+				        ->readonly()
+				        ->copyable(),
+			        Text::make('Card Brand')
+				        ->onlyOnDetail()
+				        ->readonly(),
+			        Text::make('Card Last Four')
+				        ->onlyOnDetail()
+				        ->readonly(),
+			        DateTime::make('Trial Ends At')
+				        ->onlyOnDetail()
+				        ->readonly(),
+		        ]),
+		        Tab::make('All Subscriptions', [
+			        HasMany::make('Subscriptions')
+		        ]),
+		        Tab::make('Receipts', [
+			        HasMany::make('Receipts', 'localReceipts', Receipt::class),
+		        ]),
+		        Tab::make('Logs', [
+		        	$this->actionfield()
+		        ])
+	        ]),
         ];
     }
 

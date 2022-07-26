@@ -169,11 +169,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(ServiceRecords::class);
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
-	public function submissions()
-	{
-		return $this->hasMany(Submission::class);
-	}
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function submissions()
+    {
+        return $this->hasMany(Submission::class);
+    }
 }

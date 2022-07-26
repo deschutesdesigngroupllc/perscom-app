@@ -8,6 +8,10 @@ use App\Models\Forms\Submission as SubmissionModel;
 use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Resource;
 use App\Nova\Status;
+use Eminiarts\Tabs\Tab;
+use Eminiarts\Tabs\Tabs;
+use Eminiarts\Tabs\Traits\HasActionsInTabs;
+use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -26,6 +30,9 @@ use Laravel\Nova\Panel;
 
 class Submission extends Resource
 {
+    use HasTabs;
+    use HasActionsInTabs;
+
     /**
      * The model the resource corresponds to.
      *
@@ -166,17 +173,22 @@ class Submission extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->exceptOnForms(),
-            MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
-                return [
-                    Textarea::make('Text'),
-                    Text::make('Text', function ($model) {
-                        return $model->text;
+            Tabs::make('Relations', [
+                Tab::make('Status History', [
+                    MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
+                        return [
+                            Textarea::make('Text'),
+                            Text::make('Text', function ($model) {
+                                return $model->text;
+                            }),
+                            DateTime::make('Updated At')
+                                ->sortable()
+                                ->onlyOnIndex(),
+                        ];
                     }),
-                    DateTime::make('Updated At')
-                        ->sortable()
-                        ->onlyOnIndex(),
-                ];
-            }),
+                ]),
+                Tab::make('Logs', [$this->actionfield()]),
+            ]),
         ];
     }
 

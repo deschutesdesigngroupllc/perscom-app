@@ -4,6 +4,11 @@ namespace App\Nova\Forms;
 
 use App\Nova\Field;
 use App\Nova\Resource;
+use Eminiarts\Tabs\Tab;
+use Eminiarts\Tabs\Tabs;
+use Eminiarts\Tabs\Traits\HasActionsInTabs;
+use Eminiarts\Tabs\Traits\HasTabs;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
@@ -19,6 +24,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Form extends Resource
 {
+    use HasTabs;
+    use HasActionsInTabs;
+
     /**
      * The model the resource corresponds to.
      *
@@ -56,12 +64,13 @@ class Form extends Resource
                 ->showOnPreview(),
             Slug::make('Slug')
                 ->from('Name')
-                ->rules(['required', 'unique:forms,slug']),
+                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)]),
             URL::make('URL')
                 ->displayUsing(function ($url) {
                     return $url;
                 })
                 ->exceptOnForms()
+	            ->copyable()
                 ->readonly(),
             Textarea::make('Description')
                 ->nullable()
@@ -71,14 +80,19 @@ class Form extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            MorphToMany::make('Fields', 'fields', Field::class)->fields(function ($request, $relatedModel) {
-                return [
-                    Number::make('Order')
-                        ->sortable()
-                        ->required(),
-                ];
-            }),
-	        HasMany::make('Submissions', 'submissions', Submission::class)
+            Tabs::make('Relations', [
+                Tab::make('Fields', [
+                    MorphToMany::make('Fields', 'fields', Field::class)->fields(function ($request, $relatedModel) {
+                        return [
+                            Number::make('Order')
+                                ->sortable()
+                                ->required(),
+                        ];
+                    }),
+                ]),
+                Tab::make('Submissions', [HasMany::make('Submissions', 'submissions', Submission::class)]),
+                Tab::make('Logs', [$this->actionfield()]),
+            ]),
         ];
     }
 

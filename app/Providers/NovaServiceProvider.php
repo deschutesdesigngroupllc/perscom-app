@@ -123,10 +123,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 'nova.pages.create',
                                 [
                                     'resource' => Submission::uriKey(),
-	                                'viaResource' => 'users',
-	                                'viaResourceId' => Auth::user()->getAuthIdentifier(),
-	                                'viaRelationship' => 'submissions',
-	                                'relationshipType' => 'hasMany'
+                                    'viaResource' => 'users',
+                                    'viaResourceId' => Auth::user()->getAuthIdentifier(),
+                                    'viaRelationship' => 'submissions',
+                                    'relationshipType' => 'hasMany',
                                 ],
                                 false
                             )

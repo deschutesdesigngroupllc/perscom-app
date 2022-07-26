@@ -5,9 +5,11 @@ namespace App\Models\Forms;
 use App\Models\Field;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Nova\Actions\Actionable;
 
 class Form extends Model
 {
+    use Actionable;
     use HasFactory;
 
     /**
@@ -48,6 +50,6 @@ class Form extends Model
 
     public function submissions()
     {
-    	return $this->hasMany(Submission::class);
+        return $this->hasMany(Submission::class);
     }
 }
