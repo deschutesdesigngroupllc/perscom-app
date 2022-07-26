@@ -2,7 +2,6 @@
 
 namespace App\Nova\Records;
 
-use App\Nova\Lenses\CurrentUsersRecords;
 use App\Nova\Metrics\NewServiceRecords;
 use App\Nova\Metrics\TotalServiceRecords;
 use App\Nova\Resource;
@@ -62,6 +61,22 @@ class Service extends Resource
     public function title()
     {
         return $this->user->full_name;
+    }
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->hasPermissionTo('view:servicerecord')) {
+            return $query;
+        }
+
+        return $query->where('user_id', $request->user()->id);
     }
 
     /**
@@ -125,7 +140,7 @@ class Service extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [new CurrentUsersRecords()];
+        return [];
     }
 
     /**

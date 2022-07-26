@@ -12,7 +12,6 @@ use App\Nova\Domain;
 use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
-use App\Nova\Lenses\CurrentUsersRecords;
 use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Permission;
 use App\Nova\Position;
@@ -69,84 +68,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         parent::boot();
 
-        // Build side menu
-        $menu = [MenuSection::dashboard(Main::class)->icon('chart-bar')];
-
-        $menu[] = [
-            MenuSection::make('Account', [
-                MenuItem::lens(ServiceRecords::class, CurrentUsersRecords::class),
-                MenuItem::lens(Submission::class, CurrentUsersSubmissions::class),
-            ])->icon('user-circle'),
-        ];
-
-        $menu[] = [
-            MenuSection::make('Organization', [
-                MenuItem::resource(Award::class),
-                MenuItem::resource(Document::class),
-                MenuItem::resource(Position::class),
-                MenuItem::resource(Qualification::class),
-                MenuItem::resource(Rank::class),
-                MenuItem::resource(Specialty::class),
-                MenuItem::resource(Status::class),
-                MenuItem::resource(Unit::class),
-                MenuItem::resource(User::class),
-            ])
-                ->icon('office-building')
-                ->collapsable(),
-
-            MenuSection::make('Forms', [
-                MenuItem::resource(Form::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:form');
-                }),
-                MenuItem::resource(Submission::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:submission');
-                }),
-            ])
-                ->icon('pencil-alt')
-                ->collapsable(),
-
-            MenuSection::make('Records', [
-                MenuItem::resource(AssignmentRecords::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:assignmentrecord');
-                }),
-                MenuItem::resource(AwardRecords::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:awardrecord');
-                }),
-                MenuItem::resource(CombatRecords::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:combatrecord');
-                }),
-                MenuItem::resource(QualificationRecords::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:qualificationrecord');
-                }),
-                MenuItem::resource(RankRecords::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:rankrecord');
-                }),
-                MenuItem::resource(ServiceRecords::class)->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('view:servicerecord');
-                }),
-            ])
-                ->icon('document-text')
-                ->collapsable(),
-
-            MenuSection::make('Settings', [
-                MenuItem::resource(Field::class),
-                MenuItem::resource(ActionEvent::class),
-                MenuItem::resource(Permission::class),
-                MenuItem::resource(Role::class),
-            ])
-                ->icon('cog')
-                ->collapsable(),
-
-            MenuSection::make('Support', [
-                MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
-                MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
-                MenuItem::externalLink(
-                    'Submit A Ticket',
-                    'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
-                ),
-            ])->icon('support'),
-        ];
-
         if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
             Nova::mainMenu(function (Request $request) {
                 return [
@@ -179,8 +100,93 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ];
             });
         } else {
-            Nova::mainMenu(function (Request $request) use ($menu) {
-                return $menu;
+            Nova::mainMenu(function (Request $request) {
+                return [
+                    MenuSection::dashboard(Main::class)->icon('chart-bar'),
+
+                    MenuSection::make('Account', [
+                        MenuItem::link(
+                            'My Personnel File',
+                            route(
+                                'nova.pages.detail',
+                                [
+                                    'resource' => User::uriKey(),
+                                    'resourceId' => Auth::user()->getAuthIdentifier(),
+                                ],
+                                false
+                            )
+                        ),
+                        MenuItem::lens(Submission::class, CurrentUsersSubmissions::class),
+                        MenuItem::link(
+                            'New Form Submission',
+                            route(
+                                'nova.pages.create',
+                                [
+                                    'resource' => Submission::uriKey(),
+	                                'viaResource' => 'users',
+	                                'viaResourceId' => Auth::user()->getAuthIdentifier(),
+	                                'viaRelationship' => 'submissions',
+	                                'relationshipType' => 'hasMany'
+                                ],
+                                false
+                            )
+                        ),
+                    ])->icon('user-circle'),
+
+                    MenuSection::make('Organization', [
+                        MenuItem::resource(Award::class),
+                        MenuItem::resource(Document::class),
+                        MenuItem::resource(Position::class),
+                        MenuItem::resource(Qualification::class),
+                        MenuItem::resource(Rank::class),
+                        MenuItem::resource(Specialty::class),
+                        MenuItem::resource(Status::class),
+                        MenuItem::resource(Unit::class),
+                        MenuItem::resource(User::class),
+                    ])
+                        ->icon('office-building')
+                        ->collapsable(),
+
+                    MenuSection::make('Forms', [
+                        MenuItem::resource(Form::class)->canSee(function (NovaRequest $request) {
+                            return $request->user()->hasPermissionTo('view:form');
+                        }),
+                        MenuItem::resource(Submission::class)->canSee(function (NovaRequest $request) {
+                            return $request->user()->hasPermissionTo('view:submission');
+                        }),
+                    ])
+                        ->icon('pencil-alt')
+                        ->collapsable(),
+
+                    MenuSection::make('Records', [
+                        MenuItem::resource(AssignmentRecords::class),
+                        MenuItem::resource(AwardRecords::class),
+                        MenuItem::resource(CombatRecords::class),
+                        MenuItem::resource(QualificationRecords::class),
+                        MenuItem::resource(RankRecords::class),
+                        MenuItem::resource(ServiceRecords::class),
+                    ])
+                        ->icon('document-text')
+                        ->collapsable(),
+
+                    MenuSection::make('Settings', [
+                        MenuItem::resource(Field::class),
+                        MenuItem::resource(ActionEvent::class),
+                        MenuItem::resource(Permission::class),
+                        MenuItem::resource(Role::class),
+                    ])
+                        ->icon('cog')
+                        ->collapsable(),
+
+                    MenuSection::make('Support', [
+                        MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
+                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
+                        MenuItem::externalLink(
+                            'Submit A Ticket',
+                            'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
+                        ),
+                    ])->icon('support'),
+                ];
             });
         }
 
@@ -200,7 +206,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::externalLink(
                         'My Personnel File',
                         route('nova.pages.detail', [
-                            'resource' => \App\Nova\User::uriKey(),
+                            'resource' => User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ])
                     ),

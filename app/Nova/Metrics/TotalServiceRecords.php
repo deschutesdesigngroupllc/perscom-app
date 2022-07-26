@@ -16,6 +16,13 @@ class TotalServiceRecords extends Value
     public $width = '1/2';
 
     /**
+     * Indicates whether the metric should be refreshed when actions run.
+     *
+     * @var bool
+     */
+    public $refreshWhenActionRuns = true;
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -23,7 +30,12 @@ class TotalServiceRecords extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Service::class);
+        $query = Service::query();
+        if (!$request->user()->hasPermissionTo('view:servicerecord')) {
+            $query = $query->where('user_id', $request->user()->id);
+        }
+
+        return $this->count($request, $query);
     }
 
     /**

@@ -45,4 +45,9 @@ class Form extends Model
             ->withPivot(['order'])
             ->withTimestamps();
     }
+
+    public function submissions()
+    {
+    	return $this->hasMany(Submission::class);
+    }
 }

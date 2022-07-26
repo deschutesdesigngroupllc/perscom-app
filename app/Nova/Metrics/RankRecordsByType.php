@@ -16,7 +16,12 @@ class RankRecordsByType extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Rank::class, 'type')
+        $query = Rank::query();
+        if (!$request->user()->hasPermissionTo('view:rankrecord')) {
+            $query = $query->where('user_id', $request->user()->id);
+        }
+
+        return $this->count($request, $query, 'type')
             ->label(function ($value) {
                 $labels = [
                     Rank::RECORD_RANK_PROMOTION => 'Promotion',

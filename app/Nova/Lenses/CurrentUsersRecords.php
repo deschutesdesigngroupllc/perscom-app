@@ -9,6 +9,7 @@ use App\Models\Records\Qualification;
 use App\Models\Records\Rank;
 use App\Models\Records\Service;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
@@ -35,27 +36,33 @@ class CurrentUsersRecords extends Lens
     public static function query(LensRequest $request, $query)
     {
         $serviceRecordsQuery = Service::query()
-            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+            ->select(['text', 'created_at', 'updated_at', 'user_id', 'id'])
+            ->selectRaw('"service" as type')
             ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $assignmentRecordQuery = Assignment::query()
-            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+            ->select(['text', 'created_at', 'updated_at', 'user_id', 'id'])
+            ->selectRaw('"assignment" as type')
             ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $awardsRecordQuery = Award::query()
-            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+            ->select(['text', 'created_at', 'updated_at', 'user_id', 'id'])
+            ->selectRaw('"award" as type')
             ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $combatRecordQuery = Combat::query()
-            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+            ->select(['text', 'created_at', 'updated_at', 'user_id', 'id'])
+            ->selectRaw('"combat" as type')
             ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $qualificationRecordQuery = Qualification::query()
-            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+            ->select(['text', 'created_at', 'updated_at', 'user_id', 'id'])
+            ->selectRaw('"qualification" as type')
             ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         $rankRecordQuery = Rank::query()
-            ->select(['text', 'created_at', 'updated_at', 'user_id'])
+            ->select(['text', 'created_at', 'updated_at', 'user_id', 'id'])
+            ->selectRaw('"rank" as type')
             ->where('user_id', '=', Auth::user()->getAuthIdentifier());
 
         return $request->withOrdering(
@@ -79,7 +86,14 @@ class CurrentUsersRecords extends Lens
      */
     public function fields(NovaRequest $request)
     {
-        return [Text::make('Text')->sortable(), DateTime::make('Created At'), DateTime::make('Updated At')];
+        return [
+            Text::make('Type', function () {
+                return Str::ucfirst($this->type) . ' Record';
+            }),
+            Text::make('Text'),
+            DateTime::make('Created At'),
+            DateTime::make('Updated At'),
+        ];
     }
 
     /**
@@ -112,7 +126,7 @@ class CurrentUsersRecords extends Lens
      */
     public function actions(NovaRequest $request)
     {
-        return parent::actions($request);
+        return [];
     }
 
     /**

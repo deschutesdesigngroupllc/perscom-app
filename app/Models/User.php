@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Forms\Submission;
 use App\Models\Records\Assignment as AssignmentRecords;
 use App\Models\Records\Award as AwardRecords;
 use App\Models\Records\Combat as CombatRecords;
@@ -13,7 +14,6 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -168,4 +168,12 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(ServiceRecords::class);
     }
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+	public function submissions()
+	{
+		return $this->hasMany(Submission::class);
+	}
 }

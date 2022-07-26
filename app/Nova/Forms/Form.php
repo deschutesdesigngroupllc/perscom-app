@@ -5,6 +5,7 @@ namespace App\Nova\Forms;
 use App\Nova\Field;
 use App\Nova\Resource;
 use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
@@ -77,6 +78,7 @@ class Form extends Resource
                         ->required(),
                 ];
             }),
+	        HasMany::make('Submissions', 'submissions', Submission::class)
         ];
     }
 

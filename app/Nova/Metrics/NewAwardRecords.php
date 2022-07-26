@@ -16,6 +16,13 @@ class NewAwardRecords extends Trend
     public $width = '1/2';
 
     /**
+     * Indicates whether the metric should be refreshed when actions run.
+     *
+     * @var bool
+     */
+    public $refreshWhenActionRuns = true;
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -23,7 +30,12 @@ class NewAwardRecords extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->countByDays($request, Award::class);
+        $query = Award::query();
+        if (!$request->user()->hasPermissionTo('view:awardrecord')) {
+            $query = $query->where('user_id', $request->user()->id);
+        }
+
+        return $this->countByDays($request, $query);
     }
 
     /**

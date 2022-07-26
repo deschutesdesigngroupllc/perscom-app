@@ -16,6 +16,13 @@ class TotalCombatRecords extends Value
     public $width = '1/2';
 
     /**
+     * Indicates whether the metric should be refreshed when actions run.
+     *
+     * @var bool
+     */
+    public $refreshWhenActionRuns = true;
+
+    /**
      * Calculate the value of the metric.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -23,7 +30,12 @@ class TotalCombatRecords extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Combat::class);
+        $query = Combat::query();
+        if (!$request->user()->hasPermissionTo('view:combatrecord')) {
+            $query = $query->where('user_id', $request->user()->id);
+        }
+
+        return $this->count($request, $query);
     }
 
     /**

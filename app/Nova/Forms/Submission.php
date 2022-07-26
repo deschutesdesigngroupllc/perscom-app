@@ -2,15 +2,13 @@
 
 namespace App\Nova\Forms;
 
-use App\Models\Forms\Submission as SubmissionModel;
-use App\Models\Forms\Form;
 use App\Models\Field as CustomField;
+use App\Models\Forms\Form;
+use App\Models\Forms\Submission as SubmissionModel;
 use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Resource;
 use App\Nova\Status;
-use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Country;
@@ -20,13 +18,11 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use ThinkStudio\HtmlField\Html;
 
 class Submission extends Resource
 {
@@ -154,7 +150,7 @@ class Submission extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('User')->showOnPreview(),
+            BelongsTo::make('User'),
             BelongsTo::make('Form')->showOnPreview(),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
