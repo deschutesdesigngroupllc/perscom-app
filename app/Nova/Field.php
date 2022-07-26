@@ -11,7 +11,6 @@ namespace App\Nova;
 
 use App\Nova\Forms\Form;
 use HaydenPierce\ClassFinder\ClassFinder;
-use Illuminate\Support\Arr;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;
@@ -23,6 +22,7 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Spatie\TagsField\Tags;
 
 class Field extends Resource
 {
@@ -80,7 +80,8 @@ class Field extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules(['required']),
-            Textarea::make('Description')
+	        Tags::make('Tags')->withLinkToTagResource(),
+	        Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()
                 ->showOnPreview(),

@@ -2,23 +2,17 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Heading;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Spatie\TagsField\Tags;
 
-class Document extends Resource
+class Taggable extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Document::class;
+    public static $model = \App\Models\Taggable::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -27,12 +21,12 @@ class Document extends Resource
      */
     public static $title = 'name';
 
-    /**
-     * The columns that should be searched.
-     *
-     * @var array
-     */
-    public static $search = ['id', 'name'];
+	/**
+	 * Indicates if the resource should be searchable on the index view.
+	 *
+	 * @var bool
+	 */
+	public static $searchable = false;
 
     /**
      * Get the fields displayed by the resource.
@@ -43,23 +37,12 @@ class Document extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-	        Tags::make('Tags')->withLinkToTagResource(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
-            Trix::make('Content')
-                ->hideFromIndex()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+	        Text::make('ID', function ($model) {
+		        return $model->taggable->id;
+	        })->sortable(),
+	        Text::make('Resource', function ($model) {
+	        	return class_basename($model->taggable);
+	        }),
         ];
     }
 

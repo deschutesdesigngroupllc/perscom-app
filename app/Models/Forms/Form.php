@@ -6,11 +6,13 @@ use App\Models\Field;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
+use Spatie\Tags\HasTags;
 
 class Form extends Model
 {
     use Actionable;
     use HasFactory;
+    use HasTags;
 
     /**
      * The accessors to append to the model's array form.

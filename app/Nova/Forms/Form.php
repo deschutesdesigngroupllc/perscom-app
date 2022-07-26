@@ -21,6 +21,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Spatie\TagsField\Tags;
 
 class Form extends Resource
 {
@@ -65,6 +66,7 @@ class Form extends Resource
             Slug::make('Slug')
                 ->from('Name')
                 ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)]),
+	        Tags::make('Tags')->withLinkToTagResource(),
             URL::make('URL')
                 ->displayUsing(function ($url) {
                     return $url;

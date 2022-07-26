@@ -20,6 +20,7 @@ use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rules;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -33,7 +34,6 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class User extends Resource
 {
@@ -239,6 +239,8 @@ class User extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [(new DownloadExcel())->askForFilename()->askForWriterType()];
+        return [
+            ExportAsCsv::make('Export Users')->nameable()
+        ];
     }
 }
