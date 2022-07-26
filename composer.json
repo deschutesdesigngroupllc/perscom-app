@@ -1,10 +1,9 @@
 {
-    "name": "laravel/laravel",
+    "name": "deschutesdesigngroupllc/perscom-3.0",
     "type": "project",
-    "description": "The Laravel Framework.",
+    "description": "PERSCOM Personnel Management System",
     "keywords": [
-        "framework",
-        "laravel"
+        "perscom"
     ],
     "license": "MIT",
     "require": {
@@ -22,6 +21,7 @@
         "laravel/spark-stripe": "^1.0",
         "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.5",
+        "maatwebsite/laravel-nova-excel": "^1.3.2",
         "perscom/dashboard-quick-actions": "*",
         "spatie/laravel-permission": "^5.5",
         "spatie/url": "^2.1.0",

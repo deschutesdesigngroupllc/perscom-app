@@ -70,7 +70,7 @@ class Form extends Resource
                     return $url;
                 })
                 ->exceptOnForms()
-	            ->copyable()
+                ->copyable()
                 ->readonly(),
             Textarea::make('Description')
                 ->nullable()

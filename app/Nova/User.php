@@ -33,6 +33,7 @@ use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Maatwebsite\LaravelNovaExcel\Actions\DownloadExcel;
 
 class User extends Resource
 {
@@ -238,6 +239,6 @@ class User extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [(new DownloadExcel())->askForFilename()->askForWriterType()];
     }
 }
