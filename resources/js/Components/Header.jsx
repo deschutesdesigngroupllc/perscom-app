@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
+import React, {Fragment} from "react";
+import {Popover, Transition} from "@headlessui/react";
 import clsx from "clsx";
 
-import { ButtonLink } from "../Components/Button";
-import { Container } from "../Components/Container";
-import { Logo } from "../Components/Logo";
+import {ButtonLink} from "../Components/Button";
+import {Container} from "../Components/Container";
+import {Logo} from "../Components/Logo";
 
 function MobileNavigation() {
     return (
@@ -65,11 +65,6 @@ function MobileNavigation() {
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#testimonials" className="block w-full" onClick={() => close()}>
-                                        Testimonials
-                                    </a>
-                                </li>
-                                <li>
                                     <a href="#pricing" className="block w-full" onClick={() => close()}>
                                         Pricing
                                     </a>
@@ -101,14 +96,6 @@ export function Header() {
                                 className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                             >
                                 Features
-                            </a>
-                        </li>
-                        <li className="ml-6 hidden md:block">
-                            <a
-                                href="#testimonials"
-                                className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
-                            >
-                                Testimonials
                             </a>
                         </li>
                         <li className="ml-6 hidden md:block">
