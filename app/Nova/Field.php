@@ -80,8 +80,8 @@ class Field extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules(['required']),
-	        Tags::make('Tags')->withLinkToTagResource(),
-	        Textarea::make('Description')
+            Tags::make('Tags')->withLinkToTagResource(),
+            Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()
                 ->showOnPreview(),

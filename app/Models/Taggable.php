@@ -9,16 +9,16 @@ class Taggable extends Model
 {
     use HasFactory;
 
-	/**
-	 * @var string
-	 */
+    /**
+     * @var string
+     */
     protected $table = 'taggables';
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
     public function taggable()
     {
-    	return $this->morphTo('taggable');
+        return $this->morphTo('taggable');
     }
 }

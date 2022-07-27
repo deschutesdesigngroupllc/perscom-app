@@ -239,8 +239,6 @@ class User extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export Users')->nameable()
-        ];
+        return [ExportAsCsv::make('Export Users')->nameable()];
     }
 }

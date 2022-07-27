@@ -9,11 +9,11 @@ class Tag extends TagModel
 {
     use HasFactory;
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function taggables()
     {
-    	return $this->hasMany(Taggable::class);
+        return $this->hasMany(Taggable::class);
     }
 }

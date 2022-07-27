@@ -21,12 +21,12 @@ class Taggable extends Resource
      */
     public static $title = 'name';
 
-	/**
-	 * Indicates if the resource should be searchable on the index view.
-	 *
-	 * @var bool
-	 */
-	public static $searchable = false;
+    /**
+     * Indicates if the resource should be searchable on the index view.
+     *
+     * @var bool
+     */
+    public static $searchable = false;
 
     /**
      * Get the fields displayed by the resource.
@@ -37,12 +37,12 @@ class Taggable extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-	        Text::make('ID', function ($model) {
-		        return $model->taggable->id;
-	        })->sortable(),
-	        Text::make('Resource', function ($model) {
-	        	return class_basename($model->taggable);
-	        }),
+            Text::make('ID', function ($model) {
+                return $model->taggable->id;
+            })->sortable(),
+            Text::make('Resource', function ($model) {
+                return class_basename($model->taggable);
+            }),
         ];
     }
 

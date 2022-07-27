@@ -66,7 +66,7 @@ class Form extends Resource
             Slug::make('Slug')
                 ->from('Name')
                 ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)]),
-	        Tags::make('Tags')->withLinkToTagResource(),
+            Tags::make('Tags')->withLinkToTagResource(),
             URL::make('URL')
                 ->displayUsing(function ($url) {
                     return $url;

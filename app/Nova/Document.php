@@ -48,7 +48,7 @@ class Document extends Resource
                 ->sortable()
                 ->rules(['required'])
                 ->showOnPreview(),
-	        Tags::make('Tags')->withLinkToTagResource(),
+            Tags::make('Tags')->withLinkToTagResource(),
             Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()

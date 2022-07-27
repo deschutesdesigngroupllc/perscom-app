@@ -41,7 +41,7 @@ class CreateTenantUser extends Action
             if ($model instanceof Tenant) {
                 $password = $fields->password ?? Str::random();
                 $user = $model->run(function () use ($fields, $password) {
-                    return app()
+                    $user = app()
                         ->make(CreatesNewUsers::class)
                         ->create([
                             'name' => $fields->name,
@@ -49,6 +49,12 @@ class CreateTenantUser extends Action
                             'password' => $password,
                             'password_confirmation' => $password,
                         ]);
+
+                    if ($fields->assign_admin_role) {
+                        $user->assignRole('Admin');
+                    }
+
+                    return $user;
                 });
 
                 if ($fields->send_notification) {
@@ -76,6 +82,7 @@ class CreateTenantUser extends Action
                     ],
                 ])
                 ->help('The password will be auto-generated if left blank.'),
+            Boolean::make('Assign Admin Role'),
             Boolean::make('Send Notification')->help('Send an email to the user with their login information.'),
         ];
     }

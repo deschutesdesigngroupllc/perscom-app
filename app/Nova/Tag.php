@@ -28,9 +28,7 @@ class Tag extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id', 'name'
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * Get the fields displayed by the resource.
@@ -42,8 +40,10 @@ class Tag extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Name')->required()->sortable(),
-	        MorphMany::make('Resources', 'taggables', Taggable::class)
+            Text::make('Name')
+                ->required()
+                ->sortable(),
+            MorphMany::make('Resources', 'taggables', Taggable::class),
         ];
     }
 
