@@ -1,1 +1,0 @@
-<div class="bg-indigo-100 text-indigo-600"></div>
