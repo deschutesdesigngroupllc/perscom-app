@@ -115,7 +115,7 @@ class User extends Resource
                         Line::make('Rank', function ($model) {
                             return $model->rank->name ?? null;
                         })->asSubTitle(),
-                        Line::make('Last Rank Record Date', function ($model) {
+                        Line::make('Last Rank Change Date', function ($model) {
                             return optional($model->rank?->record?->created_at, function ($date) {
                                 return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
@@ -180,12 +180,25 @@ class User extends Resource
                     Text::make('Unit', function ($model) {
                         return $model->assignment->unit->name ?? null;
                     })->onlyOnDetail(),
+	                DateTime::make('Last Assignment Change Date', function ($model) {
+		                return $model->assignment->created_at ?? null;
+	                })->onlyOnDetail(),
+	                Text::make('Time In Assignment', function ($model) {
+		                return $model->assignment
+			                ? Carbon::now()->diffForHumans(
+				                $model->assignment->created_at,
+				                CarbonInterface::DIFF_ABSOLUTE,
+				                false,
+				                3
+			                )
+			                : null;
+	                })->onlyOnDetail(),
                 ]),
                 Tab::make('Rank', [
                     Text::make('Rank', function ($model) {
                         return $model->rank->name ?? null;
                     })->onlyOnDetail(),
-                    DateTime::make('Last Rank Record Date', function ($model) {
+                    DateTime::make('Last Rank Change Date', function ($model) {
                         return $model->rank->record->created_at ?? null;
                     })->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {
