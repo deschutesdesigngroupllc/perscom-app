@@ -28,9 +28,11 @@ use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -70,6 +72,7 @@ class User extends Resource
     public function fields(NovaRequest $request)
     {
         return [
+            ID::make()->sortable(),
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255')
@@ -104,29 +107,56 @@ class User extends Resource
                 ->exceptOnForms(),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
-                    ID::make()->sortable(),
                     Gravatar::make()->maxWidth(50),
                     Boolean::make('Email Verified', function () {
                         return $this->email_verified_at !== null;
                     }),
-                    Text::make('Rank', function ($model) {
-                        return $model->rank->name ?? null;
-                    })
+                    Stack::make('Rank', [
+                        Line::make('Rank', function ($model) {
+                            return $model->rank->name ?? null;
+                        })->asSubTitle(),
+                        Line::make('Last Rank Record Date', function ($model) {
+                            return optional($model->rank?->record?->created_at, function ($date) {
+                                return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            });
+                        })->asSmall(),
+                    ])
                         ->onlyOnIndex()
                         ->showOnPreview(),
-                    Text::make('Specialty', function ($model) {
-                        return $model->assignment->specialty->name ?? null;
-                    })
+                    Stack::make('Specialty', [
+                        Line::make('Specialty', function ($model) {
+                            return $model->assignment->specialty->name ?? null;
+                        })->asSubTitle(),
+                        Line::make('Last Assignment Date', function ($model) {
+                            return optional($model->assignment?->created_at, function ($date) {
+                                return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            });
+                        })->asSmall(),
+                    ])
                         ->onlyOnIndex()
                         ->showOnPreview(),
-                    Text::make('Position', function ($model) {
-                        return $model->assignment->position->name ?? null;
-                    })
+                    Stack::make('Position', [
+                        Line::make('Position', function ($model) {
+                            return $model->assignment->position->name ?? null;
+                        })->asSubTitle(),
+                        Line::make('Last Assignment Date', function ($model) {
+                            return optional($model->assignment?->created_at, function ($date) {
+                                return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            });
+                        })->asSmall(),
+                    ])
                         ->onlyOnIndex()
                         ->showOnPreview(),
-                    Text::make('Unit', function ($model) {
-                        return $model->assignment->unit->name ?? null;
-                    })
+                    Stack::make('Unit', [
+                        Line::make('Unit', function ($model) {
+                            return $model->assignment->unit->name ?? null;
+                        })->asSubTitle(),
+                        Line::make('Last Assignment Date', function ($model) {
+                            return optional($model->assignment?->created_at, function ($date) {
+                                return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            });
+                        })->asSmall(),
+                    ])
                         ->onlyOnIndex()
                         ->showOnPreview(),
                     Heading::make('Meta')->onlyOnDetail(),
@@ -155,7 +185,7 @@ class User extends Resource
                     Text::make('Rank', function ($model) {
                         return $model->rank->name ?? null;
                     })->onlyOnDetail(),
-                    DateTime::make('Last Promotion Date', function ($model) {
+                    DateTime::make('Last Rank Record Date', function ($model) {
                         return $model->rank->record->created_at ?? null;
                     })->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {

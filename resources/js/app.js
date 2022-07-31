@@ -2,12 +2,12 @@ import React from "react";
 import {render} from "react-dom";
 import {createInertiaApp} from "@inertiajs/inertia-react";
 import {InertiaProgress} from "@inertiajs/progress";
-import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
+import {resolvePageComponent} from "laravel-vite-plugin/inertia-helpers";
 
-import '../css/app.css';
+import "../css/app.css";
 
 createInertiaApp({
-    resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob('./Pages/**/*.jsx')),
+    resolve: (name) => resolvePageComponent(`./Pages/${name}.jsx`, import.meta.glob("./Pages/**/*.jsx")),
     setup({ el, App, props }) {
         render(React.createElement(App, props), el);
     },
