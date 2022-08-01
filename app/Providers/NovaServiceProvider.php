@@ -210,10 +210,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ])
                     ),
-                    MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
-                        return $request->user()->hasPermissionTo('manage:billing');
-                    }),
                 ]);
+                if (!Request::isDemoMode()) {
+	                $menu->append([
+		                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
+			                return $request->user()->hasPermissionTo('manage:billing');
+		                }),
+                    ]);
+                }
             }
             $menu->append([
                 MenuItem::make('Logout', 'logout')->method('POST', [
