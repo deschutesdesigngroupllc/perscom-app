@@ -19,7 +19,5 @@ class UserSeeder extends Seeder
 	        'email' => 'test@deschutesdesigngroup.com'
         ]);
         $user->assignRole('Admin');
-
-        User::factory()->count(9)->create();
     }
 }

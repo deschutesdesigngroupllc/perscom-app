@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\ResetDemoAccount;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,8 +16,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // Prune telescope logs
         $schedule->command('telescope:prune --hours=96')->daily();
+        $schedule->job(new ResetDemoAccount())->daily();
     }
 
     /**

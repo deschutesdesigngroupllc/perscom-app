@@ -54,7 +54,7 @@ export default function Login({ status, canResetPassword, demoMode }) {
                         className="mt-1 block w-full"
                         autoComplete="username"
                         onChange={onHandleChange}
-                        placeholder={demoMode && 'Demo Email: demo.perscom.io'}
+                        placeholder={demoMode && 'Demo Email: demo@perscom.io'}
                     />
                 </div>
                 <div className="mt-4">
