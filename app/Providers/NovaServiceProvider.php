@@ -57,6 +57,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             config()->set('nova.guard', 'admin');
             config()->set('nova.passwords', 'admins');
         }
+
+	    if (Request::isDemoMode()) {
+			$middleware = collect(config('nova.middleware'));
+			config()->set('nova.middleware', $middleware->reject(function ($middleware) {
+				return $middleware === 'verified';
+			})->toArray());
+	    }
     }
 
     /**
