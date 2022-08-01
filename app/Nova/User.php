@@ -17,6 +17,7 @@ use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rules;
@@ -76,17 +77,26 @@ class User extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255')
-                ->showOnPreview(),
+                ->showOnPreview()
+	            ->readonly(function () {
+		            return Request::isDemoMode();
+	            }),
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
-                ->showOnPreview(),
+                ->showOnPreview()
+	            ->readonly(function () {
+	            	return Request::isDemoMode();
+	            }),
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
+                ->updateRules('nullable', Rules\Password::defaults())
+	            ->readonly(function () {
+		            return Request::isDemoMode();
+	            }),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })
