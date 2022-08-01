@@ -23,7 +23,6 @@ yarn-error.log
 auth.json
 # Project exclude paths
 /nova-components/DashboardQuickActions/dist/
-/nova-components/LatestFormSubmissions/dist/
-/nova-components/ResourceCustomField/dist/
+/nova-components/DocumentViewerTool/dist/
 .editorconfig
 .styleci.yml

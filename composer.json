@@ -29,7 +29,8 @@
         "spatie/url": "^2.1.0",
         "stancl/tenancy": "^3.5",
         "tightenco/ziggy": "^1.4",
-        "yaroslawww/nova-html-field": "^2.0"
+        "yaroslawww/nova-html-field": "^2.0",
+        "perscom/document-viewer-tool": "*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
@@ -51,6 +52,10 @@
         {
             "type": "path",
             "url": "./nova-components/DashboardQuickActions"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/DocumentViewerTool"
         }
     ],
     "autoload": {
