@@ -14,6 +14,8 @@ class AssignmentRecordSeeder extends Seeder
      */
     public function run()
     {
-        Assignment::factory()->count(10)->create();
+    	Assignment::withoutEvents(function () {
+		    Assignment::factory()->count(10)->create();
+	    });
     }
 }

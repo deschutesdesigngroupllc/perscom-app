@@ -14,6 +14,8 @@ class RankRecordSeeder extends Seeder
      */
     public function run()
     {
-        Rank::factory()->count(10)->create();
+    	Rank::withoutEvents(function () {
+		    Rank::factory()->count(10)->create();
+	    });
     }
 }

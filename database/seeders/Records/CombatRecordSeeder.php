@@ -14,6 +14,8 @@ class CombatRecordSeeder extends Seeder
      */
     public function run()
     {
-        Combat::factory()->count(10)->create();
+    	Combat::withoutEvents(function () {
+		    Combat::factory()->count(10)->create();
+	    });
     }
 }

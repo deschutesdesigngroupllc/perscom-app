@@ -14,6 +14,8 @@ class ServiceRecordSeeder extends Seeder
      */
     public function run()
     {
-        Service::factory()->count(10)->create();
+    	Service::withoutEvents(function () {
+		    Service::factory()->count(10)->create();
+	    });
     }
 }
