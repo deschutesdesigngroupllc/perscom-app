@@ -23,8 +23,10 @@ use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Status;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Stancl\Tenancy\Events\DomainCreated;
 use Stancl\Tenancy\Events\TenantCreated;
 
@@ -106,6 +108,18 @@ class Tenant extends Resource
                         ->readonly(),
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
+	            Tab::make('Billing Settings', [
+		            Text::make('Billing Address')->hideFromIndex(),
+		            Text::make('Billing Address Line 2')->hideFromIndex(),
+		            Text::make('Billing City')->hideFromIndex(),
+		            Text::make('Billing State')->hideFromIndex(),
+		            Text::make('Billing Postal Code')->hideFromIndex(),
+		            Text::make('Billing Country')->hideFromIndex(),
+		            Text::make('VAT ID')->hideFromIndex(),
+		            Email::make('Receipt Emails')->hideFromIndex(),
+		            Textarea::make('Extra Billing Information')->hideFromIndex(),
+		            DateTime::make('Trial Ends At')->hideFromIndex(),
+	            ]),
                 Tab::make('Current Subscription', [
                     Boolean::make('Customer', function ($model) {
                         return $model->hasStripeId();

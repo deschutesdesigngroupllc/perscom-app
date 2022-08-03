@@ -116,7 +116,7 @@ return [
     */
 
     'billables' => [
-        'user' => [
+        'tenant' => [
             'model' => \App\Models\Tenant::class,
             'trial_days' => 5,
             'default_interval' => 'monthly',
