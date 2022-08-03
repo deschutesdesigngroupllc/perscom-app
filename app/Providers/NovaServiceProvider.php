@@ -58,12 +58,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             config()->set('nova.passwords', 'admins');
         }
 
-	    if (Request::isDemoMode()) {
-			$middleware = collect(config('nova.middleware'));
-			config()->set('nova.middleware', $middleware->reject(function ($middleware) {
-				return $middleware === 'verified';
-			})->toArray());
-	    }
+        if (Request::isDemoMode()) {
+            $middleware = collect(config('nova.middleware'));
+            config()->set(
+                'nova.middleware',
+                $middleware
+                    ->reject(function ($middleware) {
+                        return $middleware === 'verified';
+                    })
+                    ->toArray()
+            );
+        }
     }
 
     /**
@@ -219,10 +224,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ),
                 ]);
                 if (!Request::isDemoMode()) {
-	                $menu->append([
-		                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
-			                return $request->user()->hasPermissionTo('manage:billing');
-		                }),
+                    $menu->append([
+                        MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (
+                            NovaRequest $request
+                        ) {
+                            return $request->user()->hasPermissionTo('manage:billing');
+                        }),
                     ]);
                 }
             }

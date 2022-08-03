@@ -27,11 +27,27 @@ class DocumentViewerTool extends ResourceTool
         return 'document-viewer-tool';
     }
 
-    public function withDocument(?Document $document)
+	/**
+	 * @param  string  $title
+	 *
+	 * @return DocumentViewerTool
+	 */
+    public function withTitle(string $title = null)
     {
 		return $this->withMeta([
-			'title' => $document->name ?? null,
-			'content' => $document->content ?? null
+			'title' => $title ?? null,
 		]);
     }
+
+	/**
+	 * @param  string  $content
+	 *
+	 * @return DocumentViewerTool
+	 */
+	public function withContent(string $content = null)
+	{
+		return $this->withMeta([
+			'content' => $content ?? null,
+		]);
+	}
 }

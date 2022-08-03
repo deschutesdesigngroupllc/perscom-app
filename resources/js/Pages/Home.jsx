@@ -1,12 +1,12 @@
 import React from "react";
 
-import {Header} from "@/Components/Header";
-import {Hero} from "@/Components/Hero";
-import {PrimaryFeatures} from "@/Components/PrimaryFeatures";
-import {SecondaryFeatures} from "@/Components/SecondaryFeatures";
-import {Footer} from "@/Components/Footer";
-import {Pricing} from "@/Components/Pricing";
-import {OpenBetaBanner} from "@/Components/OpenBetaBanner";
+import { Header } from "@/Components/Header";
+import { Hero } from "@/Components/Hero";
+import { PrimaryFeatures } from "@/Components/PrimaryFeatures";
+import { SecondaryFeatures } from "@/Components/SecondaryFeatures";
+import { Footer } from "@/Components/Footer";
+import { Pricing } from "@/Components/Pricing";
+import { OpenBetaBanner } from "@/Components/OpenBetaBanner";
 
 export default function Home() {
     return (

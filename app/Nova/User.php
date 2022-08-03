@@ -78,25 +78,25 @@ class User extends Resource
                 ->sortable()
                 ->rules('required', 'max:255')
                 ->showOnPreview()
-	            ->readonly(function () {
-		            return Request::isDemoMode();
-	            }),
+                ->readonly(function () {
+                    return Request::isDemoMode();
+                }),
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->showOnPreview()
-	            ->readonly(function () {
-	            	return Request::isDemoMode();
-	            }),
+                ->readonly(function () {
+                    return Request::isDemoMode();
+                }),
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
                 ->updateRules('nullable', Rules\Password::defaults())
-	            ->readonly(function () {
-		            return Request::isDemoMode();
-	            }),
+                ->readonly(function () {
+                    return Request::isDemoMode();
+                }),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })
@@ -108,7 +108,7 @@ class User extends Resource
                     return $this->status->name ?? 'No Current Status';
                 }),
             Badge::make('Online', function ($user) {
-                return Cache::tags('user.online')->has("user.online.$user->id") ? 'online' : 'offline';
+                return $user->online_status;
             })
                 ->map([
                     'offline' => 'info',
@@ -190,19 +190,19 @@ class User extends Resource
                     Text::make('Unit', function ($model) {
                         return $model->assignment->unit->name ?? null;
                     })->onlyOnDetail(),
-	                DateTime::make('Last Assignment Change Date', function ($model) {
-		                return $model->assignment->created_at ?? null;
-	                })->onlyOnDetail(),
-	                Text::make('Time In Assignment', function ($model) {
-		                return $model->assignment
-			                ? Carbon::now()->diffForHumans(
-				                $model->assignment->created_at,
-				                CarbonInterface::DIFF_ABSOLUTE,
-				                false,
-				                3
-			                )
-			                : null;
-	                })->onlyOnDetail(),
+                    DateTime::make('Last Assignment Change Date', function ($model) {
+                        return $model->assignment->created_at ?? null;
+                    })->onlyOnDetail(),
+                    Text::make('Time In Assignment', function ($model) {
+                        return $model->assignment
+                            ? Carbon::now()->diffForHumans(
+                                $model->assignment->created_at,
+                                CarbonInterface::DIFF_ABSOLUTE,
+                                false,
+                                3
+                            )
+                            : null;
+                    })->onlyOnDetail(),
                 ]),
                 Tab::make('Rank', [
                     Text::make('Rank', function ($model) {

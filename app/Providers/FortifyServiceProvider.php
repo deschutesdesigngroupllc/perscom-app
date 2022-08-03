@@ -31,9 +31,9 @@ class FortifyServiceProvider extends ServiceProvider
             config()->set('fortify.home', '/admin' . RouteServiceProvider::HOME);
         }
 
-	    if (Request::isDemoMode()) {
-		    config()->set('fortify.features', []);
-	    }
+        if (Request::isDemoMode()) {
+            config()->set('fortify.features', []);
+        }
     }
 
     /**
@@ -47,7 +47,7 @@ class FortifyServiceProvider extends ServiceProvider
             return Inertia::render('Auth/Login', [
                 'status' => session('status'),
                 'canResetPassword' => Route::has('password.request'),
-	            'demoMode' => Request::isDemoMode()
+                'demoMode' => Request::isDemoMode(),
             ]);
         });
         Fortify::requestPasswordResetLinkView(function () {

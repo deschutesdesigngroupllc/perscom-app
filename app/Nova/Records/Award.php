@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Award extends Resource
 {
@@ -108,6 +109,9 @@ class Award extends Resource
                     ->hideFromIndex(),
             ]),
             new Panel('Attachments', [BelongsTo::make('Document')->nullable()]),
+            (new DocumentViewerTool())
+                ->withTitle($this->document->name ?? null)
+                ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
         ];
     }
 

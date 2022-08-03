@@ -24,5 +24,6 @@ auth.json
 # Project exclude paths
 /nova-components/DashboardQuickActions/dist/
 /nova-components/DocumentViewerTool/dist/
+/nova-components/HtmlField/dist/
 .editorconfig
 .styleci.yml

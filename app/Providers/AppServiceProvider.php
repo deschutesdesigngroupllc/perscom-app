@@ -21,9 +21,9 @@ class AppServiceProvider extends ServiceProvider
             return collect(config('tenancy.central_domains'))->contains(\request()->getHost());
         });
 
-	    Request::macro('isDemoMode', function () {
-		    return \request()->getHost() === env('TENANT_DEMO_HOST', null);
-	    });
+        Request::macro('isDemoMode', function () {
+            return \request()->getHost() === env('TENANT_DEMO_HOST', null);
+        });
     }
 
     /**

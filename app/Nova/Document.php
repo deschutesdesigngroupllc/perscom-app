@@ -9,7 +9,10 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+use Perscom\HtmlField\HtmlField;
 use Spatie\TagsField\Tags;
+use ThinkStudio\HtmlField\Html;
 
 class Document extends Resource
 {
@@ -55,11 +58,19 @@ class Document extends Resource
                 ->showOnPreview(),
             Trix::make('Content')
                 ->hideFromIndex()
+                ->help(
+                    'Use the document tags below to dynamically inject content into your document when the document is attached to certain records.'
+                )
                 ->rules(['required'])
                 ->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
+            new Panel('Document Tags', [
+                HtmlField::make('Document Tags')
+                    ->view('fields.html.document-tags')
+                    ->onlyOnForms(),
+            ]),
         ];
     }
 

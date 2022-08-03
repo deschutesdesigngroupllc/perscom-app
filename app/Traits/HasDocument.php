@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use App\Models\Document;
+use App\Models\User;
+use Illuminate\Support\Str;
 
 trait HasDocument
 {

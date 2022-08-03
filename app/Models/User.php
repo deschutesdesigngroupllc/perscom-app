@@ -14,6 +14,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Cache;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Sanctum\HasApiTokens;
@@ -50,7 +51,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['assignment', 'rank'];
+    protected $appends = ['assignment', 'rank', 'online_status'];
 
     /**
      * The attributes that should be cast.
@@ -88,6 +89,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getFullNameAttribute()
     {
         return "$this->first_name $this->last_name";
+    }
+
+    /**
+     * @return string
+     */
+    public function getOnlineStatusAttribute()
+    {
+        return Cache::tags('user.online')->has("user.online.$this->id") ? 'online' : 'offline';
     }
 
     /**

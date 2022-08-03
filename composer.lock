@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "196fe12402935ef7dbd89ac87c4ad762",
+    "content-hash": "ac69ecf74ee2551aed29134e7ed0b0fb",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -114,16 +114,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.231.17",
+            "version": "3.231.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "d377e1b62b40a4d9e5d9c9387db7c539f28cb6df"
+                "reference": "76db7b327e023c7bbce77a0bfc9fb4d559e765b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/d377e1b62b40a4d9e5d9c9387db7c539f28cb6df",
-                "reference": "d377e1b62b40a4d9e5d9c9387db7c539f28cb6df",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/76db7b327e023c7bbce77a0bfc9fb4d559e765b3",
+                "reference": "76db7b327e023c7bbce77a0bfc9fb4d559e765b3",
                 "shasum": ""
             },
             "require": {
@@ -200,9 +200,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.231.17"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.231.18"
             },
-            "time": "2022-07-29T18:17:57+00:00"
+            "time": "2022-08-01T18:18:21+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -4731,7 +4731,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-main",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -4767,7 +4767,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-main",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -4793,6 +4793,42 @@
                 "MIT"
             ],
             "description": "A Laravel Nova resource tool.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "perscom/html-field",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/HtmlField",
+                "reference": "44f4c6174dcdc38de19ec95be18e53d66678693b"
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Perscom\\HtmlField\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Perscom\\HtmlField\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
             "keywords": [
                 "laravel",
                 "nova"
@@ -9297,55 +9333,6 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
-        },
-        {
-            "name": "yaroslawww/nova-html-field",
-            "version": "2.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/yaroslawww/nova-html-field.git",
-                "reference": "8e2b4fab78fac6c2d5ec5a6c41f65bea2d642853"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/yaroslawww/nova-html-field/zipball/8e2b4fab78fac6c2d5ec5a6c41f65bea2d642853",
-                "reference": "8e2b4fab78fac6c2d5ec5a6c41f65bea2d642853",
-                "shasum": ""
-            },
-            "require": {
-                "laravel/nova": "^4.0",
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.8"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "ThinkStudio\\HtmlField\\FieldServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "ThinkStudio\\HtmlField\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "HTML Laravel Nova field. (alternative of text field)",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "support": {
-                "issues": "https://github.com/yaroslawww/nova-html-field/issues",
-                "source": "https://github.com/yaroslawww/nova-html-field/tree/2.0.1"
-            },
-            "time": "2022-07-12T14:30:16+00:00"
         }
     ],
     "packages-dev": [

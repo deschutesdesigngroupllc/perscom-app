@@ -35,7 +35,7 @@ class SparkServiceProvider extends ServiceProvider
             return \tenant() &&
                 \tenant()->getTenantKey() === $billable->id &&
                 $request->user()->hasPermissionTo('manage:billing') &&
-	            !Request::isDemoMode();
+                !Request::isDemoMode();
         });
 
         Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {

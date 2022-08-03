@@ -108,7 +108,9 @@ class Service extends Resource
                     ->hideFromIndex(),
             ]),
             new Panel('Attachments', [BelongsTo::make('Document')->nullable()]),
-	        (new DocumentViewerTool())->withDocument($this->document)
+            (new DocumentViewerTool())
+                ->withTitle($this->document->name ?? null)
+                ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
         ];
     }
 
