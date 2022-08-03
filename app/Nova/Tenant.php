@@ -97,11 +97,7 @@ class Tenant extends Resource
                 ->onlyOnDetail(),
             Tabs::make('Relations', [
                 Tab::make('Database', [
-                    Text::make('Database Name', function ($model) {
-                        return $model->tenancy_db_name;
-                    })
-                        ->readonly()
-                        ->onlyOnDetail(),
+                    Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
                     Status::make('Database Status')
                         ->loadingWhen(['creating'])
                         ->failedWhen([])
@@ -116,7 +112,7 @@ class Tenant extends Resource
 		            Text::make('Billing Postal Code')->hideFromIndex(),
 		            Text::make('Billing Country')->hideFromIndex(),
 		            Text::make('VAT ID')->hideFromIndex(),
-		            Email::make('Receipt Emails')->hideFromIndex(),
+		            Text::make('Receipt Emails')->hideFromIndex(),
 		            Textarea::make('Extra Billing Information')->hideFromIndex(),
 		            DateTime::make('Trial Ends At')->hideFromIndex(),
 	            ]),
