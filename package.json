@@ -11,7 +11,7 @@
         "build-document-viewer-tool-install": "cd nova-components/DocumentViewerTool && npm install",
         "build-document-viewer-tool": "cd nova-components/DocumentViewerTool && npm run dev",
         "build-document-viewer-tool-prod": "cd nova-components/DocumentViewerTool && npm run prod",
-        "build-html-field-install": "cd nova-components/HtmlField && npm run install",
+        "build-html-field-install": "cd nova-components/HtmlField && npm install",
         "build-html-field": "cd nova-components/HtmlField && npm run dev",
         "build-html-field-prod": "cd nova-components/HtmlField && npm run prod"
     },
