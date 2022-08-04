@@ -109,7 +109,7 @@ class Tenant extends Resource
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Billing Settings', [
-                    DateTime::make('Trial Ends Ats')->hideFromIndex(),
+                    DateTime::make('Trial Ends At')->hideFromIndex(),
                     Text::make('Card Brand')->hideFromIndex(),
                     Text::make('Card Last Four')
                         ->rules(['nullable', 'max:4'])
