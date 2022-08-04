@@ -197,6 +197,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'Submit A Ticket',
                             'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
                         ),
+	                    MenuItem::externalLink(
+		                    'Suggest A Feature',
+		                    'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/'
+	                    ),
                     ])->icon('support'),
                 ];
             });
