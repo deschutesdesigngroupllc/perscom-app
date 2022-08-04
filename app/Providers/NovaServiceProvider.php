@@ -227,15 +227,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ])
                     ),
                 ]);
-                if (!Request::isDemoMode()) {
-                    $menu->append([
-                        MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (
-                            NovaRequest $request
-                        ) {
-                            return $request->user()->hasPermissionTo('manage:billing');
-                        }),
-                    ]);
-                }
+// TODO: Enable on go live date
+//                if (!Request::isDemoMode()) {
+//                    $menu->append([
+//                        MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (
+//                            NovaRequest $request
+//                        ) {
+//                            return $request->user()->hasPermissionTo('manage:billing');
+//                        }),
+//                    ]);
+//                }
             }
             $menu->append([
                 MenuItem::make('Logout', 'logout')->method('POST', [
