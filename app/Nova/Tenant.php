@@ -81,9 +81,9 @@ class Tenant extends Resource
                     return $url;
                 })
                 ->exceptOnForms(),
-	        Boolean::make('Demo Account', function () {
-	        	return (string) $this->id === (string) env('TENANT_DEMO_ID');
-	        })->readonly(),
+            Boolean::make('Demo Account', function () {
+                return (string) $this->id === (string) env('TENANT_DEMO_ID');
+            })->readonly(),
             Text::make('Domain', 'domain')
                 ->rules(['required', 'string', 'max:255', Rule::unique(Domain::class, 'domain')])
                 ->onlyOnForms()
@@ -108,21 +108,23 @@ class Tenant extends Resource
                         ->readonly(),
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
-	            Tab::make('Billing Settings', [
-		            DateTime::make('Trial Ends At')->hideFromIndex(),
-		            Text::make('Card Brand')->hideFromIndex(),
-		            Text::make('Card Last Four')->rules(['size:4'])->hideFromIndex(),
-		            Text::make('Receipt Emails')->hideFromIndex(),
-		            Heading::make('Billing Address'),
-		            Text::make('Billing Address')->hideFromIndex(),
-		            Text::make('Billing Address Line 2')->hideFromIndex(),
-		            Text::make('Billing City')->hideFromIndex(),
-		            Text::make('Billing State')->hideFromIndex(),
-		            Text::make('Billing Postal Code')->hideFromIndex(),
-		            Country::make('Billing Country')->hideFromIndex(),
-		            Text::make('VAT ID')->hideFromIndex(),
-		            Textarea::make('Extra Billing Information')->hideFromIndex(),
-	            ]),
+                Tab::make('Billing Settings', [
+                    DateTime::make('Trial Ends At')->hideFromIndex(),
+                    Text::make('Card Brand')->hideFromIndex(),
+                    Text::make('Card Last Four')
+                        ->rules(['nullable', 'max:4'])
+                        ->hideFromIndex(),
+                    Text::make('Receipt Emails')->hideFromIndex(),
+                    Heading::make('Billing Address'),
+                    Text::make('Billing Address')->hideFromIndex(),
+                    Text::make('Billing Address Line 2')->hideFromIndex(),
+                    Text::make('Billing City')->hideFromIndex(),
+                    Text::make('Billing State')->hideFromIndex(),
+                    Text::make('Billing Postal Code')->hideFromIndex(),
+                    Country::make('Billing Country')->hideFromIndex(),
+                    Text::make('VAT ID')->hideFromIndex(),
+                    Textarea::make('Extra Billing Information')->hideFromIndex(),
+                ]),
                 Tab::make('Current Subscription', [
                     Boolean::make('Customer', function ($model) {
                         return $model->hasStripeId();
