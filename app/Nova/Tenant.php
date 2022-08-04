@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\HasMany;
@@ -80,6 +81,9 @@ class Tenant extends Resource
                     return $url;
                 })
                 ->exceptOnForms(),
+	        Boolean::make('Demo Account', function () {
+	        	return (string) $this->id === (string) env('TENANT_DEMO_ID');
+	        })->readonly(),
             Text::make('Domain', 'domain')
                 ->rules(['required', 'string', 'max:255', Rule::unique(Domain::class, 'domain')])
                 ->onlyOnForms()
@@ -105,16 +109,19 @@ class Tenant extends Resource
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
 	            Tab::make('Billing Settings', [
+		            DateTime::make('Trial Ends At')->hideFromIndex(),
+		            Text::make('Card Brand')->hideFromIndex(),
+		            Text::make('Card Last Four')->rules(['size:4'])->hideFromIndex(),
+		            Text::make('Receipt Emails')->hideFromIndex(),
+		            Heading::make('Billing Address'),
 		            Text::make('Billing Address')->hideFromIndex(),
 		            Text::make('Billing Address Line 2')->hideFromIndex(),
 		            Text::make('Billing City')->hideFromIndex(),
 		            Text::make('Billing State')->hideFromIndex(),
 		            Text::make('Billing Postal Code')->hideFromIndex(),
-		            Text::make('Billing Country')->hideFromIndex(),
+		            Country::make('Billing Country')->hideFromIndex(),
 		            Text::make('VAT ID')->hideFromIndex(),
-		            Text::make('Receipt Emails')->hideFromIndex(),
 		            Textarea::make('Extra Billing Information')->hideFromIndex(),
-		            DateTime::make('Trial Ends At')->hideFromIndex(),
 	            ]),
                 Tab::make('Current Subscription', [
                     Boolean::make('Customer', function ($model) {
