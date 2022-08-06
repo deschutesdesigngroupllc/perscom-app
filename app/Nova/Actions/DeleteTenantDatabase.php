@@ -19,15 +19,15 @@ class DeleteTenantDatabase extends DestructiveAction
      */
     public $name = 'Delete Database';
 
-	/**
-	 * @var string
-	 */
-	public $confirmButtonText = 'Delete Database';
+    /**
+     * @var string
+     */
+    public $confirmButtonText = 'Delete Database';
 
-	/**
-	 * @var string
-	 */
-	public $confirmText = 'Are you sure you want to delete this tenant\'s database?';
+    /**
+     * @var string
+     */
+    public $confirmText = 'Are you sure you want to delete this tenant\'s database?';
 
     /**
      * Perform the action on the given models.
@@ -45,7 +45,7 @@ class DeleteTenantDatabase extends DestructiveAction
             ]);
         }
 
-	    return Action::message('The tenant\'s database has been deleted.');
+        return Action::message('The tenant\'s database has been deleted.');
     }
 
     /**

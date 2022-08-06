@@ -28,9 +28,9 @@ class CreateTenantUser extends Action
      */
     public $name = 'Create New User';
 
-	/**
-	 * @var string
-	 */
+    /**
+     * @var string
+     */
     public $confirmButtonText = 'Create User';
 
     /**

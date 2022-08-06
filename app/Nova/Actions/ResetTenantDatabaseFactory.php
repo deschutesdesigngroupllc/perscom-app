@@ -23,15 +23,15 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
      */
     public $name = 'Reset Database To Factory';
 
-	/**
-	 * @var string
-	 */
-	public $confirmButtonText = 'Reset Tenant';
+    /**
+     * @var string
+     */
+    public $confirmButtonText = 'Reset Tenant';
 
-	/**
-	 * @var string
-	 */
-	public $confirmText = 'Are you sure you want to reset this tenant\'s database to factory?';
+    /**
+     * @var string
+     */
+    public $confirmText = 'Are you sure you want to reset this tenant\'s database to factory?';
 
     /**
      * Perform the action on the given models.

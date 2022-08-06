@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class NewTenantCreatedMail extends Mailable
+class TenantDeletedMail extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -29,15 +29,14 @@ class NewTenantCreatedMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.admin.tenant.new')
-            ->subject('New Tenant Created')
+        return $this->markdown('emails.admin.tenant.deleted')
+            ->subject('Tenant Deleted')
             ->with([
                 'organization' => $this->tenant->name,
                 'email' => $this->tenant->email,
                 'domain' => $this->tenant->url,
-                'url' => route('nova.pages.detail', [
-                    'resource' => 'tenants',
-                    'resourceId' => $this->tenant->getTenantKey(),
+                'url' => route('nova.pages.index', [
+                    'resource' => \App\Nova\Tenant::uriKey()
                 ]),
             ]);
     }

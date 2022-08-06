@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Admin;
 
+use App\Mail\Admin\TenantDeletedMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -48,18 +49,7 @@ class TenantDeleted extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())
-            ->subject('Tenant Deleted')
-            ->line('A tenant has been deleted.')
-            ->action(
-                'View Tenant',
-                URL::remote(
-                    route('nova.pages.detail', [
-                        'resource' => 'tenants',
-                        'resourceId' => $this->tenant->getTenantKey(),
-                    ])
-                )
-            );
+        return (new TenantDeletedMail($this->tenant))->to($notifiable->email);
     }
 
     /**

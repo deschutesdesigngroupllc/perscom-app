@@ -32,12 +32,12 @@ class SparkServiceProvider extends ServiceProvider
         });
 
         Spark::billable(Tenant::class)->authorize(function (Tenant $billable, Request $request) {
-        	return false;
-// TODO: Enable on go live date
-//            return \tenant() &&
-//                \tenant()->getTenantKey() === $billable->id &&
-//                $request->user()->hasPermissionTo('manage:billing') &&
-//                !Request::isDemoMode();
+            return false;
+            // TODO: Enable on go live date
+            //            return \tenant() &&
+            //                \tenant()->getTenantKey() === $billable->id &&
+            //                $request->user()->hasPermissionTo('manage:billing') &&
+            //                !Request::isDemoMode();
         });
 
         Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {

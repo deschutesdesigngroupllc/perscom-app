@@ -2,7 +2,7 @@
 
 namespace App\Notifications\Admin;
 
-use App\Mail\Admin\NewTenantCreatedMail;
+use App\Mail\Admin\NewTenantMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -49,7 +49,7 @@ class NewTenant extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new NewTenantCreatedMail($this->tenant))->to($notifiable->email);
+        return (new NewTenantMail($this->tenant))->to($notifiable->email);
     }
 
     /**
