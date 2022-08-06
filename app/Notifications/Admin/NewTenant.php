@@ -2,6 +2,7 @@
 
 namespace App\Notifications\Admin;
 
+use App\Mail\Admin\NewTenantCreatedMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -48,18 +49,7 @@ class NewTenant extends Notification
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())
-            ->subject('New Tenant Created')
-            ->line('A new tenant has been created.')
-            ->action(
-                'View Tenant',
-                URL::remote(
-                    route('nova.pages.detail', [
-                        'resource' => 'tenants',
-                        'resourceId' => $this->tenant->getTenantKey(),
-                    ])
-                )
-            );
+        return (new NewTenantCreatedMail($this->tenant))->to($notifiable->email);
     }
 
     /**
