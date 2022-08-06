@@ -18,6 +18,11 @@ class CreateTenantDatabase extends Action
      */
     public $name = 'Create New Database';
 
+	/**
+	 * @var string
+	 */
+	public $confirmButtonText = 'Create Database';
+
     /**
      * Perform the action on the given models.
      *

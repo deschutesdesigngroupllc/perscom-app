@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Actions\DestructiveAction;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -21,6 +22,16 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
      * @var string
      */
     public $name = 'Reset Database To Factory';
+
+	/**
+	 * @var string
+	 */
+	public $confirmButtonText = 'Reset Tenant';
+
+	/**
+	 * @var string
+	 */
+	public $confirmText = 'Are you sure you want to reset this tenant\'s database to factory?';
 
     /**
      * Perform the action on the given models.
@@ -40,6 +51,8 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
                 '--tenants' => $model->getTenantKey(),
             ]);
         }
+
+        return Action::message('The tenant\'s database has been reset to factory.');
     }
 
     /**

@@ -33,7 +33,7 @@ class NewAwardRecord extends Notification implements ShouldQueue
     public function __construct(Award $record)
     {
         $this->record = $record;
-        $this->url = tenant_route(tenant()->domain->domain, 'nova.pages.detail', [
+        $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\Records\Award::uriKey(),
             'resourceId' => $this->record->id,
         ]);

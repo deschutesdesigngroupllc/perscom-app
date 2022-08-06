@@ -4,6 +4,7 @@ namespace App\Nova\Actions;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Actions\DestructiveAction;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -17,6 +18,16 @@ class DeleteTenantDatabase extends DestructiveAction
      * @var string
      */
     public $name = 'Delete Database';
+
+	/**
+	 * @var string
+	 */
+	public $confirmButtonText = 'Delete Database';
+
+	/**
+	 * @var string
+	 */
+	public $confirmText = 'Are you sure you want to delete this tenant\'s database?';
 
     /**
      * Perform the action on the given models.
@@ -33,6 +44,8 @@ class DeleteTenantDatabase extends DestructiveAction
                 'tenancy_db_name' => null,
             ]);
         }
+
+	    return Action::message('The tenant\'s database has been deleted.');
     }
 
     /**

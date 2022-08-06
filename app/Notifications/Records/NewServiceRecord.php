@@ -32,9 +32,8 @@ class NewServiceRecord extends Notification implements ShouldQueue
      */
     public function __construct(Service $record)
     {
-        // TODO: Fix tenant route
         $this->record = $record;
-        $this->url = tenant_route(tenant()->domain->domain, 'nova.pages.detail', [
+        $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\Records\Service::uriKey(),
             'resourceId' => $this->record->id,
         ]);

@@ -33,7 +33,7 @@ class NewAssignmentRecord extends Notification implements ShouldQueue
     public function __construct(Assignment $record)
     {
         $this->record = $record;
-        $this->url = tenant_route(tenant()->domain->domain, 'nova.pages.detail', [
+        $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\Records\Assignment::uriKey(),
             'resourceId' => $this->record->id,
         ]);
