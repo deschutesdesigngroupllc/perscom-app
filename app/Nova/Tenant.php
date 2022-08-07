@@ -8,6 +8,7 @@ use App\Nova\Actions\CreateTenantDatabase;
 use App\Nova\Actions\CreateTenantUser;
 use App\Nova\Actions\DeleteTenantDatabase;
 use App\Nova\Actions\ResetTenantDatabaseFactory;
+use App\Nova\Actions\ResetTenantTrialDate;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
@@ -109,13 +110,6 @@ class Tenant extends Resource
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Billing Settings', [
-                    DateTime::make('Trial Ends At')->hideFromIndex(),
-                    Text::make('Card Brand')->hideFromIndex(),
-                    Text::make('Card Last Four')
-                        ->rules(['nullable', 'max:4'])
-                        ->hideFromIndex(),
-                    Text::make('Receipt Emails')->hideFromIndex(),
-                    Heading::make('Billing Address'),
                     Text::make('Billing Address')->hideFromIndex(),
                     Text::make('Billing Address Line 2')->hideFromIndex(),
                     Text::make('Billing City')->hideFromIndex(),
@@ -143,8 +137,8 @@ class Tenant extends Resource
                         ->onlyOnDetail()
                         ->readonly(),
                     DateTime::make('Trial Ends At')
-                        ->onlyOnDetail()
-                        ->readonly(),
+                        ->hideFromIndex(),
+	                Text::make('Receipt Emails')->hideFromIndex()
                 ]),
                 Tab::make('All Subscriptions', [HasMany::make('Subscriptions')]),
                 Tab::make('Receipts', [HasMany::make('Receipts', 'localReceipts', Receipt::class)]),
@@ -222,7 +216,8 @@ class Tenant extends Resource
         return [
             new CreateTenantUser(),
             new CreateTenantDatabase(),
-            new DeleteTenantDatabase(),
+	        new ResetTenantTrialDate(),
+	        new DeleteTenantDatabase(),
             new ResetTenantDatabaseFactory(),
         ];
     }
