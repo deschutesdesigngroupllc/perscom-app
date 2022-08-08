@@ -7,6 +7,7 @@ use App\Models\Tenant as TenantModel;
 use App\Nova\Actions\CreateTenantDatabase;
 use App\Nova\Actions\CreateTenantUser;
 use App\Nova\Actions\DeleteTenantDatabase;
+use App\Nova\Actions\ImpersonateTenant;
 use App\Nova\Actions\ResetTenantDatabaseFactory;
 use App\Nova\Actions\ResetTenantTrialDate;
 use Eminiarts\Tabs\Tab;
@@ -216,6 +217,7 @@ class Tenant extends Resource
             new CreateTenantUser(),
             new CreateTenantDatabase(),
             new ResetTenantTrialDate(),
+            (new ImpersonateTenant())->onlyOnDetail(),
             new DeleteTenantDatabase(),
             new ResetTenantDatabaseFactory(),
         ];
