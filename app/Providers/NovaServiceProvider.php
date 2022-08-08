@@ -188,12 +188,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->icon('document-text')
                         ->collapsable(),
 
-                    MenuSection::make('External Integration', [
-                        MenuGroup::make('OAuth 2.0', [MenuItem::resource(Client::class)]),
-                        MenuGroup::make('API', [MenuItem::resource(Token::class)]),
-                    ])
-                        ->icon('link')
-                        ->collapsable(),
+//                    MenuSection::make('External Integration', [
+//                        MenuGroup::make('OAuth 2.0', [MenuItem::resource(Client::class)]),
+//                        MenuGroup::make('API', [MenuItem::resource(Token::class)]),
+//                    ])
+//                        ->icon('link')
+//                        ->collapsable(),
 
                     MenuSection::make('Settings', [
                         MenuItem::resource(Field::class),
