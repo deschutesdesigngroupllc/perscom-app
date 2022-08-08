@@ -6,7 +6,7 @@ import { Guest } from "@/Layouts/Guest";
 import { Input } from "@/Components/Input";
 import { Label } from "@/Components/Label";
 import { ValidationErrors } from "@/Components/ValidationErrors";
-import { Head, Link, useForm } from "@inertiajs/inertia-react";
+import { Head, Link, useForm, usePage } from "@inertiajs/inertia-react";
 
 export default function Login({ status, canResetPassword, demoMode }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -30,6 +30,8 @@ export default function Login({ status, canResetPassword, demoMode }) {
         post(route("login"));
     };
 
+    const { tenant } = usePage().props;
+
     return (
         <Guest>
             <Head title="Log in" />
@@ -37,9 +39,16 @@ export default function Login({ status, canResetPassword, demoMode }) {
             {status && <div className="mb-4 text-sm font-medium text-green-600">{status}</div>}
 
             {demoMode && (
-                <div class="mb-4">
+                <div className="mb-4">
                     <div className="text-lg font-bold leading-7 text-gray-600">Welcome to the PERSCOM Demo</div>
                     <div className="text-sm text-gray-500">Use the login information below to get started.</div>
+                </div>
+            )}
+
+            {tenant && !demoMode && (
+                <div className="mb-4">
+                    <div className="text-sm text-gray-500">Welcome,</div>
+                    <div className="text-lg font-bold leading-7 text-gray-600">{tenant}</div>
                 </div>
             )}
 

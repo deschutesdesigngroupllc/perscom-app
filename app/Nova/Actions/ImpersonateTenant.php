@@ -53,17 +53,17 @@ class ImpersonateTenant extends Action
      */
     public function fields(NovaRequest $request)
     {
-	    if ($request->resourceId) {
-		    $tenant = Tenant::findOrFail($request->resourceId);
-		    $options = $tenant->run(function ($tenant) {
-			    return User::all()
-				    ->mapWithKeys(function ($user) {
-					    return [$user->id => $user->name];
-				    })
-				    ->sort()
-				    ->toArray();
-		    });
-	    }
+        if ($request->resourceId) {
+            $tenant = Tenant::findOrFail($request->resourceId);
+            $options = $tenant->run(function ($tenant) {
+                return User::all()
+                    ->mapWithKeys(function ($user) {
+                        return [$user->id => $user->name];
+                    })
+                    ->sort()
+                    ->toArray();
+            });
+        }
 
         return [
             Select::make('User')
