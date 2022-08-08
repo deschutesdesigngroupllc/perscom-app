@@ -5,8 +5,10 @@ namespace App\Providers;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Events\TenancyBootstrapped;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,6 +26,11 @@ class AppServiceProvider extends ServiceProvider
         Request::macro('isDemoMode', function () {
             return \request()->getHost() === env('TENANT_DEMO_HOST', null);
         });
+
+        Passport::ignoreMigrations();
+        Passport::routes(null, [
+            'middleware' => [InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class],
+        ]);
     }
 
     /**
