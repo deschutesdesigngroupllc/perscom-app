@@ -32,7 +32,7 @@ use App\Nova\Specialty;
 use App\Nova\Status;
 use App\Nova\Subscription;
 use App\Nova\Tenant;
-use App\Nova\TenantUser;
+//use App\Nova\TenantUser;
 use App\Nova\Unit;
 use App\Nova\User;
 use Illuminate\Http\Request;
@@ -94,7 +94,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Domain::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
-                        MenuItem::resource(TenantUser::class)->name('Users'),
+//                        MenuItem::resource(TenantUser::class)->name('Users'),
                     ])
                         ->icon('terminal')
                         ->collapsable(),
