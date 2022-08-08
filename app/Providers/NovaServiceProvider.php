@@ -94,7 +94,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Domain::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
-//                        MenuItem::resource(TenantUser::class)->name('Users'),
                     ])
                         ->icon('terminal')
                         ->collapsable(),
