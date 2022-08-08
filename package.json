@@ -13,7 +13,10 @@
         "build-document-viewer-tool-prod": "cd nova-components/DocumentViewerTool && npm run prod",
         "build-html-field-install": "cd nova-components/HtmlField && npm install",
         "build-html-field": "cd nova-components/HtmlField && npm run dev",
-        "build-html-field-prod": "cd nova-components/HtmlField && npm run prod"
+        "build-html-field-prod": "cd nova-components/HtmlField && npm run prod",
+        "build-alert-card-install": "cd nova-components/AlertCard && npm install",
+        "build-alert-card": "cd nova-components/AlertCard && npm run dev",
+        "build-alert-card-prod": "cd nova-components/AlertCard && npm run prod"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",

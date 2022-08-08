@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Nova\ActionEvent;
 use App\Nova\Admin as AdminResource;
+use App\Nova\Announcement;
 use App\Nova\Award;
 use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
@@ -13,6 +14,8 @@ use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
 use App\Nova\Lenses\CurrentUsersSubmissions;
+use App\Nova\Passport\Client;
+use App\Nova\Passport\Token;
 use App\Nova\Permission;
 use App\Nova\Position;
 use App\Nova\Qualification;
@@ -29,6 +32,7 @@ use App\Nova\Specialty;
 use App\Nova\Status;
 use App\Nova\Subscription;
 use App\Nova\Tenant;
+use App\Nova\TenantUser;
 use App\Nova\Unit;
 use App\Nova\User;
 use Illuminate\Http\Request;
@@ -37,6 +41,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
+use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -89,6 +94,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Domain::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
+                        MenuItem::resource(TenantUser::class)->name('Users'),
                     ])
                         ->icon('terminal')
                         ->collapsable(),
@@ -146,6 +152,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])->icon('user-circle'),
 
                     MenuSection::make('Organization', [
+                        MenuItem::resource(Announcement::class),
                         MenuItem::resource(Award::class),
                         MenuItem::resource(Document::class),
                         MenuItem::resource(Position::class),
@@ -181,6 +188,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->icon('document-text')
                         ->collapsable(),
 
+                    MenuSection::make('External Integration', [
+                        MenuGroup::make('OAuth 2.0', [MenuItem::resource(Client::class)]),
+                        MenuGroup::make('API', [MenuItem::resource(Token::class)]),
+                    ])
+                        ->icon('link')
+                        ->collapsable(),
+
                     MenuSection::make('Settings', [
                         MenuItem::resource(Field::class),
                         MenuItem::resource(ActionEvent::class),
@@ -197,10 +211,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'Submit A Ticket',
                             'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
                         ),
-	                    MenuItem::externalLink(
-		                    'Suggest A Feature',
-		                    'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/'
-	                    ),
+                        MenuItem::externalLink(
+                            'Suggest A Feature',
+                            'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/'
+                        ),
                     ])->icon('support'),
                 ];
             });
@@ -227,16 +241,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ])
                     ),
                 ]);
-// TODO: Enable on go live date
-//                if (!Request::isDemoMode()) {
-//                    $menu->append([
-//                        MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (
-//                            NovaRequest $request
-//                        ) {
-//                            return $request->user()->hasPermissionTo('manage:billing');
-//                        }),
-//                    ]);
-//                }
+                // TODO: Enable on go live date
+                //                if (!Request::isDemoMode()) {
+                //                    $menu->append([
+                //                        MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (
+                //                            NovaRequest $request
+                //                        ) {
+                //                            return $request->user()->hasPermissionTo('manage:billing');
+                //                        }),
+                //                    ]);
+                //                }
             }
             $menu->append([
                 MenuItem::make('Logout', 'logout')->method('POST', [

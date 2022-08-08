@@ -136,9 +136,8 @@ class Tenant extends Resource
                     Text::make('Card Last Four')
                         ->onlyOnDetail()
                         ->readonly(),
-                    DateTime::make('Trial Ends At')
-                        ->hideFromIndex(),
-	                Text::make('Receipt Emails')->hideFromIndex()
+                    DateTime::make('Trial Ends At')->hideFromIndex(),
+                    Text::make('Receipt Emails')->hideFromIndex(),
                 ]),
                 Tab::make('All Subscriptions', [HasMany::make('Subscriptions')]),
                 Tab::make('Receipts', [HasMany::make('Receipts', 'localReceipts', Receipt::class)]),
@@ -216,8 +215,8 @@ class Tenant extends Resource
         return [
             new CreateTenantUser(),
             new CreateTenantDatabase(),
-	        new ResetTenantTrialDate(),
-	        new DeleteTenantDatabase(),
+            new ResetTenantTrialDate(),
+            new DeleteTenantDatabase(),
             new ResetTenantDatabaseFactory(),
         ];
     }

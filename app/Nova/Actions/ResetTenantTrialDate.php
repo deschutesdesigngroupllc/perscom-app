@@ -15,19 +15,19 @@ class ResetTenantTrialDate extends Action
 {
     use InteractsWithQueue, Queueable;
 
-	/**
-	 * The displayable name of the action.
-	 *
-	 * @var string
-	 */
-	public $name = 'Reset Trial Ends At Date';
+    /**
+     * The displayable name of the action.
+     *
+     * @var string
+     */
+    public $name = 'Reset Trial Ends At Date';
 
-	/**
-	 * @var string
-	 */
-	public $confirmButtonText = 'Reset Trial Ends At Date';
+    /**
+     * @var string
+     */
+    public $confirmButtonText = 'Reset Trial Ends At Date';
 
-	/**
+    /**
      * Perform the action on the given models.
      *
      * @param  \Laravel\Nova\Fields\ActionFields  $fields
@@ -36,12 +36,12 @@ class ResetTenantTrialDate extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-	    foreach ($models as $model) {
-		    $model->forceFill([
-		    	'trial_ends_at' => $fields->trial_ends_at
-		    ]);
-		    $model->save();
-	    }
+        foreach ($models as $model) {
+            $model->forceFill([
+                'trial_ends_at' => $fields->trial_ends_at,
+            ]);
+            $model->save();
+        }
     }
 
     /**
@@ -52,8 +52,6 @@ class ResetTenantTrialDate extends Action
      */
     public function fields(NovaRequest $request)
     {
-        return [
-        	DateTime::make('Trial Ends At')
-        ];
+        return [DateTime::make('Trial Ends At')];
     }
 }

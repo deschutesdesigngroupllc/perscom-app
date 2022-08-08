@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Announcement;
 use App\Models\Award;
 use App\Models\Document;
 use App\Models\Forms\Form;
@@ -21,6 +22,7 @@ use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
 use App\Policies\ActionEventPolicy;
+use App\Policies\AnnouncementPolicy;
 use App\Policies\AssignmentRecordsPolicy;
 use App\Policies\AwardPolicy;
 use App\Policies\AwardRecordsPolicy;
@@ -55,6 +57,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         ActionEvent::class => ActionEventPolicy::class,
+        Announcement::class => AnnouncementPolicy::class,
         Award::class => AwardPolicy::class,
         AwardRecords::class => AwardRecordsPolicy::class,
         AssignmentRecords::class => AssignmentRecordsPolicy::class,

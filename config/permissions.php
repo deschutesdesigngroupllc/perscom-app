@@ -5,6 +5,10 @@ return [
 		'Admin' => 'Has permission to perform any action on the platform.'
 	],
 	'permissions' => [
+		'view:announcement' => 'Can view an announcement',
+		'create:announcement' => 'Can create an announcement',
+		'update:announcement' => 'Can update an announcement',
+		'delete:announcement' => 'Can delete an announcement',
 		'view:award' => 'Can view an award',
 		'create:award' => 'Can create an award',
 		'update:award' => 'Can update an award',

@@ -36,7 +36,7 @@ class TenantDeletedMail extends Mailable
                 'email' => $this->tenant->email,
                 'domain' => $this->tenant->url,
                 'url' => route('nova.pages.index', [
-                    'resource' => \App\Nova\Tenant::uriKey()
+                    'resource' => \App\Nova\Tenant::uriKey(),
                 ]),
             ]);
     }
