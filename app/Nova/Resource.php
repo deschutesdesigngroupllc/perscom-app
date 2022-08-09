@@ -7,6 +7,13 @@ use Laravel\Nova\Resource as NovaResource;
 
 abstract class Resource extends NovaResource
 {
+	/**
+	 * Indicates whether Nova should check for modifications between viewing and updating a resource.
+	 *
+	 * @var bool
+	 */
+	public static $trafficCop = false;
+
     /**
      * Build an "index" query for the given resource.
      *
