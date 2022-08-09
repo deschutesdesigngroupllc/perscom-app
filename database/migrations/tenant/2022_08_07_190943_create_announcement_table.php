@@ -29,55 +29,6 @@ return new class extends Migration
             $table->timestamp('expires_at')->nullable();
             $table->timestamps();
         });
-
-        $id1 = DB::table('permissions')->insertGetId([
-			'name' => 'view:announcement',
-	        'description' => 'Can view an announcement',
-	        'guard_name' => 'web',
-	        'created_at' => now(),
-	        'updated_at' => now()
-        ]);
-
-	    $id2 = DB::table('permissions')->insertGetId([
-		    'name' => 'create:announcement',
-		    'description' => 'Can create an announcement',
-		    'guard_name' => 'web',
-		    'created_at' => now(),
-		    'updated_at' => now()
-	    ]);
-
-	    $id3 = DB::table('permissions')->insertGetId([
-		    'name' => 'update:announcement',
-		    'description' => 'Can update an announcement',
-		    'guard_name' => 'web',
-		    'created_at' => now(),
-		    'updated_at' => now()
-	    ]);
-
-	    $id4 = DB::table('permissions')->insertGetId([
-		    'name' => 'delete:announcement',
-		    'description' => 'Can delete an announcement',
-		    'guard_name' => 'web',
-		    'created_at' => now(),
-		    'updated_at' => now()
-	    ]);
-
-	    DB::table('role_has_permissions')->insert([
-	    	'permission_id' => $id1,
-		    'role_id' => 1
-	    ]);
-	    DB::table('role_has_permissions')->insert([
-		    'permission_id' => $id2,
-		    'role_id' => 1
-	    ]);
-	    DB::table('role_has_permissions')->insert([
-		    'permission_id' => $id3,
-		    'role_id' => 1
-	    ]);
-	    DB::table('role_has_permissions')->insert([
-		    'permission_id' => $id4,
-		    'role_id' => 1
-	    ]);
     }
 
     /**
