@@ -3,6 +3,7 @@
 namespace App\Models\Records;
 
 use App\Models\User;
+use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -10,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Service extends Model
 {
+	use HasAttachments;
     use HasAuthor;
     use HasDocument;
     use HasFactory;

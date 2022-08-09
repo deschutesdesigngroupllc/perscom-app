@@ -2,23 +2,25 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Rank extends Resource
+class Attachment extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Rank::class;
+    public static $model = \App\Models\Attachment::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -44,25 +46,16 @@ class Rank extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Text::make('Abbreviation')
-                ->sortable()
-                ->nullable()
-                ->showOnPreview(),
-            Text::make('Paygrade')
-                ->sortable()
-                ->nullable()
-                ->showOnPreview(),
-            Image::make('Image')
-                ->disk('s3_public')
+            Text::make('Name'),
+            File::make('File', 'path')
+                ->storeOriginalName('filename')
                 ->prunable(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            URL::make('Download', function () {
+                return Storage::temporaryUrl($this->path, now()->addMinute(), [
+                    'disk' => 's3',
+                ]);
+            })->onlyOnIndex(),
+            MorphTo::make('Resource', 'model')->exceptOnForms(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
