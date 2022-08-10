@@ -65,7 +65,7 @@ class PermissionPolicy
      */
     public function update(User $user, Permission $permission)
     {
-        if (collect(config('permissions.permissions'))->has($permission->name)) {
+        if ($permission->is_application_permission) {
             return false;
         }
         return $user->hasPermissionTo('update:permission');
@@ -80,7 +80,7 @@ class PermissionPolicy
      */
     public function delete(User $user, Permission $permission)
     {
-        if (collect(config('permissions.permissions'))->has($permission->name)) {
+        if ($permission->is_application_permission) {
             return false;
         }
         return $user->hasPermissionTo('delete:permission');
@@ -96,7 +96,7 @@ class PermissionPolicy
      */
     public function detachRole(User $user, Permission $permission, Role $role)
     {
-        if (collect(config('permissions.roles'))->has($role->name)) {
+        if ($permission->is_application_permission && $role->is_application_role) {
             return false;
         }
         return $user->hasPermissionTo('update:permission');

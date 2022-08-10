@@ -124,7 +124,7 @@ class Assignment extends Resource
             (new DocumentViewerTool())
                 ->withTitle($this->document->name ?? null)
                 ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
-            MorphMany::make('Attachments', 'attachments', Attachment::class)
+            MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
 

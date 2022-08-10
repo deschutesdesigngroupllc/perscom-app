@@ -62,74 +62,12 @@ class Permission extends Resource
                 return $model->description;
             })->onlyOnIndex(),
             Boolean::make('Custom Permission', function ($permission) {
-                return !collect(config('permissions.permissions'))->has($permission->name);
+                return $permission->is_custom_permission;
             }),
             Boolean::make('Application Permission', function ($permission) {
-                return collect(config('permissions.permissions'))->has($permission->name);
+                return $permission->is_application_permission;
             }),
             BelongsToMany::make('Roles')->showCreateRelationButton(),
-            //	        Panel::make('Organization', [
-            //		        BooleanGroup::make('Awards')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Documents')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Permissions')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Positions')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Qualifications')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Specialties')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Ranks')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Roles')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Units')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Users')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //	        ])->collapsable(),
         ];
     }
 

@@ -12,7 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Qualification extends Model
 {
-	use HasAttachments;
+    use HasAttachments;
     use HasAuthor;
     use HasDocument;
     use HasFactory;

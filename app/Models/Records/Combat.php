@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Combat extends Model
 {
-	use HasAttachments;
+    use HasAttachments;
     use HasAuthor;
     use HasDocument;
     use HasFactory;

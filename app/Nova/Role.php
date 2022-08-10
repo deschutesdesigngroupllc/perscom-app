@@ -62,10 +62,10 @@ class Role extends Resource
                 return $model->description;
             })->onlyOnIndex(),
             Boolean::make('Custom Role', function ($role) {
-                return !collect(config('permissions.roles'))->has($role->name);
+                return $role->is_custom_role;
             }),
             Boolean::make('Application Role', function ($role) {
-                return collect(config('permissions.roles'))->has($role->name);
+                return $role->is_application_role;
             }),
             BelongsToMany::make('Permissions')
                 ->showCreateRelationButton()
