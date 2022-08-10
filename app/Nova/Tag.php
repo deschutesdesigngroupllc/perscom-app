@@ -41,7 +41,7 @@ class Tag extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name')
-                ->required()
+                ->rules('required')
                 ->sortable(),
             MorphMany::make('Resources', 'taggables', Taggable::class),
         ];

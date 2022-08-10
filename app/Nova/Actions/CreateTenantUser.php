@@ -78,8 +78,8 @@ class CreateTenantUser extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make('Name')->required(),
-            Email::make('Email')->required(),
+            Text::make('Name')->rules('required'),
+            Email::make('Email')->rules('required'),
             Text::make('Password')
                 ->withMeta([
                     'extraAttributes' => [

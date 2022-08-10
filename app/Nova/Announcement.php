@@ -43,8 +43,8 @@ class Announcement extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Title')->required(),
-            Trix::make('Content')->required(),
+            Text::make('Title')->rules('required'),
+            Trix::make('Content')->rules('required'),
             Select::make('Color')
                 ->displayUsingLabels()
                 ->options([
@@ -53,7 +53,7 @@ class Announcement extends Resource
                     'warning' => 'Warning',
                     'danger' => 'Danger',
                 ])
-                ->required()
+                ->rules('required')
                 ->default(function () {
                     return 'info';
                 }),

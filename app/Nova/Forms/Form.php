@@ -88,7 +88,7 @@ class Form extends Resource
                         return [
                             Number::make('Order')
                                 ->sortable()
-                                ->required(),
+                                ->rules('required'),
                         ];
                     }),
                 ]),

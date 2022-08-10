@@ -102,7 +102,7 @@ class Submission extends Resource
             if ($novaField instanceof Field) {
                 // Required
                 if ($field->required && method_exists($novaField, 'required')) {
-                    $novaField->required();
+                    $novaField->rules('required');
                 }
 
                 // Placeholder

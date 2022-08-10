@@ -244,10 +244,9 @@ class User extends Resource
                 HasMany::make('Submission Records', 'submissions', Submission::class),
                 HasMany::make('Qualification Records', 'qualification_records', QualificationRecords::class),
             ])->showTitle(true),
-            Tabs::make('Permissions', [
-                MorphedByMany::make('Roles'),
-                MorphedByMany::make('Permissions'),
-            ])->showTitle(true),
+            Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])->showTitle(
+                true
+            ),
         ];
     }
 
