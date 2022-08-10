@@ -94,15 +94,12 @@ class Assignment extends Resource
             ID::make()->sortable(),
             BelongsTo::make('User')->sortable(),
             BelongsTo::make('Unit')
-                ->searchable()
                 ->sortable()
                 ->showCreateRelationButton(),
             BelongsTo::make('Position')
-                ->searchable()
                 ->sortable()
                 ->showCreateRelationButton(),
             BelongsTo::make('Specialty')
-                ->searchable()
                 ->sortable()
                 ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),

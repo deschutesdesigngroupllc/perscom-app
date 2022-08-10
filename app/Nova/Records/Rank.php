@@ -96,7 +96,6 @@ class Rank extends Resource
             ID::make()->sortable(),
             BelongsTo::make('User')->sortable(),
             BelongsTo::make('Rank')
-                ->searchable()
                 ->sortable()
                 ->showCreateRelationButton(),
             Select::make('Type')

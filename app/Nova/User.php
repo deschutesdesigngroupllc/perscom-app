@@ -245,8 +245,8 @@ class User extends Resource
                 HasMany::make('Qualification Records', 'qualification_records', QualificationRecords::class),
             ])->showTitle(true),
             Tabs::make('Permissions', [
-                MorphedByMany::make('Roles')->searchable(),
-                MorphedByMany::make('Permissions')->searchable(),
+                MorphedByMany::make('Roles'),
+                MorphedByMany::make('Permissions'),
             ])->showTitle(true),
         ];
     }

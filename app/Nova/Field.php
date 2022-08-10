@@ -92,7 +92,6 @@ class Field extends Resource
                     })
                 )
                 ->sortable()
-                ->searchable()
                 ->displayUsingLabels(),
             Boolean::make('Required')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                 if ($formData->type === 'Heading' || $formData->type === 'Line') {

@@ -94,7 +94,6 @@ class Award extends Resource
             ID::make()->sortable(),
             BelongsTo::make('User')->sortable(),
             BelongsTo::make('Award')
-                ->searchable()
                 ->sortable()
                 ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
