@@ -32,7 +32,6 @@ use App\Nova\Specialty;
 use App\Nova\Status;
 use App\Nova\Subscription;
 use App\Nova\Tenant;
-//use App\Nova\TenantUser;
 use App\Nova\Unit;
 use App\Nova\User;
 use Illuminate\Http\Request;
@@ -133,21 +132,23 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 false
                             )
                         ),
-                        MenuItem::lens(Submission::class, CurrentUsersSubmissions::class),
+                        MenuItem::lens(Submission::class, CurrentUsersSubmissions::class)->canSee(function (
+                            NovaRequest $request
+                        ) {
+                            return $request->user()->hasPermissionTo('create:submission');
+                        }),
                         MenuItem::link(
                             'New Form Submission',
                             route(
                                 'nova.pages.create',
                                 [
                                     'resource' => Submission::uriKey(),
-                                    'viaResource' => 'users',
-                                    'viaResourceId' => Auth::user()->getAuthIdentifier(),
-                                    'viaRelationship' => 'submissions',
-                                    'relationshipType' => 'hasMany',
                                 ],
                                 false
                             )
-                        ),
+                        )->canSee(function (NovaRequest $request) {
+                            return $request->user()->hasPermissionTo('create:submission');
+                        }),
                     ])->icon('user-circle'),
 
                     MenuSection::make('Organization', [

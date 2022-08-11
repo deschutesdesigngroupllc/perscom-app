@@ -52,19 +52,6 @@ class CurrentUsersSubmissions extends Lens
             }),
             DateTime::make('Created At')->sortable(),
             DateTime::make('Updated At')->sortable(),
-            Badge::make('Status', function ($model) {
-                return $model->status->color ?? 'none';
-            })
-                ->types(
-                    collect(\App\Models\Status::$colors)
-                        ->mapWithKeys(function ($value, $key) {
-                            return [$key => $key];
-                        })
-                        ->toArray()
-                )
-                ->label(function ($model) {
-                    return $model->status->name ?? 'No Current Status';
-                }),
         ];
     }
 
