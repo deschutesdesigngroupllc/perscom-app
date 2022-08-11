@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "483748e1077eafc1f0cccc942f7168d7",
+    "content-hash": "5a4178442316f78d790ebd7465dc0b22",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2244,6 +2244,69 @@
                 }
             ],
             "time": "2022-01-31T14:50:39+00:00"
+        },
+        {
+            "name": "kalnoy/nestedset",
+            "version": "v6.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/lazychaser/laravel-nestedset.git",
+                "reference": "bcfbccea5e3ddf31cb22e1bc3c6124da584505fc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/lazychaser/laravel-nestedset/zipball/bcfbccea5e3ddf31cb22e1bc3c6124da584505fc",
+                "reference": "bcfbccea5e3ddf31cb22e1bc3c6124da584505fc",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^7.0|^8.0|^9.0",
+                "illuminate/events": "^7.0|^8.0|^9.0",
+                "illuminate/support": "^7.0|^8.0|^9.0",
+                "php": "^7.2.5|^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "7.*|8.*|9.*"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "v5.0.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Kalnoy\\Nestedset\\NestedSetServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Kalnoy\\Nestedset\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Kalnoy",
+                    "email": "lazychaser@gmail.com"
+                }
+            ],
+            "description": "Nested Set Model for Laravel 5.7 and up",
+            "keywords": [
+                "database",
+                "hierarchy",
+                "laravel",
+                "nested sets",
+                "nsm"
+            ],
+            "support": {
+                "issues": "https://github.com/lazychaser/laravel-nestedset/issues",
+                "source": "https://github.com/lazychaser/laravel-nestedset/tree/v6.0.1"
+            },
+            "time": "2022-02-11T06:17:57+00:00"
         },
         {
             "name": "laravel/cashier",
@@ -4798,6 +4861,75 @@
             "time": "2021-05-26T10:14:45+00:00"
         },
         {
+            "name": "msztorc/laravel-env",
+            "version": "1.2.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/msztorc/laravel-env.git",
+                "reference": "82ff832a73db1c22daeaecf3970e9d8e4b5cab5a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/msztorc/laravel-env/zipball/82ff832a73db1c22daeaecf3970e9d8e4b5cab5a",
+                "reference": "82ff832a73db1c22daeaecf3970e9d8e4b5cab5a",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "illuminate/support": "^6.0|^7.0|^8.0|^9.0",
+                "php": "^7.3|^7.4|^8.0|^8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^2 || ^3",
+                "orchestra/testbench": "^4.0|^5.0|^6.0||^7.0",
+                "phpunit/phpunit": "^8.0 || ^9.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "msztorc\\LaravelEnv\\LaravelEnvServiceProvider"
+                    ],
+                    "aliases": {
+                        "LaravelEnv": "msztorc\\LaravelEnv\\LaravelEnvFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "msztorc\\LaravelEnv\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Miroslaw Sztorc",
+                    "email": "miroslaw@sztorc.com",
+                    "homepage": "https://sztorc.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Laravel env helper commands",
+            "homepage": "https://github.com/msztorc/laravel-env",
+            "keywords": [
+                "artisan",
+                "command",
+                "env",
+                "environment",
+                "laravel",
+                "laravel-env",
+                "variables"
+            ],
+            "support": {
+                "issues": "https://github.com/msztorc/laravel-env/issues",
+                "source": "https://github.com/msztorc/laravel-env/tree/1.2.5"
+            },
+            "time": "2022-02-13T09:21:23+00:00"
+        },
+        {
             "name": "mtdowling/jmespath.php",
             "version": "2.6.1",
             "source": {
@@ -5227,6 +5359,66 @@
             "time": "2022-05-31T20:59:12+00:00"
         },
         {
+            "name": "novius/laravel-nova-order-nestedset-field",
+            "version": "v4.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/novius/laravel-nova-order-nestedset-field.git",
+                "reference": "040a37bd1cb7ec90fe28a2a94d4e02813f3e1ab4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/novius/laravel-nova-order-nestedset-field/zipball/040a37bd1cb7ec90fe28a2a94d4e02813f3e1ab4",
+                "reference": "040a37bd1cb7ec90fe28a2a94d4e02813f3e1ab4",
+                "shasum": ""
+            },
+            "require": {
+                "kalnoy/nestedset": "^6.0.0",
+                "laravel/nova": "^4.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Novius\\LaravelNovaOrderNestedsetField\\OrderNestedsetFieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Novius\\LaravelNovaOrderNestedsetField\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "AGPL-3.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "Novius Agency",
+                    "email": "team-developpeurs@novius.com",
+                    "homepage": "https://www.novius.com"
+                }
+            ],
+            "description": "A Laravel Nova field that make your resources orderable",
+            "keywords": [
+                "hierarchies",
+                "laravel",
+                "nestedset",
+                "nova",
+                "trees"
+            ],
+            "support": {
+                "issues": "https://github.com/novius/laravel-nova-order-nestedset-field/issues",
+                "source": "https://github.com/novius/laravel-nova-order-nestedset-field/tree/v4.0.0"
+            },
+            "time": "2022-04-26T12:07:24+00:00"
+        },
+        {
             "name": "nunomaduro/termwind",
             "version": "v1.14.0",
             "source": {
@@ -5597,7 +5789,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5633,7 +5825,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -5669,7 +5861,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -5705,7 +5897,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-master",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
