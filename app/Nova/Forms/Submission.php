@@ -181,9 +181,9 @@ class Submission extends Resource
             BelongsTo::make('Form')->showOnPreview(),
             BelongsTo::make('User')
                 ->showOnPreview()
-	            ->default(function (NovaRequest $request) {
-	            	return $request->user()->id;
-	            })
+                ->default(function (NovaRequest $request) {
+                    return $request->user()->id;
+                })
                 ->canSee(function (NovaRequest $request) {
                     return $request->user()->hasPermissionTo('update:submission');
                 }),

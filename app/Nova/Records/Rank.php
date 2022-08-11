@@ -103,7 +103,7 @@ class Rank extends Resource
                     \App\Models\Records\Rank::RECORD_RANK_PROMOTION => 'Promotion',
                     \App\Models\Records\Rank::RECORD_RANK_DEMOTION => 'Demotion',
                 ])
-	            ->rules('required')
+                ->rules('required')
                 ->displayUsingLabels(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {

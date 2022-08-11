@@ -42,7 +42,7 @@ class Announcement extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->hideFromIndex(),
             Text::make('Title')->rules('required'),
             Trix::make('Content')->rules('required'),
             Select::make('Color')
