@@ -255,7 +255,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::footer(function ($request) {
             return Blade::render('
-	            <div class="mt-8 leading-normal text-xs text-gray-500 space-y-1"><p class="text-center">PERSCOM Personnel Management System</a> · v{{ config("app.version") }} ({{ \Illuminate\Support\Str::ucfirst(config("app.env")) }})</p>
+	            <div class="mt-8 leading-normal text-xs text-gray-500 space-y-1"><p class="text-center">PERSCOM Personnel Management System</a> · {{ config("app.version") }} ({{ \Illuminate\Support\Str::ucfirst(config("app.env")) }})</p>
             		<p class="text-center">© 2022 Deschutes Design Group LLC</p>
         		</div>
 	        ');
