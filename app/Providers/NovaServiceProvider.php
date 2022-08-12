@@ -10,6 +10,7 @@ use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
+use App\Nova\Feature;
 use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
@@ -91,6 +92,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Application', [
                         MenuItem::resource(AdminResource::class),
                         MenuItem::resource(Domain::class),
+                        MenuItem::resource(Feature::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
                     ])

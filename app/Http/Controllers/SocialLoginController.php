@@ -68,13 +68,13 @@ class SocialLoginController extends Controller
         $token = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
             $user = User::updateOrCreate(
                 [
-	                'email' => $socialLiteUser->email,
+                    'email' => $socialLiteUser->email,
                 ],
                 [
                     'name' => $socialLiteUser->name,
                     'email_verified_at' => now(),
-	                'social_id' => $socialLiteUser->id,
-	                'social_driver' => $driver,
+                    'social_id' => $socialLiteUser->id,
+                    'social_driver' => $driver,
                     'social_token' => $socialLiteUser->token,
                     'social_refresh_token' => $socialLiteUser->refreshToken,
                 ]
