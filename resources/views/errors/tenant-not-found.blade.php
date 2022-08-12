@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('code', __('404'))
+@section('title', __('Not Found'))
+@section('header', __('Organization not found.'))
+@section('message', __('Sorry, we couldn’t find the organization you’re looking for. Please check with your administrator for the proper domain.'))

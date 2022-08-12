@@ -43,6 +43,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/api.php'));
 
+            Route::domain(config('app.auth_url'))
+                ->middleware('auth')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/auth.php'));
+
             foreach (config('tenancy.central_domains', []) as $domain) {
                 Route::middleware('web')
                     ->domain($domain)
