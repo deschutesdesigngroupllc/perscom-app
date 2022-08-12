@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
@@ -28,5 +29,10 @@ Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web
 
 	Route::get('/impersonate/{token}', function ($token) {
 		return UserImpersonation::makeResponse($token);
-	})->middleware();
+	})->name('impersonate.tenant');
+
+	Route::group(['prefix' => 'auth'], function () {
+		Route::get('/{driver}/redirect', [SocialLoginController::class, 'tenant'])->name('auth.social.tenant.redirect');
+		Route::get('/login/{token}', [SocialLoginController::class, 'login'])->name('auth.social.tenant.login');
+	});
 });

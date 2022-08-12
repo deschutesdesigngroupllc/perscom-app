@@ -9,6 +9,7 @@
     "require": {
         "php": "^8.1",
         "aws/aws-sdk-php": "^3.230",
+        "doctrine/dbal": "^3.4",
         "eminiarts/nova-tabs": "^2.1",
         "fakerphp/faker": "^1.9.1",
         "fruitcake/laravel-cors": "^2.0",
@@ -21,6 +22,7 @@
         "laravel/nova": "^4.10",
         "laravel/passport": "^10.4",
         "laravel/sanctum": "^2.11",
+        "laravel/socialite": "^5.5",
         "laravel/spark-stripe": "^1.0",
         "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.5",

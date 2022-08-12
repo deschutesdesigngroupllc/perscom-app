@@ -48,6 +48,18 @@ class FortifyServiceProvider extends ServiceProvider
                 'status' => session('status'),
                 'canResetPassword' => Route::has('password.request'),
                 'demoMode' => Request::isDemoMode(),
+                'adminMode' => Request::isCentralRequest(),
+                'githubLogin' =>
+                    !Request::isCentralRequest() && !Request::isDemoMode()
+                        ? \route('auth.social.tenant.redirect', [
+                            'driver' => 'github',
+                        ])
+                        : false,
+                'discordLogin' => !Request::isCentralRequest()
+                    ? \route('auth.social.tenant.redirect', [
+                        'driver' => 'discord',
+                    ])
+                    : false,
             ]);
         });
         Fortify::requestPasswordResetLinkView(function () {

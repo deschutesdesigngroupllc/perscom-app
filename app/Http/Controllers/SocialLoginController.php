@@ -1,0 +1,104 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\LoginToken;
+use App\Models\Tenant;
+use App\Models\User;
+use http\Exception\RuntimeException;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
+
+class SocialLoginController extends Controller
+{
+    /**
+     * @var string
+     */
+    protected static $sessionKey = 'auth.social.login.tenant';
+
+    /**
+     * @param $driver
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function tenant($driver)
+    {
+        return redirect()->route('auth.social.redirect', [
+            'driver' => $driver,
+            'tenant' => tenant()->getTenantKey(),
+        ]);
+    }
+
+    /**
+     * @param $driver
+     * @param $tenant
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function redirect($driver, $tenant)
+    {
+        if (!$tenant) {
+            throw new \RuntimeException('There was no Tenant ID included with your request. Please try again.');
+        }
+
+        session()->put(self::$sessionKey, $tenant);
+
+        return Socialite::driver($driver)->redirect();
+    }
+
+    /**
+     * @param $driver
+     *
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Psr\Container\ContainerExceptionInterface
+     * @throws \Psr\Container\NotFoundExceptionInterface
+     */
+    public function callback($driver)
+    {
+        $tenantId = session()->get(self::$sessionKey);
+
+        if (!$tenantId) {
+            throw new \RuntimeException('There was no Tenant ID saved to your session. Please try again.');
+        }
+
+        $socialLiteUser = Socialite::driver($driver)->user();
+
+        $tenant = Tenant::findOrFail($tenantId);
+        $token = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
+            $user = User::updateOrCreate(
+                [
+                    'social_id' => $socialLiteUser->id,
+                    'social_driver' => $driver,
+                ],
+                [
+                    'name' => $socialLiteUser->name,
+                    'email' => $socialLiteUser->email,
+                    'email_verified_at' => now(),
+                    'social_token' => $socialLiteUser->token,
+                    'social_refresh_token' => $socialLiteUser->refreshToken,
+                ]
+            );
+
+            return LoginToken::create([
+                'user_id' => $user->id,
+            ]);
+        });
+
+        return redirect()->to("{$tenant->url}/auth/login/$token->token");
+    }
+
+    /**
+     * @param  LoginToken  $token
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function login(LoginToken $token)
+    {
+        Auth::loginUsingId($token->user_id);
+
+        $token->delete();
+
+        return redirect(tenant()->url);
+    }
+}
