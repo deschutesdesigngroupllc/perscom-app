@@ -40,7 +40,6 @@ class AppServiceProvider extends ServiceProvider
             return $socialite->buildProvider(DiscordSocialiteProvider::class, $config);
         });
 
-        // Prefix the permission cache key with the tenant identifier
         Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
             PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
         });

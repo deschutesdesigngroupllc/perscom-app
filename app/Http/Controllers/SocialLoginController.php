@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\LoginToken;
 use App\Models\Tenant;
 use App\Models\User;
-use http\Exception\RuntimeException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -16,6 +14,16 @@ class SocialLoginController extends Controller
      * @var string
      */
     protected static $sessionKey = 'auth.social.login.tenant';
+
+    /**
+     * Instantiate a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('feature:social-login');
+    }
 
     /**
      * @param $driver

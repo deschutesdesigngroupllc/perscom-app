@@ -2,10 +2,9 @@
 
 namespace App\Nova\Fields;
 
-use App\Nova\Field;
 use Codinglabs\FeatureFlags\Enums\FeatureState as Enum;
-use Laravel\Nova\Fields\Select;
 use Illuminate\Support\Str;
+use Laravel\Nova\Fields\Select;
 
 class FeatureState extends Select
 {
@@ -18,9 +17,7 @@ class FeatureState extends Select
         });
 
         $this->displayUsing(function ($value) {
-            return $value instanceof Enum
-                ? Str::ucfirst($value->value)
-                : $value;
+            return $value instanceof Enum ? Str::ucfirst($value->value) : $value;
         });
 
         $this->fillUsing(function ($request, $model, $attribute, $requestAttribute) {

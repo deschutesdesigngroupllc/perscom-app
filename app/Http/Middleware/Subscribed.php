@@ -2,8 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
-use Illuminate\Http\Request;
+use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
 class Subscribed extends VerifyBillableIsSubscribed
@@ -19,7 +18,7 @@ class Subscribed extends VerifyBillableIsSubscribed
      */
     public function handle($request, $next, $billableType = null, $plan = null)
     {
-        if ($request->isDemoMode() || $request->isCentralRequest()) {
+        if ($request->isDemoMode() || $request->isCentralRequest() || FeatureFlag::isOff('billing')) {
             return $next($request);
         }
 

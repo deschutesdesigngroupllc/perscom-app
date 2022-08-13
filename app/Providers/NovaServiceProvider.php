@@ -35,13 +35,13 @@ use App\Nova\Subscription;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
+use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
-use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -216,43 +216,35 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         }
 
         Nova::userMenu(function (Request $request, Menu $menu) {
-            if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
-                $menu->append([
-                    MenuItem::externalLink(
-                        'Account',
-                        route('nova.pages.detail', [
-                            'resource' => \App\Nova\Admin::uriKey(),
-                            'resourceId' => Auth::user()->getAuthIdentifier(),
-                        ])
-                    ),
-                ]);
-            } else {
-                $menu->append([
-                    MenuItem::externalLink(
-                        'My Personnel File',
-                        route('nova.pages.detail', [
-                            'resource' => User::uriKey(),
-                            'resourceId' => Auth::user()->getAuthIdentifier(),
-                        ])
-                    ),
-                ]);
-                // TODO: Enable on go live date
-                //                if (!Request::isDemoMode()) {
-                //                    $menu->append([
-                //                        MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (
-                //                            NovaRequest $request
-                //                        ) {
-                //                            return $request->user()->hasPermissionTo('manage:billing');
-                //                        }),
-                //                    ]);
-                //                }
-            }
-            $menu->append([
+            return [
+                MenuItem::externalLink(
+                    'Account',
+                    route('nova.pages.detail', [
+                        'resource' => \App\Nova\Admin::uriKey(),
+                        'resourceId' => Auth::user()->getAuthIdentifier(),
+                    ])
+                )->canSee(function (NovaRequest $request) {
+                    return $request->isCentralRequest();
+                }),
+                MenuItem::externalLink(
+                    'My Personnel File',
+                    route('nova.pages.detail', [
+                        'resource' => User::uriKey(),
+                        'resourceId' => Auth::user()->getAuthIdentifier(),
+                    ])
+                )->canSee(function (NovaRequest $request) {
+                    return !$request->isCentralRequest();
+                }),
+                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
+                    return !$request->isDemoMode() &&
+                        !$request->isCentralRequest() &&
+                        $request->user()->hasPermissionTo('manage:billing') &&
+                        FeatureFlag::isOn('billing');
+                }),
                 MenuItem::make('Logout', 'logout')->method('POST', [
                     '_token' => csrf_token(),
                 ]),
-            ]);
-            return $menu;
+            ];
         });
 
         Nova::footer(function ($request) {

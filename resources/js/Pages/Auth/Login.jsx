@@ -8,7 +8,7 @@ import { Label } from "@/Components/Label";
 import { ValidationErrors } from "@/Components/ValidationErrors";
 import { Head, Link, useForm, usePage } from "@inertiajs/inertia-react";
 
-export default function Login({ status, canResetPassword, demoMode, adminMode, githubLogin, discordLogin }) {
+export default function Login({ status, canResetPassword, demoMode, enableSocialLogin, githubLogin, discordLogin }) {
     const { data, setData, post, processing, errors, reset } = useForm({
         email: "",
         password: "",
@@ -105,7 +105,7 @@ export default function Login({ status, canResetPassword, demoMode, adminMode, g
                 </div>
             </form>
 
-            {!adminMode && !demoMode && (
+            {enableSocialLogin && (
                 <div className="mt-6">
                     <div className="relative">
                         <div className="absolute inset-0 flex items-center">

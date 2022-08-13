@@ -4,15 +4,14 @@ namespace App\Nova;
 
 use App\Nova\Fields\FeatureState as FeatureStateField;
 use Codinglabs\FeatureFlags\Enums\FeatureState;
-use Illuminate\Http\Request;
+use Codinglabs\FeatureFlags\Facades\FeatureFlag;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use SimpleSquid\Nova\Fields\Enum\Enum;
 
 class Feature extends Resource
 {
@@ -50,6 +49,9 @@ class Feature extends Resource
             Text::make('Name')
                 ->rules('required')
                 ->sortable(),
+	        Text::make('Description', function () {
+	        	return Str::limit($this->description);
+	        })->onlyOnIndex(),
             Textarea::make('Description')
                 ->alwaysShow()
                 ->nullable(),
@@ -66,6 +68,15 @@ class Feature extends Resource
                 ->attach(FeatureState::class)
                 ->onlyOnForms(),
         ];
+    }
+
+    /**
+     * @param  NovaRequest  $request
+     * @param  Model        $model
+     */
+    public static function afterUpdate(NovaRequest $request, Model $model)
+    {
+        FeatureFlag::updateFeatureState($model->name, $model->state);
     }
 
     /**

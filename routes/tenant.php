@@ -32,7 +32,11 @@ Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web
 	})->name('impersonate.tenant');
 
 	Route::group(['prefix' => 'auth'], function () {
-		Route::get('/{driver}/redirect', [SocialLoginController::class, 'tenant'])->name('auth.social.tenant.redirect');
-		Route::get('/login/{token}', [SocialLoginController::class, 'login'])->name('auth.social.tenant.login');
+		Route::get('/{driver}/redirect', [SocialLoginController::class, 'tenant'])
+			->middleware('feature:social-login')
+			->name('auth.social.tenant.redirect');
+		Route::get('/login/{token}', [SocialLoginController::class, 'login'])
+			->middleware('feature:social-login')
+			->name('auth.social.tenant.login');
 	});
 });

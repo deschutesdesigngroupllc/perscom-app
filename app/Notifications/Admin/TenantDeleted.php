@@ -5,7 +5,6 @@ namespace App\Notifications\Admin;
 use App\Mail\Admin\TenantDeletedMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;

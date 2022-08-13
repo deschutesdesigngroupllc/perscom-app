@@ -29,7 +29,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
 use Stancl\Tenancy\Events\DomainCreated;
 use Stancl\Tenancy\Events\TenantCreated;
 
