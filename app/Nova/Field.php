@@ -68,6 +68,21 @@ class Field extends Resource
     }
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $orderings
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected static function applyOrderings($query, array $orderings)
+    {
+        if (!request()->get('orderBy')) {
+            return parent::applyOrderings($query, [
+                'name' => 'asc',
+            ]);
+        }
+        return parent::applyOrderings($query, $orderings);
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -76,7 +91,7 @@ class Field extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->hideFromIndex(),
             Text::make('Name')
                 ->sortable()
                 ->rules(['required']),
@@ -92,7 +107,6 @@ class Field extends Resource
                     })
                 )
                 ->sortable()
-                ->searchable()
                 ->displayUsingLabels(),
             Boolean::make('Required')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                 if ($formData->type === 'Heading' || $formData->type === 'Line') {

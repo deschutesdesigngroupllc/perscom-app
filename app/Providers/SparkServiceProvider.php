@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Tenant;
+use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\ServiceProvider;
 use Spark\Plan;
@@ -32,12 +33,12 @@ class SparkServiceProvider extends ServiceProvider
         });
 
         Spark::billable(Tenant::class)->authorize(function (Tenant $billable, Request $request) {
-            return false;
-            // TODO: Enable on go live date
-            //            return \tenant() &&
-            //                \tenant()->getTenantKey() === $billable->id &&
-            //                $request->user()->hasPermissionTo('manage:billing') &&
-            //                !Request::isDemoMode();
+            return \tenant() &&
+                \tenant()->getTenantKey() === $billable->id &&
+                $request->user()->hasPermissionTo('manage:billing') &&
+                !$request->isDemoMode() &&
+                !$request->isCentralRequest() &&
+                FeatureFlag::isOn('billing');
         });
 
         Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {

@@ -3,9 +3,9 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -34,6 +34,21 @@ class Rank extends Resource
     public static $search = ['id', 'name'];
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $orderings
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected static function applyOrderings($query, array $orderings)
+    {
+        if (!request()->get('orderBy')) {
+            return parent::applyOrderings($query, [
+                'name' => 'asc',
+            ]);
+        }
+        return parent::applyOrderings($query, $orderings);
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -42,20 +57,22 @@ class Rank extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->hideFromIndex(),
             Text::make('Name')
-                ->sortable()
                 ->rules(['required'])
+                ->sortable()
                 ->showOnPreview(),
             Text::make('Abbreviation')
-                ->sortable()
                 ->nullable()
+                ->sortable()
                 ->showOnPreview(),
             Text::make('Paygrade')
-                ->sortable()
                 ->nullable()
+                ->sortable()
                 ->showOnPreview(),
-            File::make('Image')->disk('public'),
+            Image::make('Image')
+                ->disk('s3_public')
+                ->prunable(),
             Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()

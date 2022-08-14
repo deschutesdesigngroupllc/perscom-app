@@ -53,14 +53,7 @@ jobs:
         run: npm ci
 
       - name: Build Application
-        run: npm run prod
-
-      - name: Deploy Application
-        run: |
-          forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
-          forge deploy ${{ secrets.FORGE_SERVER_SITE }}
-        env:
-          FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+        run: npm run build
 
       - name: Bump Application Version and Tag
         id: tag_version
@@ -72,6 +65,14 @@ jobs:
           release_branches: master
           pre_release_branches: prerelease
           append_to_pre_release_tag: prerelease
+
+      - name: Deploy Application
+        run: |
+          forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
+          forge deploy ${{ secrets.FORGE_SERVER_SITE }}
+          forge command ${{ secrets.FORGE_SERVER_SITE }} --command="php artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
+        env:
+          FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
 
       - name: Create Release
         uses: ncipollo/release-action@v1

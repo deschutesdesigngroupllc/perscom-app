@@ -31,4 +31,18 @@ return [
 	    'token' => env('AWS_SESSION_TOKEN')
     ],
 
+	'github' => [
+		'client_id' => env('GITHUB_CLIENT_ID'),
+		'client_secret' => env('GITHUB_CLIENT_SECRET'),
+		'redirect' => env('GITHUB_REDIRECT_URL'),
+	],
+
+	'discord' => [
+		'base_uri' => 'https://discord.com/api',
+		'client_id' => env('DISCORD_CLIENT_ID'),
+		'client_secret' => env('DISCORD_CLIENT_SECRET'),
+		'redirect' => env('DISCORD_REDIRECT_URL'),
+		'allow_gif_avatars' => true,
+		'avatar_default_extension' => 'jpg'
+	],
 ];

@@ -19,7 +19,6 @@ use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Badge;
@@ -65,6 +64,21 @@ class User extends Resource
     public static $search = ['id', 'name', 'email'];
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $orderings
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected static function applyOrderings($query, array $orderings)
+    {
+        if (!request()->get('orderBy')) {
+            return parent::applyOrderings($query, [
+                'name' => 'asc',
+            ]);
+        }
+        return parent::applyOrderings($query, $orderings);
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -73,7 +87,7 @@ class User extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->hideFromIndex(),
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255')
@@ -244,10 +258,9 @@ class User extends Resource
                 HasMany::make('Submission Records', 'submissions', Submission::class),
                 HasMany::make('Qualification Records', 'qualification_records', QualificationRecords::class),
             ])->showTitle(true),
-            Tabs::make('Permissions', [
-                MorphedByMany::make('Roles')->searchable(),
-                MorphedByMany::make('Permissions')->searchable(),
-            ])->showTitle(true),
+            Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])->showTitle(
+                true
+            ),
         ];
     }
 

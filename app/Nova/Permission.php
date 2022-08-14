@@ -42,6 +42,21 @@ class Permission extends Resource
     public static $search = ['id', 'name'];
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $orderings
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected static function applyOrderings($query, array $orderings)
+    {
+        if (!request()->get('orderBy')) {
+            return parent::applyOrderings($query, [
+                'name' => 'asc',
+            ]);
+        }
+        return parent::applyOrderings($query, $orderings);
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -50,7 +65,7 @@ class Permission extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->hideFromIndex(),
             Text::make('Name')
                 ->sortable()
                 ->rules(['required']),
@@ -62,74 +77,12 @@ class Permission extends Resource
                 return $model->description;
             })->onlyOnIndex(),
             Boolean::make('Custom Permission', function ($permission) {
-                return !collect(config('permissions.permissions'))->has($permission->name);
+                return $permission->is_custom_permission;
             }),
             Boolean::make('Application Permission', function ($permission) {
-                return collect(config('permissions.permissions'))->has($permission->name);
+                return $permission->is_application_permission;
             }),
             BelongsToMany::make('Roles')->showCreateRelationButton(),
-            //	        Panel::make('Organization', [
-            //		        BooleanGroup::make('Awards')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Documents')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Permissions')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Positions')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Qualifications')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Specialties')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Ranks')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Roles')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Units')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //		        BooleanGroup::make('Users')->options([
-            //			        'create' => 'Create',
-            //			        'read' => 'Read',
-            //			        'update' => 'Update',
-            //			        'delete' => 'Delete',
-            //		        ]),
-            //	        ])->collapsable(),
         ];
     }
 

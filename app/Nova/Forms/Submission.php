@@ -20,6 +20,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Field;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
+use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Select;
@@ -73,7 +74,7 @@ class Submission extends Resource
      */
     public static function createButtonLabel()
     {
-        return 'New Form Submission';
+        return 'Submit Form';
     }
 
     /**
@@ -100,11 +101,6 @@ class Submission extends Resource
                 "field_{$field->id}"
             );
             if ($novaField instanceof Field) {
-                // Required
-                if ($field->required && method_exists($novaField, 'required')) {
-                    $novaField->required();
-                }
-
                 // Placeholder
                 if ($field->placeholder && method_exists($novaField, 'placeholder')) {
                     $novaField->placeholder($field->placeholder);
@@ -138,6 +134,9 @@ class Submission extends Resource
                     $form = Form::find($formData->form);
                     if ($form && $form->fields->pluck('id')->search($field->id) !== false) {
                         $novaField->show();
+                        if ($field->required && method_exists($novaField, 'required')) {
+                            $novaField->rules('required');
+                        }
                     }
                 });
 
@@ -145,6 +144,22 @@ class Submission extends Resource
                 $this->customFields[] = $novaField;
             }
         }
+    }
+
+    /**
+     * Build an "index" query for the given resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if ($request->user()->hasPermissionTo('view:submission')) {
+            return $query;
+        }
+
+        return $query->where('user_id', $request->user()->id);
     }
 
     /**
@@ -157,8 +172,20 @@ class Submission extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('User'),
+            Hidden::make('User', 'user_id')
+                ->default(function (NovaRequest $request) {
+                    return $request->user()->id;
+                })
+                ->showOnDetail(),
             BelongsTo::make('Form')->showOnPreview(),
+            BelongsTo::make('User')
+                ->showOnPreview()
+                ->default(function (NovaRequest $request) {
+                    return $request->user()->id;
+                })
+                ->canSee(function (NovaRequest $request) {
+                    return $request->user()->hasPermissionTo('update:submission');
+                }),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })
@@ -222,7 +249,11 @@ class Submission extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [new CurrentUsersSubmissions()];
+        return [
+            (new CurrentUsersSubmissions())->canSee(function (NovaRequest $request) {
+                return $request->user()->hasPermissionTo('create:submission');
+            }),
+        ];
     }
 
     /**

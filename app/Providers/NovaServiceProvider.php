@@ -10,6 +10,7 @@ use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
+use App\Nova\Feature;
 use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
@@ -32,16 +33,15 @@ use App\Nova\Specialty;
 use App\Nova\Status;
 use App\Nova\Subscription;
 use App\Nova\Tenant;
-//use App\Nova\TenantUser;
 use App\Nova\Unit;
 use App\Nova\User;
+use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
-use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -92,6 +92,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Application', [
                         MenuItem::resource(AdminResource::class),
                         MenuItem::resource(Domain::class),
+                        MenuItem::resource(Feature::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
                     ])
@@ -133,21 +134,23 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 false
                             )
                         ),
-                        MenuItem::lens(Submission::class, CurrentUsersSubmissions::class),
+                        MenuItem::lens(Submission::class, CurrentUsersSubmissions::class)->canSee(function (
+                            NovaRequest $request
+                        ) {
+                            return $request->user()->hasPermissionTo('create:submission');
+                        }),
                         MenuItem::link(
                             'New Form Submission',
                             route(
                                 'nova.pages.create',
                                 [
                                     'resource' => Submission::uriKey(),
-                                    'viaResource' => 'users',
-                                    'viaResourceId' => Auth::user()->getAuthIdentifier(),
-                                    'viaRelationship' => 'submissions',
-                                    'relationshipType' => 'hasMany',
                                 ],
                                 false
                             )
-                        ),
+                        )->canSee(function (NovaRequest $request) {
+                            return $request->user()->hasPermissionTo('create:submission');
+                        }),
                     ])->icon('user-circle'),
 
                     MenuSection::make('Organization', [
@@ -220,48 +223,40 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         }
 
         Nova::userMenu(function (Request $request, Menu $menu) {
-            if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
-                $menu->append([
-                    MenuItem::externalLink(
-                        'Account',
-                        route('nova.pages.detail', [
-                            'resource' => \App\Nova\Admin::uriKey(),
-                            'resourceId' => Auth::user()->getAuthIdentifier(),
-                        ])
-                    ),
-                ]);
-            } else {
-                $menu->append([
-                    MenuItem::externalLink(
-                        'My Personnel File',
-                        route('nova.pages.detail', [
-                            'resource' => User::uriKey(),
-                            'resourceId' => Auth::user()->getAuthIdentifier(),
-                        ])
-                    ),
-                ]);
-                // TODO: Enable on go live date
-                //                if (!Request::isDemoMode()) {
-                //                    $menu->append([
-                //                        MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (
-                //                            NovaRequest $request
-                //                        ) {
-                //                            return $request->user()->hasPermissionTo('manage:billing');
-                //                        }),
-                //                    ]);
-                //                }
-            }
-            $menu->append([
+            return [
+                MenuItem::externalLink(
+                    'Account',
+                    route('nova.pages.detail', [
+                        'resource' => \App\Nova\Admin::uriKey(),
+                        'resourceId' => Auth::user()->getAuthIdentifier(),
+                    ])
+                )->canSee(function (NovaRequest $request) {
+                    return $request->isCentralRequest();
+                }),
+                MenuItem::externalLink(
+                    'My Personnel File',
+                    route('nova.pages.detail', [
+                        'resource' => User::uriKey(),
+                        'resourceId' => Auth::user()->getAuthIdentifier(),
+                    ])
+                )->canSee(function (NovaRequest $request) {
+                    return !$request->isCentralRequest();
+                }),
+                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
+                    return !$request->isDemoMode() &&
+                        !$request->isCentralRequest() &&
+                        $request->user()->hasPermissionTo('manage:billing') &&
+                        FeatureFlag::isOn('billing');
+                }),
                 MenuItem::make('Logout', 'logout')->method('POST', [
                     '_token' => csrf_token(),
                 ]),
-            ]);
-            return $menu;
+            ];
         });
 
         Nova::footer(function ($request) {
             return Blade::render('
-	            <div class="mt-8 leading-normal text-xs text-gray-500 space-y-1"><p class="text-center">PERSCOM Personnel Management System</a> · v{{ config("app.version") }} ({{ \Illuminate\Support\Str::ucfirst(config("app.env")) }})</p>
+	            <div class="mt-8 leading-normal text-xs text-gray-500 space-y-1"><p class="text-center">PERSCOM Personnel Management System</a> · {{ config("app.version") }} ({{ \Illuminate\Support\Str::ucfirst(config("app.env")) }})</p>
             		<p class="text-center">© 2022 Deschutes Design Group LLC</p>
         		</div>
 	        ');

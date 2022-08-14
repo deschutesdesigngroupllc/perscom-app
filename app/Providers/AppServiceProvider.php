@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use Laravel\Socialite\Contracts\Factory;
 use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Events\TenancyBootstrapped;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
@@ -40,7 +41,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Prefix the permission cache key with the tenant identifier
+        $socialite = $this->app->make(Factory::class);
+        $socialite->extend('discord', function () use ($socialite) {
+            $config = config('services.discord');
+            return $socialite->buildProvider(DiscordSocialiteProvider::class, $config);
+        });
+
         Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
             PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
         });

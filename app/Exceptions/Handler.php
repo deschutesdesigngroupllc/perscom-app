@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Inertia\Inertia;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
 use Throwable;
 
@@ -35,7 +34,7 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
-            return Inertia::render('Auth/TenantNotFound');
+            return response()->view('errors.tenant-not-found');
         });
     }
 }

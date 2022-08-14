@@ -6,6 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
+use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -48,6 +49,14 @@ class FortifyServiceProvider extends ServiceProvider
                 'status' => session('status'),
                 'canResetPassword' => Route::has('password.request'),
                 'demoMode' => Request::isDemoMode(),
+                'enableSocialLogin' =>
+                    !Request::isCentralRequest() && !Request::isDemoMode() && FeatureFlag::isOn('social-login'),
+                'githubLogin' => \route('auth.social.tenant.redirect', [
+                    'driver' => 'github',
+                ]),
+                'discordLogin' => \route('auth.social.tenant.redirect', [
+                    'driver' => 'discord',
+                ]),
             ]);
         });
         Fortify::requestPasswordResetLinkView(function () {

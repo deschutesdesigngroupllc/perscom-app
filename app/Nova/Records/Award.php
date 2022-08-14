@@ -2,6 +2,7 @@
 
 namespace App\Nova\Records;
 
+use App\Nova\Attachment;
 use App\Nova\Metrics\NewAwardRecords;
 use App\Nova\Metrics\TotalAwardRecords;
 use App\Nova\Resource;
@@ -9,6 +10,7 @@ use App\Nova\User;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -92,13 +94,15 @@ class Award extends Resource
             ID::make()->sortable(),
             BelongsTo::make('User')->sortable(),
             BelongsTo::make('Award')
-                ->searchable()
                 ->sortable()
                 ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
             })->onlyOnIndex(),
+            BelongsTo::make('Document')
+                ->nullable()
+                ->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
                 DateTime::make('Created At')
@@ -108,10 +112,10 @@ class Award extends Resource
                     ->exceptOnForms()
                     ->hideFromIndex(),
             ]),
-            new Panel('Attachments', [BelongsTo::make('Document')->nullable()]),
             (new DocumentViewerTool())
                 ->withTitle($this->document->name ?? null)
                 ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
+            MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
 

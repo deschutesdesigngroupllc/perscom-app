@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
@@ -42,9 +41,9 @@ class Announcement extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Title')->required(),
-            Trix::make('Content')->required(),
+            ID::make()->hideFromIndex(),
+            Text::make('Title')->rules('required'),
+            Trix::make('Content')->rules('required'),
             Select::make('Color')
                 ->displayUsingLabels()
                 ->options([
@@ -53,7 +52,7 @@ class Announcement extends Resource
                     'warning' => 'Warning',
                     'danger' => 'Danger',
                 ])
-                ->required()
+                ->rules('required')
                 ->default(function () {
                     return 'info';
                 }),

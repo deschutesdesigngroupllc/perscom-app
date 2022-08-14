@@ -5,14 +5,12 @@ namespace App\Nova\Actions;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\URL;
 
 class ImpersonateTenant extends Action
 {
@@ -68,7 +66,7 @@ class ImpersonateTenant extends Action
         return [
             Select::make('User')
                 ->options($options ?? [])
-                ->required()
+                ->rules('required')
                 ->help('Select the user you would like to sign in as.'),
         ];
     }

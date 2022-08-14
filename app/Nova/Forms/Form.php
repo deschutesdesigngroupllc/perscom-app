@@ -50,6 +50,21 @@ class Form extends Resource
     public static $search = ['id', 'name'];
 
     /**
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param array $orderings
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected static function applyOrderings($query, array $orderings)
+    {
+        if (!request()->get('orderBy')) {
+            return parent::applyOrderings($query, [
+                'name' => 'asc',
+            ]);
+        }
+        return parent::applyOrderings($query, $orderings);
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -58,7 +73,7 @@ class Form extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()->hideFromIndex(),
             Text::make('Name')
                 ->sortable()
                 ->rules(['required'])
@@ -88,7 +103,7 @@ class Form extends Resource
                         return [
                             Number::make('Order')
                                 ->sortable()
-                                ->required(),
+                                ->rules('required'),
                         ];
                     }),
                 ]),

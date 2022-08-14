@@ -6,8 +6,6 @@ use App\Casts\SubmissionCast;
 use App\Models\Field;
 use App\Models\User;
 use App\Traits\HasStatuses;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

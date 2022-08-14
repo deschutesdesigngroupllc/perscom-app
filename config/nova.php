@@ -104,8 +104,7 @@ return [
 	    InitializeTenancyByDomainOrSubdomain::class,
         'web',
 	    'verified',
-// TODO: Enable on go live date
-//	    'subscribed',
+	    'subscribed',
 	    HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
