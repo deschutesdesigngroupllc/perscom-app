@@ -28,7 +28,6 @@
         "laravel/telescope": "^4.9",
         "laravel/tinker": "^2.5",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "maatwebsite/laravel-nova-excel": "^1.3.2",
         "msztorc/laravel-env": "^1.2",
         "novius/laravel-nova-order-nestedset-field": "^4.0",
         "perscom/alert-card": "*",

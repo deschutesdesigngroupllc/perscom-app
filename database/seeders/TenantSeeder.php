@@ -15,6 +15,7 @@ class TenantSeeder extends Seeder
     public function run()
     {
         $this->call([
+        	PassportSeeder::class,
         	PermissionSeeder::class,
 	        RoleSeeder::class
         ]);

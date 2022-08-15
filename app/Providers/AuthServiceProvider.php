@@ -29,6 +29,7 @@ use App\Policies\AwardRecordsPolicy;
 use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
 use App\Policies\FormPolicy;
+use App\Policies\Passport\ClientPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\PositionPolicy;
 use App\Policies\QualificationPolicy;
@@ -47,6 +48,7 @@ use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvid
 use Laravel\Cashier\Subscription;
 use Laravel\Cashier\SubscriptionItem;
 use Laravel\Nova\Actions\ActionEvent;
+use Laravel\Passport\Client;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -62,6 +64,7 @@ class AuthServiceProvider extends ServiceProvider
         AwardRecords::class => AwardRecordsPolicy::class,
         AssignmentRecords::class => AssignmentRecordsPolicy::class,
         CombatRecords::class => CombatRecordsPolicy::class,
+        Client::class => ClientPolicy::class,
         Document::class => DocumentPolicy::class,
         Form::class => FormPolicy::class,
         Permission::class => PermissionPolicy::class,

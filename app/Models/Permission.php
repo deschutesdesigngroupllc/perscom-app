@@ -2,9 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Permission extends \Spatie\Permission\Models\Permission
+class Permission extends \Spatie\Permission\Models\Permission implements Arrayable
 {
     use HasFactory;
 
@@ -30,7 +31,7 @@ class Permission extends \Spatie\Permission\Models\Permission
      */
     public function getIsCustomPermissionAttribute()
     {
-        return !collect(config('permissions.permissions'))->has($this->name);
+        return !self::getPermissionsFromConfig()->has($this->name);
     }
 
     /**
@@ -38,6 +39,14 @@ class Permission extends \Spatie\Permission\Models\Permission
      */
     public function getIsApplicationPermissionAttribute()
     {
-        return collect(config('permissions.permissions'))->has($this->name);
+        return self::getPermissionsFromConfig()->has($this->name);
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection
+     */
+    public static function getPermissionsFromConfig()
+    {
+        return collect(config('permissions.permissions'));
     }
 }

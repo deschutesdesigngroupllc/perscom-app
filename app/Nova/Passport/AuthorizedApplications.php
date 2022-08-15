@@ -1,0 +1,174 @@
+<?php
+
+namespace App\Nova\Passport;
+
+use App\Models\Passport\Token;
+use App\Nova\Resource;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Heading;
+use Laravel\Nova\Fields\Hidden;
+use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MultiSelect;
+use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Passport\ClientRepository;
+use Laravel\Passport\Passport;
+
+class AuthorizedApplications extends Resource
+{
+    /**
+     * The model the resource corresponds to.
+     *
+     * @var string
+     */
+    public static $model = Token::class;
+
+    /**
+     * The single value that should be used to represent the resource when being displayed.
+     *
+     * @var string
+     */
+    public static $title = 'name';
+
+    /**
+     * The columns that should be searched.
+     *
+     * @var array
+     */
+    public static $search = ['id', 'name'];
+
+    /**
+     * @param  NovaRequest                            $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        $personalAccessClient = app()
+            ->make(ClientRepository::class)
+            ->personalAccessClient();
+        return $query->where('client_id', '<>', $personalAccessClient->id);
+    }
+
+    /**
+     * Get the fields displayed by the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function fields(NovaRequest $request)
+    {
+        return [
+            Hidden::make('ID', 'id')->default('1'),
+            Hidden::make('Client Id', 'client_id')->default('1'),
+            BelongsTo::make('Application', 'client', Client::class)
+                ->sortable()
+                ->readonly(),
+            Text::make('Access Token', function () {
+                return $this->id;
+            })->copyable(),
+            MultiSelect::make('Scopes')
+                ->options(
+                    Passport::scopes()
+                        ->mapWithKeys(function ($scope) {
+                            return [$scope->id => $scope->id];
+                        })
+                        ->sort()
+                )
+                ->hideFromIndex()
+                ->readonly(),
+            Boolean::make('Revoked')
+                ->default(false)
+                ->sortable(),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Updated At')->onlyOnDetail(),
+            DateTime::make('Expires At')->onlyOnDetail(),
+        ];
+    }
+
+    /**
+     * @param  Request  $request
+     *
+     * @return false
+     */
+    public static function authorizedToCreate(Request $request)
+    {
+        return false;
+    }
+
+    /**
+     * @param  NovaRequest             $request
+     * @param  \Laravel\Nova\Resource  $resource
+     *
+     * @return string
+     */
+    public static function redirectAfterCreate(NovaRequest $request, $resource)
+    {
+        return '/resources/' . static::uriKey();
+    }
+
+    /**
+     * @param  NovaRequest  $request
+     * @param  Model        $model
+     */
+    public static function afterCreate(NovaRequest $request, Model $model)
+    {
+        Auth::user()->createToken($model->name, $model->scopes);
+        $model->delete();
+    }
+
+    /**
+     * Get the cards available for the request.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function cards(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the filters available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function filters(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the lenses available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function lenses(NovaRequest $request)
+    {
+        return [];
+    }
+
+    /**
+     * Get the actions available for the resource.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @return array
+     */
+    public function actions(NovaRequest $request)
+    {
+        return [];
+    }
+}

@@ -17,7 +17,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -54,14 +54,14 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'social_token', 'social_refresh_token'];
 
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['assignment', 'rank', 'online_status'];
+    protected $appends = ['assignment', 'rank', 'online'];
 
     /**
      * The attributes that should be cast.
@@ -71,6 +71,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
+        'online' => 'boolean',
     ];
 
     /**
@@ -104,9 +105,9 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @return string
      */
-    public function getOnlineStatusAttribute()
+    public function getOnlineAttribute()
     {
-        return Cache::tags('user.online')->has("user.online.$this->id") ? 'online' : 'offline';
+        return Cache::tags('user.online')->has("user.online.$this->id");
     }
 
     /**

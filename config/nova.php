@@ -111,8 +111,6 @@ return [
     ],
 
     'api_middleware' => [
-	    'universal',
-	    InitializeTenancyByDomainOrSubdomain::class,
         'nova',
 	    Authenticate::class,
         Authorize::class,

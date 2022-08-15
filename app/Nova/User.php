@@ -122,11 +122,11 @@ class User extends Resource
                     return $this->status->name ?? 'No Current Status';
                 }),
             Badge::make('Online', function ($user) {
-                return $user->online_status;
+                return $user->online;
             })
                 ->map([
-                    'offline' => 'info',
-                    'online' => 'success',
+                    false => 'info',
+                    true => 'success',
                 ])
                 ->exceptOnForms(),
             Tabs::make('Personnel File', [

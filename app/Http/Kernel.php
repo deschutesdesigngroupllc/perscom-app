@@ -42,7 +42,7 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\CaptureUserOnlineStatus::class,
         ],
 
-        'auth' => [
+        'auth_web' => [
             \App\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\Session\Middleware\StartSession::class,
@@ -51,11 +51,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        'api' => [
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
-            'throttle:api',
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-        ],
+        'api' => ['throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class],
 
         'universal' => [CheckUniversalRouteForTenantOrAdmin::class],
     ];

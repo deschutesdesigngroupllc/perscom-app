@@ -3,8 +3,15 @@
 namespace App\Nova\Passport;
 
 use App\Nova\Resource;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
+use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -23,7 +30,7 @@ class Client extends Resource
      *
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -31,6 +38,29 @@ class Client extends Resource
      * @var array
      */
     public static $search = ['id'];
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return 'Application';
+    }
+
+    /**
+     * @param  NovaRequest                            $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query
+            ->where('name', '<>', 'Default Personal Access Client')
+            ->where('name', '<>', 'Default Password Grant Client');
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -41,15 +71,21 @@ class Client extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Name')->required(),
-            URL::make('Redirect URL', 'redirect')->required(),
-            Text::make('Client ID')
+            Text::make('Name')
+                ->rules('required')
+                ->sortable(),
+            ID::make('Client ID', 'id')->sortable(),
+            Hidden::make('Personal Access Client', 'personal_access_client')->default(0),
+            Hidden::make('Personal Access Client', 'password_client')->default(0),
+            Hidden::make('Secret')->default(Str::random(40)),
+            Text::make('Client Secret', 'secret')
                 ->readonly()
-                ->exceptOnForms(),
-            Text::make('Client Secret')
-                ->readonly()
-                ->exceptOnForms(),
+                ->onlyOnDetail(),
+            URL::make('Redirect URL', 'redirect')->rules('required'),
+            Boolean::make('Revoked')
+                ->default(false)
+                ->sortable(),
+            HasMany::make('Authorized Applications', 'tokens', AuthorizedApplications::class),
         ];
     }
 
