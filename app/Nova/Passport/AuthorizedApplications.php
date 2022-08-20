@@ -72,9 +72,9 @@ class AuthorizedApplications extends Resource
             BelongsTo::make('Application', 'client', Client::class)
                 ->sortable()
                 ->readonly(),
-            Text::make('Access Token', function () {
+            Text::make('ID', function () {
                 return $this->id;
-            })->copyable(),
+            }),
             MultiSelect::make('Scopes')
                 ->options(
                     Passport::scopes()

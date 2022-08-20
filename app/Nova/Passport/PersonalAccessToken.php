@@ -3,10 +3,12 @@
 namespace App\Nova\Passport;
 
 use App\Models\Passport\Token;
+use App\Nova\Actions\Passport\RegeneratePersonalAccessToken;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
@@ -147,7 +149,10 @@ class PersonalAccessToken extends Resource
      */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
-        Auth::user()->createToken($model->name, $model->scopes);
+    	return Action::modal('test', [
+    		'token' => 'token'
+	    ]);
+        $token = Auth::user()->createToken($model->name, $model->scopes);
         $model->delete();
     }
 

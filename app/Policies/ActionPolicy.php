@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 use Laravel\Nova\Actions\ActionEvent;
 
-class ActionEventPolicy
+class ActionPolicy
 {
     use HandlesAuthorization;
 

@@ -1,6 +1,6 @@
 <?php
 
-use Laravel\Nova\Actions\ActionResource;
+use App\Nova\Action;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
@@ -188,6 +188,6 @@ return [
     */
 
     'actions' => [
-        'resource' => ActionResource::class,
+        'resource' => Action::class,
     ],
 ];

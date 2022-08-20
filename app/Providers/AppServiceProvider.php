@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Passport\Client;
 use App\Models\Passport\Token;
 use App\Models\Permission;
 use Illuminate\Support\Facades\Event;
@@ -35,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::ignoreMigrations();
         Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
         Passport::useTokenModel(Token::class);
+        Passport::useClientModel(Client::class);
         Passport::routes(null, [
             'middleware' => [InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class],
         ]);

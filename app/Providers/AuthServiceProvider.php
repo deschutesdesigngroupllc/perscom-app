@@ -2,10 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Action;
 use App\Models\Announcement;
 use App\Models\Award;
 use App\Models\Document;
 use App\Models\Forms\Form;
+use App\Models\Passport\Client;
 use App\Models\Permission;
 use App\Models\Position;
 use App\Models\Qualification;
@@ -21,7 +23,7 @@ use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
-use App\Policies\ActionEventPolicy;
+use App\Policies\ActionPolicy;
 use App\Policies\AnnouncementPolicy;
 use App\Policies\AssignmentRecordsPolicy;
 use App\Policies\AwardPolicy;
@@ -47,8 +49,6 @@ use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Cashier\Subscription;
 use Laravel\Cashier\SubscriptionItem;
-use Laravel\Nova\Actions\ActionEvent;
-use Laravel\Passport\Client;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -58,7 +58,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        ActionEvent::class => ActionEventPolicy::class,
+        Action::class => ActionPolicy::class,
         Announcement::class => AnnouncementPolicy::class,
         Award::class => AwardPolicy::class,
         AwardRecords::class => AwardRecordsPolicy::class,

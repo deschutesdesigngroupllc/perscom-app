@@ -2,13 +2,16 @@
 
 namespace App\Nova\Passport;
 
+use App\Nova\Actions\Passport\RegenerateClientSecret;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
+use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
@@ -23,7 +26,7 @@ class Client extends Resource
      *
      * @var string
      */
-    public static $model = \Laravel\Passport\Client::class;
+    public static $model = \App\Models\Passport\Client::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -74,17 +77,20 @@ class Client extends Resource
             Text::make('Name')
                 ->rules('required')
                 ->sortable(),
-            ID::make('Client ID', 'id')->sortable(),
-            Hidden::make('Personal Access Client', 'personal_access_client')->default(0),
-            Hidden::make('Personal Access Client', 'password_client')->default(0),
+            ID::make('Client ID', 'id')
+                ->onlyOnDetail()
+                ->sortable(),
             Hidden::make('Secret')->default(Str::random(40)),
             Text::make('Client Secret', 'secret')
                 ->readonly()
                 ->onlyOnDetail(),
             URL::make('Redirect URL', 'redirect')->rules('required'),
-            Boolean::make('Revoked')
-                ->default(false)
-                ->sortable(),
+            Boolean::make('Revoked')->sortable(),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Updated At')->onlyOnDetail(),
             HasMany::make('Authorized Applications', 'tokens', AuthorizedApplications::class),
         ];
     }
@@ -130,6 +136,6 @@ class Client extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [(new RegenerateClientSecret())->onlyOnDetail()];
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Nova\ActionEvent;
+use App\Nova\Action;
 use App\Nova\Admin as AdminResource;
 use App\Nova\Announcement;
 use App\Nova\Award;
@@ -41,7 +41,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Actions\ActionEvent as ActionEventModel;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuGroup;
@@ -49,6 +48,7 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Perscom\PassportManager\PassportManager;
 use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -87,18 +87,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
-
-        ActionEventModel::creating(function ($actionEvent) {
-            if (
-                \in_array(
-                    $actionEvent->actionable_type,
-                    [\Laravel\Passport\Client::class, \Laravel\Passport\Token::class],
-                    true
-                )
-            ) {
-                return false;
-            }
-        });
 
         if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
             Nova::mainMenu(function (Request $request) {
@@ -215,7 +203,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                     MenuSection::make('Settings', [
                         MenuItem::resource(Field::class),
-                        MenuItem::resource(ActionEvent::class),
+                        MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
                     ])
@@ -323,6 +311,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [new PassportManager()];
     }
 }
