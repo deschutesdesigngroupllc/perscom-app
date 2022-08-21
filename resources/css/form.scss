@@ -1,0 +1,14 @@
+@import url('https://fonts.bunny.net/css?family=Nunito');
+
+$font-family-sans-serif: 'Nunito', sans-serif;
+$font-size-base: 0.9rem;
+$line-height-base: 1.6;
+$enable-responsive-font-sizes: true;
+
+@import 'tailwind-color-palette/scss/tailwind-color-palette';
+
+$body-bg: #F2F5F9;
+$primary: rgb(37, 99, 235);
+
+@import 'bootstrap/scss/bootstrap';
+@import 'laraform/src/themes/bs4/scss/theme';

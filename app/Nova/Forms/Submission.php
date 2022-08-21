@@ -78,75 +78,6 @@ class Submission extends Resource
     }
 
     /**
-     * @param  null  $resource
-     */
-    public function __construct($resource = null)
-    {
-        parent::__construct($resource);
-
-        // Get the fields we will be using for the submission
-        $resourceId = Route::current()->parameter('resourceId');
-        $submission = SubmissionModel::find($resourceId);
-        $fields =
-            $submission?->form->fields->sortBy(function ($field) {
-                return $field->pivot->order;
-            }) ?? CustomField::all();
-
-        // Load all possible custom fields
-        foreach ($fields as $field) {
-            // Build our nova field
-            $novaField = \call_user_func(
-                ["Laravel\\Nova\\Fields\\{$field->type}", 'make'],
-                $field->name,
-                "field_{$field->id}"
-            );
-            if ($novaField instanceof Field) {
-                // Placeholder
-                if ($field->placeholder && method_exists($novaField, 'placeholder')) {
-                    $novaField->placeholder($field->placeholder);
-                }
-
-                // Help
-                if ($field->help && method_exists($novaField, 'help')) {
-                    $novaField->help($field->help);
-                }
-
-                // Display properties
-                $novaField->hideFromIndex();
-                $novaField->showOnPreview();
-
-                // Custom changes for specific fields
-                if ($novaField instanceof Country) {
-                    // Display as
-                    $novaField->displayUsingLabels();
-                }
-                if ($novaField instanceof Select) {
-                    // Display as
-                    $novaField->options(collect($field->options)->toArray())->displayUsingLabels();
-                }
-
-                // Configure which fields are shown depending on the form
-                $novaField->hide();
-                $novaField->dependsOn(['form'], function ($resource, NovaRequest $request, FormData $formData) use (
-                    $field,
-                    $novaField
-                ) {
-                    $form = Form::find($formData->form);
-                    if ($form && $form->fields->pluck('id')->search($field->id) !== false) {
-                        $novaField->show();
-                        if ($field->required && method_exists($novaField, 'required')) {
-                            $novaField->rules('required');
-                        }
-                    }
-                });
-
-                // Save the fields to our array
-                $this->customFields[] = $novaField;
-            }
-        }
-    }
-
-    /**
      * Build an "index" query for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -196,7 +127,6 @@ class Submission extends Resource
                 ->label(function () {
                     return $this->status->name ?? 'No Current Status';
                 }),
-            new Panel('Form', $this->customFields),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->exceptOnForms(),

@@ -9,6 +9,7 @@ use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
@@ -82,6 +83,7 @@ class Form extends Resource
                 ->from('Name')
                 ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)]),
             Tags::make('Tags')->withLinkToTagResource(),
+            Boolean::make('Public', 'is_public')->help('Check to make this form avaiable to the public.'),
             URL::make('URL')
                 ->displayUsing(function ($url) {
                     return $url;

@@ -19,30 +19,27 @@ class Field extends Model
      */
     protected $casts = [
         'options' => 'array',
+        'required' => 'boolean',
+        'readonly' => 'boolean',
+        'disabled' => 'boolean',
     ];
 
     /**
      * Available field types
      */
     public static $fieldTypes = [
-        'Boolean' => 'boolean',
-        'Code' => 'string',
-        'Color' => 'string',
-        'Country' => 'string',
-        'Currency' => 'string',
-        'DateTime' => 'datetime',
-        'Date' => 'date',
-        'Email' => 'string',
-        'Heading' => 'string',
-        'Line' => 'string',
-        'Markdown' => 'string',
-        'Number' => 'integer',
-        'Password' => 'string',
-        'Select' => 'string',
-        'Text' => 'string',
-        'Textarea' => 'string',
-        'Timezone' => 'string',
-        'URL' => 'string',
+        'checkbox' => 'Checkbox',
+        'email' => 'Email',
+        'meta' => 'Meta',
+        'multiselect' => 'Multiselect',
+        'radio' => 'Radio',
+        'radiogroup' => 'Radio Group',
+        'select' => 'Select',
+        'static' => 'Static',
+        'text' => 'Text',
+        'textarea' => 'Textarea',
+        'toggle' => 'Toggle',
+        'password' => 'Password',
     ];
 
     /**

@@ -139,18 +139,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ) {
                             return $request->user()->hasPermissionTo('create:submission');
                         }),
-                        MenuItem::link(
-                            'New Form Submission',
-                            route(
-                                'nova.pages.create',
-                                [
-                                    'resource' => Submission::uriKey(),
-                                ],
-                                false
-                            )
-                        )->canSee(function (NovaRequest $request) {
-                            return $request->user()->hasPermissionTo('create:submission');
-                        }),
                     ])->icon('user-circle'),
 
                     MenuSection::make('Organization', [
@@ -169,12 +157,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->collapsable(),
 
                     MenuSection::make('Forms', [
-                        MenuItem::resource(Form::class)->canSee(function (NovaRequest $request) {
-                            return $request->user()->hasPermissionTo('view:form');
-                        }),
-                        MenuItem::resource(Submission::class)->canSee(function (NovaRequest $request) {
-                            return $request->user()->hasPermissionTo('view:submission');
-                        }),
+                        MenuItem::resource(Field::class),
+                        MenuItem::resource(Form::class),
+                        MenuItem::resource(Submission::class),
                     ])
                         ->icon('pencil-alt')
                         ->collapsable(),
@@ -191,7 +176,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->collapsable(),
 
                     MenuSection::make('Settings', [
-                        MenuItem::resource(Field::class),
                         MenuItem::resource(ActionEvent::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
