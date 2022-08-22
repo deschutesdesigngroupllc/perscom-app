@@ -51,19 +51,9 @@ class Form extends Resource
     public static $search = ['id', 'name'];
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $orderings
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @var string[]
      */
-    protected static function applyOrderings($query, array $orderings)
-    {
-        if (!request()->get('orderBy')) {
-            return parent::applyOrderings($query, [
-                'name' => 'asc',
-            ]);
-        }
-        return parent::applyOrderings($query, $orderings);
-    }
+    public static $orderBy = ['name' => 'asc'];
 
     /**
      * Get the fields displayed by the resource.
@@ -81,9 +71,9 @@ class Form extends Resource
                 ->showOnPreview(),
             Slug::make('Slug')
                 ->from('Name')
-                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)]),
+                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)])
+                ->help('The slug will be used in the URL to access the form.'),
             Tags::make('Tags')->withLinkToTagResource(),
-            Boolean::make('Public', 'is_public')->help('Check to make this form avaiable to the public.'),
             URL::make('URL')
                 ->displayUsing(function ($url) {
                     return $url;
@@ -96,6 +86,12 @@ class Form extends Resource
                 ->alwaysShow()
                 ->showOnPreview(),
             Markdown::make('Instructions'),
+            Heading::make('Access')->hideFromIndex(),
+            Boolean::make('Public', 'is_public')->help('Check to make this form available to the public.'),
+            Heading::make('Submission')->hideFromIndex(),
+            Textarea::make('Success Message')
+                ->help('The message displayed when the form is successfully submitted.')
+                ->alwaysShow(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

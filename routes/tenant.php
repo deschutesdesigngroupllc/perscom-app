@@ -21,8 +21,12 @@ use Stancl\Tenancy\Features\UserImpersonation;
 
 // Initialize tenancy
 Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web']], function () {
-	Route::get('/forms/{slug}', [FormController::class, 'index'])
-		->name('form');
+	// Forms
+	Route::group(['prefix' => 'forms'], function () {
+		Route::get('{slug}', [FormController::class, 'index'])
+			->name('form');
+		Route::post('process', [FormController::class, 'process'])->name('form.process');
+	});
 
 	Route::get('/impersonate/{token}', function ($token) {
 		return UserImpersonation::makeResponse($token);

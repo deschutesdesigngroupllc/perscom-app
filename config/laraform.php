@@ -100,7 +100,7 @@ return [
     |   step: before moving to the next step when using Wizard
     |
     */
-    'validateOn' => 'submit|change',
+    'validateOn' => 'submit',
 
     /*
     |--------------------------------------------------------------------------
@@ -110,7 +110,7 @@ return [
     | Default endpoint where the form should submit.
     |
     */
-    'endpoint' => '/laraform/process',
+    'endpoint' => '/forms/process',
 
     /*
     |--------------------------------------------------------------------------

@@ -15,6 +15,7 @@ return new class extends Migration
     {
         Schema::table('forms', function (Blueprint $table) {
             $table->after('slug', function (Blueprint $table) {
+            	$table->text('success_message')->nullable();
 				$table->boolean('is_public')->default(false);
             });
         });
@@ -36,6 +37,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('forms', function (Blueprint $table) {
+        	$table->dropColumn('success_message');
             $table->dropColumn('is_public');
         });
 

@@ -4,11 +4,12 @@ $font-family-sans-serif: 'Nunito', sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
 $enable-responsive-font-sizes: true;
-
-@import 'tailwind-color-palette/scss/tailwind-color-palette';
+$enable-shadows: true;
 
 $body-bg: #F2F5F9;
-$primary: rgb(37, 99, 235);
+$body-color: rgb(100, 116, 139);
+$theme-colors: (
+  "primary": rgb(37, 99, 235),
+);
 
 @import 'bootstrap/scss/bootstrap';
-@import 'laraform/src/themes/bs4/scss/theme';

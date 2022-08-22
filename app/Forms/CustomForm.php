@@ -2,6 +2,7 @@
 
 namespace App\Forms;
 
+use App\Models\Field;
 use App\Models\Forms\Form;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
@@ -16,38 +17,21 @@ use Laraform\Validation\Validation;
 class CustomForm extends Laraform
 {
     /**
-     * @var Form
-     */
-    protected $form;
-
-    /**
      * @var string
      */
     public $class = 'form';
 
     /**
-     * @param  Form  $form
-     *
-     * @return $this
-     */
-    public function withForm(Form $form)
-    {
-        $this->form = $form;
-
-        return $this;
-    }
-
-    /**
      * @return array
      */
-    public function schema()
+    public function schema($fields = null)
     {
-        $fields = [];
+        $elements = [];
 
-        if ($this->form) {
-            foreach ($this->form->fields as $field) {
+        if ($fields) {
+            foreach ($fields as $field) {
                 $definition = [
-                    'type' => $field->type === 'email' ? 'text' : $field->type,
+                    'type' => $field->type === Field::FIELD_EMAIL ? Field::FIELD_TEXT : $field->type,
                     'label' => $field->name,
                     'placeholder' => $field->placeholder,
                     'readonly' => $field->readonly,
@@ -62,30 +46,36 @@ class CustomForm extends Laraform
                     Arr::set($definition, 'rules', $rules);
                 }
 
-                if ($field->type === 'email') {
+                if ($field->type === Field::FIELD_EMAIL) {
                     $rules[] = 'email';
                     Arr::set($definition, 'rules', $rules);
                 }
 
-                if ($field->type === 'select' || $field->type === 'radiogroup') {
+                if (
+                    $field->type === Field::FIELD_SELECT ||
+                    $field->type === Field::FIELD_RADIOGROUP ||
+                    $field->type === Field::FIELD_MULTISELECT
+                ) {
                     Arr::set($definition, 'items', $field->options);
                 }
 
-                if ($field->type === 'static') {
+                if ($field->type === Field::FIELD_STATIC) {
                     Arr::pull($definition, 'label');
-                    Arr::set($definition, 'content', Str::markdown($field->text));
+                    if ($field->text) {
+                        Arr::set($definition, 'content', Str::markdown($field->text));
+                    }
                 }
 
-                if ($field->type === 'checkbox') {
+                if ($field->type === Field::FIELD_CHECKBOX) {
                     Arr::pull($definition, 'label');
                     Arr::set($definition, 'text', $field->name);
                 }
 
-                $fields[$field->id] = $definition;
+                $elements[$field->id] = $definition;
             }
         }
 
-        return $fields;
+        return $elements;
     }
 
     /**

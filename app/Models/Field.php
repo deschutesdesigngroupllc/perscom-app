@@ -25,21 +25,37 @@ class Field extends Model
     ];
 
     /**
+     * Fields
+     */
+    public const FIELD_CHECKBOX = 'checkbox';
+    public const FIELD_EMAIL = 'email';
+    public const FIELD_META = 'meta';
+    public const FIELD_MULTISELECT = 'multiselect';
+    public const FIELD_RADIO = 'radio';
+    public const FIELD_RADIOGROUP = 'radiogroup';
+    public const FIELD_SELECT = 'select';
+    public const FIELD_STATIC = 'static';
+    public const FIELD_TEXT = 'text';
+    public const FIELD_TEXTAREA = 'textarea';
+    public const FIELD_TOGGLE = 'toggle';
+    public const FIELD_PASSWORD = 'password';
+
+    /**
      * Available field types
      */
     public static $fieldTypes = [
-        'checkbox' => 'Checkbox',
-        'email' => 'Email',
-        'meta' => 'Meta',
-        'multiselect' => 'Multiselect',
-        'radio' => 'Radio',
-        'radiogroup' => 'Radio Group',
-        'select' => 'Select',
-        'static' => 'Static',
-        'text' => 'Text',
-        'textarea' => 'Textarea',
-        'toggle' => 'Toggle',
-        'password' => 'Password',
+        self::FIELD_CHECKBOX => 'Checkbox',
+        self::FIELD_EMAIL => 'Email',
+        self::FIELD_META => 'Meta',
+        self::FIELD_MULTISELECT => 'Multiselect',
+        self::FIELD_RADIO => 'Radio',
+        self::FIELD_RADIOGROUP => 'Radio Group',
+        self::FIELD_SELECT => 'Select',
+        self::FIELD_STATIC => 'Static',
+        self::FIELD_TEXT => 'Text',
+        self::FIELD_TEXTAREA => 'Textarea',
+        self::FIELD_TOGGLE => 'Toggle',
+        self::FIELD_PASSWORD => 'Password',
     ];
 
     /**

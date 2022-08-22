@@ -1,16 +1,10 @@
 <?php
-/*
- * Copyright (c) 6/27/22, 9:06 PM Deschutes Design Group LLC.year. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
 
 namespace App\Nova;
 
 use App\Nova\Forms\Form;
 use HaydenPierce\ClassFinder\ClassFinder;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -64,19 +58,14 @@ class Field extends Resource
     public static $search = ['id', 'name'];
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $orderings
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @var int
      */
-    protected static function applyOrderings($query, array $orderings)
-    {
-        if (!request()->get('orderBy')) {
-            return parent::applyOrderings($query, [
-                'name' => 'asc',
-            ]);
-        }
-        return parent::applyOrderings($query, $orderings);
-    }
+    public static $perPageViaRelationship = 10;
+
+    /**
+     * @var string[]
+     */
+    public static $orderBy = ['name' => 'asc'];
 
     /**
      * Get the fields displayed by the resource.
@@ -104,18 +93,19 @@ class Field extends Resource
                 ->sortable()
                 ->displayUsingLabels(),
             Boolean::make('Required')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                if ($formData->type === 'static') {
+                if ($formData->type === \App\Models\Field::FIELD_STATIC) {
                     $field->hide();
                 }
             }),
             Boolean::make('Readonly')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                     if (
-                        $formData->type === 'radiogroup' ||
-                        $formData->type === 'radio' ||
-                        $formData->type === 'static' ||
-                        $formData->type === 'checkbox' ||
-                        $formData->type === 'select'
+                        $formData->type === \App\Models\Field::FIELD_RADIOGROUP ||
+                        $formData->type === \App\Models\Field::FIELD_RADIO ||
+                        $formData->type === \App\Models\Field::FIELD_STATIC ||
+                        $formData->type === \App\Models\Field::FIELD_CHECKBOX ||
+                        $formData->type === \App\Models\Field::FIELD_SELECT ||
+                        $formData->type === \App\Models\Field::FIELD_MULTISELECT
                     ) {
                         $field->hide();
                     }
@@ -125,7 +115,7 @@ class Field extends Resource
                 ),
             Boolean::make('Disabled')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type === 'static') {
+                    if ($formData->type === \App\Models\Field::FIELD_STATIC) {
                         $field->hide();
                     }
                 })
@@ -136,10 +126,10 @@ class Field extends Resource
                 ->help('If a text type field, this text will fill the field when no value is present.')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                     if (
-                        $formData->type === 'text' ||
-                        $formData->type === 'textarea' ||
-                        $formData->type === 'email' ||
-                        $formData->type === 'password'
+                        $formData->type === \App\Models\Field::FIELD_TEXT ||
+                        $formData->type === \App\Models\Field::FIELD_TEXTAREA ||
+                        $formData->type === \App\Models\Field::FIELD_EMAIL ||
+                        $formData->type === \App\Models\Field::FIELD_PASSWORD
                     ) {
                         $field->show();
                     }
@@ -148,7 +138,7 @@ class Field extends Resource
                 ->hideFromIndex()
                 ->help('Like this text, this is a short description that should help the user fill out the field.')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type === 'static') {
+                    if ($formData->type === \App\Models\Field::FIELD_STATIC) {
                         $field->hide();
                     }
                 }),
@@ -157,14 +147,21 @@ class Field extends Resource
                 ->hide()
                 ->help('Like this text, this is a short description that should help the user fill out the field.')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type === 'static' || $formData->type === 'radio') {
+                    if (
+                        $formData->type === \App\Models\Field::FIELD_STATIC ||
+                        $formData->type === \App\Models\Field::FIELD_RADIO
+                    ) {
                         $field->show();
                     }
                 }),
             KeyValue::make('Options')
                 ->hide()
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type === 'select' || $formData->type === 'radiogroup') {
+                    if (
+                        $formData->type === \App\Models\Field::FIELD_SELECT ||
+                        $formData->type === \App\Models\Field::FIELD_RADIOGROUP ||
+                        $formData->type === \App\Models\Field::FIELD_MULTISELECT
+                    ) {
                         $field->show();
                     }
                 }),
