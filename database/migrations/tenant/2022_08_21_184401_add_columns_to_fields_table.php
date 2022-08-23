@@ -26,6 +26,7 @@ return new class extends Migration
 			    $table->boolean('disabled')->default(false);
 		    });
 		    $table->text('text')->after('help')->nullable();
+		    $table->string('key')->after('name')->nullable();
 	    });
     }
 
@@ -45,6 +46,7 @@ return new class extends Migration
 		    $table->dropColumn('readonly');
 		    $table->dropColumn('disabled');
 		    $table->dropColumn('text');
+		    $table->dropColumn('key');
 	    });
     }
 };

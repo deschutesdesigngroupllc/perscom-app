@@ -4,7 +4,9 @@ namespace App\Forms;
 
 use App\Models\Field;
 use App\Models\Forms\Form;
+use App\Models\Forms\Submission;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laraform\Authorization\AuthorizationBuilder;
 use Laraform\Database\DatabaseBuilder;
@@ -24,9 +26,14 @@ class CustomForm extends Laraform
     /**
      * @return array
      */
-    public function schema($fields = null)
+    public function schema($fields = null, $formId = null)
     {
-        $elements = [];
+        $elements = [
+            'form_id' => [
+                'type' => 'meta',
+                'default' => $formId,
+            ],
+        ];
 
         if ($fields) {
             foreach ($fields as $field) {
@@ -71,11 +78,24 @@ class CustomForm extends Laraform
                     Arr::set($definition, 'text', $field->name);
                 }
 
-                $elements[$field->id] = $definition;
+                $key = $field->key ?? Str::slug($field->name);
+                $elements[$key] = $definition;
             }
         }
 
         return $elements;
+    }
+
+    /**
+     * After hook
+     */
+    public function after()
+    {
+        Submission::create([
+            'data' => Arr::except($this->data, 'form_id'),
+            'form_id' => $this->data['form_id'],
+            'user_id' => Auth::user() ? Auth::user()->getAuthIdentifier() : null,
+        ]);
     }
 
     /**

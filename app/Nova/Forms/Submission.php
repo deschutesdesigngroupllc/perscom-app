@@ -15,6 +15,7 @@ use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Field;
@@ -63,19 +64,9 @@ class Submission extends Resource
     public static $search = ['id'];
 
     /**
-     * @var array
+     * @var string[]
      */
-    protected $customFields = [];
-
-    /**
-     * Get the text for the create resource button.
-     *
-     * @return string|null
-     */
-    public static function createButtonLabel()
-    {
-        return 'Submit Form';
-    }
+    public static $orderBy = ['created_at' => 'desc'];
 
     /**
      * Build an "index" query for the given resource.
@@ -116,7 +107,19 @@ class Submission extends Resource
                 })
                 ->canSee(function (NovaRequest $request) {
                     return $request->user()->hasPermissionTo('update:submission');
-                }),
+                })
+                ->onlyOnForms()
+                ->nullable()
+                ->help('The user will be set to guest if left blank.'),
+            Text::make('User', function () {
+                return optional($this->user, function ($user) {
+                    return $user->name;
+                }) ?? 'Guest';
+            }),
+            Code::make('Data')
+                ->hideFromIndex()
+                ->rules('json')
+                ->json(),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })
@@ -128,8 +131,12 @@ class Submission extends Resource
                     return $this->status->name ?? 'No Current Status';
                 }),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->exceptOnForms(),
-            DateTime::make('Updated At')->exceptOnForms(),
+            DateTime::make('Created At')
+                ->exceptOnForms()
+                ->sortable(),
+            DateTime::make('Updated At')
+                ->exceptOnForms()
+                ->sortable(),
             Tabs::make('Relations', [
                 Tab::make('Status History', [
                     MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {

@@ -21,7 +21,7 @@ class FormController extends Controller
     {
         $form = Form::where('slug', $slug)->firstOrFail();
         $customForm = app(CustomForm::class);
-        $customForm->schema = $customForm->schema($form->fields->sortBy('pivot.order')->all());
+        $customForm->schema = $customForm->schema($form->fields->sortBy('pivot.order')->all(), $form->id);
         $customForm->setElements();
 
         if (!$form->is_public && !Auth::check()) {

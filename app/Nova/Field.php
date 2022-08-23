@@ -6,6 +6,7 @@ use App\Nova\Forms\Form;
 use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;
@@ -16,6 +17,7 @@ use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
@@ -80,6 +82,10 @@ class Field extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules(['required']),
+            Slug::make('Slug', 'key')
+                ->from('Name')
+                ->rules(['required', Rule::unique('fields', 'key')->ignore($this->id)])
+                ->help('The slug will be used as the field key when saving the form submission.'),
             Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()
