@@ -22,16 +22,16 @@ class DemoDataSeeder extends Seeder
     public function run()
     {
 	    $this->call([
-	    	AnnouncementSeeder::class,
+		    PermissionSeeder::class,
+		    RoleSeeder::class,
+		    AnnouncementSeeder::class,
 		    AssignmentRecordSeeder::class,
 		    AwardRecordSeeder::class,
 		    CombatRecordSeeder::class,
 		    FieldSeeder::class,
 		    FormSeeder::class,
-		    PermissionSeeder::class,
 		    QualificationRecordSeeder::class,
 		    RankRecordSeeder::class,
-		    RoleSeeder::class,
 		    ServiceRecordSeeder::class
 	    ]);
 

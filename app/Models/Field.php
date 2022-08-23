@@ -37,7 +37,6 @@ class Field extends Model
     public const FIELD_STATIC = 'static';
     public const FIELD_TEXT = 'text';
     public const FIELD_TEXTAREA = 'textarea';
-    public const FIELD_TOGGLE = 'toggle';
     public const FIELD_PASSWORD = 'password';
 
     /**
@@ -54,7 +53,6 @@ class Field extends Model
         self::FIELD_STATIC => 'Static',
         self::FIELD_TEXT => 'Text',
         self::FIELD_TEXTAREA => 'Textarea',
-        self::FIELD_TOGGLE => 'Toggle',
         self::FIELD_PASSWORD => 'Password',
     ];
 

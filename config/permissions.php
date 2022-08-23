@@ -2,7 +2,21 @@
 
 return [
 	'roles' => [
-		'Admin' => 'Has permission to perform any action on the platform.'
+		'Admin' => 'Has permission to perform any action on the platform.',
+		'User' => 'Has permission to view all necessary records only pertaining to the user.'
+	],
+	'default' => [
+		'User' => [
+			'view:user',
+			'view:form',
+			'view:submission',
+			'view:assignmentrecord',
+			'view:awardrecord',
+			'view:combatrecord',
+			'view:qualificationrecord',
+			'view:rankrecord',
+			'view:servicerecord'
+		]
 	],
 	'permissions' => [
 		'view:announcement' => 'Can view an announcement',

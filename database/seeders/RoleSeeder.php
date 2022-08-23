@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Role;
 use Illuminate\Database\Seeder;
+use Laraform\Support\Arr;
 
 class RoleSeeder extends Seeder
 {
@@ -14,12 +15,21 @@ class RoleSeeder extends Seeder
      */
     public function run()
     {
+    	$allPermissions = collect(config('permissions.permissions'))->keys()->toArray();
+	    $defaultPermissions = config('permissions.default');
 	    foreach (config('permissions.roles') as $role => $description) {
-		    $role = Role::factory()->create([
-			    'name' => $role,
-			    'description' => $description
-		    ]);
-		    $role->givePermissionTo(collect(config('permissions.permissions'))->keys()->toArray());
+		    if (!Role::where('name', $role)->first()) {
+			    $role = Role::factory()->create([
+				    'name' => $role,
+				    'description' => $description
+			    ]);
+
+			    if (Arr::exists($defaultPermissions, $role->name)) {
+				    $role->givePermissionTo(Arr::get($defaultPermissions, $role->name));
+			    } else {
+				    $role->givePermissionTo($allPermissions);
+			    }
+		    }
 	    }
     }
 }

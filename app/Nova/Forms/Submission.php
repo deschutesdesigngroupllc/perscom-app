@@ -12,6 +12,7 @@ use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -77,7 +78,7 @@ class Submission extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if ($request->user()->hasPermissionTo('view:submission')) {
+        if (Gate::check('update', $request->findModel())) {
             return $query;
         }
 
@@ -105,9 +106,6 @@ class Submission extends Resource
                 ->default(function (NovaRequest $request) {
                     return $request->user()->id;
                 })
-                ->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('update:submission');
-                })
                 ->onlyOnForms()
                 ->nullable()
                 ->help('The user will be set to guest if left blank.'),
@@ -116,10 +114,6 @@ class Submission extends Resource
                     return $user->name;
                 }) ?? 'Guest';
             }),
-            Code::make('Data')
-                ->hideFromIndex()
-                ->rules('json')
-                ->json(),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })
@@ -130,6 +124,10 @@ class Submission extends Resource
                 ->label(function () {
                     return $this->status->name ?? 'No Current Status';
                 }),
+            Code::make('Data')
+                ->hideFromIndex()
+                ->rules('json')
+                ->json(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')
                 ->exceptOnForms()
@@ -186,11 +184,7 @@ class Submission extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [
-            (new CurrentUsersSubmissions())->canSee(function (NovaRequest $request) {
-                return $request->user()->hasPermissionTo('create:submission');
-            }),
-        ];
+        return [];
     }
 
     /**

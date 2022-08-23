@@ -2,24 +2,26 @@
 
 namespace App\Policies;
 
-use App\Models\Records\Rank;
+use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class RankRecordsPolicy
+class AttachmentPolicy
 {
     use HandlesAuthorization;
 
-    /**
-     * @return bool
-     */
-    public function before()
-    {
-        if (Request::isCentralRequest()) {
-            return false;
-        }
-    }
+    //TODO: Finish policy
+	/**
+	 * @return bool
+	 */
+	public function before()
+	{
+		if (Request::isCentralRequest()) {
+			return false;
+		}
+		return true;
+	}
 
     /**
      * Determine whether the user can view any models.
@@ -29,19 +31,19 @@ class RankRecordsPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:rankrecord');
+        //
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Rank $rank)
+    public function view(User $user, Attachment $attachment)
     {
-        return $user->hasPermissionTo('view:rankrecord') || $rank->user?->id === $user->id;
+        //
     }
 
     /**
@@ -52,41 +54,41 @@ class RankRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:rankrecord');
+        //
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Rank $rank)
+    public function update(User $user, Attachment $attachment)
     {
-        return $user->hasPermissionTo('update:rankrecord');
+        //
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Rank $rank)
+    public function delete(User $user, Attachment $attachment)
     {
-        return $user->hasPermissionTo('delete:rankrecord');
+        //
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Rank $rank)
+    public function restore(User $user, Attachment $attachment)
     {
         //
     }
@@ -95,10 +97,10 @@ class RankRecordsPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\Attachment  $attachment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Rank $rank)
+    public function forceDelete(User $user, Attachment $attachment)
     {
         //
     }

@@ -134,11 +134,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 false
                             )
                         ),
-                        MenuItem::lens(Submission::class, CurrentUsersSubmissions::class)->canSee(function (
-                            NovaRequest $request
-                        ) {
-                            return $request->user()->hasPermissionTo('create:submission');
-                        }),
                     ])->icon('user-circle'),
 
                     MenuSection::make('Organization', [

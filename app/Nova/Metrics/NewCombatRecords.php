@@ -3,6 +3,7 @@
 namespace App\Nova\Metrics;
 
 use App\Models\Records\Combat;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 
@@ -31,7 +32,7 @@ class NewCombatRecords extends Trend
     public function calculate(NovaRequest $request)
     {
         $query = Combat::query();
-        if (!$request->user()->hasPermissionTo('view:combatrecord')) {
+	    if (!Gate::check('update', $request->findModel())) {
             $query = $query->where('user_id', $request->user()->id);
         }
 

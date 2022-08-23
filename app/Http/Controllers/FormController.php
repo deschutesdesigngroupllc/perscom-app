@@ -6,6 +6,7 @@ use App\Forms\CustomForm;
 use App\Models\Forms\Form;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laraform\Traits\ProcessesForm;
@@ -24,8 +25,8 @@ class FormController extends Controller
         $customForm->schema = $customForm->schema($form->fields->sortBy('pivot.order')->all(), $form->id);
         $customForm->setElements();
 
-        if (!$form->is_public && !Auth::check()) {
-            abort(403, 'This form is not avaiable to the public. Please login to continue.');
+        if (!$form->is_public && !Gate::check('view', $form)) {
+            abort(403, 'You do not have permission to view this form.');
         }
 
         return Inertia::render('Forms/FormWrapper', [

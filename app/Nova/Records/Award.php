@@ -7,6 +7,7 @@ use App\Nova\Metrics\NewAwardRecords;
 use App\Nova\Metrics\TotalAwardRecords;
 use App\Nova\Resource;
 use App\Nova\User;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -75,7 +76,7 @@ class Award extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if ($request->user()->hasPermissionTo('view:awardrecord')) {
+        if (Gate::check('update', $request->findModel())) {
             return $query;
         }
 
