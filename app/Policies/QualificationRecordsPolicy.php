@@ -29,7 +29,7 @@ class QualificationRecordsPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:qualificationrecord');
+        return $user->hasPermissionTo('view:qualificationrecord');
     }
 
     /**
@@ -67,7 +67,7 @@ class QualificationRecordsPolicy
         return $user->hasPermissionTo('update:qualificationrecord');
     }
 
-	/**
+    /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user

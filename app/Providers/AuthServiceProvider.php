@@ -60,7 +60,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         ActionEvent::class => ActionEventPolicy::class,
         Announcement::class => AnnouncementPolicy::class,
-	    Attachment::class => AttachmentPolicy::class,
+        Attachment::class => AttachmentPolicy::class,
         Award::class => AwardPolicy::class,
         AwardRecords::class => AwardRecordsPolicy::class,
         AssignmentRecords::class => AssignmentRecordsPolicy::class,

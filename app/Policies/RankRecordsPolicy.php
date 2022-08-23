@@ -29,7 +29,7 @@ class RankRecordsPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:rankrecord');
+        return $user->hasPermissionTo('view:rankrecord');
     }
 
     /**

@@ -32,7 +32,7 @@ class TotalServiceRecords extends Value
     public function calculate(NovaRequest $request)
     {
         $query = Service::query();
-	    if (!Gate::check('update', $request->findModel())) {
+        if (!Gate::check('update', $request->findModel())) {
             $query = $query->where('user_id', $request->user()->id);
         }
 

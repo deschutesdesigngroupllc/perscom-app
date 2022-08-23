@@ -29,7 +29,7 @@ class SubmissionPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('view:submission');
+        return $user->hasPermissionTo('view:submission');
     }
 
     /**

@@ -25,7 +25,7 @@ class NewRankRecords extends Trend
     public function calculate(NovaRequest $request)
     {
         $query = Rank::query();
-	    if (!Gate::check('update', $request->findModel())) {
+        if (!Gate::check('update', $request->findModel())) {
             $query = $query->where('user_id', $request->user()->id);
         }
 

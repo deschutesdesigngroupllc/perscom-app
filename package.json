@@ -2,9 +2,7 @@
     "private": true,
     "scripts": {
         "dev": "vite",
-        "dev:form": "vite --config vite.form.config.js",
         "build": "vite build",
-        "build:form": "vite build --config vite.form.config.js",
         "lint": "eslint --ext .js,.jsx --ignore-path .gitignore --fix resources/js",
         "format": "prettier 'resources/js/**/*.{js,jsx,json,vue}' 'app/**/*.php' --write --list-different --ignore-unknown",
         "build-dashboard-quick-actions-install": "cd nova-components/DashboardQuickActions && npm install",

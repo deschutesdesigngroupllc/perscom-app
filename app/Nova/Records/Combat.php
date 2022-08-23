@@ -76,7 +76,7 @@ class Combat extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-	    if (Gate::check('update', $request->findModel())) {
+        if (Gate::check('update', $request->findModel())) {
             return $query;
         }
 
