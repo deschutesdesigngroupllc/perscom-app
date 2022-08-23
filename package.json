@@ -2,9 +2,11 @@
     "private": true,
     "scripts": {
         "dev": "vite",
+        "dev:form": "vite --config vite.form.config.js",
         "build": "vite build",
+        "build:form": "vite build --config vite.form.config.js",
         "lint": "eslint --ext .js,.jsx --ignore-path .gitignore --fix resources/js",
-        "format": "prettier 'resources/js/**/*.{js,jsx,json}' 'app/**/*.php' --write --list-different --ignore-unknown",
+        "format": "prettier 'resources/js/**/*.{js,jsx,json,vue}' 'app/**/*.php' --write --list-different --ignore-unknown",
         "build-dashboard-quick-actions-install": "cd nova-components/DashboardQuickActions && npm install",
         "build-dashboard-quick-actions-dev": "cd nova-components/DashboardQuickActions && npm run dev",
         "build-dashboard-quick-actions-prod": "cd nova-components/DashboardQuickActions && npm run prod",
@@ -21,9 +23,11 @@
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",
         "@inertiajs/inertia-react": "^0.8.0",
+        "@inertiajs/inertia-vue": "^0.8.0",
         "@inertiajs/progress": "^0.2.7",
         "react": "^17.0.0",
-        "react-dom": "^17.0.0"
+        "react-dom": "^17.0.0",
+        "vue": "^2.7.9"
     },
     "devDependencies": {
         "@babel/preset-react": "^7.17.12",
@@ -32,20 +36,25 @@
         "@prettier/plugin-php": "^0.18.9",
         "@tailwindcss/forms": "^0.5.2",
         "@vitejs/plugin-react": "^2.0.0",
+        "@vitejs/plugin-vue2": "^1.1.2",
         "autoprefixer": "10.4.5",
         "axios": "^0.21",
+        "bootstrap": "^4.6.2",
         "clsx": "^1.1.1",
         "eslint": "^8.17.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-react": "^7.30.1",
         "focus-visible": "^5.2.0",
+        "laraform": "^1.2.4",
         "laravel-vite-plugin": "^0.5.2",
         "lodash": "^4.17.19",
+        "moment": "^2.29.4",
         "path-browserify": "^1.0.1",
         "postcss": "^8.1.14",
         "postcss-focus-visible": "^6.0.4",
         "prettier": "^2.7.1",
         "prettier-plugin-tailwindcss": "^0.1.11",
+        "sass": "^1.54.5",
         "tailwindcss": "^3.1.3",
         "vite": "^3.0.4"
     }

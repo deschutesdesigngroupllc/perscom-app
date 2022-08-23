@@ -49,9 +49,9 @@ class Feature extends Resource
             Text::make('Name')
                 ->rules('required')
                 ->sortable(),
-	        Text::make('Description', function () {
-	        	return Str::limit($this->description);
-	        })->onlyOnIndex(),
+            Text::make('Description', function () {
+                return Str::limit($this->description);
+            })->onlyOnIndex(),
             Textarea::make('Description')
                 ->alwaysShow()
                 ->nullable(),

@@ -17,6 +17,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "innocenzi/laravel-vite": "^0.1.27",
         "kalnoy/nestedset": "^6.0",
+        "laraform/laraform-laravel": "^1.2",
         "laravel/fortify": "^1.13",
         "laravel/framework": "^9.0",
         "laravel/horizon": "^5.9",

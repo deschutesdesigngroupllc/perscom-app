@@ -32,7 +32,7 @@ class FormPolicy
         return $user->hasPermissionTo('view:form');
     }
 
-    /**
+    /**x
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user

@@ -3,6 +3,7 @@
 namespace App\Nova\Metrics;
 
 use App\Models\Records\Rank;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 
@@ -24,7 +25,7 @@ class NewRankRecords extends Trend
     public function calculate(NovaRequest $request)
     {
         $query = Rank::query();
-        if (!$request->user()->hasPermissionTo('view:rankrecord')) {
+	    if (!Gate::check('update', $request->findModel())) {
             $query = $query->where('user_id', $request->user()->id);
         }
 

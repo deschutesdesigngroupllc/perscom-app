@@ -1,26 +1,26 @@
 <?php
-/*
- * Copyright (c) 6/27/22, 9:06 PM Deschutes Design Group LLC.year. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
 
 namespace App\Nova;
 
 use App\Nova\Forms\Form;
 use HaydenPierce\ClassFinder\ClassFinder;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
+use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphedByMany;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Spatie\TagsField\Tags;
 
@@ -60,27 +60,14 @@ class Field extends Resource
     public static $search = ['id', 'name'];
 
     /**
-     * @return string
+     * @var int
      */
-    public static function label()
-    {
-        return 'Custom Fields';
-    }
+    public static $perPageViaRelationship = 10;
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $orderings
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @var string[]
      */
-    protected static function applyOrderings($query, array $orderings)
-    {
-        if (!request()->get('orderBy')) {
-            return parent::applyOrderings($query, [
-                'name' => 'asc',
-            ]);
-        }
-        return parent::applyOrderings($query, $orderings);
-    }
+    public static $orderBy = ['name' => 'asc'];
 
     /**
      * Get the fields displayed by the resource.
@@ -95,51 +82,105 @@ class Field extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules(['required']),
-            Tags::make('Tags')->withLinkToTagResource(),
+            Slug::make('Slug', 'key')
+                ->from('Name')
+                ->rules(['required', Rule::unique('fields', 'key')->ignore($this->id)])
+                ->help('The slug will be used as the field key when saving the form submission.'),
             Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()
                 ->showOnPreview(),
+            Text::make('Description', function () {
+                return Str::limit($this->description);
+            })->onlyOnIndex(),
+            Tags::make('Tags')->withLinkToTagResource(),
             Select::make('Type')
-                ->options(
-                    collect(\App\Models\Field::$fieldTypes)->mapWithKeys(function ($value, $key) {
-                        return [$key => $key];
-                    })
-                )
+                ->options(\App\Models\Field::$fieldTypes)
                 ->sortable()
                 ->displayUsingLabels(),
             Boolean::make('Required')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                if ($formData->type === 'Heading' || $formData->type === 'Line') {
+                if ($formData->type === \App\Models\Field::FIELD_STATIC) {
                     $field->hide();
                 }
             }),
+            Boolean::make('Readonly')
+                ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                    if (
+                        $formData->type === \App\Models\Field::FIELD_RADIOGROUP ||
+                        $formData->type === \App\Models\Field::FIELD_RADIO ||
+                        $formData->type === \App\Models\Field::FIELD_STATIC ||
+                        $formData->type === \App\Models\Field::FIELD_CHECKBOX ||
+                        $formData->type === \App\Models\Field::FIELD_SELECT ||
+                        $formData->type === \App\Models\Field::FIELD_MULTISELECT
+                    ) {
+                        $field->hide();
+                    }
+                })
+                ->help(
+                    'A readonly input field cannot be modified (however, a user can tab to it, highlight it, and copy the text from it).'
+                ),
+            Boolean::make('Disabled')
+                ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                    if ($formData->type === \App\Models\Field::FIELD_STATIC) {
+                        $field->hide();
+                    }
+                })
+                ->help('A disabled input element is unusable and un-clickable.'),
             Text::make('Placeholder')
                 ->hideFromIndex()
+                ->hide()
                 ->help('If a text type field, this text will fill the field when no value is present.')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type === 'Heading' || $formData->type === 'Line') {
-                        $field->hide();
+                    if (
+                        $formData->type === \App\Models\Field::FIELD_TEXT ||
+                        $formData->type === \App\Models\Field::FIELD_TEXTAREA ||
+                        $formData->type === \App\Models\Field::FIELD_EMAIL ||
+                        $formData->type === \App\Models\Field::FIELD_PASSWORD
+                    ) {
+                        $field->show();
                     }
                 }),
             Text::make('Help')
                 ->hideFromIndex()
                 ->help('Like this text, this is a short description that should help the user fill out the field.')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type === 'Heading' || $formData->type === 'Line') {
+                    if ($formData->type === \App\Models\Field::FIELD_STATIC) {
                         $field->hide();
+                    }
+                }),
+            Markdown::make('Text')
+                ->hideFromIndex()
+                ->hide()
+                ->help('Like this text, this is a short description that should help the user fill out the field.')
+                ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                    if (
+                        $formData->type === \App\Models\Field::FIELD_STATIC ||
+                        $formData->type === \App\Models\Field::FIELD_RADIO
+                    ) {
+                        $field->show();
                     }
                 }),
             KeyValue::make('Options')
                 ->hide()
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type === 'Select') {
+                    if (
+                        $formData->type === \App\Models\Field::FIELD_SELECT ||
+                        $formData->type === \App\Models\Field::FIELD_RADIOGROUP ||
+                        $formData->type === \App\Models\Field::FIELD_MULTISELECT
+                    ) {
                         $field->show();
                     }
                 }),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            MorphedByMany::make('Assigned Forms', 'forms', Form::class),
+            MorphedByMany::make('Assigned Forms', 'forms', Form::class)->fields(function ($request, $relatedModel) {
+                return [
+                    Number::make('Order')
+                        ->sortable()
+                        ->rules('required'),
+                ];
+            }),
         ];
     }
 

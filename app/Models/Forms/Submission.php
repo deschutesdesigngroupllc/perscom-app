@@ -39,76 +39,8 @@ class Submission extends Model
      * @var array
      */
     protected $casts = [
-        'data' => AsCollection::class,
+        'data' => 'json',
     ];
-
-    /**
-     * @param  string  $key
-     *
-     * @return mixed
-     */
-    public function getAttribute($key)
-    {
-        if (Str::startsWith($key, 'field_')) {
-            $fieldId = self::getFieldIdFromKey($key);
-
-            $attribute = collect($this->data)->get($fieldId);
-
-            return $this->castAttribute($key, $attribute);
-        }
-
-        return parent::getAttribute($key);
-    }
-
-    /**
-     * @param  string  $key
-     * @param  mixed   $value
-     *
-     * @return mixed
-     */
-    public function setAttribute($key, $value)
-    {
-        if (Str::startsWith($key, 'field_')) {
-            $fieldId = self::getFieldIdFromKey($key);
-
-            $attribute = collect($this->data)->put($fieldId, $value);
-
-            return parent::setAttribute('data', $attribute);
-        }
-
-        return parent::setAttribute($key, $value);
-    }
-
-    /**
-     * @param  string  $key
-     *
-     * @return array|\ArrayAccess|mixed|string
-     */
-    protected function getCastType($key)
-    {
-        if (Str::startsWith($key, 'field_')) {
-            $fieldId = self::getFieldIdFromKey($key);
-
-            $field = $this->form?->fields->where('id', $fieldId)->first();
-
-            if ($field && Arr::exists(Field::$fieldTypes, $field->type)) {
-                return Arr::get(Field::$fieldTypes, $field->type);
-            }
-            return 'string';
-        }
-
-        return parent::getCastType($key);
-    }
-
-    /**
-     * @param $key
-     *
-     * @return string
-     */
-    public static function getFieldIdFromKey($key)
-    {
-        return substr($key, strpos($key, '_') + 1);
-    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

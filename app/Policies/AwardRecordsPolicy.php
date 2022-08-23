@@ -29,7 +29,7 @@ class AwardRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+	    return $user->hasPermissionTo('view:awardrecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class AwardRecordsPolicy
      */
     public function view(User $user, Award $award)
     {
-        return $user->hasPermissionTo('view:awardrecord') || $award->user->id === $user->id;
+        return $user->hasPermissionTo('view:awardrecord') || $award->user?->id === $user->id;
     }
 
     /**
