@@ -4,9 +4,6 @@ namespace App\Nova\Passport;
 
 use App\Nova\Actions\Passport\RegenerateClientSecret;
 use App\Nova\Resource;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -14,7 +11,6 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -77,15 +73,39 @@ class Client extends Resource
             Text::make('Name')
                 ->rules('required')
                 ->sortable(),
-            ID::make('Client ID', 'id')
-                ->onlyOnDetail()
-                ->sortable(),
+            ID::make('Client ID', 'id')->sortable(),
             Hidden::make('Secret')->default(Str::random(40)),
             Text::make('Client Secret', 'secret')
                 ->readonly()
                 ->onlyOnDetail(),
             URL::make('Redirect URL', 'redirect')->rules('required'),
-            Boolean::make('Revoked')->sortable(),
+            Boolean::make('Revoked')
+                ->default(false)
+                ->sortable()
+                ->hideWhenCreating()
+                ->showOnUpdating()
+                ->sortable(),
+            Heading::make('OAuth 2.0 Endpoints')->onlyOnDetail(),
+            Text::make('Authorization Endpoint', function () {
+                return route('passport.authorizations.authorize');
+            })
+                ->copyable()
+                ->onlyOnDetail(),
+            Text::make('Token Endpoint', function () {
+                return route('passport.token');
+            })
+                ->copyable()
+                ->onlyOnDetail(),
+            Text::make('Refresh Token Endpoint', function () {
+                return route('passport.token.refresh');
+            })
+                ->copyable()
+                ->onlyOnDetail(),
+            Text::make('Authenticated User Endpoint', function () {
+                return route('api.me');
+            })
+                ->copyable()
+                ->onlyOnDetail(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')
                 ->sortable()

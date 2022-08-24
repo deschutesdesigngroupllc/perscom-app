@@ -12,7 +12,7 @@ use App\Nova\Records\Combat as CombatRecords;
 use App\Nova\Records\Qualification as QualificationRecords;
 use App\Nova\Records\Rank as RankRecords;
 use App\Nova\Records\Service as ServiceRecords;
-use Carbon\CarbonInterface;
+use Carbon\CarbonInterval;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
@@ -198,14 +198,7 @@ class User extends Resource
                         return $model->assignment->created_at ?? null;
                     })->onlyOnDetail(),
                     Text::make('Time In Assignment', function ($model) {
-                        return $model->assignment
-                            ? Carbon::now()->diffForHumans(
-                                $model->assignment->created_at,
-                                CarbonInterface::DIFF_ABSOLUTE,
-                                false,
-                                3
-                            )
-                            : null;
+	                    return $model->time_in_assignment ? CarbonInterval::make($model->time_in_assignment)->forHumans() : null;
                     })->onlyOnDetail(),
                 ]),
                 Tab::make('Rank', [
@@ -216,14 +209,7 @@ class User extends Resource
                         return $model->rank->record->created_at ?? null;
                     })->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {
-                        return $model->rank
-                            ? Carbon::now()->diffForHumans(
-                                $model->rank->record->created_at,
-                                CarbonInterface::DIFF_ABSOLUTE,
-                                false,
-                                3
-                            )
-                            : null;
+                        return $model->time_in_grade ? CarbonInterval::make($model->time_in_grade)->forHumans() : null;
                     })->onlyOnDetail(),
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),

@@ -8,15 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
-use Laravel\Nova\Fields\Hidden;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MultiSelect;
-use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Passport;
@@ -55,7 +50,7 @@ class AuthorizedApplications extends Resource
         $personalAccessClient = app()
             ->make(ClientRepository::class)
             ->personalAccessClient();
-        return $query->where('client_id', '<>', $personalAccessClient->id);
+        return $query->where('client_id', '<>', $personalAccessClient?->id);
     }
 
     /**
@@ -67,14 +62,9 @@ class AuthorizedApplications extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Hidden::make('ID', 'id')->default('1'),
-            Hidden::make('Client Id', 'client_id')->default('1'),
             BelongsTo::make('Application', 'client', Client::class)
                 ->sortable()
                 ->readonly(),
-            Text::make('ID', function () {
-                return $this->id;
-            }),
             MultiSelect::make('Scopes')
                 ->options(
                     Passport::scopes()
@@ -93,7 +83,9 @@ class AuthorizedApplications extends Resource
                 ->sortable()
                 ->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            DateTime::make('Expires At')->onlyOnDetail(),
+            DateTime::make('Expires At')
+                ->sortable()
+                ->exceptOnForms(),
         ];
     }
 

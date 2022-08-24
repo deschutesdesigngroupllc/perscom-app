@@ -10,10 +10,12 @@ use App\Models\Records\Qualification as QualificationRecords;
 use App\Models\Records\Rank as RankRecords;
 use App\Models\Records\Service as ServiceRecords;
 use App\Traits\HasStatuses;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
@@ -94,6 +96,19 @@ class User extends Authenticatable implements MustVerifyEmail
             ->first();
     }
 
+	/**
+	 * @return mixed|null
+	 */
+	public function getTimeInAssignmentAttribute()
+	{
+		return $this->assignment ? Carbon::now()->diff(
+			$this->assignment->created_at,
+			CarbonInterface::DIFF_ABSOLUTE,
+			false,
+			3
+		) : null;
+	}
+
     /**
      * @return string
      */
@@ -116,9 +131,22 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getRankAttribute()
     {
         return $this->ranks()
-            ->orderByPivot('created_at', 'desc')
+            ->latest()
             ->first();
     }
+
+	/**
+	 * @return mixed|null
+	 */
+	public function getTimeInGradeAttribute()
+	{
+		return $this->rank ? Carbon::now()->diff(
+			$this->rank->record->created_at,
+			CarbonInterface::DIFF_ABSOLUTE,
+			false,
+			3
+		) : null;
+	}
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -91,7 +91,7 @@ class PersonalAccessToken extends Resource
         $personalAccessClient = app()
             ->make(ClientRepository::class)
             ->personalAccessClient();
-        return $query->where('client_id', '=', $personalAccessClient->id);
+        return $query->where('client_id', '=', $personalAccessClient?->id);
     }
 
     /**
@@ -142,7 +142,9 @@ class PersonalAccessToken extends Resource
                 ->sortable()
                 ->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            DateTime::make('Expires At')->onlyOnDetail(),
+            DateTime::make('Expires At')
+                ->sortable()
+                ->exceptOnForms(),
         ];
     }
 

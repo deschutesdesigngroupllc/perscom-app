@@ -15,8 +15,11 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 |
 */
 Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'auth:api']], function () {
-	Route::get('/user', function (Request $request) {
-		return $request->user();
-	});
+	Route::get('/me', function (Request $request) {
+		return \App\Http\Resources\Api\MeResource::make($request->user());
+	})->name('api.me');
+	Route::get('/users', function () {
+		return \App\Http\Resources\Api\UserResource::collection(\App\Models\User::all()->keyBy->id);
+	})->name('api.users.index');
 });
 
