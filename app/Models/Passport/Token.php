@@ -3,12 +3,18 @@
 namespace App\Models\Passport;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Passport\Token as BaseTokenModel;
 
 class Token extends BaseTokenModel
 {
     use HasFactory;
+
+    /**
+     * @var false[]
+     */
+    protected $attributes = [
+        'revoked' => false,
+    ];
 
     /**
      * The attributes that should be cast to native types.

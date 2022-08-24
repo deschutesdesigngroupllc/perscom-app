@@ -3,19 +3,17 @@
 namespace App\Nova\Passport;
 
 use App\Models\Passport\Token;
-use App\Nova\Actions\Passport\RegeneratePersonalAccessToken;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Nova\Actions\Action;
+use Illuminate\Support\Facades\Crypt;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\Hidden;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MultiSelect;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Passport\ClientRepository;
@@ -109,8 +107,22 @@ class PersonalAccessToken extends Resource
             Hidden::make('Client Id', 'client_id')->default('1'),
             Text::make('Name')->sortable(),
             Text::make('API Key', function () {
-                return $this->id;
-            })->copyable(),
+                return Crypt::decryptString($this->token);
+            })
+                ->displayUsing(function ($value) {
+                    return Str::limit($value);
+                })
+                ->onlyOnIndex()
+                ->readonly()
+                ->copyable(),
+            Code::make('API Key', function () {
+                return Crypt::decryptString($this->token);
+            })
+                ->readonly()
+                ->language('shell')
+                ->help(
+                    'API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'
+                ),
             MultiSelect::make('Scopes')
                 ->options(
                     Passport::scopes()
@@ -122,6 +134,8 @@ class PersonalAccessToken extends Resource
                 ->hideFromIndex(),
             Boolean::make('Revoked')
                 ->default(false)
+                ->hideWhenCreating()
+                ->showOnUpdating()
                 ->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')
@@ -149,10 +163,12 @@ class PersonalAccessToken extends Resource
      */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
-    	return Action::modal('test', [
-    		'token' => 'token'
-	    ]);
-        $token = Auth::user()->createToken($model->name, $model->scopes);
+        $tokenResult = Auth::user()->createToken($model->name, $model->scopes);
+        $tokenResult->token->forceFill([
+            'token' => Crypt::encryptString($tokenResult->accessToken),
+        ]);
+        $tokenResult->token->save();
+
         $model->delete();
     }
 

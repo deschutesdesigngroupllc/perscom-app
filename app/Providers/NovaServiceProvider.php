@@ -41,9 +41,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Http\Controllers\ResourceDestroyController;
+use Laravel\Nova\Http\Controllers\ResourceStoreController;
+use Laravel\Nova\Http\Controllers\ResourceUpdateController;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
-use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -77,6 +79,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->toArray()
             );
         }
+
+        $this->app->bind(ResourceStoreController::class, \App\Http\Controllers\Nova\ResourceStoreController::class);
+        $this->app->bind(ResourceUpdateController::class, \App\Http\Controllers\Nova\ResourceUpdateController::class);
+        $this->app->bind(ResourceDestroyController::class, \App\Http\Controllers\Nova\ResourceDestroyController::class);
     }
 
     /**
@@ -182,7 +188,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->collapsable(),
 
                     MenuSection::make('Settings', [
-                        MenuItem::resource(ActionEvent::class),
+                        MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
                     ])

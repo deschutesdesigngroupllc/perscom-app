@@ -36,7 +36,8 @@ return new class extends Migration
 	        $table->unsignedBigInteger('client_id');
 	        $table->string('name')->nullable();
             $table->text('scopes')->nullable();
-            $table->boolean('revoked');
+	        $table->text('token')->nullable();
+	        $table->boolean('revoked');
             $table->timestamps();
             $table->dateTime('expires_at')->nullable();
         });
