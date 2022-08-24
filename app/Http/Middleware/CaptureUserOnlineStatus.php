@@ -18,7 +18,7 @@ class CaptureUserOnlineStatus
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::check()) {
+        if (Auth::check() && tenancy()->initialized) {
             $expire = now()->addMinutes(2);
             $user = Auth::user();
             if ($user) {

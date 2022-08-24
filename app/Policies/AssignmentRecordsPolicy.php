@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Attachment;
 use App\Models\Records\Assignment;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -29,7 +30,7 @@ class AssignmentRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->hasPermissionTo('view:assignmentrecord');
     }
 
     /**
@@ -41,7 +42,7 @@ class AssignmentRecordsPolicy
      */
     public function view(User $user, Assignment $assignment)
     {
-        return $user->hasPermissionTo('view:assignmentrecord') || $assignment->user->id === $user->id;
+        return $user->hasPermissionTo('view:assignmentrecord') || $assignment->user?->id === $user->id;
     }
 
     /**

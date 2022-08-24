@@ -15,6 +15,21 @@ abstract class Resource extends NovaResource
     public static $trafficCop = false;
 
     /**
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param  array                                  $orderings
+     *
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    protected static function applyOrderings($query, array $orderings)
+    {
+        if (empty($orderings) && property_exists(static::class, 'orderBy')) {
+            $orderings = static::$orderBy;
+        }
+
+        return parent::applyOrderings($query, $orderings);
+    }
+
+    /**
      * Build an "index" query for the given resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request

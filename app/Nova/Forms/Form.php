@@ -2,13 +2,18 @@
 
 namespace App\Nova\Forms;
 
+use App\Nova\Actions\OpenForm;
 use App\Nova\Field;
 use App\Nova\Resource;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
@@ -50,19 +55,9 @@ class Form extends Resource
     public static $search = ['id', 'name'];
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $orderings
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @var string[]
      */
-    protected static function applyOrderings($query, array $orderings)
-    {
-        if (!request()->get('orderBy')) {
-            return parent::applyOrderings($query, [
-                'name' => 'asc',
-            ]);
-        }
-        return parent::applyOrderings($query, $orderings);
-    }
+    public static $orderBy = ['name' => 'asc'];
 
     /**
      * Get the fields displayed by the resource.
@@ -80,20 +75,41 @@ class Form extends Resource
                 ->showOnPreview(),
             Slug::make('Slug')
                 ->from('Name')
-                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)]),
-            Tags::make('Tags')->withLinkToTagResource(),
+                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)])
+                ->help('The slug will be used in the URL to access the form.')
+                ->canSee(function (NovaRequest $request) {
+                    return Gate::check('update', $request->findModel());
+                }),
+            Tags::make('Tags')
+                ->withLinkToTagResource()
+                ->canSee(function (NovaRequest $request) {
+                    return Gate::check('update', $request->findModel());
+                }),
             URL::make('URL')
                 ->displayUsing(function ($url) {
                     return $url;
                 })
                 ->exceptOnForms()
                 ->copyable()
-                ->readonly(),
+                ->readonly()
+                ->canSee(function (NovaRequest $request) {
+                    return Gate::check('update', $request->findModel());
+                }),
             Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()
                 ->showOnPreview(),
             Markdown::make('Instructions'),
+            Heading::make('Access')->hideFromIndex(),
+            Boolean::make('Public', 'is_public')
+                ->help('Check to make this form available to the public.')
+                ->canSee(function (NovaRequest $request) {
+                    return Gate::check('update', $request->findModel());
+                }),
+            Heading::make('Submission')->hideFromIndex(),
+            Textarea::make('Success Message')
+                ->help('The message displayed when the form is successfully submitted.')
+                ->alwaysShow(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
@@ -111,6 +127,16 @@ class Form extends Resource
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];
+    }
+
+    /**
+     * @param  Request  $request
+     *
+     * @return bool
+     */
+    public function authorizedToView(Request $request)
+    {
+        return $this->authorizedTo($request, 'update');
     }
 
     /**
@@ -154,6 +180,15 @@ class Form extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new OpenForm())
+                ->showInline()
+                ->canRun(function (NovaRequest $request) {
+                    return Gate::check('view', $request->findModel());
+                })
+                ->canSee(function (NovaRequest $request) {
+                    return Gate::check('view', $request->findModel());
+                }),
+        ];
     }
 }

@@ -12,9 +12,11 @@ use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Field;
@@ -63,88 +65,9 @@ class Submission extends Resource
     public static $search = ['id'];
 
     /**
-     * @var array
+     * @var string[]
      */
-    protected $customFields = [];
-
-    /**
-     * Get the text for the create resource button.
-     *
-     * @return string|null
-     */
-    public static function createButtonLabel()
-    {
-        return 'Submit Form';
-    }
-
-    /**
-     * @param  null  $resource
-     */
-    public function __construct($resource = null)
-    {
-        parent::__construct($resource);
-
-        // Get the fields we will be using for the submission
-        $resourceId = Route::current()->parameter('resourceId');
-        $submission = SubmissionModel::find($resourceId);
-        $fields =
-            $submission?->form->fields->sortBy(function ($field) {
-                return $field->pivot->order;
-            }) ?? CustomField::all();
-
-        // Load all possible custom fields
-        foreach ($fields as $field) {
-            // Build our nova field
-            $novaField = \call_user_func(
-                ["Laravel\\Nova\\Fields\\{$field->type}", 'make'],
-                $field->name,
-                "field_{$field->id}"
-            );
-            if ($novaField instanceof Field) {
-                // Placeholder
-                if ($field->placeholder && method_exists($novaField, 'placeholder')) {
-                    $novaField->placeholder($field->placeholder);
-                }
-
-                // Help
-                if ($field->help && method_exists($novaField, 'help')) {
-                    $novaField->help($field->help);
-                }
-
-                // Display properties
-                $novaField->hideFromIndex();
-                $novaField->showOnPreview();
-
-                // Custom changes for specific fields
-                if ($novaField instanceof Country) {
-                    // Display as
-                    $novaField->displayUsingLabels();
-                }
-                if ($novaField instanceof Select) {
-                    // Display as
-                    $novaField->options(collect($field->options)->toArray())->displayUsingLabels();
-                }
-
-                // Configure which fields are shown depending on the form
-                $novaField->hide();
-                $novaField->dependsOn(['form'], function ($resource, NovaRequest $request, FormData $formData) use (
-                    $field,
-                    $novaField
-                ) {
-                    $form = Form::find($formData->form);
-                    if ($form && $form->fields->pluck('id')->search($field->id) !== false) {
-                        $novaField->show();
-                        if ($field->required && method_exists($novaField, 'required')) {
-                            $novaField->rules('required');
-                        }
-                    }
-                });
-
-                // Save the fields to our array
-                $this->customFields[] = $novaField;
-            }
-        }
-    }
+    public static $orderBy = ['created_at' => 'desc'];
 
     /**
      * Build an "index" query for the given resource.
@@ -155,7 +78,7 @@ class Submission extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if ($request->user()->hasPermissionTo('view:submission')) {
+        if (Gate::check('update', $request->findModel())) {
             return $query;
         }
 
@@ -183,9 +106,14 @@ class Submission extends Resource
                 ->default(function (NovaRequest $request) {
                     return $request->user()->id;
                 })
-                ->canSee(function (NovaRequest $request) {
-                    return $request->user()->hasPermissionTo('update:submission');
-                }),
+                ->onlyOnForms()
+                ->nullable()
+                ->help('The user will be set to guest if left blank.'),
+            Text::make('User', function () {
+                return optional($this->user, function ($user) {
+                    return $user->name;
+                }) ?? 'Guest';
+            }),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })
@@ -196,10 +124,17 @@ class Submission extends Resource
                 ->label(function () {
                     return $this->status->name ?? 'No Current Status';
                 }),
-            new Panel('Form', $this->customFields),
+            Code::make('Data')
+                ->hideFromIndex()
+                ->rules('json')
+                ->json(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->exceptOnForms(),
-            DateTime::make('Updated At')->exceptOnForms(),
+            DateTime::make('Created At')
+                ->exceptOnForms()
+                ->sortable(),
+            DateTime::make('Updated At')
+                ->exceptOnForms()
+                ->sortable(),
             Tabs::make('Relations', [
                 Tab::make('Status History', [
                     MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
@@ -249,11 +184,7 @@ class Submission extends Resource
      */
     public function lenses(NovaRequest $request)
     {
-        return [
-            (new CurrentUsersSubmissions())->canSee(function (NovaRequest $request) {
-                return $request->user()->hasPermissionTo('create:submission');
-            }),
-        ];
+        return [];
     }
 
     /**

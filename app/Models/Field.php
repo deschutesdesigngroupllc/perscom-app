@@ -19,30 +19,41 @@ class Field extends Model
      */
     protected $casts = [
         'options' => 'array',
+        'required' => 'boolean',
+        'readonly' => 'boolean',
+        'disabled' => 'boolean',
     ];
+
+    /**
+     * Fields
+     */
+    public const FIELD_CHECKBOX = 'checkbox';
+    public const FIELD_EMAIL = 'email';
+    public const FIELD_META = 'meta';
+    public const FIELD_MULTISELECT = 'multiselect';
+    public const FIELD_RADIO = 'radio';
+    public const FIELD_RADIOGROUP = 'radiogroup';
+    public const FIELD_SELECT = 'select';
+    public const FIELD_STATIC = 'static';
+    public const FIELD_TEXT = 'text';
+    public const FIELD_TEXTAREA = 'textarea';
+    public const FIELD_PASSWORD = 'password';
 
     /**
      * Available field types
      */
     public static $fieldTypes = [
-        'Boolean' => 'boolean',
-        'Code' => 'string',
-        'Color' => 'string',
-        'Country' => 'string',
-        'Currency' => 'string',
-        'DateTime' => 'datetime',
-        'Date' => 'date',
-        'Email' => 'string',
-        'Heading' => 'string',
-        'Line' => 'string',
-        'Markdown' => 'string',
-        'Number' => 'integer',
-        'Password' => 'string',
-        'Select' => 'string',
-        'Text' => 'string',
-        'Textarea' => 'string',
-        'Timezone' => 'string',
-        'URL' => 'string',
+        self::FIELD_CHECKBOX => 'Checkbox',
+        self::FIELD_EMAIL => 'Email',
+        self::FIELD_META => 'Meta',
+        self::FIELD_MULTISELECT => 'Multiselect',
+        self::FIELD_RADIO => 'Radio',
+        self::FIELD_RADIOGROUP => 'Radio Group',
+        self::FIELD_SELECT => 'Select',
+        self::FIELD_STATIC => 'Static',
+        self::FIELD_TEXT => 'Text',
+        self::FIELD_TEXTAREA => 'Textarea',
+        self::FIELD_PASSWORD => 'Password',
     ];
 
     /**

@@ -64,19 +64,9 @@ class User extends Resource
     public static $search = ['id', 'name', 'email'];
 
     /**
-     * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param array $orderings
-     * @return \Illuminate\Database\Eloquent\Builder
+     * @var string[]
      */
-    protected static function applyOrderings($query, array $orderings)
-    {
-        if (!request()->get('orderBy')) {
-            return parent::applyOrderings($query, [
-                'name' => 'asc',
-            ]);
-        }
-        return parent::applyOrderings($query, $orderings);
-    }
+    public static $orderBy = ['name' => 'asc'];
 
     /**
      * Get the fields displayed by the resource.

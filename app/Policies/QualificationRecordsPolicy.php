@@ -29,7 +29,7 @@ class QualificationRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->hasPermissionTo('view:qualificationrecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class QualificationRecordsPolicy
      */
     public function view(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('view:qualificationrecord') || $qualification->user->id === $user->id;
+        return $user->hasPermissionTo('view:qualificationrecord') || $qualification->user?->id === $user->id;
     }
 
     /**

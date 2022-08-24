@@ -3,6 +3,7 @@
 namespace App\Nova\Metrics;
 
 use App\Models\Records\Service;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -31,7 +32,7 @@ class TotalServiceRecords extends Value
     public function calculate(NovaRequest $request)
     {
         $query = Service::query();
-        if (!$request->user()->hasPermissionTo('view:servicerecord')) {
+        if (!Gate::check('update', $request->findModel())) {
             $query = $query->where('user_id', $request->user()->id);
         }
 

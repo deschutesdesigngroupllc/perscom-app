@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Field;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class FieldFactory extends Factory
 {
@@ -14,8 +15,10 @@ class FieldFactory extends Factory
      */
     public function definition()
     {
+    	$field = "Field {$this->faker->unique()->randomNumber()}";
     	return [
-            'name' => "Field {$this->faker->unique()->randomNumber()}",
+            'name' => $field,
+		    'key' => Str::slug($field),
 		    'description' => $this->faker->paragraph,
 		    'required' => $this->faker->boolean,
 		    'help' => $this->faker->sentence,

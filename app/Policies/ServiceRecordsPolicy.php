@@ -29,7 +29,7 @@ class ServiceRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->hasPermissionTo('view:servicerecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class ServiceRecordsPolicy
      */
     public function view(User $user, Service $service)
     {
-        return $user->hasPermissionTo('view:servicerecord') || $service->user->id === $user->id;
+        return $user->hasPermissionTo('view:servicerecord') || $service->user?->id === $user->id;
     }
 
     /**

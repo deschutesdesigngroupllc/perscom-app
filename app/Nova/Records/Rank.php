@@ -8,6 +8,7 @@ use App\Nova\Metrics\RankRecordsByType;
 use App\Nova\Metrics\TotalRankRecords;
 use App\Nova\Resource;
 use App\Nova\User;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -77,7 +78,7 @@ class Rank extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        if ($request->user()->hasPermissionTo('view:rankrecord')) {
+        if (Gate::check('update', $request->findModel())) {
             return $query;
         }
 

@@ -2,7 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -14,6 +16,23 @@ class HandleInertiaRequests extends Middleware
      * @var string
      */
     protected $rootView = 'app';
+
+    /**
+     * Handle the incoming request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Closure  $next
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function handle(Request $request, Closure $next)
+    {
+        $route = Route::currentRouteName();
+        if ($route === 'form') {
+            $this->rootView = 'form';
+        }
+
+        return parent::handle($request, $next);
+    }
 
     /**
      * Determines the current asset version.
