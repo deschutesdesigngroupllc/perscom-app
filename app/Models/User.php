@@ -96,18 +96,15 @@ class User extends Authenticatable implements MustVerifyEmail
             ->first();
     }
 
-	/**
-	 * @return mixed|null
-	 */
-	public function getTimeInAssignmentAttribute()
-	{
-		return $this->assignment ? Carbon::now()->diff(
-			$this->assignment->created_at,
-			CarbonInterface::DIFF_ABSOLUTE,
-			false,
-			3
-		) : null;
-	}
+    /**
+     * @return mixed|null
+     */
+    public function getTimeInAssignmentAttribute()
+    {
+        return $this->assignment
+            ? Carbon::now()->diff($this->assignment->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
+            : null;
+    }
 
     /**
      * @return string
@@ -135,18 +132,15 @@ class User extends Authenticatable implements MustVerifyEmail
             ->first();
     }
 
-	/**
-	 * @return mixed|null
-	 */
-	public function getTimeInGradeAttribute()
-	{
-		return $this->rank ? Carbon::now()->diff(
-			$this->rank->record->created_at,
-			CarbonInterface::DIFF_ABSOLUTE,
-			false,
-			3
-		) : null;
-	}
+    /**
+     * @return mixed|null
+     */
+    public function getTimeInGradeAttribute()
+    {
+        return $this->rank
+            ? Carbon::now()->diff($this->rank->record->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
+            : null;
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

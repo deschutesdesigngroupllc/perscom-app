@@ -6,12 +6,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserResource extends JsonResource
 {
-	/**
-	 * Indicates if the resource's collection keys should be preserved.
-	 *
-	 * @var bool
-	 */
-	public $preserveKeys = true;
+    /**
+     * Indicates if the resource's collection keys should be preserved.
+     *
+     * @var bool
+     */
+    public $preserveKeys = true;
 
     /**
      * Transform the resource collection into an array.
@@ -21,28 +21,28 @@ class UserResource extends JsonResource
      */
     public function toArray($request)
     {
-    	return [
-    		'id' => $this->id,
-		    'name' => $this->name,
-		    'email' => $this->email,
-		    'online' => $this->online,
-		    'rank' => RankResource::make($this->rank),
-		    'status' => StatusResource::make($this->status),
-		    'assignemnt' => AssignmentResource::make($this->assignment),
-		    'created_at' => $this->created_at,
-		    'updated_at' => $this->updated_at,
-		    'last_seen_at' => $this->last_seen_at,
-		    'time_in_grade' => $this->time_in_grade,
-		    'time_in_assignment' => $this->time_in_assignment,
-		    'records' => [
-			    'assignments' => $this->assignment_records,
-		    	'awards' => $this->award_records,
-			    'combat' => $this->combat_records,
-			    'qualification' => $this->qualification_records,
-			    'rank' => $this->rank_records,
-			    'service' => $this->service_records,
-			    'status' => $this->statuses,
-		    ]
-	    ];
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'email' => $this->email,
+            'online' => $this->online,
+            'rank' => RankResource::make($this->rank),
+            'status' => StatusResource::make($this->status),
+            'assignemnt' => AssignmentResource::make($this->assignment),
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'last_seen_at' => $this->last_seen_at,
+            'time_in_grade' => $this->time_in_grade,
+            'time_in_assignment' => $this->time_in_assignment,
+            'records' => [
+                'assignments' => $this->assignment_records,
+                'awards' => $this->award_records,
+                'combat' => $this->combat_records,
+                'qualification' => $this->qualification_records,
+                'rank' => $this->rank_records,
+                'service' => $this->service_records,
+                'status' => $this->statuses,
+            ],
+        ];
     }
 }

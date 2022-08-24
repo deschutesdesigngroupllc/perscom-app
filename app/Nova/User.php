@@ -198,7 +198,9 @@ class User extends Resource
                         return $model->assignment->created_at ?? null;
                     })->onlyOnDetail(),
                     Text::make('Time In Assignment', function ($model) {
-	                    return $model->time_in_assignment ? CarbonInterval::make($model->time_in_assignment)->forHumans() : null;
+                        return $model->time_in_assignment
+                            ? CarbonInterval::make($model->time_in_assignment)->forHumans()
+                            : null;
                     })->onlyOnDetail(),
                 ]),
                 Tab::make('Rank', [

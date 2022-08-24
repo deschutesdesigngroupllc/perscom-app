@@ -15,12 +15,12 @@ class AssignmentResource extends JsonResource
     public function toArray($request)
     {
         return [
-        	'unit' => UnitResource::make($this->unit),
-	        'position' => PositionResource::make($this->position),
-	        'specialty' => SpecialtyResource::make($this->specialty),
-	        'document' => DocumentResource::make($this->document),
-	        'author' => $this->author,
-	        'text' => $this->text
+            'unit' => UnitResource::make($this->unit),
+            'position' => PositionResource::make($this->position),
+            'specialty' => SpecialtyResource::make($this->specialty),
+            'document' => DocumentResource::make($this->document),
+            'author' => $this->author,
+            'text' => $this->text,
         ];
     }
 }
