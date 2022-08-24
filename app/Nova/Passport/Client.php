@@ -73,10 +73,18 @@ class Client extends Resource
             Text::make('Name')
                 ->rules('required')
                 ->sortable(),
-            ID::make('Client ID', 'id')->sortable(),
+            ID::make('Client ID', 'id')
+                ->hide()
+                ->sortable(),
+            Text::make('Client ID', function () {
+                return $this->id;
+            })
+                ->copyable()
+                ->exceptOnForms(),
             Hidden::make('Secret')->default(Str::random(40)),
             Text::make('Client Secret', 'secret')
                 ->readonly()
+                ->copyable()
                 ->onlyOnDetail(),
             URL::make('Redirect URL', 'redirect')->rules('required'),
             Boolean::make('Revoked')

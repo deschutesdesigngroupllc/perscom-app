@@ -36,11 +36,11 @@ class HandleInertiaRequests extends Middleware
         $response = parent::handle($request, $next);
         $location = $response->headers->get('Location');
 
-	    if (\is_string($location) && !Str::of($location)->startsWith(config('app.url'))) {
-		    return Inertia::location($location);
-	    }
+        if (\is_string($location) && !Str::of($location)->startsWith(config('app.url'))) {
+            return Inertia::location($location);
+        }
 
-	    return $response;
+        return $response;
     }
 
     /**
