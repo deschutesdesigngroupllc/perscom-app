@@ -1,6 +1,6 @@
 <?php
 
-use Laravel\Nova\Actions\ActionResource;
+use App\Nova\Action;
 use Laravel\Nova\Http\Middleware\Authenticate;
 use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
@@ -111,8 +111,6 @@ return [
     ],
 
     'api_middleware' => [
-	    'universal',
-	    InitializeTenancyByDomainOrSubdomain::class,
         'nova',
 	    Authenticate::class,
         Authorize::class,
@@ -190,6 +188,6 @@ return [
     */
 
     'actions' => [
-        'resource' => ActionResource::class,
+        'resource' => Action::class,
     ],
 ];

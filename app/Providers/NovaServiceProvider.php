@@ -2,7 +2,7 @@
 
 namespace App\Providers;
 
-use App\Nova\ActionEvent;
+use App\Nova\Action;
 use App\Nova\Admin as AdminResource;
 use App\Nova\Announcement;
 use App\Nova\Award;
@@ -15,8 +15,9 @@ use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
 use App\Nova\Lenses\CurrentUsersSubmissions;
+use App\Nova\Passport\AuthorizedApplications;
 use App\Nova\Passport\Client;
-use App\Nova\Passport\Token;
+use App\Nova\Passport\PersonalAccessToken;
 use App\Nova\Permission;
 use App\Nova\Position;
 use App\Nova\Qualification;
@@ -40,6 +41,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Http\Controllers\ResourceDestroyController;
+use Laravel\Nova\Http\Controllers\ResourceStoreController;
+use Laravel\Nova\Http\Controllers\ResourceUpdateController;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuItem;
@@ -74,6 +78,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ->toArray()
             );
         }
+
+        $this->app->bind(ResourceStoreController::class, \App\Http\Controllers\Nova\ResourceStoreController::class);
+        $this->app->bind(ResourceUpdateController::class, \App\Http\Controllers\Nova\ResourceUpdateController::class);
+        $this->app->bind(ResourceDestroyController::class, \App\Http\Controllers\Nova\ResourceDestroyController::class);
     }
 
     /**
@@ -170,14 +178,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->icon('document-text')
                         ->collapsable(),
 
+                    MenuSection::make('External Integration', [
+                        MenuItem::resource(AuthorizedApplications::class),
+                        MenuItem::resource(Client::class)->name('My Apps'),
+                        MenuItem::resource(PersonalAccessToken::class),
+                    ])
+                        ->icon('link')
+                        ->collapsable(),
+
                     MenuSection::make('Settings', [
-                        MenuItem::resource(ActionEvent::class),
+                        MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
                     ])
                         ->icon('cog')
                         ->collapsable(),
-
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),

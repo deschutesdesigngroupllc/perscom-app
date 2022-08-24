@@ -105,6 +105,7 @@ return [
 		'update:servicerecord' => 'Can update a service record',
 		'delete:servicerecord' => 'Can delete a service record',
 		'view:log' => 'Can view application logs',
-		'manage:billing' => 'Can manage billing and subscription'
+		'manage:billing' => 'Can manage billing and subscription',
+		'manage:api' => 'Can manage API keys and external applications'
 	]
 ];

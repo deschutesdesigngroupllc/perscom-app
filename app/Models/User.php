@@ -10,14 +10,16 @@ use App\Models\Records\Qualification as QualificationRecords;
 use App\Models\Records\Rank as RankRecords;
 use App\Models\Records\Service as ServiceRecords;
 use App\Traits\HasStatuses;
+use Carbon\CarbonInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
-use Laravel\Sanctum\HasApiTokens;
+use Laravel\Passport\HasApiTokens;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -54,14 +56,14 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $hidden = ['password', 'remember_token'];
+    protected $hidden = ['password', 'remember_token', 'social_token', 'social_refresh_token'];
 
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['assignment', 'rank', 'online_status'];
+    protected $appends = ['assignment', 'rank', 'online'];
 
     /**
      * The attributes that should be cast.
@@ -71,6 +73,7 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
+        'online' => 'boolean',
     ];
 
     /**
@@ -94,6 +97,16 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
+     * @return mixed|null
+     */
+    public function getTimeInAssignmentAttribute()
+    {
+        return $this->assignment
+            ? Carbon::now()->diff($this->assignment->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
+            : null;
+    }
+
+    /**
      * @return string
      */
     public function getFullNameAttribute()
@@ -104,9 +117,9 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @return string
      */
-    public function getOnlineStatusAttribute()
+    public function getOnlineAttribute()
     {
-        return Cache::tags('user.online')->has("user.online.$this->id") ? 'online' : 'offline';
+        return Cache::tags('user.online')->has("user.online.$this->id");
     }
 
     /**
@@ -115,8 +128,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function getRankAttribute()
     {
         return $this->ranks()
-            ->orderByPivot('created_at', 'desc')
+            ->latest()
             ->first();
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getTimeInGradeAttribute()
+    {
+        return $this->rank
+            ? Carbon::now()->diff($this->rank->record->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
+            : null;
     }
 
     /**

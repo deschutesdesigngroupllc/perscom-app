@@ -2,11 +2,14 @@
 
 namespace App\Providers;
 
+use App\Models\Action;
 use App\Models\Announcement;
 use App\Models\Attachment;
 use App\Models\Award;
 use App\Models\Document;
 use App\Models\Forms\Form;
+use App\Models\Passport\Client;
+use App\Models\Passport\Token;
 use App\Models\Permission;
 use App\Models\Position;
 use App\Models\Qualification;
@@ -22,7 +25,7 @@ use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
-use App\Policies\ActionEventPolicy;
+use App\Policies\ActionPolicy;
 use App\Policies\AnnouncementPolicy;
 use App\Policies\AssignmentRecordsPolicy;
 use App\Policies\AttachmentPolicy;
@@ -31,6 +34,8 @@ use App\Policies\AwardRecordsPolicy;
 use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
 use App\Policies\FormPolicy;
+use App\Policies\Passport\ClientPolicy;
+use App\Policies\Passport\TokenPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\PositionPolicy;
 use App\Policies\QualificationPolicy;
@@ -48,7 +53,6 @@ use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Laravel\Cashier\Subscription;
 use Laravel\Cashier\SubscriptionItem;
-use Laravel\Nova\Actions\ActionEvent;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -58,13 +62,14 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-        ActionEvent::class => ActionEventPolicy::class,
+        Action::class => ActionPolicy::class,
         Announcement::class => AnnouncementPolicy::class,
         Attachment::class => AttachmentPolicy::class,
         Award::class => AwardPolicy::class,
         AwardRecords::class => AwardRecordsPolicy::class,
         AssignmentRecords::class => AssignmentRecordsPolicy::class,
         CombatRecords::class => CombatRecordsPolicy::class,
+        Client::class => ClientPolicy::class,
         Document::class => DocumentPolicy::class,
         Form::class => FormPolicy::class,
         Permission::class => PermissionPolicy::class,
@@ -79,6 +84,7 @@ class AuthServiceProvider extends ServiceProvider
         Status::class => StatusPolicy::class,
         Subscription::class => SubscriptionPolicy::class,
         SubscriptionItem::class => SubscriptionItemPolicy::class,
+        Token::class => TokenPolicy::class,
         Unit::class => UnitPolicy::class,
         User::class => UserPolicy::class,
     ];

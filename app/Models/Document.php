@@ -22,7 +22,7 @@ class Document extends Model
         '{user_email}' => 'The user\'s email.',
         '{user_email_verified_at}' => 'The user\'s email verification date. Null if email has not been verified',
         '{user_status}' => 'The user\'s status.',
-        '{user_online_status}' => 'The user\'s online status.',
+        '{user_online}' => 'The user\'s online status.',
         '{user_assignment_position}' => 'The user\'s current assignment position.',
         '{user_assignment_specialty}' => 'The user\'s current assignment specialty.',
         '{user_assignment_unit}' => 'The user\'s current assignment unit.',
@@ -86,8 +86,8 @@ class Document extends Model
             case '{user_status}':
                 return $user->status->name ?? null;
                 break;
-            case '{user_online_status}':
-                return $user->online_status ?? null;
+            case '{user_online}':
+                return $user->online ?? null;
                 break;
             case '{user_assignment_position}':
                 return $user->assignment->position->name ?? null;

@@ -2,12 +2,19 @@
 
 namespace App\Providers;
 
+use App\Models\Passport\Client;
+use App\Models\Passport\Token;
+use App\Models\Permission;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Passport\Passport;
 use Laravel\Socialite\Contracts\Factory;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Events\TenancyBootstrapped;
+use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +32,14 @@ class AppServiceProvider extends ServiceProvider
         Request::macro('isDemoMode', function () {
             return \request()->getHost() === env('TENANT_DEMO_HOST', null);
         });
+
+        Passport::ignoreMigrations();
+        Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
+        Passport::useTokenModel(Token::class);
+        Passport::useClientModel(Client::class);
+        Passport::routes(null, [
+            'middleware' => [InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class],
+        ]);
     }
 
     /**
