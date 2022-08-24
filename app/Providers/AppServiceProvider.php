@@ -9,8 +9,8 @@ use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Passport\Passport;
+use Laravel\Passport\RouteRegistrar;
 use Laravel\Socialite\Contracts\Factory;
-use Mockery\Generator\StringManipulation\Pass\Pass;
 use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Events\TenancyBootstrapped;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
@@ -37,9 +37,17 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
         Passport::useTokenModel(Token::class);
         Passport::useClientModel(Client::class);
-        Passport::routes(null, [
-            'middleware' => [InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class],
-        ]);
+        Passport::routes(
+            static function (RouteRegistrar $router) {
+                $router->forAccessTokens();
+                $router->forTransientTokens();
+                $router->forClients();
+                $router->forPersonalAccessTokens();
+            },
+            [
+                'middleware' => [InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class],
+            ]
+        );
     }
 
     /**

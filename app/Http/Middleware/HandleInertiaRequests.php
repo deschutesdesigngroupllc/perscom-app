@@ -5,6 +5,8 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Str;
+use Inertia\Inertia;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -31,7 +33,14 @@ class HandleInertiaRequests extends Middleware
             $this->rootView = 'form';
         }
 
-        return parent::handle($request, $next);
+        $response = parent::handle($request, $next);
+        $location = $response->headers->get('Location');
+
+	    if (\is_string($location) && !Str::of($location)->startsWith(config('app.url'))) {
+		    return Inertia::location($location);
+	    }
+
+	    return $response;
     }
 
     /**
