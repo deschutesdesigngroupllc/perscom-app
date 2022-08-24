@@ -2,12 +2,12 @@
 
 namespace App\Policies\Passport;
 
+use App\Models\Passport\Token;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
-use Laravel\Passport\Client;
 
-class ClientPolicy
+class TokenPolicy
 {
     use HandlesAuthorization;
 
@@ -29,22 +29,18 @@ class ClientPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Laravel\Passport\Client  $client
+     * @param  \App\Models\Passport\Token  $token
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Client $client)
+    public function view(User $user, Token $token)
     {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
-
 	    return $user->hasPermissionTo('manage:api');
     }
 
@@ -63,15 +59,11 @@ class ClientPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Laravel\Passport\Client  $client
+     * @param  \App\Models\Passport\Token  $token
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Client $client)
+    public function update(User $user, Token $token)
     {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
-
 	    return $user->hasPermissionTo('manage:api');
     }
 
@@ -79,15 +71,11 @@ class ClientPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Laravel\Passport\Client  $client
+     * @param  \App\Models\Passport\Token  $token
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Client $client)
+    public function delete(User $user, Token $token)
     {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
-
 	    return $user->hasPermissionTo('manage:api');
     }
 
@@ -95,10 +83,10 @@ class ClientPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Laravel\Passport\Client  $client
+     * @param  \App\Models\Passport\Token  $token
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Client $client)
+    public function restore(User $user, Token $token)
     {
         //
     }
@@ -107,10 +95,10 @@ class ClientPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Laravel\Passport\Client  $client
+     * @param  \App\Models\Passport\Token  $token
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Client $client)
+    public function forceDelete(User $user, Token $token)
     {
         //
     }

@@ -9,6 +9,7 @@ use App\Models\Award;
 use App\Models\Document;
 use App\Models\Forms\Form;
 use App\Models\Passport\Client;
+use App\Models\Passport\Token;
 use App\Models\Permission;
 use App\Models\Position;
 use App\Models\Qualification;
@@ -34,6 +35,7 @@ use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
 use App\Policies\FormPolicy;
 use App\Policies\Passport\ClientPolicy;
+use App\Policies\Passport\TokenPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\PositionPolicy;
 use App\Policies\QualificationPolicy;
@@ -82,6 +84,7 @@ class AuthServiceProvider extends ServiceProvider
         Status::class => StatusPolicy::class,
         Subscription::class => SubscriptionPolicy::class,
         SubscriptionItem::class => SubscriptionItemPolicy::class,
+	    Token::class => TokenPolicy::class,
         Unit::class => UnitPolicy::class,
         User::class => UserPolicy::class,
     ];
