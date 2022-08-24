@@ -38,8 +38,7 @@
         "spatie/nova-tags-field": "^4.0",
         "spatie/url": "^2.1.0",
         "stancl/tenancy": "^3.5",
-        "tightenco/ziggy": "^1.4",
-        "perscom/passport-manager": "*"
+        "tightenco/ziggy": "^1.4"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
@@ -73,10 +72,6 @@
         {
             "type": "path",
             "url": "./nova-components/AlertCard"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/PassportManager"
         }
     ],
     "autoload": {

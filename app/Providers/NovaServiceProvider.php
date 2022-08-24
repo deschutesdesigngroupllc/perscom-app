@@ -50,7 +50,6 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
-use Perscom\PassportManager\PassportManager;
 use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -194,7 +193,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                         ->icon('cog')
                         ->collapsable(),
-
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
@@ -296,6 +294,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [new PassportManager()];
+        return [];
     }
 }

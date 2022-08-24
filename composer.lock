@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1585103d09432d3f1ee05904fe84559c",
+    "content-hash": "3c1a0f440bd7823341d95ad9db13be75",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -114,16 +114,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.234.1",
+            "version": "3.234.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "0057dc79b832f456ed5eb20369a51f894b99a968"
+                "reference": "4e0edc577543d4c009c1a1b5d70d34f58b9f2e25"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/0057dc79b832f456ed5eb20369a51f894b99a968",
-                "reference": "0057dc79b832f456ed5eb20369a51f894b99a968",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4e0edc577543d4c009c1a1b5d70d34f58b9f2e25",
+                "reference": "4e0edc577543d4c009c1a1b5d70d34f58b9f2e25",
                 "shasum": ""
             },
             "require": {
@@ -200,9 +200,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.234.1"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.234.2"
             },
-            "time": "2022-08-23T18:19:55+00:00"
+            "time": "2022-08-24T18:19:29+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -5706,42 +5706,6 @@
                 "MIT"
             ],
             "description": "A Laravel Nova field.",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
-            "name": "perscom/passport-manager",
-            "version": "dev-passport-feature",
-            "dist": {
-                "type": "path",
-                "url": "./nova-components/PassportManager",
-                "reference": "13321a74bef593f3614cd7a1fee3065fc48e9cbc"
-            },
-            "require": {
-                "php": "^7.3|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Perscom\\PassportManager\\ToolServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Perscom\\PassportManager\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A Laravel Nova tool.",
             "keywords": [
                 "laravel",
                 "nova"

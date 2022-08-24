@@ -16,9 +16,7 @@
         "build-html-field-prod": "cd nova-components/HtmlField && npm run prod",
         "build-alert-card-install": "cd nova-components/AlertCard && npm install",
         "build-alert-card": "cd nova-components/AlertCard && npm run dev",
-        "build-alert-card-prod": "cd nova-components/AlertCard && npm run prod",
-        "build-passport-manager": "cd nova-components/PassportManager && npm run dev",
-        "build-passport-manager-prod": "cd nova-components/PassportManager && npm run prod"
+        "build-alert-card-prod": "cd nova-components/AlertCard && npm run prod"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",
