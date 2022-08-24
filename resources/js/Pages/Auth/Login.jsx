@@ -1,12 +1,17 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 
-import { Button } from "@/Components/Button";
-import { Checkbox } from "@/Components/Checkbox";
-import { Guest } from "@/Layouts/Guest";
-import { Input } from "@/Components/Input";
-import { Label } from "@/Components/Label";
-import { ValidationErrors } from "@/Components/ValidationErrors";
-import { Head, Link, useForm, usePage } from "@inertiajs/inertia-react";
+import {Button} from "@/Components/Button";
+import {Checkbox} from "@/Components/Checkbox";
+import {Guest} from "@/Layouts/Guest";
+import {Input} from "@/Components/Input";
+import {Label} from "@/Components/Label";
+import {ValidationErrors} from "@/Components/ValidationErrors";
+import {
+    Head,
+    Link,
+    useForm,
+    usePage
+} from "@inertiajs/inertia-react";
 
 export default function Login({ status, canResetPassword, demoMode, enableSocialLogin, githubLogin, discordLogin }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -99,7 +104,7 @@ export default function Login({ status, canResetPassword, demoMode, enableSocial
                     </div>
                 </div>
                 <div>
-                    <Button color="blue" type="submit" className="w-full">
+                    <Button color="blue" type="submit" className="w-full" processing={processing}>
                         Log in
                     </Button>
                 </div>
