@@ -84,7 +84,7 @@ class AuthServiceProvider extends ServiceProvider
         Status::class => StatusPolicy::class,
         Subscription::class => SubscriptionPolicy::class,
         SubscriptionItem::class => SubscriptionItemPolicy::class,
-	    Token::class => TokenPolicy::class,
+        Token::class => TokenPolicy::class,
         Unit::class => UnitPolicy::class,
         User::class => UserPolicy::class,
     ];

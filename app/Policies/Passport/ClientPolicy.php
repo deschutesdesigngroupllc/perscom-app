@@ -11,15 +11,15 @@ class ClientPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -29,7 +29,7 @@ class ClientPolicy
      */
     public function viewAny(User $user)
     {
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
@@ -45,7 +45,7 @@ class ClientPolicy
             return false;
         }
 
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
@@ -56,7 +56,7 @@ class ClientPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
@@ -72,7 +72,7 @@ class ClientPolicy
             return false;
         }
 
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
@@ -88,7 +88,7 @@ class ClientPolicy
             return false;
         }
 
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**

@@ -11,15 +11,15 @@ class TokenPolicy
 {
     use HandlesAuthorization;
 
-	/**
-	 * @return bool
-	 */
-	public function before()
-	{
-		if (Request::isCentralRequest()) {
-			return false;
-		}
-	}
+    /**
+     * @return bool
+     */
+    public function before()
+    {
+        if (Request::isCentralRequest()) {
+            return false;
+        }
+    }
 
     /**
      * Determine whether the user can view any models.
@@ -41,7 +41,7 @@ class TokenPolicy
      */
     public function view(User $user, Token $token)
     {
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
@@ -52,7 +52,7 @@ class TokenPolicy
      */
     public function create(User $user)
     {
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
@@ -64,7 +64,7 @@ class TokenPolicy
      */
     public function update(User $user, Token $token)
     {
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
@@ -76,7 +76,7 @@ class TokenPolicy
      */
     public function delete(User $user, Token $token)
     {
-	    return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
