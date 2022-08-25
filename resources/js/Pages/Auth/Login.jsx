@@ -63,7 +63,7 @@ export default function Login({ status, canResetPassword, demoMode, enableSocial
                         className="mt-1 block w-full"
                         autoComplete="username"
                         onChange={onHandleChange}
-                        placeholder={demoMode && "Demo Email: demo@perscom.io"}
+                        placeholder={demoMode ? "Demo Email: demo@perscom.io" : ""}
                     />
                 </div>
                 <div>
@@ -75,7 +75,7 @@ export default function Login({ status, canResetPassword, demoMode, enableSocial
                         className="mt-1 block w-full"
                         autoComplete="current-password"
                         onChange={onHandleChange}
-                        placeholder={demoMode && "Demo Password: password"}
+                        placeholder={demoMode ? "Demo Password: password" : ""}
                     />
                 </div>
                 <div className="flex items-center justify-between">
