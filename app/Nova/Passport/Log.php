@@ -3,6 +3,7 @@
 namespace App\Nova\Passport;
 
 use App\Nova\Resource;
+use App\Nova\User;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Code;
@@ -95,7 +96,7 @@ class Log extends Resource
                 ->language('vim')
                 ->onlyOnDetail(),
             Heading::make('Client'),
-            MorphTo::make('Performed By', 'causer'),
+            MorphTo::make('Performed By', 'causer', User::class),
             Text::make('IP Address', function (Activity $log) {
                 return $log->properties->get('ip');
             }),
