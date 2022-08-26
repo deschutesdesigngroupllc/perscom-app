@@ -36,11 +36,11 @@ class HandleInertiaRequests extends Middleware
         $response = parent::handle($request, $next);
         $location = $response->headers->get('Location');
 
-	    if (\is_string($location) && $response->isRedirection() && $request->header('X-Inertia')) {
-		    $host = parse_url($location, PHP_URL_HOST);
-	    	if (!Str::endsWith($host, config('tenancy.central_domains'))) {
-			    return Inertia::location($location);
-		    }
+        if (\is_string($location) && $response->isRedirection() && $request->header('X-Inertia')) {
+            $host = parse_url($location, PHP_URL_HOST);
+            if (!Str::endsWith($host, config('tenancy.central_domains'))) {
+                return Inertia::location($location);
+            }
         }
 
         return $response;

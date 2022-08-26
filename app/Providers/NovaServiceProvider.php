@@ -17,6 +17,7 @@ use App\Nova\Forms\Submission;
 use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Passport\AuthorizedApplications;
 use App\Nova\Passport\Client;
+use App\Nova\Passport\Log;
 use App\Nova\Passport\PersonalAccessToken;
 use App\Nova\Permission;
 use App\Nova\Position;
@@ -182,6 +183,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(AuthorizedApplications::class),
                         MenuItem::resource(Client::class)->name('My Apps'),
                         MenuItem::resource(PersonalAccessToken::class),
+                        MenuItem::resource(Log::class),
                     ])
                         ->icon('link')
                         ->collapsable(),

@@ -2,9 +2,6 @@
 
 namespace App\Nova\Forms;
 
-use App\Models\Field as CustomField;
-use App\Models\Forms\Form;
-use App\Models\Forms\Submission as SubmissionModel;
 use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Resource;
 use App\Nova\Status;
@@ -13,23 +10,17 @@ use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Code;
-use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Field;
-use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
 
 class Submission extends Resource
 {

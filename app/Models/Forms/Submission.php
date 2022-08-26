@@ -3,14 +3,10 @@
 namespace App\Models\Forms;
 
 use App\Casts\SubmissionCast;
-use App\Models\Field;
 use App\Models\User;
 use App\Traits\HasStatuses;
-use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
-use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Actionable;
 
 class Submission extends Model
