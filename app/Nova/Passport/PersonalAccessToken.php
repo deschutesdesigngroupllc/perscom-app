@@ -110,7 +110,7 @@ class PersonalAccessToken extends Resource
                 return Crypt::decryptString($this->token);
             })
                 ->displayUsing(function ($value) {
-                    return Str::limit($value);
+                    return Str::limit($value, 50);
                 })
                 ->onlyOnIndex()
                 ->readonly()

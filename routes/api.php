@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\LogApiRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
@@ -14,7 +15,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'auth:api']], function () {
+Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, LogApiRequests::class, 'auth:api']], function () {
 	Route::get('/me', function (Request $request) {
 		return \App\Http\Resources\Api\MeResource::make($request->user());
 	})->name('api.me');

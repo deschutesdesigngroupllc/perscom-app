@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Policies;
+namespace App\Policies\Passport;
 
-use App\Models\Records\Assignment;
+use App\Models\Passport\Log;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class AssignmentRecordsPolicy
+class LogPolicy
 {
     use HandlesAuthorization;
 
@@ -29,19 +29,19 @@ class AssignmentRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:assignmentrecord');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\Passport\Log  $log
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Assignment $assignment)
+    public function view(User $user, Log $log)
     {
-        return $user->hasPermissionTo('view:assignmentrecord') || $assignment->user?->id === $user->id;
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
@@ -52,41 +52,41 @@ class AssignmentRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:assignmentrecord');
+        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\Passport\Log  $log
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Assignment $assignment)
+    public function update(User $user, Log $log)
     {
-        return $user->hasPermissionTo('update:assignmentrecord');
+        return false;
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\Passport\Log  $log
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Assignment $assignment)
+    public function delete(User $user, Log $log)
     {
-        return $user->hasPermissionTo('delete:assignmentrecord');
+        return $user->hasPermissionTo('manage:api');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\Passport\Log  $log
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Assignment $assignment)
+    public function restore(User $user, Log $log)
     {
         //
     }
@@ -95,10 +95,10 @@ class AssignmentRecordsPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\Passport\Log  $log
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Assignment $assignment)
+    public function forceDelete(User $user, Log $log)
     {
         //
     }

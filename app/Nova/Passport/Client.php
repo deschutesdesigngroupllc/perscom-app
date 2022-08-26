@@ -4,6 +4,7 @@ namespace App\Nova\Passport;
 
 use App\Nova\Actions\Passport\RegenerateClientSecret;
 use App\Nova\Resource;
+use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -121,6 +122,16 @@ class Client extends Resource
             DateTime::make('Updated At')->onlyOnDetail(),
             HasMany::make('Authorized Applications', 'tokens', AuthorizedApplications::class),
         ];
+    }
+
+    /**
+     * @param  Request  $request
+     *
+     * @return false
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
     }
 
     /**
