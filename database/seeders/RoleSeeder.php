@@ -16,12 +16,12 @@ class RoleSeeder extends Seeder
     {
     	$allPermissions = collect(config('permissions.permissions'))->keys()->values();
 	    $defaultPermissions = collect(config('permissions.default'));
-	    foreach (config('permissions.roles') as $role => $description) {
-	    	$role = Role::where('name', $role)->first();
+	    foreach (config('permissions.roles') as $roleName => $roleDescription) {
+	    	$role = Role::where('name', $roleName)->first();
 		    if (!$role) {
 			    $role = Role::factory()->create([
-				    'name' => $role,
-				    'description' => $description
+				    'name' => $roleName,
+				    'description' => $roleDescription
 			    ]);
 		    }
 
