@@ -111,6 +111,7 @@ return [
     ],
 
     'api_middleware' => [
+	    'universal',
         'nova',
 	    Authenticate::class,
         Authorize::class,
