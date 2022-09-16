@@ -6,6 +6,7 @@ use App\Models\Domain;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Stancl\Tenancy\Events\DomainCreated;
 use Stancl\Tenancy\Events\TenantCreated;
@@ -24,7 +25,7 @@ class CreateNewTenant
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],
             'website' => ['nullable', 'string', 'max:255'],
-            'domain' => ['required', 'string', 'max:255', Rule::unique(Domain::class, 'domain')],
+            'domain' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique(Domain::class, 'domain')],
         ])->validate();
 
         $tenant = Tenant::withoutEvents(function () use ($input) {
@@ -37,7 +38,7 @@ class CreateNewTenant
 
         $domain = Domain::withoutEvents(function () use ($tenant, $input) {
             return $tenant->domains()->create([
-                'domain' => $input['domain'],
+                'domain' => Str::lower($input['domain']),
             ]);
         });
 
