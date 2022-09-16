@@ -48,7 +48,7 @@ class Domain extends Resource
             Text::make('Domain')
                 ->sortable()
                 ->onlyOnForms()
-                ->rules(['required', Rule::unique('domains', 'domain')->ignore($this->id)]),
+                ->rules(['required', 'alpha_dash', Rule::unique('domains', 'domain')->ignore($this->id)]),
             URL::make('Domain', 'url')
                 ->sortable()
                 ->displayUsing(function ($url) {
