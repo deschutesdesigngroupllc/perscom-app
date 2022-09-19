@@ -42,6 +42,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Fields\Email;
+use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
@@ -51,6 +53,8 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
+use Laravel\Nova\Panel;
+use Outl1ne\NovaSettings\NovaSettings;
 use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -192,6 +196,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
+                        MenuItem::link('Settings', 'settings')->canSee(function (NovaRequest $request) {
+                            return !$request->isDemoMode() && !$request->isCentralRequest();
+                        }),
                     ])
                         ->icon('cog')
                         ->collapsable(),
@@ -250,6 +257,26 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         		</div>
 	        ');
         });
+
+        NovaSettings::addSettingsFields(function () {
+            return [
+                Panel::make('Account', [
+                    Text::make('Organization', 'organization')
+                        ->help('The name of your organization.')
+                        ->rules('required'),
+                    Email::make('Email', 'email')
+                        ->help(
+                            'The main email account associated with the account. This email will receive all pertient emails regarding PERSCOM.'
+                        )
+                        ->rules('required'),
+                ]),
+                Panel::make('Domain', [
+                    Text::make('Subdomain', 'subdomain')
+                        ->help('The subdomain for your account.')
+                        ->rules('required'),
+                ]),
+            ];
+        });
     }
 
     /**
@@ -296,6 +323,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+            (new NovaSettings())->canSee(function () {
+                return !Request::isCentralRequest() && !Request::isDemoMode() && Auth::user()->hasRole('Admin');
+            }),
+        ];
     }
 }
