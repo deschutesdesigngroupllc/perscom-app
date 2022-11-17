@@ -8,6 +8,7 @@ use App\Nova\Metrics\TotalAssignmentRecords;
 use App\Nova\Resource;
 use App\Nova\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -16,6 +17,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Assignment extends Resource
@@ -93,7 +95,11 @@ class Assignment extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('User')->sortable(),
+            BelongsTo::make(
+                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
+                'user',
+                User::class
+            )->sortable(),
             BelongsTo::make('Unit')
                 ->sortable()
                 ->showCreateRelationButton(),

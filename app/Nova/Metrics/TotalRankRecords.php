@@ -4,8 +4,10 @@ namespace App\Nova\Metrics;
 
 use App\Models\Records\Rank;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
+use Outl1ne\NovaSettings\NovaSettings;
 
 class TotalRankRecords extends Value
 {
@@ -68,5 +70,17 @@ class TotalRankRecords extends Value
     public function uriKey()
     {
         return 'total-rank-records';
+    }
+
+    /**
+     * Get the displayable name of the metric
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'Total ' .
+            Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) .
+            ' Records';
     }
 }

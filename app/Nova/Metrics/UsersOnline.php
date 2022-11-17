@@ -2,9 +2,11 @@
 
 namespace App\Nova\Metrics;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Metrics\ValueResult;
+use Outl1ne\NovaSettings\NovaSettings;
 
 class UsersOnline extends Value
 {
@@ -66,6 +68,8 @@ class UsersOnline extends Value
      */
     public function name()
     {
-        return 'Current Users Online';
+        return 'Current ' .
+            Str::plural(Str::title(NovaSettings::getSetting('localization_users', 'Users'))) .
+            ' Online';
     }
 }

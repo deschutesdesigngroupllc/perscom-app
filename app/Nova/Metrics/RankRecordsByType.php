@@ -4,8 +4,10 @@ namespace App\Nova\Metrics;
 
 use App\Models\Records\Rank;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
+use Outl1ne\NovaSettings\NovaSettings;
 
 class RankRecordsByType extends Partition
 {
@@ -54,5 +56,15 @@ class RankRecordsByType extends Partition
     public function uriKey()
     {
         return 'rank-records-by-type';
+    }
+
+    /**
+     * Get the displayable name of the metric
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) . ' Records By Type';
     }
 }

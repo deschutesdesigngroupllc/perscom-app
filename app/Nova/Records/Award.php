@@ -8,6 +8,7 @@ use App\Nova\Metrics\TotalAwardRecords;
 use App\Nova\Resource;
 use App\Nova\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -16,6 +17,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Award extends Resource
@@ -48,7 +50,7 @@ class Award extends Resource
      */
     public static function uriKey()
     {
-        return 'award-records';
+        return Str::singular(Str::slug(NovaSettings::getSetting('localization_awards', 'award'))) . '-records';
     }
 
     /**
@@ -56,7 +58,7 @@ class Award extends Resource
      */
     public static function label()
     {
-        return 'Award Records';
+        return Str::singular(Str::title(NovaSettings::getSetting('localization_awards', 'Award'))) . ' Records';
     }
 
     /**
@@ -93,8 +95,16 @@ class Award extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('User')->sortable(),
-            BelongsTo::make('Award')
+            BelongsTo::make(
+                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
+                'user',
+                User::class
+            )->sortable(),
+            BelongsTo::make(
+                Str::singular(Str::title(NovaSettings::getSetting('localization_awards', 'Award'))),
+                'award',
+                \App\Nova\Award::class
+            )
                 ->sortable()
                 ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
