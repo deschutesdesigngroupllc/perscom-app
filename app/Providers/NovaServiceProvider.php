@@ -42,6 +42,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
@@ -97,6 +98,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function boot()
     {
         parent::boot();
+
+        Nova::withBreadcrumbs();
 
         if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
             Nova::mainMenu(function (Request $request) {
@@ -196,23 +199,30 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
-                        MenuItem::link('Settings', 'settings')->canSee(function (NovaRequest $request) {
-                            return !$request->isDemoMode() && !$request->isCentralRequest();
-                        }),
+                        MenuItem::link('Settings', 'settings'),
                     ])
                         ->icon('cog')
-                        ->collapsable(),
+                        ->collapsable()
+                        ->canSee(function (NovaRequest $request) {
+                            return !$request->isDemoMode() &&
+                                !$request->isCentralRequest() &&
+                                Auth::user()->hasRole('Admin');
+                        }),
+
                     MenuSection::make('Support', [
-                        MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
-                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
+                        MenuItem::externalLink(
+                            'Community Forums',
+                            'https://community.deschutesdesigngroup.com'
+                        )->openInNewTab(),
+                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
                         MenuItem::externalLink(
                             'Submit A Ticket',
                             'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
-                        ),
+                        )->openInNewTab(),
                         MenuItem::externalLink(
                             'Suggest A Feature',
                             'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/'
-                        ),
+                        )->openInNewTab(),
                     ])->icon('support'),
                 ];
             });
@@ -263,17 +273,41 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 Panel::make('Account', [
                     Text::make('Organization', 'organization')
                         ->help('The name of your organization.')
-                        ->rules('required'),
+                        ->rules(
+                            'required',
+                            'string',
+                            'max:255',
+                            Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())
+                        ),
                     Email::make('Email', 'email')
                         ->help(
                             'The main email account associated with the account. This email will receive all pertient emails regarding PERSCOM.'
                         )
-                        ->rules('required'),
+                        ->rules(
+                            'required',
+                            'string',
+                            'email',
+                            'max:255',
+                            Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())
+                        ),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')
-                        ->help('The subdomain for your account.')
-                        ->rules('required'),
+                        ->copyable()
+                        ->help(
+                            'The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved.'
+                        )
+                        ->rules(
+                            'required',
+                            'string',
+                            'max:255',
+                            'alpha_dash',
+                            'lowercase',
+                            Rule::unique(\App\Models\Domain::class, 'domain')->ignore(
+                                \tenant()->getTenantKey(),
+                                'tenant_id'
+                            )
+                        ),
                 ]),
             ];
         });
