@@ -11,6 +11,7 @@ use App\Models\Records\Rank;
 use App\Models\Records\Service;
 use App\Models\Settings;
 use App\Models\Tenant;
+use App\Models\User;
 use App\Observers\Records\AssignmentRecordObserver;
 use App\Observers\Records\AwardRecordObserver;
 use App\Observers\Records\CombatRecordObserver;
@@ -19,6 +20,7 @@ use App\Observers\Records\RankRecordObserver;
 use App\Observers\Records\ServiceRecordObserver;
 use App\Observers\SettingsObserver;
 use App\Observers\TenantObserver;
+use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -58,5 +60,6 @@ class EventServiceProvider extends ServiceProvider
         Service::observe(ServiceRecordObserver::class);
         Settings::observe(SettingsObserver::class);
         Tenant::observe(TenantObserver::class);
+        User::observe(UserObserver::class);
     }
 }
