@@ -127,88 +127,88 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ];
             });
         } else {
-            Nova::mainMenu(function (Request $request) {
-                return [
-                    MenuSection::dashboard(Main::class)->icon('chart-bar'),
-
-                    MenuSection::make('Account', [
-                        MenuItem::link(
-                            'My Personnel File',
-                            route(
-                                'nova.pages.detail',
-                                [
-                                    'resource' => User::uriKey(),
-                                    'resourceId' => Auth::user()->getAuthIdentifier(),
-                                ],
-                                false
-                            )
-                        ),
-                    ])->icon('user-circle'),
-
-                    MenuSection::make('Organization', [
-                        MenuItem::resource(Announcement::class),
-                        MenuItem::resource(Award::class),
-                        MenuItem::resource(Document::class),
-                        MenuItem::resource(Position::class),
-                        MenuItem::resource(Qualification::class),
-                        MenuItem::resource(Rank::class),
-                        MenuItem::resource(Specialty::class),
-                        MenuItem::resource(Status::class),
-                        MenuItem::resource(Unit::class),
-                        MenuItem::resource(User::class),
-                    ])
-                        ->icon('office-building')
-                        ->collapsable(),
-
-                    MenuSection::make('Forms', [
-                        MenuItem::resource(Field::class),
-                        MenuItem::resource(Form::class),
-                        MenuItem::resource(Submission::class),
-                    ])
-                        ->icon('pencil-alt')
-                        ->collapsable(),
-
-                    MenuSection::make('Records', [
-                        MenuItem::resource(AssignmentRecords::class),
-                        MenuItem::resource(AwardRecords::class),
-                        MenuItem::resource(CombatRecords::class),
-                        MenuItem::resource(QualificationRecords::class),
-                        MenuItem::resource(RankRecords::class),
-                        MenuItem::resource(ServiceRecords::class),
-                    ])
-                        ->icon('document-text')
-                        ->collapsable(),
-
-                    MenuSection::make('External Integration', [
-                        MenuItem::resource(AuthorizedApplications::class),
-                        MenuItem::resource(Client::class)->name('My Apps'),
-                        MenuItem::resource(PersonalAccessToken::class),
-                        MenuItem::resource(Log::class),
-                    ])
-                        ->icon('link')
-                        ->collapsable(),
-
-                    MenuSection::make('Settings', [
-                        MenuItem::resource(Action::class),
-                        MenuItem::resource(Permission::class),
-                        MenuItem::resource(Role::class),
-                    ])
-                        ->icon('cog')
-                        ->collapsable(),
-                    MenuSection::make('Support', [
-                        MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
-                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
-                        MenuItem::externalLink(
-                            'Submit A Ticket',
-                            'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
-                        ),
-                        MenuItem::externalLink(
-                            'Suggest A Feature',
-                            'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/'
-                        ),
-                    ])->icon('support'),
-                ];
-            });
+//            Nova::mainMenu(function (Request $request) {
+//                return [
+//                    MenuSection::dashboard(Main::class)->icon('chart-bar'),
+//
+//                    MenuSection::make('Account', [
+//                        MenuItem::link(
+//                            'My Personnel File',
+//                            route(
+//                                'nova.pages.detail',
+//                                [
+//                                    'resource' => User::uriKey(),
+//                                    'resourceId' => Auth::user()->getAuthIdentifier(),
+//                                ],
+//                                false
+//                            )
+//                        ),
+//                    ])->icon('user-circle'),
+//
+//                    MenuSection::make('Organization', [
+//                        MenuItem::resource(Announcement::class),
+//                        MenuItem::resource(Award::class),
+//                        MenuItem::resource(Document::class),
+//                        MenuItem::resource(Position::class),
+//                        MenuItem::resource(Qualification::class),
+//                        MenuItem::resource(Rank::class),
+//                        MenuItem::resource(Specialty::class),
+//                        MenuItem::resource(Status::class),
+//                        MenuItem::resource(Unit::class),
+//                        MenuItem::resource(User::class),
+//                    ])
+//                        ->icon('office-building')
+//                        ->collapsable(),
+//
+//                    MenuSection::make('Forms', [
+//                        MenuItem::resource(Field::class),
+//                        MenuItem::resource(Form::class),
+//                        MenuItem::resource(Submission::class),
+//                    ])
+//                        ->icon('pencil-alt')
+//                        ->collapsable(),
+//
+//                    MenuSection::make('Records', [
+//                        MenuItem::resource(AssignmentRecords::class),
+//                        MenuItem::resource(AwardRecords::class),
+//                        MenuItem::resource(CombatRecords::class),
+//                        MenuItem::resource(QualificationRecords::class),
+//                        MenuItem::resource(RankRecords::class),
+//                        MenuItem::resource(ServiceRecords::class),
+//                    ])
+//                        ->icon('document-text')
+//                        ->collapsable(),
+//
+//                    MenuSection::make('External Integration', [
+//                        MenuItem::resource(AuthorizedApplications::class),
+//                        MenuItem::resource(Client::class)->name('My Apps'),
+//                        MenuItem::resource(PersonalAccessToken::class),
+//                        MenuItem::resource(Log::class),
+//                    ])
+//                        ->icon('link')
+//                        ->collapsable(),
+//
+//                    MenuSection::make('Settings', [
+//                        MenuItem::resource(Action::class),
+//                        MenuItem::resource(Permission::class),
+//                        MenuItem::resource(Role::class),
+//                    ])
+//                        ->icon('cog')
+//                        ->collapsable(),
+//                    MenuSection::make('Support', [
+//                        MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com'),
+//                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com'),
+//                        MenuItem::externalLink(
+//                            'Submit A Ticket',
+//                            'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
+//                        ),
+//                        MenuItem::externalLink(
+//                            'Suggest A Feature',
+//                            'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/'
+//                        ),
+//                    ])->icon('support'),
+//                ];
+//            });
         }
 
         Nova::userMenu(function (Request $request, Menu $menu) {
@@ -296,6 +296,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-        return [];
+        return [
+	        \Whitecube\NovaPage\NovaPageTool::make(),
+        ];
     }
 }

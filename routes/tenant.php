@@ -31,6 +31,13 @@ Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web
 		Route::post('process', [FormController::class, 'process'])->name('form.process');
 	});
 
+	// Pages
+	Route::group(['prefix' => 'pages', 'middleware' => ['pages']], function () {
+		Route::get('test', [\App\Http\Controllers\PageController::class, 'show'])
+			->template(\App\Nova\Templates\Blank::class)
+			->name('blank.page');
+	});
+
 	// Impersonation
 	Route::get('/impersonate/{token}', function ($token) {
 		return UserImpersonation::makeResponse($token);
