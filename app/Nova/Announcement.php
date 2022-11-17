@@ -8,6 +8,8 @@ use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+use Perscom\HtmlField\HtmlField;
 
 class Announcement extends Resource
 {
@@ -42,8 +44,8 @@ class Announcement extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Title')->rules('required'),
-            Trix::make('Content')->rules('required'),
+            Text::make('Title')->rules('required')->hideFromDetail(),
+            Trix::make('Content')->rules('required')->hideFromDetail(),
             Select::make('Color')
                 ->displayUsingLabels()
                 ->options([
@@ -55,8 +57,11 @@ class Announcement extends Resource
                 ->rules('required')
                 ->default(function () {
                     return 'info';
-                }),
+                })->onlyOnForms(),
             DateTime::make('Expires At'),
+	        new Panel($this->title, [
+		        Trix::make('Details', 'content')->rules('required')->onlyOnDetail()->alwaysShow(),
+	        ])
         ];
     }
 
