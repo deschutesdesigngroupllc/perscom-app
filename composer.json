@@ -30,6 +30,7 @@
         "league/flysystem-aws-s3-v3": "^3.0",
         "msztorc/laravel-env": "^1.2",
         "novius/laravel-nova-order-nestedset-field": "^4.0",
+        "outl1ne/nova-settings": "^5.0",
         "perscom/alert-card": "*",
         "perscom/dashboard-quick-actions": "*",
         "perscom/document-viewer-tool": "*",

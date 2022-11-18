@@ -3,12 +3,13 @@
 namespace App\Notifications\Admin;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Cashier\Subscription;
 use Laravel\Nova\Notifications\NovaChannel;
 
-class NewSubscription extends Notification
+class NewSubscription extends Notification implements ShouldQueue
 {
     use Queueable;
 

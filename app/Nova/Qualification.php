@@ -2,12 +2,14 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Outl1ne\NovaSettings\NovaSettings;
 
 class Qualification extends Resource
 {
@@ -36,6 +38,26 @@ class Qualification extends Resource
      * @var string[]
      */
     public static $orderBy = ['name' => 'asc'];
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return Str::plural(Str::title(NovaSettings::getSetting('localization_qualifications', 'Qualifications')));
+    }
+
+    /**
+     * Get the URI key for the resource.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return Str::plural(Str::slug(NovaSettings::getSetting('localization_qualifications', 'qualifications')));
+    }
 
     /**
      * Get the fields displayed by the resource.

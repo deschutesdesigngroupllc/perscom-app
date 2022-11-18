@@ -25,7 +25,14 @@ class CreateNewTenant
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],
             'website' => ['nullable', 'string', 'max:255'],
-            'domain' => ['required', 'string', 'max:255', 'alpha_dash', Rule::unique(Domain::class, 'domain')],
+            'domain' => [
+                'required',
+                'string',
+                'max:255',
+                'alpha_dash',
+                'lowercase',
+                Rule::unique(Domain::class, 'domain'),
+            ],
         ])->validate();
 
         $tenant = Tenant::withoutEvents(function () use ($input) {

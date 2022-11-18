@@ -2,7 +2,7 @@
 
 namespace App\Nova\Actions;
 
-use App\Mail\NewUserLoginInformationMail;
+use App\Mail\User\NewUserLoginInformationMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;

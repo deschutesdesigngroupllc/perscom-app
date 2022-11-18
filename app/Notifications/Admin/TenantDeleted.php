@@ -5,12 +5,13 @@ namespace App\Notifications\Admin;
 use App\Mail\Admin\TenantDeletedMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
 use Laravel\Nova\URL;
 
-class TenantDeleted extends Notification
+class TenantDeleted extends Notification implements ShouldQueue
 {
     use Queueable;
 
