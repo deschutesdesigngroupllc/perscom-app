@@ -3,9 +3,9 @@
 namespace App\Nova;
 
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -72,11 +72,9 @@ class Role extends Resource
             Boolean::make('Application Role', function ($role) {
                 return $role->is_application_role;
             }),
-            BelongsToMany::make('Permissions')
+            Tag::make('Permissions')
                 ->showCreateRelationButton()
-                ->actions(function () {
-                    return [];
-                }),
+	            ->withPreview()
         ];
     }
 
