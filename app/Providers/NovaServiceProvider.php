@@ -37,6 +37,7 @@ use App\Nova\Subscription;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
+use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
@@ -48,6 +49,7 @@ use Laravel\Nova\Http\Controllers\ResourceDestroyController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
@@ -230,6 +232,38 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             });
         }
 
+        Nova::userMenu(function (Request $request, Menu $menu) {
+            return [
+                MenuItem::externalLink(
+                    'Account',
+                    route('nova.pages.detail', [
+                        'resource' => \App\Nova\Admin::uriKey(),
+                        'resourceId' => Auth::user()->getAuthIdentifier(),
+                    ])
+                )->canSee(function (NovaRequest $request) {
+                    return $request->isCentralRequest();
+                }),
+                MenuItem::externalLink(
+                    'My Personnel File',
+                    route('nova.pages.detail', [
+                        'resource' => User::uriKey(),
+                        'resourceId' => Auth::user()->getAuthIdentifier(),
+                    ])
+                )->canSee(function (NovaRequest $request) {
+                    return !$request->isCentralRequest();
+                }),
+                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
+                    return !$request->isDemoMode() &&
+                        !$request->isCentralRequest() &&
+                        $request->user()->hasPermissionTo('manage:billing') &&
+                        FeatureFlag::isOn('billing');
+                }),
+                MenuItem::make('Logout', 'logout')->method('POST', [
+                    '_token' => csrf_token(),
+                ]),
+            ];
+        });
+
         Nova::footer(function ($request) {
             return Blade::render('
 	            <div class="mt-8 leading-normal text-xs text-gray-500 space-y-1"><p class="text-center">{{ config("app.name") }}</a> · {{ config("app.version") }} ({{ Illuminate\Support\Str::ucfirst(config("app.env")) }})</p>
@@ -248,9 +282,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'string',
                             'max:255',
                             Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())
-                        )->resolveUsing(function () {
-                        	return \tenant('name');
-	                    }),
+                        )
+                        ->resolveUsing(function () {
+                            return \tenant('name');
+                        }),
                     Email::make('Email', 'email')
                         ->help(
                             'The main email account associated with the account. This email will receive all pertient emails regarding PERSCOM.'
@@ -261,9 +296,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'email',
                             'max:255',
                             Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())
-                        )->resolveUsing(function () {
-		                    return \tenant('email');
-	                    }),
+                        )
+                        ->resolveUsing(function () {
+                            return \tenant('email');
+                        }),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')
@@ -281,9 +317,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 \tenant()->getTenantKey(),
                                 'tenant_id'
                             )
-                        )->resolveUsing(function () {
-                        	return \tenant()->domain->domain;
-	                    }),
+                        )
+                        ->resolveUsing(function () {
+                            return \tenant()->domain->domain;
+                        }),
                 ]),
             ];
         });

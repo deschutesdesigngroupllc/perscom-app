@@ -27,7 +27,7 @@ class DomainObserver
      */
     public function updated(Domain $domain)
     {
-	    Notification::send(tenant(), new DomainUpdated(tenant()));
+        Notification::send(tenant(), new DomainUpdated(tenant()));
     }
 
     /**
