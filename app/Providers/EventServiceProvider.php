@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Listeners\System\SendDomainUpdatedNotification;
 use App\Listeners\TenantCouldNotBeIdentified;
+use App\Models\Domain;
 use App\Models\Records\Assignment;
 use App\Models\Records\Award;
 use App\Models\Records\Combat;
@@ -12,6 +14,7 @@ use App\Models\Records\Service;
 use App\Models\Settings;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Observers\DomainObserver;
 use App\Observers\Records\AssignmentRecordObserver;
 use App\Observers\Records\AwardRecordObserver;
 use App\Observers\Records\CombatRecordObserver;
@@ -55,6 +58,7 @@ class EventServiceProvider extends ServiceProvider
         Assignment::observe(AssignmentRecordObserver::class);
         Award::observe(AwardRecordObserver::class);
         Combat::observe(CombatRecordObserver::class);
+        Domain::observe(DomainObserver::class);
         Qualification::observe(QualificationRecordObserver::class);
         Rank::observe(RankRecordObserver::class);
         Service::observe(ServiceRecordObserver::class);

@@ -11,7 +11,6 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Outl1ne\NovaSettings\NovaSettings;
-use Perscom\HtmlField\HtmlField;
 
 class Announcement extends Resource
 {

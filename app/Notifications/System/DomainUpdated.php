@@ -3,11 +3,9 @@
 namespace App\Notifications\System;
 
 use App\Mail\System\DomainUpdatedMail;
-use App\Models\Domain;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class DomainUpdated extends Notification implements ShouldQueue

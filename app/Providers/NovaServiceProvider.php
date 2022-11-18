@@ -37,22 +37,17 @@ use App\Nova\Subscription;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
-use Firebase\JWT\Key;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Email;
-use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
@@ -253,7 +248,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'string',
                             'max:255',
                             Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())
-                        ),
+                        )->resolveUsing(function () {
+                        	return \tenant('name');
+	                    }),
                     Email::make('Email', 'email')
                         ->help(
                             'The main email account associated with the account. This email will receive all pertient emails regarding PERSCOM.'
@@ -264,7 +261,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'email',
                             'max:255',
                             Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())
-                        ),
+                        )->resolveUsing(function () {
+		                    return \tenant('email');
+	                    }),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')
@@ -282,7 +281,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 \tenant()->getTenantKey(),
                                 'tenant_id'
                             )
-                        ),
+                        )->resolveUsing(function () {
+                        	return \tenant()->domain->domain;
+	                    }),
                 ]),
             ];
         });
