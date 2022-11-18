@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Settings;
+use App\Notifications\System\DomainUpdated;
+use Illuminate\Support\Facades\Notification;
 
 class SettingsObserver
 {
@@ -41,6 +43,8 @@ class SettingsObserver
             tenant()->domain->update([
                 'domain' => $settings->value,
             ]);
+
+            Notification::send(tenant(), new DomainUpdated(tenant()));
         }
     }
 

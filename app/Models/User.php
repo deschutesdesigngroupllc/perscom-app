@@ -44,8 +44,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'email_verified_at',
         'password',
-	    'notes',
-	    'notes_updated_at',
+        'notes',
+        'notes_updated_at',
         'last_seen_at',
         'social_id',
         'social_driver',
@@ -75,8 +75,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'last_seen_at' => 'datetime',
-	    'notes_updated_at' => 'datetime',
-	    'online' => 'boolean',
+        'notes_updated_at' => 'datetime',
+        'online' => 'boolean',
     ];
 
     /**

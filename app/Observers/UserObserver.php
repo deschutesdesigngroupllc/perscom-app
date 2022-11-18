@@ -25,10 +25,10 @@ class UserObserver
      */
     public function updated(User $user)
     {
-    	if ($user->isDirty('notes')) {
-		    $user->notes_updated_at = now();
-		    $user->saveQuietly();
-	    }
+        if ($user->isDirty('notes')) {
+            $user->notes_updated_at = now();
+            $user->saveQuietly();
+        }
     }
 
     /**

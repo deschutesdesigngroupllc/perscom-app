@@ -5,28 +5,24 @@ namespace App\Notifications\Admin;
 use App\Mail\Admin\NewTenantMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
 use Laravel\Nova\URL;
 
-class NewTenant extends Notification
+class NewTenant extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * @var
-     */
-    protected $tenant;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Tenant $tenant)
+    public function __construct(protected Tenant $tenant)
     {
-        $this->tenant = $tenant;
+        //
     }
 
     /**

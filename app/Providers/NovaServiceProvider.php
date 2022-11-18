@@ -270,7 +270,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     Text::make('Subdomain', 'subdomain')
                         ->copyable()
                         ->help(
-                            'The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved.'
+                            'The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.'
                         )
                         ->rules(
                             'required',

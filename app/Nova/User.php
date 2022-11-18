@@ -304,10 +304,10 @@ class User extends Resource
                     QualificationRecords::class
                 ),
             ])->showTitle(true),
-	        new Panel('Notes', [
-	        	Trix::make('Notes')->alwaysShow(),
-		        DateTime::make('Notes Last Updated At', 'notes_updated_at')->onlyOnDetail()
-	        ]),
+            new Panel('Notes', [
+                Trix::make('Notes')->alwaysShow(),
+                DateTime::make('Notes Last Updated At', 'notes_updated_at')->onlyOnDetail(),
+            ]),
             Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])->showTitle(
                 true
             ),
