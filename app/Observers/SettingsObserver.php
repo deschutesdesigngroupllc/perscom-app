@@ -14,23 +14,23 @@ class SettingsObserver
      */
     public function created(Settings $settings)
     {
-	    if ($settings->key === 'organization') {
-		    tenant()->update([
-			    'name' => $settings->value,
-		    ]);
-	    }
+        if ($settings->key === 'organization') {
+            tenant()->update([
+                'name' => $settings->value,
+            ]);
+        }
 
-	    if ($settings->key === 'email') {
-		    tenant()->update([
-			    'email' => $settings->value,
-		    ]);
-	    }
+        if ($settings->key === 'email') {
+            tenant()->update([
+                'email' => $settings->value,
+            ]);
+        }
 
-	    if ($settings->key === 'subdomain') {
-		    tenant()->domain->update([
-			    'domain' => $settings->value,
-		    ]);
-	    }
+        if ($settings->key === 'subdomain') {
+            tenant()->domain->update([
+                'domain' => $settings->value,
+            ]);
+        }
     }
 
     /**
