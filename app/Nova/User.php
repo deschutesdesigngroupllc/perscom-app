@@ -37,6 +37,7 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
+use Laravel\Nova\Fields\UiAvatar;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Outl1ne\NovaSettings\NovaSettings;
@@ -101,7 +102,8 @@ class User extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->hideFromIndex(),
+	        UiAvatar::make(null, 'name')->hideFromDetail(),
+	        ID::make()->hideFromIndex(),
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255')
@@ -148,7 +150,6 @@ class User extends Resource
                 ->exceptOnForms(),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
-                    Gravatar::make()->maxWidth(50),
                     Boolean::make('Email Verified', function () {
                         return $this->email_verified_at !== null;
                     }),
@@ -206,7 +207,6 @@ class User extends Resource
                     ])
                         ->onlyOnIndex()
                         ->showOnPreview(),
-                    Heading::make('Meta')->onlyOnDetail(),
                     DateTime::make('Last Seen At')
                         ->displayUsing(function ($lastSeenAt) {
                             return optional($lastSeenAt, function () use ($lastSeenAt) {

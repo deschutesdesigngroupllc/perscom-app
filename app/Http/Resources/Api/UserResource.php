@@ -34,6 +34,8 @@ class UserResource extends JsonResource
             'last_seen_at' => $this->last_seen_at,
             'time_in_grade' => $this->time_in_grade,
             'time_in_assignment' => $this->time_in_assignment,
+	        'notes' => $this->notes,
+	        'notes_updated_at' => $this->notes_updated_at,
             'records' => [
                 'assignments' => $this->assignment_records,
                 'awards' => $this->award_records,
