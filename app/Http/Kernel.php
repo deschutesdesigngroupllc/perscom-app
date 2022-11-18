@@ -70,7 +70,6 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'feature' => \Codinglabs\FeatureFlags\Middleware\VerifyFeatureIsOn::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-	    'pages' => \Whitecube\NovaPage\Http\Middleware\LoadPageForCurrentRoute::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'subscribed' => \App\Http\Middleware\Subscribed::class,

@@ -15,6 +15,7 @@ use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
 use App\Nova\Lenses\CurrentUsersSubmissions;
+use App\Nova\Page;
 use App\Nova\Passport\AuthorizedApplications;
 use App\Nova\Passport\Client;
 use App\Nova\Passport\Log;
@@ -175,6 +176,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])
                         ->icon('pencil-alt')
                         ->collapsable(),
+
+	                MenuSection::make('Pages', [
+		                MenuItem::resource(Page::class),
+	                ])
+		                ->icon('document-text')
+		                ->collapsable(),
 
                     MenuSection::make('Records', [
                         MenuItem::resource(AssignmentRecords::class),
@@ -392,8 +399,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [
             (new NovaSettings())->canSee(function () {
                 return !Request::isCentralRequest() && !Request::isDemoMode() && Auth::user()->hasRole('Admin');
-            }),
-	        \Whitecube\NovaPage\NovaPageTool::make(),
+            })
         ];
     }
 }

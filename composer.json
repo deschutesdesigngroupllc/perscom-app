@@ -40,8 +40,7 @@
         "spatie/nova-tags-field": "^4.0",
         "spatie/url": "^2.1.0",
         "stancl/tenancy": "^3.5",
-        "tightenco/ziggy": "^1.4",
-        "whitecube/nova-page": "^0.3.0"
+        "tightenco/ziggy": "^1.4"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",

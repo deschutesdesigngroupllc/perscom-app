@@ -23,6 +23,7 @@
         "@inertiajs/inertia-react": "^0.8.0",
         "@inertiajs/inertia-vue": "^0.8.0",
         "@inertiajs/progress": "^0.2.7",
+        "dompurify": "^2.4.1",
         "react": "^17.0.0",
         "react-dom": "^17.0.0",
         "vue": "^2.7.9"

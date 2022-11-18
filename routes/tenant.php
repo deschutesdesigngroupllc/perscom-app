@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Page;
 use App\Http\Controllers\FormController;
 use App\Http\Controllers\Passport\AuthorizationController;
 use App\Http\Controllers\SocialLoginController;
@@ -32,10 +33,9 @@ Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web
 	});
 
 	// Pages
-	Route::group(['prefix' => 'pages', 'middleware' => ['pages']], function () {
-		Route::get('test', [\App\Http\Controllers\PageController::class, 'show'])
-			->template(\App\Nova\Templates\Blank::class)
-			->name('blank.page');
+	Route::group(['prefix' => 'pages'], function () {
+		Route::get('{page}', [\App\Http\Controllers\PageController::class, 'show'])
+			->name('page');
 	});
 
 	// Impersonation

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Page;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
-use Whitecube\NovaPage\Pages\Manager;
 
 class PageController extends Controller
 {
-    public function show(Request $request, Manager $page)
+    public function show(Request $request, Page $page)
     {
-    	$page->loadForRoute($request->route());
-
-    	return Inertia::render();
+    	return Inertia::render('Pages/Page', [
+    		'content' => $page->content
+	    ]);
     }
 }
