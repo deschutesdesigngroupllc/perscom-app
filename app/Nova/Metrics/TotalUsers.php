@@ -3,8 +3,10 @@
 namespace App\Nova\Metrics;
 
 use App\Models\User;
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
+use Outl1ne\NovaSettings\NovaSettings;
 
 class TotalUsers extends Value
 {
@@ -71,6 +73,6 @@ class TotalUsers extends Value
      */
     public function name()
     {
-        return 'Total Users';
+        return 'Total ' . Str::plural(Str::title(NovaSettings::getSetting('localization_users', 'Users')));
     }
 }

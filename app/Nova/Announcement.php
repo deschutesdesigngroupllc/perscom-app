@@ -2,12 +2,15 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
+use Outl1ne\NovaSettings\NovaSettings;
 
 class Announcement extends Resource
 {
@@ -33,6 +36,26 @@ class Announcement extends Resource
     public static $search = ['id', 'title'];
 
     /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return Str::plural(Str::title(NovaSettings::getSetting('localization_announcements', 'Announcements')));
+    }
+
+    /**
+     * Get the URI key for the resource.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return Str::plural(Str::slug(NovaSettings::getSetting('localization_announcements', 'announcements')));
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -42,8 +65,12 @@ class Announcement extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Title')->rules('required'),
-            Trix::make('Content')->rules('required'),
+            Text::make('Title')
+                ->rules('required')
+                ->hideFromDetail(),
+            Trix::make('Content')
+                ->rules('required')
+                ->hideFromDetail(),
             Select::make('Color')
                 ->displayUsingLabels()
                 ->options([
@@ -55,8 +82,15 @@ class Announcement extends Resource
                 ->rules('required')
                 ->default(function () {
                     return 'info';
-                }),
+                })
+                ->onlyOnForms(),
             DateTime::make('Expires At'),
+            new Panel($this->title, [
+                Trix::make('Details', 'content')
+                    ->rules('required')
+                    ->onlyOnDetail()
+                    ->alwaysShow(),
+            ]),
         ];
     }
 

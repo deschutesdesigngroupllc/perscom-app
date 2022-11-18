@@ -9,6 +9,7 @@ use App\Nova\Metrics\TotalRankRecords;
 use App\Nova\Resource;
 use App\Nova\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -18,6 +19,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Rank extends Resource
@@ -50,7 +52,7 @@ class Rank extends Resource
      */
     public static function uriKey()
     {
-        return 'rank-records';
+        return Str::singular(Str::slug(NovaSettings::getSetting('localization_ranks', 'rank'))) . '-records';
     }
 
     /**
@@ -58,7 +60,7 @@ class Rank extends Resource
      */
     public static function label()
     {
-        return 'Rank Records';
+        return Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) . ' Records';
     }
 
     /**
@@ -95,8 +97,16 @@ class Rank extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('User')->sortable(),
-            BelongsTo::make('Rank')
+            BelongsTo::make(
+                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
+                'user',
+                User::class
+            )->sortable(),
+            BelongsTo::make(
+                Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))),
+                'rank',
+                \App\Nova\Rank::class
+            )
                 ->sortable()
                 ->showCreateRelationButton(),
             Select::make('Type')

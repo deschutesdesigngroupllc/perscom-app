@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Events\NullDispatcher;
+use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Nova;
 use Spark\Billable;
@@ -18,6 +19,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     use HasFactory;
     use HasDomains;
     use HasDatabase;
+    use Notifiable;
 
     /**
      * @var null
@@ -131,5 +133,16 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     public function stripeName()
     {
         return $this->name;
+    }
+
+    /**
+     * Route notifications for the mail channel.
+     *
+     * @param  \Illuminate\Notifications\Notification  $notification
+     * @return array|string
+     */
+    public function routeNotificationForMail($notification)
+    {
+        return $this->email;
     }
 }

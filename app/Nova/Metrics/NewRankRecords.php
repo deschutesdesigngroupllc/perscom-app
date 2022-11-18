@@ -4,8 +4,10 @@ namespace App\Nova\Metrics;
 
 use App\Models\Records\Rank;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
+use Outl1ne\NovaSettings\NovaSettings;
 
 class NewRankRecords extends Trend
 {
@@ -64,5 +66,15 @@ class NewRankRecords extends Trend
     public function uriKey()
     {
         return 'new-rank-records';
+    }
+
+    /**
+     * Get the displayable name of the metric
+     *
+     * @return string
+     */
+    public function name()
+    {
+        return 'New ' . Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) . ' Records';
     }
 }

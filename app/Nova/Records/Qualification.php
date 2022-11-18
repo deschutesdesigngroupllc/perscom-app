@@ -8,6 +8,7 @@ use App\Nova\Metrics\TotalQualificationRecords;
 use App\Nova\Resource;
 use App\Nova\User;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -16,6 +17,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Qualification extends Resource
@@ -48,7 +50,8 @@ class Qualification extends Resource
      */
     public static function uriKey()
     {
-        return 'qualification-records';
+        return Str::singular(Str::slug(NovaSettings::getSetting('localization_qualifications', 'qualification'))) .
+            '-records';
     }
 
     /**
@@ -56,7 +59,8 @@ class Qualification extends Resource
      */
     public static function label()
     {
-        return 'Qualification Records';
+        return Str::singular(Str::title(NovaSettings::getSetting('localization_qualifications', 'Qualification'))) .
+            ' Records';
     }
 
     /**
@@ -93,8 +97,16 @@ class Qualification extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('User')->sortable(),
-            BelongsTo::make('Qualification')
+            BelongsTo::make(
+                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
+                'user',
+                User::class
+            )->sortable(),
+            BelongsTo::make(
+                Str::singular(Str::title(NovaSettings::getSetting('localization_qualifications', 'Qualification'))),
+                'qualification',
+                \App\Nova\Qualification::class
+            )
                 ->sortable()
                 ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),

@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
@@ -9,6 +10,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Outl1ne\NovaSettings\NovaSettings;
 
 class Status extends Resource
 {
@@ -34,19 +36,29 @@ class Status extends Resource
     public static $search = ['id', 'name'];
 
     /**
-     * Get the text for the create resource button.
-     *
-     * @return string|null
-     */
-    public static function createButtonLabel()
-    {
-        return 'Create A Status';
-    }
-
-    /**
      * @var string[]
      */
     public static $orderBy = ['name' => 'asc'];
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return Str::plural(Str::title(NovaSettings::getSetting('localization_statuses', 'Statuses')));
+    }
+
+    /**
+     * Get the URI key for the resource.
+     *
+     * @return string
+     */
+    public static function uriKey()
+    {
+        return Str::plural(Str::slug(NovaSettings::getSetting('localization_statuses', 'statuses')));
+    }
 
     /**
      * Get the fields displayed by the resource.

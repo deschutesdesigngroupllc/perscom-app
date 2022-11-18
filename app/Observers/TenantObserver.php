@@ -18,7 +18,7 @@ class TenantObserver
      */
     public function created(Tenant $tenant)
     {
-        Notification::sendNow(Admin::all(), new NewTenant($tenant));
+        Notification::send(Admin::all(), new NewTenant($tenant));
     }
 
     /**
@@ -40,7 +40,7 @@ class TenantObserver
      */
     public function deleted(Tenant $tenant)
     {
-        Notification::sendNow(Admin::all(), new TenantDeleted($tenant));
+        Notification::send(Admin::all(), new TenantDeleted($tenant));
     }
 
     /**

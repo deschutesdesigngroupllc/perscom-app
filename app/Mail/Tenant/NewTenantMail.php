@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Mail;
+namespace App\Mail\Tenant;
 
 use App\Models\Tenant;
 use App\Models\User;
