@@ -2,7 +2,7 @@
 
 namespace App\Jobs;
 
-use App\Mail\NewTenantMail;
+use App\Mail\Tenant\NewTenantMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
