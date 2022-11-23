@@ -1,24 +1,16 @@
 <template>
-  <Card class="flex flex-col items-center justify-center">
-    <div class="px-3 py-3">
-      <h1 class="text-center text-3xl text-gray-500 font-light">Dashboard Title</h1>
+  <div class="flex justify-center items-center" v-if="this.card.title || this.card.subtitle">
+    <div class="w-full">
+      <Heading class="font-bold" style="font-weight: 600;" v-if="this.card.title">{{ this.card.title }}</Heading>
+      <p class="text-90 leading-tight" v-if="this.card.subtitle">
+        {{ this.card.subtitle }}
+      </p>
     </div>
-  </Card>
+  </div>
 </template>
 
 <script>
 export default {
-  props: [
-    'card',
-
-    // The following props are only available on resource detail cards...
-    // 'resource',
-    // 'resourceId',
-    // 'resourceName',
-  ],
-
-  mounted() {
-    //
-  },
+  props: ["card"]
 }
 </script>

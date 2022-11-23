@@ -82,9 +82,6 @@
 
 <script>
 export default {
-    props: ["card"],
-    mounted() {
-      console.log(this.card.announcements)
-    }
+    props: ["card"]
 };
 </script>

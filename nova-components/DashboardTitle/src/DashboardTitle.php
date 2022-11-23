@@ -6,12 +6,19 @@ use Laravel\Nova\Card;
 
 class DashboardTitle extends Card
 {
-    /**
-     * The width of the card (1/3, 1/2, or full).
-     *
-     * @var string
-     */
-    public $width = '1/3';
+	/**
+	 * The width of the card (1/3, 1/2, or full).
+	 *
+	 * @var string
+	 */
+	public $width = self::FULL_WIDTH;
+
+	/**
+	 * The height strategy of the card.
+	 *
+	 * @var string
+	 */
+	public $height = self::DYNAMIC_HEIGHT;
 
     /**
      * Get the component name for the element.
@@ -28,8 +35,14 @@ class DashboardTitle extends Card
 	 *
 	 * @return DashboardTitle
 	 */
-    public function withTitle(string $title): DashboardTitle
+    public function withTitle(mixed $title): DashboardTitle
     {
+    	if (\is_callable($title)) {
+    		return $this->withMeta([
+    			'title' => $title()
+		    ]);
+	    }
+
     	return $this->withMeta([
     		'title' => $title
 	    ]);
@@ -40,8 +53,14 @@ class DashboardTitle extends Card
 	 *
 	 * @return DashboardTitle
 	 */
-    public function withSubtitle(string $subtitle): DashboardTitle
+    public function withSubtitle(mixed $subtitle): DashboardTitle
     {
+	    if (\is_callable($subtitle)) {
+		    return $this->withMeta([
+			    'subtitle' => $subtitle()
+		    ]);
+	    }
+
     	return $this->withMeta([
     		'subtitle' => $subtitle
 	    ]);
