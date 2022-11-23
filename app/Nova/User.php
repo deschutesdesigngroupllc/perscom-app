@@ -102,8 +102,8 @@ class User extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-	        UiAvatar::make(null, 'name')->hideFromDetail(),
-	        ID::make()->hideFromIndex(),
+            UiAvatar::make(null, 'name')->hideFromDetail(),
+            ID::make()->hideFromIndex(),
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255')

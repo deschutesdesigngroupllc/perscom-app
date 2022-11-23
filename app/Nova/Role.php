@@ -74,7 +74,7 @@ class Role extends Resource
             }),
             Tag::make('Permissions')
                 ->showCreateRelationButton()
-	            ->withPreview()
+                ->withPreview(),
         ];
     }
 
