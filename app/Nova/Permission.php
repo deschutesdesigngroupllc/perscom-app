@@ -72,7 +72,9 @@ class Permission extends Resource
             Boolean::make('Application Permission', function ($permission) {
                 return $permission->is_application_permission;
             }),
-            Tag::make('Roles')->showCreateRelationButton()->withPreview(),
+            Tag::make('Roles')
+                ->showCreateRelationButton()
+                ->withPreview(),
         ];
     }
 

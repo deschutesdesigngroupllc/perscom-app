@@ -45,7 +45,9 @@ class Main extends Dashboard
             ->toArray();
 
         return [
-	        (new DashboardTitle())->withTitle(NovaSettings::getSetting('dashboard_title') ?? \tenant('name'))->withSubtitle(NovaSettings::getSetting('dashboard_subtitle')),
+            (new DashboardTitle())
+                ->withTitle(NovaSettings::getSetting('dashboard_title') ?? \tenant('name'))
+                ->withSubtitle(NovaSettings::getSetting('dashboard_subtitle')),
             (new AlertCard())->withAnnouncements($announcements),
             new NewUsers(),
             new UsersOnline(),
