@@ -16,7 +16,9 @@
         "build-html-field-prod": "cd nova-components/HtmlField && npm run prod",
         "build-alert-card-install": "cd nova-components/AlertCard && npm install",
         "build-alert-card": "cd nova-components/AlertCard && npm run dev",
-        "build-alert-card-prod": "cd nova-components/AlertCard && npm run prod"
+        "build-alert-card-prod": "cd nova-components/AlertCard && npm run prod",
+        "build-dashboard-title": "cd nova-components/DashboardTitle && npm run dev",
+        "build-dashboard-title-prod": "cd nova-components/DashboardTitle && npm run prod"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",

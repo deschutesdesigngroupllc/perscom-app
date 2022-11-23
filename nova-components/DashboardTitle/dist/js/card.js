@@ -13,7 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_Card__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_Card__WEBPACK_IMPORTED_MODULE_0__);
 
 Nova.booting(function (app, store) {
-  app.component("alert-card", (_components_Card__WEBPACK_IMPORTED_MODULE_0___default()));
+  app.component('dashboard-title', (_components_Card__WEBPACK_IMPORTED_MODULE_0___default()));
 });
 
 /***/ }),
@@ -37,7 +37,7 @@ __webpack_require__.r(__webpack_exports__);
   \******************************************/
 /***/ (() => {
 
-throw new Error("Module build failed (from ./node_modules/vue-loader/dist/index.js):\nTypeError: Cannot read properties of undefined (reading 'styles')\n    at Object.loader (/Users/jonerickson/PhpstormProjects/PERSCOM-3.0/nova-components/AlertCard/node_modules/vue-loader/dist/index.js:70:34)");
+throw new Error("Module build failed (from ./node_modules/vue-loader/dist/index.js):\nTypeError: Cannot read properties of undefined (reading 'styles')\n    at Object.loader (/var/www/html/nova-components/DashboardTitle/node_modules/vue-loader/dist/index.js:70:34)");
 
 /***/ })
 
@@ -192,7 +192,7 @@ throw new Error("Module build failed (from ./node_modules/vue-loader/dist/index.
 /******/ 			return __webpack_require__.O(result);
 /******/ 		}
 /******/ 		
-/******/ 		var chunkLoadingGlobal = self["webpackChunkperscom_alert_card"] = self["webpackChunkperscom_alert_card"] || [];
+/******/ 		var chunkLoadingGlobal = self["webpackChunkperscom_dashboard_title"] = self["webpackChunkperscom_dashboard_title"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
 /******/ 	})();

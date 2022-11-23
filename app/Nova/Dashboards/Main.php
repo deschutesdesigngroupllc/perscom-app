@@ -9,6 +9,7 @@ use App\Nova\Metrics\UsersOnline;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 use Perscom\AlertCard\AlertCard;
 use Perscom\DashboardQuickActions\DashboardQuickActions;
+use Perscom\DashboardTitle\DashboardTitle;
 
 class Main extends Dashboard
 {
@@ -41,7 +42,9 @@ class Main extends Dashboard
                 ];
             })
             ->toArray();
+
         return [
+	        (new DashboardTitle())->withTitle(tenant('name'))->withSubtitle('This is a test.')
             (new AlertCard())->withAnnouncements($announcements),
             new NewUsers(),
             new UsersOnline(),
