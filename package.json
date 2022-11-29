@@ -5,18 +5,16 @@
         "build": "vite build",
         "lint": "eslint --ext .js,.jsx --ignore-path .gitignore --fix resources/js",
         "format": "prettier 'resources/js/**/*.{js,jsx,json,vue}' 'app/**/*.php' --write --list-different --ignore-unknown",
-        "build-dashboard-quick-actions-install": "cd nova-components/DashboardQuickActions && npm install",
         "build-dashboard-quick-actions-dev": "cd nova-components/DashboardQuickActions && npm run dev",
         "build-dashboard-quick-actions-prod": "cd nova-components/DashboardQuickActions && npm run prod",
-        "build-document-viewer-tool-install": "cd nova-components/DocumentViewerTool && npm install",
         "build-document-viewer-tool": "cd nova-components/DocumentViewerTool && npm run dev",
         "build-document-viewer-tool-prod": "cd nova-components/DocumentViewerTool && npm run prod",
-        "build-html-field-install": "cd nova-components/HtmlField && npm install",
         "build-html-field": "cd nova-components/HtmlField && npm run dev",
         "build-html-field-prod": "cd nova-components/HtmlField && npm run prod",
-        "build-alert-card-install": "cd nova-components/AlertCard && npm install",
         "build-alert-card": "cd nova-components/AlertCard && npm run dev",
-        "build-alert-card-prod": "cd nova-components/AlertCard && npm run prod"
+        "build-alert-card-prod": "cd nova-components/AlertCard && npm run prod",
+        "build-dashboard-title": "cd nova-components/DashboardTitle && npm run dev",
+        "build-dashboard-title-prod": "cd nova-components/DashboardTitle && npm run prod"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",

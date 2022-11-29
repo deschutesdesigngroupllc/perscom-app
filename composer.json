@@ -40,7 +40,8 @@
         "spatie/nova-tags-field": "^4.0",
         "spatie/url": "^2.1.0",
         "stancl/tenancy": "^3.5",
-        "tightenco/ziggy": "^1.4"
+        "tightenco/ziggy": "^1.4",
+        "perscom/dashboard-title": "*"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
@@ -74,6 +75,14 @@
         {
             "type": "path",
             "url": "./nova-components/AlertCard"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/DashboardTitle"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/DashboardTitle"
         }
     ],
     "autoload": {

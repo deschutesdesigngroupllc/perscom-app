@@ -329,6 +329,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             return \tenant()->domain->domain;
                         }),
                 ]),
+                Panel::make('Branding', [
+                    Text::make('Dashboard Title', 'dashboard_title')
+                        ->default(function () {
+                            return \tenant('name');
+                        })
+                        ->help(
+                            'The main heading on your dashboard homepage. This will default to your organization name if not set.'
+                        ),
+                    Text::make('Dashboard Subtitle', 'dashboard_subtitle')->help(
+                        'A subtitle or description that can be added under your dashboard heading.'
+                    ),
+                ]),
             ];
         });
 
