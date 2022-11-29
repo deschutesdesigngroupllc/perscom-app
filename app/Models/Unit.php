@@ -2,10 +2,19 @@
 
 namespace App\Models;
 
+use App\Models\Records\Assignment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Unit extends Model
 {
     use HasFactory;
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
+	 */
+    public function assignment_records()
+    {
+    	return $this->hasMany(Assignment::class);
+    }
 }

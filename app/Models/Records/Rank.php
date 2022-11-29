@@ -23,12 +23,32 @@ class Rank extends Model
     public const RECORD_RANK_PROMOTION = 0;
     public const RECORD_RANK_DEMOTION = 1;
 
+	/**
+	 * @var string[]
+	 */
+    protected $with = ['rank'];
+
     /**
      * The table associated with the model.
      *
      * @var string
      */
     protected $table = 'records_ranks';
+
+	/**
+	 * Boot
+	 */
+	public static function boot()
+	{
+		parent::boot();
+
+		static::created(function (Rank $record) {
+			if ($record->user) {
+				$record->user->rank_id = $record->rank?->id;
+				$record->user->save();
+			}
+		});
+	}
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

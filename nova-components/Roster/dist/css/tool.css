@@ -1,0 +1,95 @@
+.roster-relative {
+    position: relative
+}
+.roster-mb-6 {
+    margin-bottom: 1.5rem
+}
+.roster-w-full {
+    width: 100%
+}
+.roster-table-auto {
+    table-layout: auto
+}
+.roster-cursor-pointer {
+    cursor: pointer
+}
+.roster-flex-col {
+    flex-direction: column
+}
+.roster-space-y-2 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
+}
+.roster-space-y-6 > :not([hidden]) ~ :not([hidden]) {
+    --tw-space-y-reverse: 0;
+    margin-top: calc(1.5rem * calc(1 - var(--tw-space-y-reverse)));
+    margin-bottom: calc(1.5rem * var(--tw-space-y-reverse))
+}
+.roster-divide-y > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(1px * var(--tw-divide-y-reverse))
+}
+.roster-divide-gray-100 > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-opacity: 1;
+    border-color: rgb(243 244 246 / var(--tw-divide-opacity))
+}
+.roster-overflow-hidden {
+    overflow: hidden
+}
+.roster-overflow-x-auto {
+    overflow-x: auto
+}
+.roster-whitespace-nowrap {
+    white-space: nowrap
+}
+.roster-rounded-lg {
+    border-radius: 0.5rem
+}
+.roster-bg-gray-50 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity))
+}
+.roster-px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem
+}
+.roster-py-2 {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem
+}
+.roster-text-left {
+    text-align: left
+}
+.roster-text-center {
+    text-align: center
+}
+.roster-uppercase {
+    text-transform: uppercase
+}
+.roster-tracking-wide {
+    letter-spacing: 0.025em
+}
+.roster-text-gray-500 {
+    --tw-text-opacity: 1;
+    color: rgb(107 114 128 / var(--tw-text-opacity))
+}
+.roster-group:hover .group-hover\:roster-bg-gray-50 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(249 250 251 / var(--tw-bg-opacity))
+}
+@media (prefers-color-scheme: dark) {
+    .dark\:roster-divide-gray-700 > :not([hidden]) ~ :not([hidden]) {
+        --tw-divide-opacity: 1;
+        border-color: rgb(55 65 81 / var(--tw-divide-opacity))
+    }
+    .dark\:roster-bg-gray-800 {
+        --tw-bg-opacity: 1;
+        background-color: rgb(31 41 55 / var(--tw-bg-opacity))
+    }
+    .roster-group:hover .dark\:group-hover\:roster-bg-gray-900 {
+        --tw-bg-opacity: 1;
+        background-color: rgb(17 24 39 / var(--tw-bg-opacity))
+    }
+}

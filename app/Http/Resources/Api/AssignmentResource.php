@@ -19,7 +19,7 @@ class AssignmentResource extends JsonResource
             'position' => PositionResource::make($this->position),
             'specialty' => SpecialtyResource::make($this->specialty),
             'document' => DocumentResource::make($this->document),
-            'author' => $this->author,
+            //'author' => $this->author,
             'text' => $this->text,
         ];
     }

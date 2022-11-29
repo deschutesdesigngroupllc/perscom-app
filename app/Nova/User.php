@@ -158,7 +158,7 @@ class User extends Resource
                             return $model->rank->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Rank Change Date', function ($model) {
-                            return optional($model->rank?->record?->created_at, function ($date) {
+                            return optional($model->rank_records()->latest()->first()->created_at, function ($date) {
                                 return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
                         })->asSmall(),
@@ -169,10 +169,10 @@ class User extends Resource
                         Str::singular(Str::title(NovaSettings::getSetting('localization_specialties', 'Specialty'))),
                         [
                             Line::make('Specialty', function ($model) {
-                                return $model->assignment->specialty->name ?? null;
+                                return $model->specialty->name ?? null;
                             })->asSubTitle(),
                             Line::make('Last Assignment Date', function ($model) {
-                                return optional($model->assignment?->created_at, function ($date) {
+                                return optional($model->assignment_records()->latest()->first()->created_at, function ($date) {
                                     return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
                                 });
                             })->asSmall(),
@@ -184,10 +184,10 @@ class User extends Resource
                         Str::singular(Str::title(NovaSettings::getSetting('localization_positions', 'Position'))),
                         [
                             Line::make('Position', function ($model) {
-                                return $model->assignment->position->name ?? null;
+                                return $model->position->name ?? null;
                             })->asSubTitle(),
                             Line::make('Last Assignment Date', function ($model) {
-                                return optional($model->assignment?->created_at, function ($date) {
+                                return optional($model->assignment_records()->latest()->first()->created_at, function ($date) {
                                     return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
                                 });
                             })->asSmall(),
@@ -197,10 +197,10 @@ class User extends Resource
                         ->showOnPreview(),
                     Stack::make(Str::singular(Str::title(NovaSettings::getSetting('localization_units', 'Unit'))), [
                         Line::make('Unit', function ($model) {
-                            return $model->assignment->unit->name ?? null;
+                            return $model->unit->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment?->created_at, function ($date) {
+                            return optional($model->assignment_records()->latest()->first()->created_at, function ($date) {
                                 return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
                         })->asSmall(),
@@ -221,23 +221,23 @@ class User extends Resource
                     Text::make(
                         Str::singular(Str::title(NovaSettings::getSetting('localization_positions', 'Position'))),
                         function ($model) {
-                            return $model->assignment->position->name ?? null;
+                            return $model->position->name ?? null;
                         }
                     )->onlyOnDetail(),
                     Text::make(
                         Str::singular(Str::title(NovaSettings::getSetting('localization_specialties', 'Specialty'))),
                         function ($model) {
-                            return $model->assignment->specialty->name ?? null;
+                            return $model->specialty->name ?? null;
                         }
                     )->onlyOnDetail(),
                     Text::make(
                         Str::singular(Str::title(NovaSettings::getSetting('localization_units', 'Unit'))),
                         function ($model) {
-                            return $model->assignment->unit->name ?? null;
+                            return $model->unit->name ?? null;
                         }
                     )->onlyOnDetail(),
                     DateTime::make('Last Assignment Change Date', function ($model) {
-                        return $model->assignment->created_at ?? null;
+                        return $model->assignment_records()->latest()->first()->created_at ?? null;
                     })->onlyOnDetail(),
                     Text::make('Time In Assignment', function ($model) {
                         return $model->time_in_assignment
@@ -257,7 +257,7 @@ class User extends Resource
                             Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) .
                             ' Change Date',
                         function ($model) {
-                            return $model->rank->record->created_at ?? null;
+	                        return $model->rank_records()->latest()->first()->created_at ?? null;
                         }
                     )->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {

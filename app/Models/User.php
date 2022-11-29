@@ -43,6 +43,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'email_verified_at',
+	    'position_id',
+	    'rank_id',
+	    'specialty_id',
+	    'status_id',
+	    'unit_id',
         'password',
         'notes',
         'notes_updated_at',
@@ -60,12 +65,17 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $hidden = ['password', 'remember_token', 'social_token', 'social_refresh_token'];
 
+	/**
+	 * @var string[]
+	 */
+    protected $with = ['position', 'specialty', 'rank', 'status', 'unit'];
+
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['assignment', 'rank', 'online'];
+    protected $appends = ['online'];
 
     /**
      * The attributes that should be cast.
@@ -90,22 +100,12 @@ class User extends Authenticatable implements MustVerifyEmail
     }
 
     /**
-     * @return Model|\Illuminate\Database\Eloquent\Relations\HasMany|object|null
-     */
-    public function getAssignmentAttribute()
-    {
-        return $this->assignment_records()
-            ->latest()
-            ->first();
-    }
-
-    /**
      * @return mixed|null
      */
     public function getTimeInAssignmentAttribute()
     {
-        return $this->assignment
-            ? Carbon::now()->diff($this->assignment->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
+        return $this->assignment_records()->count()
+            ? Carbon::now()->diff($this->assignment_records()->latest()->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
             : null;
     }
 
@@ -128,20 +128,10 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @return mixed|null
      */
-    public function getRankAttribute()
-    {
-        return $this->ranks()
-            ->latest()
-            ->first();
-    }
-
-    /**
-     * @return mixed|null
-     */
     public function getTimeInGradeAttribute()
     {
-        return $this->rank
-            ? Carbon::now()->diff($this->rank->record->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
+        return $this->rank_records->count()
+            ? Carbon::now()->diff($this->rank_records()->latest()->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
             : null;
     }
 
@@ -169,6 +159,14 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(CombatRecords::class);
     }
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+    public function position()
+    {
+    	return $this->belongsTo(Position::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -185,6 +183,14 @@ class User extends Authenticatable implements MustVerifyEmail
     public function qualification_records()
     {
         return $this->hasMany(QualificationRecords::class);
+    }
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+    public function rank()
+    {
+    	return $this->belongsTo(Rank::class);
     }
 
     /**
@@ -214,11 +220,35 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(ServiceRecords::class);
     }
 
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+    public function specialty()
+    {
+    	return $this->belongsTo(Specialty::class);
+    }
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+    public function status()
+    {
+    	return $this->belongsTo(Status::class);
+    }
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function submissions()
     {
         return $this->hasMany(Submission::class);
+    }
+
+	/**
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+    public function unit()
+    {
+    	return $this->belongsTo(Unit::class);
     }
 }
