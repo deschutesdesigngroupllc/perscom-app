@@ -90,13 +90,13 @@ class Document extends Model
                 return $user->online ?? null;
                 break;
             case '{user_assignment_position}':
-                return $user->assignment->position->name ?? null;
+                return $user->position->name ?? null;
                 break;
             case '{user_assignment_specialty}':
-                return $user->assignment->specialty->name ?? null;
+                return $user->specialty->name ?? null;
                 break;
             case '{user_assignment_unit}':
-                return $user->assignment->unit->name ?? null;
+                return $user->unit->name ?? null;
                 break;
             case '{user_rank}':
                 return $user->rank->name ?? null;
