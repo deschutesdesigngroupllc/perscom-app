@@ -17,9 +17,8 @@ class RegisterController extends Controller
     }
 
     /**
-     * @param  Request          $request
+     * @param  Request  $request
      * @param  CreateNewTenant  $createNewTenant
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, CreateNewTenant $createNewTenant)

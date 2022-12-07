@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\V1\UnitsController;
+use App\Http\Controllers\Api\V1\UsersController;
 use App\Http\Middleware\LogApiRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -16,11 +18,7 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 |
 */
 Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, LogApiRequests::class, 'auth:api']], function () {
-	Route::get('/me', function (Request $request) {
-		return \App\Http\Resources\Api\MeResource::make($request->user());
-	})->name('api.me');
-	Route::get('/users', function () {
-		return \App\Http\Resources\Api\UserResource::collection(\App\Models\User::all()->keyBy->id);
-	})->name('api.users.index');
+	Route::apiResource('units', UnitsController::class)->only('index');
+    Route::get('users/me', [UsersController::class, 'me'])->name('users.me');
+    Route::apiResource('users', UsersController::class)->only('index');
 });
-

@@ -52,9 +52,9 @@ class CreateNewTenant
         $tenant->load('domains');
 
         Event::dispatch(new TenantCreated($tenant));
-        event('eloquent.created: ' . Tenant::class, $tenant);
+        event('eloquent.created: '.Tenant::class, $tenant);
         Event::dispatch(new DomainCreated($domain));
-        event('eloquent.created: ' . Domain::class, $domain);
+        event('eloquent.created: '.Domain::class, $domain);
 
         return $tenant;
     }

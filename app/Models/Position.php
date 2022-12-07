@@ -2,10 +2,27 @@
 
 namespace App\Models;
 
+use App\Models\Records\Assignment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Position extends Model
 {
     use HasFactory;
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function assignment_records()
+    {
+        return $this->hasMany(Assignment::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
+    }
 }

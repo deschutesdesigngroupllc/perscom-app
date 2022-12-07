@@ -72,7 +72,7 @@ class Feature extends Resource
 
     /**
      * @param  NovaRequest  $request
-     * @param  Model        $model
+     * @param  Model  $model
      */
     public static function afterUpdate(NovaRequest $request, Model $model)
     {

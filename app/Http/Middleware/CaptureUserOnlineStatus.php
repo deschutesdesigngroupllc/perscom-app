@@ -29,6 +29,7 @@ class CaptureUserOnlineStatus
                 ]);
             }
         }
+
         return $next($request);
     }
 }

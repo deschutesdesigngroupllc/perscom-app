@@ -1,8 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Schema;
-use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\PermissionRegistrar;
 
 class CreatePermissionTables extends Migration
@@ -28,7 +28,7 @@ class CreatePermissionTables extends Migration
         Schema::create($tableNames['permissions'], function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
-	        $table->text('description')->nullable();
+            $table->text('description')->nullable();
             $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
 
@@ -42,8 +42,8 @@ class CreatePermissionTables extends Migration
                 $table->index($columnNames['team_foreign_key'], 'roles_team_foreign_key_index');
             }
             $table->string('name');       // For MySQL 8.0 use string('name', 125);
-	        $table->text('description')->nullable();
-	        $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
+            $table->text('description')->nullable();
+            $table->string('guard_name'); // For MySQL 8.0 use string('guard_name', 125);
             $table->timestamps();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);
@@ -73,7 +73,6 @@ class CreatePermissionTables extends Migration
                 $table->primary([PermissionRegistrar::$pivotPermission, $columnNames['model_morph_key'], 'model_type'],
                     'model_has_permissions_permission_model_type_primary');
             }
-
         });
 
         Schema::create($tableNames['model_has_roles'], function (Blueprint $table) use ($tableNames, $columnNames, $teams) {

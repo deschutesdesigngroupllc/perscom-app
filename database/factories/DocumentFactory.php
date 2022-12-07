@@ -14,9 +14,9 @@ class DocumentFactory extends Factory
     public function definition()
     {
         return [
-	        'name' => "Document {$this->faker->unique()->randomNumber()}",
-	        'description' => $this->faker->paragraph,
-	        'content' => $this->faker->randomHtml
+            'name' => "Document {$this->faker->unique()->randomNumber()}",
+            'description' => $this->faker->paragraph,
+            'content' => $this->faker->randomHtml,
         ];
     }
 }

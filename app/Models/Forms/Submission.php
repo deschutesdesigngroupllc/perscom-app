@@ -2,7 +2,6 @@
 
 namespace App\Models\Forms;
 
-use App\Casts\SubmissionCast;
 use App\Models\User;
 use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;

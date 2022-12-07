@@ -4,8 +4,23 @@
 .roster-mb-6 {
     margin-bottom: 1.5rem
 }
+.roster-flex {
+    display: flex
+}
+.roster-inline-flex {
+    display: inline-flex
+}
 .roster-w-full {
     width: 100%
+}
+.roster-w-2\/12 {
+    width: 16.666667%
+}
+.roster-w-1\/12 {
+    width: 8.333333%
+}
+.roster-w-3\/12 {
+    width: 25%
 }
 .roster-table-auto {
     table-layout: auto
@@ -16,10 +31,11 @@
 .roster-flex-col {
     flex-direction: column
 }
-.roster-space-y-2 > :not([hidden]) ~ :not([hidden]) {
-    --tw-space-y-reverse: 0;
-    margin-top: calc(0.5rem * calc(1 - var(--tw-space-y-reverse)));
-    margin-bottom: calc(0.5rem * var(--tw-space-y-reverse))
+.roster-items-center {
+    align-items: center
+}
+.roster-justify-end {
+    justify-content: flex-end
 }
 .roster-space-y-6 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-y-reverse: 0;
@@ -47,9 +63,20 @@
 .roster-rounded-lg {
     border-radius: 0.5rem
 }
+.roster-rounded-full {
+    border-radius: 9999px
+}
 .roster-bg-gray-50 {
     --tw-bg-opacity: 1;
     background-color: rgb(249 250 251 / var(--tw-bg-opacity))
+}
+.roster-bg-green-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(220 252 231 / var(--tw-bg-opacity))
+}
+.roster-bg-sky-100 {
+    --tw-bg-opacity: 1;
+    background-color: rgb(224 242 254 / var(--tw-bg-opacity))
 }
 .roster-px-2 {
     padding-left: 0.5rem;
@@ -59,11 +86,25 @@
     padding-top: 0.5rem;
     padding-bottom: 0.5rem
 }
+.roster-py-4 {
+    padding-top: 1rem;
+    padding-bottom: 1rem
+}
 .roster-text-left {
     text-align: left
 }
 .roster-text-center {
     text-align: center
+}
+.roster-text-right {
+    text-align: right
+}
+.roster-text-xs {
+    font-size: 0.75rem;
+    line-height: 1rem
+}
+.roster-font-bold {
+    font-weight: 700
 }
 .roster-uppercase {
     text-transform: uppercase
@@ -75,9 +116,13 @@
     --tw-text-opacity: 1;
     color: rgb(107 114 128 / var(--tw-text-opacity))
 }
-.roster-group:hover .group-hover\:roster-bg-gray-50 {
-    --tw-bg-opacity: 1;
-    background-color: rgb(249 250 251 / var(--tw-bg-opacity))
+.roster-text-green-600 {
+    --tw-text-opacity: 1;
+    color: rgb(22 163 74 / var(--tw-text-opacity))
+}
+.roster-text-sky-600 {
+    --tw-text-opacity: 1;
+    color: rgb(2 132 199 / var(--tw-text-opacity))
 }
 @media (prefers-color-scheme: dark) {
     .dark\:roster-divide-gray-700 > :not([hidden]) ~ :not([hidden]) {
@@ -88,8 +133,20 @@
         --tw-bg-opacity: 1;
         background-color: rgb(31 41 55 / var(--tw-bg-opacity))
     }
-    .roster-group:hover .dark\:group-hover\:roster-bg-gray-900 {
+    .dark\:roster-bg-green-500 {
         --tw-bg-opacity: 1;
-        background-color: rgb(17 24 39 / var(--tw-bg-opacity))
+        background-color: rgb(34 197 94 / var(--tw-bg-opacity))
+    }
+    .dark\:roster-bg-sky-500 {
+        --tw-bg-opacity: 1;
+        background-color: rgb(14 165 233 / var(--tw-bg-opacity))
+    }
+    .dark\:roster-text-green-900 {
+        --tw-text-opacity: 1;
+        color: rgb(20 83 45 / var(--tw-text-opacity))
+    }
+    .dark\:roster-text-sky-900 {
+        --tw-text-opacity: 1;
+        color: rgb(12 74 110 / var(--tw-text-opacity))
     }
 }

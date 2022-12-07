@@ -10,8 +10,8 @@ class PageController extends Controller
 {
     public function show(Request $request, Page $page)
     {
-    	return Inertia::render('Pages/Page', [
-    		'content' => $page->content
-	    ]);
+        return Inertia::render('Pages/Page', [
+            'content' => $page->content,
+        ]);
     }
 }

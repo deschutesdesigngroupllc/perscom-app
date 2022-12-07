@@ -27,12 +27,11 @@ class DiscordSocialiteProvider extends AbstractProvider
 
     /**
      * @param  string  $state
-     *
      * @return string
      */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase($this->getDiscordUrl() . '/oauth2/authorize', $state);
+        return $this->buildAuthUrlFromBase($this->getDiscordUrl().'/oauth2/authorize', $state);
     }
 
     /**
@@ -40,21 +39,21 @@ class DiscordSocialiteProvider extends AbstractProvider
      */
     protected function getTokenUrl()
     {
-        return $this->getDiscordUrl() . '/oauth2/token';
+        return $this->getDiscordUrl().'/oauth2/token';
     }
 
     /**
      * @param  string  $token
-     *
      * @return array|mixed
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get($this->getDiscordUrl() . '/users/@me', [
+        $response = $this->getHttpClient()->get($this->getDiscordUrl().'/users/@me', [
             'headers' => [
                 'cache-control' => 'no-cache',
-                'Authorization' => 'Bearer ' . $token,
+                'Authorization' => 'Bearer '.$token,
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
         ]);
@@ -64,7 +63,6 @@ class DiscordSocialiteProvider extends AbstractProvider
 
     /**
      * @param  array  $user
-     *
      * @return User
      */
     protected function mapUserToObject(array $user)
@@ -79,8 +77,7 @@ class DiscordSocialiteProvider extends AbstractProvider
     }
 
     /**
-     * @param array $user
-     *
+     * @param  array  $user
      * @return string|null
      *
      * @see https://discord.com/developers/docs/reference#image-formatting-cdn-endpoints

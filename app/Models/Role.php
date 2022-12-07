@@ -30,7 +30,7 @@ class Role extends \Spatie\Permission\Models\Role
      */
     public function getIsCustomRoleAttribute()
     {
-        return !collect(config('permissions.roles'))->has($this->name);
+        return ! collect(config('permissions.roles'))->has($this->name);
     }
 
     /**

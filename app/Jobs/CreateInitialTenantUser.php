@@ -47,6 +47,7 @@ class CreateInitialTenantUser implements ShouldQueue
                 'password_confirmation' => $password,
             ]);
             $user->assignRole('Admin');
+
             return $user;
         });
 

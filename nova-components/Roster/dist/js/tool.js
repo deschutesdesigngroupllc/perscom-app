@@ -16,7 +16,7 @@ __webpack_require__.r(__webpack_exports__);
   data: function data() {
     return {
       loading: true,
-      units: []
+      roster: []
     };
   },
   mounted: function mounted() {
@@ -24,9 +24,14 @@ __webpack_require__.r(__webpack_exports__);
     this.loading = true;
     Nova.request().get('/nova-vendor/roster').then(function (_ref) {
       var data = _ref.data;
-      _this.units = data.units;
+      _this.roster = data.units;
       _this.loading = false;
     });
+  },
+  methods: {
+    goToProfile: function goToProfile(url) {
+      Nova.visit(url);
+    }
   }
 });
 
@@ -59,44 +64,80 @@ var _hoisted_4 = {
 };
 var _hoisted_5 = {
   "class": "roster-text-center roster-px-2 roster-whitespace-nowrap roster-uppercase roster-text-gray-500 text-xxs roster-tracking-wide roster-py-2",
-  colspan: "6"
+  colspan: "7"
 };
-var _hoisted_6 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", {
-  "class": "roster-divide-y roster-divide-gray-100 dark:roster-divide-gray-700"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", {
-  "class": "group"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  "class": "roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:roster-bg-gray-50 dark:group-hover:roster-bg-gray-900"
+var _hoisted_6 = ["onClick"];
+var _hoisted_7 = {
+  "class": "roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
+};
+var _hoisted_8 = {
+  "class": "roster-text-right roster-items-center roster-flex roster-justify-end"
+};
+var _hoisted_9 = ["src"];
+var _hoisted_10 = {
+  key: 1,
+  "class": "roster-whitespace-nowrap"
+};
+var _hoisted_11 = {
+  "class": "roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
+};
+var _hoisted_12 = {
+  "class": "roster-text-left"
+};
+var _hoisted_13 = {
+  "class": "roster-whitespace-nowrap"
+};
+var _hoisted_14 = {
+  "class": "roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
+};
+var _hoisted_15 = {
+  "class": "roster-text-left"
+};
+var _hoisted_16 = {
+  key: 0,
+  "class": "roster-whitespace-nowrap"
+};
+var _hoisted_17 = {
+  "class": "roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
+};
+var _hoisted_18 = {
+  "class": "roster-text-left"
+};
+var _hoisted_19 = {
+  key: 0,
+  "class": "roster-whitespace-nowrap"
+};
+var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
   "class": "roster-text-center"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "roster-whitespace-nowrap"
-}, " Captain ")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  "class": "roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:roster-bg-gray-50 dark:group-hover:roster-bg-gray-900"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "roster-text-left"
+}, " Active ")])], -1 /* HOISTED */);
+var _hoisted_21 = {
+  "class": "roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
+};
+var _hoisted_22 = {
+  "class": "roster-text-center"
+};
+var _hoisted_23 = {
+  key: 0,
+  "class": "roster-inline-flex roster-items-center roster-whitespace-nowrap min-h-6 roster-px-2 roster-rounded-full roster-uppercase roster-text-xs roster-font-bold roster-bg-green-100 roster-text-green-600 dark:roster-bg-green-500 dark:roster-text-green-900"
+};
+var _hoisted_24 = {
+  key: 1,
+  "class": "roster-inline-flex roster-items-center roster-whitespace-nowrap min-h-6 roster-px-2 roster-rounded-full roster-uppercase roster-text-xs roster-font-bold roster-bg-sky-100 roster-text-sky-600 dark:roster-bg-sky-500 dark:roster-text-sky-900"
+};
+var _hoisted_25 = {
+  key: 1
+};
+var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+  "class": "roster-px-2 roster-py-4 roster-whitespace-nowrap dark:roster-bg-gray-800 roster-text-center",
+  colspan: "7"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "roster-whitespace-nowrap"
-}, " Jon Erickson ")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  "class": "roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:roster-bg-gray-50 dark:group-hover:roster-bg-gray-900"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "roster-text-left"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "roster-whitespace-nowrap"
-}, " Company Commander, Headquarters Company ")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  "class": "roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:roster-bg-gray-50 dark:group-hover:roster-bg-gray-900"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "roster-text-left"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "roster-whitespace-nowrap"
-}, " Infantry Officer ")])]), /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  "class": "roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:roster-bg-gray-50 dark:group-hover:roster-bg-gray-900"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "roster-text-left"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "roster-whitespace-nowrap"
-}, " Active ")])])])], -1 /* HOISTED */);
-
+}, " There are no users assigned to this unit. ")], -1 /* HOISTED */);
+var _hoisted_27 = [_hoisted_26];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
   var _component_Heading = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Heading");
@@ -111,7 +152,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
       return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)("Roster")];
     }),
     _: 1 /* STABLE */
-  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.units, function (unit) {
+  }), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_1, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(_ctx.roster, function (unit) {
     return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_Card, {
       key: unit.id
     }, {
@@ -120,7 +161,25 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           loading: _ctx.loading
         }, {
           "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(unit.name), 1 /* TEXT */)])])]), _hoisted_6])])];
+            return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(unit.name), 1 /* TEXT */)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [unit.users.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+              key: 0
+            }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(unit.users, function (user) {
+              var _user$rank, _user$position, _user$specialty;
+              return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
+                "class": "group",
+                key: user.id,
+                onClick: function onClick($event) {
+                  return $options.goToProfile(user.url);
+                }
+              }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_7, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_8, [(_user$rank = user.rank) !== null && _user$rank !== void 0 && _user$rank.image_url ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("img", {
+                key: 0,
+                "class": "",
+                style: {
+                  "max-width": "20px"
+                },
+                src: user.rank.image_url
+              }, null, 8 /* PROPS */, _hoisted_9)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.rank.name), 1 /* TEXT */))])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.name), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(_user$position = user.position) !== null && _user$position !== void 0 && _user$position.name ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.position.name), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(_user$specialty = user.specialty) !== null && _user$specialty !== void 0 && _user$specialty.name ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.specialty.name), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [user.online ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_23, " Online ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_24, " Offline "))])])], 8 /* PROPS */, _hoisted_6);
+            }), 128 /* KEYED_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_25, _hoisted_27))])])])];
           }),
           _: 2 /* DYNAMIC */
         }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["loading"])];

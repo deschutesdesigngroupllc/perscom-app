@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Qualification;
-use App\Models\Rank;
 use Illuminate\Database\Seeder;
 
 class QualificationSeeder extends Seeder

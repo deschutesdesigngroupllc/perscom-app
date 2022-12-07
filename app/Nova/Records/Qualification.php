@@ -17,7 +17,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Qualification extends Resource
@@ -50,7 +49,7 @@ class Qualification extends Resource
      */
     public static function uriKey()
     {
-        return Str::singular(Str::slug(NovaSettings::getSetting('localization_qualifications', 'qualification'))) .
+        return Str::singular(Str::slug(setting('localization_qualifications', 'qualification'))).
             '-records';
     }
 
@@ -59,7 +58,7 @@ class Qualification extends Resource
      */
     public static function label()
     {
-        return Str::singular(Str::title(NovaSettings::getSetting('localization_qualifications', 'Qualification'))) .
+        return Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).
             ' Records';
     }
 
@@ -98,12 +97,12 @@ class Qualification extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
+                Str::singular(Str::title(setting('localization_users', 'User'))),
                 'user',
                 User::class
             )->sortable(),
             BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_qualifications', 'Qualification'))),
+                Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))),
                 'qualification',
                 \App\Nova\Qualification::class
             )

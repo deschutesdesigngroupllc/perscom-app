@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
@@ -43,11 +44,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'email_verified_at',
-	    'position_id',
-	    'rank_id',
-	    'specialty_id',
-	    'status_id',
-	    'unit_id',
+        'position_id',
+        'rank_id',
+        'specialty_id',
+        'status_id',
+        'unit_id',
         'password',
         'notes',
         'notes_updated_at',
@@ -65,9 +66,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $hidden = ['password', 'remember_token', 'social_token', 'social_refresh_token'];
 
-	/**
-	 * @var string[]
-	 */
+    /**
+     * @var string[]
+     */
     protected $with = ['position', 'specialty', 'rank', 'status', 'unit'];
 
     /**
@@ -75,7 +76,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['online'];
+    protected $appends = ['online', 'url'];
 
     /**
      * The attributes that should be cast.
@@ -125,6 +126,19 @@ class User extends Authenticatable implements MustVerifyEmail
         return Cache::tags('user.online')->has("user.online.$this->id");
     }
 
+	/**
+	 * @return string
+	 */
+    public function getUrlAttribute()
+    {
+    	return route('nova.pages.detail',
+		    [
+			    'resource' => \App\Nova\User::uriKey(),
+			    'resourceId' => $this->id,
+		    ]
+	    );
+    }
+
     /**
      * @return mixed|null
      */
@@ -159,12 +173,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(CombatRecords::class);
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function position()
     {
-    	return $this->belongsTo(Position::class);
+        return $this->belongsTo(Position::class);
     }
 
     /**
@@ -185,12 +199,12 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(QualificationRecords::class);
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function rank()
     {
-    	return $this->belongsTo(Rank::class);
+        return $this->belongsTo(Rank::class);
     }
 
     /**
@@ -220,20 +234,20 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(ServiceRecords::class);
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function specialty()
     {
-    	return $this->belongsTo(Specialty::class);
+        return $this->belongsTo(Specialty::class);
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function status()
     {
-    	return $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class);
     }
 
     /**
@@ -244,11 +258,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Submission::class);
     }
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function unit()
     {
-    	return $this->belongsTo(Unit::class);
+        return $this->belongsTo(Unit::class);
     }
 }

@@ -14,8 +14,8 @@ class UnitFactory extends Factory
     public function definition()
     {
         return [
-	        'name' => "Unit {$this->faker->unique()->randomNumber()}",
-	        'description' => $this->faker->paragraph,
+            'name' => "Unit {$this->faker->unique()->randomNumber()}",
+            'description' => $this->faker->paragraph,
         ];
     }
 }

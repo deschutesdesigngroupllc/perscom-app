@@ -34,7 +34,7 @@ class LogApiRequests
             $activity->causedByAnonymous();
         }
 
-        $activity->log($response->getContent());
+        //$activity->log($response->getContent());
 
         return $response;
     }

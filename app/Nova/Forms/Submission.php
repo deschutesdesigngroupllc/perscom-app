@@ -2,7 +2,6 @@
 
 namespace App\Nova\Forms;
 
-use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Resource;
 use App\Nova\Status;
 use Eminiarts\Tabs\Tab;

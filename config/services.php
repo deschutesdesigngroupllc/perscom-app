@@ -28,21 +28,21 @@ return [
         'key' => env('AWS_ACCESS_KEY_ID'),
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
-	    'token' => env('AWS_SESSION_TOKEN')
+        'token' => env('AWS_SESSION_TOKEN'),
     ],
 
-	'github' => [
-		'client_id' => env('GITHUB_CLIENT_ID'),
-		'client_secret' => env('GITHUB_CLIENT_SECRET'),
-		'redirect' => env('GITHUB_REDIRECT_URL'),
-	],
+    'github' => [
+        'client_id' => env('GITHUB_CLIENT_ID'),
+        'client_secret' => env('GITHUB_CLIENT_SECRET'),
+        'redirect' => env('GITHUB_REDIRECT_URL'),
+    ],
 
-	'discord' => [
-		'base_uri' => 'https://discord.com/api',
-		'client_id' => env('DISCORD_CLIENT_ID'),
-		'client_secret' => env('DISCORD_CLIENT_SECRET'),
-		'redirect' => env('DISCORD_REDIRECT_URL'),
-		'allow_gif_avatars' => true,
-		'avatar_default_extension' => 'jpg'
-	],
+    'discord' => [
+        'base_uri' => 'https://discord.com/api',
+        'client_id' => env('DISCORD_CLIENT_ID'),
+        'client_secret' => env('DISCORD_CLIENT_SECRET'),
+        'redirect' => env('DISCORD_REDIRECT_URL'),
+        'allow_gif_avatars' => true,
+        'avatar_default_extension' => 'jpg',
+    ],
 ];

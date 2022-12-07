@@ -6,7 +6,6 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class NewUsers extends Trend
 {
@@ -62,6 +61,6 @@ class NewUsers extends Trend
      */
     public function name()
     {
-        return 'New ' . Str::plural(Str::title(NovaSettings::getSetting('localization_users', 'Users')));
+        return 'New '.Str::plural(Str::title(setting('localization_users', 'Users')));
     }
 }

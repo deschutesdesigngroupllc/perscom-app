@@ -17,7 +17,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Combat extends Resource
@@ -96,7 +95,7 @@ class Combat extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
+                Str::singular(Str::title(setting('localization_users', 'User'))),
                 'user',
                 User::class
             )->sortable(),

@@ -16,13 +16,13 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])
-	->name('landing.home');
+    ->name('landing.home');
 
 Route::group(['prefix' => 'register'], function () {
-	Route::get('/', [RegisterController::class, 'index'])
-		->name('register.index');
-	Route::post('/', [RegisterController::class, 'store'])
-		->name('register.store');
-	Route::get('/complete', [RegisterController::class, 'complete'])
-		->name('register.complete');
+    Route::get('/', [RegisterController::class, 'index'])
+        ->name('register.index');
+    Route::post('/', [RegisterController::class, 'store'])
+        ->name('register.store');
+    Route::get('/complete', [RegisterController::class, 'complete'])
+        ->name('register.complete');
 });

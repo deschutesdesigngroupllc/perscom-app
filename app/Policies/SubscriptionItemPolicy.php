@@ -19,6 +19,7 @@ class SubscriptionItemPolicy
         if (Request::isCentralRequest()) {
             return true;
         }
+
         return false;
     }
 
@@ -37,7 +38,7 @@ class SubscriptionItemPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \Laravel\Cashier\SubscriptionItem $subscriptionItem
+     * @param  \Laravel\Cashier\SubscriptionItem  $subscriptionItem
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, SubscriptionItem $subscriptionItem)

@@ -17,12 +17,12 @@ use Laravel\Nova\Http\Middleware\Authorize;
 */
 
 Route::get('/routes', function (Request $request) {
-	return [
-		'user' => \route('nova.pages.create', 'users'),
-		'assignment' => \route('nova.pages.create', 'assignment-records'),
-		'service' => \route('nova.pages.create', 'service-records'),
-		'combat' => \route('nova.pages.create', 'combat-records'),
-		'promotion' => \route('nova.pages.create', 'rank-records'),
-		'award' => \route('nova.pages.create', 'award-records')
-	];
+    return [
+        'user' => \route('nova.pages.create', 'users'),
+        'assignment' => \route('nova.pages.create', 'assignment-records'),
+        'service' => \route('nova.pages.create', 'service-records'),
+        'combat' => \route('nova.pages.create', 'combat-records'),
+        'promotion' => \route('nova.pages.create', 'rank-records'),
+        'award' => \route('nova.pages.create', 'award-records'),
+    ];
 })->middleware([Authenticate::class, Authorize::class]);

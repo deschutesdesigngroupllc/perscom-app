@@ -26,9 +26,7 @@ use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\HasMany;
-use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\MorphedByMany;
@@ -41,7 +39,6 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Fields\UiAvatar;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class User extends Resource
 {
@@ -81,7 +78,7 @@ class User extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_users', 'Users')));
+        return Str::plural(Str::title(setting('localization_users', 'Users')));
     }
 
     /**
@@ -91,7 +88,7 @@ class User extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_users', 'users')));
+        return Str::plural(Str::slug(setting('localization_users', 'users')));
     }
 
     /**
@@ -129,7 +126,7 @@ class User extends Resource
                     return Request::isDemoMode();
                 }),
             Badge::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_statuses', 'Status'))),
+                Str::singular(Str::title(setting('localization_statuses', 'Status'))),
                 function () {
                     return $this->status->name ?? 'none';
                 }
@@ -149,40 +146,40 @@ class User extends Resource
                     true => 'success',
                 ])
                 ->exceptOnForms(),
-	        Panel::make('Assignment', [
-		        BelongsTo::make('Position', 'position', Position::class)->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')->nullable()->onlyOnForms(),
-		        BelongsTo::make('Specialty', 'specialty', Specialty::class)->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')->nullable()->onlyOnForms(),
-		        BelongsTo::make('Unit', 'unit', Unit::class)->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')->nullable()->onlyOnForms()
-	        ]),
-	        Panel::make('Rank', [
-		        BelongsTo::make('Rank', 'rank', Rank::class)->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')->nullable()->onlyOnForms(),
-	        ]),
+            Panel::make('Assignment', [
+                BelongsTo::make('Position', 'position', Position::class)->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')->nullable()->onlyOnForms(),
+                BelongsTo::make('Specialty', 'specialty', Specialty::class)->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')->nullable()->onlyOnForms(),
+                BelongsTo::make('Unit', 'unit', Unit::class)->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')->nullable()->onlyOnForms(),
+            ]),
+            Panel::make('Rank', [
+                BelongsTo::make('Rank', 'rank', Rank::class)->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')->nullable()->onlyOnForms(),
+            ]),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
                     Boolean::make('Email Verified', function () {
                         return $this->email_verified_at !== null;
                     }),
-                    Stack::make(Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))), [
+                    Stack::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
                         Line::make('Rank', function ($model) {
                             return $model->rank->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Rank Change Date', function ($model) {
-                            return optional($model->rank_records()->latest()->first()->created_at, function ($date) {
-                                return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            return optional($model->rank_records()->latest()->first()?->created_at, function ($date) {
+                                return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
                         })->asSmall(),
                     ])
                         ->onlyOnIndex()
                         ->showOnPreview(),
                     Stack::make(
-                        Str::singular(Str::title(NovaSettings::getSetting('localization_specialties', 'Specialty'))),
+                        Str::singular(Str::title(setting('localization_specialties', 'Specialty'))),
                         [
                             Line::make('Specialty', function ($model) {
                                 return $model->specialty->name ?? null;
                             })->asSubTitle(),
                             Line::make('Last Assignment Date', function ($model) {
-                                return optional($model->assignment_records()->latest()->first()->created_at, function ($date) {
-                                    return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                                return optional($model->assignment_records()->latest()->first()?->created_at, function ($date) {
+                                    return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                                 });
                             })->asSmall(),
                         ]
@@ -190,27 +187,27 @@ class User extends Resource
                         ->onlyOnIndex()
                         ->showOnPreview(),
                     Stack::make(
-                        Str::singular(Str::title(NovaSettings::getSetting('localization_positions', 'Position'))),
+                        Str::singular(Str::title(setting('localization_positions', 'Position'))),
                         [
                             Line::make('Position', function ($model) {
                                 return $model->position->name ?? null;
                             })->asSubTitle(),
                             Line::make('Last Assignment Date', function ($model) {
-                                return optional($model->assignment_records()->latest()->first()->created_at, function ($date) {
-                                    return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                                return optional($model->assignment_records()->latest()->first()?->created_at, function ($date) {
+                                    return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                                 });
                             })->asSmall(),
                         ]
                     )
                         ->onlyOnIndex()
                         ->showOnPreview(),
-                    Stack::make(Str::singular(Str::title(NovaSettings::getSetting('localization_units', 'Unit'))), [
+                    Stack::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), [
                         Line::make('Unit', function ($model) {
                             return $model->unit->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment_records()->latest()->first()->created_at, function ($date) {
-                                return 'Updated: ' . Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            return optional($model->assignment_records()->latest()->first()?->created_at, function ($date) {
+                                return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
                         })->asSmall(),
                     ])
@@ -228,19 +225,19 @@ class User extends Resource
                 ]),
                 Tab::make('Assignment', [
                     Text::make(
-                        Str::singular(Str::title(NovaSettings::getSetting('localization_positions', 'Position'))),
+                        Str::singular(Str::title(setting('localization_positions', 'Position'))),
                         function ($model) {
                             return $model->position->name ?? null;
                         }
                     )->onlyOnDetail(),
                     Text::make(
-                        Str::singular(Str::title(NovaSettings::getSetting('localization_specialties', 'Specialty'))),
+                        Str::singular(Str::title(setting('localization_specialties', 'Specialty'))),
                         function ($model) {
                             return $model->specialty->name ?? null;
                         }
                     )->onlyOnDetail(),
                     Text::make(
-                        Str::singular(Str::title(NovaSettings::getSetting('localization_units', 'Unit'))),
+                        Str::singular(Str::title(setting('localization_units', 'Unit'))),
                         function ($model) {
                             return $model->unit->name ?? null;
                         }
@@ -254,19 +251,19 @@ class User extends Resource
                             : null;
                     })->onlyOnDetail(),
                 ]),
-                Tab::make(Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))), [
+                Tab::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
                     Text::make(
-                        Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))),
+                        Str::singular(Str::title(setting('localization_ranks', 'Rank'))),
                         function ($model) {
                             return $model->rank->name ?? null;
                         }
                     )->onlyOnDetail(),
                     DateTime::make(
-                        'Last ' .
-                            Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) .
+                        'Last '.
+                            Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
                             ' Change Date',
                         function ($model) {
-	                        return $model->rank_records()->latest()->first()->created_at ?? null;
+                            return $model->rank_records()->latest()->first()->created_at ?? null;
                         }
                     )->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {
@@ -278,19 +275,19 @@ class User extends Resource
             Tabs::make('Records', [
                 HasMany::make('Assignment Records', 'assignment_records', AssignmentRecords::class),
                 HasMany::make(
-                    Str::singular(Str::title(NovaSettings::getSetting('localization_awards', 'Award'))) . ' Records',
+                    Str::singular(Str::title(setting('localization_awards', 'Award'))).' Records',
                     'award_records',
                     AwardRecords::class
                 ),
                 HasMany::make('Combat Records', 'combat_records', CombatRecords::class),
                 HasMany::make(
-                    Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) . ' Records',
+                    Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records',
                     'rank_records',
                     RankRecords::class
                 ),
                 HasMany::make('Service Records', 'service_records', ServiceRecords::class),
                 MorphToMany::make(
-                    Str::singular(Str::title(NovaSettings::getSetting('localization_statuses', 'Status'))) . ' Records',
+                    Str::singular(Str::title(setting('localization_statuses', 'Status'))).' Records',
                     'statuses',
                     Status::class
                 )->fields(function () {
@@ -307,8 +304,8 @@ class User extends Resource
                 HasMany::make('Submission Records', 'submissions', Submission::class),
                 HasMany::make(
                     Str::singular(
-                        Str::title(NovaSettings::getSetting('localization_qualifications', 'Qualification'))
-                    ) . ' Records',
+                        Str::title(setting('localization_qualifications', 'Qualification'))
+                    ).' Records',
                     'qualification_records',
                     QualificationRecords::class
                 ),

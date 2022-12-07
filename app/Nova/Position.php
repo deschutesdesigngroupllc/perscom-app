@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class Position extends Resource
 {
@@ -46,7 +45,7 @@ class Position extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_positions', 'Positions')));
+        return Str::plural(Str::title(setting('localization_positions', 'Positions')));
     }
 
     /**
@@ -56,7 +55,7 @@ class Position extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_positions', 'positions')));
+        return Str::plural(Str::slug(setting('localization_positions', 'positions')));
     }
 
     /**

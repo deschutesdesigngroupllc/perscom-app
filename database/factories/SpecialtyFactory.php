@@ -13,11 +13,12 @@ class SpecialtyFactory extends Factory
      */
     public function definition()
     {
-    	$number = $this->faker->unique()->randomNumber();
+        $number = $this->faker->unique()->randomNumber();
+
         return [
-	        'name' => "Specialty $number",
-	        'abbreviation' => "SPC$number",
-	        'description' => $this->faker->paragraph,
+            'name' => "Specialty $number",
+            'abbreviation' => "SPC$number",
+            'description' => $this->faker->paragraph,
         ];
     }
 }

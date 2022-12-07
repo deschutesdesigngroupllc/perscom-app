@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class RankRecordsByType extends Partition
 {
@@ -20,7 +19,7 @@ class RankRecordsByType extends Partition
     public function calculate(NovaRequest $request)
     {
         $query = Rank::query();
-        if (!Gate::check('update', $request->findModel())) {
+        if (! Gate::check('update', $request->findModel())) {
             $query = $query->where('user_id', $request->user()->id);
         }
 
@@ -30,6 +29,7 @@ class RankRecordsByType extends Partition
                     Rank::RECORD_RANK_PROMOTION => 'Promotion',
                     Rank::RECORD_RANK_DEMOTION => 'Demotion',
                 ];
+
                 return $labels[$value];
             })
             ->colors([
@@ -65,6 +65,6 @@ class RankRecordsByType extends Partition
      */
     public function name()
     {
-        return Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) . ' Records By Type';
+        return Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records By Type';
     }
 }

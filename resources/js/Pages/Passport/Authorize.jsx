@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Button } from "@/Components/Button";
-import { Guest } from "@/Layouts/Guest";
+import { Auth } from "@/Layouts/Auth";
 import { ValidationErrors } from "@/Components/ValidationErrors";
 import { Head, Link, useForm } from "@inertiajs/inertia-react";
 
@@ -24,7 +24,7 @@ export default function Authorize({ client, name, scopes, state, authToken, csrf
     });
 
     return (
-        <Guest>
+        <Auth>
             <Head title="Authorization" />
             <ValidationErrors errors={errors} />
             <form onSubmit={submit}>
@@ -48,6 +48,6 @@ export default function Authorize({ client, name, scopes, state, authToken, csrf
                     </Button>
                 </div>
             </form>
-        </Guest>
+        </Auth>
     );
 }

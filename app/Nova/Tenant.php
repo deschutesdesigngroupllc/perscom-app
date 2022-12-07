@@ -166,9 +166,9 @@ class Tenant extends Resource
         $model->load('domains');
 
         Event::dispatch(new TenantCreated($model));
-        event('eloquent.created: ' . TenantModel::class, $model);
+        event('eloquent.created: '.TenantModel::class, $model);
         Event::dispatch(new DomainCreated($domain));
-        event('eloquent.created: ' . Domain::class, $domain);
+        event('eloquent.created: '.Domain::class, $domain);
     }
 
     /**

@@ -19,6 +19,7 @@ class TenantPolicy
         if (Request::isCentralRequest()) {
             return true;
         }
+
         return false;
     }
 

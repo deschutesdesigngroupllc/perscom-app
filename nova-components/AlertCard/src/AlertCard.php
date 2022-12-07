@@ -14,12 +14,12 @@ class AlertCard extends Card
      */
     public $width = self::FULL_WIDTH;
 
-	/**
-	 * The height strategy of the card.
-	 *
-	 * @var string
-	 */
-	public $height = self::DYNAMIC_HEIGHT;
+    /**
+     * The height strategy of the card.
+     *
+     * @var string
+     */
+    public $height = self::DYNAMIC_HEIGHT;
 
     /**
      * Get the component name for the element.
@@ -31,16 +31,16 @@ class AlertCard extends Card
         return 'alert-card';
     }
 
-	/**
-	 * @param  array|null  $announcements
-	 *
-	 * @return AlertCard
-	 */
+    /**
+     * @param  array|null  $announcements
+     * @return AlertCard
+     */
     public function withAnnouncements(array $announcements = null): AlertCard
     {
-    	$announcements = Arr::isList($announcements) ? $announcements : [$announcements];
-    	return $this->withMeta([
-    		'announcements' => $announcements
-	    ]);
+        $announcements = Arr::isList($announcements) ? $announcements : [$announcements];
+
+        return $this->withMeta([
+            'announcements' => $announcements,
+        ]);
     }
 }

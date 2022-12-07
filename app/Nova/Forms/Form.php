@@ -130,7 +130,6 @@ class Form extends Resource
 
     /**
      * @param  Request  $request
-     *
      * @return bool
      */
     public function authorizedToView(Request $request)

@@ -10,11 +10,19 @@ class Unit extends Model
 {
     use HasFactory;
 
-	/**
-	 * @return \Illuminate\Database\Eloquent\Relations\HasMany
-	 */
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function assignment_records()
     {
-    	return $this->hasMany(Assignment::class);
+        return $this->hasMany(Assignment::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function users()
+    {
+        return $this->hasMany(User::class);
     }
 }

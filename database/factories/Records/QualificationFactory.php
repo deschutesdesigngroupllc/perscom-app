@@ -16,10 +16,10 @@ class QualificationFactory extends Factory
     public function definition()
     {
         return [
-	        'text' => $this->faker->sentence(),
-	        'author_id' => User::factory(),
-	        'user_id' => User::factory(),
-	        'qualification_id' => Qualification::factory()
+            'text' => $this->faker->sentence(),
+            'author_id' => User::factory(),
+            'user_id' => User::factory(),
+            'qualification_id' => Qualification::factory(),
         ];
     }
 }

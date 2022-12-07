@@ -31,7 +31,7 @@ class Permission extends \Spatie\Permission\Models\Permission implements Arrayab
      */
     public function getIsCustomPermissionAttribute()
     {
-        return !self::getPermissionsFromConfig()->has($this->name);
+        return ! self::getPermissionsFromConfig()->has($this->name);
     }
 
     /**

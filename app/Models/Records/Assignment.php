@@ -19,14 +19,14 @@ class Assignment extends Model
     use HasDocument;
     use HasFactory;
 
-	/**
-	 * @var string[]
-	 */
+    /**
+     * @var string[]
+     */
     protected $fillable = ['user_id', 'position_id', 'unit_id', 'specialty_id'];
 
-	/**
-	 * @var string[]
-	 */
+    /**
+     * @var string[]
+     */
     protected $with = ['position', 'specialty', 'unit'];
 
     /**
@@ -36,24 +36,24 @@ class Assignment extends Model
      */
     protected $table = 'records_assignments';
 
-	/**
-	 * Boot
-	 */
+    /**
+     * Boot
+     */
     public static function boot()
     {
-	    parent::boot();
+        parent::boot();
 
-	    static::created(function (Assignment $record) {
-	    	if ($record->user) {
-			    $record->user->position_id = $record->position?->id;
-			    $record->user->specialty_id = $record->specialty?->id;
-			    $record->user->unit_id = $record->unit?->id;
-			    $record->user->save();
-		    }
-	    });
+        static::created(function (Assignment $record) {
+            if ($record->user) {
+                $record->user->position_id = $record->position?->id;
+                $record->user->specialty_id = $record->specialty?->id;
+                $record->user->unit_id = $record->unit?->id;
+                $record->user->save();
+            }
+        });
     }
 
-	/**
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function user()

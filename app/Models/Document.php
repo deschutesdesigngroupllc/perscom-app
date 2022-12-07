@@ -51,7 +51,6 @@ class Document extends Model
     /**
      * @param  User  $user
      * @param  null  $attachedModel
-     *
      * @return mixed|string
      */
     public function replaceContent(User $user, $attachedModel = null)
@@ -65,10 +64,9 @@ class Document extends Model
     }
 
     /**
-     * @param             $tag
+     * @param    $tag
      * @param  User|null  $user
-     * @param  null       $attachedModel
-     *
+     * @param  null  $attachedModel
      * @return mixed|void|null
      */
     protected function resolveTag($tag, ?User $user = null, $attachedModel = null)

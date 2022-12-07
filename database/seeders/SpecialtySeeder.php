@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Position;
 use App\Models\Specialty;
 use Illuminate\Database\Seeder;
 

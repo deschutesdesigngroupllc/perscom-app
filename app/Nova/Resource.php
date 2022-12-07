@@ -16,8 +16,7 @@ abstract class Resource extends NovaResource
 
     /**
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @param  array                                  $orderings
-     *
+     * @param  array  $orderings
      * @return \Illuminate\Database\Eloquent\Builder
      */
     protected static function applyOrderings($query, array $orderings)

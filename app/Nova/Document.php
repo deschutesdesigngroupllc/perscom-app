@@ -11,10 +11,8 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\HtmlField\HtmlField;
 use Spatie\TagsField\Tags;
-use ThinkStudio\HtmlField\Html;
 
 class Document extends Resource
 {
@@ -51,7 +49,7 @@ class Document extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_documents', 'Documents')));
+        return Str::plural(Str::title(setting('localization_documents', 'Documents')));
     }
 
     /**
@@ -61,7 +59,7 @@ class Document extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_documents', 'documents')));
+        return Str::plural(Str::slug(setting('localization_documents', 'documents')));
     }
 
     /**

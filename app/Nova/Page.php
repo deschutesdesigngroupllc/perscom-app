@@ -35,7 +35,7 @@ class Page extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'title'
+        'id', 'title',
     ];
 
     /**
@@ -48,16 +48,16 @@ class Page extends Resource
     {
         return [
             ID::make()->sortable(),
-	        Text::make('Title')->rules('required'),
-	        Textarea::make('Description')->nullable(),
-	        Slug::make('Slug')->rules('required')->from('title')->help('This will be used to generate the URL to access the page.')->hideFromIndex(),
-	        URL::make('URL', fn () => tenant()->url . '/pages/' . $this->slug)->displayUsing(fn () => tenant()->url . '/pages/' . $this->slug)->onlyOnIndex(),
-	        Boolean::make('Enabled')->default(function () {
-	        	return true;
-	        })->help('Disable to prevent access to the page.'),
-	        new Panel('Content', [
-	        	Code::make('Page Content', 'content')->language('html')
-	        ])
+            Text::make('Title')->rules('required'),
+            Textarea::make('Description')->nullable(),
+            Slug::make('Slug')->rules('required')->from('title')->help('This will be used to generate the URL to access the page.')->hideFromIndex(),
+            URL::make('URL', fn () => tenant()->url.'/pages/'.$this->slug)->displayUsing(fn () => tenant()->url.'/pages/'.$this->slug)->onlyOnIndex(),
+            Boolean::make('Enabled')->default(function () {
+                return true;
+            })->help('Disable to prevent access to the page.'),
+            new Panel('Content', [
+                Code::make('Page Content', 'content')->language('html'),
+            ]),
         ];
     }
 

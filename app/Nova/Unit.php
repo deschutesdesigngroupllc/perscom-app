@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class Unit extends Resource
 {
@@ -46,7 +45,7 @@ class Unit extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_units', 'Units')));
+        return Str::plural(Str::title(setting('localization_units', 'Units')));
     }
 
     /**
@@ -56,7 +55,7 @@ class Unit extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_units', 'units')));
+        return Str::plural(Str::slug(setting('localization_units', 'units')));
     }
 
     /**

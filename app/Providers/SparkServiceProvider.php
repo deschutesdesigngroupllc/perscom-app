@@ -36,8 +36,8 @@ class SparkServiceProvider extends ServiceProvider
             return \tenant() &&
                 \tenant()->getTenantKey() === $billable->id &&
                 $request->user()->hasPermissionTo('manage:billing') &&
-                !$request->isDemoMode() &&
-                !$request->isCentralRequest() &&
+                ! $request->isDemoMode() &&
+                ! $request->isCentralRequest() &&
                 FeatureFlag::isOn('billing');
         });
 

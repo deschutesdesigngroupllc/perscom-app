@@ -100,20 +100,20 @@ return [
     */
 
     'middleware' => [
-	    'universal',
-	    InitializeTenancyByDomainOrSubdomain::class,
+        'universal',
+        InitializeTenancyByDomainOrSubdomain::class,
         'web',
-	    'verified',
-	    'subscribed',
-	    HandleInertiaRequests::class,
+        'verified',
+        'subscribed',
+        HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
     ],
 
     'api_middleware' => [
-	    'universal',
+        'universal',
         'nova',
-	    Authenticate::class,
+        Authenticate::class,
         Authorize::class,
     ],
 
@@ -168,14 +168,14 @@ return [
     |
     */
 
-     'brand' => [
-	     'logo' => realpath(__DIR__ . '/../public/svg/app-logo.svg'),
-         'colors' => [
-             '400' => '37, 99, 235, 0.5',
-             '500' => '37, 99, 235',
-             '600' => '37, 99, 235, 0.75',
-         ]
-     ],
+    'brand' => [
+        'logo' => realpath(__DIR__.'/../public/svg/app-logo.svg'),
+        'colors' => [
+            '400' => '37, 99, 235, 0.5',
+            '500' => '37, 99, 235',
+            '600' => '37, 99, 235, 0.75',
+        ],
+    ],
 
     /*
     |--------------------------------------------------------------------------

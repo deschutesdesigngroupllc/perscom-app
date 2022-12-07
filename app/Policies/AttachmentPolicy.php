@@ -20,6 +20,7 @@ class AttachmentPolicy
         if (Request::isCentralRequest()) {
             return false;
         }
+
         return true;
     }
 

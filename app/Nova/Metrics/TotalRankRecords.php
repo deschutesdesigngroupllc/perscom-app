@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class TotalRankRecords extends Value
 {
@@ -27,7 +26,7 @@ class TotalRankRecords extends Value
     public function calculate(NovaRequest $request)
     {
         $query = Rank::query();
-        if (!Gate::check('update', $request->findModel())) {
+        if (! Gate::check('update', $request->findModel())) {
             $query = $query->where('user_id', $request->user()->id);
         }
 
@@ -79,8 +78,8 @@ class TotalRankRecords extends Value
      */
     public function name()
     {
-        return 'Total ' .
-            Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) .
+        return 'Total '.
+            Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
             ' Records';
     }
 }

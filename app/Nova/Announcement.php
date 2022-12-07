@@ -10,7 +10,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class Announcement extends Resource
 {
@@ -42,7 +41,7 @@ class Announcement extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_announcements', 'Announcements')));
+        return Str::plural(Str::title(setting('localization_announcements', 'Announcements')));
     }
 
     /**
@@ -52,7 +51,7 @@ class Announcement extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_announcements', 'announcements')));
+        return Str::plural(Str::slug(setting('localization_announcements', 'announcements')));
     }
 
     /**

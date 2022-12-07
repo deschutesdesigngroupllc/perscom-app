@@ -68,6 +68,7 @@ class RolePolicy
         if ($role->is_application_role) {
             return false;
         }
+
         return $user->hasPermissionTo('update:role');
     }
 
@@ -83,6 +84,7 @@ class RolePolicy
         if ($role->is_application_role) {
             return false;
         }
+
         return $user->hasPermissionTo('update:role');
     }
 
@@ -99,6 +101,7 @@ class RolePolicy
         if ($role->is_application_role && $permission->is_application_permission) {
             return false;
         }
+
         return $user->hasPermissionTo('update:role');
     }
 

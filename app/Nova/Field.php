@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Nova\Forms\Form;
-use HaydenPierce\ClassFinder\ClassFinder;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;

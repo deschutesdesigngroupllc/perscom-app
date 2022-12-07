@@ -15,19 +15,19 @@ return new class extends Migration
     {
         Schema::table('forms', function (Blueprint $table) {
             $table->after('slug', function (Blueprint $table) {
-            	$table->text('success_message')->nullable();
-				$table->boolean('is_public')->default(false);
+                $table->text('success_message')->nullable();
+                $table->boolean('is_public')->default(false);
             });
         });
 
-	    Schema::table('fields', function (Blueprint $table) {
-		    $table->after('required', function (Blueprint $table) {
-			    $table->boolean('readonly')->default(false);
-			    $table->boolean('disabled')->default(false);
-		    });
-		    $table->text('text')->after('help')->nullable();
-		    $table->string('key')->after('name')->nullable();
-	    });
+        Schema::table('fields', function (Blueprint $table) {
+            $table->after('required', function (Blueprint $table) {
+                $table->boolean('readonly')->default(false);
+                $table->boolean('disabled')->default(false);
+            });
+            $table->text('text')->after('help')->nullable();
+            $table->string('key')->after('name')->nullable();
+        });
     }
 
     /**
@@ -38,15 +38,15 @@ return new class extends Migration
     public function down()
     {
         Schema::table('forms', function (Blueprint $table) {
-        	$table->dropColumn('success_message');
+            $table->dropColumn('success_message');
             $table->dropColumn('is_public');
         });
 
-	    Schema::table('fields', function (Blueprint $table) {
-		    $table->dropColumn('readonly');
-		    $table->dropColumn('disabled');
-		    $table->dropColumn('text');
-		    $table->dropColumn('key');
-	    });
+        Schema::table('fields', function (Blueprint $table) {
+            $table->dropColumn('readonly');
+            $table->dropColumn('disabled');
+            $table->dropColumn('text');
+            $table->dropColumn('key');
+        });
     }
 };

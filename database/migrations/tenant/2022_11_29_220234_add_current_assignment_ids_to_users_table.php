@@ -14,13 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-        	$table->after('email_verified_at', function (Blueprint $table) {
-		        $table->unsignedBigInteger('position_id')->nullable();
-		        $table->unsignedBigInteger('rank_id')->nullable();
-		        $table->unsignedBigInteger('specialty_id')->nullable();
-		        $table->unsignedBigInteger('status_id')->nullable();
-		        $table->unsignedBigInteger('unit_id')->nullable();
-	        });
+            $table->after('email_verified_at', function (Blueprint $table) {
+                $table->unsignedBigInteger('position_id')->nullable();
+                $table->unsignedBigInteger('rank_id')->nullable();
+                $table->unsignedBigInteger('specialty_id')->nullable();
+                $table->unsignedBigInteger('status_id')->nullable();
+                $table->unsignedBigInteger('unit_id')->nullable();
+            });
         });
     }
 
@@ -32,11 +32,11 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-	        $table->dropColumn('position_id');
-	        $table->dropColumn('rank_id');
-	        $table->dropColumn('specialty_id');
+            $table->dropColumn('position_id');
+            $table->dropColumn('rank_id');
+            $table->dropColumn('specialty_id');
             $table->dropColumn('status_id');
-	        $table->dropColumn('unit_id');
+            $table->dropColumn('unit_id');
         });
     }
 };

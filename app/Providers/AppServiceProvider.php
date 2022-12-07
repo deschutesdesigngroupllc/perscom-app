@@ -60,11 +60,12 @@ class AppServiceProvider extends ServiceProvider
         $socialite = $this->app->make(Factory::class);
         $socialite->extend('discord', function () use ($socialite) {
             $config = config('services.discord');
+
             return $socialite->buildProvider(DiscordSocialiteProvider::class, $config);
         });
 
         Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
-            PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.' . $event->tenancy->tenant->id;
+            PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->id;
         });
     }
 }

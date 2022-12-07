@@ -15,10 +15,10 @@ class CreateRecordsCombatsTable extends Migration
     {
         Schema::create('records_combat', function (Blueprint $table) {
             $table->id();
-	        $table->unsignedBigInteger('user_id');
-	        $table->unsignedBigInteger('document_id')->nullable();
-	        $table->unsignedBigInteger('author_id')->nullable();
-	        $table->text('text');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('document_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
+            $table->text('text');
             $table->timestamps();
         });
     }

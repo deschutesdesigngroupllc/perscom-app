@@ -18,7 +18,7 @@ class SubscriptionByStatus extends Partition
     {
         return $this->count($request, Subscription::class, 'stripe_status')
             ->label(
-                fn($value) => match ($value) {
+                fn ($value) => match ($value) {
                     null => 'None',
                     default => ucfirst($value),
                 }

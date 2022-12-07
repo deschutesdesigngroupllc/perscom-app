@@ -23,7 +23,7 @@ class FormController extends Controller
         $customForm->schema = $customForm->schema($form->fields->sortBy('pivot.order')->all(), $form->id);
         $customForm->setElements();
 
-        if (!$form->is_public && !Gate::check('view', $form)) {
+        if (! $form->is_public && ! Gate::check('view', $form)) {
             abort(403, 'You do not have permission to view this form.');
         }
 

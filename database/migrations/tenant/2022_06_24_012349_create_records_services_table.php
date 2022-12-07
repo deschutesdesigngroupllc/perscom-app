@@ -15,11 +15,11 @@ class CreateRecordsServicesTable extends Migration
     {
         Schema::create('records_service', function (Blueprint $table) {
             $table->id();
-	        $table->unsignedBigInteger('user_id');
-	        $table->unsignedBigInteger('document_id')->nullable();
-	        $table->unsignedBigInteger('author_id')->nullable();
-	        $table->text('text');
-	        $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('document_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
+            $table->text('text');
+            $table->timestamps();
         });
     }
 

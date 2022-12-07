@@ -14,7 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-	'version' => env('APP_VERSION', null),
+    'version' => env('APP_VERSION', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,7 +54,7 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-	'auth_url' => env('AUTH_URL', 'http://auth.localhost'),
+    'auth_url' => env('AUTH_URL', 'http://auth.localhost'),
     'asset_url' => env('ASSET_URL', null),
 
     /*
@@ -174,13 +174,13 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-	    App\Providers\FortifyServiceProvider::class,
+        App\Providers\FortifyServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\SparkServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
-		App\Providers\TenancyServiceProvider::class
+        App\Providers\TenancyServiceProvider::class,
     ],
 
     /*

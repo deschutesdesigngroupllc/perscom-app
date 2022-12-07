@@ -17,7 +17,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Award extends Resource
@@ -50,7 +49,7 @@ class Award extends Resource
      */
     public static function uriKey()
     {
-        return Str::singular(Str::slug(NovaSettings::getSetting('localization_awards', 'award'))) . '-records';
+        return Str::singular(Str::slug(setting('localization_awards', 'award'))).'-records';
     }
 
     /**
@@ -58,7 +57,7 @@ class Award extends Resource
      */
     public static function label()
     {
-        return Str::singular(Str::title(NovaSettings::getSetting('localization_awards', 'Award'))) . ' Records';
+        return Str::singular(Str::title(setting('localization_awards', 'Award'))).' Records';
     }
 
     /**
@@ -96,12 +95,12 @@ class Award extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
+                Str::singular(Str::title(setting('localization_users', 'User'))),
                 'user',
                 User::class
             )->sortable(),
             BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_awards', 'Award'))),
+                Str::singular(Str::title(setting('localization_awards', 'Award'))),
                 'award',
                 \App\Nova\Award::class
             )

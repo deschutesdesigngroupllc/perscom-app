@@ -14,7 +14,6 @@ use App\Nova\Feature;
 use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
-use App\Nova\Lenses\CurrentUsersSubmissions;
 use App\Nova\Page;
 use App\Nova\Passport\AuthorizedApplications;
 use App\Nova\Passport\Client;
@@ -29,7 +28,6 @@ use App\Nova\Records\Award as AwardRecords;
 use App\Nova\Records\Combat as CombatRecords;
 use App\Nova\Records\Qualification as QualificationRecords;
 use App\Nova\Records\Rank as RankRecords;
-use App\Nova\Records\Service;
 use App\Nova\Records\Service as ServiceRecords;
 use App\Nova\Role;
 use App\Nova\Specialty;
@@ -121,13 +119,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Tools', [
                         MenuItem::externalLink(
                             'Horizon',
-                            Url::fromString(config('app.url') . '/' . config('horizon.path'))
+                            Url::fromString(config('app.url').'/'.config('horizon.path'))
                                 ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
                                 ->__toString()
                         ),
                         MenuItem::externalLink(
                             'Telescope',
-                            Url::fromString(config('app.url') . '/' . config('telescope.path'))
+                            Url::fromString(config('app.url').'/'.config('telescope.path'))
                                 ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
                                 ->__toString()
                         ),
@@ -141,9 +139,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 return [
                     MenuSection::dashboard(Main::class)->icon('chart-bar'),
 
-	                MenuSection::make('Roster')
-		                ->path('/roster')
-		                ->icon('user-group'),
+                    MenuSection::make('Roster')
+                        ->path('/roster')
+                        ->icon('user-group'),
 
                     MenuSection::make('Account', [
                         MenuItem::link(
@@ -182,11 +180,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->icon('pencil-alt')
                         ->collapsable(),
 
-	                MenuSection::make('Pages', [
-		                MenuItem::resource(Page::class),
-	                ])
-		                ->icon('document-text')
-		                ->collapsable(),
+                    MenuSection::make('Pages', [
+                        MenuItem::resource(Page::class),
+                    ])
+                        ->icon('document-text')
+                        ->collapsable(),
 
                     MenuSection::make('Records', [
                         MenuItem::resource(AssignmentRecords::class),
@@ -220,8 +218,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->icon('terminal')
                         ->collapsable()
                         ->canSee(function (NovaRequest $request) {
-                            return !$request->isDemoMode() &&
-                                !$request->isCentralRequest() &&
+                            return ! $request->isDemoMode() &&
+                                ! $request->isCentralRequest() &&
                                 Auth::user()->hasRole('Admin');
                         }),
 
@@ -262,11 +260,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         'resourceId' => Auth::user()->getAuthIdentifier(),
                     ])
                 )->canSee(function (NovaRequest $request) {
-                    return !$request->isCentralRequest();
+                    return ! $request->isCentralRequest();
                 }),
                 MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
-                    return !$request->isDemoMode() &&
-                        !$request->isCentralRequest() &&
+                    return ! $request->isDemoMode() &&
+                        ! $request->isCentralRequest() &&
                         $request->user()->hasPermissionTo('manage:billing') &&
                         FeatureFlag::isOn('billing');
                 }),
@@ -403,6 +401,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         if (Request::isCentralRequest()) {
             return [new Admin()];
         }
+
         return [new Main()];
     }
 
@@ -413,14 +412,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function tools()
     {
-	    if (Request::isCentralRequest()) {
-		    return [];
-	    }
-	    return [
-	    	new Roster(),
-	    	(new NovaSettings())->canSee(function () {
-		        return !Request::isDemoMode() && Auth::user()->hasRole('Admin');
-	        })
-	    ];
+        if (Request::isCentralRequest()) {
+            return [];
+        }
+
+        return [
+            new Roster(),
+            (new NovaSettings())->canSee(function () {
+                return ! Request::isDemoMode() && Auth::user()->hasRole('Admin');
+            }),
+        ];
     }
 }

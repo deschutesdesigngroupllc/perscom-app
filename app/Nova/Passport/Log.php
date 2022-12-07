@@ -105,8 +105,10 @@ class Log extends Resource
                 $status = $log->properties->get('status');
                 if ($status) {
                     $message = Response::$statusTexts[$status];
+
                     return "$status $message";
                 }
+
                 return 'No Status Logged';
             }),
             MorphTo::make('Subject')->onlyOnDetail(),

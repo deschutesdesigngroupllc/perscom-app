@@ -27,7 +27,6 @@ class SocialLoginController extends Controller
 
     /**
      * @param $driver
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function tenant($driver)
@@ -41,12 +40,11 @@ class SocialLoginController extends Controller
     /**
      * @param $driver
      * @param $tenant
-     *
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function redirect($driver, $tenant)
     {
-        if (!$tenant) {
+        if (! $tenant) {
             throw new \RuntimeException('There was no Tenant ID included with your request. Please try again.');
         }
 
@@ -57,8 +55,8 @@ class SocialLoginController extends Controller
 
     /**
      * @param $driver
-     *
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
@@ -66,7 +64,7 @@ class SocialLoginController extends Controller
     {
         $tenantId = session()->get(self::$sessionKey);
 
-        if (!$tenantId) {
+        if (! $tenantId) {
             throw new \RuntimeException('There was no Tenant ID saved to your session. Please try again.');
         }
 
@@ -98,7 +96,6 @@ class SocialLoginController extends Controller
 
     /**
      * @param  LoginToken  $token
-     *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function login(LoginToken $token)

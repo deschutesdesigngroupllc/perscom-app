@@ -19,7 +19,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Rank extends Resource
@@ -52,7 +51,7 @@ class Rank extends Resource
      */
     public static function uriKey()
     {
-        return Str::singular(Str::slug(NovaSettings::getSetting('localization_ranks', 'rank'))) . '-records';
+        return Str::singular(Str::slug(setting('localization_ranks', 'rank'))).'-records';
     }
 
     /**
@@ -60,7 +59,7 @@ class Rank extends Resource
      */
     public static function label()
     {
-        return Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) . ' Records';
+        return Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records';
     }
 
     /**
@@ -98,12 +97,12 @@ class Rank extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
+                Str::singular(Str::title(setting('localization_users', 'User'))),
                 'user',
                 User::class
             )->sortable(),
             BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))),
+                Str::singular(Str::title(setting('localization_ranks', 'Rank'))),
                 'rank',
                 \App\Nova\Rank::class
             )
