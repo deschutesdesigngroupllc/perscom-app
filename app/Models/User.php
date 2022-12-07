@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
@@ -126,17 +125,17 @@ class User extends Authenticatable implements MustVerifyEmail
         return Cache::tags('user.online')->has("user.online.$this->id");
     }
 
-	/**
-	 * @return string
-	 */
+    /**
+     * @return string
+     */
     public function getUrlAttribute()
     {
-    	return route('nova.pages.detail',
-		    [
-			    'resource' => \App\Nova\User::uriKey(),
-			    'resourceId' => $this->id,
-		    ]
-	    );
+        return route('nova.pages.detail',
+            [
+                'resource' => \App\Nova\User::uriKey(),
+                'resourceId' => $this->id,
+            ]
+        );
     }
 
     /**

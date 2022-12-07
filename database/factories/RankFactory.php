@@ -13,62 +13,12 @@ class RankFactory extends Factory
      */
     public function definition()
     {
-        $rank = $this->faker->randomElement($this->possibleRanks());
-
         return [
-            'name' => $rank['name'],
+            'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'abbreviation' => $rank['abbreviation'],
-            'paygrade' => $rank['paygrade'],
+            'abbreviation' => $this->faker->word,
+            'paygrade' => $this->faker->word,
+            'order' => $this->faker->numberBetween(1, 10),
         ];
-    }
-
-	/**
-	 * @return \string[][]
-	 */
-    protected function possibleRanks()
-    {
-    	return [
-    		[
-    			'name' => 'Private',
-			    'abbreviation' => 'PVT',
-			    'paygrade' => 'E-1'
-		    ],
-		    [
-			    'name' => 'Private Second Class',
-			    'abbreviation' => 'PV2',
-			    'paygrade' => 'E-2'
-		    ],
-		    [
-			    'name' => 'Private First Class',
-			    'abbreviation' => 'PFC',
-			    'paygrade' => 'E-3'
-		    ],
-		    [
-			    'name' => 'Specialist',
-			    'abbreviation' => 'SPC',
-			    'paygrade' => 'E-4'
-		    ],
-		    [
-			    'name' => 'Corporal',
-			    'abbreviation' => 'CPL',
-			    'paygrade' => 'E-4'
-		    ],
-		    [
-			    'name' => 'Sergeant',
-			    'abbreviation' => 'SGT',
-			    'paygrade' => 'E-5'
-		    ],
-		    [
-			    'name' => 'Staff Sergeant',
-			    'abbreviation' => 'SSG',
-			    'paygrade' => 'E-6'
-		    ],
-		    [
-			    'name' => 'Sergeant First Class',
-			    'abbreviation' => 'SFC',
-			    'paygrade' => 'E-7'
-		    ]
-	    ];
     }
 }

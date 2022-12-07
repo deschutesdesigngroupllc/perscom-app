@@ -9,23 +9,23 @@ use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->middleware('scope:view:user')->only('index');
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->middleware('scope:view:user')->only('index');
+    }
 
-	/**
-	 * Display the logged in user
-	 *
-	 * @return UserResource
-	 */
-	public function me()
-	{
-		return UserResource::make(\request()->user());
-	}
+    /**
+     * Display the logged in user
+     *
+     * @return UserResource
+     */
+    public function me()
+    {
+        return UserResource::make(\request()->user());
+    }
 
     /**
      * Display a listing of the resource.
@@ -34,7 +34,7 @@ class UsersController extends Controller
      */
     public function index()
     {
-    	return UserResource::collection(User::all()->keyBy->id);
+        return UserResource::collection(User::all()->keyBy->id);
     }
 
     /**

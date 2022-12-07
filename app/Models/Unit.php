@@ -5,10 +5,12 @@ namespace App\Models;
 use App\Models\Records\Assignment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\SortableTrait;
 
 class Unit extends Model
 {
     use HasFactory;
+    use SortableTrait;
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

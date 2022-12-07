@@ -9,13 +9,13 @@ use Illuminate\Http\Request;
 
 class UnitsController extends Controller
 {
-	/**
-	 * Constructor
-	 */
-	public function __construct()
-	{
-		$this->middleware('scope:view:unit')->only('index');
-	}
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->middleware('scope:view:unit')->only('index');
+    }
 
     /**
      * Display a listing of the resource.
@@ -24,7 +24,7 @@ class UnitsController extends Controller
      */
     public function index()
     {
-	    $this->authorize('view:unit');
+        $this->authorize('view:unit');
 
         return UnitResource::collection(Unit::all()->keyBy->id);
     }

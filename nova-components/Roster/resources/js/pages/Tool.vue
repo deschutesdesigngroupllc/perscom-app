@@ -20,8 +20,8 @@
                   <td class="roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                     <div class="roster-text-right roster-items-center roster-flex roster-justify-end">
                       <img class="" style="max-width: 20px;" :src="user.rank.image_url" v-if="user.rank?.image_url">
-                      <span class="roster-whitespace-nowrap" v-else>
-                        {{ user.rank.name }}
+                      <span class="roster-whitespace-nowrap" v-else-if="user.rank?.abbreviation">
+                        {{ user.rank.abbreviation }}
                       </span>
                     </div>
                   </td>

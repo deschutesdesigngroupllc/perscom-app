@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -37,7 +38,7 @@ class Rank extends Resource
     /**
      * @var string[]
      */
-    public static $orderBy = ['name' => 'asc'];
+    public static $orderBy = ['order' => 'asc'];
 
     /**
      * Get the displayable label of the resource.
@@ -84,6 +85,7 @@ class Rank extends Resource
             Image::make('Image')
                 ->disk('s3_public')
                 ->prunable(),
+            Number::make('Order')->help('Use the order to field to establish rank hierarchy. The lower the number, the higher the rank.'),
             Textarea::make('Description')
                 ->nullable()
                 ->alwaysShow()

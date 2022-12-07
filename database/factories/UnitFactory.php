@@ -16,6 +16,7 @@ class UnitFactory extends Factory
         return [
             'name' => "Unit {$this->faker->unique()->randomNumber()}",
             'description' => $this->faker->paragraph,
+            'order' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

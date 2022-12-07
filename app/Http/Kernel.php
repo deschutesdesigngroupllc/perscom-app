@@ -3,7 +3,6 @@
 namespace App\Http;
 
 use App\Http\Middleware\CheckUniversalRouteForTenantOrAdmin;
-use App\Http\Middleware\ForceJsonResponse;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -71,10 +70,10 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'feature' => \Codinglabs\FeatureFlags\Middleware\VerifyFeatureIsOn::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
-	    'json' => \App\Http\Middleware\ForceJsonResponse::class,
+        'json' => \App\Http\Middleware\ForceJsonResponse::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
-	    'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
-	    'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
+        'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
+        'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'subscribed' => \App\Http\Middleware\Subscribed::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
@@ -92,7 +91,7 @@ class Kernel extends HttpKernel
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-	    \App\Http\Middleware\ForceJsonResponse::class,
+        \App\Http\Middleware\ForceJsonResponse::class,
         \App\Http\Middleware\LogApiRequests::class,
         \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
         \Illuminate\Routing\Middleware\ThrottleRequests::class,
