@@ -14,7 +14,8 @@ return [
      */
     'central_domains' => [
     	'localhost',
-	    'perscom.io'
+	    'perscom.io',
+	    'staging.perscom.io'
     ],
 
     /**
