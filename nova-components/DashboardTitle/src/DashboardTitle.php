@@ -2,6 +2,7 @@
 
 namespace Perscom\DashboardTitle;
 
+use Closure;
 use Laravel\Nova\Card;
 
 class DashboardTitle extends Card
@@ -37,7 +38,7 @@ class DashboardTitle extends Card
 	 */
     public function withTitle(mixed $title): DashboardTitle
     {
-    	if (\is_callable($title)) {
+    	if ($title instanceof Closure) {
     		return $this->withMeta([
     			'title' => $title()
 		    ]);
@@ -55,7 +56,7 @@ class DashboardTitle extends Card
 	 */
     public function withSubtitle(mixed $subtitle): DashboardTitle
     {
-	    if (\is_callable($subtitle)) {
+	    if ($subtitle instanceof Closure) {
 		    return $this->withMeta([
 			    'subtitle' => $subtitle()
 		    ]);
