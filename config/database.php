@@ -123,6 +123,7 @@ return [
 
         'options' => [
             'cluster' => env('REDIS_CLUSTER', 'redis'),
+	        'prefix' => env('REDIS_PREFIX', 'perscom_database_'),
         ],
 
         'default' => [
