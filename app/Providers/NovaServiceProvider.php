@@ -120,13 +120,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::externalLink(
                             'Horizon',
                             Url::fromString(config('app.url') . '/' . config('horizon.path'))
-                                ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
+                                ->withScheme(config('app.scheme'))
                                 ->__toString()
                         ),
                         MenuItem::externalLink(
                             'Telescope',
                             Url::fromString(config('app.url') . '/' . config('telescope.path'))
-                                ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
+                                ->withScheme(config('app.scheme'))
                                 ->__toString()
                         ),
                     ])
