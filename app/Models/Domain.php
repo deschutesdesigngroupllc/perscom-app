@@ -26,9 +26,9 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
             return Url::fromString(
                 Str::endsWith($this->domain, config('tenancy.central_domains'))
                     ? $this->domain
-                    : $this->domain.(app()->environment() === 'production' ? '.perscom.io' : '.localhost')
+                    : $this->domain . config('app.base_url')
             )
-                ->withScheme(app()->environment() === 'production' ? 'https' : 'http')
+                ->withScheme(config('app.scheme'))
                 ->__toString();
         });
     }
