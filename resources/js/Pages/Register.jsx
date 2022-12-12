@@ -7,7 +7,7 @@ import { Input } from "@/Components/Input";
 import { Logo } from "@/Components/Logo";
 import { ValidationErrors } from "@/Components/ValidationErrors";
 
-export default function Register() {
+export default function Register({ baseUrl }) {
     const { data, setData, post, processing, errors } = useForm({
         organization: "",
         email: "",
@@ -66,7 +66,7 @@ export default function Register() {
                         <Input
                             label="Domain"
                             id="domain"
-                            append=".perscom.io"
+                            append={baseUrl}
                             name="domain"
                             type="text"
                             value={data.domain}
