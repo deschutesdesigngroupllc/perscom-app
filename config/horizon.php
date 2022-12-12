@@ -167,7 +167,7 @@ return [
     'defaults' => [
         'supervisor-1' => [
             'connection' => 'redis',
-            'queue' => ['default'],
+            'queue' => ['default', 'local', 'staging', 'production'],
             'balance' => 'auto',
             'maxProcesses' => 1,
             'maxTime' => 0,
@@ -187,6 +187,14 @@ return [
                 'balanceCooldown' => 3,
             ],
         ],
+
+	    'staging' => [
+		    'supervisor-1' => [
+			    'maxProcesses' => 10,
+			    'balanceMaxShift' => 1,
+			    'balanceCooldown' => 3,
+		    ],
+	    ],
 
         'local' => [
             'supervisor-1' => [
