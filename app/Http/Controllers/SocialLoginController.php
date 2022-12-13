@@ -16,10 +16,10 @@ class SocialLoginController extends Controller
      */
     protected static $sessionKey = 'auth.social.login.tenant';
 
-	/**
-	 * @var string
-	 */
-	protected static $loginTokenTtl = 60;
+    /**
+     * @var string
+     */
+    protected static $loginTokenTtl = 60;
 
     /**
      * Instantiate a new controller instance.
@@ -106,13 +106,13 @@ class SocialLoginController extends Controller
      */
     public function login(LoginToken $loginToken)
     {
-	    if ($loginToken->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
-		    abort(403);
-	    }
+        if ($loginToken->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
+            abort(403);
+        }
 
         Auth::loginUsingId($loginToken->user_id);
 
-	    $loginToken->delete();
+        $loginToken->delete();
 
         return redirect(tenant()->url);
     }

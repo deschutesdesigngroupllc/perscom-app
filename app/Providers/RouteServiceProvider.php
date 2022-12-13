@@ -49,14 +49,14 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/auth.php'));
 
-	        Route::middleware('web')
-		        ->domain(config('app.url'))
-		        ->namespace($this->namespace)
-		        ->group(base_path('routes/web.php'));
+            Route::middleware('web')
+                ->domain(config('app.url'))
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
         });
 
         $this->app['router']->model('loginToken', LoginToken::class, function () {
-        	abort(403);
+            abort(403);
         });
     }
 

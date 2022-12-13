@@ -14,7 +14,7 @@ class RegisterController extends Controller
     public function index()
     {
         return Inertia::render('Register', [
-        	'baseUrl' => config('app.base_url')
+            'baseUrl' => config('app.base_url'),
         ]);
     }
 

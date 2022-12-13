@@ -147,16 +147,16 @@ class User extends Resource
                 ])
                 ->exceptOnForms(),
             Panel::make('Assignment', [
-                BelongsTo::make('Position', 'position', Position::class)->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')->nullable()->onlyOnForms(),
-                BelongsTo::make('Specialty', 'specialty', Specialty::class)->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')->nullable()->onlyOnForms(),
-                BelongsTo::make('Unit', 'unit', Unit::class)->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')->nullable()->onlyOnForms(),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')->nullable()->onlyOnForms(),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')->nullable()->onlyOnForms(),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')->nullable()->onlyOnForms(),
             ]),
-            Panel::make('Rank', [
-                BelongsTo::make('Rank', 'rank', Rank::class)->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')->nullable()->onlyOnForms(),
+            Panel::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
+                BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')->nullable()->onlyOnForms(),
             ]),
-	        Panel::make('Status', [
-		        BelongsTo::make('Status', 'status', Status::class)->help('You can manually set the user\'s status. Creating a status record will also change their status.')->nullable()->onlyOnForms(),
-	        ]),
+            Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
+                BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)->help('You can manually set the user\'s status. Creating a status record will also change their status.')->nullable()->onlyOnForms(),
+            ]),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
                     Boolean::make('Email Verified', function () {
