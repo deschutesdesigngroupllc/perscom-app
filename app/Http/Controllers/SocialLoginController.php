@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\LoginToken;
 use App\Models\Tenant;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -14,6 +15,11 @@ class SocialLoginController extends Controller
      * @var string
      */
     protected static $sessionKey = 'auth.social.login.tenant';
+
+	/**
+	 * @var string
+	 */
+	protected static $loginTokenTtl = 60;
 
     /**
      * Instantiate a new controller instance.
@@ -103,6 +109,10 @@ class SocialLoginController extends Controller
      */
     public function login(LoginToken $token)
     {
+	    if ($token->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
+		    abort(403);
+	    }
+
         Auth::loginUsingId($token->user_id);
 
         $token->delete();
