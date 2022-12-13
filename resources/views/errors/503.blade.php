@@ -1,5 +1,5 @@
-@extends('errors::minimal')
-
-@section('title', __('Service Unavailable'))
+@extends('errors.layout', ['showLink' => false])
 @section('code', '503')
-@section('message', __('Service Unavailable'))
+@section('title', __('Service Unavailable'))
+@section('header', __('Down for maintenance.'))
+@section('message', __('The service is currently unavailable. Please check back at another time.'))
