@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -33,10 +34,10 @@ class Position extends Resource
      */
     public static $search = ['id', 'name'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['name' => 'asc'];
+	/**
+	 * @var string[]
+	 */
+	public static $orderBy = ['order' => 'asc'];
 
     /**
      * Get the displayable label of the resource.
@@ -76,7 +77,8 @@ class Position extends Resource
                 ->nullable()
                 ->alwaysShow()
                 ->showOnPreview(),
-            Heading::make('Meta')->onlyOnDetail(),
+	        Number::make('Order')->help('Use the order to field to establish rank hierarchy. The lower the number, the higher the rank.'),
+	        Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
         ];

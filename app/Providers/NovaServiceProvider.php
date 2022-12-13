@@ -57,6 +57,7 @@ use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Panel;
 use Outl1ne\NovaSettings\NovaSettings;
+use Perscom\Roster\Roster;
 use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -138,6 +139,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Nova::mainMenu(function (Request $request) {
                 return [
                     MenuSection::dashboard(Main::class)->icon('chart-bar'),
+
+	                MenuSection::make('Roster')
+		                ->path('/roster')
+		                ->icon('user-group'),
 
                     MenuSection::make('Account', [
                         MenuItem::link(
@@ -405,6 +410,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new NovaSettings())->canSee(function () {
                 return !Request::isCentralRequest() && !Request::isDemoMode() && Auth::user()->hasRole('Admin');
             }),
+	        (new Roster())->canSee(function () {
+		        return !Request::isCentralRequest();
+	        }),
         ];
     }
 }

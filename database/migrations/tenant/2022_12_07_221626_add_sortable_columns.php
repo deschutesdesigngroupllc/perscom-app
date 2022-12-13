@@ -20,6 +20,10 @@ return new class extends Migration
         Schema::table('units', function (Blueprint $table) {
             $table->integer('order')->after('description')->default(0);
         });
+
+	    Schema::table('positions', function (Blueprint $table) {
+		    $table->integer('order')->after('description')->default(0);
+	    });
     }
 
     /**
@@ -36,5 +40,9 @@ return new class extends Migration
         Schema::table('units', function (Blueprint $table) {
             $table->dropColumn('order');
         });
+
+	    Schema::table('positions', function (Blueprint $table) {
+		    $table->dropColumn('order');
+	    });
     }
 };

@@ -30,6 +30,6 @@ class Roster extends Tool
     {
         return MenuSection::make('Roster')
             ->path('/roster')
-            ->icon('server');
+            ->icon('user-group');
     }
 }
