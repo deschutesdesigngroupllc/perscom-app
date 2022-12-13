@@ -1,5 +1,5 @@
-@extends('errors::minimal')
-
-@section('title', __('Server Error'))
+@extends('errors.layout')
 @section('code', '500')
-@section('message', __('Server Error'))
+@section('title', __('Server Error'))
+@section('header', __('Server error.'))
+@section('message', __('Oops. We did not expect that to happen. Please try again.'))

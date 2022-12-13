@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\LoginToken;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -52,6 +53,10 @@ class RouteServiceProvider extends ServiceProvider
 		        ->domain(config('app.url'))
 		        ->namespace($this->namespace)
 		        ->group(base_path('routes/web.php'));
+        });
+
+        $this->app['router']->model('loginToken', LoginToken::class, function () {
+        	abort(403);
         });
     }
 
