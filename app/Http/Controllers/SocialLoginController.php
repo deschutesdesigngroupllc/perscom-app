@@ -107,15 +107,15 @@ class SocialLoginController extends Controller
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function login(LoginToken $token)
+    public function login(LoginToken $loginToken)
     {
-	    if ($token->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
+	    if ($loginToken->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
 		    abort(403);
 	    }
 
-        Auth::loginUsingId($token->user_id);
+        Auth::loginUsingId($loginToken->user_id);
 
-        $token->delete();
+	    $loginToken->delete();
 
         return redirect(tenant()->url);
     }
