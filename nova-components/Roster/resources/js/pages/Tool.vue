@@ -42,14 +42,15 @@
                   <td class="roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                     <div class="roster-text-left">
                       <span class="roster-whitespace-nowrap" v-if="user.specialty?.name">
-                        {{ user.specialty.name }}
+                        {{ user.specialty.name }}<span v-if="user.specialty?.abbreviation">, {{ user.specialty.abbreviation }}
+                        </span>
                       </span>
                     </div>
                   </td>
                   <td class="roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                     <div class="roster-text-center">
-                      <span class="roster-whitespace-nowrap">
-                        Active
+                      <span :class="user.status.color" class="roster-inline-flex roster-items-center roster-whitespace-nowrap min-h-6 roster-px-2 roster-rounded-full roster-uppercase roster-text-xs roster-font-bold" v-if="user.status">
+                       {{ user.status.name }}
                       </span>
                     </div>
                   </td>

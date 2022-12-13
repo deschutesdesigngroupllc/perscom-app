@@ -47,7 +47,9 @@ class DemoDataSeeder extends Seeder
         $user->assignRole('Admin');
 
         Unit::all()->each(static function ($unit) {
-            User::factory()->count(10)->hasAttached(Status::all()->random())->create()->each(static function ($user) use ($unit) {
+            User::factory()->count(5)->create()->each(static function (User $user) use ($unit) {
+            	$user->statuses()->attach(Status::all()->random());
+
                 Assignment::factory()
                     ->for($user)
                     ->for($unit)

@@ -154,6 +154,9 @@ class User extends Resource
             Panel::make('Rank', [
                 BelongsTo::make('Rank', 'rank', Rank::class)->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')->nullable()->onlyOnForms(),
             ]),
+	        Panel::make('Status', [
+		        BelongsTo::make('Status', 'status', Status::class)->help('You can manually set the user\'s status. Creating a status record will also change their status.')->nullable()->onlyOnForms(),
+	        ]),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
                     Boolean::make('Email Verified', function () {

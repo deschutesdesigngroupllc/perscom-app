@@ -107,13 +107,9 @@ var _hoisted_19 = {
   key: 0,
   "class": "roster-whitespace-nowrap"
 };
-var _hoisted_20 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
-  "class": "roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", {
-  "class": "roster-text-center"
-}, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
-  "class": "roster-whitespace-nowrap"
-}, " Active ")])], -1 /* HOISTED */);
+var _hoisted_20 = {
+  key: 0
+};
 var _hoisted_21 = {
   "class": "roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
 };
@@ -121,23 +117,29 @@ var _hoisted_22 = {
   "class": "roster-text-center"
 };
 var _hoisted_23 = {
+  "class": "roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900"
+};
+var _hoisted_24 = {
+  "class": "roster-text-center"
+};
+var _hoisted_25 = {
   key: 0,
   "class": "roster-inline-flex roster-items-center roster-whitespace-nowrap min-h-6 roster-px-2 roster-rounded-full roster-uppercase roster-text-xs roster-font-bold roster-bg-green-100 roster-text-green-600 dark:roster-bg-green-500 dark:roster-text-green-900"
 };
-var _hoisted_24 = {
+var _hoisted_26 = {
   key: 1,
   "class": "roster-inline-flex roster-items-center roster-whitespace-nowrap min-h-6 roster-px-2 roster-rounded-full roster-uppercase roster-text-xs roster-font-bold roster-bg-sky-100 roster-text-sky-600 dark:roster-bg-sky-500 dark:roster-text-sky-900"
 };
-var _hoisted_25 = {
+var _hoisted_27 = {
   key: 1
 };
-var _hoisted_26 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
+var _hoisted_28 = /*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", {
   "class": "roster-px-2 roster-py-4 roster-whitespace-nowrap dark:roster-bg-gray-800 roster-text-center",
   colspan: "7"
 }, [/*#__PURE__*/(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", {
   "class": "roster-whitespace-nowrap"
 }, " There are no users assigned to this unit. ")], -1 /* HOISTED */);
-var _hoisted_27 = [_hoisted_26];
+var _hoisted_29 = [_hoisted_28];
 function render(_ctx, _cache, $props, $setup, $data, $options) {
   var _component_Head = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Head");
   var _component_Heading = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Heading");
@@ -164,7 +166,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
             return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("table", _hoisted_3, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("thead", _hoisted_4, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tr", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("th", _hoisted_5, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(unit.name), 1 /* TEXT */)])])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("tbody", null, [unit.users.length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
               key: 0
             }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)(unit.users, function (user) {
-              var _user$rank, _user$rank2, _user$position, _user$specialty;
+              var _user$rank, _user$rank2, _user$position, _user$specialty, _user$specialty2;
               return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", {
                 "class": "group",
                 key: user.id,
@@ -178,8 +180,11 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
                   "max-width": "20px"
                 },
                 src: user.rank.image_url
-              }, null, 8 /* PROPS */, _hoisted_9)) : (_user$rank2 = user.rank) !== null && _user$rank2 !== void 0 && _user$rank2.abbreviation ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.rank.abbreviation), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.name), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(_user$position = user.position) !== null && _user$position !== void 0 && _user$position.name ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.position.name), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(_user$specialty = user.specialty) !== null && _user$specialty !== void 0 && _user$specialty.name ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_19, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.specialty.name), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), _hoisted_20, (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [user.online ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_23, " Online ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_24, " Offline "))])])], 8 /* PROPS */, _hoisted_6);
-            }), 128 /* KEYED_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_25, _hoisted_27))])])])];
+              }, null, 8 /* PROPS */, _hoisted_9)) : (_user$rank2 = user.rank) !== null && _user$rank2 !== void 0 && _user$rank2.abbreviation ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_10, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.rank.abbreviation), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_11, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_12, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("span", _hoisted_13, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.name), 1 /* TEXT */)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_14, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_15, [(_user$position = user.position) !== null && _user$position !== void 0 && _user$position.name ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_16, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.position.name), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_17, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_18, [(_user$specialty = user.specialty) !== null && _user$specialty !== void 0 && _user$specialty.name ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_19, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.specialty.name), 1 /* TEXT */), (_user$specialty2 = user.specialty) !== null && _user$specialty2 !== void 0 && _user$specialty2.abbreviation ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_20, ", " + (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.specialty.abbreviation), 1 /* TEXT */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_21, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_22, [user.status ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", {
+                key: 0,
+                "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)([user.status.color, "roster-inline-flex roster-items-center roster-whitespace-nowrap min-h-6 roster-px-2 roster-rounded-full roster-uppercase roster-text-xs roster-font-bold"])
+              }, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(user.status.name), 3 /* TEXT, CLASS */)) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)])]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("td", _hoisted_23, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_24, [user.online ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_25, " Online ")) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("span", _hoisted_26, " Offline "))])])], 8 /* PROPS */, _hoisted_6);
+            }), 128 /* KEYED_FRAGMENT */)) : ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("tr", _hoisted_27, _hoisted_29))])])])];
           }),
           _: 2 /* DYNAMIC */
         }, 1032 /* PROPS, DYNAMIC_SLOTS */, ["loading"])];
