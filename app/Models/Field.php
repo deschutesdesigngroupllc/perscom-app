@@ -71,8 +71,6 @@ class Field extends Model
      */
     public function forms()
     {
-        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
-            ->withPivot(['order'])
-            ->withTimestamps();
+        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')->withPivot(['order'])->withTimestamps();
     }
 }

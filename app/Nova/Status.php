@@ -32,7 +32,10 @@ class Status extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @var string[]
@@ -69,29 +72,16 @@ class Status extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
             Badge::make('Color', function ($model) {
                 return $model->color;
-            })
-                ->types(
-                    collect(\App\Models\Status::$colors)
-                        ->mapWithKeys(function ($value, $key) {
-                            return [$key => $key];
-                        })
-                        ->toArray()
-                )
-                ->label(function ($value) {
-                    return \App\Models\Status::$colors[$value];
-                }),
-            Select::make('Color')
-                ->rules(['required'])
-                ->showOnPreview()
-                ->displayUsingLabels()
-                ->onlyOnForms()
-                ->options(\App\Models\Status::$colors),
+            })->types(collect(\App\Models\Status::$colors)->mapWithKeys(function ($value, $key) {
+                return [$key => $key];
+            })->toArray())->label(function ($value) {
+                return \App\Models\Status::$colors[$value];
+            }),
+            Select::make('Color')->rules(['required'])->showOnPreview()->displayUsingLabels()->onlyOnForms()
+                  ->options(\App\Models\Status::$colors),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

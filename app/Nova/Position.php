@@ -32,7 +32,10 @@ class Position extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @var string[]
@@ -69,15 +72,10 @@ class Position extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
-            Number::make('Order')->help('Use the order to field to establish rank hierarchy. The lower the number, the higher the rank.'),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
+            Number::make('Order')
+                  ->help('Use the order to field to establish rank hierarchy. The lower the number, the higher the rank.'),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

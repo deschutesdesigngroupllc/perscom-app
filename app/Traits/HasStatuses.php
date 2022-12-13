@@ -12,10 +12,7 @@ trait HasStatuses
      */
     public function statuses()
     {
-        return $this->morphToMany(Status::class, 'model', 'model_has_statuses')
-            ->withPivot('text')
-            ->withTimestamps()
-            ->as('record')
-            ->using(StatusRecord::class);
+        return $this->morphToMany(Status::class, 'model', 'model_has_statuses')->withPivot('text')->withTimestamps()
+                    ->as('record')->using(StatusRecord::class);
     }
 }

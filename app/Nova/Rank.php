@@ -33,7 +33,10 @@ class Rank extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @var string[]
@@ -70,26 +73,13 @@ class Rank extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->rules(['required'])
-                ->sortable()
-                ->showOnPreview(),
-            Text::make('Abbreviation')
-                ->nullable()
-                ->sortable()
-                ->showOnPreview(),
-            Text::make('Paygrade')
-                ->nullable()
-                ->sortable()
-                ->showOnPreview(),
-            Image::make('Image')
-                ->disk('s3_public')
-                ->prunable(),
-            Number::make('Order')->help('Use the order to field to establish rank hierarchy. The lower the number, the higher the rank.'),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->rules(['required'])->sortable()->showOnPreview(),
+            Text::make('Abbreviation')->nullable()->sortable()->showOnPreview(),
+            Text::make('Paygrade')->nullable()->sortable()->showOnPreview(),
+            Image::make('Image')->disk('s3_public')->prunable(),
+            Number::make('Order')
+                  ->help('Use the order to field to establish rank hierarchy. The lower the number, the higher the rank.'),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

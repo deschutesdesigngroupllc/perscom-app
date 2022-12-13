@@ -12,6 +12,7 @@ class AttachmentPolicy
     use HandlesAuthorization;
 
     //TODO: Finish policy
+
     /**
      * @return bool
      */

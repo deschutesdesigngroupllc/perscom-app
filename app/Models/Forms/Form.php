@@ -42,11 +42,9 @@ class Form extends Model
      */
     public function getUrlAttribute()
     {
-        return $this->slug
-            ? route('form', [
-                'slug' => $this->slug,
-            ])
-            : null;
+        return $this->slug ? route('form', [
+            'slug' => $this->slug,
+        ]) : null;
     }
 
     /**
@@ -54,9 +52,7 @@ class Form extends Model
      */
     public function fields()
     {
-        return $this->morphToMany(Field::class, 'model', 'model_has_fields')
-            ->withPivot(['order'])
-            ->withTimestamps();
+        return $this->morphToMany(Field::class, 'model', 'model_has_fields')->withPivot(['order'])->withTimestamps();
     }
 
     public function submissions()

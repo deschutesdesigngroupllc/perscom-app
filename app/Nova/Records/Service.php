@@ -40,7 +40,10 @@ class Service extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'text'];
+    public static $search = [
+        'id',
+        'text',
+    ];
 
     /**
      * Get the URI key for the resource.
@@ -94,33 +97,20 @@ class Service extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make(
-                Str::singular(Str::title(setting('localization_users', 'User'))),
-                'user',
-                User::class
-            )->sortable(),
-            Textarea::make('Text')
-                ->rules(['required'])
-                ->hideFromIndex()
-                ->alwaysShow(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
+                     ->sortable(),
+            Textarea::make('Text')->rules(['required'])->hideFromIndex()->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
             })->onlyOnIndex(),
-            BelongsTo::make('Document')
-                ->nullable()
-                ->onlyOnForms(),
+            BelongsTo::make('Document')->nullable()->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-                DateTime::make('Created At')
-                    ->sortable()
-                    ->exceptOnForms(),
-                DateTime::make('Updated At')
-                    ->exceptOnForms()
-                    ->hideFromIndex(),
+                DateTime::make('Created At')->sortable()->exceptOnForms(),
+                DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())
-                ->withTitle($this->document->name ?? null)
-                ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)
+                                      ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
@@ -133,7 +123,10 @@ class Service extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [new TotalServiceRecords(), new NewServiceRecords()];
+        return [
+            new TotalServiceRecords(),
+            new NewServiceRecords(),
+        ];
     }
 
     /**

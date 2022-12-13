@@ -35,7 +35,12 @@ class Subscription extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'stripe_id', 'stripe_plan', 'stripe_status'];
+    public static $search = [
+        'id',
+        'stripe_id',
+        'stripe_plan',
+        'stripe_status',
+    ];
 
     /**
      * Get the fields displayed by the resource.
@@ -48,14 +53,10 @@ class Subscription extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Tenant', 'owner', Tenant::class),
-            Text::make('Name')
-                ->rules(['required'])
-                ->placeholder('default'),
-            Text::make('Stripe ID')
-                ->readonly(function ($request) {
-                    return $request->isUpdateOrUpdateAttachedRequest();
-                })
-                ->rules(['required']),
+            Text::make('Name')->rules(['required'])->placeholder('default'),
+            Text::make('Stripe ID')->readonly(function ($request) {
+                return $request->isUpdateOrUpdateAttachedRequest();
+            })->rules(['required']),
             Badge::make('Stripe Status')->map([
                 'active' => 'success',
                 'incomplete' => 'warning',
@@ -65,11 +66,9 @@ class Subscription extends Resource
                 'canceled' => 'danger',
                 'unpaid' => 'danger',
             ]),
-            Text::make('Stripe Plan')
-                ->readonly(function ($request) {
-                    return $request->isUpdateOrUpdateAttachedRequest();
-                })
-                ->rules(['required']),
+            Text::make('Stripe Plan')->readonly(function ($request) {
+                return $request->isUpdateOrUpdateAttachedRequest();
+            })->rules(['required']),
             Number::make('Quantity')->rules(['required']),
             DateTime::make('Trial Ends At'),
             DateTime::make('Ends At'),

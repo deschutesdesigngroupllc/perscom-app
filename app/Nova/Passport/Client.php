@@ -56,9 +56,8 @@ class Client extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query
-            ->where('name', '<>', 'Default Personal Access Client')
-            ->where('name', '<>', 'Default Password Grant Client');
+        return $query->where('name', '<>', 'Default Personal Access Client')
+                     ->where('name', '<>', 'Default Password Grant Client');
     }
 
     /**
@@ -70,54 +69,30 @@ class Client extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make('Name')
-                ->rules('required')
-                ->sortable(),
-            ID::make('Client ID', 'id')
-                ->hide()
-                ->sortable(),
+            Text::make('Name')->rules('required')->sortable(),
+            ID::make('Client ID', 'id')->hide()->sortable(),
             Text::make('Client ID', function () {
                 return $this->id;
-            })
-                ->copyable()
-                ->exceptOnForms(),
+            })->copyable()->exceptOnForms(),
             Hidden::make('Secret')->default(Str::random(40)),
-            Text::make('Client Secret', 'secret')
-                ->readonly()
-                ->copyable()
-                ->onlyOnDetail(),
+            Text::make('Client Secret', 'secret')->readonly()->copyable()->onlyOnDetail(),
             URL::make('Redirect URL', 'redirect')->rules('required'),
-            Boolean::make('Revoked')
-                ->default(false)
-                ->sortable()
-                ->hideWhenCreating()
-                ->showOnUpdating()
-                ->sortable(),
+            Boolean::make('Revoked')->default(false)->sortable()->hideWhenCreating()->showOnUpdating()->sortable(),
             Heading::make('OAuth 2.0 Endpoints')->onlyOnDetail(),
             Text::make('Authorization Endpoint', function () {
                 return route('passport.authorizations.authorize');
-            })
-                ->copyable()
-                ->onlyOnDetail(),
+            })->copyable()->onlyOnDetail(),
             Text::make('Token Endpoint', function () {
                 return route('passport.token');
-            })
-                ->copyable()
-                ->onlyOnDetail(),
+            })->copyable()->onlyOnDetail(),
             Text::make('Refresh Token Endpoint', function () {
                 return route('passport.token.refresh');
-            })
-                ->copyable()
-                ->onlyOnDetail(),
+            })->copyable()->onlyOnDetail(),
             Text::make('Authenticated User Endpoint', function () {
                 return route('api.me');
-            })
-                ->copyable()
-                ->onlyOnDetail(),
+            })->copyable()->onlyOnDetail(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Created At')->sortable()->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
             HasMany::make('Authorized Applications', 'tokens', AuthorizedApplications::class),
         ];

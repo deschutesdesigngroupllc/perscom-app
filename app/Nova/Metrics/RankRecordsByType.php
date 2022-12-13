@@ -23,19 +23,17 @@ class RankRecordsByType extends Partition
             $query = $query->where('user_id', $request->user()->id);
         }
 
-        return $this->count($request, $query, 'type')
-            ->label(function ($value) {
-                $labels = [
-                    Rank::RECORD_RANK_PROMOTION => 'Promotion',
-                    Rank::RECORD_RANK_DEMOTION => 'Demotion',
-                ];
+        return $this->count($request, $query, 'type')->label(function ($value) {
+            $labels = [
+                Rank::RECORD_RANK_PROMOTION => 'Promotion',
+                Rank::RECORD_RANK_DEMOTION => 'Demotion',
+            ];
 
-                return $labels[$value];
-            })
-            ->colors([
-                Rank::RECORD_RANK_PROMOTION => '#16A34A',
-                Rank::RECORD_RANK_DEMOTION => '#DC2626',
-            ]);
+            return $labels[$value];
+        })->colors([
+            Rank::RECORD_RANK_PROMOTION => '#16A34A',
+            Rank::RECORD_RANK_DEMOTION => '#DC2626',
+        ]);
     }
 
     /**

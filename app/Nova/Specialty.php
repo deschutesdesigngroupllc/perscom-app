@@ -31,7 +31,11 @@ class Specialty extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name', 'abbreviation'];
+    public static $search = [
+        'id',
+        'name',
+        'abbreviation',
+    ];
 
     /**
      * @var string[]
@@ -68,17 +72,9 @@ class Specialty extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Text::make('Abbreviation')
-                ->sortable()
-                ->showOnPreview(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            Text::make('Abbreviation')->sortable()->showOnPreview(),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

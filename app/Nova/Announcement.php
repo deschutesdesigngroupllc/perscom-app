@@ -32,7 +32,10 @@ class Announcement extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'title'];
+    public static $search = [
+        'id',
+        'title',
+    ];
 
     /**
      * Get the displayable label of the resource.
@@ -64,31 +67,19 @@ class Announcement extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Title')
-                ->rules('required')
-                ->hideFromDetail(),
-            Trix::make('Content')
-                ->rules('required')
-                ->hideFromDetail(),
-            Select::make('Color')
-                ->displayUsingLabels()
-                ->options([
-                    'info' => 'Information',
-                    'success' => 'Success',
-                    'warning' => 'Warning',
-                    'danger' => 'Danger',
-                ])
-                ->rules('required')
-                ->default(function () {
-                    return 'info';
-                })
-                ->onlyOnForms(),
+            Text::make('Title')->rules('required')->hideFromDetail(),
+            Trix::make('Content')->rules('required')->hideFromDetail(),
+            Select::make('Color')->displayUsingLabels()->options([
+                'info' => 'Information',
+                'success' => 'Success',
+                'warning' => 'Warning',
+                'danger' => 'Danger',
+            ])->rules('required')->default(function () {
+                return 'info';
+            })->onlyOnForms(),
             DateTime::make('Expires At'),
             new Panel($this->title, [
-                Trix::make('Details', 'content')
-                    ->rules('required')
-                    ->onlyOnDetail()
-                    ->alwaysShow(),
+                Trix::make('Details', 'content')->rules('required')->onlyOnDetail()->alwaysShow(),
             ]),
         ];
     }

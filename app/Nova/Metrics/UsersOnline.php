@@ -27,17 +27,14 @@ class UsersOnline extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $keys = \App\Models\User::all()
-            ->map(function ($user) {
-                return "user.online.$user->id";
-            })
-            ->toArray();
+        $keys = \App\Models\User::all()->map(function ($user) {
+            return "user.online.$user->id";
+        })->toArray();
 
         $count = collect(\Illuminate\Support\Facades\Cache::tags('user.online')->many($keys))
             ->filter(function ($value) {
                 return $value === true;
-            })
-            ->count();
+            })->count();
 
         return new ValueResult($count);
     }
@@ -67,8 +64,6 @@ class UsersOnline extends Value
      */
     public function name()
     {
-        return 'Current '.
-            Str::plural(Str::title(setting('localization_users', 'Users'))).
-            ' Online';
+        return 'Current '.Str::plural(Str::title(setting('localization_users', 'Users'))).' Online';
     }
 }

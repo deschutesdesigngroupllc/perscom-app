@@ -37,17 +37,17 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
         Passport::useTokenModel(Token::class);
         Passport::useClientModel(Client::class);
-        Passport::routes(
-            static function (RouteRegistrar $router) {
-                $router->forAccessTokens();
-                $router->forTransientTokens();
-                $router->forClients();
-                $router->forPersonalAccessTokens();
-            },
-            [
-                'middleware' => [InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class],
-            ]
-        );
+        Passport::routes(static function (RouteRegistrar $router) {
+            $router->forAccessTokens();
+            $router->forTransientTokens();
+            $router->forClients();
+            $router->forPersonalAccessTokens();
+        }, [
+            'middleware' => [
+                InitializeTenancyByDomainOrSubdomain::class,
+                PreventAccessFromCentralDomains::class,
+            ],
+        ]);
     }
 
     /**

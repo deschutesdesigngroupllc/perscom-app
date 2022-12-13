@@ -53,7 +53,8 @@ class User extends Resource
     public static $model = \App\Models\User::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
+     * The single value that should be used to represent the
+     * resource when being displayed.
      *
      * @var string
      */
@@ -64,7 +65,11 @@ class User extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name', 'email'];
+    public static $search = [
+        'id',
+        'name',
+        'email',
+    ];
 
     /**
      * @var string[]
@@ -102,60 +107,51 @@ class User extends Resource
         return [
             UiAvatar::make(null, 'name')->hideFromDetail(),
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255')
-                ->showOnPreview()
-                ->readonly(function () {
+            Text::make('Name')->sortable()->rules('required', 'max:255')->showOnPreview()->readonly(function () {
+                return Request::isDemoMode();
+            }),
+            Text::make('Email')->sortable()->rules('required', 'email', 'max:254')->creationRules('unique:users,email')
+                ->updateRules('unique:users,email,{{resourceId}}')->showOnPreview()->readonly(function () {
                     return Request::isDemoMode();
                 }),
-            Text::make('Email')
-                ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}')
-                ->showOnPreview()
-                ->readonly(function () {
-                    return Request::isDemoMode();
-                }),
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults())
-                ->readonly(function () {
-                    return Request::isDemoMode();
-                }),
-            Badge::make(
-                Str::singular(Str::title(setting('localization_statuses', 'Status'))),
-                function () {
-                    return $this->status->name ?? 'none';
-                }
-            )
-                ->types([
-                    'none' => 'bg-gray-100 text-gray-600',
-                    $this->status?->name => $this->status?->color,
-                ])
-                ->label(function () {
-                    return $this->status->name ?? 'No Current Status';
-                }),
+            Password::make('Password')->onlyOnForms()->creationRules('required', Rules\Password::defaults())
+                    ->updateRules('nullable', Rules\Password::defaults())->readonly(function () {
+                        return Request::isDemoMode();
+                    }),
+            Badge::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), function () {
+                return $this->status->name ?? 'none';
+            })->types([
+                'none' => 'bg-gray-100 text-gray-600',
+                $this->status?->name => $this->status?->color,
+            ])->label(function () {
+                return $this->status->name ?? 'No Current Status';
+            }),
             Badge::make('Online', function ($user) {
                 return $user->online;
-            })
-                ->map([
-                    false => 'info',
-                    true => 'success',
-                ])
-                ->exceptOnForms(),
+            })->map([
+                false => 'info',
+                true => 'success',
+            ])->exceptOnForms(),
             Panel::make('Assignment', [
-                BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')->nullable()->onlyOnForms(),
-                BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')->nullable()->onlyOnForms(),
-                BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')->nullable()->onlyOnForms(),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
+                         ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
+                         ->nullable()->onlyOnForms(),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
+                         ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
+                         ->nullable()->onlyOnForms(),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
+                         ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
+                         ->nullable()->onlyOnForms(),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
-                BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')->nullable()->onlyOnForms(),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)
+                         ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
+                         ->nullable()->onlyOnForms(),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
-                BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)->help('You can manually set the user\'s status. Creating a status record will also change their status.')->nullable()->onlyOnForms(),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
+                         ->help('You can manually set the user\'s status. Creating a status record will also change their status.')
+                         ->nullable()->onlyOnForms(),
             ]),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
@@ -171,104 +167,73 @@ class User extends Resource
                                 return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
                         })->asSmall(),
-                    ])
-                        ->onlyOnIndex()
-                        ->showOnPreview(),
-                    Stack::make(
-                        Str::singular(Str::title(setting('localization_specialties', 'Specialty'))),
-                        [
-                            Line::make('Specialty', function ($model) {
-                                return $model->specialty->name ?? null;
-                            })->asSubTitle(),
-                            Line::make('Last Assignment Date', function ($model) {
-                                return optional($model->assignment_records()->latest()->first()?->created_at, function ($date) {
-                                    return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
-                                });
-                            })->asSmall(),
-                        ]
-                    )
-                        ->onlyOnIndex()
-                        ->showOnPreview(),
-                    Stack::make(
-                        Str::singular(Str::title(setting('localization_positions', 'Position'))),
-                        [
-                            Line::make('Position', function ($model) {
-                                return $model->position->name ?? null;
-                            })->asSubTitle(),
-                            Line::make('Last Assignment Date', function ($model) {
-                                return optional($model->assignment_records()->latest()->first()?->created_at, function ($date) {
-                                    return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
-                                });
-                            })->asSmall(),
-                        ]
-                    )
-                        ->onlyOnIndex()
-                        ->showOnPreview(),
+                    ])->onlyOnIndex()->showOnPreview(),
+                    Stack::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), [
+                        Line::make('Specialty', function ($model) {
+                            return $model->specialty->name ?? null;
+                        })->asSubTitle(),
+                        Line::make('Last Assignment Date', function ($model) {
+                            return optional($model->assignment_records()->latest()
+                                                  ->first()?->created_at, function ($date) {
+                                                      return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                                                  });
+                        })->asSmall(),
+                    ])->onlyOnIndex()->showOnPreview(),
+                    Stack::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), [
+                        Line::make('Position', function ($model) {
+                            return $model->position->name ?? null;
+                        })->asSubTitle(),
+                        Line::make('Last Assignment Date', function ($model) {
+                            return optional($model->assignment_records()->latest()
+                                                  ->first()?->created_at, function ($date) {
+                                                      return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                                                  });
+                        })->asSmall(),
+                    ])->onlyOnIndex()->showOnPreview(),
                     Stack::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), [
                         Line::make('Unit', function ($model) {
                             return $model->unit->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment_records()->latest()->first()?->created_at, function ($date) {
-                                return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
-                            });
+                            return optional($model->assignment_records()->latest()
+                                                  ->first()?->created_at, function ($date) {
+                                                      return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                                                  });
                         })->asSmall(),
-                    ])
-                        ->onlyOnIndex()
-                        ->showOnPreview(),
-                    DateTime::make('Last Seen At')
-                        ->displayUsing(function ($lastSeenAt) {
-                            return optional($lastSeenAt, function () use ($lastSeenAt) {
-                                return $lastSeenAt->longRelativeToNowDiffForHumans();
-                            });
-                        })
-                        ->onlyOnDetail(),
+                    ])->onlyOnIndex()->showOnPreview(),
+                    DateTime::make('Last Seen At')->displayUsing(function ($lastSeenAt) {
+                        return optional($lastSeenAt, function () use ($lastSeenAt) {
+                            return $lastSeenAt->longRelativeToNowDiffForHumans();
+                        });
+                    })->onlyOnDetail(),
                     DateTime::make('Created At')->onlyOnDetail(),
                     DateTime::make('Updated At')->onlyOnDetail(),
                 ]),
                 Tab::make('Assignment', [
-                    Text::make(
-                        Str::singular(Str::title(setting('localization_positions', 'Position'))),
-                        function ($model) {
-                            return $model->position->name ?? null;
-                        }
-                    )->onlyOnDetail(),
-                    Text::make(
-                        Str::singular(Str::title(setting('localization_specialties', 'Specialty'))),
-                        function ($model) {
-                            return $model->specialty->name ?? null;
-                        }
-                    )->onlyOnDetail(),
-                    Text::make(
-                        Str::singular(Str::title(setting('localization_units', 'Unit'))),
-                        function ($model) {
-                            return $model->unit->name ?? null;
-                        }
-                    )->onlyOnDetail(),
+                    Text::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), function ($model) {
+                        return $model->position->name ?? null;
+                    })->onlyOnDetail(),
+                    Text::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), function ($model) {
+                        return $model->specialty->name ?? null;
+                    })->onlyOnDetail(),
+                    Text::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), function ($model) {
+                        return $model->unit->name ?? null;
+                    })->onlyOnDetail(),
                     DateTime::make('Last Assignment Change Date', function ($model) {
                         return $model->assignment_records()->latest()->first()->created_at ?? null;
                     })->onlyOnDetail(),
                     Text::make('Time In Assignment', function ($model) {
-                        return $model->time_in_assignment
-                            ? CarbonInterval::make($model->time_in_assignment)->forHumans()
-                            : null;
+                        return $model->time_in_assignment ? CarbonInterval::make($model->time_in_assignment)
+                                                                          ->forHumans() : null;
                     })->onlyOnDetail(),
                 ]),
                 Tab::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
-                    Text::make(
-                        Str::singular(Str::title(setting('localization_ranks', 'Rank'))),
-                        function ($model) {
-                            return $model->rank->name ?? null;
-                        }
-                    )->onlyOnDetail(),
-                    DateTime::make(
-                        'Last '.
-                            Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
-                            ' Change Date',
-                        function ($model) {
-                            return $model->rank_records()->latest()->first()->created_at ?? null;
-                        }
-                    )->onlyOnDetail(),
+                    Text::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), function ($model) {
+                        return $model->rank->name ?? null;
+                    })->onlyOnDetail(),
+                    DateTime::make('Last '.Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Change Date', function ($model) {
+                        return $model->rank_records()->latest()->first()->created_at ?? null;
+                    })->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {
                         return $model->time_in_grade ? CarbonInterval::make($model->time_in_grade)->forHumans() : null;
                     })->onlyOnDetail(),
@@ -277,49 +242,31 @@ class User extends Resource
             ])->showTitle(true),
             Tabs::make('Records', [
                 HasMany::make('Assignment Records', 'assignment_records', AssignmentRecords::class),
-                HasMany::make(
-                    Str::singular(Str::title(setting('localization_awards', 'Award'))).' Records',
-                    'award_records',
-                    AwardRecords::class
-                ),
+                HasMany::make(Str::singular(Str::title(setting('localization_awards', 'Award'))).' Records', 'award_records', AwardRecords::class),
                 HasMany::make('Combat Records', 'combat_records', CombatRecords::class),
-                HasMany::make(
-                    Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records',
-                    'rank_records',
-                    RankRecords::class
-                ),
+                HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records', 'rank_records', RankRecords::class),
                 HasMany::make('Service Records', 'service_records', ServiceRecords::class),
-                MorphToMany::make(
-                    Str::singular(Str::title(setting('localization_statuses', 'Status'))).' Records',
-                    'statuses',
-                    Status::class
-                )->fields(function () {
-                    return [
-                        Textarea::make('Text'),
-                        Text::make('Text', function ($model) {
-                            return $model->text;
-                        }),
-                        DateTime::make('Created At')
-                            ->sortable()
-                            ->onlyOnIndex(),
-                    ];
-                }),
+                MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))).' Records', 'statuses', Status::class)
+                           ->fields(function () {
+                               return [
+                                   Textarea::make('Text'),
+                                   Text::make('Text', function ($model) {
+                                       return $model->text;
+                                   }),
+                                   DateTime::make('Created At')->sortable()->onlyOnIndex(),
+                               ];
+                           }),
                 HasMany::make('Submission Records', 'submissions', Submission::class),
-                HasMany::make(
-                    Str::singular(
-                        Str::title(setting('localization_qualifications', 'Qualification'))
-                    ).' Records',
-                    'qualification_records',
-                    QualificationRecords::class
-                ),
+                HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).' Records', 'qualification_records', QualificationRecords::class),
             ])->showTitle(true),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow(),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')->onlyOnDetail(),
             ]),
-            Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])->showTitle(
-                true
-            ),
+            Tabs::make('Permissions', [
+                MorphedByMany::make('Roles'),
+                MorphedByMany::make('Permissions'),
+            ])->showTitle(true),
         ];
     }
 
@@ -331,7 +278,11 @@ class User extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [new TotalUsers(), new NewUsers(), new UsersOnline()];
+        return [
+            new TotalUsers(),
+            new NewUsers(),
+            new UsersOnline(),
+        ];
     }
 
     /**
@@ -364,6 +315,8 @@ class User extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export Users')->nameable()];
+        return [
+            ExportAsCsv::make('Export Users')->nameable(),
+        ];
     }
 }

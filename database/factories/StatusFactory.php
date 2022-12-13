@@ -18,7 +18,7 @@ class StatusFactory extends Factory
 
         return [
             'name' => $this->faker->word,
-            'color' => $this->faker->randomElement($colors)
+            'color' => $this->faker->randomElement($colors),
         ];
     }
 }

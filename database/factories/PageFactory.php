@@ -16,8 +16,7 @@ class PageFactory extends Factory
      */
     public function definition()
     {
-        return [
-            //
+        return [//
         ];
     }
 }

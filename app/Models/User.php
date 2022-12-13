@@ -63,19 +63,33 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
-    protected $hidden = ['password', 'remember_token', 'social_token', 'social_refresh_token'];
+    protected $hidden = [
+        'password',
+        'remember_token',
+        'social_token',
+        'social_refresh_token',
+    ];
 
     /**
      * @var string[]
      */
-    protected $with = ['position', 'specialty', 'rank', 'status', 'unit'];
+    protected $with = [
+        'position',
+        'specialty',
+        'rank',
+        'status',
+        'unit',
+    ];
 
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = ['online', 'url'];
+    protected $appends = [
+        'online',
+        'url',
+    ];
 
     /**
      * The attributes that should be cast.
@@ -104,9 +118,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getTimeInAssignmentAttribute()
     {
-        return $this->assignment_records()->count()
-            ? Carbon::now()->diff($this->assignment_records()->latest()->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
-            : null;
+        return $this->assignment_records()->count() ? Carbon::now()->diff($this->assignment_records()->latest()
+                                                                               ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3) : null;
     }
 
     /**
@@ -130,12 +143,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getUrlAttribute()
     {
-        return route('nova.pages.detail',
-            [
-                'resource' => \App\Nova\User::uriKey(),
-                'resourceId' => $this->id,
-            ]
-        );
+        return route('nova.pages.detail', [
+            'resource' => \App\Nova\User::uriKey(),
+            'resourceId' => $this->id,
+        ]);
     }
 
     /**
@@ -143,9 +154,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getTimeInGradeAttribute()
     {
-        return $this->rank_records->count()
-            ? Carbon::now()->diff($this->rank_records()->latest()->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
-            : null;
+        return $this->rank_records->count() ? Carbon::now()->diff($this->rank_records()->latest()
+                                                                       ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3) : null;
     }
 
     /**
@@ -185,9 +195,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function qualifications()
     {
-        return $this->belongsToMany(Qualification::class, 'records_qualifications')
-            ->withPivot(['text'])
-            ->as('record');
+        return $this->belongsToMany(Qualification::class, 'records_qualifications')->withPivot(['text'])->as('record');
     }
 
     /**
@@ -211,10 +219,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function ranks()
     {
-        return $this->belongsToMany(Rank::class, 'records_ranks')
-            ->withTimestamps()
-            ->withPivot(['text', 'type'])
-            ->as('record');
+        return $this->belongsToMany(Rank::class, 'records_ranks')->withTimestamps()->withPivot([
+            'text',
+            'type',
+        ])->as('record');
     }
 
     /**

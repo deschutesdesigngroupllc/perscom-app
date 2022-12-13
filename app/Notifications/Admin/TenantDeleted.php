@@ -38,7 +38,10 @@ class TenantDeleted extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', NovaChannel::class];
+        return [
+            'mail',
+            NovaChannel::class,
+        ];
     }
 
     /**
@@ -59,18 +62,10 @@ class TenantDeleted extends Notification implements ShouldQueue
      */
     public function toNova()
     {
-        return (new NovaNotification())
-            ->message('A tenant has been deleted.')
-            ->action(
-                'View Tenant',
-                URL::remote(
-                    route('nova.pages.detail', [
-                        'resource' => 'tenants',
-                        'resourceId' => $this->tenant->getTenantKey(),
-                    ])
-                )
-            )
-            ->icon('user-remove')
-            ->type('danger');
+        return (new NovaNotification())->message('A tenant has been deleted.')
+                                       ->action('View Tenant', URL::remote(route('nova.pages.detail', [
+                                           'resource' => 'tenants',
+                                           'resourceId' => $this->tenant->getTenantKey(),
+                                       ])))->icon('user-remove')->type('danger');
     }
 }

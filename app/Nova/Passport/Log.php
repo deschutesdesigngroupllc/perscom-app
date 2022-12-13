@@ -73,28 +73,22 @@ class Log extends Resource
             Heading::make('Request'),
             Badge::make('Method', function (Activity $log) {
                 return $log->properties->get('method') ?? 'No Method Logged';
-            })
-                ->map([
-                    'No Method Logged' => 'info',
-                    Request::METHOD_HEAD => 'info',
-                    Request::METHOD_DELETE => 'danger',
-                    Request::METHOD_GET => 'info',
-                    Request::METHOD_OPTIONS => 'info',
-                    Request::METHOD_PATCH => 'info',
-                    Request::METHOD_POST => 'success',
-                    Request::METHOD_PUT => 'warning',
-                ])
-                ->sortable(),
+            })->map([
+                'No Method Logged' => 'info',
+                Request::METHOD_HEAD => 'info',
+                Request::METHOD_DELETE => 'danger',
+                Request::METHOD_GET => 'info',
+                Request::METHOD_OPTIONS => 'info',
+                Request::METHOD_PATCH => 'info',
+                Request::METHOD_POST => 'success',
+                Request::METHOD_PUT => 'warning',
+            ])->sortable(),
             Text::make('Endpoint', function (Activity $log) {
                 return $log->properties->get('endpoint') ?? 'No Endpoint Logged';
-            })
-                ->copyable()
-                ->sortable(),
+            })->copyable()->sortable(),
             Code::make('Headers', function (Activity $log) {
                 return $log->properties->get('request_headers');
-            })
-                ->language('vim')
-                ->onlyOnDetail(),
+            })->language('vim')->onlyOnDetail(),
             Heading::make('Client'),
             MorphTo::make('Performed By', 'causer', User::class),
             Text::make('IP Address', function (Activity $log) {
@@ -114,14 +108,10 @@ class Log extends Resource
             MorphTo::make('Subject')->onlyOnDetail(),
             Code::make('Content', function () {
                 return $this->description;
-            })
-                ->json()
-                ->onlyOnDetail(),
+            })->json()->onlyOnDetail(),
             Code::make('Headers', function (Activity $log) {
                 return $log->properties->get('response_headers');
-            })
-                ->language('vim')
-                ->onlyOnDetail(),
+            })->language('vim')->onlyOnDetail(),
             Heading::make('Meta'),
             DateTime::make('Requested At', 'created_at')->sortable(),
         ];

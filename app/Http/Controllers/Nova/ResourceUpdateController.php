@@ -18,7 +18,10 @@ class ResourceUpdateController extends \Laravel\Nova\Http\Controllers\ResourceUp
      */
     public function __invoke(UpdateResourceRequest $request)
     {
-        if (\in_array(\get_class($request->findModel()), [Token::class, Client::class], true)) {
+        if (\in_array(\get_class($request->findModel()), [
+            Token::class,
+            Client::class,
+        ], true)) {
             config()->set('nova.actions.resource', null);
         }
 

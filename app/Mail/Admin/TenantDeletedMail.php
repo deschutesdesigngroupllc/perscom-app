@@ -28,15 +28,13 @@ class TenantDeletedMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.admin.tenant.deleted')
-            ->subject('Tenant Deleted')
-            ->with([
-                'organization' => $this->tenant->name,
-                'email' => $this->tenant->email,
-                'domain' => $this->tenant->url,
-                'url' => route('nova.pages.index', [
-                    'resource' => \App\Nova\Tenant::uriKey(),
-                ]),
-            ]);
+        return $this->markdown('emails.admin.tenant.deleted')->subject('Tenant Deleted')->with([
+            'organization' => $this->tenant->name,
+            'email' => $this->tenant->email,
+            'domain' => $this->tenant->url,
+            'url' => route('nova.pages.index', [
+                'resource' => \App\Nova\Tenant::uriKey(),
+            ]),
+        ]);
     }
 }

@@ -22,9 +22,24 @@ class CreateNewTenant
     public function create(array $input)
     {
         Validator::make($input, [
-            'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
-            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],
-            'website' => ['nullable', 'string', 'max:255'],
+            'organization' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique(Tenant::class, 'name'),
+            ],
+            'email' => [
+                'required',
+                'string',
+                'email',
+                'max:255',
+                Rule::unique(Tenant::class, 'email'),
+            ],
+            'website' => [
+                'nullable',
+                'string',
+                'max:255',
+            ],
             'domain' => [
                 'required',
                 'string',

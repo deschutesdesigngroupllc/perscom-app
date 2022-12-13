@@ -40,7 +40,10 @@ class PersonalAccessToken extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * Get the text for the create resource button.
@@ -87,9 +90,7 @@ class PersonalAccessToken extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        $personalAccessClient = app()
-            ->make(ClientRepository::class)
-            ->personalAccessClient();
+        $personalAccessClient = app()->make(ClientRepository::class)->personalAccessClient();
 
         return $query->where('client_id', '=', $personalAccessClient?->id);
     }
@@ -108,43 +109,21 @@ class PersonalAccessToken extends Resource
             Text::make('Name')->sortable(),
             Text::make('API Key', function () {
                 return Crypt::decryptString($this->token);
-            })
-                ->displayUsing(function ($value) {
-                    return Str::limit($value, 50);
-                })
-                ->onlyOnIndex()
-                ->readonly()
-                ->copyable(),
+            })->displayUsing(function ($value) {
+                return Str::limit($value, 50);
+            })->onlyOnIndex()->readonly()->copyable(),
             Code::make('API Key', function () {
                 return Crypt::decryptString($this->token);
-            })
-                ->readonly()
-                ->language('shell')
-                ->help(
-                    'API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'
-                ),
-            MultiSelect::make('Scopes')
-                ->options(
-                    Passport::scopes()
-                        ->mapWithKeys(function ($scope) {
-                            return [$scope->id => $scope->id];
-                        })
-                        ->sort()
-                )
-                ->hideFromIndex(),
-            Boolean::make('Revoked')
-                ->default(false)
-                ->hideWhenCreating()
-                ->showOnUpdating()
-                ->sortable(),
+            })->readonly()->language('shell')
+                ->help('API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'),
+            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
+                return [$scope->id => $scope->id];
+            })->sort())->hideFromIndex(),
+            Boolean::make('Revoked')->default(false)->hideWhenCreating()->showOnUpdating()->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Created At')->sortable()->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            DateTime::make('Expires At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Expires At')->sortable()->exceptOnForms(),
         ];
     }
 

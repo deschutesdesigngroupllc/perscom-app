@@ -10,7 +10,10 @@ class DiscordSocialiteProvider extends AbstractProvider
     /**
      * @var string[]
      */
-    protected $scopes = ['email', 'identify'];
+    protected $scopes = [
+        'email',
+        'identify',
+    ];
 
     /**
      * @var string
@@ -89,10 +92,7 @@ class DiscordSocialiteProvider extends AbstractProvider
         }
 
         $isGif = preg_match('/a_.+/m', $user['avatar']) === 1;
-        $extension =
-            $this->getConfig('allow_gif_avatars', true) && $isGif
-                ? 'gif'
-                : $this->getConfig('avatar_default_extension', 'jpg');
+        $extension = $this->getConfig('allow_gif_avatars', true) && $isGif ? 'gif' : $this->getConfig('avatar_default_extension', 'jpg');
 
         return sprintf('https://cdn.discordapp.com/avatars/%s/%s.%s', $user['id'], $user['avatar'], $extension);
     }

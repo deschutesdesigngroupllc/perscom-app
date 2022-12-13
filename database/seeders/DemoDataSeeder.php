@@ -48,67 +48,44 @@ class DemoDataSeeder extends Seeder
 
         Unit::all()->each(static function ($unit) {
             User::factory()->count(5)->create()->each(static function (User $user) use ($unit) {
-            	$user->statuses()->attach(Status::all()->random());
+                $user->statuses()->attach(Status::all()->random());
 
-                Assignment::factory()
-                    ->for($user)
-                    ->for($unit)
-                    ->state(new Sequence(function ($sequence) use ($user) {
-                        return [
-                            'position_id' => \App\Models\Position::all()->random(),
-                            'specialty_id' => \App\Models\Specialty::all()->random(),
-                            'author_id' => $user,
-                        ];
-                    }))
-                    ->create();
-
-                Rank::factory()
-                    ->for($user)
-                    ->state(new Sequence(function ($sequence) use ($user) {
-                        return [
-                            'rank_id' => \App\Models\Rank::all()->random(),
-                            'author_id' => $user,
-                        ];
-                    }))
-                    ->create();
-
-                Award::factory()
-                    ->count(5)
-                    ->for($user)
-                    ->state(new Sequence(function ($sequence) use ($user) {
-                        return [
-                            'award_id' => \App\Models\Award::all()->random(),
-                            'author_id' => $user,
-                        ];
-                    }))
-                    ->create();
-
-                Qualification::factory()
-                    ->count(5)
-                    ->for($user)
-                    ->state(new Sequence(function ($sequence) use ($user) {
-                        return [
-                            'qualification_id' => \App\Models\Qualification::all()->random(),
-                            'author_id' => $user,
-                        ];
-                    }))
-                    ->create();
-
-                Service::factory()
-                    ->count(5)
-                    ->for($user)
-                    ->state([
+                Assignment::factory()->for($user)->for($unit)->state(new Sequence(function ($sequence) use ($user) {
+                    return [
+                        'position_id' => \App\Models\Position::all()->random(),
+                        'specialty_id' => \App\Models\Specialty::all()->random(),
                         'author_id' => $user,
-                    ])
-                    ->create();
+                    ];
+                }))->create();
 
-                Combat::factory()
-                    ->count(5)
-                    ->for($user)
-                    ->state([
+                Rank::factory()->for($user)->state(new Sequence(function ($sequence) use ($user) {
+                    return [
+                        'rank_id' => \App\Models\Rank::all()->random(),
                         'author_id' => $user,
-                    ])
-                    ->create();
+                    ];
+                }))->create();
+
+                Award::factory()->count(5)->for($user)->state(new Sequence(function ($sequence) use ($user) {
+                    return [
+                        'award_id' => \App\Models\Award::all()->random(),
+                        'author_id' => $user,
+                    ];
+                }))->create();
+
+                Qualification::factory()->count(5)->for($user)->state(new Sequence(function ($sequence) use ($user) {
+                    return [
+                        'qualification_id' => \App\Models\Qualification::all()->random(),
+                        'author_id' => $user,
+                    ];
+                }))->create();
+
+                Service::factory()->count(5)->for($user)->state([
+                    'author_id' => $user,
+                ])->create();
+
+                Combat::factory()->count(5)->for($user)->state([
+                    'author_id' => $user,
+                ])->create();
             });
         });
     }

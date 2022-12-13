@@ -20,31 +20,18 @@ class AuthorizationController extends \Laravel\Passport\Http\Controllers\Authori
      * @param  \Laravel\Passport\TokenRepository  $tokens
      * @return \Illuminate\Http\Response
      */
-    public function authorize(
-        ServerRequestInterface $psrRequest,
-        Request $request,
-        ClientRepository $clients,
-        TokenRepository $tokens
-    ) {
+    public function authorize(ServerRequestInterface $psrRequest, Request $request, ClientRepository $clients, TokenRepository $tokens)
+    {
         $authRequest = $this->withErrorHandling(function () use ($psrRequest) {
             return $this->server->validateAuthorizationRequest($psrRequest);
         });
 
         $scopes = $this->parseScopes($authRequest);
 
-        $token = $tokens->findValidToken(
-            $user = $request->user(),
-            $client = $clients->find($authRequest->getClient()->getIdentifier())
-        );
+        $token = $tokens->findValidToken($user = $request->user(), $client = $clients->find($authRequest->getClient()
+                                                                                                        ->getIdentifier()));
 
-        if (
-            ($token &&
-                $token->scopes ===
-                    collect($scopes)
-                        ->pluck('id')
-                        ->all()) ||
-            $client->skipsAuthorization()
-        ) {
+        if (($token && $token->scopes === collect($scopes)->pluck('id')->all()) || $client->skipsAuthorization()) {
             return $this->approveRequest($authRequest, $user);
         }
 

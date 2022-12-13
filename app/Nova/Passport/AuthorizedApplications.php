@@ -37,7 +37,10 @@ class AuthorizedApplications extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @param  NovaRequest  $request
@@ -46,9 +49,7 @@ class AuthorizedApplications extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        $personalAccessClient = app()
-            ->make(ClientRepository::class)
-            ->personalAccessClient();
+        $personalAccessClient = app()->make(ClientRepository::class)->personalAccessClient();
 
         return $query->where('client_id', '<>', $personalAccessClient?->id);
     }
@@ -62,30 +63,15 @@ class AuthorizedApplications extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make('Application', 'client', Client::class)
-                ->sortable()
-                ->readonly(),
-            MultiSelect::make('Scopes')
-                ->options(
-                    Passport::scopes()
-                        ->mapWithKeys(function ($scope) {
-                            return [$scope->id => $scope->id];
-                        })
-                        ->sort()
-                )
-                ->hideFromIndex()
-                ->readonly(),
-            Boolean::make('Revoked')
-                ->default(false)
-                ->sortable(),
+            BelongsTo::make('Application', 'client', Client::class)->sortable()->readonly(),
+            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
+                return [$scope->id => $scope->id];
+            })->sort())->hideFromIndex()->readonly(),
+            Boolean::make('Revoked')->default(false)->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Created At')->sortable()->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            DateTime::make('Expires At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Expires At')->sortable()->exceptOnForms(),
         ];
     }
 

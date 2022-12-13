@@ -85,20 +85,13 @@ class Submission extends Resource
     {
         return [
             ID::make()->sortable(),
-            Hidden::make('User', 'user_id')
-                ->default(function (NovaRequest $request) {
-                    return $request->user()->id;
-                })
-                ->showOnDetail(),
+            Hidden::make('User', 'user_id')->default(function (NovaRequest $request) {
+                return $request->user()->id;
+            })->showOnDetail(),
             BelongsTo::make('Form')->showOnPreview(),
-            BelongsTo::make('User')
-                ->showOnPreview()
-                ->default(function (NovaRequest $request) {
-                    return $request->user()->id;
-                })
-                ->onlyOnForms()
-                ->nullable()
-                ->help('The user will be set to guest if left blank.'),
+            BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
+                return $request->user()->id;
+            })->onlyOnForms()->nullable()->help('The user will be set to guest if left blank.'),
             Text::make('User', function () {
                 return optional($this->user, function ($user) {
                     return $user->name;
@@ -106,25 +99,16 @@ class Submission extends Resource
             }),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
-            })
-                ->types([
-                    'none' => 'bg-gray-100 text-gray-600',
-                    $this->status?->name => $this->status?->color,
-                ])
-                ->label(function () {
-                    return $this->status->name ?? 'No Current Status';
-                }),
-            Code::make('Data')
-                ->hideFromIndex()
-                ->rules('json')
-                ->json(),
+            })->types([
+                'none' => 'bg-gray-100 text-gray-600',
+                $this->status?->name => $this->status?->color,
+            ])->label(function () {
+                return $this->status->name ?? 'No Current Status';
+            }),
+            Code::make('Data')->hideFromIndex()->rules('json')->json(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->exceptOnForms()
-                ->sortable(),
-            DateTime::make('Updated At')
-                ->exceptOnForms()
-                ->sortable(),
+            DateTime::make('Created At')->exceptOnForms()->sortable(),
+            DateTime::make('Updated At')->exceptOnForms()->sortable(),
             Tabs::make('Relations', [
                 Tab::make('Status History', [
                     MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
@@ -133,9 +117,7 @@ class Submission extends Resource
                             Text::make('Text', function ($model) {
                                 return $model->text;
                             }),
-                            DateTime::make('Updated At')
-                                ->sortable()
-                                ->onlyOnIndex(),
+                            DateTime::make('Updated At')->sortable()->onlyOnIndex(),
                         ];
                     }),
                 ]),

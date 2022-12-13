@@ -78,8 +78,6 @@ class TotalRankRecords extends Value
      */
     public function name()
     {
-        return 'Total '.
-            Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
-            ' Records';
+        return 'Total '.Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records';
     }
 }

@@ -22,12 +22,21 @@ class Assignment extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'position_id', 'unit_id', 'specialty_id'];
+    protected $fillable = [
+        'user_id',
+        'position_id',
+        'unit_id',
+        'specialty_id',
+    ];
 
     /**
      * @var string[]
      */
-    protected $with = ['position', 'specialty', 'unit'];
+    protected $with = [
+        'position',
+        'specialty',
+        'unit',
+    ];
 
     /**
      * The table associated with the model.

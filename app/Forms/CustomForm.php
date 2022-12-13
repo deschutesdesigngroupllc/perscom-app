@@ -51,11 +51,7 @@ class CustomForm extends Laraform
                     Arr::set($definition, 'rules', $rules);
                 }
 
-                if (
-                    $field->type === Field::FIELD_SELECT ||
-                    $field->type === Field::FIELD_RADIOGROUP ||
-                    $field->type === Field::FIELD_MULTISELECT
-                ) {
+                if ($field->type === Field::FIELD_SELECT || $field->type === Field::FIELD_RADIOGROUP || $field->type === Field::FIELD_MULTISELECT) {
                     Arr::set($definition, 'items', $field->options);
                 }
 

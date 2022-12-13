@@ -51,7 +51,10 @@ class Form extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @var string[]
@@ -68,47 +71,31 @@ class Form extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Slug::make('Slug')
-                ->from('Name')
-                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)])
-                ->help('The slug will be used in the URL to access the form.')
-                ->canSee(function (NovaRequest $request) {
-                    return Gate::check('update', $request->findModel());
-                }),
-            Tags::make('Tags')
-                ->withLinkToTagResource()
-                ->canSee(function (NovaRequest $request) {
-                    return Gate::check('update', $request->findModel());
-                }),
-            URL::make('URL')
-                ->displayUsing(function ($url) {
-                    return $url;
-                })
-                ->exceptOnForms()
-                ->copyable()
-                ->readonly()
-                ->canSee(function (NovaRequest $request) {
-                    return Gate::check('update', $request->findModel());
-                }),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            Slug::make('Slug')->from('Name')->rules([
+                'required',
+                Rule::unique('forms', 'slug')->ignore($this->id),
+            ])->help('The slug will be used in the URL to access the form.')->canSee(function (NovaRequest $request) {
+                return Gate::check('update', $request->findModel());
+            }),
+            Tags::make('Tags')->withLinkToTagResource()->canSee(function (NovaRequest $request) {
+                return Gate::check('update', $request->findModel());
+            }),
+            URL::make('URL')->displayUsing(function ($url) {
+                return $url;
+            })->exceptOnForms()->copyable()->readonly()->canSee(function (NovaRequest $request) {
+                return Gate::check('update', $request->findModel());
+            }),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
             Heading::make('Access')->hideFromIndex(),
-            Boolean::make('Public', 'is_public')
-                ->help('Check to make this form available to the public.')
-                ->canSee(function (NovaRequest $request) {
-                    return Gate::check('update', $request->findModel());
-                }),
+            Boolean::make('Public', 'is_public')->help('Check to make this form available to the public.')
+                   ->canSee(function (NovaRequest $request) {
+                       return Gate::check('update', $request->findModel());
+                   }),
             Heading::make('Submission')->hideFromIndex(),
-            Textarea::make('Success Message')
-                ->help('The message displayed when the form is successfully submitted.')
-                ->alwaysShow(),
+            Textarea::make('Success Message')->help('The message displayed when the form is successfully submitted.')
+                    ->alwaysShow(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
@@ -116,9 +103,7 @@ class Form extends Resource
                 Tab::make('Fields', [
                     MorphToMany::make('Fields', 'fields', Field::class)->fields(function ($request, $relatedModel) {
                         return [
-                            Number::make('Order')
-                                ->sortable()
-                                ->rules('required'),
+                            Number::make('Order')->sortable()->rules('required'),
                         ];
                     }),
                 ]),
@@ -179,14 +164,11 @@ class Form extends Resource
     public function actions(NovaRequest $request)
     {
         return [
-            (new OpenForm())
-                ->showInline()
-                ->canRun(function (NovaRequest $request) {
-                    return Gate::check('view', $request->findModel());
-                })
-                ->canSee(function (NovaRequest $request) {
-                    return Gate::check('view', $request->findModel());
-                }),
+            (new OpenForm())->showInline()->canRun(function (NovaRequest $request) {
+                return Gate::check('view', $request->findModel());
+            })->canSee(function (NovaRequest $request) {
+                return Gate::check('view', $request->findModel());
+            }),
         ];
     }
 }

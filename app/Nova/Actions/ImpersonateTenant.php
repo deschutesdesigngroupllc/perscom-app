@@ -55,20 +55,15 @@ class ImpersonateTenant extends Action
         if ($request->resourceId) {
             $tenant = Tenant::findOrFail($request->resourceId);
             $options = $tenant->run(function ($tenant) {
-                return User::all()
-                    ->mapWithKeys(function ($user) {
-                        return [$user->id => $user->name];
-                    })
-                    ->sort()
-                    ->toArray();
+                return User::all()->mapWithKeys(function ($user) {
+                    return [$user->id => $user->name];
+                })->sort()->toArray();
             });
         }
 
         return [
-            Select::make('User')
-                ->options($options ?? [])
-                ->rules('required')
-                ->help('Select the user you would like to sign in as.'),
+            Select::make('User')->options($options ?? [])->rules('required')
+                  ->help('Select the user you would like to sign in as.'),
         ];
     }
 }

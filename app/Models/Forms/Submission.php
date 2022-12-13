@@ -19,14 +19,21 @@ class Submission extends Model
      *
      * @var array
      */
-    protected $with = ['form', 'user'];
+    protected $with = [
+        'form',
+        'user',
+    ];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'form_id', 'data'];
+    protected $fillable = [
+        'user_id',
+        'form_id',
+        'data',
+    ];
 
     /**
      * The attributes that should be cast.

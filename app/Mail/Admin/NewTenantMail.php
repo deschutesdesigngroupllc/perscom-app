@@ -28,16 +28,14 @@ class NewTenantMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.admin.tenant.new')
-            ->subject('New Tenant Created')
-            ->with([
-                'organization' => $this->tenant->name,
-                'email' => $this->tenant->email,
-                'domain' => $this->tenant->url,
-                'url' => route('nova.pages.detail', [
-                    'resource' => 'tenants',
-                    'resourceId' => $this->tenant->getTenantKey(),
-                ]),
-            ]);
+        return $this->markdown('emails.admin.tenant.new')->subject('New Tenant Created')->with([
+            'organization' => $this->tenant->name,
+            'email' => $this->tenant->email,
+            'domain' => $this->tenant->url,
+            'url' => route('nova.pages.detail', [
+                'resource' => 'tenants',
+                'resourceId' => $this->tenant->getTenantKey(),
+            ]),
+        ]);
     }
 }

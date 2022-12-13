@@ -21,9 +21,7 @@ class TotalRevenue extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Receipt::class, 'amount', 'paid_at')
-            ->currency()
-            ->format('0,0.00');
+        return $this->count($request, Receipt::class, 'amount', 'paid_at')->currency()->format('0,0.00');
     }
 
     /**

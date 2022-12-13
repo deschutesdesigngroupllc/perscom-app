@@ -35,7 +35,10 @@ class Document extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @var string[]
@@ -72,29 +75,17 @@ class Document extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
             Tags::make('Tags')->withLinkToTagResource(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
-            Trix::make('Content')
-                ->hideFromIndex()
-                ->help(
-                    'Use the document tags below to dynamically inject content into your document when the document is attached to certain records.'
-                )
-                ->rules(['required'])
-                ->showOnPreview(),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
+            Trix::make('Content')->hideFromIndex()
+                ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
+                ->rules(['required'])->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
             new Panel('Document Tags', [
-                HtmlField::make('Document Tags')
-                    ->view('fields.html.document-tags')
-                    ->onlyOnForms(),
+                HtmlField::make('Document Tags')->view('fields.html.document-tags')->onlyOnForms(),
             ]),
         ];
     }
