@@ -8,11 +8,11 @@ use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -70,50 +70,52 @@ class Log extends Resource
     {
         return [
             ID::make()->sortable(),
-            Heading::make('Request'),
-            Badge::make('Method', function (Activity $log) {
-                return $log->properties->get('method') ?? 'No Method Logged';
-            })->map([
-                'No Method Logged' => 'info',
-                Request::METHOD_HEAD => 'info',
-                Request::METHOD_DELETE => 'danger',
-                Request::METHOD_GET => 'info',
-                Request::METHOD_OPTIONS => 'info',
-                Request::METHOD_PATCH => 'info',
-                Request::METHOD_POST => 'success',
-                Request::METHOD_PUT => 'warning',
-            ])->sortable(),
-            Text::make('Endpoint', function (Activity $log) {
-                return $log->properties->get('endpoint') ?? 'No Endpoint Logged';
-            })->copyable()->sortable(),
-            Code::make('Headers', function (Activity $log) {
-                return $log->properties->get('request_headers');
-            })->language('vim')->onlyOnDetail(),
-            Heading::make('Client'),
-            MorphTo::make('Performed By', 'causer', User::class),
-            Text::make('IP Address', function (Activity $log) {
-                return $log->properties->get('ip');
-            }),
-            Heading::make('Response'),
-            Text::make('Status', function (Activity $log) {
-                $status = $log->properties->get('status');
-                if ($status) {
-                    $message = Response::$statusTexts[$status];
-
-                    return "$status $message";
-                }
-
-                return 'No Status Logged';
-            }),
-            MorphTo::make('Subject')->onlyOnDetail(),
-            Code::make('Content', function () {
-                return $this->description;
-            })->json()->onlyOnDetail(),
-            Code::make('Headers', function (Activity $log) {
-                return $log->properties->get('response_headers');
-            })->language('vim')->onlyOnDetail(),
-            Heading::make('Meta'),
             DateTime::make('Requested At', 'created_at')->sortable(),
+            new Panel('Client', [
+                MorphTo::make('Performed By', 'causer', User::class),
+                Text::make('IP Address', function (Activity $log) {
+                    return $log->properties->get('ip');
+                }),
+            ]),
+            new Panel('Request', [
+                Badge::make('Method', function (Activity $log) {
+                    return $log->properties->get('method') ?? 'No Method Logged';
+                })->map([
+                    'No Method Logged' => 'info',
+                    Request::METHOD_HEAD => 'info',
+                    Request::METHOD_DELETE => 'danger',
+                    Request::METHOD_GET => 'info',
+                    Request::METHOD_OPTIONS => 'info',
+                    Request::METHOD_PATCH => 'info',
+                    Request::METHOD_POST => 'success',
+                    Request::METHOD_PUT => 'warning',
+                ])->sortable(),
+                Text::make('Endpoint', function (Activity $log) {
+                    return $log->properties->get('endpoint') ?? 'No Endpoint Logged';
+                })->copyable()->sortable(),
+                Code::make('Headers', function (Activity $log) {
+                    return $log->properties->get('request_headers');
+                })->language('vim')->onlyOnDetail(),
+            ]),
+            new Panel('Response', [
+                Text::make('Status', function (Activity $log) {
+                    $status = $log->properties->get('status');
+                    if ($status) {
+                        $message = Response::$statusTexts[$status];
+
+                        return "$status $message";
+                    }
+
+                    return 'No Status Logged';
+                }),
+                MorphTo::make('Subject')->onlyOnDetail(),
+                Code::make('Content', function () {
+                    return $this->description;
+                })->json()->onlyOnDetail(),
+                Code::make('Headers', function (Activity $log) {
+                    return $log->properties->get('response_headers');
+                })->language('vim')->onlyOnDetail(),
+            ]),
         ];
     }
 
