@@ -25,7 +25,7 @@ class RouteServiceProvider extends ServiceProvider
      *
      * @var string|null
      */
-    // protected $namespace = 'App\\Http\\Controllers';
+    protected $namespace = 'App\\Http\\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -44,6 +44,9 @@ class RouteServiceProvider extends ServiceProvider
 
             Route::middleware('web')->domain(config('app.url'))->namespace($this->namespace)
                  ->group(base_path('routes/web.php'));
+
+            Route::prefix('oauth')->as('passport.')->namespace('Laravel\Passport\Http\Controllers')
+                 ->group(base_path('routes/passport.php'));
         });
 
         $this->app['router']->model('loginToken', LoginToken::class, function () {

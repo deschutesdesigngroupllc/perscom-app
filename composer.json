@@ -22,7 +22,7 @@
         "laravel/framework": "^9.0",
         "laravel/horizon": "^5.9",
         "laravel/nova": "^4.10",
-        "laravel/passport": "^10.4",
+        "laravel/passport": "dev-authorize-view-reponse",
         "laravel/socialite": "^5.5",
         "laravel/spark-stripe": "^1.0",
         "laravel/telescope": "^4.9",
@@ -56,6 +56,10 @@
         "spatie/laravel-ignition": "^1.0"
     },
     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/JonErickson/passport"
+        },
         {
             "type": "composer",
             "url": "https://nova.laravel.com"

@@ -1,14 +1,10 @@
 <?php
 
 use App\Http\Controllers\FormController;
-use App\Http\Controllers\Passport\AuthorizationController;
 use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
-use Laravel\Passport\Http\Controllers\ApproveAuthorizationController;
-use Laravel\Passport\Http\Controllers\DenyAuthorizationController;
 use Stancl\Tenancy\Features\UserImpersonation;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
-use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,18 +37,5 @@ Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web
              ->name('auth.social.tenant.redirect');
         Route::get('/login/{loginToken}', [SocialLoginController::class, 'login'])->middleware('feature:social-login')
              ->name('auth.social.tenant.login');
-    });
-
-    // Authenticated Routes
-    Route::group(['middleware' => 'auth'], function () {
-        // Passport
-        Route::group(['prefix' => 'oauth', 'middleware' => PreventAccessFromCentralDomains::class], function () {
-            Route::get('/authorize', [AuthorizationController::class, 'authorize'])
-                 ->name('passport.authorizations.authorize');
-            Route::post('/authorize', [ApproveAuthorizationController::class, 'approve'])
-                 ->name('passport.authorizations.approve');
-            Route::delete('/authorize', [DenyAuthorizationController::class, 'deny'])
-                 ->name('passport.authorizations.deny');
-        });
     });
 });
