@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6d620f43bd2035f741a633ba9b512a72",
+    "content-hash": "7cbd41829ddc44012a4a699b22e0b420",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2866,17 +2866,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.19.4",
+            "version": "4.19.5",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "962deed1c3df3740620be19646c8acd69430e66d"
+                "reference": "1c4f32ab373d93314ae84bd175b644b71c96a28d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-962deed1c3df3740620be19646c8acd69430e66d-zip-804f62.zip",
-                "reference": "962deed1c3df3740620be19646c8acd69430e66d",
-                "shasum": "51ac67d601f0f11213b23a9a8f5df425ae48f122"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-1c4f32ab373d93314ae84bd175b644b71c96a28d-zip-42a3e1.zip",
+                "reference": "1c4f32ab373d93314ae84bd175b644b71c96a28d",
+                "shasum": "853ce862f1e4adb43b3f18b0542512d6dd54f18a"
             },
             "require": {
                 "brick/money": "^0.5.0|^0.6.0|^0.7.0",
@@ -2887,7 +2887,7 @@
                 "laravel/ui": "^3.3|^4.0",
                 "nesbot/carbon": "^2.53.1",
                 "php": "^7.3|^8.0",
-                "rap2hpoutre/fast-excel": "^3.2|^4.1",
+                "rap2hpoutre/fast-excel": "^3.2|^4.1|^5.0",
                 "spatie/once": "^1.1|^2.0|^3.0",
                 "symfony/console": "^5.4|^6.0",
                 "symfony/finder": "^5.4|^6.0",
@@ -2971,9 +2971,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/nova/tree/v4.19.4"
+                "source": "https://github.com/laravel/nova/tree/v4.19.5"
             },
-            "time": "2022-11-29T15:30:53+00:00"
+            "time": "2022-12-14T02:03:19+00:00"
         },
         {
             "name": "laravel/passport",
@@ -5583,6 +5583,63 @@
                 }
             ],
             "time": "2022-10-21T14:26:41+00:00"
+        },
+        {
+            "name": "outl1ne/nova-sortable",
+            "version": "3.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outl1ne/nova-sortable.git",
+                "reference": "6a3e0ea03550df9deed201ddb1be2061414de0dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outl1ne/nova-sortable/zipball/6a3e0ea03550df9deed201ddb1be2061414de0dc",
+                "reference": "6a3e0ea03550df9deed201ddb1be2061414de0dc",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.17.0",
+                "outl1ne/nova-translations-loader": "^5.0",
+                "php": ">=8.0",
+                "spatie/eloquent-sortable": "^3.10.0|^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outl1ne\\NovaSortable\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outl1ne\\NovaSortable\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This Laravel Nova package allows you to reorder models in a Nova resource's index view using drag & drop.",
+            "keywords": [
+                "eloquent-sortable",
+                "laravel",
+                "nova",
+                "optimistdigital",
+                "outl1ne"
+            ],
+            "support": {
+                "issues": "https://github.com/outl1ne/nova-sortable/issues",
+                "source": "https://github.com/outl1ne/nova-sortable/tree/3.3.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/outl1ne",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-10-28T12:41:03+00:00"
         },
         {
             "name": "outl1ne/nova-translations-loader",

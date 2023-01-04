@@ -31,6 +31,7 @@
         "msztorc/laravel-env": "^1.2",
         "novius/laravel-nova-order-nestedset-field": "^4.0",
         "outl1ne/nova-settings": "^5.0",
+        "outl1ne/nova-sortable": "^3.3",
         "perscom/alert-card": "*",
         "perscom/dashboard-quick-actions": "*",
         "perscom/dashboard-title": "*",
