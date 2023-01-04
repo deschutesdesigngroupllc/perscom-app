@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use Perscom\Roster\Http\Controllers\RosterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,8 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function (Request $request) {
-    return [
-        'units' => \App\Models\Unit::query()->with('users')->get(),
-    ];
-});
+Route::get('/', [RosterController::class, 'index']);

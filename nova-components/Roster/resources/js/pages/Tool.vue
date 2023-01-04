@@ -25,21 +25,21 @@
                       </span>
                     </div>
                   </td>
-                  <td class="roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
+                  <td class="roster-w-10/12 sm:roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                     <div class="roster-text-left">
                       <span class="roster-whitespace-nowrap">
                         {{ user.name }}
                       </span>
                     </div>
                   </td>
-                  <td class="roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
+                  <td class="roster-hidden sm:roster-table-cell roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                     <div class="roster-text-left">
                       <span class="roster-whitespace-nowrap" v-if="user.position?.name">
                         {{ user.position.name }}
                       </span>
                     </div>
                   </td>
-                  <td class="roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
+                  <td class="roster-hidden md:roster-table-cell roster-w-3/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                     <div class="roster-text-left">
                       <span class="roster-whitespace-nowrap" v-if="user.specialty?.name">
                         {{ user.specialty.name }}<span v-if="user.specialty?.abbreviation">, {{ user.specialty.abbreviation }}
@@ -54,7 +54,7 @@
                       </span>
                     </div>
                   </td>
-                  <td class="roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
+                  <td class="roster-hidden xl:roster-table-cell roster-w-1/12 roster-px-2 roster-py-2 roster-whitespace-nowrap roster-cursor-pointer dark:roster-bg-gray-800 group-hover:bg-gray-50 dark:group-hover:bg-gray-900">
                     <div class="roster-text-center">
                       <span class="roster-inline-flex roster-items-center roster-whitespace-nowrap min-h-6 roster-px-2 roster-rounded-full roster-uppercase roster-text-xs roster-font-bold roster-bg-green-100 roster-text-green-600 dark:roster-bg-green-500 dark:roster-text-green-900" v-if="user.online">
                         Online
@@ -81,7 +81,6 @@
   </div>
 </template>
 
-
 <script>
 export default {
   data: () => ({
@@ -91,7 +90,7 @@ export default {
   mounted() {
     this.loading = true;
     Nova.request().get('/nova-vendor/roster').then(({ data }) => {
-      this.roster = data.units;
+      this.roster = data;
       this.loading = false;
     });
   },
