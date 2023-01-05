@@ -4,8 +4,8 @@
     <Heading class="roster-mb-6">Roster</Heading>
 
     <div class="roster-flex-col roster-space-y-6">
-      <Card v-for="unit in roster" :key="unit.id">
-        <LoadingView :loading="loading">
+      <Card v-for="unit in roster.value" :key="unit.id">
+        <LoadingView :loading="loading.value">
             <div class="roster-overflow-hidden roster-shadow roster-rounded-md">
                 <div class="dark:roster-bg-gray-700 roster-bg-gray-50 roster-p-4 roster-border-b dark:roster-border-gray-700 roster-flex roster-justify-center roster-font-bold">
                     {{ unit.name }}
@@ -63,23 +63,21 @@
   </div>
 </template>
 
-<script>
-export default {
-  data: () => ({
-    loading: true,
-    roster: []
-  }),
-  mounted() {
-    this.loading = true;
+<script setup>
+import {onMounted, reactive} from 'vue';
+
+const loading = reactive({});
+const roster = reactive({});
+
+onMounted(() => {
+    loading.value = true;
     Nova.request().get('/nova-vendor/roster').then(({ data }) => {
-      this.roster = data;
-      this.loading = false;
+        roster.value = data;
+        loading.value = false;
     });
-  },
-  methods: {
-    goToProfile(url) {
-      Nova.visit(url);
-    }
-  }
+})
+
+function goToProfile(url) {
+    Nova.visit(url)
 }
 </script>
