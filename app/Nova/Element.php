@@ -2,31 +2,33 @@
 
 namespace App\Nova;
 
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Taggable extends Resource
+class Element extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<\App\Models\Element>
      */
-    public static $model = \App\Models\Taggable::class;
+    public static $model = \App\Models\Element::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'id';
 
     /**
-     * Indicates if the resource should be searchable on the index view.
+     * The columns that should be searched.
      *
-     * @var bool
+     * @var array
      */
-    public static $searchable = false;
+    public static $search = [
+        'id',
+    ];
 
     /**
      * Get the fields displayed by the resource.
@@ -37,12 +39,7 @@ class Taggable extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make('ID', function ($model) {
-                return $model->taggable->id;
-            })->sortable(),
-            Text::make('Resource', function ($model) {
-                return class_basename($model->taggable);
-            }),
+            ID::make()->sortable(),
         ];
     }
 

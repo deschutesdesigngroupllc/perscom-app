@@ -122,7 +122,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->assignment_records()->count() ? Carbon::now()->diff($this->assignment_records()
                                                                                ->latest()
-                                                                               ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3) : null;
+                                                                               ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
+            : null;
     }
 
     /**
@@ -151,7 +152,8 @@ class User extends Authenticatable implements MustVerifyEmail
     {
         return $this->rank_records->count() ? Carbon::now()->diff($this->rank_records()
                                                                        ->latest()
-                                                                       ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3) : null;
+                                                                       ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
+            : null;
     }
 
     /**

@@ -115,8 +115,8 @@ class Rank extends Resource
                 DateTime::make('Created At')->sortable()->exceptOnForms(),
                 DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())->withTitle($this->document->name ?? null)
-                                      ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document
+                    ? $this->document->replaceContent($this->user, $this) : null),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }

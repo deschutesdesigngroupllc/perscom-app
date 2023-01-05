@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -44,7 +43,6 @@ class Tag extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name')->rules('required')->sortable(),
-            MorphMany::make('Resources', 'taggables', Taggable::class),
         ];
     }
 

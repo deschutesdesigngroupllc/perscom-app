@@ -5,12 +5,10 @@ namespace App\Models;
 use App\Models\Forms\Form;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Tags\HasTags;
 
 class Field extends Model
 {
     use HasFactory;
-    use HasTags;
 
     /**
      * The attributes that should be cast to native types.
@@ -71,6 +69,9 @@ class Field extends Model
      */
     public function forms()
     {
-        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')->withPivot(['order'])->withTimestamps();
+        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
+                    ->as('forms')
+                    ->withPivot(['order'])
+                    ->withTimestamps();
     }
 }

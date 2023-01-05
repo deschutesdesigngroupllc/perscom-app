@@ -12,7 +12,6 @@ use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Perscom\HtmlField\HtmlField;
-use Spatie\TagsField\Tags;
 
 class Document extends Resource
 {
@@ -76,7 +75,7 @@ class Document extends Resource
         return [
             ID::make()->hideFromIndex(),
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-            Tags::make('Tags')->withLinkToTagResource(),
+            //            Tags::make('Tags')->withLinkToTagResource(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Trix::make('Content')
                 ->hideFromIndex()

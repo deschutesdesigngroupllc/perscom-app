@@ -19,10 +19,12 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Spatie\TagsField\Tags;
+use Outl1ne\NovaSortable\Traits\HasSortableManyToManyRows;
 
 class Field extends Resource
 {
+    use HasSortableManyToManyRows;
+
     /**
      * The model the resource corresponds to.
      *
@@ -88,7 +90,6 @@ class Field extends Resource
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
-            Tags::make('Tags')->withLinkToTagResource(),
             Select::make('Type')->options(\App\Models\Field::$fieldTypes)->sortable()->displayUsingLabels(),
             Boolean::make('Required')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                 if ($formData->type === \App\Models\Field::FIELD_STATIC) {

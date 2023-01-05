@@ -19,13 +19,12 @@ use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphToMany;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Slug;
+use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Spatie\TagsField\Tags;
 
 class Form extends Resource
 {
@@ -78,14 +77,12 @@ class Form extends Resource
             ])->help('The slug will be used in the URL to access the form.')->canSee(function (NovaRequest $request) {
                 return Gate::check('update', $request->findModel());
             }),
-            Tags::make('Tags')->withLinkToTagResource()->canSee(function (NovaRequest $request) {
-                return Gate::check('update', $request->findModel());
-            }),
+            Tag::make('Tags')->showCreateRelationButton()->withPreview()->showOnPreview(),
             URL::make('URL')->displayUsing(function ($url) {
                 return $url;
             })->exceptOnForms()->copyable()->readonly()->canSee(function (NovaRequest $request) {
                 return Gate::check('update', $request->findModel());
-            }),
+            })->showOnPreview(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
             Heading::make('Access')->hideFromIndex(),
@@ -103,11 +100,7 @@ class Form extends Resource
             DateTime::make('Updated At')->onlyOnDetail(),
             Tabs::make('Relations', [
                 Tab::make('Fields', [
-                    MorphToMany::make('Fields', 'fields', Field::class)->fields(function ($request, $relatedModel) {
-                        return [
-                            Number::make('Order')->sortable()->rules('required'),
-                        ];
-                    }),
+                    MorphToMany::make('Fields', 'fields', Field::class),
                 ]),
                 Tab::make('Submissions', [HasMany::make('Submissions', 'submissions', Submission::class)]),
                 Tab::make('Logs', [$this->actionfield()]),
