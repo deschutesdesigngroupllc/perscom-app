@@ -3,7 +3,7 @@ module.exports = {
     content: [
         './resources/**/*.{js,vue}',
     ],
-    prefix: 'roster-',
+    prefix: 'dashboard-title-',
     corePlugins: {
         preflight: false,
     }
