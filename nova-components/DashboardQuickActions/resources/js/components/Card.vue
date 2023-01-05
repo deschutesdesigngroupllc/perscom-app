@@ -10,7 +10,7 @@
                 <div class="md:dashboard-actions-grid md:dashboard-actions-grid-cols-2">
                     <div v-for="(route, key, index) in routes.value.user" :key="index"
                          class="dashboard-actions-flex dashboard-actions-items-center dashboard-actions-border-gray-200 dark:dashboard-actions-border-gray-700"
-                         :class="{ 'odd:md:dashboard-actions-border-r': numberOfAdminRoutes.value > 1, 'dashboard-actions-border-b': index < (numberOfAdminRoutes.value - 1), 'md:dashboard-actions-border-b-0': index === (numberOfAdminRoutes.value - 2) }">
+                         :class="{ 'odd:md:dashboard-actions-border-r': numberOfUserRoutes.value > 1, 'dashboard-actions-border-b': index < (numberOfUserRoutes.value - 1), 'md:dashboard-actions-border-b-0': index === (numberOfUserRoutes.value - 2) }">
                         <a :href="route.link"
                            class="dashboard-actions-no-underline dashboard-actions-flex dashboard-actions-p-6">
                             <div

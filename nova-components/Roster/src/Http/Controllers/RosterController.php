@@ -21,7 +21,7 @@ class RosterController extends Controller
                        'users' => function (HasMany $query) {
                            $query
                                ->without(['unit'])
-                               ->select(['users.name', 'users.id', 'users.unit_id', 'users.position_id', 'users.specialty_id', 'users.status_id', 'users.rank_id'])
+                               ->select(['users.name', 'users.email', 'users.id', 'users.unit_id', 'users.position_id', 'users.specialty_id', 'users.status_id', 'users.rank_id'])
                                ->join('positions', 'positions.id', '=', 'users.position_id')
                                ->join('specialties', 'specialties.id', '=', 'users.specialty_id')
                                ->join('ranks', 'ranks.id', '=', 'users.rank_id')
