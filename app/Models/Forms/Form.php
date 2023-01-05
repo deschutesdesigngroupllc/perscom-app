@@ -2,8 +2,8 @@
 
 namespace App\Models\Forms;
 
-use App\Models\Element;
 use App\Models\Field;
+use App\Models\Pivots\Element;
 use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;

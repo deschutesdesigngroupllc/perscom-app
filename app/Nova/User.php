@@ -266,20 +266,20 @@ class User extends Resource
                 HasMany::make('Combat Records', 'combat_records', CombatRecords::class),
                 HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records', 'rank_records', RankRecords::class),
                 HasMany::make('Service Records', 'service_records', ServiceRecords::class),
-                MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))).' Records', 'statuses', Status::class)
-                           ->allowDuplicateRelations()
-                           ->fields(function () {
-                               return [
-                                   Textarea::make('Text'),
-                                   Text::make('Text', function ($model) {
-                                       return $model->text;
-                                   }),
-                                   DateTime::make('Created At')->sortable()->onlyOnIndex(),
-                               ];
-                           }),
                 HasMany::make('Submission Records', 'submissions', Submission::class),
                 HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).' Records', 'qualification_records', QualificationRecords::class),
             ])->showTitle(true),
+            MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'statuses', Status::class)
+                       ->allowDuplicateRelations()
+                       ->fields(function () {
+                           return [
+                               Textarea::make('Text'),
+                               Text::make('Text', function ($model) {
+                                   return $model->text;
+                               }),
+                               DateTime::make('Created At')->sortable()->onlyOnIndex(),
+                           ];
+                       }),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note:user'),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')->canSeeWhen('note:user')->onlyOnDetail(),

@@ -111,16 +111,18 @@ class Submission extends Resource
             DateTime::make('Updated At')->exceptOnForms()->sortable(),
             Tabs::make('Relations', [
                 Tab::make('Status History', [
-                    MorphToMany::make('Status History', 'statuses', Status::class)->fields(function () {
-                        return [
-                            Textarea::make('Text'),
-                            Text::make('Text', function ($model) {
-                                return $model->text;
-                            }),
-                            DateTime::make('Updated At')->sortable()->onlyOnIndex(),
-                        ];
-                    }),
-                ]),
+                    MorphToMany::make('Status', 'statuses', Status::class)
+                        ->allowDuplicateRelations()
+                        ->fields(function () {
+                            return [
+                                Textarea::make('Text'),
+                                Text::make('Text', function ($model) {
+                                    return $model->text;
+                                }),
+                                DateTime::make('Updated At')->sortable()->onlyOnIndex(),
+                            ];
+                        }),
+                    ]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];

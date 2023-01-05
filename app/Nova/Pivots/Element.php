@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Nova;
+namespace App\Nova\Pivots;
 
+use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -10,9 +11,9 @@ class Element extends Resource
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\Element>
+     * @var class-string<\App\Models\Pivots\Element>
      */
-    public static $model = \App\Models\Element::class;
+    public static $model = \App\Models\Pivots\Element::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

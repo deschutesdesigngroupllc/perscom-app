@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Forms\Submission as SubmissionModel;
 use App\Nova\Action;
 use App\Nova\Admin as AdminResource;
 use App\Nova\Announcement;
@@ -148,7 +149,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Forms', [
                         MenuItem::resource(Field::class),
                         MenuItem::resource(Form::class),
-                        MenuItem::resource(Submission::class),
+                        MenuItem::resource(Submission::class)->withBadgeIf(function () {
+                            return SubmissionModel::query()->whereDoesntHave('statuses')->count();
+                        }, 'info', function () {
+                            return SubmissionModel::query()->whereDoesntHave('statuses')->exists();
+                        }),
                     ])->icon('pencil-alt')->collapsable(),
 
                     MenuSection::make('Records', [
