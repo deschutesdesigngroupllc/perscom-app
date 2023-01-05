@@ -97,7 +97,8 @@ class Qualification extends Resource
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
                      ->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))), 'qualification', \App\Nova\Qualification::class)
-                     ->sortable()->showCreateRelationButton(),
+                     ->sortable()
+                     ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;

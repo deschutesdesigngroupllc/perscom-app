@@ -34,7 +34,8 @@ class UsersOnline extends Value
         $count = collect(\Illuminate\Support\Facades\Cache::tags('user.online')->many($keys))
             ->filter(function ($value) {
                 return $value === true;
-            })->count();
+            })
+            ->count();
 
         return new ValueResult($count);
     }

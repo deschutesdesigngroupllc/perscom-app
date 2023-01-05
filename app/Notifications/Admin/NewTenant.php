@@ -61,6 +61,8 @@ class NewTenant extends Notification implements ShouldQueue
                                        ->action('View Tenant', URL::remote(route('nova.pages.detail', [
                                            'resource' => 'tenants',
                                            'resourceId' => $this->tenant->getTenantKey(),
-                                       ])))->icon('user-add')->type('success');
+                                       ])))
+                                       ->icon('user-add')
+                                       ->type('success');
     }
 }

@@ -89,12 +89,14 @@ class Form extends Resource
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
             Heading::make('Access')->hideFromIndex(),
-            Boolean::make('Public', 'is_public')->help('Check to make this form available to the public.')
+            Boolean::make('Public', 'is_public')
+                   ->help('Check to make this form available to the public.')
                    ->canSee(function (NovaRequest $request) {
                        return Gate::check('update', $request->findModel());
                    }),
             Heading::make('Submission')->hideFromIndex(),
-            Textarea::make('Success Message')->help('The message displayed when the form is successfully submitted.')
+            Textarea::make('Success Message')
+                    ->help('The message displayed when the form is successfully submitted.')
                     ->alwaysShow(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),

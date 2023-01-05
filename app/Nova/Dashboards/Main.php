@@ -30,14 +30,18 @@ class Main extends Dashboard
      */
     public function cards()
     {
-        $announcements = Announcement::query()->whereDate('expires_at', '>', now())->orWhereNull('expires_at')->get()
+        $announcements = Announcement::query()
+                                     ->whereDate('expires_at', '>', now())
+                                     ->orWhereNull('expires_at')
+                                     ->get()
                                      ->map(function ($announcement) {
                                          return [
                                              'title' => $announcement->title,
                                              'content' => $announcement->content,
                                              'color' => $announcement->color,
                                          ];
-                                     })->toArray();
+                                     })
+                                     ->toArray();
 
         return [
             (new DashboardTitle())->withTitle(setting('dashboard_title') ?? \tenant('name'))

@@ -95,39 +95,46 @@ class Field extends Resource
                     $field->hide();
                 }
             }),
-            Boolean::make('Readonly')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                if ($formData->type === \App\Models\Field::FIELD_RADIOGROUP || $formData->type === \App\Models\Field::FIELD_RADIO || $formData->type === \App\Models\Field::FIELD_STATIC || $formData->type === \App\Models\Field::FIELD_CHECKBOX || $formData->type === \App\Models\Field::FIELD_SELECT || $formData->type === \App\Models\Field::FIELD_MULTISELECT) {
-                    $field->hide();
-                }
-            })
+            Boolean::make('Readonly')
+                   ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                       if ($formData->type === \App\Models\Field::FIELD_RADIOGROUP || $formData->type === \App\Models\Field::FIELD_RADIO || $formData->type === \App\Models\Field::FIELD_STATIC || $formData->type === \App\Models\Field::FIELD_CHECKBOX || $formData->type === \App\Models\Field::FIELD_SELECT || $formData->type === \App\Models\Field::FIELD_MULTISELECT) {
+                           $field->hide();
+                       }
+                   })
                    ->help('A readonly input field cannot be modified (however, a user can tab to it, highlight it, and copy the text from it).'),
             Boolean::make('Disabled')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                 if ($formData->type === \App\Models\Field::FIELD_STATIC) {
                     $field->hide();
                 }
             })->help('A disabled input element is unusable and un-clickable.'),
-            Text::make('Placeholder')->hideFromIndex()->hide()
+            Text::make('Placeholder')
+                ->hideFromIndex()
+                ->hide()
                 ->help('If a text type field, this text will fill the field when no value is present.')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                     if ($formData->type === \App\Models\Field::FIELD_TEXT || $formData->type === \App\Models\Field::FIELD_TEXTAREA || $formData->type === \App\Models\Field::FIELD_EMAIL || $formData->type === \App\Models\Field::FIELD_PASSWORD) {
                         $field->show();
                     }
                 }),
-            Text::make('Help')->hideFromIndex()
+            Text::make('Help')
+                ->hideFromIndex()
                 ->help('Like this text, this is a short description that should help the user fill out the field.')
                 ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                     if ($formData->type === \App\Models\Field::FIELD_STATIC) {
                         $field->hide();
                     }
                 }),
-            Markdown::make('Text')->hideFromIndex()->hide()
+            Markdown::make('Text')
+                    ->hideFromIndex()
+                    ->hide()
                     ->help('Like this text, this is a short description that should help the user fill out the field.')
                     ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                         if ($formData->type === \App\Models\Field::FIELD_STATIC || $formData->type === \App\Models\Field::FIELD_RADIO) {
                             $field->show();
                         }
                     }),
-            KeyValue::make('Options')->hide()
+            KeyValue::make('Options')
+                    ->hide()
                     ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
                         if ($formData->type === \App\Models\Field::FIELD_SELECT || $formData->type === \App\Models\Field::FIELD_RADIOGROUP || $formData->type === \App\Models\Field::FIELD_MULTISELECT) {
                             $field->show();

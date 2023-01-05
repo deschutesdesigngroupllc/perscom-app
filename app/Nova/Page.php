@@ -50,10 +50,14 @@ class Page extends Resource
             ID::make()->sortable(),
             Text::make('Title')->rules('required'),
             Textarea::make('Description')->nullable(),
-            Slug::make('Slug')->rules('required')->from('title')
-                ->help('This will be used to generate the URL to access the page.')->hideFromIndex(),
+            Slug::make('Slug')
+                ->rules('required')
+                ->from('title')
+                ->help('This will be used to generate the URL to access the page.')
+                ->hideFromIndex(),
             URL::make('URL', fn () => tenant()->url.'/pages/'.$this->slug)
-               ->displayUsing(fn () => tenant()->url.'/pages/'.$this->slug)->onlyOnIndex(),
+               ->displayUsing(fn () => tenant()->url.'/pages/'.$this->slug)
+               ->onlyOnIndex(),
             Boolean::make('Enabled')->default(function () {
                 return true;
             })->help('Disable to prevent access to the page.'),

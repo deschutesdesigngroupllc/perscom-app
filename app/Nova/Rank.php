@@ -7,13 +7,15 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
 class Rank extends Resource
 {
+    use HasSortableRows;
+
     /**
      * The model the resource corresponds to.
      *
@@ -77,8 +79,6 @@ class Rank extends Resource
             Text::make('Abbreviation')->nullable()->sortable()->showOnPreview(),
             Text::make('Paygrade')->nullable()->sortable()->showOnPreview(),
             Image::make('Image')->disk('s3_public')->prunable(),
-            Number::make('Order')
-                  ->help('Use the order to field to establish rank hierarchy. The lower the number, the higher the rank.'),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),

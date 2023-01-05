@@ -70,6 +70,7 @@ return [
         'view:user' => 'Can view a user',
         'create:user' => 'Can create a user',
         'update:user' => 'Can update a user',
+        'note:user' => 'Can update a user\'s note',
         'delete:user' => 'Can delete a user',
         'impersonate:user' => 'Can impersonate a user',
         'view:permission' => 'Can view a permission',

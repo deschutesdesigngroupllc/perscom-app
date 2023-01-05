@@ -6,13 +6,15 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
 class Unit extends Resource
 {
+    use HasSortableRows;
+
     /**
      * The model the resource corresponds to.
      *
@@ -74,8 +76,6 @@ class Unit extends Resource
             ID::make()->hideFromIndex(),
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-            Number::make('Order')
-                  ->help('Use the order to field to establish unit hierarchy. The lower the number, the higher the unit.'),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

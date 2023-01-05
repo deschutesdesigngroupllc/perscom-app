@@ -24,7 +24,8 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
     {
         return optional($this->domain, function () {
             return Url::fromString(Str::endsWith($this->domain, config('tenancy.central_domains')) ? $this->domain : $this->domain.config('app.base_url'))
-                      ->withScheme(config('app.scheme'))->__toString();
+                      ->withScheme(config('app.scheme'))
+                      ->__toString();
         });
     }
 }

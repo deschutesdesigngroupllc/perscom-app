@@ -62,7 +62,9 @@ class ImpersonateTenant extends Action
         }
 
         return [
-            Select::make('User')->options($options ?? [])->rules('required')
+            Select::make('User')
+                  ->options($options ?? [])
+                  ->rules('required')
                   ->help('Select the user you would like to sign in as.'),
         ];
     }

@@ -80,7 +80,11 @@ class Status extends Resource
             })->toArray())->label(function ($value) {
                 return \App\Models\Status::$colors[$value];
             }),
-            Select::make('Color')->rules(['required'])->showOnPreview()->displayUsingLabels()->onlyOnForms()
+            Select::make('Color')
+                  ->rules(['required'])
+                  ->showOnPreview()
+                  ->displayUsingLabels()
+                  ->onlyOnForms()
                   ->options(\App\Models\Status::$colors),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),

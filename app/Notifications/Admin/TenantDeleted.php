@@ -66,6 +66,8 @@ class TenantDeleted extends Notification implements ShouldQueue
                                        ->action('View Tenant', URL::remote(route('nova.pages.detail', [
                                            'resource' => 'tenants',
                                            'resourceId' => $this->tenant->getTenantKey(),
-                                       ])))->icon('user-remove')->type('danger');
+                                       ])))
+                                       ->icon('user-remove')
+                                       ->type('danger');
     }
 }

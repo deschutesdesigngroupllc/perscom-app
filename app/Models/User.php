@@ -68,6 +68,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
         'social_token',
         'social_refresh_token',
+        'social_id',
+        'social_driver',
     ];
 
     /**
@@ -118,16 +120,9 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getTimeInAssignmentAttribute()
     {
-        return $this->assignment_records()->count() ? Carbon::now()->diff($this->assignment_records()->latest()
+        return $this->assignment_records()->count() ? Carbon::now()->diff($this->assignment_records()
+                                                                               ->latest()
                                                                                ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3) : null;
-    }
-
-    /**
-     * @return string
-     */
-    public function getFullNameAttribute()
-    {
-        return "$this->first_name $this->last_name";
     }
 
     /**
@@ -154,7 +149,8 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function getTimeInGradeAttribute()
     {
-        return $this->rank_records->count() ? Carbon::now()->diff($this->rank_records()->latest()
+        return $this->rank_records->count() ? Carbon::now()->diff($this->rank_records()
+                                                                       ->latest()
                                                                        ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3) : null;
     }
 

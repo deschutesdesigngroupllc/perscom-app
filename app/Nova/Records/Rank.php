@@ -99,7 +99,8 @@ class Rank extends Resource
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
                      ->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', \App\Nova\Rank::class)
-                     ->sortable()->showCreateRelationButton(),
+                     ->sortable()
+                     ->showCreateRelationButton(),
             Select::make('Type')->options([
                 \App\Models\Records\Rank::RECORD_RANK_PROMOTION => 'Promotion',
                 \App\Models\Records\Rank::RECORD_RANK_DEMOTION => 'Demotion',

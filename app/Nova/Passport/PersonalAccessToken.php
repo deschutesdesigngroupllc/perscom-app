@@ -114,7 +114,9 @@ class PersonalAccessToken extends Resource
             })->onlyOnIndex()->readonly()->copyable(),
             Code::make('API Key', function () {
                 return Crypt::decryptString($this->token);
-            })->readonly()->language('shell')
+            })
+                ->readonly()
+                ->language('shell')
                 ->help('API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'),
             MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
                 return [$scope->id => $scope->id];

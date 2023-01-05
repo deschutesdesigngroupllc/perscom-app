@@ -39,13 +39,19 @@ class RouteServiceProvider extends ServiceProvider
         $this->routes(function () {
             Route::prefix('api')->middleware('api')->namespace($this->namespace)->group(base_path('routes/api.php'));
 
-            Route::domain(config('app.auth_url'))->middleware('auth_web')->namespace($this->namespace)
+            Route::domain(config('app.auth_url'))
+                 ->middleware('auth_web')
+                 ->namespace($this->namespace)
                  ->group(base_path('routes/auth.php'));
 
-            Route::middleware('web')->domain(config('app.url'))->namespace($this->namespace)
+            Route::middleware('web')
+                 ->domain(config('app.url'))
+                 ->namespace($this->namespace)
                  ->group(base_path('routes/web.php'));
 
-            Route::prefix('oauth')->as('passport.')->namespace('Laravel\Passport\Http\Controllers')
+            Route::prefix('oauth')
+                 ->as('passport.')
+                 ->namespace('Laravel\Passport\Http\Controllers')
                  ->group(base_path('routes/passport.php'));
         });
 

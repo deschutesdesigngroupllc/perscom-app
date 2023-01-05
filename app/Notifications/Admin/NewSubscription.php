@@ -58,6 +58,7 @@ class NewSubscription extends Notification implements ShouldQueue
     {
         return (new NovaNotification())->message('Your report is ready to download.')
                                        ->action('Download', URL::remote('https://example.com/report.pdf'))
-                                       ->icon('download')->type('info');
+                                       ->icon('download')
+                                       ->type('info');
     }
 }

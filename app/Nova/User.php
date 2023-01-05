@@ -110,12 +110,20 @@ class User extends Resource
             Text::make('Name')->sortable()->rules('required', 'max:255')->showOnPreview()->readonly(function () {
                 return Request::isDemoMode();
             }),
-            Text::make('Email')->sortable()->rules('required', 'email', 'max:254')->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}')->showOnPreview()->readonly(function () {
+            Text::make('Email')
+                ->sortable()
+                ->rules('required', 'email', 'max:254')
+                ->creationRules('unique:users,email')
+                ->updateRules('unique:users,email,{{resourceId}}')
+                ->showOnPreview()
+                ->readonly(function () {
                     return Request::isDemoMode();
                 }),
-            Password::make('Password')->onlyOnForms()->creationRules('required', Rules\Password::defaults())
-                    ->updateRules('nullable', Rules\Password::defaults())->readonly(function () {
+            Password::make('Password')
+                    ->onlyOnForms()
+                    ->creationRules('required', Rules\Password::defaults())
+                    ->updateRules('nullable', Rules\Password::defaults())
+                    ->readonly(function () {
                         return Request::isDemoMode();
                     }),
             Badge::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), function () {
@@ -135,23 +143,32 @@ class User extends Resource
             Panel::make('Assignment', [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
                          ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
-                         ->nullable()->onlyOnForms(),
+                         ->nullable()
+                         ->onlyOnForms()
+                         ->canSeeWhen('create:assignmentrecord'),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
                          ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
-                         ->nullable()->onlyOnForms(),
+                         ->nullable()
+                         ->onlyOnForms()
+                         ->canSeeWhen('create:assignmentrecord'),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
                          ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
-                         ->nullable()->onlyOnForms(),
+                         ->nullable()
+                         ->onlyOnForms()
+                         ->canSeeWhen('create:assignmentrecord'),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)
                          ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
-                         ->nullable()->onlyOnForms(),
+                         ->nullable()
+                         ->onlyOnForms()
+                         ->canSeeWhen('create:rankrecord'),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
                          ->help('You can manually set the user\'s status. Creating a status record will also change their status.')
-                         ->nullable()->onlyOnForms(),
+                         ->nullable()
+                         ->onlyOnForms(),
             ]),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
@@ -173,7 +190,8 @@ class User extends Resource
                             return $model->specialty->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment_records()->latest()
+                            return optional($model->assignment_records()
+                                                  ->latest()
                                                   ->first()?->created_at, function ($date) {
                                                       return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                                                   });
@@ -184,7 +202,8 @@ class User extends Resource
                             return $model->position->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment_records()->latest()
+                            return optional($model->assignment_records()
+                                                  ->latest()
                                                   ->first()?->created_at, function ($date) {
                                                       return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                                                   });
@@ -195,7 +214,8 @@ class User extends Resource
                             return $model->unit->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment_records()->latest()
+                            return optional($model->assignment_records()
+                                                  ->latest()
                                                   ->first()?->created_at, function ($date) {
                                                       return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                                                   });
@@ -247,6 +267,7 @@ class User extends Resource
                 HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records', 'rank_records', RankRecords::class),
                 HasMany::make('Service Records', 'service_records', ServiceRecords::class),
                 MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))).' Records', 'statuses', Status::class)
+                           ->allowDuplicateRelations()
                            ->fields(function () {
                                return [
                                    Textarea::make('Text'),
@@ -260,8 +281,8 @@ class User extends Resource
                 HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).' Records', 'qualification_records', QualificationRecords::class),
             ])->showTitle(true),
             new Panel('Notes', [
-                Trix::make('Notes')->alwaysShow(),
-                DateTime::make('Notes Last Updated At', 'notes_updated_at')->onlyOnDetail(),
+                Trix::make('Notes')->alwaysShow()->canSeeWhen('note:user'),
+                DateTime::make('Notes Last Updated At', 'notes_updated_at')->canSeeWhen('note:user')->onlyOnDetail(),
             ]),
             Tabs::make('Permissions', [
                 MorphedByMany::make('Roles'),

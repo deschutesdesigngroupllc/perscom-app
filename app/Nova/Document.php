@@ -78,9 +78,11 @@ class Document extends Resource
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
             Tags::make('Tags')->withLinkToTagResource(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-            Trix::make('Content')->hideFromIndex()
+            Trix::make('Content')
+                ->hideFromIndex()
                 ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
-                ->rules(['required'])->showOnPreview(),
+                ->rules(['required'])
+                ->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

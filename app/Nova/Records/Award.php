@@ -97,7 +97,8 @@ class Award extends Resource
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
                      ->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_awards', 'Award'))), 'award', \App\Nova\Award::class)
-                     ->sortable()->showCreateRelationButton(),
+                     ->sortable()
+                     ->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;

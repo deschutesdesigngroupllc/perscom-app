@@ -110,9 +110,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                     MenuSection::make('Tools', [
                         MenuItem::externalLink('Horizon', Url::fromString(config('app.url').'/'.config('horizon.path'))
-                                                             ->withScheme(config('app.scheme'))->__toString()),
+                                                             ->withScheme(config('app.scheme'))
+                                                             ->__toString()),
                         MenuItem::externalLink('Telescope', Url::fromString(config('app.url').'/'.config('telescope.path'))
-                                                               ->withScheme(config('app.scheme'))->__toString()),
+                                                               ->withScheme(config('app.scheme'))
+                                                               ->__toString()),
                     ])->icon('external-link')->collapsable(),
                 ];
             });
@@ -226,7 +228,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         NovaSettings::addSettingsFields(function () {
             return [
                 Panel::make('Account', [
-                    Text::make('Organization', 'organization')->help('The name of your organization.')
+                    Text::make('Organization', 'organization')
+                        ->help('The name of your organization.')
                         ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')
                                                                      ->ignore(\tenant()->getTenantKey()))
                         ->resolveUsing(function () {
@@ -241,7 +244,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                          }),
                 ]),
                 Panel::make('Domain', [
-                    Text::make('Subdomain', 'subdomain')->copyable()
+                    Text::make('Subdomain', 'subdomain')
+                        ->copyable()
                         ->help('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
                         ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')
                                                                                                 ->ignore(\tenant()->getTenantKey(), 'tenant_id'))
@@ -250,9 +254,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }),
                 ]),
                 Panel::make('Branding', [
-                    Text::make('Dashboard Title', 'dashboard_title')->default(function () {
-                        return \tenant('name');
-                    })
+                    Text::make('Dashboard Title', 'dashboard_title')
+                        ->default(function () {
+                            return \tenant('name');
+                        })
                         ->help('The main heading on your dashboard homepage. This will default to your organization name if not set.'),
                     Text::make('Dashboard Subtitle', 'dashboard_subtitle')
                         ->help('A subtitle or description that can be added under your dashboard heading.'),
