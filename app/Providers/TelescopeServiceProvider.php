@@ -45,12 +45,15 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
         Telescope::hideRequestParameters(['_token']);
 
-        Telescope::hideRequestHeaders(['cookie', 'x-csrf-token', 'x-xsrf-token']);
+        Telescope::hideRequestHeaders([
+            'cookie',
+            'x-csrf-token',
+            'x-xsrf-token',
+        ]);
     }
 
     /**
      * Register the Telescope gate.
-     *
      * This gate determines who can access Telescope in non-local environments.
      *
      * @return void

@@ -15,13 +15,13 @@ class CreateRecordsAssignmentsTable extends Migration
     {
         Schema::create('records_assignments', function (Blueprint $table) {
             $table->id();
-	        $table->unsignedBigInteger('user_id');
-	        $table->unsignedBigInteger('unit_id');
-	        $table->unsignedBigInteger('position_id');
-	        $table->unsignedBigInteger('specialty_id');
-	        $table->unsignedBigInteger('document_id')->nullable();
-	        $table->unsignedBigInteger('author_id')->nullable();
-	        $table->text('text')->nullable();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('unit_id');
+            $table->unsignedBigInteger('position_id');
+            $table->unsignedBigInteger('specialty_id');
+            $table->unsignedBigInteger('document_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
+            $table->text('text')->nullable();
             $table->timestamps();
         });
     }

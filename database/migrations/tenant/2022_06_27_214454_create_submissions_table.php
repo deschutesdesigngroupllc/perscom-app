@@ -16,8 +16,8 @@ class CreateSubmissionsTable extends Migration
         Schema::create('submissions', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('form_id');
-	        $table->unsignedInteger('user_id')->nullable();
-	        $table->json('data')->nullable();
+            $table->unsignedInteger('user_id')->nullable();
+            $table->json('data')->nullable();
             $table->timestamps();
         });
     }

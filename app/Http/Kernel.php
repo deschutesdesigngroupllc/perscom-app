@@ -9,7 +9,6 @@ class Kernel extends HttpKernel
 {
     /**
      * The application's global HTTP middleware stack.
-     *
      * These middleware are run during every request to your application.
      *
      * @var array<int, class-string|string>
@@ -51,14 +50,17 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ],
 
-        'api' => ['throttle:api', \Illuminate\Routing\Middleware\SubstituteBindings::class],
+        'api' => [
+            'throttle:api',
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \App\Http\Middleware\ForceJsonResponse::class,
+        ],
 
         'universal' => [CheckUniversalRouteForTenantOrAdmin::class],
     ];
 
     /**
      * The application's route middleware.
-     *
      * These middleware may be assigned to groups or used individually.
      *
      * @var array<string, class-string|string>
@@ -70,7 +72,10 @@ class Kernel extends HttpKernel
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
         'feature' => \Codinglabs\FeatureFlags\Middleware\VerifyFeatureIsOn::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'json' => \App\Http\Middleware\ForceJsonResponse::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
+        'scopes' => \Laravel\Passport\Http\Middleware\CheckScopes::class,
+        'scope' => \Laravel\Passport\Http\Middleware\CheckForAnyScope::class,
         'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
         'subscribed' => \App\Http\Middleware\Subscribed::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
@@ -79,7 +84,6 @@ class Kernel extends HttpKernel
 
     /**
      * The priority-sorted list of middleware.
-     *
      * This forces non-global middleware to always be in the given order.
      *
      * @var string[]
@@ -88,6 +92,7 @@ class Kernel extends HttpKernel
         \Illuminate\Cookie\Middleware\EncryptCookies::class,
         \Illuminate\Session\Middleware\StartSession::class,
         \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \App\Http\Middleware\ForceJsonResponse::class,
         \App\Http\Middleware\LogApiRequests::class,
         \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
         \Illuminate\Routing\Middleware\ThrottleRequests::class,

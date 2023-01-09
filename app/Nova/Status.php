@@ -10,7 +10,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class Status extends Resource
 {
@@ -33,7 +32,10 @@ class Status extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @var string[]
@@ -47,7 +49,7 @@ class Status extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_statuses', 'Statuses')));
+        return Str::plural(Str::title(setting('localization_statuses', 'Statuses')));
     }
 
     /**
@@ -57,7 +59,7 @@ class Status extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_statuses', 'statuses')));
+        return Str::plural(Str::slug(setting('localization_statuses', 'statuses')));
     }
 
     /**
@@ -70,29 +72,20 @@ class Status extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
             Badge::make('Color', function ($model) {
                 return $model->color;
-            })
-                ->types(
-                    collect(\App\Models\Status::$colors)
-                        ->mapWithKeys(function ($value, $key) {
-                            return [$key => $key];
-                        })
-                        ->toArray()
-                )
-                ->label(function ($value) {
-                    return \App\Models\Status::$colors[$value];
-                }),
+            })->types(collect(\App\Models\Status::$colors)->mapWithKeys(function ($value, $key) {
+                return [$key => $key];
+            })->toArray())->label(function ($value) {
+                return \App\Models\Status::$colors[$value];
+            }),
             Select::make('Color')
-                ->rules(['required'])
-                ->showOnPreview()
-                ->displayUsingLabels()
-                ->onlyOnForms()
-                ->options(\App\Models\Status::$colors),
+                  ->rules(['required'])
+                  ->showOnPreview()
+                  ->displayUsingLabels()
+                  ->onlyOnForms()
+                  ->options(\App\Models\Status::$colors),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

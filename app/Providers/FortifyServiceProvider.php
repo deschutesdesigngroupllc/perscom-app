@@ -29,7 +29,7 @@ class FortifyServiceProvider extends ServiceProvider
             config()->set('fortify.features', []);
             config()->set('fortify.guard', 'admin');
             config()->set('fortify.passwords', 'admins');
-            config()->set('fortify.home', '/admin' . RouteServiceProvider::HOME);
+            config()->set('fortify.home', '/admin'.RouteServiceProvider::HOME);
         }
 
         if (Request::isDemoMode()) {
@@ -49,8 +49,7 @@ class FortifyServiceProvider extends ServiceProvider
                 'status' => session('status'),
                 'canResetPassword' => Route::has('password.request'),
                 'demoMode' => Request::isDemoMode(),
-                'enableSocialLogin' =>
-                    !Request::isCentralRequest() && !Request::isDemoMode() && FeatureFlag::isOn('social-login'),
+                'enableSocialLogin' => ! Request::isCentralRequest() && ! Request::isDemoMode() && FeatureFlag::isOn('social-login'),
                 'githubLogin' => \route('auth.social.tenant.redirect', [
                     'driver' => 'github',
                 ]),
@@ -88,7 +87,8 @@ class FortifyServiceProvider extends ServiceProvider
 
         RateLimiter::for('login', function (Request $request) {
             $email = (string) $request->email;
-            return Limit::perMinute(5)->by($email . $request->ip());
+
+            return Limit::perMinute(5)->by($email.$request->ip());
         });
 
         RateLimiter::for('two-factor', function (Request $request) {

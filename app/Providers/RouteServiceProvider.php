@@ -13,7 +13,6 @@ class RouteServiceProvider extends ServiceProvider
 {
     /**
      * The path to the "home" route for your application.
-     *
      * This is used by Laravel authentication to redirect users after login.
      *
      * @var string
@@ -22,12 +21,11 @@ class RouteServiceProvider extends ServiceProvider
 
     /**
      * The controller namespace for the application.
-     *
      * When present, controller route declarations will automatically be prefixed with this namespace.
      *
      * @var string|null
      */
-    // protected $namespace = 'App\\Http\\Controllers';
+    protected $namespace = 'App\\Http\\Controllers';
 
     /**
      * Define your route model bindings, pattern filters, etc.
@@ -39,24 +37,26 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')
-                ->middleware('api')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/api.php'));
+            Route::prefix('api')->middleware('api')->namespace($this->namespace)->group(base_path('routes/api.php'));
 
             Route::domain(config('app.auth_url'))
-                ->middleware('auth_web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/auth.php'));
+                 ->middleware('auth_web')
+                 ->namespace($this->namespace)
+                 ->group(base_path('routes/auth.php'));
 
-	        Route::middleware('web')
-		        ->domain(config('app.url'))
-		        ->namespace($this->namespace)
-		        ->group(base_path('routes/web.php'));
+            Route::middleware('web')
+                 ->domain(config('app.url'))
+                 ->namespace($this->namespace)
+                 ->group(base_path('routes/web.php'));
+
+            Route::prefix('oauth')
+                 ->as('passport.')
+                 ->namespace('Laravel\Passport\Http\Controllers')
+                 ->group(base_path('routes/passport.php'));
         });
 
         $this->app['router']->model('loginToken', LoginToken::class, function () {
-        	abort(403);
+            abort(403);
         });
     }
 

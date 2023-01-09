@@ -68,6 +68,7 @@ class PermissionPolicy
         if ($permission->is_application_permission) {
             return false;
         }
+
         return $user->hasPermissionTo('update:permission');
     }
 
@@ -83,6 +84,7 @@ class PermissionPolicy
         if ($permission->is_application_permission) {
             return false;
         }
+
         return $user->hasPermissionTo('delete:permission');
     }
 
@@ -99,6 +101,7 @@ class PermissionPolicy
         if ($permission->is_application_permission && $role->is_application_role) {
             return false;
         }
+
         return $user->hasPermissionTo('update:permission');
     }
 

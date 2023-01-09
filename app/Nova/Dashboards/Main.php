@@ -7,7 +7,6 @@ use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\UpdatesPerformed;
 use App\Nova\Metrics\UsersOnline;
 use Laravel\Nova\Dashboards\Main as Dashboard;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\AlertCard\AlertCard;
 use Perscom\DashboardQuickActions\DashboardQuickActions;
 use Perscom\DashboardTitle\DashboardTitle;
@@ -32,22 +31,21 @@ class Main extends Dashboard
     public function cards()
     {
         $announcements = Announcement::query()
-            ->whereDate('expires_at', '>', now())
-            ->orWhereNull('expires_at')
-            ->get()
-            ->map(function ($announcement) {
-                return [
-                    'title' => $announcement->title,
-                    'content' => $announcement->content,
-                    'color' => $announcement->color,
-                ];
-            })
-            ->toArray();
+                                     ->whereDate('expires_at', '>', now())
+                                     ->orWhereNull('expires_at')
+                                     ->get()
+                                     ->map(function ($announcement) {
+                                         return [
+                                             'title' => $announcement->title,
+                                             'content' => $announcement->content,
+                                             'color' => $announcement->color,
+                                         ];
+                                     })
+                                     ->toArray();
 
         return [
-            (new DashboardTitle())
-                ->withTitle(NovaSettings::getSetting('dashboard_title') ?? \tenant('name'))
-                ->withSubtitle(NovaSettings::getSetting('dashboard_subtitle')),
+            (new DashboardTitle())->withTitle(setting('dashboard_title') ?? \tenant('name'))
+                                  ->withSubtitle(setting('dashboard_subtitle')),
             (new AlertCard())->withAnnouncements($announcements),
             new NewUsers(),
             new UsersOnline(),

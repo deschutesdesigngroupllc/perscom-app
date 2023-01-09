@@ -14,8 +14,8 @@ class AwardFactory extends Factory
     public function definition()
     {
         return [
-	        'name' => "Award {$this->faker->unique()->randomNumber()}",
-	        'description' => $this->faker->paragraph,
+            'name' => "Award {$this->faker->unique()->randomNumber()}",
+            'description' => $this->faker->paragraph,
         ];
     }
 }

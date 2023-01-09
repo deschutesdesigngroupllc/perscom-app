@@ -37,19 +37,20 @@ class AuthorizedApplications extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
-     * @param  NovaRequest                            $request
+     * @param  NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        $personalAccessClient = app()
-            ->make(ClientRepository::class)
-            ->personalAccessClient();
+        $personalAccessClient = app()->make(ClientRepository::class)->personalAccessClient();
+
         return $query->where('client_id', '<>', $personalAccessClient?->id);
     }
 
@@ -62,36 +63,20 @@ class AuthorizedApplications extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            BelongsTo::make('Application', 'client', Client::class)
-                ->sortable()
-                ->readonly(),
-            MultiSelect::make('Scopes')
-                ->options(
-                    Passport::scopes()
-                        ->mapWithKeys(function ($scope) {
-                            return [$scope->id => $scope->id];
-                        })
-                        ->sort()
-                )
-                ->hideFromIndex()
-                ->readonly(),
-            Boolean::make('Revoked')
-                ->default(false)
-                ->sortable(),
+            BelongsTo::make('Application', 'client', Client::class)->sortable()->readonly(),
+            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
+                return [$scope->id => $scope->id];
+            })->sort())->hideFromIndex()->readonly(),
+            Boolean::make('Revoked')->default(false)->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Created At')->sortable()->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            DateTime::make('Expires At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Expires At')->sortable()->exceptOnForms(),
         ];
     }
 
     /**
      * @param  Request  $request
-     *
      * @return false
      */
     public static function authorizedToCreate(Request $request)
@@ -100,19 +85,18 @@ class AuthorizedApplications extends Resource
     }
 
     /**
-     * @param  NovaRequest             $request
+     * @param  NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
-     *
      * @return string
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
-        return '/resources/' . static::uriKey();
+        return '/resources/'.static::uriKey();
     }
 
     /**
      * @param  NovaRequest  $request
-     * @param  Model        $model
+     * @param  Model  $model
      */
     public static function afterCreate(NovaRequest $request, Model $model)
     {

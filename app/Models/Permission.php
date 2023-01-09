@@ -24,14 +24,17 @@ class Permission extends \Spatie\Permission\Models\Permission implements Arrayab
      *
      * @var array
      */
-    protected $appends = ['is_custom_permission', 'is_application_permission'];
+    protected $appends = [
+        'is_custom_permission',
+        'is_application_permission',
+    ];
 
     /**
      * @return bool
      */
     public function getIsCustomPermissionAttribute()
     {
-        return !self::getPermissionsFromConfig()->has($this->name);
+        return ! self::getPermissionsFromConfig()->has($this->name);
     }
 
     /**

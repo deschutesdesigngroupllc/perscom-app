@@ -22,7 +22,7 @@
         "laravel/framework": "^9.0",
         "laravel/horizon": "^5.9",
         "laravel/nova": "^4.10",
-        "laravel/passport": "^10.4",
+        "laravel/passport": "dev-authorize-view-reponse",
         "laravel/socialite": "^5.5",
         "laravel/spark-stripe": "^1.0",
         "laravel/telescope": "^4.9",
@@ -31,27 +31,39 @@
         "msztorc/laravel-env": "^1.2",
         "novius/laravel-nova-order-nestedset-field": "^4.0",
         "outl1ne/nova-settings": "^5.0",
+        "outl1ne/nova-sortable": "dev-tailwindcss",
         "perscom/alert-card": "*",
         "perscom/dashboard-quick-actions": "*",
+        "perscom/dashboard-title": "*",
         "perscom/document-viewer-tool": "*",
         "perscom/html-field": "*",
+        "perscom/roster": "*",
+        "spatie/eloquent-sortable": "^4.0",
         "spatie/laravel-activitylog": "^4.5",
         "spatie/laravel-permission": "^5.5",
-        "spatie/nova-tags-field": "^4.0",
         "spatie/url": "^2.1.0",
         "stancl/tenancy": "^3.5",
-        "tightenco/ziggy": "^1.4",
-        "perscom/dashboard-title": "*"
+        "tightenco/ziggy": "^1.4"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-latest",
-        "spatie/laravel-ignition": "^1.0",
+        "barryvdh/laravel-debugbar": "^3.7",
+        "laravel/pint": "^1.2",
         "laravel/sail": "^1.0.1",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^6.1",
-        "phpunit/phpunit": "^9.5.10"
+        "phpunit/phpunit": "^9.5.10",
+        "roave/security-advisories": "dev-latest",
+        "spatie/laravel-ignition": "^1.0"
     },
     "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/JonErickson/nova-sortable"
+        },
+        {
+            "type": "vcs",
+            "url": "https://github.com/JonErickson/passport"
+        },
         {
             "type": "composer",
             "url": "https://nova.laravel.com"
@@ -82,10 +94,13 @@
         },
         {
             "type": "path",
-            "url": "./nova-components/DashboardTitle"
+            "url": "./nova-components/Roster"
         }
     ],
     "autoload": {
+        "files": [
+            "app/helpers.php"
+        ],
         "psr-4": {
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",

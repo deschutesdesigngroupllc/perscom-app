@@ -16,8 +16,7 @@ class LoginTokenFactory extends Factory
      */
     public function definition()
     {
-        return [
-            //
+        return [//
         ];
     }
 }

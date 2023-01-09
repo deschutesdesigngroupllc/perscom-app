@@ -14,14 +14,13 @@ class RegisterController extends Controller
     public function index()
     {
         return Inertia::render('Register', [
-        	'baseUrl' => config('app.base_url')
+            'baseUrl' => config('app.base_url'),
         ]);
     }
 
     /**
-     * @param  Request          $request
+     * @param  Request  $request
      * @param  CreateNewTenant  $createNewTenant
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, CreateNewTenant $createNewTenant)

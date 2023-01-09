@@ -35,8 +35,9 @@ class FormPolicy
     /**x
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Forms\Form  $form
+     * @param \App\Models\User       $user
+     * @param \App\Models\Forms\Form $form
+     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, Form $form)

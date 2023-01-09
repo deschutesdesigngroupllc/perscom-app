@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Award;
-use App\Models\Position;
 use Illuminate\Database\Seeder;
 
 class AwardSeeder extends Seeder

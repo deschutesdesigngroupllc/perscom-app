@@ -19,6 +19,7 @@ class SubscriptionPolicy
         if (Request::isCentralRequest()) {
             return true;
         }
+
         return false;
     }
 

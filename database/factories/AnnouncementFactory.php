@@ -17,10 +17,10 @@ class AnnouncementFactory extends Factory
     public function definition()
     {
         return [
-	        'title' => "Announcement {$this->faker->unique()->randomNumber()}",
-	        'content' => $this->faker->paragraph,
-	        'color' => $this->faker->randomElement(['info', 'success', 'warning', 'danger']),
-	        'expires_at' => $this->faker->dateTimeBetween('now', '21 days')
+            'title' => "Announcement {$this->faker->unique()->randomNumber()}",
+            'content' => $this->faker->paragraph,
+            'color' => $this->faker->randomElement(['info', 'success', 'warning', 'danger']),
+            'expires_at' => $this->faker->dateTimeBetween('now', '21 days'),
         ];
     }
 }

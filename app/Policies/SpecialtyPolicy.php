@@ -35,9 +35,8 @@ class SpecialtyPolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User       $user
+     * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, Specialty $mos)
@@ -59,9 +58,8 @@ class SpecialtyPolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User       $user
+     * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Specialty $mos)
@@ -72,9 +70,8 @@ class SpecialtyPolicy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User       $user
+     * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, Specialty $mos)
@@ -85,9 +82,8 @@ class SpecialtyPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User       $user
+     * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, Specialty $mos)
@@ -100,7 +96,6 @@ class SpecialtyPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, Specialty $mos)

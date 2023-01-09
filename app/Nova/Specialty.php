@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class Specialty extends Resource
 {
@@ -32,7 +31,11 @@ class Specialty extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name', 'abbreviation'];
+    public static $search = [
+        'id',
+        'name',
+        'abbreviation',
+    ];
 
     /**
      * @var string[]
@@ -46,7 +49,7 @@ class Specialty extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_specialties', 'Specialties')));
+        return Str::plural(Str::title(setting('localization_specialties', 'Specialties')));
     }
 
     /**
@@ -56,7 +59,7 @@ class Specialty extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_specialties', 'specialties')));
+        return Str::plural(Str::slug(setting('localization_specialties', 'specialties')));
     }
 
     /**
@@ -69,17 +72,9 @@ class Specialty extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Text::make('Abbreviation')
-                ->sortable()
-                ->showOnPreview(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            Text::make('Abbreviation')->sortable()->showOnPreview(),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

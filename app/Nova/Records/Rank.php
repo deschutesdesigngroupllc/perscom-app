@@ -19,7 +19,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Rank extends Resource
@@ -52,7 +51,7 @@ class Rank extends Resource
      */
     public static function uriKey()
     {
-        return Str::singular(Str::slug(NovaSettings::getSetting('localization_ranks', 'rank'))) . '-records';
+        return Str::singular(Str::slug(setting('localization_ranks', 'rank'))).'-records';
     }
 
     /**
@@ -60,7 +59,7 @@ class Rank extends Resource
      */
     public static function label()
     {
-        return Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))) . ' Records';
+        return Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records';
     }
 
     /**
@@ -97,44 +96,27 @@ class Rank extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
-                'user',
-                User::class
-            )->sortable(),
-            BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_ranks', 'Rank'))),
-                'rank',
-                \App\Nova\Rank::class
-            )
-                ->sortable()
-                ->showCreateRelationButton(),
-            Select::make('Type')
-                ->options([
-                    \App\Models\Records\Rank::RECORD_RANK_PROMOTION => 'Promotion',
-                    \App\Models\Records\Rank::RECORD_RANK_DEMOTION => 'Demotion',
-                ])
-                ->rules('required')
-                ->displayUsingLabels(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
+                     ->sortable(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', \App\Nova\Rank::class)
+                     ->sortable()
+                     ->showCreateRelationButton(),
+            Select::make('Type')->options([
+                \App\Models\Records\Rank::RECORD_RANK_PROMOTION => 'Promotion',
+                \App\Models\Records\Rank::RECORD_RANK_DEMOTION => 'Demotion',
+            ])->rules('required')->displayUsingLabels(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
             })->onlyOnIndex(),
-            BelongsTo::make('Document')
-                ->nullable()
-                ->onlyOnForms(),
+            BelongsTo::make('Document')->nullable()->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-                DateTime::make('Created At')
-                    ->sortable()
-                    ->exceptOnForms(),
-                DateTime::make('Updated At')
-                    ->exceptOnForms()
-                    ->hideFromIndex(),
+                DateTime::make('Created At')->sortable()->exceptOnForms(),
+                DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())
-                ->withTitle($this->document->name ?? null)
-                ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document
+                    ? $this->document->replaceContent($this->user, $this) : null),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
@@ -147,7 +129,11 @@ class Rank extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [new TotalRankRecords(), new NewRankRecords(), new RankRecordsByType()];
+        return [
+            new TotalRankRecords(),
+            new NewRankRecords(),
+            new RankRecordsByType(),
+        ];
     }
 
     /**

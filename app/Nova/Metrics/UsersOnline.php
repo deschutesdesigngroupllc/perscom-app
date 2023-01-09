@@ -6,7 +6,6 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 use Laravel\Nova\Metrics\ValueResult;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class UsersOnline extends Value
 {
@@ -28,11 +27,9 @@ class UsersOnline extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $keys = \App\Models\User::all()
-            ->map(function ($user) {
-                return "user.online.$user->id";
-            })
-            ->toArray();
+        $keys = \App\Models\User::all()->map(function ($user) {
+            return "user.online.$user->id";
+        })->toArray();
 
         $count = collect(\Illuminate\Support\Facades\Cache::tags('user.online')->many($keys))
             ->filter(function ($value) {
@@ -68,8 +65,6 @@ class UsersOnline extends Value
      */
     public function name()
     {
-        return 'Current ' .
-            Str::plural(Str::title(NovaSettings::getSetting('localization_users', 'Users'))) .
-            ' Online';
+        return 'Current '.Str::plural(Str::title(setting('localization_users', 'Users'))).' Online';
     }
 }

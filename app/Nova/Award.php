@@ -10,7 +10,6 @@ use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class Award extends Resource
 {
@@ -33,7 +32,10 @@ class Award extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @var string[]
@@ -47,7 +49,7 @@ class Award extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_awards', 'Awards')));
+        return Str::plural(Str::title(setting('localization_awards', 'Awards')));
     }
 
     /**
@@ -57,7 +59,7 @@ class Award extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_awards', 'awards')));
+        return Str::plural(Str::slug(setting('localization_awards', 'awards')));
     }
 
     /**
@@ -70,17 +72,9 @@ class Award extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Image::make('Image')
-                ->disk('public')
-                ->hideFromIndex(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            Image::make('Image')->disk('public')->hideFromIndex(),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

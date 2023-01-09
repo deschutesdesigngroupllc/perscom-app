@@ -39,7 +39,10 @@ class Role extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * @var string[]
@@ -56,13 +59,8 @@ class Role extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required']),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required']),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Text::make('Description', function ($model) {
                 return $model->description;
             })->onlyOnIndex(),
@@ -72,9 +70,7 @@ class Role extends Resource
             Boolean::make('Application Role', function ($role) {
                 return $role->is_application_role;
             }),
-            Tag::make('Permissions')
-                ->showCreateRelationButton()
-                ->withPreview(),
+            Tag::make('Permissions')->showCreateRelationButton()->withPreview(),
         ];
     }
 
@@ -88,9 +84,7 @@ class Role extends Resource
     public static function afterCreate(NovaRequest $request, Model $model)
     {
         // Reset permission cache
-        app()
-            ->make(PermissionRegistrar::class)
-            ->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
@@ -103,9 +97,7 @@ class Role extends Resource
     public static function afterUpdate(NovaRequest $request, Model $model)
     {
         // Reset permission cache
-        app()
-            ->make(PermissionRegistrar::class)
-            ->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
@@ -118,9 +110,7 @@ class Role extends Resource
     public static function afterDelete(NovaRequest $request, Model $model)
     {
         // Reset permission cache
-        app()
-            ->make(PermissionRegistrar::class)
-            ->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**

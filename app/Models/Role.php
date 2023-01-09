@@ -23,14 +23,17 @@ class Role extends \Spatie\Permission\Models\Role
      *
      * @var array
      */
-    protected $appends = ['is_custom_role', 'is_application_role'];
+    protected $appends = [
+        'is_custom_role',
+        'is_application_role',
+    ];
 
     /**
      * @return bool
      */
     public function getIsCustomRoleAttribute()
     {
-        return !collect(config('permissions.roles'))->has($this->name);
+        return ! collect(config('permissions.roles'))->has($this->name);
     }
 
     /**

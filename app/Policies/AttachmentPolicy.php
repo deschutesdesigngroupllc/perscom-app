@@ -12,6 +12,7 @@ class AttachmentPolicy
     use HandlesAuthorization;
 
     //TODO: Finish policy
+
     /**
      * @return bool
      */
@@ -20,6 +21,7 @@ class AttachmentPolicy
         if (Request::isCentralRequest()) {
             return false;
         }
+
         return true;
     }
 

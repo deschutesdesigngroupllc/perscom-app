@@ -34,7 +34,10 @@ class Feature extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
+    public static $search = [
+        'id',
+        'name',
+    ];
 
     /**
      * Get the fields displayed by the resource.
@@ -46,33 +49,25 @@ class Feature extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')
-                ->rules('required')
-                ->sortable(),
+            Text::make('Name')->rules('required')->sortable(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
-            Textarea::make('Description')
-                ->alwaysShow()
-                ->nullable(),
+            Textarea::make('Description')->alwaysShow()->nullable(),
             Badge::make('State', function () {
                 return FeatureState::from($this->state)->value;
-            })
-                ->map([
-                    'off' => 'danger',
-                    'on' => 'success',
-                    'dynamic' => 'info',
-                ])
-                ->exceptOnForms(),
-            FeatureStateField::make('State')
-                ->attach(FeatureState::class)
-                ->onlyOnForms(),
+            })->map([
+                'off' => 'danger',
+                'on' => 'success',
+                'dynamic' => 'info',
+            ])->exceptOnForms(),
+            FeatureStateField::make('State')->attach(FeatureState::class)->onlyOnForms(),
         ];
     }
 
     /**
      * @param  NovaRequest  $request
-     * @param  Model        $model
+     * @param  Model  $model
      */
     public static function afterUpdate(NovaRequest $request, Model $model)
     {

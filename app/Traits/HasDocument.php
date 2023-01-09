@@ -7,9 +7,8 @@ use App\Models\Document;
 trait HasDocument
 {
     /**
-     * @param Builder $query
-     * @param Document    $user
-     *
+     * @param  Builder  $query
+     * @param  Document  $user
      * @return Builder
      */
     public function scopeForDocument($query, $document)

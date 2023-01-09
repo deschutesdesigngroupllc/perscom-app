@@ -43,10 +43,10 @@ return [
     |
     */
 
-     'brand' =>  [
-	     'logo' => realpath(__DIR__.'/../public/svg/billing-logo.svg'),
-         'color' => 'bg-blue-600',
-     ],
+    'brand' => [
+        'logo' => realpath(__DIR__.'/../public/svg/billing-logo.svg'),
+        'color' => 'bg-blue-600',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -79,7 +79,6 @@ return [
         // Features::receiptEmails(['custom-addresses' => true]),
         Features::paymentNotificationEmails(),
     ],
-
 
     /*
     |--------------------------------------------------------------------------
@@ -130,34 +129,34 @@ return [
                         'Up to 25 personnel files',
                         'Social login support',
                         'Application provided subdomain',
-	                    'Community support'
+                        'Community support',
                     ],
                 ],
-	            [
-		            'name' => 'Company',
-		            'short_description' => 'For growing organizations with less than 100 personnel.',
-		            'monthly_id' => 'price_1LGWtYGt8lrL0dgCAfBx95kG',
-		            'yearly_id' => 'price_1LGWtYGt8lrL0dgC03GRAj6K',
-		            'features' => [
-			            'Up to 100 personnel files',
-			            'Access to powerful API',
-			            'Custom subdomain',
-			            'Ticket and email support'
-		            ],
-	            ],
-	            [
-		            'name' => 'Battalion',
-		            'short_description' => 'For large organizations that have more than 100 personnel.',
-		            'monthly_id' => 'price_1LGWuVGt8lrL0dgCA8GM8Bpw',
-		            'yearly_id' => 'price_1LGWuVGt8lrL0dgCoKsh7puY',
-		            'features' => [
-			            'Unlimited personnel files',
-			            'Export and backup personnel data',
-			            'Single sign-on integration',
-			            'Priority support'
-		            ],
-	            ],
+                [
+                    'name' => 'Company',
+                    'short_description' => 'For growing organizations with less than 100 personnel.',
+                    'monthly_id' => 'price_1LGWtYGt8lrL0dgCAfBx95kG',
+                    'yearly_id' => 'price_1LGWtYGt8lrL0dgC03GRAj6K',
+                    'features' => [
+                        'Up to 100 personnel files',
+                        'Access to powerful API',
+                        'Custom subdomain',
+                        'Ticket and email support',
+                    ],
+                ],
+                [
+                    'name' => 'Battalion',
+                    'short_description' => 'For large organizations that have more than 100 personnel.',
+                    'monthly_id' => 'price_1LGWuVGt8lrL0dgCA8GM8Bpw',
+                    'yearly_id' => 'price_1LGWuVGt8lrL0dgCoKsh7puY',
+                    'features' => [
+                        'Unlimited personnel files',
+                        'Export and backup personnel data',
+                        'Single sign-on integration',
+                        'Priority support',
+                    ],
+                ],
             ],
         ],
-    ]
+    ],
 ];

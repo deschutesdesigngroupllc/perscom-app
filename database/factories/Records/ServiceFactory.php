@@ -16,8 +16,8 @@ class ServiceFactory extends Factory
     {
         return [
             'text' => $this->faker->sentence(),
-	        'author_id' => User::factory(),
-	        'user_id' => User::factory()
+            'author_id' => User::factory(),
+            'user_id' => User::factory(),
         ];
     }
 }

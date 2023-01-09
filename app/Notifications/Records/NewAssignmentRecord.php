@@ -47,7 +47,10 @@ class NewAssignmentRecord extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail', NovaChannel::class];
+        return [
+            'mail',
+            NovaChannel::class,
+        ];
     }
 
     /**
@@ -58,10 +61,9 @@ class NewAssignmentRecord extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())
-            ->subject('New Assignment Record Added')
-            ->line('A new assignment record has been added to your personnel file.')
-            ->action('View Record', $this->url);
+        return (new MailMessage())->subject('New Assignment Record Added')
+                                  ->line('A new assignment record has been added to your personnel file.')
+                                  ->action('View Record', $this->url);
     }
 
     /**
@@ -71,10 +73,9 @@ class NewAssignmentRecord extends Notification implements ShouldQueue
      */
     public function toNova()
     {
-        return (new NovaNotification())
-            ->message('A new assignment record has been added to your personnel file.')
-            ->action('View Record', URL::remote($this->url))
-            ->icon('document-text')
-            ->type('info');
+        return (new NovaNotification())->message('A new assignment record has been added to your personnel file.')
+                                       ->action('View Record', URL::remote($this->url))
+                                       ->icon('document-text')
+                                       ->type('info');
     }
 }

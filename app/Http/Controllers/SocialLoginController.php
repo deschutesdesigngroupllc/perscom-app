@@ -16,10 +16,10 @@ class SocialLoginController extends Controller
      */
     protected static $sessionKey = 'auth.social.login.tenant';
 
-	/**
-	 * @var string
-	 */
-	protected static $loginTokenTtl = 60;
+    /**
+     * @var string
+     */
+    protected static $loginTokenTtl = 60;
 
     /**
      * Instantiate a new controller instance.
@@ -33,7 +33,6 @@ class SocialLoginController extends Controller
 
     /**
      * @param $driver
-     *
      * @return \Illuminate\Http\RedirectResponse
      */
     public function tenant($driver)
@@ -47,12 +46,11 @@ class SocialLoginController extends Controller
     /**
      * @param $driver
      * @param $tenant
-     *
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function redirect($driver, $tenant)
     {
-        if (!$tenant) {
+        if (! $tenant) {
             throw new \RuntimeException('There was no Tenant ID included with your request. Please try again.');
         }
 
@@ -63,8 +61,8 @@ class SocialLoginController extends Controller
 
     /**
      * @param $driver
-     *
      * @return \Illuminate\Http\RedirectResponse
+     *
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
@@ -72,7 +70,7 @@ class SocialLoginController extends Controller
     {
         $tenantId = session()->get(self::$sessionKey);
 
-        if (!$tenantId) {
+        if (! $tenantId) {
             throw new \RuntimeException('There was no Tenant ID saved to your session. Please try again.');
         }
 
@@ -80,19 +78,16 @@ class SocialLoginController extends Controller
 
         $tenant = Tenant::findOrFail($tenantId);
         $token = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
-            $user = User::updateOrCreate(
-                [
-                    'email' => $socialLiteUser->email,
-                ],
-                [
-                    'name' => $socialLiteUser->name,
-                    'email_verified_at' => now(),
-                    'social_id' => $socialLiteUser->id,
-                    'social_driver' => $driver,
-                    'social_token' => $socialLiteUser->token,
-                    'social_refresh_token' => $socialLiteUser->refreshToken,
-                ]
-            );
+            $user = User::updateOrCreate([
+                'email' => $socialLiteUser->email,
+            ], [
+                'name' => $socialLiteUser->name,
+                'email_verified_at' => now(),
+                'social_id' => $socialLiteUser->id,
+                'social_driver' => $driver,
+                'social_token' => $socialLiteUser->token,
+                'social_refresh_token' => $socialLiteUser->refreshToken,
+            ]);
 
             return LoginToken::create([
                 'user_id' => $user->id,
@@ -104,18 +99,17 @@ class SocialLoginController extends Controller
 
     /**
      * @param  LoginToken  $token
-     *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function login(LoginToken $loginToken)
     {
-	    if ($loginToken->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
-		    abort(403);
-	    }
+        if ($loginToken->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
+            abort(403);
+        }
 
         Auth::loginUsingId($loginToken->user_id);
 
-	    $loginToken->delete();
+        $loginToken->delete();
 
         return redirect(tenant()->url);
     }

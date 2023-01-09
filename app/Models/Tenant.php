@@ -63,7 +63,10 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      *
      * @var array
      */
-    protected $appends = ['domain', 'database_status'];
+    protected $appends = [
+        'domain',
+        'database_status',
+    ];
 
     /**
      * The relations to eager load on every query.

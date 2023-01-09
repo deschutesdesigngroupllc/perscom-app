@@ -7,12 +7,10 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Spatie\Tags\HasTags;
 
 class Document extends Model
 {
     use HasFactory;
-    use HasTags;
 
     /**
      * @var string[]
@@ -51,7 +49,6 @@ class Document extends Model
     /**
      * @param  User  $user
      * @param  null  $attachedModel
-     *
      * @return mixed|string
      */
     public function replaceContent(User $user, $attachedModel = null)
@@ -65,10 +62,9 @@ class Document extends Model
     }
 
     /**
-     * @param             $tag
+     * @param    $tag
      * @param  User|null  $user
-     * @param  null       $attachedModel
-     *
+     * @param  null  $attachedModel
      * @return mixed|void|null
      */
     protected function resolveTag($tag, ?User $user = null, $attachedModel = null)
@@ -90,13 +86,13 @@ class Document extends Model
                 return $user->online ?? null;
                 break;
             case '{user_assignment_position}':
-                return $user->assignment->position->name ?? null;
+                return $user->position->name ?? null;
                 break;
             case '{user_assignment_specialty}':
-                return $user->assignment->specialty->name ?? null;
+                return $user->specialty->name ?? null;
                 break;
             case '{user_assignment_unit}':
-                return $user->assignment->unit->name ?? null;
+                return $user->unit->name ?? null;
                 break;
             case '{user_rank}':
                 return $user->rank->name ?? null;
@@ -114,8 +110,7 @@ class Document extends Model
                 return $attachedModel->text ?? null;
                 break;
             case '{assignment_record_date}':
-                return $attachedModel->created_at
-                    ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
+                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
                     : null;
                 break;
             case '{award_record_award}':
@@ -125,16 +120,14 @@ class Document extends Model
                 return $attachedModel->text ?? null;
                 break;
             case '{award_record_date}':
-                return $attachedModel->created_at
-                    ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
+                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
                     : null;
                 break;
             case '{combat_record_text}':
                 return $attachedModel->text ?? null;
                 break;
             case '{combat_record_date}':
-                return $attachedModel->created_at
-                    ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
+                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
                     : null;
                 break;
             case '{qualification_record_qualification}':
@@ -144,8 +137,7 @@ class Document extends Model
                 return $attachedModel->text ?? null;
                 break;
             case '{qualification_record_date}':
-                return $attachedModel->created_at
-                    ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
+                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
                     : null;
                 break;
             case '{rank_record_rank}':
@@ -158,16 +150,14 @@ class Document extends Model
                 return $attachedModel->text ?? null;
                 break;
             case '{rank_record_date}':
-                return $attachedModel->created_at
-                    ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
+                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
                     : null;
                 break;
             case '{service_record_text}':
                 return $attachedModel->text ?? null;
                 break;
             case '{service_record_date}':
-                return $attachedModel->created_at
-                    ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
+                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
                     : null;
                 break;
             default:

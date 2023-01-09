@@ -15,9 +15,9 @@ class CreateModelHasFieldsTable extends Migration
     {
         Schema::create('model_has_fields', function (Blueprint $table) {
             $table->id();
-	        $table->unsignedBigInteger('field_id');
-	        $table->morphs('model');
-	        $table->integer('order')->default(0);
+            $table->unsignedBigInteger('field_id');
+            $table->morphs('model');
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

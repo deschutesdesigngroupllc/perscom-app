@@ -2,7 +2,6 @@
 
 namespace App\Models\Forms;
 
-use App\Casts\SubmissionCast;
 use App\Models\User;
 use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,14 +19,22 @@ class Submission extends Model
      *
      * @var array
      */
-    protected $with = ['form', 'user'];
+    protected $with = [
+        'form',
+        'user',
+        'statuses'
+    ];
 
     /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'form_id', 'data'];
+    protected $fillable = [
+        'user_id',
+        'form_id',
+        'data',
+    ];
 
     /**
      * The attributes that should be cast.

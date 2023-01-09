@@ -10,7 +10,10 @@ class DiscordSocialiteProvider extends AbstractProvider
     /**
      * @var string[]
      */
-    protected $scopes = ['email', 'identify'];
+    protected $scopes = [
+        'email',
+        'identify',
+    ];
 
     /**
      * @var string
@@ -27,12 +30,11 @@ class DiscordSocialiteProvider extends AbstractProvider
 
     /**
      * @param  string  $state
-     *
      * @return string
      */
     protected function getAuthUrl($state)
     {
-        return $this->buildAuthUrlFromBase($this->getDiscordUrl() . '/oauth2/authorize', $state);
+        return $this->buildAuthUrlFromBase($this->getDiscordUrl().'/oauth2/authorize', $state);
     }
 
     /**
@@ -40,21 +42,21 @@ class DiscordSocialiteProvider extends AbstractProvider
      */
     protected function getTokenUrl()
     {
-        return $this->getDiscordUrl() . '/oauth2/token';
+        return $this->getDiscordUrl().'/oauth2/token';
     }
 
     /**
      * @param  string  $token
-     *
      * @return array|mixed
+     *
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get($this->getDiscordUrl() . '/users/@me', [
+        $response = $this->getHttpClient()->get($this->getDiscordUrl().'/users/@me', [
             'headers' => [
                 'cache-control' => 'no-cache',
-                'Authorization' => 'Bearer ' . $token,
+                'Authorization' => 'Bearer '.$token,
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
         ]);
@@ -64,7 +66,6 @@ class DiscordSocialiteProvider extends AbstractProvider
 
     /**
      * @param  array  $user
-     *
      * @return User
      */
     protected function mapUserToObject(array $user)
@@ -79,8 +80,7 @@ class DiscordSocialiteProvider extends AbstractProvider
     }
 
     /**
-     * @param array $user
-     *
+     * @param  array  $user
      * @return string|null
      *
      * @see https://discord.com/developers/docs/reference#image-formatting-cdn-endpoints
@@ -92,10 +92,7 @@ class DiscordSocialiteProvider extends AbstractProvider
         }
 
         $isGif = preg_match('/a_.+/m', $user['avatar']) === 1;
-        $extension =
-            $this->getConfig('allow_gif_avatars', true) && $isGif
-                ? 'gif'
-                : $this->getConfig('avatar_default_extension', 'jpg');
+        $extension = $this->getConfig('allow_gif_avatars', true) && $isGif ? 'gif' : $this->getConfig('avatar_default_extension', 'jpg');
 
         return sprintf('https://cdn.discordapp.com/avatars/%s/%s.%s', $user['id'], $user['avatar'], $extension);
     }

@@ -47,12 +47,10 @@ class NewUserLoginInformationMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.user.new-login')
-            ->subject('Your New Account Information')
-            ->with([
-                'url' => $this->url,
-                'email' => $this->email,
-                'password' => $this->password,
-            ]);
+        return $this->markdown('emails.user.new-login')->subject('Your New Account Information')->with([
+            'url' => $this->url,
+            'email' => $this->email,
+            'password' => $this->password,
+        ]);
     }
 }

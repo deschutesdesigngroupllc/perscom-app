@@ -32,7 +32,10 @@ class Domain extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'domain'];
+    public static $search = [
+        'id',
+        'domain',
+    ];
 
     /**
      * Get the fields displayed by the resource.
@@ -45,24 +48,17 @@ class Domain extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Tenant')->showCreateRelationButton(),
-            Text::make('Domain')
-                ->sortable()
-                ->onlyOnForms()
-                ->rules(['required', 'alpha_dash', Rule::unique('domains', 'domain')->ignore($this->id)]),
-            URL::make('Domain', 'url')
-                ->sortable()
-                ->displayUsing(function ($url) {
-                    return $url;
-                })
-                ->exceptOnForms(),
+            Text::make('Domain')->sortable()->onlyOnForms()->rules([
+                'required',
+                'alpha_dash',
+                Rule::unique('domains', 'domain')->ignore($this->id),
+            ]),
+            URL::make('Domain', 'url')->sortable()->displayUsing(function ($url) {
+                return $url;
+            })->exceptOnForms(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->sortable()
-                ->exceptOnForms(),
-            DateTime::make('Updated At')
-                ->sortable()
-                ->exceptOnForms()
-                ->onlyOnDetail(),
+            DateTime::make('Created At')->sortable()->exceptOnForms(),
+            DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
         ];
     }
 

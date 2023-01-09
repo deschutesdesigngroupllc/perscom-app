@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Listeners\System\SendDomainUpdatedNotification;
 use App\Listeners\TenantCouldNotBeIdentified;
 use App\Models\Domain;
 use App\Models\Records\Assignment;

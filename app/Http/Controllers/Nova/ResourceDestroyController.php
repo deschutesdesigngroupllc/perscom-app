@@ -16,7 +16,10 @@ class ResourceDestroyController extends \Laravel\Nova\Http\Controllers\ResourceD
      */
     public function __invoke(DeleteResourceRequest $request)
     {
-        if (\in_array(\get_class($request->findModel()), [Token::class, Client::class], true)) {
+        if (\in_array(\get_class($request->findModel()), [
+            Token::class,
+            Client::class,
+        ], true)) {
             config()->set('nova.actions.resource', null);
         }
 
