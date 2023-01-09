@@ -21,12 +21,5 @@ yarn-error.log
 /.idea
 /.vscode
 auth.json
-# Project exclude paths
-/nova-components/AlertCard/dist/
-/nova-components/DashboardQuickActions/dist/
-/nova-components/DashboardTitle/dist/
-/nova-components/DocumentViewerTool/dist/
-/nova-components/HtmlField/dist/
-/nova-components/Roster/dist/
 .editorconfig
 .styleci.yml
