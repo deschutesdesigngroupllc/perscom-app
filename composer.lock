@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "39c5242c0308fbda646e984976a44bbf",
+    "content-hash": "47b3b6fdb2fdcef317cf09e23dadfb37",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5586,16 +5586,16 @@
         },
         {
             "name": "outl1ne/nova-sortable",
-            "version": "3.3.0",
+            "version": "dev-tailwindcss",
             "source": {
                 "type": "git",
-                "url": "https://github.com/outl1ne/nova-sortable.git",
-                "reference": "6a3e0ea03550df9deed201ddb1be2061414de0dc"
+                "url": "https://github.com/JonErickson/nova-sortable.git",
+                "reference": "3ee27c9cdd5dae56eb15e9452dff97518bd06c67"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/outl1ne/nova-sortable/zipball/6a3e0ea03550df9deed201ddb1be2061414de0dc",
-                "reference": "6a3e0ea03550df9deed201ddb1be2061414de0dc",
+                "url": "https://api.github.com/repos/JonErickson/nova-sortable/zipball/3ee27c9cdd5dae56eb15e9452dff97518bd06c67",
+                "reference": "3ee27c9cdd5dae56eb15e9452dff97518bd06c67",
                 "shasum": ""
             },
             "require": {
@@ -5617,7 +5617,6 @@
                     "Outl1ne\\NovaSortable\\": "src/"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -5630,16 +5629,15 @@
                 "outl1ne"
             ],
             "support": {
-                "issues": "https://github.com/outl1ne/nova-sortable/issues",
-                "source": "https://github.com/outl1ne/nova-sortable/tree/3.3.0"
+                "source": "https://github.com/JonErickson/nova-sortable/tree/tailwindcss"
             },
             "funding": [
                 {
-                    "url": "https://github.com/outl1ne",
-                    "type": "github"
+                    "type": "github",
+                    "url": "https://github.com/outl1ne"
                 }
             ],
-            "time": "2022-10-28T12:41:03+00:00"
+            "time": "2023-01-09T20:38:50+00:00"
         },
         {
             "name": "outl1ne/nova-translations-loader",
@@ -5809,7 +5807,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-main",
+            "version": "dev-static-pages",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5845,7 +5843,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-main",
+            "version": "dev-static-pages",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -5881,7 +5879,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-main",
+            "version": "dev-static-pages",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -5917,7 +5915,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-main",
+            "version": "dev-static-pages",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -5953,7 +5951,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-main",
+            "version": "dev-static-pages",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -5989,7 +5987,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-main",
+            "version": "dev-static-pages",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -13978,6 +13976,7 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "laravel/passport": 20,
+        "outl1ne/nova-sortable": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
