@@ -8,7 +8,6 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByRequestData;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -39,7 +38,7 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::domain(config('app.api_url'))
-                 ->middleware(['api', InitializeTenancyByRequestData::class])
+                 ->middleware('api')
                  ->namespace($this->namespace)
                  ->group(base_path('routes/api.php'));
 

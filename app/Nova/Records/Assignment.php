@@ -110,7 +110,7 @@ class Assignment extends Resource
                 DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
             ]),
             (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document
-                    ? $this->document->replaceContent($this->user, $this) : null),
+                ? $this->document->replaceContent($this->user, $this) : null),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }

@@ -169,6 +169,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(AuthorizedApplications::class),
                         MenuItem::resource(Client::class)->name('My Apps'),
                         MenuItem::resource(PersonalAccessToken::class),
+                        MenuItem::externalLink('Documentation', 'https://api.perscom.io/documentation')->openInNewTab(),
                         MenuItem::resource(Log::class),
                     ])->icon('link')->collapsable(),
 
@@ -247,6 +248,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                          ->resolveUsing(function () {
                              return \tenant('email');
                          }),
+                    Text::make('PERSCOM Account ID', function () {
+                        return \tenant()->getTenantKey();
+                    })->help('Your Account ID that must be used in all API requests.')->readonly(),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')

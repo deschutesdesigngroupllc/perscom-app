@@ -89,7 +89,7 @@ class Client extends Resource
                 return route('passport.token.refresh');
             })->copyable()->onlyOnDetail(),
             Text::make('Authenticated User Endpoint', function () {
-                return route('users.me');
+                return route('api.me.index');
             })->copyable()->onlyOnDetail(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->sortable()->exceptOnForms(),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Http\Middleware\CheckUniversalRouteForTenantOrAdmin;
+use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Jobs\CreateInitialTenantUser;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
@@ -127,6 +128,7 @@ class TenancyServiceProvider extends ServiceProvider
             Middleware\InitializeTenancyByDomainOrSubdomain::class,
             Middleware\InitializeTenancyByPath::class,
             Middleware\InitializeTenancyByRequestData::class,
+            InitializeTenancyByRequestData::class,
             CheckUniversalRouteForTenantOrAdmin::class,
         ];
 
