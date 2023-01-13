@@ -1,28 +1,28 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Users;
+namespace App\Http\Controllers\Api\V1\Units;
 
-use App\Http\Requests\UserRequest;
-use App\Models\User;
-use App\Policies\UserPolicy;
+use App\Http\Requests\UnitRequest;
+use App\Models\Unit;
+use App\Policies\UnitPolicy;
 use Orion\Http\Controllers\Controller;
 
-class UsersController extends Controller
+class UnitsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = User::class;
+    protected $model = Unit::class;
 
     /**
      * @var string
      */
-    protected $request = UserRequest::class;
+    protected $request = UnitRequest::class;
 
     /**
      * @var string
      */
-    protected $policy = UserPolicy::class;
+    protected $policy = UnitPolicy::class;
 
     /**
      * @return string[]
@@ -37,7 +37,7 @@ class UsersController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['name', 'email'];
+        return ['name'];
     }
 
     /**
@@ -45,6 +45,6 @@ class UsersController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'created_at'];
+        return ['id', 'name'];
     }
 }

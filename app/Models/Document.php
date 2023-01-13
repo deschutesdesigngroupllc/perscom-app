@@ -15,6 +15,15 @@ class Document extends Model
     /**
      * @var string[]
      */
+    protected $fillable = [
+        'name',
+        'description',
+        'content',
+    ];
+
+    /**
+     * @var string[]
+     */
     public static $tags = [
         '{user_name}' => 'The user\'s name.',
         '{user_email}' => 'The user\'s email.',

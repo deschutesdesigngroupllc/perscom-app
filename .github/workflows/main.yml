@@ -7,8 +7,8 @@ on:
       - prerelease
 
 jobs:
-  build-application:
-    name: Build Application
+  delpoy-application:
+    name: Deploy Application
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
@@ -40,6 +40,22 @@ jobs:
           release_branches: master
           pre_release_branches: prerelease
           append_to_pre_release_tag: prerelease
+
+      - name: Generate API Specification File
+        run: php artisan perscom:specs --format=yaml
+
+      - name: Generate Swagger API UI
+        uses: Legion2/swagger-ui-action@v1
+        with:
+          output: swagger-ui
+          version: ${{ steps.tag_version.outputs.new_tag }}
+          spec-file: app/storage/specs/specs.yaml
+
+      - name: Deploy API Docs to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: swagger-ui
 
       - name: Deploy Application for Staging
         if: github.ref == 'refs/heads/prerelease'

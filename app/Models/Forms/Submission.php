@@ -22,7 +22,7 @@ class Submission extends Model
     protected $with = [
         'form',
         'user',
-        'statuses'
+        'statuses',
     ];
 
     /**

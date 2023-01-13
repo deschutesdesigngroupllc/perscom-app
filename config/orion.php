@@ -11,12 +11,12 @@ return [
     'specs' => [
         'info' => [
             'title' => env('APP_NAME'),
-            'description' => null,
+            'description' => 'The PERSCOM API describes how to interact and manipulate your PERSCOM data available at https://perscom.io. The API provides a powerful interface to allow for third-party collaboration and integration with your PERSCOM Dashboard.',
             'terms_of_service' => null,
             'contact' => [
-                'name' => null,
-                'url' => null,
-                'email' => null,
+                'name' => 'Deschutes Design Group LLC',
+                'url' => 'www.deschutesdesigngroup.com',
+                'email' => 'info@deschutesdesigngroup.com',
             ],
             'license' => [
                 'name' => null,
@@ -25,7 +25,9 @@ return [
             'version' => '1.0.0',
         ],
         'servers' => [
-            ['url' => env('APP_URL').'/api', 'description' => 'Default Environment'],
+            ['url' => 'http://api.localhost', 'description' => 'Local Environment'],
+            ['url' => 'https://api.staging.perscom.io', 'description' => 'Staging Environment'],
+            ['url' => 'https://api.perscom.io', 'description' => 'Production Environment']
         ],
         'tags' => [],
     ],

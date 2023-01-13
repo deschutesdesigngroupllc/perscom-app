@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Orion\Http\Requests\Request;
 
-class UserRequest extends Request
+class UnitRequest extends Request
 {
     /**
      * @return string[]
@@ -12,9 +12,7 @@ class UserRequest extends Request
     public function commonRules(): array
     {
         return [
-            'email_verified_at' => 'nullable|date',
-            'notes_updated_at' => 'nullable|date',
-            'last_seen_at' => 'nullable|date',
+            'description' => 'nullable|string',
         ];
     }
 
@@ -25,7 +23,6 @@ class UserRequest extends Request
     {
         return [
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
         ];
     }
 }

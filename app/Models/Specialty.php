@@ -11,6 +11,15 @@ class Specialty extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = [
+        'name',
+        'abbreviation',
+        'description',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function assignment_records()

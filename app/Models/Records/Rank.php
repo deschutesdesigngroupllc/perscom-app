@@ -18,6 +18,17 @@ class Rank extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = [
+        'user_id',
+        'rank_id',
+        'document_id',
+        'author_id',
+        'text',
+    ];
+
+    /**
      * Record types
      */
     public const RECORD_RANK_PROMOTION = 0;

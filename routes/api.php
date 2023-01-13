@@ -1,6 +1,10 @@
 <?php
 
-use App\Http\Controllers\Api\V1\UnitsController;
+use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
+use App\Http\Controllers\Api\V1\Forms\SubmissionsController;
+use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\Units\UnitsController;
+use App\Http\Controllers\Api\V1\Units\UnitsUsersController;
 use App\Http\Controllers\Api\V1\Users\UsersAssignmentRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersAwardRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersCombatRecordsController;
@@ -16,7 +20,6 @@ use App\Http\Controllers\Api\V1\Users\UsersUnitController;
 use App\Http\Middleware\LogApiRequests;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,14 +33,23 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 */
 Route::group([
     'middleware' => [
-        InitializeTenancyByDomainOrSubdomain::class,
         LogApiRequests::class,
-        'treblle'
+        'treblle',
     ],
-    'as' => 'api.'
+    'as' => 'api.',
 ], static function () {
-    Route::apiResource('units', UnitsController::class);
-    Route::get('users/me', [UsersController::class, 'me'])->name('users.me');
+    // OIDC
+    Orion::resource('me', MeController::class)->only('index');
+
+    // Announcements
+    Orion::resource('announcements', AnnouncementsController::class);
+
+    // Submissions
+    Orion::resource('submissions', SubmissionsController::class);
+
+    // Units
+    Orion::resource('units', UnitsController::class);
+    Orion::hasManyResource('units', 'users', UnitsUsersController::class);
 
     // Users
     Orion::resource('users', UsersController::class);
