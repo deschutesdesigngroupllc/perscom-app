@@ -8,6 +8,7 @@ use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvi
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
+use Stancl\Tenancy\Middleware\InitializeTenancyByRequestData;
 
 class RouteServiceProvider extends ServiceProvider
 {
@@ -37,7 +38,10 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::prefix('api')->middleware('api')->namespace($this->namespace)->group(base_path('routes/api.php'));
+            Route::domain(config('app.api_url'))
+                 ->middleware(['api', InitializeTenancyByRequestData::class])
+                 ->namespace($this->namespace)
+                 ->group(base_path('routes/api.php'));
 
             Route::domain(config('app.auth_url'))
                  ->middleware('auth_web')

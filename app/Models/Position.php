@@ -13,6 +13,15 @@ class Position extends Model
     use SortableTrait;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = [
+        'name',
+        'description',
+        'order',
+    ];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function assignment_records()

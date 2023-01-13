@@ -61,7 +61,7 @@ class Status extends Resource
     {
         return [
             ID::make()->sortable(),
-            Textarea::make('Text')
+            Textarea::make('Text'),
         ];
     }
 

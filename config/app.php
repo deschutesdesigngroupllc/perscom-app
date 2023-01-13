@@ -56,6 +56,7 @@ return [
     'url' => env('APP_URL', 'http://localhost'),
 	'base_url' => env('BASE_URL', '.localhost'),
 	'auth_url' => env('AUTH_URL', 'http://auth.localhost'),
+    'api_url' => env('API_URL', 'http://api.localhost'),
     'asset_url' => env('ASSET_URL', null),
 	'scheme' => env('APP_SCHEME', 'http'),
 

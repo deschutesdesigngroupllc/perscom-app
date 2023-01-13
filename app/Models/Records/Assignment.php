@@ -24,9 +24,12 @@ class Assignment extends Model
      */
     protected $fillable = [
         'user_id',
-        'position_id',
         'unit_id',
+        'position_id',
         'specialty_id',
+        'document_id',
+        'author_id',
+        'text',
     ];
 
     /**

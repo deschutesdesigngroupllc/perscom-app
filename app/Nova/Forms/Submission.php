@@ -122,7 +122,7 @@ class Submission extends Resource
                                 DateTime::make('Updated At')->sortable()->onlyOnIndex(),
                             ];
                         }),
-                    ]),
+                ]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];

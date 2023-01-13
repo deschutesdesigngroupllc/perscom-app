@@ -15,6 +15,18 @@ class Rank extends Model
     /**
      * @var string[]
      */
+    protected $fillable = [
+        'name',
+        'description',
+        'abbreviation',
+        'paygrade',
+        'image',
+        'order',
+    ];
+
+    /**
+     * @var string[]
+     */
     protected $appends = [
         'image_url',
     ];
