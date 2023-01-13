@@ -7,8 +7,8 @@ on:
       - prerelease
 
 jobs:
-  delpoy-application:
-    name: Deploy Application
+  build-application:
+    name: Build Application
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Source Code
@@ -27,26 +27,6 @@ jobs:
           coverage: none
           tools: composer
 
-      - name: Configure Composer Authentication
-        run: |
-          composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
-          composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_API_TOKEN }}
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
-
-      - name: Cache Dependencies
-        uses: actions/cache@v1
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-composer-
-
-      - name: Install Composer Dependencies
-        run: composer install --no-interaction --prefer-dist
-
       - name: Require Forge CLI
         run: composer global require laravel/forge-cli
 
@@ -60,22 +40,6 @@ jobs:
           release_branches: master
           pre_release_branches: prerelease
           append_to_pre_release_tag: prerelease
-
-      - name: Generate API Specification File
-        run: php artisan perscom:specs --format=yaml
-
-      - name: Generate Swagger API UI
-        uses: Legion2/swagger-ui-action@v1
-        with:
-          output: swagger-ui
-          version: ${{ steps.tag_version.outputs.new_tag }}
-          spec-file: app/storage/specs/specs.yaml
-
-      - name: Deploy API Docs to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: swagger-ui
 
       - name: Deploy Application for Staging
         if: github.ref == 'refs/heads/prerelease'
