@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
 use App\Http\Controllers\Api\V1\Forms\SubmissionsController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\SpecController;
 use App\Http\Controllers\Api\V1\Units\UnitsController;
 use App\Http\Controllers\Api\V1\Units\UnitsUsersController;
 use App\Http\Controllers\Api\V1\Users\UsersAssignmentRecordsController;
@@ -34,37 +35,42 @@ use Orion\Facades\Orion;
 */
 Route::group([
     'middleware' => [
-        InitializeTenancyByRequestData::class,
-        LogApiRequests::class,
         'treblle',
-        'subscribed'
     ],
+    'prefix' => 'v1',
     'as' => 'api.',
 ], static function () {
-    // OIDC
-    Orion::resource('me', MeController::class)->only('index');
 
-    // Announcements
-    Orion::resource('announcements', AnnouncementsController::class);
+    // Spec
+    Route::get('spec.yaml', [SpecController::class, 'index']);
 
-    // Submissions
-    Orion::resource('submissions', SubmissionsController::class);
+    // Tenant specific
+    Route::group(['middleware' => [InitializeTenancyByRequestData::class, LogApiRequests::class, 'subscribed']], static function() {
+        // OIDC
+        Orion::resource('me', MeController::class)->only('index');
 
-    // Units
-    Orion::resource('units', UnitsController::class);
-    Orion::hasManyResource('units', 'users', UnitsUsersController::class);
+        // Announcements
+        Orion::resource('announcements', AnnouncementsController::class);
 
-    // Users
-    Orion::resource('users', UsersController::class);
-    Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);
-    Orion::hasManyResource('users', 'award-records', UsersAwardRecordsController::class);
-    Orion::hasManyResource('users', 'combat-records', UsersCombatRecordsController::class);
-    Orion::hasManyResource('users', 'qualification-records', UsersQualificationRecordsController::class);
-    Orion::hasManyResource('users', 'rank-records', UsersRankRecordsController::class);
-    Orion::hasManyResource('users', 'service-records', UsersServiceRecordsController::class);
-    Orion::hasOneResource('users', 'position', UsersPositionController::class);
-    Orion::hasOneResource('users', 'rank', UsersRankController::class);
-    Orion::hasOneResource('users', 'specialty', UsersSpecialtyController::class);
-    Orion::hasOneResource('users', 'status', UsersStatusController::class);
-    Orion::belongsToResource('users', 'unit', UsersUnitController::class);
+        // Submissions
+        Orion::resource('submissions', SubmissionsController::class);
+
+        // Units
+        Orion::resource('units', UnitsController::class);
+        Orion::hasManyResource('units', 'users', UnitsUsersController::class);
+
+        // Users
+        Orion::resource('users', UsersController::class);
+        Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);
+        Orion::hasManyResource('users', 'award-records', UsersAwardRecordsController::class);
+        Orion::hasManyResource('users', 'combat-records', UsersCombatRecordsController::class);
+        Orion::hasManyResource('users', 'qualification-records', UsersQualificationRecordsController::class);
+        Orion::hasManyResource('users', 'rank-records', UsersRankRecordsController::class);
+        Orion::hasManyResource('users', 'service-records', UsersServiceRecordsController::class);
+        Orion::hasOneResource('users', 'position', UsersPositionController::class);
+        Orion::hasOneResource('users', 'rank', UsersRankController::class);
+        Orion::hasOneResource('users', 'specialty', UsersSpecialtyController::class);
+        Orion::hasOneResource('users', 'status', UsersStatusController::class);
+        Orion::belongsToResource('users', 'unit', UsersUnitController::class);
+    });
 });
