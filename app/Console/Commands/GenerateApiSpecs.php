@@ -14,7 +14,7 @@ class GenerateApiSpecs extends Command
      * @var string
      */
     protected $signature = 'perscom:specs
-                            {--format=json}
+                            {--format=yaml}
                             {--tenant=}';
 
     /**
