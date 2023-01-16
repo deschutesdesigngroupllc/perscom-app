@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Actions\Fortify\CreateNewTenant;
+use App\Models\Tenant;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -25,16 +26,25 @@ class RegisterController extends Controller
      */
     public function store(Request $request, CreateNewTenant $createNewTenant)
     {
-        $createNewTenant->create($request->all());
+        $tenant = $createNewTenant->create($request->all());
 
-        return redirect()->route('register.complete');
+        return redirect()->route('register.complete', [
+            'tenant' => $tenant
+        ]);
     }
 
     /**
-     * @return \Inertia\Response
+     * @param $tenant
+     *
+     * @return \Inertia\Response|void
      */
-    public function complete()
+    public function complete($tenant)
     {
+        $tenant = Tenant::find($tenant);
+        if (!$tenant || !$tenant->wasRecentlyCreated) {
+            return redirect()->route('register.index');
+        }
+
         return Inertia::render('Complete');
     }
 }
