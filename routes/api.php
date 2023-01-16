@@ -80,5 +80,5 @@ Route::group(['as' => 'api.'], static function () {
     // Route not found
     Route::fallback(function () {
         throw new NotFoundHttpException('The requested API endpoint could not be found or you do not have access to it.');
-    })->name('api.error');
+    })->name('error');
 });

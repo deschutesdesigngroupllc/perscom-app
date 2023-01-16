@@ -19,14 +19,22 @@ class Subscribed extends VerifyBillableIsSubscribed
      */
     public function handle($request, $next, $billableType = null, $plan = null)
     {
+        $response = parent::handle($request, $next, $billableType, $plan);
+
         if ($request->isDemoMode() || $request->isCentralRequest() || FeatureFlag::isOff('billing')) {
             return $next($request);
         }
 
-        $response =  parent::handle($request, $next, $billableType, $plan);
+        if ($request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*')) {
+            return $next($request);
+        }
 
-        if ($response->getStatusCode() === 402 && $request->expectsJson()) {
+        if ($response->getStatusCode() === 402 && $request->expectsJson() && $request->routeIs('api.*')) {
             throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
+        }
+
+        if ($request->expectsJson()) {
+            return $next($request);
         }
 
         return $response;
