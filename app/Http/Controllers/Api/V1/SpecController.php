@@ -13,7 +13,7 @@ class SpecController extends Controller
     public function index()
     {
         return response(Storage::disk('local')->get('specs/specs.yaml'), 200, [
-            'Content-Type' => 'text/yaml'
+            'Content-Type' => 'text/yaml',
         ]);
     }
 }
