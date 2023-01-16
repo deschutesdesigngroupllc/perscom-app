@@ -6,7 +6,6 @@
 
         <title>PERSCOM Personnel Management System</title>
 
-        @client
         @vite('resources/js/form.js')
         @inertiaHead
         <style>

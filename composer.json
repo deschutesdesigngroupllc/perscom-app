@@ -15,7 +15,6 @@
         "fakerphp/faker": "^1.9.1",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "innocenzi/laravel-vite": "^0.1.27",
         "kalnoy/nestedset": "^6.0",
         "laraform/laraform-laravel": "^1.2",
         "laravel/fortify": "^1.13",
@@ -31,7 +30,7 @@
         "msztorc/laravel-env": "^1.2",
         "novius/laravel-nova-order-nestedset-field": "^4.0",
         "outl1ne/nova-settings": "^5.0",
-        "outl1ne/nova-sortable": "dev-tailwindcss",
+        "outl1ne/nova-sortable": "^3.4.2",
         "perscom/alert-card": "*",
         "perscom/dashboard-quick-actions": "*",
         "perscom/dashboard-title": "*",
@@ -58,10 +57,6 @@
         "spatie/laravel-ignition": "^1.0"
     },
     "repositories": [
-        {
-            "type": "vcs",
-            "url": "https://github.com/JonErickson/nova-sortable"
-        },
         {
             "type": "vcs",
             "url": "https://github.com/JonErickson/passport"
