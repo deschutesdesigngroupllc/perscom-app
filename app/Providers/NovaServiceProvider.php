@@ -44,6 +44,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Email;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
@@ -61,6 +62,43 @@ use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
+    /**
+     * Register the Nova routes.
+     *
+     * @return void
+     */
+    protected function routes()
+    {
+        Nova::routes()->register();
+    }
+
+    /**
+     * Register the Nova gate.
+     * This gate determines who can access Nova in non-local environments.
+     *
+     * @return void
+     */
+    protected function gate()
+    {
+        Gate::define('viewNova', function ($user) {
+            return true;
+        });
+    }
+
+    /**
+     * Get the dashboards that should be listed in the Nova sidebar.
+     *
+     * @return array
+     */
+    protected function dashboards()
+    {
+        if (Request::isCentralRequest()) {
+            return [new Admin()];
+        }
+
+        return [new Main()];
+    }
+
     /**
      * Register any application services.
      *
@@ -169,7 +207,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(AuthorizedApplications::class),
                         MenuItem::resource(Client::class)->name('My Apps'),
                         MenuItem::resource(PersonalAccessToken::class),
-                        MenuItem::externalLink('Documentation', config('app.url') . '/documentation/api')->openInNewTab(),
+                        MenuItem::externalLink('Documentation', config('app.url').'/documentation/api')
+                                ->openInNewTab(),
                         MenuItem::resource(Log::class),
                     ])->icon('link')->collapsable(),
 
@@ -234,6 +273,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         NovaSettings::addSettingsFields(function () {
             return [
                 Panel::make('Account', [
+                    Text::make('Account ID', function () {
+                        return \tenant()->getTenantKey();
+                    })->help('Your Account ID that must be used in all API requests.')->readonly(),
                     Text::make('Organization', 'organization')
                         ->help('The name of your organization.')
                         ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')
@@ -242,15 +284,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             return \tenant('name');
                         }),
                     Email::make('Email', 'email')
-                         ->help('The main email account associated with the account. This email will receive all pertient emails regarding PERSCOM.')
+                         ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
                          ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')
                                                                                ->ignore(\tenant()->getTenantKey()))
                          ->resolveUsing(function () {
                              return \tenant('email');
                          }),
-                    Text::make('PERSCOM Account ID', function () {
-                        return \tenant()->getTenantKey();
-                    })->help('Your Account ID that must be used in all API requests.')->readonly(),
+                    Timezone::make('Default Timezone', 'timezone')->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.'),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')
@@ -288,43 +328,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 Text::make('Users (Plural)', 'localization_users')->placeholder('users'),
             ]),
         ], [], 'Localization');
-    }
-
-    /**
-     * Register the Nova routes.
-     *
-     * @return void
-     */
-    protected function routes()
-    {
-        Nova::routes()->register();
-    }
-
-    /**
-     * Register the Nova gate.
-     * This gate determines who can access Nova in non-local environments.
-     *
-     * @return void
-     */
-    protected function gate()
-    {
-        Gate::define('viewNova', function ($user) {
-            return true;
-        });
-    }
-
-    /**
-     * Get the dashboards that should be listed in the Nova sidebar.
-     *
-     * @return array
-     */
-    protected function dashboards()
-    {
-        if (Request::isCentralRequest()) {
-            return [new Admin()];
-        }
-
-        return [new Main()];
     }
 
     /**

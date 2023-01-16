@@ -29,19 +29,18 @@ class RegisterController extends Controller
         $tenant = $createNewTenant->create($request->all());
 
         return redirect()->route('register.complete', [
-            'tenant' => $tenant
+            'tenant' => $tenant,
         ]);
     }
 
     /**
      * @param $tenant
-     *
      * @return \Inertia\Response|void
      */
     public function complete($tenant)
     {
         $tenant = Tenant::find($tenant);
-        if (!$tenant || !$tenant->wasRecentlyCreated) {
+        if (! $tenant || ! $tenant->wasRecentlyCreated) {
             return redirect()->route('register.index');
         }
 

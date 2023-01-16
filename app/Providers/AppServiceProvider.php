@@ -5,12 +5,14 @@ namespace App\Providers;
 use App\Models\Passport\Client;
 use App\Models\Passport\Token;
 use App\Models\Permission;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Laravel\Passport\Passport;
 use Laravel\Socialite\Contracts\Factory;
+use Outl1ne\NovaSettings\NovaSettings;
 use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Events\TenancyBootstrapped;
 
@@ -64,6 +66,7 @@ class AppServiceProvider extends ServiceProvider
 
         Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
             PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->id;
+            Config::set('app.timezone', NovaSettings::getSetting('timezone', \config('app.timezone')));
         });
     }
 }
