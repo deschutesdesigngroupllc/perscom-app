@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\SubscriptionRequired;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
@@ -22,6 +23,12 @@ class Subscribed extends VerifyBillableIsSubscribed
             return $next($request);
         }
 
-        return parent::handle($request, $next, $billableType, $plan);
+        $response =  parent::handle($request, $next, $billableType, $plan);
+
+        if ($response->getStatusCode() === 402 && $request->expectsJson()) {
+            throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
+        }
+
+        return $response;
     }
 }
