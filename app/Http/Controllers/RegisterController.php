@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Actions\Fortify\CreateNewTenant;
 use App\Models\Tenant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
 class RegisterController extends Controller
@@ -14,9 +15,7 @@ class RegisterController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Register', [
-            'baseUrl' => config('app.base_url'),
-        ]);
+        return Inertia::render('Register');
     }
 
     /**
@@ -29,18 +28,21 @@ class RegisterController extends Controller
         $tenant = $createNewTenant->create($request->all());
 
         return redirect()->route('register.complete', [
-            'tenant' => $tenant,
+            'id' => $tenant->id,
+            'hash' => Hash::make($tenant->email),
         ]);
     }
 
     /**
-     * @param $tenant
-     * @return \Inertia\Response|void
+     * @param $id
+     * @param $hash
+     *
+     * @return \Illuminate\Http\RedirectResponse|\Inertia\Response
      */
-    public function complete($tenant)
+    public function complete($id, $hash)
     {
-        $tenant = Tenant::find($tenant);
-        if (! $tenant || ! $tenant->wasRecentlyCreated) {
+        $tenant = Tenant::find($id);
+        if (!$tenant || !Hash::check($tenant->email, $hash)) {
             return redirect()->route('register.index');
         }
 

@@ -1,8 +1,8 @@
 import React from "react";
 import clsx from "clsx";
 
-import { ButtonLink } from "../Components/Button";
-import { Container } from "../Components/Container";
+import {ButtonLink} from "../Components/Button";
+import {Container} from "../Components/Container";
 
 function Plan({ name, price, description, href, features, featured = false }) {
     return (
@@ -106,7 +106,6 @@ export function Pricing() {
                         description="For small organizations with less than 25 personnel."
                         href={route("register.index")}
                         features={[
-                            "Up to 25 personnel files",
                             "Social login support",
                             "Application provided subdomain",
                             "Community support",
@@ -119,7 +118,6 @@ export function Pricing() {
                         description="For growing organizations with less than 100 personnel."
                         href={route("register.index")}
                         features={[
-                            "Up to 100 personnel files",
                             "Access to powerful API",
                             "Custom subdomain",
                             "Ticket and email support",
@@ -131,7 +129,6 @@ export function Pricing() {
                         description="For large organizations that have more than 100 personnel."
                         href={route("register.index")}
                         features={[
-                            "Unlimited personnel files",
                             "Export and backup personnel data",
                             "Single sign-on integration",
                             "Priority support",

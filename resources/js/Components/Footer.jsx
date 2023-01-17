@@ -1,7 +1,7 @@
 import React from "react";
 
-import { Container } from "../Components/Container";
-import { Logo } from "../Components/Logo";
+import {Container} from "../Components/Container";
+import {Logo} from "../Components/Logo";
 
 export function Footer() {
     return (
@@ -18,15 +18,6 @@ export function Footer() {
                                 >
                                     {" "}
                                     Features{" "}
-                                </a>
-                            </li>
-                            <li>
-                                <a
-                                    href="#testimonials"
-                                    className="rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
-                                >
-                                    {" "}
-                                    Testimonials{" "}
                                 </a>
                             </li>
                             <li>
