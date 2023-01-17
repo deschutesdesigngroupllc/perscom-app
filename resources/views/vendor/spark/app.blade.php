@@ -19,6 +19,12 @@
         {!! file_get_contents($cssPath) !!}
     </style>
 
+    <style>
+        .font-sans {
+            font-family: Nunito Sans,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
+        }
+    </style>
+
     @if (strpos(config('spark.brand.color'), '#') === 0)
     <style>
         .bg-custom-hex {
