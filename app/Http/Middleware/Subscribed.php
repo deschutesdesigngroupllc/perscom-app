@@ -31,8 +31,14 @@ class Subscribed extends VerifyBillableIsSubscribed
             return $next($request);
         }
 
-        if ($response->getStatusCode() === 402 && $request->expectsJson() && $request->routeIs('api.*')) {
-            throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
+        if ($request->expectsJson() && $request->routeIs('api.*')) {
+            if ($response->getStatusCode() === 402) {
+                throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
+            }
+
+            if (!tenant()->canAccessApi()) {
+                throw new SubscriptionRequired(403, 'Your plan does not include the API. Please upgrade your plan to use the API.');
+            }
         }
 
         if ($request->expectsJson()) {

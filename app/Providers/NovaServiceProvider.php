@@ -135,7 +135,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::withBreadcrumbs();
 
-        if (\Illuminate\Support\Facades\Request::isCentralRequest()) {
+        if (Request::isCentralRequest()) {
             Nova::mainMenu(function (Request $request) {
                 return [
                     MenuSection::dashboard(Admin::class)->icon('chart-bar'),
@@ -210,7 +210,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::externalLink('Documentation', config('app.url').'/documentation/api')
                                 ->openInNewTab(),
                         MenuItem::resource(Log::class),
-                    ])->icon('link')->collapsable(),
+                    ])->icon('link')->collapsable()->canSee(function () {
+                        return \tenant()->canAccessApi();
+                    }),
 
                     MenuSection::make('System', [
                         MenuItem::resource(Action::class),
@@ -221,8 +223,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::link('Localization', '/settings/localization'),
                         ])->collapsable(),
                     ])->icon('terminal')->collapsable()->canSee(function (NovaRequest $request) {
-                        return ! $request->isDemoMode() && ! $request->isCentralRequest() && Auth::user()
-                                                                                               ->hasRole('Admin');
+                        return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
                     }),
 
                     MenuSection::make('Support', [
@@ -290,7 +291,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                          ->resolveUsing(function () {
                              return \tenant('email');
                          }),
-                    Timezone::make('Default Timezone', 'timezone')->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.'),
+                    Timezone::make('Default Timezone', 'timezone')
+                            ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.'),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')

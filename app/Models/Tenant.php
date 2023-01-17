@@ -148,4 +148,24 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     {
         return $this->email;
     }
+
+    /**
+     * @return bool
+     */
+    public function canAccessApi()
+    {
+        $plan = $this->sparkPlan();
+
+        return request()->isDemoMode() || ($plan && $plan->name !== 'Platoon') || $this->onTrial();
+    }
+
+    /**
+     * @return bool
+     */
+    public function canAccessCustomSubdomain()
+    {
+        $plan = $this->sparkPlan();
+
+        return $plan && $plan->name !== 'Platoon';
+    }
 }

@@ -19,6 +19,10 @@ class LogPolicy
         if (Request::isCentralRequest()) {
             return false;
         }
+
+        if (!tenant()->canAccessApi()) {
+            return false;
+        }
     }
 
     /**
