@@ -17,7 +17,7 @@ class Handler extends ExceptionHandler
      */
     protected $dontReport = [
         TenantCouldNotBeIdentifiedByRequestDataException::class,
-        OAuthServerException::class
+        OAuthServerException::class,
     ];
 
     /**
@@ -48,10 +48,10 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param Throwable                $e
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  Throwable  $e
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
+     *
      * @throws Throwable
      */
     public function render($request, Throwable $e)
@@ -61,8 +61,8 @@ class Handler extends ExceptionHandler
             $response->setData([
                 'error' => [
                     'message' => $e->getMessage(),
-                    'type' => class_basename($e)
-                ]
+                    'type' => class_basename($e),
+                ],
             ]);
 
             if ($e instanceof AuthorizationException) {

@@ -33,17 +33,17 @@ class CreateNewTenant
                 'email',
                 'max:255',
                 Rule::unique(Tenant::class, 'email'),
-            ]
+            ],
         ])->validate();
 
         $tenant = Tenant::withoutEvents(function () use ($input) {
             return Tenant::create([
                 'name' => $input['organization'],
-                'email' => $input['email']
+                'email' => $input['email'],
             ]);
         });
 
-        $domain = Domain::withoutEvents(function () use ($tenant, $input) {
+        $domain = Domain::withoutEvents(function () use ($tenant) {
             return $tenant->domains()->create([
                 'domain' => Domain::generateSubdomain(),
             ]);

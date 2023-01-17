@@ -39,7 +39,7 @@ class Subscribed extends VerifyBillableIsSubscribed
             return $next($request);
         }
 
-        if (!Auth::user()->hasPermissionTo('manage:billing')) {
+        if (! Auth::user()->hasPermissionTo('manage:billing')) {
             throw new AuthorizationException('The account requires a subscription to continue. Please contact your account administrator.');
         }
 

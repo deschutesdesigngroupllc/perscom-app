@@ -56,9 +56,9 @@ class Main extends Dashboard
                                              ->get()
                                              ->map(function ($announcement) {
                                                  return [
-                                                     'title'   => $announcement->title,
+                                                     'title' => $announcement->title,
                                                      'content' => $announcement->content,
-                                                     'color'   => $announcement->color,
+                                                     'color' => $announcement->color,
                                                  ];
                                              })
                                              ->toArray());
@@ -69,8 +69,7 @@ class Main extends Dashboard
                 $ends = Carbon::parse($date)->toFormattedDateString();
                 $left = Carbon::parse($date)->longRelativeToNowDiffForHumans();
                 $card->withSubscriptionMessage("You are currently on trial. Your trial will end $left on $ends.", 'Sign Up For Subscription', route('spark.portal'));
-            }
-            else if (!\tenant()->subscribed()) {
+            } elseif (! \tenant()->subscribed()) {
                 $card->withSubscriptionMessage('You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.', 'Sign Up For Subscription', route('spark.portal'));
             }
         }

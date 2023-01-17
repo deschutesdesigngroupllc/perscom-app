@@ -36,13 +36,12 @@ class RegisterController extends Controller
     /**
      * @param $id
      * @param $hash
-     *
      * @return \Illuminate\Http\RedirectResponse|\Inertia\Response
      */
     public function complete($id, $hash)
     {
         $tenant = Tenant::find($id);
-        if (!$tenant || !Hash::check($tenant->email, $hash)) {
+        if (! $tenant || ! Hash::check($tenant->email, $hash)) {
             return redirect()->route('register.index');
         }
 
