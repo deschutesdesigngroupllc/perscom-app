@@ -43,4 +43,34 @@ class AlertCard extends Card
             'announcements' => $announcements,
         ]);
     }
+
+    /**
+     * @param  array|null  $messages
+     * @return AlertCard
+     */
+    public function withSystemMessages(array $messages = null): AlertCard
+    {
+        $messages = Arr::isList($messages) ? $messages : [$messages];
+
+        return $this->withMeta([
+            'messages' => $messages,
+        ]);
+    }
+
+    /**
+     * @param  null  $message
+     * @param  null  $button
+     * @param  null  $url
+     * @return AlertCard
+     */
+    public function withSubscriptionMessage($message = null, $button = null, $url = null): AlertCard
+    {
+        return $this->withMeta([
+            'subscription' => [
+                'message' => $message,
+                'button' => $button,
+                'url' => $url,
+            ],
+        ]);
+    }
 }

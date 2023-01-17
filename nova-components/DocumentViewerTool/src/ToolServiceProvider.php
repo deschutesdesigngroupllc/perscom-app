@@ -37,9 +37,7 @@ class ToolServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::middleware(['nova'])
-                ->prefix('nova-vendor/document-viewer-tool')
-                ->group(__DIR__.'/../routes/api.php');
+        Route::middleware(['nova'])->prefix('nova-vendor/document-viewer-tool')->group(__DIR__.'/../routes/api.php');
     }
 
     /**
