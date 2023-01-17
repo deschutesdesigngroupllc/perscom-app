@@ -14,7 +14,7 @@
                     </div>
                     <div class="ac-ml-3 ac-flex-1 md:ac-flex md:ac-justify-between">
                         <p class="ac-text-sm ac-text-blue-700">{{ props.card.subscription.message }}</p>
-                        <p class="ac-mt-3 ac-text-sm md:ac-mt-0 md:ac-ml-6">
+                        <p class="ac-mt-3 ac-text-sm md:ac-mt-0 md:ac-ml-6" v-if="props.card.subscription.url || props.card.subscription.button">
                             <a :href="props.card.subscription.url"
                                class="ac-whitespace-nowrap ac-font-semibold ac-text-blue-700 hover:ac-text-blue-600">
                                 {{ props.card.subscription.button }}
@@ -38,11 +38,11 @@
                         </svg>
                     </div>
                     <div class="ac-ml-3 ac-flex-1 md:ac-flex md:ac-justify-between">
-                        <p class="ac-text-sm ac-text-blue-700">{{ message.content }}</p>
-                        <p class="ac-mt-3 ac-text-sm md:ac-mt-0 md:ac-ml-6" v-if="message.url">
+                        <p class="ac-text-sm ac-text-blue-700">{{ message.message }}</p>
+                        <p class="ac-mt-3 ac-text-sm md:ac-mt-0 md:ac-ml-6" v-if="message.url || message.button">
                             <a :href="message.url"
-                               class="ac-whitespace-nowrap ac-font-medium ac-text-blue-700 hover:ac-text-blue-600">
-                                Details
+                               class="ac-whitespace-nowrap ac-font-semibold ac-text-blue-700 hover:ac-text-blue-600">
+                                {{ message.button }}
                                 <span aria-hidden="true"> →</span>
                             </a>
                         </p>
@@ -135,5 +135,4 @@
 
 <script setup>
 const props = defineProps(['card']);
-console.log(props.card);
 </script>
