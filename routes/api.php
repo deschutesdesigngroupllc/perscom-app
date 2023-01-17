@@ -36,7 +36,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 */
 Route::group(['as' => 'api.'], static function () {
     Route::group(['middleware' => ['treblle'], 'prefix' => 'v1'], static function () {
-
         // Spec
         Route::get('spec.yaml', [SpecController::class, 'index']);
 
@@ -45,8 +44,8 @@ Route::group(['as' => 'api.'], static function () {
             'middleware' => [
                 InitializeTenancyByRequestData::class,
                 LogApiRequests::class,
-                'subscribed'
-            ]
+                'subscribed',
+            ],
         ], static function () {
             // OIDC
             Orion::resource('me', MeController::class)->only('index');

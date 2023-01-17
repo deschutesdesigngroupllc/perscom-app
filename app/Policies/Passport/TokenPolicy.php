@@ -20,7 +20,7 @@ class TokenPolicy
             return false;
         }
 
-        if (!tenant()->canAccessApi()) {
+        if (! tenant()->canAccessApi()) {
             return false;
         }
     }

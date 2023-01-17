@@ -36,7 +36,7 @@ class Subscribed extends VerifyBillableIsSubscribed
                 throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
             }
 
-            if (!tenant()->canAccessApi()) {
+            if (! tenant()->canAccessApi()) {
                 throw new SubscriptionRequired(403, 'Your plan does not include the API. Please upgrade your plan to use the API.');
             }
         }
