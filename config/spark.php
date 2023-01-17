@@ -117,7 +117,7 @@ return [
     'billables' => [
         'tenant' => [
             'model' => \App\Models\Tenant::class,
-            'trial_days' => 5,
+            'trial_days' => 7,
             'default_interval' => 'monthly',
             'plans' => [
                 [
@@ -126,7 +126,6 @@ return [
                     'monthly_id' => 'price_1LGWsjGt8lrL0dgCSh82mHu3',
                     'yearly_id' => 'price_1LGWsjGt8lrL0dgC0K9buQ89',
                     'features' => [
-                        'Up to 25 personnel files',
                         'Social login support',
                         'Application provided subdomain',
                         'Community support',
@@ -138,7 +137,6 @@ return [
                     'monthly_id' => 'price_1LGWtYGt8lrL0dgCAfBx95kG',
                     'yearly_id' => 'price_1LGWtYGt8lrL0dgC03GRAj6K',
                     'features' => [
-                        'Up to 100 personnel files',
                         'Access to powerful API',
                         'Custom subdomain',
                         'Ticket and email support',
@@ -150,7 +148,6 @@ return [
                     'monthly_id' => 'price_1LGWuVGt8lrL0dgCA8GM8Bpw',
                     'yearly_id' => 'price_1LGWuVGt8lrL0dgCoKsh7puY',
                     'features' => [
-                        'Unlimited personnel files',
                         'Export and backup personnel data',
                         'Single sign-on integration',
                         'Priority support',

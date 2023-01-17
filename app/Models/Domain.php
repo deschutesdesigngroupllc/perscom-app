@@ -18,6 +18,14 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
     protected $appends = ['url'];
 
     /**
+     * @return string
+     */
+    public static function generateSubdomain(): string
+    {
+        return Str::random(8);
+    }
+
+    /**
      * @return mixed|null
      */
     public function getUrlAttribute()

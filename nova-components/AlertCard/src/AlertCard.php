@@ -32,15 +32,59 @@ class AlertCard extends Card
     }
 
     /**
-     * @param  array|null  $announcements
+     * @param  null  $title
+     * @param  null  $content
+     * @param  null  $color
      * @return AlertCard
      */
-    public function withAnnouncements(array $announcements = null): AlertCard
+    public function withAnnouncement($title = null, $content = null, $color = null): AlertCard
     {
-        $announcements = Arr::isList($announcements) ? $announcements : [$announcements];
+        $meta = $this->meta();
+        $existingMessages = Arr::get($meta, 'announcements', []);
+        $newMessages = Arr::prepend($existingMessages, [
+            'title' => $title,
+            'content' => $content,
+            'color' => $color,
+        ]);
+        $newMeta = Arr::set($meta, 'announcements', $newMessages);
 
+        return $this->withMeta($newMeta);
+    }
+
+    /**
+     * @param  null  $message
+     * @param  null  $button
+     * @param  null  $url
+     * @return AlertCard
+     */
+    public function withSystemMessage($message = null, $button = null, $url = null): AlertCard
+    {
+        $meta = $this->meta();
+        $existingMessages = Arr::get($meta, 'messages', []);
+        $newMessages = Arr::prepend($existingMessages, [
+            'message' => $message,
+            'button' => $button,
+            'url' => $url,
+        ]);
+        $newMeta = Arr::set($meta, 'messages', $newMessages);
+
+        return $this->withMeta($newMeta);
+    }
+
+    /**
+     * @param  null  $message
+     * @param  null  $button
+     * @param  null  $url
+     * @return AlertCard
+     */
+    public function withSubscriptionMessage($message = null, $button = null, $url = null): AlertCard
+    {
         return $this->withMeta([
-            'announcements' => $announcements,
+            'subscription' => [
+                'message' => $message,
+                'button' => $button,
+                'url' => $url,
+            ],
         ]);
     }
 }

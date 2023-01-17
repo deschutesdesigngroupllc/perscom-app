@@ -13,9 +13,9 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
-    	'localhost',
-	    'perscom.io',
-	    'staging.perscom.io'
+        'localhost',
+        'perscom.io',
+        'staging.perscom.io',
     ],
 
     /**
@@ -49,7 +49,7 @@ return [
          * prefix + tenant_id + suffix.
          */
         'prefix' => 'tenant',
-        'suffix' => '_' . env('APP_ENV'),
+        'suffix' => '_'.env('APP_ENV'),
 
         /**
          * TenantDatabaseManagers are classes that handle the creation & deletion of tenant databases.
@@ -160,12 +160,12 @@ return [
      * understand which ones you want to enable.
      */
     'features' => [
-    	Stancl\Tenancy\Features\UserImpersonation::class,
+        Stancl\Tenancy\Features\UserImpersonation::class,
         Stancl\Tenancy\Features\TelescopeTags::class,
         Stancl\Tenancy\Features\UniversalRoutes::class,
-	    Stancl\Tenancy\Features\ViteBundler::class
+        Stancl\Tenancy\Features\ViteBundler::class,
         // Stancl\Tenancy\Features\TenantConfig::class, // https://tenancyforlaravel.com/docs/v3/features/tenant-config
-	    // Stancl\Tenancy\Features\CrossDomainRedirect::class, // https://tenancyforlaravel.com/docs/v3/features/cross-domain-redirect
+        // Stancl\Tenancy\Features\CrossDomainRedirect::class, // https://tenancyforlaravel.com/docs/v3/features/cross-domain-redirect
     ],
 
     /**
@@ -191,6 +191,6 @@ return [
      */
     'seeder_parameters' => [
         '--class' => 'TenantSeeder', // root seeder class
-	    '--force' => true,
+        '--force' => true,
     ],
 ];

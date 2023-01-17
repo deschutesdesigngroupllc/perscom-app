@@ -37,9 +37,7 @@ class CardServiceProvider extends ServiceProvider
             return;
         }
 
-        Route::middleware(['nova'])
-                ->prefix('nova-vendor/dashboard-title')
-                ->group(__DIR__.'/../routes/api.php');
+        Route::middleware(['nova'])->prefix('nova-vendor/dashboard-title')->group(__DIR__.'/../routes/api.php');
     }
 
     /**

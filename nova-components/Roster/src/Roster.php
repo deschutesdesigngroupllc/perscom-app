@@ -28,8 +28,6 @@ class Roster extends Tool
      */
     public function menu(Request $request)
     {
-        return MenuSection::make('Roster')
-            ->path('/roster')
-            ->icon('user-group');
+        return MenuSection::make('Roster')->path('/roster')->icon('user-group');
     }
 }

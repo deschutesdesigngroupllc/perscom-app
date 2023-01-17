@@ -22,6 +22,7 @@ use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequests;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,44 +34,50 @@ use Orion\Facades\Orion;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group([
-    'middleware' => [
-        'treblle',
-    ],
-    'prefix' => 'v1',
-    'as' => 'api.',
-], static function () {
+Route::group(['as' => 'api.'], static function () {
+    Route::group(['middleware' => ['treblle'], 'prefix' => 'v1'], static function () {
+        // Spec
+        Route::get('spec.yaml', [SpecController::class, 'index']);
 
-    // Spec
-    Route::get('spec.yaml', [SpecController::class, 'index']);
+        // Tenant specific
+        Route::group([
+            'middleware' => [
+                InitializeTenancyByRequestData::class,
+                LogApiRequests::class,
+                'subscribed',
+            ],
+        ], static function () {
+            // OIDC
+            Orion::resource('me', MeController::class)->only('index');
 
-    // Tenant specific
-    Route::group(['middleware' => [InitializeTenancyByRequestData::class, LogApiRequests::class, 'subscribed']], static function() {
-        // OIDC
-        Orion::resource('me', MeController::class)->only('index');
+            // Announcements
+            Orion::resource('announcements', AnnouncementsController::class);
 
-        // Announcements
-        Orion::resource('announcements', AnnouncementsController::class);
+            // Submissions
+            Orion::resource('submissions', SubmissionsController::class);
 
-        // Submissions
-        Orion::resource('submissions', SubmissionsController::class);
+            // Units
+            Orion::resource('units', UnitsController::class);
+            Orion::hasManyResource('units', 'users', UnitsUsersController::class);
 
-        // Units
-        Orion::resource('units', UnitsController::class);
-        Orion::hasManyResource('units', 'users', UnitsUsersController::class);
-
-        // Users
-        Orion::resource('users', UsersController::class);
-        Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);
-        Orion::hasManyResource('users', 'award-records', UsersAwardRecordsController::class);
-        Orion::hasManyResource('users', 'combat-records', UsersCombatRecordsController::class);
-        Orion::hasManyResource('users', 'qualification-records', UsersQualificationRecordsController::class);
-        Orion::hasManyResource('users', 'rank-records', UsersRankRecordsController::class);
-        Orion::hasManyResource('users', 'service-records', UsersServiceRecordsController::class);
-        Orion::hasOneResource('users', 'position', UsersPositionController::class);
-        Orion::hasOneResource('users', 'rank', UsersRankController::class);
-        Orion::hasOneResource('users', 'specialty', UsersSpecialtyController::class);
-        Orion::hasOneResource('users', 'status', UsersStatusController::class);
-        Orion::belongsToResource('users', 'unit', UsersUnitController::class);
+            // Users
+            Orion::resource('users', UsersController::class);
+            Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);
+            Orion::hasManyResource('users', 'award-records', UsersAwardRecordsController::class);
+            Orion::hasManyResource('users', 'combat-records', UsersCombatRecordsController::class);
+            Orion::hasManyResource('users', 'qualification-records', UsersQualificationRecordsController::class);
+            Orion::hasManyResource('users', 'rank-records', UsersRankRecordsController::class);
+            Orion::hasManyResource('users', 'service-records', UsersServiceRecordsController::class);
+            Orion::hasOneResource('users', 'position', UsersPositionController::class);
+            Orion::hasOneResource('users', 'rank', UsersRankController::class);
+            Orion::hasOneResource('users', 'specialty', UsersSpecialtyController::class);
+            Orion::hasOneResource('users', 'status', UsersStatusController::class);
+            Orion::belongsToResource('users', 'unit', UsersUnitController::class);
+        });
     });
+
+    // Route not found
+    Route::fallback(function () {
+        throw new NotFoundHttpException('The requested API endpoint could not be found or you do not have access to it.');
+    })->name('error');
 });
