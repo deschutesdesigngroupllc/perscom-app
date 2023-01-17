@@ -302,6 +302,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                                                                                 ->ignore(\tenant()->getTenantKey(), 'tenant_id'))
                         ->resolveUsing(function () {
                             return \tenant()->domain->domain;
+                        })
+                        ->canSee(function () {
+                            return \tenant()->canAccessCustomSubdomain();
                         }),
                 ]),
                 Panel::make('Branding', [
