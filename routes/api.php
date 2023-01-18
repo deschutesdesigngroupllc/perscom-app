@@ -34,7 +34,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['as' => 'api.'], static function () {
+Route::group(['middleware' => 'auth:api', 'as' => 'api.'], static function () {
     Route::group(['middleware' => ['treblle'], 'prefix' => 'v1'], static function () {
         // Spec
         Route::get('spec.yaml', [SpecController::class, 'index']);

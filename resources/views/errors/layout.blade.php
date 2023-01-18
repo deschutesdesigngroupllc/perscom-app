@@ -22,11 +22,7 @@
                     <div class="text-center">
                         <p class="text-sm font-semibold text-blue-600 uppercase tracking-wide">@yield('code') error</p>
                         <h1 class="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">@yield('header')</h1>
-                        @if(isset($exception) && $exception->getMessage())
-                            <p class="mt-2 text-base text-gray-500">{{ $exception->getMessage() }}</p>
-                        @else
-                            <p class="mt-2 text-base text-gray-500">@yield('message')</p>
-                        @endif
+                        <p class="mt-2 text-base text-gray-500">@yield('message')</p>
                         @if(!isset($showLink) || $showLink)
                             <div class="mt-6">
                                 <a href="{{ route('landing.home') }}" class="text-base font-medium text-blue-600 hover:text-blue-500">Go back home<span aria-hidden="true"> &rarr;</span></a>

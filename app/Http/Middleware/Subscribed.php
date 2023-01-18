@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\SubscriptionRequired;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Auth;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
@@ -23,6 +22,8 @@ class Subscribed extends VerifyBillableIsSubscribed
     {
         $response = parent::handle($request, $next, $billableType, $plan);
 
+        $isNotSubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
+
         if ($request->isDemoMode() || $request->isCentralRequest() || FeatureFlag::isOff('billing')) {
             return $next($request);
         }
@@ -31,8 +32,8 @@ class Subscribed extends VerifyBillableIsSubscribed
             return $next($request);
         }
 
-        if ($request->expectsJson() && $request->routeIs('api.*')) {
-            if ($response->getStatusCode() === 402) {
+        if ($request->routeIs('api.*')) {
+            if ($isNotSubscribed) {
                 throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
             }
 
@@ -45,8 +46,8 @@ class Subscribed extends VerifyBillableIsSubscribed
             return $next($request);
         }
 
-        if (! Auth::user()->hasPermissionTo('manage:billing')) {
-            throw new AuthorizationException('The account requires a subscription to continue. Please contact your account administrator.');
+        if ($isNotSubscribed && ! (Auth::user()->hasPermissionTo('manage:billing') || ! Auth::check())) {
+            throw new SubscriptionRequired(402);
         }
 
         return $response;

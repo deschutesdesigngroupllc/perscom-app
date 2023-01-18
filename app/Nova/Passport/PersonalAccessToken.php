@@ -3,6 +3,7 @@
 namespace App\Nova\Passport;
 
 use App\Models\Passport\Token;
+use App\Models\Permission;
 use App\Nova\Resource;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -17,7 +18,6 @@ use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Passport\ClientRepository;
-use Laravel\Passport\Passport;
 
 class PersonalAccessToken extends Resource
 {
@@ -118,8 +118,8 @@ class PersonalAccessToken extends Resource
                 ->readonly()
                 ->language('shell')
                 ->help('API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'),
-            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
-                return [$scope->id => $scope->id];
+            MultiSelect::make('Scopes')->options(Permission::query()->where('guard_name', '=', 'api')->get()->mapWithKeys(function ($scope) {
+                return [$scope->name => $scope->name];
             })->sort())->hideFromIndex(),
             Boolean::make('Revoked')->default(false)->hideWhenCreating()->showOnUpdating()->sortable(),
             Heading::make('Meta')->onlyOnDetail(),

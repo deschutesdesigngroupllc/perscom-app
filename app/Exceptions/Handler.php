@@ -45,6 +45,10 @@ class Handler extends ExceptionHandler
         $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
             return response()->view('errors.tenant-not-found');
         });
+
+        $this->renderable(function (SubscriptionRequired $e, $request) {
+            return response()->view('errors.subscription-required');
+        });
     }
 
     /**

@@ -33,7 +33,7 @@ class LogPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -45,7 +45,7 @@ class LogPolicy
      */
     public function view(User $user, Log $log)
     {
-        return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -80,7 +80,7 @@ class LogPolicy
      */
     public function delete(User $user, Log $log)
     {
-        return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api') || $user->tokenCan('manage:api');
     }
 
     /**

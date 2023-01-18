@@ -29,7 +29,7 @@ class DocumentPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:document');
+        return $user->hasPermissionTo('view:document') || $user->tokenCan('view:document');
     }
 
     /**
@@ -41,7 +41,7 @@ class DocumentPolicy
      */
     public function view(User $user, Document $document)
     {
-        return $user->hasPermissionTo('view:document');
+        return $user->hasPermissionTo('view:document') || $user->tokenCan('view:document');
     }
 
     /**
@@ -52,7 +52,7 @@ class DocumentPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:document');
+        return $user->hasPermissionTo('create:document') || $user->tokenCan('create:document');
     }
 
     /**
@@ -64,7 +64,7 @@ class DocumentPolicy
      */
     public function update(User $user, Document $document)
     {
-        return $user->hasPermissionTo('update:document');
+        return $user->hasPermissionTo('update:document') || $user->tokenCan('update:document');
     }
 
     /**
@@ -76,7 +76,7 @@ class DocumentPolicy
      */
     public function delete(User $user, Document $document)
     {
-        return $user->hasPermissionTo('delete:document');
+        return $user->hasPermissionTo('delete:document') || $user->tokenCan('delete:document');
     }
 
     /**

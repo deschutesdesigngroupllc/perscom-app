@@ -29,7 +29,7 @@ class AssignmentRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:assignmentrecord');
+        return $user->hasPermissionTo('view:assignmentrecord') || $user->tokenCan('view:assignmentrecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class AssignmentRecordsPolicy
      */
     public function view(User $user, Assignment $assignment)
     {
-        return $user->hasPermissionTo('view:assignmentrecord') || $assignment->user?->id === $user->id;
+        return $user->hasPermissionTo('view:assignmentrecord') || $assignment->user?->id === $user->id || $user->tokenCan('view:assignmentrecord');
     }
 
     /**
@@ -52,7 +52,7 @@ class AssignmentRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:assignmentrecord');
+        return $user->hasPermissionTo('create:assignmentrecord') || $user->tokenCan('create:assignmentrecord');
     }
 
     /**
@@ -64,7 +64,7 @@ class AssignmentRecordsPolicy
      */
     public function update(User $user, Assignment $assignment)
     {
-        return $user->hasPermissionTo('update:assignmentrecord');
+        return $user->hasPermissionTo('update:assignmentrecord') || $user->tokenCan('update:assignmentrecord');
     }
 
     /**
@@ -76,7 +76,7 @@ class AssignmentRecordsPolicy
      */
     public function delete(User $user, Assignment $assignment)
     {
-        return $user->hasPermissionTo('delete:assignmentrecord');
+        return $user->hasPermissionTo('delete:assignmentrecord') || $user->tokenCan('delete:assignmentrecord');
     }
 
     /**

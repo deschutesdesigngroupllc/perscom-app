@@ -29,7 +29,7 @@ class AwardPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:award');
+        return $user->hasPermissionTo('view:award') || $user->tokenCan('view:award');
     }
 
     /**
@@ -41,7 +41,7 @@ class AwardPolicy
      */
     public function view(User $user, Award $award)
     {
-        return $user->hasPermissionTo('view:award');
+        return $user->hasPermissionTo('view:award') || $user->tokenCan('view:award');
     }
 
     /**
@@ -52,7 +52,7 @@ class AwardPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:award');
+        return $user->hasPermissionTo('create:award') || $user->tokenCan('create:award');
     }
 
     /**
@@ -64,7 +64,7 @@ class AwardPolicy
      */
     public function update(User $user, Award $award)
     {
-        return $user->hasPermissionTo('update:award');
+        return $user->hasPermissionTo('update:award') || $user->tokenCan('update:award');
     }
 
     /**
@@ -76,7 +76,7 @@ class AwardPolicy
      */
     public function delete(User $user, Award $award)
     {
-        return $user->hasPermissionTo('delete:award');
+        return $user->hasPermissionTo('delete:award') || $user->tokenCan('delete:award');
     }
 
     /**

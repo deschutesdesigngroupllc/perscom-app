@@ -5,6 +5,10 @@ return [
         'Admin' => 'Has permission to perform any action on the platform.',
         'User' => 'Has permission to view all necessary records only pertaining to the user.',
     ],
+    'guards' => [
+        'web',
+        'api'
+    ],
     'default' => [
         'User' => [
             'view:user',

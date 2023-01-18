@@ -14,12 +14,15 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        foreach (config('permissions.permissions') as $permission => $description) {
-            if (! Permission::query()->where('name', '=', $permission)->exists()) {
-                Permission::factory()->create([
-                    'name' => $permission,
-                    'description' => $description,
-                ]);
+        foreach (config('permissions.guards') as $guard) {
+            foreach (config('permissions.permissions') as $permission => $description) {
+                if (! Permission::query()->where('name', '=', $permission)->where('guard_name', '=', $guard)->exists()) {
+                    Permission::factory()->create([
+                        'name' => $permission,
+                        'description' => $description,
+                        'guard_name' => $guard
+                    ]);
+                }
             }
         }
     }

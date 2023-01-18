@@ -30,7 +30,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:permission');
+        return $user->hasPermissionTo('view:permission') || $user->tokenCan('view:permission');
     }
 
     /**
@@ -42,7 +42,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission)
     {
-        return $user->hasPermissionTo('view:permission');
+        return $user->hasPermissionTo('view:permission') || $user->tokenCan('view:permission');
     }
 
     /**
@@ -53,7 +53,7 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:permission');
+        return $user->hasPermissionTo('create:permission') || $user->tokenCan('create:permission');
     }
 
     /**
@@ -69,7 +69,7 @@ class PermissionPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('update:permission');
+        return $user->hasPermissionTo('update:permission') || $user->tokenCan('update:permission');
     }
 
     /**
@@ -85,7 +85,7 @@ class PermissionPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('delete:permission');
+        return $user->hasPermissionTo('delete:permission') || $user->tokenCan('delete:permission');
     }
 
     /**
