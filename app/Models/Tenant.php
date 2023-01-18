@@ -156,7 +156,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     {
         $plan = $this->sparkPlan();
 
-        return request()->isDemoMode() || ($plan && $plan->name !== 'Platoon') || $this->onTrial();
+        return request()->isDemoMode() || ($plan && $plan->name !== 'Basic') || $this->onTrial();
     }
 
     /**
@@ -166,6 +166,6 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     {
         $plan = $this->sparkPlan();
 
-        return $plan && $plan->name !== 'Platoon';
+        return $plan && $plan->name !== 'Basic';
     }
 }

@@ -121,10 +121,10 @@ return [
             'default_interval' => 'monthly',
             'plans' => [
                 [
-                    'name' => 'Platoon',
+                    'name' => 'Basic',
                     'short_description' => 'For small organizations with less than 25 personnel.',
-                    'monthly_id' => 'price_1LGWsjGt8lrL0dgCSh82mHu3',
-                    'yearly_id' => 'price_1LGWsjGt8lrL0dgC0K9buQ89',
+                    'monthly_id' => env('STRIPE_PRODUCT_BASIC_MONTH'),
+                    'yearly_id' => env('STRIPE_PRODUCT_BASIC_YEAR'),
                     'features' => [
                         'Social login support',
                         'Application provided subdomain',
@@ -132,10 +132,10 @@ return [
                     ],
                 ],
                 [
-                    'name' => 'Company',
+                    'name' => 'Pro',
                     'short_description' => 'For growing organizations with less than 100 personnel.',
-                    'monthly_id' => 'price_1LGWtYGt8lrL0dgCAfBx95kG',
-                    'yearly_id' => 'price_1LGWtYGt8lrL0dgC03GRAj6K',
+                    'monthly_id' => env('STRIPE_PRODUCT_PRO_MONTH'),
+                    'yearly_id' => env('STRIPE_PRODUCT_PRO_YEAR'),
                     'features' => [
                         'Access to powerful API',
                         'Custom subdomain',
@@ -143,10 +143,10 @@ return [
                     ],
                 ],
                 [
-                    'name' => 'Battalion',
+                    'name' => 'Enterprise',
                     'short_description' => 'For large organizations that have more than 100 personnel.',
-                    'monthly_id' => 'price_1LGWuVGt8lrL0dgCA8GM8Bpw',
-                    'yearly_id' => 'price_1LGWuVGt8lrL0dgCoKsh7puY',
+                    'monthly_id' => env('STRIPE_PRODUCT_ENTERPRISE_MONTH'),
+                    'yearly_id' => env('STRIPE_PRODUCT_ENTERPRISE_YEAR'),
                     'features' => [
                         'Export and backup personnel data',
                         'Single sign-on integration',

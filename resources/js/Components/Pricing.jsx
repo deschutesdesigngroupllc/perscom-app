@@ -101,7 +101,7 @@ export function Pricing() {
                 </div>
                 <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
                     <Plan
-                        name="Platoon"
+                        name="Basic"
                         price="$9"
                         description="For small organizations with less than 25 personnel."
                         href={route("register.index")}
@@ -113,7 +113,7 @@ export function Pricing() {
                     />{" "}
                     <Plan
                         featured
-                        name="Company"
+                        name="Pro"
                         price="$15"
                         description="For growing organizations with less than 100 personnel."
                         href={route("register.index")}
@@ -124,7 +124,7 @@ export function Pricing() {
                         ]}
                     />{" "}
                     <Plan
-                        name="Battalion"
+                        name="Enterprise"
                         price="$39"
                         description="For large organizations that have more than 100 personnel."
                         href={route("register.index")}
