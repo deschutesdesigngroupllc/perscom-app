@@ -121,9 +121,9 @@ class Tenant extends Resource
                     Boolean::make('On Trial', function ($model) {
                         return $model->onGenericTrial();
                     }),
-                    Text::make('Stripe ID')->onlyOnDetail()->readonly()->copyable(),
-                    Text::make('Card Brand')->onlyOnDetail()->readonly(),
-                    Text::make('Card Last Four')->onlyOnDetail()->readonly(),
+                    Text::make('Stripe ID')->hideFromIndex()->copyable(),
+                    Text::make('Card Brand')->hideFromIndex(),
+                    Text::make('Card Last Four')->hideFromIndex(),
                     DateTime::make('Trial Ends At')->hideFromIndex(),
                     Text::make('Receipt Emails')->hideFromIndex(),
                 ]),

@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Exceptions\SubscriptionRequired;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
 class Subscribed extends VerifyBillableIsSubscribed
@@ -20,20 +21,19 @@ class Subscribed extends VerifyBillableIsSubscribed
      */
     public function handle($request, $next, $billableType = null, $plan = null)
     {
+        if ($request->isDemoMode() ||
+            $request->isCentralRequest() ||
+            FeatureFlag::isOff('billing') ||
+            $request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*') ||
+            Str::contains($request->path(), 'nova-vendor')) {
+            return $next($request);
+        }
+
         $response = parent::handle($request, $next, $billableType, $plan);
-
-        $isNotSubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
-
-        if ($request->isDemoMode() || $request->isCentralRequest() || FeatureFlag::isOff('billing')) {
-            return $next($request);
-        }
-
-        if ($request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*')) {
-            return $next($request);
-        }
+        $unsubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
 
         if ($request->routeIs('api.*')) {
-            if ($isNotSubscribed) {
+            if ($unsubscribed) {
                 throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
             }
 
@@ -42,12 +42,8 @@ class Subscribed extends VerifyBillableIsSubscribed
             }
         }
 
-        if ($request->expectsJson()) {
-            return $next($request);
-        }
-
-        if ($isNotSubscribed && ! (Auth::user()->hasPermissionTo('manage:billing') || ! Auth::check())) {
-            throw new SubscriptionRequired(402);
+        if ($unsubscribed && !Auth::user()->hasPermissionTo('manage:api')) {
+            throw new SubscriptionRequired(403, 'The account requires a subscription to continue. Please contact your account administrator.');
         }
 
         return $response;
