@@ -15,11 +15,7 @@ class Document extends Model
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'description',
-        'content',
-    ];
+    protected $fillable = ['name', 'description', 'content'];
 
     /**
      * @var string[]

@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
+import React, {Fragment} from "react";
+import {Popover, Transition} from "@headlessui/react";
 import clsx from "clsx";
 
-import { ButtonLink } from "../../Components/Button";
-import { Container } from "../../Components/Container";
-import { Logo } from "../../Components/Logo";
+import {ButtonLink} from "../../Components/Button";
+import {Container} from "../../Components/Container";
+import {Logo} from "../../Components/Logo";
 
 function MobileNavigation() {
     return (
@@ -58,8 +58,7 @@ function MobileNavigation() {
                             <Popover.Panel
                                 as="ul"
                                 className="absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
-                            >
-                            </Popover.Panel>
+                            ></Popover.Panel>
                         </Transition.Child>
                     </Transition.Root>
                 </>

@@ -1,12 +1,7 @@
 import React from "react";
 
-import { Tenant } from "@/Layouts/Tenant"
-import { Hero } from "@/Components/Hero";
+import {Tenant} from "@/Layouts/Tenant";
 
 export default function Page({ content }) {
-  return (
-      <Tenant>
-        {content}
-      </Tenant>
-  );
+    return <Tenant>{content}</Tenant>;
 }

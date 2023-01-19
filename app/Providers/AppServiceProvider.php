@@ -30,9 +30,10 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Request::macro('isDemoMode', function () {
-            return \request()->getHost() === env('TENANT_DEMO_HOST', null)
-                || (\request()->expectsJson() &&
-                    (\request()->header('X-Perscom-Id') === env('TENANT_DEMO_ID') || \request()->get('perscom_id') === env('TENANT_DEMO_ID')));
+            return \request()->getHost() === env('TENANT_DEMO_HOST', null) ||
+                   (\request()->expectsJson() &&
+                    (\request()->header('X-Perscom-Id') === env('TENANT_DEMO_ID') ||
+                     \request()->get('perscom_id') === env('TENANT_DEMO_ID')));
         });
 
         Passport::ignoreRoutes();

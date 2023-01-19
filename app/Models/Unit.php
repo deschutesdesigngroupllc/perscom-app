@@ -17,11 +17,7 @@ class Unit extends Model
      *
      * @var array<int, string>
      */
-    protected $fillable = [
-        'name',
-        'description',
-        'order',
-    ];
+    protected $fillable = ['name', 'description', 'order'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

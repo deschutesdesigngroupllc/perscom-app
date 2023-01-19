@@ -50,10 +50,7 @@ class Form extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'name',
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * @var string[]
@@ -71,12 +68,13 @@ class Form extends Resource
         return [
             ID::make()->hideFromIndex(),
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-            Slug::make('Slug')->from('Name')->rules([
-                'required',
-                Rule::unique('forms', 'slug')->ignore($this->id),
-            ])->help('The slug will be used in the URL to access the form.')->canSee(function (NovaRequest $request) {
-                return Gate::check('update', $request->findModel());
-            }),
+            Slug::make('Slug')
+                ->from('Name')
+                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)])
+                ->help('The slug will be used in the URL to access the form.')
+                ->canSee(function (NovaRequest $request) {
+                    return Gate::check('update', $request->findModel());
+                }),
             Tag::make('Tags')->showCreateRelationButton()->withPreview()->showOnPreview(),
             URL::make('URL')->displayUsing(function ($url) {
                 return $url;
@@ -99,9 +97,7 @@ class Form extends Resource
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
             Tabs::make('Relations', [
-                Tab::make('Fields', [
-                    MorphToMany::make('Fields', 'fields', Field::class),
-                ]),
+                Tab::make('Fields', [MorphToMany::make('Fields', 'fields', Field::class)]),
                 Tab::make('Submissions', [HasMany::make('Submissions', 'submissions', Submission::class)]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),

@@ -41,7 +41,9 @@ class CombatRecordsPolicy
      */
     public function view(User $user, Combat $combat)
     {
-        return $user->hasPermissionTo('view:combatrecord', 'web') || $combat->user?->id === $user->id || $user->tokenCan('view:combatrecord');
+        return $user->hasPermissionTo('view:combatrecord', 'web') ||
+               $combat->user?->id === $user->id ||
+               $user->tokenCan('view:combatrecord');
     }
 
     /**

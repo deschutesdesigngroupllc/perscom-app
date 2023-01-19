@@ -12,9 +12,5 @@ class Award extends Model
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'image',
-        'description',
-    ];
+    protected $fillable = ['name', 'image', 'description'];
 }

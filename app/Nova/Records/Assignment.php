@@ -123,10 +123,7 @@ class Assignment extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new TotalAssignmentRecords(),
-            new NewAssignmentRecords(),
-        ];
+        return [new TotalAssignmentRecords(), new NewAssignmentRecords()];
     }
 
     /**

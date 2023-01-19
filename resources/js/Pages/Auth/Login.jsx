@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, {useEffect} from "react";
 
-import { Button } from "@/Components/Button";
-import { Checkbox } from "@/Components/Checkbox";
-import { Input } from "@/Components/Input";
-import { Label } from "@/Components/Label";
-import { ValidationErrors } from "@/Components/ValidationErrors";
-import { Head, Link, useForm, usePage } from "@inertiajs/inertia-react";
+import {Button} from "@/Components/Button";
+import {Checkbox} from "@/Components/Checkbox";
+import {Input} from "@/Components/Input";
+import {Label} from "@/Components/Label";
+import {ValidationErrors} from "@/Components/ValidationErrors";
+import {Head, Link, useForm, usePage} from "@inertiajs/inertia-react";
 import {Auth} from "@/Layouts/Auth";
 
 export default function Login({ status, canResetPassword, demoMode, enableSocialLogin, githubLogin, discordLogin }) {

@@ -40,10 +40,7 @@ class Service extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'text',
-    ];
+    public static $search = ['id', 'text'];
 
     /**
      * Get the URI key for the resource.
@@ -123,10 +120,7 @@ class Service extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new TotalServiceRecords(),
-            new NewServiceRecords(),
-        ];
+        return [new TotalServiceRecords(), new NewServiceRecords()];
     }
 
     /**

@@ -41,7 +41,9 @@ class AwardRecordsPolicy
      */
     public function view(User $user, Award $award)
     {
-        return $user->hasPermissionTo('view:awardrecord', 'web') || $award->user?->id === $user->id || $user->tokenCan('view:awardrecord');
+        return $user->hasPermissionTo('view:awardrecord', 'web') ||
+               $award->user?->id === $user->id ||
+               $user->tokenCan('view:awardrecord');
     }
 
     /**

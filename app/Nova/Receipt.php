@@ -43,9 +43,7 @@ class Receipt extends Resource
      */
     public function fields(NovaRequest $request)
     {
-        return [
-            ID::make()->sortable(),
-        ];
+        return [ID::make()->sortable()];
     }
 
     /**

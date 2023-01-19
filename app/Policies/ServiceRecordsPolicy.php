@@ -41,7 +41,9 @@ class ServiceRecordsPolicy
      */
     public function view(User $user, Service $service)
     {
-        return $user->hasPermissionTo('view:servicerecord', 'web') || $service->user?->id === $user->id || $user->tokenCan('view:servicerecord');
+        return $user->hasPermissionTo('view:servicerecord', 'web') ||
+               $service->user?->id === $user->id ||
+               $user->tokenCan('view:servicerecord');
     }
 
     /**

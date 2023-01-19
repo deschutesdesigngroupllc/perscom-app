@@ -16,10 +16,7 @@ class ResourceStoreController extends \Laravel\Nova\Http\Controllers\ResourceSto
      */
     public function __invoke(CreateResourceRequest $request)
     {
-        if (\in_array(\get_class($request->findModel()), [
-            Token::class,
-            Client::class,
-        ], true)) {
+        if (\in_array(\get_class($request->findModel()), [Token::class, Client::class], true)) {
             config()->set('nova.actions.resource', null);
         }
 

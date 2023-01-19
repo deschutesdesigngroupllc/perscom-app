@@ -64,7 +64,7 @@ export default function Register({ baseUrl }) {
                     </div>
                     <div className="pt-5">
                         <Button type="submit" processing={processing} color="blue" className="w-full">
-                            Start free trial <span aria-hidden="true">&rarr;</span>
+                            Start free trial <span aria-hidden="true">&nbsp;&rarr;</span>
                         </Button>
                     </div>
                 </form>

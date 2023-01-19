@@ -129,11 +129,7 @@ class Rank extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new TotalRankRecords(),
-            new NewRankRecords(),
-            new RankRecordsByType(),
-        ];
+        return [new TotalRankRecords(), new NewRankRecords(), new RankRecordsByType()];
     }
 
     /**

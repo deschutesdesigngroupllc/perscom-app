@@ -38,10 +38,7 @@ class TenantDeleted extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return [
-            'mail',
-            NovaChannel::class,
-        ];
+        return ['mail', NovaChannel::class];
     }
 
     /**

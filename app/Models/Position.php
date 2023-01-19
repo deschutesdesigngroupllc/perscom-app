@@ -15,11 +15,7 @@ class Position extends Model
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'description',
-        'order',
-    ];
+    protected $fillable = ['name', 'description', 'order'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

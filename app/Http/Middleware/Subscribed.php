@@ -42,7 +42,7 @@ class Subscribed extends VerifyBillableIsSubscribed
             }
         }
 
-        if ($unsubscribed && !Auth::user()->hasPermissionTo('manage:api')) {
+        if ($unsubscribed && ! Auth::user()->hasPermissionTo('manage:api')) {
             throw new SubscriptionRequired(403, 'The account requires a subscription to continue. Please contact your account administrator.');
         }
 

@@ -32,10 +32,7 @@ class Announcement extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'title',
-    ];
+    public static $search = ['id', 'title'];
 
     /**
      * Get the displayable label of the resource.

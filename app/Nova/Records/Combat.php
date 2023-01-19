@@ -120,10 +120,7 @@ class Combat extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new TotalCombatRecords(),
-            new NewCombatRecords(),
-        ];
+        return [new TotalCombatRecords(), new NewCombatRecords()];
     }
 
     /**

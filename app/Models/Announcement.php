@@ -12,12 +12,7 @@ class Announcement extends Model
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'title',
-        'content',
-        'color',
-        'expires_at',
-    ];
+    protected $fillable = ['title', 'content', 'color', 'expires_at'];
 
     /**
      * The attributes that should be cast.

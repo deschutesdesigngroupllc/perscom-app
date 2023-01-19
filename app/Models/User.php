@@ -75,23 +75,14 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @var string[]
      */
-    protected $with = [
-        'position',
-        'specialty',
-        'rank',
-        'status',
-        'unit',
-    ];
+    protected $with = ['position', 'specialty', 'rank', 'status', 'unit'];
 
     /**
      * The accessors to append to the model's array form.
      *
      * @var array
      */
-    protected $appends = [
-        'online',
-        'url',
-    ];
+    protected $appends = ['online', 'url'];
 
     /**
      * The attributes that should be cast.
@@ -217,10 +208,10 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function ranks()
     {
-        return $this->belongsToMany(Rank::class, 'records_ranks')->withTimestamps()->withPivot([
-            'text',
-            'type',
-        ])->as('record');
+        return $this->belongsToMany(Rank::class, 'records_ranks')
+                    ->withTimestamps()
+                    ->withPivot(['text', 'type'])
+                    ->as('record');
     }
 
     /**

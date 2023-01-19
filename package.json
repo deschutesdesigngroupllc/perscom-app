@@ -4,7 +4,7 @@
         "dev": "vite",
         "build": "vite build",
         "lint": "eslint --ext .js,.jsx --ignore-path .gitignore --fix resources/js",
-        "format": "prettier 'resources/js/**/*.{js,jsx,json,vue}' 'app/**/*.php' --write --list-different --ignore-unknown",
+        "format": "prettier 'resources/js/**/*.{js,jsx,json,vue}' --write --list-different --ignore-unknown",
         "build-components": "chmod +x ./nova-components/build.sh && ./nova-components/build.sh"
     },
     "dependencies": {

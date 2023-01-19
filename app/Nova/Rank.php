@@ -35,10 +35,7 @@ class Rank extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'name',
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * @var string[]

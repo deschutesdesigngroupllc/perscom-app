@@ -31,11 +31,7 @@ class Specialty extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'name',
-        'abbreviation',
-    ];
+    public static $search = ['id', 'name', 'abbreviation'];
 
     /**
      * @var string[]

@@ -41,7 +41,9 @@ class AssignmentRecordsPolicy
      */
     public function view(User $user, Assignment $assignment)
     {
-        return $user->hasPermissionTo('view:assignmentrecord', 'web') || $assignment->user?->id === $user->id || $user->tokenCan('view:assignmentrecord');
+        return $user->hasPermissionTo('view:assignmentrecord', 'web') ||
+               $assignment->user?->id === $user->id ||
+               $user->tokenCan('view:assignmentrecord');
     }
 
     /**

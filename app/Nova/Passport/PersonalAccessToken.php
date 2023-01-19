@@ -40,10 +40,7 @@ class PersonalAccessToken extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'name',
-    ];
+    public static $search = ['id', 'name'];
 
     /**
      * Get the text for the create resource button.

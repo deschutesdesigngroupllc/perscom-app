@@ -10,10 +10,7 @@ class DiscordSocialiteProvider extends AbstractProvider
     /**
      * @var string[]
      */
-    protected $scopes = [
-        'email',
-        'identify',
-    ];
+    protected $scopes = ['email', 'identify'];
 
     /**
      * @var string

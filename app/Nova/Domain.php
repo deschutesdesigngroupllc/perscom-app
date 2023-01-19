@@ -32,10 +32,7 @@ class Domain extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'domain',
-    ];
+    public static $search = ['id', 'domain'];
 
     /**
      * Get the fields displayed by the resource.

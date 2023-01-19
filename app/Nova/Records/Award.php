@@ -123,10 +123,7 @@ class Award extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new TotalAwardRecords(),
-            new NewAwardRecords(),
-        ];
+        return [new TotalAwardRecords(), new NewAwardRecords()];
     }
 
     /**

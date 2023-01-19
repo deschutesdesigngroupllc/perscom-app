@@ -56,11 +56,7 @@ class Tenant extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'name',
-        'website',
-    ];
+    public static $search = ['id', 'name', 'website'];
 
     /**
      * Get the fields displayed by the resource.
@@ -72,14 +68,11 @@ class Tenant extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')->sortable()->rules([
-                'required',
-                Rule::unique('tenants', 'name')->ignore($this->id),
-            ])->copyable(),
-            Email::make('Email')->sortable()->rules([
-                'required',
-                Rule::unique('tenants', 'email')->ignore($this->id),
-            ]),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
+                ->copyable(),
+            Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
             Text::make('Website')->sortable(),
             URL::make('Domain', 'url')->sortable()->displayUsing(function ($url) {
                 return $url;
@@ -93,8 +86,8 @@ class Tenant extends Resource
                 'max:255',
                 Rule::unique(Domain::class, 'domain'),
             ])->onlyOnForms()->hideWhenUpdating()->fillUsing(function ($request) {
-                return null;
-            }),
+                    return null;
+                }),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->sortable()->exceptOnForms(),
             DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),

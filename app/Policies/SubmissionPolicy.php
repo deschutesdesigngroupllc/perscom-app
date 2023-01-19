@@ -41,7 +41,9 @@ class SubmissionPolicy
      */
     public function view(User $user, Submission $submission)
     {
-        return $user->hasPermissionTo('view:submission', 'web') || $user->id === $submission->user?->id || $user->tokenCan('view:submission');
+        return $user->hasPermissionTo('view:submission', 'web') ||
+               $user->id === $submission->user?->id ||
+               $user->tokenCan('view:submission');
     }
 
     /**

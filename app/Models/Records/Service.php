@@ -19,12 +19,7 @@ class Service extends Model
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'user_id',
-        'document_id',
-        'author_id',
-        'text',
-    ];
+    protected $fillable = ['user_id', 'document_id', 'author_id', 'text'];
 
     /**
      * The table associated with the model.

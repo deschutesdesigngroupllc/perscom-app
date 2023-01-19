@@ -15,21 +15,14 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, class-string<Throwable>>
      */
-    protected $dontReport = [
-        TenantCouldNotBeIdentifiedByRequestDataException::class,
-        OAuthServerException::class,
-    ];
+    protected $dontReport = [TenantCouldNotBeIdentifiedByRequestDataException::class, OAuthServerException::class];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
      *
      * @var array<int, string>
      */
-    protected $dontFlash = [
-        'current_password',
-        'password',
-        'password_confirmation',
-    ];
+    protected $dontFlash = ['current_password', 'password', 'password_confirmation'];
 
     /**
      * Register the exception handling callbacks for the application.

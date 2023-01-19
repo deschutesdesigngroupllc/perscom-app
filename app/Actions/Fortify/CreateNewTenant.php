@@ -21,19 +21,8 @@ class CreateNewTenant
     public function create(array $input)
     {
         Validator::make($input, [
-            'organization' => [
-                'required',
-                'string',
-                'max:255',
-                Rule::unique(Tenant::class, 'name'),
-            ],
-            'email' => [
-                'required',
-                'string',
-                'email',
-                'max:255',
-                Rule::unique(Tenant::class, 'email'),
-            ],
+            'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],
+            'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],
         ])->validate();
 
         $tenant = Tenant::withoutEvents(function () use ($input) {

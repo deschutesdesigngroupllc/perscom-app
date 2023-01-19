@@ -28,10 +28,7 @@ class Status extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'text',
-    ];
+    public static $search = ['id', 'text'];
 
     /**
      * Get the URI key for the resource.
@@ -59,10 +56,7 @@ class Status extends Resource
      */
     public function fields(NovaRequest $request)
     {
-        return [
-            ID::make()->sortable(),
-            Textarea::make('Text'),
-        ];
+        return [ID::make()->sortable(), Textarea::make('Text')];
     }
 
     /**

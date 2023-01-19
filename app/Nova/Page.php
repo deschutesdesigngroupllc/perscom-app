@@ -33,10 +33,7 @@ class Page extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'title',
-    ];
+    public static $search = ['id', 'title'];
 
     /**
      * Get the fields displayed by the resource.
@@ -56,14 +53,14 @@ class Page extends Resource
                 ->help('This will be used to generate the URL to access the page.')
                 ->hideFromIndex(),
             URL::make('URL', fn () => tenant()->url.'/pages/'.$this->slug)
-               ->displayUsing(fn () => tenant()->url.'/pages/'.$this->slug)
+               ->displayUsing(fn () => tenant()->url.
+                                      '/pages/'.
+                                      $this->slug)
                ->onlyOnIndex(),
             Boolean::make('Enabled')->default(function () {
                 return true;
             })->help('Disable to prevent access to the page.'),
-            new Panel('Content', [
-                Code::make('Page Content', 'content')->language('html'),
-            ]),
+            new Panel('Content', [Code::make('Page Content', 'content')->language('html')]),
         ];
     }
 

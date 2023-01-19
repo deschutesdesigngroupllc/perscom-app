@@ -148,10 +148,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])->icon('terminal')->collapsable(),
 
                     MenuSection::make('Tools', [
-                        MenuItem::externalLink('Horizon', Url::fromString(config('app.url').'/'.config('horizon.path'))
+                        MenuItem::externalLink('Horizon', Url::fromString(config('app.url').
+                                                                          '/'.
+                                                                          config('horizon.path'))
                                                              ->withScheme(config('app.scheme'))
                                                              ->__toString()),
-                        MenuItem::externalLink('Telescope', Url::fromString(config('app.url').'/'.config('telescope.path'))
+                        MenuItem::externalLink('Telescope', Url::fromString(config('app.url').
+                                                                            '/'.
+                                                                            config('telescope.path'))
                                                                ->withScheme(config('app.scheme'))
                                                                ->__toString()),
                     ])->icon('external-link')->collapsable(),
@@ -254,8 +258,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     return ! $request->isCentralRequest();
                 }),
                 MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
-                    return ! $request->isDemoMode() && ! $request->isCentralRequest() && $request->user()
-                                                                                               ->hasPermissionTo('manage:billing') && FeatureFlag::isOn('billing');
+                    return ! $request->isDemoMode() &&
+                           ! $request->isCentralRequest() &&
+                           $request->user()->hasPermissionTo('manage:billing') &&
+                           FeatureFlag::isOn('billing');
                 }),
                 MenuItem::make('Logout', 'logout')->method('POST', [
                     '_token' => csrf_token(),

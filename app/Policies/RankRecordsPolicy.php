@@ -41,7 +41,9 @@ class RankRecordsPolicy
      */
     public function view(User $user, Rank $rank)
     {
-        return $user->hasPermissionTo('view:rankrecord', 'web') || $rank->user?->id === $user->id || $user->tokenCan('view:rankrecord');
+        return $user->hasPermissionTo('view:rankrecord', 'web') ||
+               $rank->user?->id === $user->id ||
+               $user->tokenCan('view:rankrecord');
     }
 
     /**

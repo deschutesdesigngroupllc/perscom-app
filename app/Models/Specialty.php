@@ -13,11 +13,7 @@ class Specialty extends Model
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'name',
-        'abbreviation',
-        'description',
-    ];
+    protected $fillable = ['name', 'abbreviation', 'description'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

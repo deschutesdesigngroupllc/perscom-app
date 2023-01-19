@@ -1,9 +1,9 @@
 import React from "react";
 
-import { Button } from "@/Components/Button";
-import { Input } from "@/Components/Input";
-import { ValidationErrors } from "@/Components/ValidationErrors";
-import { Head, useForm } from "@inertiajs/inertia-react";
+import {Button} from "@/Components/Button";
+import {Input} from "@/Components/Input";
+import {ValidationErrors} from "@/Components/ValidationErrors";
+import {Head, useForm} from "@inertiajs/inertia-react";
 import {Auth} from "@/Layouts/Auth";
 
 export default function ForgotPassword({ status }) {

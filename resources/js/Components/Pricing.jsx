@@ -105,11 +105,7 @@ export function Pricing() {
                         price="$9"
                         description="For small organizations with less than 25 personnel."
                         href={route("register.index")}
-                        features={[
-                            "Social login support",
-                            "Application provided subdomain",
-                            "Community support",
-                        ]}
+                        features={["Social login support", "Application provided subdomain", "Community support"]}
                     />{" "}
                     <Plan
                         featured
@@ -117,11 +113,7 @@ export function Pricing() {
                         price="$15"
                         description="For growing organizations with less than 100 personnel."
                         href={route("register.index")}
-                        features={[
-                            "Access to powerful API",
-                            "Custom subdomain",
-                            "Ticket and email support",
-                        ]}
+                        features={["Access to powerful API", "Custom subdomain", "Ticket and email support"]}
                     />{" "}
                     <Plan
                         name="Enterprise"

@@ -65,11 +65,7 @@ class User extends Resource
      *
      * @var array
      */
-    public static $search = [
-        'id',
-        'name',
-        'email',
-    ];
+    public static $search = ['id', 'name', 'email'];
 
     /**
      * @var string[]
@@ -251,9 +247,11 @@ class User extends Resource
                     Text::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), function ($model) {
                         return $model->rank->name ?? null;
                     })->onlyOnDetail(),
-                    DateTime::make('Last '.Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Change Date', function ($model) {
-                        return $model->rank_records()->latest()->first()->created_at ?? null;
-                    })->onlyOnDetail(),
+                    DateTime::make('Last '.
+                                   Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
+                                   ' Change Date', function ($model) {
+                                       return $model->rank_records()->latest()->first()->created_at ?? null;
+                                   })->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {
                         return $model->time_in_grade ? CarbonInterval::make($model->time_in_grade)->forHumans() : null;
                     })->onlyOnDetail(),
@@ -262,12 +260,15 @@ class User extends Resource
             ])->showTitle(true),
             Tabs::make('Records', [
                 HasMany::make('Assignment Records', 'assignment_records', AssignmentRecords::class),
-                HasMany::make(Str::singular(Str::title(setting('localization_awards', 'Award'))).' Records', 'award_records', AwardRecords::class),
+                HasMany::make(Str::singular(Str::title(setting('localization_awards', 'Award'))).
+                              ' Records', 'award_records', AwardRecords::class),
                 HasMany::make('Combat Records', 'combat_records', CombatRecords::class),
-                HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records', 'rank_records', RankRecords::class),
+                HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
+                              ' Records', 'rank_records', RankRecords::class),
                 HasMany::make('Service Records', 'service_records', ServiceRecords::class),
                 HasMany::make('Submission Records', 'submissions', Submission::class),
-                HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).' Records', 'qualification_records', QualificationRecords::class),
+                HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).
+                              ' Records', 'qualification_records', QualificationRecords::class),
             ])->showTitle(true),
             MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'statuses', Status::class)
                        ->allowDuplicateRelations()
@@ -284,10 +285,8 @@ class User extends Resource
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note:user'),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')->canSeeWhen('note:user')->onlyOnDetail(),
             ]),
-            Tabs::make('Permissions', [
-                MorphedByMany::make('Roles'),
-                MorphedByMany::make('Permissions'),
-            ])->showTitle(true),
+            Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])
+                ->showTitle(true),
         ];
     }
 
@@ -299,11 +298,7 @@ class User extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new TotalUsers(),
-            new NewUsers(),
-            new UsersOnline(),
-        ];
+        return [new TotalUsers(), new NewUsers(), new UsersOnline()];
     }
 
     /**
@@ -336,8 +331,6 @@ class User extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export Users')->nameable(),
-        ];
+        return [ExportAsCsv::make('Export Users')->nameable()];
     }
 }

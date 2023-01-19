@@ -123,10 +123,7 @@ class Qualification extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [
-            new TotalQualificationRecords(),
-            new NewQualificationRecords(),
-        ];
+        return [new TotalQualificationRecords(), new NewQualificationRecords()];
     }
 
     /**

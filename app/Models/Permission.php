@@ -24,10 +24,7 @@ class Permission extends \Spatie\Permission\Models\Permission implements Arrayab
      *
      * @var array
      */
-    protected $appends = [
-        'is_custom_permission',
-        'is_application_permission',
-    ];
+    protected $appends = ['is_custom_permission', 'is_application_permission'];
 
     /**
      * @return bool

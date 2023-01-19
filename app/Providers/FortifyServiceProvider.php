@@ -49,7 +49,9 @@ class FortifyServiceProvider extends ServiceProvider
                 'status' => session('status'),
                 'canResetPassword' => Route::has('password.request'),
                 'demoMode' => Request::isDemoMode(),
-                'enableSocialLogin' => ! Request::isCentralRequest() && ! Request::isDemoMode() && FeatureFlag::isOn('social-login'),
+                'enableSocialLogin' => ! Request::isCentralRequest() &&
+                                       ! Request::isDemoMode() &&
+                                       FeatureFlag::isOn('social-login'),
                 'githubLogin' => \route('auth.social.tenant.redirect', [
                     'driver' => 'github',
                 ]),

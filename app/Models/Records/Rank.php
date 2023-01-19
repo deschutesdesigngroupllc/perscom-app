@@ -20,13 +20,7 @@ class Rank extends Model
     /**
      * @var string[]
      */
-    protected $fillable = [
-        'user_id',
-        'rank_id',
-        'document_id',
-        'author_id',
-        'text',
-    ];
+    protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text'];
 
     /**
      * Record types
