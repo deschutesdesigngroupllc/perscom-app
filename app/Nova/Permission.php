@@ -5,7 +5,6 @@ namespace App\Nova;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
@@ -65,10 +64,6 @@ class Permission extends Resource
             Text::make('Description', function ($model) {
                 return $model->description;
             })->onlyOnIndex(),
-            Select::make('Scope', 'guard_name')->displayUsingLabels()->options([
-                'web' => 'Dashboard',
-                'api' => 'API',
-            ])->sortable(),
             Boolean::make('Custom Permission', function ($permission) {
                 return $permission->is_custom_permission;
             }),

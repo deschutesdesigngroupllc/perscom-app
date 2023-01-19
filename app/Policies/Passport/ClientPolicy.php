@@ -33,7 +33,7 @@ class ClientPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('manage:api') || $user->tokenCan('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -49,7 +49,7 @@ class ClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api') || $user->tokenCan('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -60,7 +60,7 @@ class ClientPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('manage:api') || $user->tokenCan('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -76,7 +76,7 @@ class ClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api') || $user->tokenCan('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -92,7 +92,7 @@ class ClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api') || $user->tokenCan('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**

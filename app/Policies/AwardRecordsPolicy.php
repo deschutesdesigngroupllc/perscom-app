@@ -29,7 +29,7 @@ class AwardRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:awardrecord') || $user->tokenCan('view:awardrecord');
+        return $user->hasPermissionTo('view:awardrecord', 'web') || $user->tokenCan('view:awardrecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class AwardRecordsPolicy
      */
     public function view(User $user, Award $award)
     {
-        return $user->hasPermissionTo('view:awardrecord') || $award->user?->id === $user->id || $user->tokenCan('view:awardrecord');
+        return $user->hasPermissionTo('view:awardrecord', 'web') || $award->user?->id === $user->id || $user->tokenCan('view:awardrecord');
     }
 
     /**
@@ -52,7 +52,7 @@ class AwardRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:awardrecord') || $user->tokenCan('create:awardrecord');
+        return $user->hasPermissionTo('create:awardrecord', 'web') || $user->tokenCan('create:awardrecord');
     }
 
     /**
@@ -64,7 +64,7 @@ class AwardRecordsPolicy
      */
     public function update(User $user, Award $award)
     {
-        return $user->hasPermissionTo('update:awardrecord') || $user->tokenCan('update:awardrecord');
+        return $user->hasPermissionTo('update:awardrecord', 'web') || $user->tokenCan('update:awardrecord');
     }
 
     /**
@@ -76,7 +76,7 @@ class AwardRecordsPolicy
      */
     public function delete(User $user, Award $award)
     {
-        return $user->hasPermissionTo('delete:awardrecord') || $user->tokenCan('delete:awardrecord');
+        return $user->hasPermissionTo('delete:awardrecord', 'web') || $user->tokenCan('delete:awardrecord');
     }
 
     /**

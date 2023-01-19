@@ -6,8 +6,7 @@ return [
         'User' => 'Has permission to view all necessary records only pertaining to the user.',
     ],
     'guards' => [
-        'web',
-        'api'
+        'web'
     ],
     'default' => [
         'User' => [

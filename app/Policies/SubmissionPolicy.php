@@ -29,7 +29,7 @@ class SubmissionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:submission') || $user->tokenCan('view:submission');
+        return $user->hasPermissionTo('view:submission', 'web') || $user->tokenCan('view:submission');
     }
 
     /**
@@ -41,7 +41,7 @@ class SubmissionPolicy
      */
     public function view(User $user, Submission $submission)
     {
-        return $user->hasPermissionTo('view:submission') || $user->id === $submission->user?->id || $user->tokenCan('view:submission');
+        return $user->hasPermissionTo('view:submission', 'web') || $user->id === $submission->user?->id || $user->tokenCan('view:submission');
     }
 
     /**
@@ -52,7 +52,7 @@ class SubmissionPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:submission') || $user->tokenCan('create:submission');
+        return $user->hasPermissionTo('create:submission', 'web') || $user->tokenCan('create:submission');
     }
 
     /**
@@ -64,7 +64,7 @@ class SubmissionPolicy
      */
     public function update(User $user, Submission $submission)
     {
-        return $user->hasPermissionTo('update:submission') || $user->tokenCan('update:submission');
+        return $user->hasPermissionTo('update:submission', 'web') || $user->tokenCan('update:submission');
     }
 
     /**
@@ -76,7 +76,7 @@ class SubmissionPolicy
      */
     public function delete(User $user, Submission $submission)
     {
-        return $user->hasPermissionTo('delete:submission') || $user->tokenCan('delete:submission');
+        return $user->hasPermissionTo('delete:submission', 'web') || $user->tokenCan('delete:submission');
     }
 
     /**

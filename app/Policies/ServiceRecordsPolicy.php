@@ -29,7 +29,7 @@ class ServiceRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:servicerecord') || $user->tokenCan('view:servicerecord');
+        return $user->hasPermissionTo('view:servicerecord', 'web') || $user->tokenCan('view:servicerecord');
     }
 
     /**
@@ -41,7 +41,7 @@ class ServiceRecordsPolicy
      */
     public function view(User $user, Service $service)
     {
-        return $user->hasPermissionTo('view:servicerecord') || $service->user?->id === $user->id || $user->tokenCan('view:servicerecord');
+        return $user->hasPermissionTo('view:servicerecord', 'web') || $service->user?->id === $user->id || $user->tokenCan('view:servicerecord');
     }
 
     /**
@@ -52,7 +52,7 @@ class ServiceRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:servicerecord') || $user->tokenCan('create:servicerecord');
+        return $user->hasPermissionTo('create:servicerecord', 'web') || $user->tokenCan('create:servicerecord');
     }
 
     /**
@@ -64,7 +64,7 @@ class ServiceRecordsPolicy
      */
     public function update(User $user, Service $service)
     {
-        return $user->hasPermissionTo('update:servicerecord') || $user->tokenCan('update:servicerecord');
+        return $user->hasPermissionTo('update:servicerecord', 'web') || $user->tokenCan('update:servicerecord');
     }
 
     /**
@@ -76,7 +76,7 @@ class ServiceRecordsPolicy
      */
     public function delete(User $user, Service $service)
     {
-        return $user->hasPermissionTo('delete:servicerecord') || $user->tokenCan('delete:servicerecord');
+        return $user->hasPermissionTo('delete:servicerecord', 'web') || $user->tokenCan('delete:servicerecord');
     }
 
     /**
