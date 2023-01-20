@@ -118,8 +118,9 @@ class Tenant extends Resource
                         return $this->sparkPlan()->name ?? null;
                     }),
                     Text::make('Stripe ID')->hideFromIndex()->copyable(),
-                    Text::make('Card Brand')->hideFromIndex(),
-                    Text::make('Card Last Four')->hideFromIndex(),
+                    Text::make('Card Brand', 'pm_type')->hideFromIndex(),
+                    Text::make('Card Last Four', 'pm_last_four')->hideFromIndex(),
+                    Text::make('Card Expiration', 'pm_expiration')->hideFromIndex(),
                     DateTime::make('Trial Ends At')->hideFromIndex(),
                     DateTime::make('Plan Ends At')->hideFromIndex(),
                     Text::make('Receipt Emails')->hideFromIndex(),
