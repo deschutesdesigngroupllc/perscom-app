@@ -6,7 +6,7 @@ use Laravel\Cashier\Subscription;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
 
-class SubscriptionsByPlan extends Partition
+class SubscriptionsByPrice extends Partition
 {
     /**
      * Calculate the value of the metric.
@@ -16,7 +16,7 @@ class SubscriptionsByPlan extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Subscription::class, 'stripe_plan');
+        return $this->count($request, Subscription::class, 'stripe_price');
     }
 
     /**
@@ -36,6 +36,6 @@ class SubscriptionsByPlan extends Partition
      */
     public function uriKey()
     {
-        return 'admin-subscriptions-by-plan';
+        return 'admin-subscriptions-by-price';
     }
 }
