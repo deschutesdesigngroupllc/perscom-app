@@ -43,7 +43,10 @@ class SubscriptionItem extends Resource
             Text::make('Stripe ID')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
-            Text::make('Stripe Plan')->readonly(function ($request) {
+            Text::make('Stripe Price')->readonly(function ($request) {
+                return $request->isUpdateOrUpdateAttachedRequest();
+            })->rules(['required']),
+            Text::make('Stripe Price')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
             Number::make('Quantity')->rules(['required']),

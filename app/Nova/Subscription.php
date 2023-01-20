@@ -35,7 +35,7 @@ class Subscription extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'stripe_id', 'stripe_plan', 'stripe_status'];
+    public static $search = ['id', 'stripe_id', 'stripe_price', 'stripe_status'];
 
     /**
      * Get the fields displayed by the resource.
@@ -61,7 +61,7 @@ class Subscription extends Resource
                 'canceled' => 'danger',
                 'unpaid' => 'danger',
             ]),
-            Text::make('Stripe Plan')->readonly(function ($request) {
+            Text::make('Stripe Price')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
             Number::make('Quantity')->rules(['required']),
