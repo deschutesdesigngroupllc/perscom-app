@@ -20,7 +20,7 @@ class PermissionSeeder extends Seeder
                     Permission::factory()->create([
                         'name' => $permission,
                         'description' => $description,
-                        'guard_name' => $guard
+                        'guard_name' => $guard,
                     ]);
                 }
             }

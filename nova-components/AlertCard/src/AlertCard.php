@@ -52,16 +52,19 @@ class AlertCard extends Card
     }
 
     /**
-     * @param  null  $message
-     * @param  null  $button
-     * @param  null  $url
+     * @param null $title
+     * @param null $message
+     * @param null $button
+     * @param null $url
+     *
      * @return AlertCard
      */
-    public function withSystemMessage($message = null, $button = null, $url = null): AlertCard
+    public function withSystemMessage($title = null, $message = null, $button = null, $url = null): AlertCard
     {
         $meta = $this->meta();
         $existingMessages = Arr::get($meta, 'messages', []);
         $newMessages = Arr::prepend($existingMessages, [
+            'title' => $title,
             'message' => $message,
             'button' => $button,
             'url' => $url,

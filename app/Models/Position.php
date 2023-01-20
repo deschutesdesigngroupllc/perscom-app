@@ -5,9 +5,10 @@ namespace App\Models;
 use App\Models\Records\Assignment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
-class Position extends Model
+class Position extends Model implements Sortable
 {
     use HasFactory;
     use SortableTrait;

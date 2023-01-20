@@ -37,8 +37,11 @@
                                   clip-rule="evenodd"/>
                         </svg>
                     </div>
-                    <div class="ac-ml-3 ac-flex-1 md:ac-flex md:ac-justify-between">
-                        <p class="ac-text-sm ac-text-blue-700">{{ message.message }}</p>
+                    <div class="ac-ml-3 ac-flex-1 md:ac-flex md:ac-justify-between md:ac-items-center">
+                        <div>
+                            <h3 class="ac-text-sm ac-font-bold ac-text-blue-800">{{ message.title }}</h3>
+                            <p class="ac-mt-2 ac-text-sm ac-text-blue-700">{{ message.message }}</p>
+                        </div>
                         <p class="ac-mt-3 ac-text-sm md:ac-mt-0 md:ac-ml-6" v-if="message.url || message.button">
                             <a :href="message.url"
                                class="ac-whitespace-nowrap ac-font-semibold ac-text-blue-700 hover:ac-text-blue-600">

@@ -73,7 +73,7 @@ class Tenant extends Resource
                 ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
                 ->copyable(),
             Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
-            Text::make('Website')->sortable(),
+            Text::make('Website')->hideFromIndex(),
             URL::make('Domain', 'url')->sortable()->displayUsing(function ($url) {
                 return $url;
             })->exceptOnForms(),
@@ -86,10 +86,10 @@ class Tenant extends Resource
                 'max:255',
                 Rule::unique(Domain::class, 'domain'),
             ])->onlyOnForms()->hideWhenUpdating()->fillUsing(function ($request) {
-                    return null;
-                }),
+                return null;
+            }),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->sortable()->exceptOnForms(),
+            DateTime::make('Created At')->sortable()->exceptOnForms()->onlyOnDetail(),
             DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
             Tabs::make('Relations', [
                 Tab::make('Database', [
@@ -114,10 +114,14 @@ class Tenant extends Resource
                     Boolean::make('On Trial', function ($model) {
                         return $model->onGenericTrial();
                     }),
+                    Text::make('Plan', function () {
+                        return $this->sparkPlan()->name ?? null;
+                    }),
                     Text::make('Stripe ID')->hideFromIndex()->copyable(),
                     Text::make('Card Brand')->hideFromIndex(),
                     Text::make('Card Last Four')->hideFromIndex(),
                     DateTime::make('Trial Ends At')->hideFromIndex(),
+                    DateTime::make('Plan Ends At')->hideFromIndex(),
                     Text::make('Receipt Emails')->hideFromIndex(),
                 ]),
                 Tab::make('All Subscriptions', [HasMany::make('Subscriptions')]),

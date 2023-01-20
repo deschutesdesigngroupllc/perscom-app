@@ -3,6 +3,7 @@
 namespace App\Nova\Dashboards;
 
 use App\Models\Announcement;
+use App\Models\Message;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\UpdatesPerformed;
 use App\Nova\Metrics\UsersOnline;
@@ -58,6 +59,10 @@ class Main extends Dashboard
                     ->each(function ($announcement) use ($card) {
                         $card->withAnnouncement($announcement->title, $announcement->content, $announcement->color);
                     });
+
+        Message::query()->active()->ordered()->each(function ($message) use ($card) {
+            $card->withSystemMessage($message->title, $message->message, $message->link_text, $message->url);
+        });
 
         if (! Request::isDemoMode() && FeatureFlag::isOn('billing') && Auth::user()->hasPermissionTo('manage:billing')) {
             if (\tenant()->onTrial()) {
