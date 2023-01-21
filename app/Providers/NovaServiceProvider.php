@@ -230,7 +230,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ])->collapsable(),
                     ])->icon('terminal')->collapsable()->canSee(function (NovaRequest $request) {
                         return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
-                    }),
+                    })->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
@@ -240,7 +240,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 ->openInNewTab(),
                         MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
                                 ->openInNewTab(),
-                    ])->icon('support'),
+                    ])->icon('support')->collapsable()->collapsedByDefault(),
                 ];
             });
         }

@@ -94,9 +94,9 @@ return [
     'receipt_data' => [
         'vendor' => 'Deschutes Design Group LLC',
         'product' => 'PERSCOM Personnel Management System',
-        'street' => '111 Example St.',
-        'location' => 'Los Angeles, CA',
-        'phone' => '555-555-5555',
+        'street' => '2209 Sturnella Lane',
+        'location' => 'Belgrade, Montana',
+        'phone' => '541-213-9729',
     ],
 
     /*

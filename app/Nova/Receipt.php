@@ -3,6 +3,8 @@
 namespace App\Nova;
 
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Receipt extends Resource
@@ -36,6 +38,11 @@ class Receipt extends Resource
     public static $search = ['id'];
 
     /**
+     * @var string[]
+     */
+    public static $orderBy = ['paid_at' => 'asc'];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -43,7 +50,21 @@ class Receipt extends Resource
      */
     public function fields(NovaRequest $request)
     {
-        return [ID::make()->sortable()];
+        return [
+            ID::make()->sortable(),
+            Text::make('Amount')->readonly(),
+            Text::make('Tax')->readonly(),
+            Text::make('Paid At')->readonly()->sortable(),
+            URL::make('Download', function () {
+                return \App\Models\Tenant::find($this->tenant_id)->run(function ($tenant) {
+                    return route('spark.receipts.download', [
+                        $tenant->sparkConfiguration()['type'],
+                        $tenant->id,
+                        $this->provider_id
+                    ]);
+                });
+            })
+        ];
     }
 
     /**
