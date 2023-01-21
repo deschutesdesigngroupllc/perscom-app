@@ -16,7 +16,7 @@
             <a href="/" class="inline-flex">
                 <span class="sr-only">PERSCOM</span>
                 <img class="h-12 w-auto"
-                     src="{{ \Illuminate\Support\Facades\Vite::asset('resources/svg/app-logo.svg') }}" alt="">
+                     src="{{ \Illuminate\Support\Facades\Vite::asset('resources/svg/logo.svg') }}" alt="">
             </a>
         </div>
         <div class="py-16">

@@ -31,7 +31,7 @@ class NewMail extends Mailable implements ShouldQueue
     {
         return $this->markdown('emails.tenant.mail')->subject($this->mail->subject)->with([
             'content' => $this->mail->content,
-            'links' => $this->mail->links
+            'links' => $this->mail->links,
         ]);
     }
 }

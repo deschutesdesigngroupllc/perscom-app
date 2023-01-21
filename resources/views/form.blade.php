@@ -16,7 +16,7 @@
 </head>
 <body class="bg-body">
 <header class="bg-white d-flex align-items-center" style="height: 3.5rem;">
-    <img class="px-4" src="../../../svg/app-logo.svg" alt="" height="24">
+    <img class="px-4" src="../../../svg/logo.svg" alt="" height="24">
 </header>
 @inertia
 </body>

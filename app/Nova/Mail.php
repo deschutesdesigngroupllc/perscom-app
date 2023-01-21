@@ -89,8 +89,8 @@ class Mail extends Resource
             DateTime::make('Created At')->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
             new Panel('Links', [
-                KeyValue::make('Links', 'links')->rules('json')->keyLabel('Text')->valueLabel('URL')
-            ])
+                KeyValue::make('Links', 'links')->rules('json')->keyLabel('Text')->valueLabel('URL'),
+            ]),
         ];
     }
 

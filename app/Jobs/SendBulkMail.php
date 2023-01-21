@@ -33,7 +33,7 @@ class SendBulkMail implements ShouldQueue
     public function handle()
     {
         $this->mail->update([
-            'sent_at' => now()
+            'sent_at' => now(),
         ]);
 
         Notification::send($this->tenants, new MailNotification($this->mail));

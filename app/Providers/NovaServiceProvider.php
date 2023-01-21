@@ -151,7 +151,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                     MenuSection::make('Communications', [
                         MenuItem::resource(Mail::class),
-                        MenuItem::resource(Message::class)
+                        MenuItem::resource(Message::class),
                     ])->icon('chat')->collapsable(),
 
                     MenuSection::make('Tools', [

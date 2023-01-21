@@ -169,7 +169,7 @@ return [
     */
 
     'brand' => [
-        'logo' => realpath(__DIR__.'/../public/svg/app-logo.svg'),
+        'logo' => realpath(__DIR__ . '/../public/svg/logo.svg'),
         'colors' => [
             '400' => '37, 99, 235, 0.5',
             '500' => '37, 99, 235',

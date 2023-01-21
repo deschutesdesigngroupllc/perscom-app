@@ -27,6 +27,6 @@ class Mail extends Model
     protected $casts = [
         'links' => 'json',
         'send_at' => 'datetime',
-        'sent_at' => 'datetime'
+        'sent_at' => 'datetime',
     ];
 }

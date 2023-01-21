@@ -1,9 +1,9 @@
-<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 103 24" width="103" height="24">
+<svg version="1.2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 103 24" width="103" height="24" id="logo">
 	<title>PERSCOM</title>
 	<style>
-		.s0 { fill: none } 
-		.s1 { fill: #646464;stroke: #ffffff;stroke-width: 0 } 
-		.s2 { fill: #d9d9d9 } 
+		.s0 { fill: none }
+		.s1 { fill: #646464;stroke: #ffffff;stroke-width: 0 }
+		.s2 { fill: #d9d9d9 }
 	</style>
 	<g id="background-logo">
 		<path id="Layer" class="s0" d="m-21.6-49.1h175.8v140.4h-175.8z"/>
