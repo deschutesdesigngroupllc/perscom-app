@@ -8,6 +8,7 @@ use App\Models\Attachment;
 use App\Models\Award;
 use App\Models\Document;
 use App\Models\Forms\Form;
+use App\Models\Mail;
 use App\Models\Message;
 use App\Models\Passport\Client;
 use App\Models\Passport\Log;
@@ -36,6 +37,7 @@ use App\Policies\AwardRecordsPolicy;
 use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
 use App\Policies\FormPolicy;
+use App\Policies\MailPolicy;
 use App\Policies\MessagePolicy;
 use App\Policies\Passport\ClientPolicy;
 use App\Policies\Passport\LogPolicy;
@@ -77,6 +79,7 @@ class AuthServiceProvider extends ServiceProvider
         Document::class => DocumentPolicy::class,
         Form::class => FormPolicy::class,
         Log::class => LogPolicy::class,
+        Mail::class => MailPolicy::class,
         Message::class => MessagePolicy::class,
         Permission::class => PermissionPolicy::class,
         Position::class => PositionPolicy::class,

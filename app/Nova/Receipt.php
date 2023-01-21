@@ -60,10 +60,10 @@ class Receipt extends Resource
                     return route('spark.receipts.download', [
                         $tenant->sparkConfiguration()['type'],
                         $tenant->id,
-                        $this->provider_id
+                        $this->provider_id,
                     ]);
                 });
-            })
+            }),
         ];
     }
 

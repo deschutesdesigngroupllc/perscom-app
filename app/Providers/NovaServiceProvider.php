@@ -15,6 +15,7 @@ use App\Nova\Feature;
 use App\Nova\Field;
 use App\Nova\Forms\Form;
 use App\Nova\Forms\Submission;
+use App\Nova\Mail;
 use App\Nova\Message;
 use App\Nova\Passport\AuthorizedApplications;
 use App\Nova\Passport\Client;
@@ -144,10 +145,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(AdminResource::class),
                         MenuItem::resource(Domain::class),
                         MenuItem::resource(Feature::class),
-                        MenuItem::resource(Message::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
                     ])->icon('terminal')->collapsable(),
+
+                    MenuSection::make('Communications', [
+                        MenuItem::resource(Mail::class),
+                        MenuItem::resource(Message::class)
+                    ])->icon('chat')->collapsable(),
 
                     MenuSection::make('Tools', [
                         MenuItem::externalLink('Horizon', Url::fromString(config('app.url').
