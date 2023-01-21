@@ -4,13 +4,12 @@
 
 <script>
 export default {
-    props: ['resourceName', 'resourceId', 'field'],
+    props: ["resourceName", "resourceId", "field"],
     mounted() {
-        this.field.fill = this.fill
+        this.field.fill = this.fill;
     },
     methods: {
-        fill(formData) {
-        }
+        fill(formData) {},
     },
-}
+};
 </script>

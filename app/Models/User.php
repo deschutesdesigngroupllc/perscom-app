@@ -82,7 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array
      */
-    protected $appends = ['online', 'url'];
+    protected $appends = ['online', 'url', 'relative_url'];
 
     /**
      * The attributes that should be cast.
@@ -134,6 +134,17 @@ class User extends Authenticatable implements MustVerifyEmail
             'resource' => \App\Nova\User::uriKey(),
             'resourceId' => $this->id,
         ]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getRelativeUrlAttribute()
+    {
+        return route('nova.pages.detail', [
+            'resource' => \App\Nova\User::uriKey(),
+            'resourceId' => $this->id,
+        ], false);
     }
 
     /**

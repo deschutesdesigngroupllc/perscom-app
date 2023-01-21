@@ -52,11 +52,10 @@ class AlertCard extends Card
     }
 
     /**
-     * @param null $title
-     * @param null $message
-     * @param null $button
-     * @param null $url
-     *
+     * @param  null  $title
+     * @param  null  $message
+     * @param  null  $button
+     * @param  null  $url
      * @return AlertCard
      */
     public function withSystemMessage($title = null, $message = null, $button = null, $url = null): AlertCard
