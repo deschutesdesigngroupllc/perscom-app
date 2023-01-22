@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Listeners\TenantCouldNotBeIdentified;
+use App\Listeners\UserLoggedIn;
 use App\Models\Domain;
 use App\Models\Mail;
 use App\Models\Records\Assignment;
@@ -25,6 +26,7 @@ use App\Observers\Records\ServiceRecordObserver;
 use App\Observers\SettingsObserver;
 use App\Observers\TenantObserver;
 use App\Observers\UserObserver;
+use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -38,8 +40,16 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Registered::class => [SendEmailVerificationNotification::class],
-        TenantCouldNotBeIdentifiedOnDomainException::class => [TenantCouldNotBeIdentified::class],
+        Login::class => [
+            UserLoggedIn::class
+        ],
+        Registered::class => [
+            SendEmailVerificationNotification::class
+        ],
+        TenantCouldNotBeIdentifiedOnDomainException::class => [
+            TenantCouldNotBeIdentified::class
+        ],
+
     ];
 
     /**

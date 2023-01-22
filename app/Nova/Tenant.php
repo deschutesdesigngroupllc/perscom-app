@@ -89,12 +89,13 @@ class Tenant extends Resource
                 return null;
             }),
             Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Last Login At')->sortable()->exceptOnForms(),
             DateTime::make('Created At')->sortable()->exceptOnForms()->onlyOnDetail(),
             DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
             Tabs::make('Relations', [
                 Tab::make('Database', [
                     Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
-                    Status::make('Database Status')->loadingWhen(['creating'])->failedWhen([])->readonly(),
+                    Status::make('Database Status')->loadingWhen(['creating'])->hideFromIndex()->failedWhen([])->readonly(),
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Billing Settings', [

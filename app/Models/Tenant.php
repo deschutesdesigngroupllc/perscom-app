@@ -56,6 +56,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     protected $casts = [
         'trial_ends_at' => 'datetime',
+        'last_login_at' => 'datetime'
     ];
 
     /**
@@ -71,6 +72,33 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      * @var array
      */
     protected $with = ['domains'];
+
+    /**
+     * @var string[]
+     */
+    protected $fillable = [
+        'id',
+        'name',
+        'email',
+        'website',
+        'stripe_id',
+        'pm_type',
+        'pm_last_four',
+        'pm_expiration',
+        'extra_billing_information',
+        'trial_ends_at',
+        'billing_address',
+        'billing_address_line_2',
+        'billing_city',
+        'billing_state',
+        'billing_postal_code',
+        'billing_country',
+        'vat_id',
+        'receipt_emails',
+        'last_login_at',
+        'created_at',
+        'updated_at',
+    ];
 
     /**
      * @return string[]
@@ -96,6 +124,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
             'billing_country',
             'vat_id',
             'receipt_emails',
+            'last_login_at',
             'created_at',
             'updated_at',
         ];
