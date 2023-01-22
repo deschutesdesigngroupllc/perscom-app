@@ -30,7 +30,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:permission');
+        return $user->hasPermissionTo('view:permission', 'web') || $user->tokenCan('view:permission');
     }
 
     /**
@@ -42,7 +42,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission)
     {
-        return $user->hasPermissionTo('view:permission');
+        return $user->hasPermissionTo('view:permission', 'web') || $user->tokenCan('view:permission');
     }
 
     /**
@@ -53,7 +53,7 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:permission');
+        return $user->hasPermissionTo('create:permission', 'web') || $user->tokenCan('create:permission');
     }
 
     /**
@@ -68,7 +68,8 @@ class PermissionPolicy
         if ($permission->is_application_permission) {
             return false;
         }
-        return $user->hasPermissionTo('update:permission');
+
+        return $user->hasPermissionTo('update:permission', 'web') || $user->tokenCan('update:permission');
     }
 
     /**
@@ -83,7 +84,8 @@ class PermissionPolicy
         if ($permission->is_application_permission) {
             return false;
         }
-        return $user->hasPermissionTo('delete:permission');
+
+        return $user->hasPermissionTo('delete:permission', 'web') || $user->tokenCan('delete:permission');
     }
 
     /**
@@ -99,6 +101,7 @@ class PermissionPolicy
         if ($permission->is_application_permission && $role->is_application_role) {
             return false;
         }
+
         return $user->hasPermissionTo('update:permission');
     }
 

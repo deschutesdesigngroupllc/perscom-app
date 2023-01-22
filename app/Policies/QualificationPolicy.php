@@ -29,7 +29,7 @@ class QualificationPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:qualification');
+        return $user->hasPermissionTo('view:qualification', 'web') || $user->tokenCan('view:qualification');
     }
 
     /**
@@ -41,7 +41,7 @@ class QualificationPolicy
      */
     public function view(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('view:qualification');
+        return $user->hasPermissionTo('view:qualification', 'web') || $user->tokenCan('view:qualification');
     }
 
     /**
@@ -52,7 +52,7 @@ class QualificationPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:qualification');
+        return $user->hasPermissionTo('create:qualification', 'web') || $user->tokenCan('create:qualification');
     }
 
     /**
@@ -64,7 +64,7 @@ class QualificationPolicy
      */
     public function update(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('update:qualification');
+        return $user->hasPermissionTo('update:qualification', 'web') || $user->tokenCan('update:qualification');
     }
 
     /**
@@ -76,7 +76,7 @@ class QualificationPolicy
      */
     public function delete(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('delete:qualification');
+        return $user->hasPermissionTo('delete:qualification', 'web') || $user->tokenCan('delete:qualification');
     }
 
     /**

@@ -83,9 +83,9 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
             'email',
             'website',
             'stripe_id',
-            'card_brand',
-            'card_last_four',
-            'card_expiration',
+            'pm_type',
+            'pm_last_four',
+            'pm_expiration',
             'extra_billing_information',
             'trial_ends_at',
             'billing_address',
@@ -144,5 +144,25 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     public function routeNotificationForMail($notification)
     {
         return $this->email;
+    }
+
+    /**
+     * @return bool
+     */
+    public function canAccessApi()
+    {
+        $plan = $this->sparkPlan();
+
+        return request()->isDemoMode() || ($plan && $plan->name !== 'Basic') || $this->onTrial();
+    }
+
+    /**
+     * @return bool
+     */
+    public function canAccessCustomSubdomain()
+    {
+        $plan = $this->sparkPlan();
+
+        return $plan && $plan->name !== 'Basic';
     }
 }

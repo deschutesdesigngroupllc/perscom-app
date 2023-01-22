@@ -15,12 +15,12 @@ class CreateRecordsQualificationsTable extends Migration
     {
         Schema::create('records_qualifications', function (Blueprint $table) {
             $table->id();
-	        $table->unsignedBigInteger('user_id');
-	        $table->unsignedBigInteger('qualification_id');
-	        $table->unsignedBigInteger('document_id')->nullable();
-	        $table->unsignedBigInteger('author_id')->nullable();
-	        $table->text('text')->nullable();
-	        $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('qualification_id');
+            $table->unsignedBigInteger('document_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
+            $table->text('text')->nullable();
+            $table->timestamps();
         });
     }
 

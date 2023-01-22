@@ -1,16 +1,17 @@
 <template>
-  <div class="flex justify-center items-center" v-if="this.card.title || this.card.subtitle">
-    <div class="w-full">
-      <Heading class="font-bold" style="font-weight: 600;" v-if="this.card.title">{{ this.card.title }}</Heading>
-      <p class="text-90 leading-tight" v-if="this.card.subtitle">
-        {{ this.card.subtitle }}
-      </p>
+    <div
+        class="dashboard-title-flex dashboard-title-justify-center dashboard-title-items-center"
+        v-if="props.card.title || props.card.subtitle"
+    >
+        <div class="dashboard-title-w-full">
+            <Heading class="dashboard-title-font-bold" v-if="props.card.title">{{ props.card.title }}</Heading>
+            <p class="text-90 dashboard-title-leading-tight" v-if="props.card.subtitle">
+                {{ props.card.subtitle }}
+            </p>
+        </div>
     </div>
-  </div>
 </template>
 
-<script>
-export default {
-  props: ["card"]
-}
+<script setup>
+const props = defineProps(["card"]);
 </script>

@@ -47,10 +47,7 @@ class Admin extends Resource
 
             Gravatar::make()->maxWidth(50),
 
-            Text::make('Name')
-                ->sortable()
-                ->rules('required', 'max:255')
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules('required', 'max:255')->showOnPreview(),
 
             Text::make('Email')
                 ->sortable()
@@ -64,9 +61,9 @@ class Admin extends Resource
             }),
 
             Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
+                    ->onlyOnForms()
+                    ->creationRules('required', Rules\Password::defaults())
+                    ->updateRules('nullable', Rules\Password::defaults()),
             MorphedByMany::make('Roles'),
             MorphedByMany::make('Permissions'),
         ];

@@ -30,7 +30,7 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:role');
+        return $user->hasPermissionTo('view:role', 'web') || $user->tokenCan('view:role');
     }
 
     /**
@@ -42,7 +42,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role)
     {
-        return $user->hasPermissionTo('view:role');
+        return $user->hasPermissionTo('view:role', 'web') || $user->tokenCan('view:role');
     }
 
     /**
@@ -53,7 +53,7 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('view:role');
+        return $user->hasPermissionTo('create:role', 'web') || $user->tokenCan('create:role');
     }
 
     /**
@@ -68,7 +68,8 @@ class RolePolicy
         if ($role->is_application_role) {
             return false;
         }
-        return $user->hasPermissionTo('update:role');
+
+        return $user->hasPermissionTo('update:role', 'web') || $user->tokenCan('update:role');
     }
 
     /**
@@ -83,7 +84,8 @@ class RolePolicy
         if ($role->is_application_role) {
             return false;
         }
-        return $user->hasPermissionTo('update:role');
+
+        return $user->hasPermissionTo('delete:role', 'web') || $user->tokenCan('delete:role');
     }
 
     /**
@@ -99,6 +101,7 @@ class RolePolicy
         if ($role->is_application_role && $permission->is_application_permission) {
             return false;
         }
+
         return $user->hasPermissionTo('update:role');
     }
 

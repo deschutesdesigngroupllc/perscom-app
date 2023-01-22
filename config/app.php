@@ -14,7 +14,7 @@ return [
     */
 
     'name' => env('APP_NAME', 'Laravel'),
-	'version' => env('APP_VERSION', null),
+    'version' => env('APP_VERSION', null),
 
     /*
     |--------------------------------------------------------------------------
@@ -54,10 +54,12 @@ return [
     */
 
     'url' => env('APP_URL', 'http://localhost'),
-	'base_url' => env('BASE_URL', '.localhost'),
-	'auth_url' => env('AUTH_URL', 'http://auth.localhost'),
+    'base_url' => env('BASE_URL', '.localhost'),
+    'auth_url' => env('AUTH_URL', 'http://auth.localhost'),
     'asset_url' => env('ASSET_URL', null),
-	'scheme' => env('APP_SCHEME', 'http'),
+    'scheme' => env('APP_SCHEME', 'http'),
+    'api_url' => env('API_URL', 'http://api.localhost'),
+    'api_version' => env('API_VERSION', 'v1'),
 
     /*
     |--------------------------------------------------------------------------
@@ -176,13 +178,13 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
-	    App\Providers\FortifyServiceProvider::class,
+        App\Providers\FortifyServiceProvider::class,
         App\Providers\HorizonServiceProvider::class,
         App\Providers\SparkServiceProvider::class,
         App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\TelescopeServiceProvider::class,
-		App\Providers\TenancyServiceProvider::class
+        App\Providers\TenancyServiceProvider::class,
     ],
 
     /*

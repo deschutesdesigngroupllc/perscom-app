@@ -81,16 +81,14 @@ class PersonalAccessToken extends Resource
     }
 
     /**
-     * @param  NovaRequest                            $request
+     * @param  NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
-     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        $personalAccessClient = app()
-            ->make(ClientRepository::class)
-            ->personalAccessClient();
+        $personalAccessClient = app()->make(ClientRepository::class)->personalAccessClient();
+
         return $query->where('client_id', '=', $personalAccessClient?->id);
     }
 
@@ -108,60 +106,39 @@ class PersonalAccessToken extends Resource
             Text::make('Name')->sortable(),
             Text::make('API Key', function () {
                 return Crypt::decryptString($this->token);
-            })
-                ->displayUsing(function ($value) {
-                    return Str::limit($value, 50);
-                })
-                ->onlyOnIndex()
-                ->readonly()
-                ->copyable(),
+            })->displayUsing(function ($value) {
+                return Str::limit($value, 50);
+            })->onlyOnIndex()->readonly()->copyable(),
             Code::make('API Key', function () {
                 return Crypt::decryptString($this->token);
             })
                 ->readonly()
                 ->language('shell')
-                ->help(
-                    'API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'
-                ),
-            MultiSelect::make('Scopes')
-                ->options(
-                    Passport::scopes()
-                        ->mapWithKeys(function ($scope) {
-                            return [$scope->id => $scope->id];
-                        })
-                        ->sort()
-                )
-                ->hideFromIndex(),
-            Boolean::make('Revoked')
-                ->default(false)
-                ->hideWhenCreating()
-                ->showOnUpdating()
-                ->sortable(),
+                ->help('API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'),
+            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
+                return [$scope->id => $scope->id];
+            })->sort())->hideFromIndex(),
+            Boolean::make('Revoked')->default(false)->hideWhenCreating()->showOnUpdating()->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Created At')->sortable()->exceptOnForms(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            DateTime::make('Expires At')
-                ->sortable()
-                ->exceptOnForms(),
+            DateTime::make('Expires At')->sortable()->exceptOnForms(),
         ];
     }
 
     /**
-     * @param  NovaRequest             $request
+     * @param  NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
-     *
      * @return string
      */
     public static function redirectAfterCreate(NovaRequest $request, $resource)
     {
-        return '/resources/' . static::uriKey();
+        return '/resources/'.static::uriKey();
     }
 
     /**
      * @param  NovaRequest  $request
-     * @param  Model        $model
+     * @param  Model  $model
      */
     public static function afterCreate(NovaRequest $request, Model $model)
     {

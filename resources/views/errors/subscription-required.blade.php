@@ -1,0 +1,5 @@
+@extends('errors.layout')
+@section('code', __('402'))
+@section('title', __('Subscription Required'))
+@section('header', __('Subscription Required.'))
+@section('message', __('The account requires a subscription to continue. Please contact your account administrator.'))

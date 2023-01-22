@@ -9,7 +9,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSettings\NovaSettings;
 
 class Qualification extends Resource
 {
@@ -46,7 +45,7 @@ class Qualification extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_qualifications', 'Qualifications')));
+        return Str::plural(Str::title(setting('localization_qualifications', 'Qualifications')));
     }
 
     /**
@@ -56,7 +55,7 @@ class Qualification extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_qualifications', 'qualifications')));
+        return Str::plural(Str::slug(setting('localization_qualifications', 'qualifications')));
     }
 
     /**
@@ -69,14 +68,8 @@ class Qualification extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

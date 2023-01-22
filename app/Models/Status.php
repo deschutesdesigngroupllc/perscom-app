@@ -13,6 +13,11 @@ class Status extends Model
     /**
      * @var string[]
      */
+    protected $fillable = ['name', 'color'];
+
+    /**
+     * @var string[]
+     */
     public static $colors = [
         'bg-sky-100 text-sky-600' => 'Blue',
         'bg-gray-100 text-gray-600' => 'Gray',

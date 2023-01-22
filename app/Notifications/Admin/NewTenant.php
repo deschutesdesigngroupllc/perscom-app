@@ -54,18 +54,12 @@ class NewTenant extends Notification implements ShouldQueue
      */
     public function toNova()
     {
-        return (new NovaNotification())
-            ->message('A new tenant has been created.')
-            ->action(
-                'View Tenant',
-                URL::remote(
-                    route('nova.pages.detail', [
-                        'resource' => 'tenants',
-                        'resourceId' => $this->tenant->getTenantKey(),
-                    ])
-                )
-            )
-            ->icon('user-add')
-            ->type('success');
+        return (new NovaNotification())->message('A new tenant has been created.')
+                                       ->action('View Tenant', URL::remote(route('nova.pages.detail', [
+                                           'resource' => 'tenants',
+                                           'resourceId' => $this->tenant->getTenantKey(),
+                                       ])))
+                                       ->icon('user-add')
+                                       ->type('success');
     }
 }

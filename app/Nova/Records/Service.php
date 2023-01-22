@@ -17,7 +17,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class Service extends Resource
@@ -95,33 +94,20 @@ class Service extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make(
-                Str::singular(Str::title(NovaSettings::getSetting('localization_users', 'User'))),
-                'user',
-                User::class
-            )->sortable(),
-            Textarea::make('Text')
-                ->rules(['required'])
-                ->hideFromIndex()
-                ->alwaysShow(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
+                     ->sortable(),
+            Textarea::make('Text')->rules(['required'])->hideFromIndex()->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
             })->onlyOnIndex(),
-            BelongsTo::make('Document')
-                ->nullable()
-                ->onlyOnForms(),
+            BelongsTo::make('Document')->nullable()->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-                DateTime::make('Created At')
-                    ->sortable()
-                    ->exceptOnForms(),
-                DateTime::make('Updated At')
-                    ->exceptOnForms()
-                    ->hideFromIndex(),
+                DateTime::make('Created At')->sortable()->exceptOnForms(),
+                DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())
-                ->withTitle($this->document->name ?? null)
-                ->withContent($this->document ? $this->document->replaceContent($this->user, $this) : null),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document
+                ? $this->document->replaceContent($this->user, $this) : null),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }

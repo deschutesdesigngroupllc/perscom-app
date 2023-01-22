@@ -2,7 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Exceptions\SubscriptionRequired;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
 class Subscribed extends VerifyBillableIsSubscribed
@@ -18,10 +21,32 @@ class Subscribed extends VerifyBillableIsSubscribed
      */
     public function handle($request, $next, $billableType = null, $plan = null)
     {
-        if ($request->isDemoMode() || $request->isCentralRequest() || FeatureFlag::isOff('billing')) {
+        if ($request->isDemoMode() ||
+            $request->isCentralRequest() ||
+            FeatureFlag::isOff('billing') ||
+            $request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*') ||
+            Str::contains($request->path(), 'nova-vendor') ||
+            Str::contains($request->path(), 'roster')) {
             return $next($request);
         }
 
-        return parent::handle($request, $next, $billableType, $plan);
+        $response = parent::handle($request, $next, $billableType, $plan);
+        $unsubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
+
+        if ($request->routeIs('api.*')) {
+            if ($unsubscribed) {
+                throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
+            }
+
+            if (! tenant()->canAccessApi()) {
+                throw new SubscriptionRequired(403, 'Your plan does not include the API. Please upgrade your plan to use the API.');
+            }
+        }
+
+        if ($unsubscribed && ! Auth::user()->hasPermissionTo('manage:api')) {
+            throw new SubscriptionRequired(403, 'The account requires a subscription to continue. Please contact your account administrator.');
+        }
+
+        return $response;
     }
 }

@@ -11,10 +11,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
-use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\HtmlField\HtmlField;
-use Spatie\TagsField\Tags;
-use ThinkStudio\HtmlField\Html;
 
 class Document extends Resource
 {
@@ -51,7 +48,7 @@ class Document extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_documents', 'Documents')));
+        return Str::plural(Str::title(setting('localization_documents', 'Documents')));
     }
 
     /**
@@ -61,7 +58,7 @@ class Document extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_documents', 'documents')));
+        return Str::plural(Str::slug(setting('localization_documents', 'documents')));
     }
 
     /**
@@ -74,29 +71,19 @@ class Document extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required'])
-                ->showOnPreview(),
-            Tags::make('Tags')->withLinkToTagResource(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            //            Tags::make('Tags')->withLinkToTagResource(),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Trix::make('Content')
                 ->hideFromIndex()
-                ->help(
-                    'Use the document tags below to dynamically inject content into your document when the document is attached to certain records.'
-                )
+                ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
                 ->rules(['required'])
                 ->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
             new Panel('Document Tags', [
-                HtmlField::make('Document Tags')
-                    ->view('fields.html.document-tags')
-                    ->onlyOnForms(),
+                HtmlField::make('Document Tags')->view('fields.html.document-tags')->onlyOnForms(),
             ]),
         ];
     }

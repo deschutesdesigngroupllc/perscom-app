@@ -17,6 +17,11 @@ class Service extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = ['user_id', 'document_id', 'author_id', 'text'];
+
+    /**
      * The table associated with the model.
      *
      * @var string

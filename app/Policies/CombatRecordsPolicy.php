@@ -29,7 +29,7 @@ class CombatRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:combatrecord');
+        return $user->hasPermissionTo('view:combatrecord', 'web') || $user->tokenCan('view:combatrecord');
     }
 
     /**
@@ -41,7 +41,9 @@ class CombatRecordsPolicy
      */
     public function view(User $user, Combat $combat)
     {
-        return $user->hasPermissionTo('view:combatrecord') || $combat->user?->id === $user->id;
+        return $user->hasPermissionTo('view:combatrecord', 'web') ||
+               $combat->user?->id === $user->id ||
+               $user->tokenCan('view:combatrecord');
     }
 
     /**
@@ -52,7 +54,7 @@ class CombatRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:combatrecord');
+        return $user->hasPermissionTo('create:combatrecord', 'web') || $user->tokenCan('create:combatrecord');
     }
 
     /**
@@ -64,7 +66,7 @@ class CombatRecordsPolicy
      */
     public function update(User $user, Combat $combat)
     {
-        return $user->hasPermissionTo('update:combatrecord');
+        return $user->hasPermissionTo('update:combatrecord', 'web') || $user->tokenCan('update:combatrecord');
     }
 
     /**
@@ -76,7 +78,7 @@ class CombatRecordsPolicy
      */
     public function delete(User $user, Combat $combat)
     {
-        return $user->hasPermissionTo('delete:combatrecord');
+        return $user->hasPermissionTo('delete:combatrecord', 'web') || $user->tokenCan('delete:combatrecord');
     }
 
     /**

@@ -20,9 +20,8 @@ trait HasAuthor
     }
 
     /**
-     * @param Builder $query
-     * @param User    $user
-     *
+     * @param  Builder  $query
+     * @param  User  $user
      * @return Builder
      */
     public function scopeForAuthor($query, $user)

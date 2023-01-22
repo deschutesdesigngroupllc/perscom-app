@@ -16,11 +16,11 @@ class RankFactory extends Factory
     public function definition()
     {
         return [
-	        'text' => $this->faker->sentence(),
-	        'type' => $this->faker->boolean(),
-	        'author_id' => User::factory(),
-	        'user_id' => User::factory(),
-	        'rank_id' => Rank::factory()
+            'text' => $this->faker->sentence(),
+            'type' => $this->faker->boolean(),
+            'author_id' => User::factory(),
+            'user_id' => User::factory(),
+            'rank_id' => Rank::factory(),
         ];
     }
 }

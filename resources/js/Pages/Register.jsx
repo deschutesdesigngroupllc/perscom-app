@@ -1,11 +1,11 @@
 import React from "react";
-import { useForm } from "@inertiajs/inertia-react";
+import {useForm} from "@inertiajs/inertia-react";
 
-import { AuthLayout } from "@/Components/AuthLayout";
-import { Button } from "@/Components/Button";
-import { Input } from "@/Components/Input";
-import { Logo } from "@/Components/Logo";
-import { ValidationErrors } from "@/Components/ValidationErrors";
+import {AuthLayout} from "@/Components/AuthLayout";
+import {Button} from "@/Components/Button";
+import {Input} from "@/Components/Input";
+import {Logo} from "@/Components/Logo";
+import {ValidationErrors} from "@/Components/ValidationErrors";
 
 export default function Register({ baseUrl }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -62,20 +62,9 @@ export default function Register({ baseUrl }) {
                             onChange={onHandleChange}
                         />
                     </div>
-                    <div>
-                        <Input
-                            label="Domain"
-                            id="domain"
-                            append={baseUrl}
-                            name="domain"
-                            type="text"
-                            value={data.domain}
-                            onChange={onHandleChange}
-                        />
-                    </div>
                     <div className="pt-5">
                         <Button type="submit" processing={processing} color="blue" className="w-full">
-                            Start free trial <span aria-hidden="true">&rarr;</span>
+                            Start free trial <span aria-hidden="true">&nbsp;&rarr;</span>
                         </Button>
                     </div>
                 </form>

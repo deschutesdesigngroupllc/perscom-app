@@ -19,13 +19,13 @@ class AssignmentFactory extends Factory
     public function definition()
     {
         return [
-	        'text' => $this->faker->sentence(),
-	        'author_id' => User::factory(),
-	        'user_id' => User::factory(),
-	        'unit_id' => Unit::factory(),
-	        'position_id' => Position::factory(),
-	        'specialty_id' => Specialty::factory(),
-	        'document_id' => Document::factory()
+            'text' => $this->faker->sentence(),
+            'author_id' => User::factory(),
+            'user_id' => User::factory(),
+            'unit_id' => Unit::factory(),
+            'position_id' => Position::factory(),
+            'specialty_id' => Specialty::factory(),
+            'document_id' => Document::factory(),
         ];
     }
 }

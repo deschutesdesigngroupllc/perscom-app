@@ -56,13 +56,8 @@ class Permission extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required']),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->sortable()->rules(['required']),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Text::make('Description', function ($model) {
                 return $model->description;
             })->onlyOnIndex(),
@@ -72,9 +67,7 @@ class Permission extends Resource
             Boolean::make('Application Permission', function ($permission) {
                 return $permission->is_application_permission;
             }),
-            Tag::make('Roles')
-                ->showCreateRelationButton()
-                ->withPreview(),
+            Tag::make('Roles')->showCreateRelationButton()->withPreview(),
         ];
     }
 
@@ -88,9 +81,7 @@ class Permission extends Resource
     public static function afterCreate(NovaRequest $request, Model $model)
     {
         // Reset permission cache
-        app()
-            ->make(PermissionRegistrar::class)
-            ->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
@@ -103,9 +94,7 @@ class Permission extends Resource
     public static function afterUpdate(NovaRequest $request, Model $model)
     {
         // Reset permission cache
-        app()
-            ->make(PermissionRegistrar::class)
-            ->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
@@ -118,9 +107,7 @@ class Permission extends Resource
     public static function afterDelete(NovaRequest $request, Model $model)
     {
         // Reset permission cache
-        app()
-            ->make(PermissionRegistrar::class)
-            ->forgetCachedPermissions();
+        app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**

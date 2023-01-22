@@ -19,6 +19,7 @@
 
 <script>
 import CustomForm from "./CustomForm.vue";
+
 export default {
     components: { CustomForm },
     data() {
@@ -49,11 +50,13 @@ export default {
 .container {
     max-width: 700px;
 }
+
 .form {
     border-radius: 0.5rem;
     padding: 30px;
     margin: auto;
 }
+
 h1,
 h2,
 h3,
@@ -61,14 +64,17 @@ h4,
 h5 {
     line-height: 1.25;
 }
+
 h1 {
     font-size: 1.5rem;
     font-weight: 400;
 }
+
 h3 {
     font-size: 0.875rem;
     font-weight: 700;
 }
+
 .form-button {
     color: white;
     font-weight: 600;

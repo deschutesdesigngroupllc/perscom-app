@@ -29,20 +29,19 @@ class SpecialtyPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:specialty');
+        return $user->hasPermissionTo('view:specialty', 'web') || $user->tokenCan('view:specialty');
     }
 
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User       $user
+     * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, Specialty $mos)
     {
-        return $user->hasPermissionTo('view:specialty');
+        return $user->hasPermissionTo('view:specialty', 'web') || $user->tokenCan('view:specialty');
     }
 
     /**
@@ -53,41 +52,38 @@ class SpecialtyPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:specialty');
+        return $user->hasPermissionTo('create:specialty', 'web') || $user->tokenCan('create:specialty');
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User       $user
+     * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Specialty $mos)
     {
-        return $user->hasPermissionTo('update:specialty');
+        return $user->hasPermissionTo('update:specialty', 'web') || $user->tokenCan('update:specialty');
     }
 
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User       $user
+     * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, Specialty $mos)
     {
-        return $user->hasPermissionTo('delete:specialty');
+        return $user->hasPermissionTo('delete:specialty', 'web') || $user->tokenCan('delete:specialty');
     }
 
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User       $user
+     * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, Specialty $mos)
@@ -100,7 +96,6 @@ class SpecialtyPolicy
      *
      * @param  \App\Models\User  $user
      * @param  \App\Models\Specialty  $mos
-     *
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, Specialty $mos)

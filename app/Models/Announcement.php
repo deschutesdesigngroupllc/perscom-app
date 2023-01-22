@@ -10,6 +10,11 @@ class Announcement extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = ['title', 'content', 'color', 'expires_at'];
+
+    /**
      * The attributes that should be cast.
      *
      * @var array<string, string>

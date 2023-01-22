@@ -16,10 +16,10 @@ class CreateRanksTable extends Migration
         Schema::create('ranks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-	        $table->text('description')->nullable();
-	        $table->string('abbreviation')->nullable();
-	        $table->string('paygrade')->nullable();
-	        $table->timestamps();
+            $table->text('description')->nullable();
+            $table->string('abbreviation')->nullable();
+            $table->string('paygrade')->nullable();
+            $table->timestamps();
         });
     }
 

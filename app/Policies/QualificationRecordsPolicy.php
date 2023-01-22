@@ -29,7 +29,7 @@ class QualificationRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:qualificationrecord');
+        return $user->hasPermissionTo('view:qualificationrecord', 'web') || $user->tokenCan('view:qualificationrecord');
     }
 
     /**
@@ -41,7 +41,9 @@ class QualificationRecordsPolicy
      */
     public function view(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('view:qualificationrecord') || $qualification->user?->id === $user->id;
+        return $user->hasPermissionTo('view:qualificationrecord') ||
+               $qualification->user?->id === $user->id ||
+               $user->tokenCan('view:qualificationrecord');
     }
 
     /**
@@ -52,7 +54,8 @@ class QualificationRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:qualificationrecord');
+        return $user->hasPermissionTo('create:qualificationrecord', 'web') ||
+               $user->tokenCan('create:qualificationrecord');
     }
 
     /**
@@ -64,7 +67,8 @@ class QualificationRecordsPolicy
      */
     public function update(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('update:qualificationrecord');
+        return $user->hasPermissionTo('update:qualificationrecord', 'web') ||
+               $user->tokenCan('update:qualificationrecord');
     }
 
     /**
@@ -76,7 +80,8 @@ class QualificationRecordsPolicy
      */
     public function delete(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('delete:qualificationrecord');
+        return $user->hasPermissionTo('delete:qualificationrecord', 'web') ||
+               $user->tokenCan('delete:qualificationrecord');
     }
 
     /**

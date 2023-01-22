@@ -50,7 +50,6 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
     /**
      * Register the Telescope gate.
-     *
      * This gate determines who can access Telescope in non-local environments.
      *
      * @return void

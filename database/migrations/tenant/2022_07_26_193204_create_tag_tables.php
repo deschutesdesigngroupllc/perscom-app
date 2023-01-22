@@ -18,8 +18,8 @@ class CreateTagTables extends Migration
         });
 
         Schema::create('taggables', function (Blueprint $table) {
-	        $table->id();
-	        $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
+            $table->id();
+            $table->foreignId('tag_id')->constrained()->cascadeOnDelete();
             $table->morphs('taggable');
             $table->unique(['tag_id', 'taggable_id', 'taggable_type']);
         });
@@ -27,7 +27,7 @@ class CreateTagTables extends Migration
 
     public function down()
     {
-    	Schema::drop('tags');
-    	Schema::drop('taggables');
+        Schema::drop('tags');
+        Schema::drop('taggables');
     }
 }

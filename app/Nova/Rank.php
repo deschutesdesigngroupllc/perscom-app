@@ -10,10 +10,12 @@ use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSettings\NovaSettings;
+use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
 class Rank extends Resource
 {
+    use HasSortableRows;
+
     /**
      * The model the resource corresponds to.
      *
@@ -38,7 +40,7 @@ class Rank extends Resource
     /**
      * @var string[]
      */
-    public static $orderBy = ['name' => 'asc'];
+    public static $orderBy = ['order' => 'asc'];
 
     /**
      * Get the displayable label of the resource.
@@ -47,7 +49,7 @@ class Rank extends Resource
      */
     public static function label()
     {
-        return Str::plural(Str::title(NovaSettings::getSetting('localization_ranks', 'Ranks')));
+        return Str::plural(Str::title(setting('localization_ranks', 'Ranks')));
     }
 
     /**
@@ -57,7 +59,7 @@ class Rank extends Resource
      */
     public static function uriKey()
     {
-        return Str::plural(Str::slug(NovaSettings::getSetting('localization_ranks', 'ranks')));
+        return Str::plural(Str::slug(setting('localization_ranks', 'ranks')));
     }
 
     /**
@@ -70,25 +72,11 @@ class Rank extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Name')
-                ->rules(['required'])
-                ->sortable()
-                ->showOnPreview(),
-            Text::make('Abbreviation')
-                ->nullable()
-                ->sortable()
-                ->showOnPreview(),
-            Text::make('Paygrade')
-                ->nullable()
-                ->sortable()
-                ->showOnPreview(),
-            Image::make('Image')
-                ->disk('s3_public')
-                ->prunable(),
-            Textarea::make('Description')
-                ->nullable()
-                ->alwaysShow()
-                ->showOnPreview(),
+            Text::make('Name')->rules(['required'])->sortable()->showOnPreview(),
+            Text::make('Abbreviation')->nullable()->sortable()->showOnPreview(),
+            Text::make('Paygrade')->nullable()->sortable()->showOnPreview(),
+            Image::make('Image')->disk('s3_public')->prunable(),
+            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

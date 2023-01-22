@@ -28,10 +28,8 @@ class DomainUpdatedMail extends Mailable
      */
     public function build()
     {
-        return $this->markdown('emails.system.domain-updated')
-            ->subject('Domain Successfully Updated')
-            ->with([
-                'url' => $this->tenant->url,
-            ]);
+        return $this->markdown('emails.system.domain-updated')->subject('Domain Successfully Updated')->with([
+            'url' => $this->tenant->url,
+        ]);
     }
 }

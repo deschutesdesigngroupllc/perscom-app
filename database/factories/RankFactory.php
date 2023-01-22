@@ -13,12 +13,12 @@ class RankFactory extends Factory
      */
     public function definition()
     {
-    	$number = $this->faker->unique()->randomNumber();
         return [
-	        'name' => "Rank $number",
-	        'description' => $this->faker->paragraph,
-	        'abbreviation' => "RNK$number",
-	        'paygrade' => "R-$number"
+            'name' => $this->faker->word,
+            'description' => $this->faker->paragraph,
+            'abbreviation' => $this->faker->word,
+            'paygrade' => $this->faker->word,
+            'order' => $this->faker->numberBetween(1, 10),
         ];
     }
 }

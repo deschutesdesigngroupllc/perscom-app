@@ -29,7 +29,7 @@ class ActionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:log');
+        return $user->hasPermissionTo('view:log', 'web') || $user->tokenCan('view:log');
     }
 
     /**
@@ -41,6 +41,6 @@ class ActionPolicy
      */
     public function view(User $user, ActionEvent $actionEvent)
     {
-        return $user->hasPermissionTo('view:log');
+        return $user->hasPermissionTo('view:log', 'web') || $user->tokenCan('view:log');
     }
 }

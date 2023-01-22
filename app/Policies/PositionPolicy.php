@@ -29,7 +29,7 @@ class PositionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:position');
+        return $user->hasPermissionTo('view:position', 'web') || $user->tokenCan('view:position');
     }
 
     /**
@@ -41,7 +41,7 @@ class PositionPolicy
      */
     public function view(User $user, Position $position)
     {
-        return $user->hasPermissionTo('view:position');
+        return $user->hasPermissionTo('view:position', 'web') || $user->tokenCan('view:position');
     }
 
     /**
@@ -52,7 +52,7 @@ class PositionPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:position');
+        return $user->hasPermissionTo('create:position', 'web') || $user->tokenCan('create:position');
     }
 
     /**
@@ -64,7 +64,7 @@ class PositionPolicy
      */
     public function update(User $user, Position $position)
     {
-        return $user->hasPermissionTo('update:position');
+        return $user->hasPermissionTo('update:position', 'web') || $user->tokenCan('update:position');
     }
 
     /**
@@ -76,7 +76,7 @@ class PositionPolicy
      */
     public function delete(User $user, Position $position)
     {
-        return $user->hasPermissionTo('delete:position');
+        return $user->hasPermissionTo('delete:position', 'web') || $user->tokenCan('delete:position');
     }
 
     /**

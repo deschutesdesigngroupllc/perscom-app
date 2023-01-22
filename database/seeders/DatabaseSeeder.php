@@ -21,19 +21,19 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
-	        PermissionSeeder::class,
-	        RoleSeeder::class,
-	        AnnouncementSeeder::class,
-        	AssignmentRecordSeeder::class,
-        	AwardRecordSeeder::class,
-        	CombatRecordSeeder::class,
-        	FieldSeeder::class,
-        	FormSeeder::class,
-        	PassportSeeder::class,
-	        QualificationRecordSeeder::class,
-	        RankRecordSeeder::class,
-	        ServiceRecordSeeder::class,
-	        UserSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
+            AnnouncementSeeder::class,
+            AssignmentRecordSeeder::class,
+            AwardRecordSeeder::class,
+            CombatRecordSeeder::class,
+            FieldSeeder::class,
+            FormSeeder::class,
+            PassportSeeder::class,
+            QualificationRecordSeeder::class,
+            RankRecordSeeder::class,
+            ServiceRecordSeeder::class,
+            UserSeeder::class,
         ]);
     }
 }

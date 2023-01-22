@@ -8,17 +8,17 @@ use Illuminate\Support\Str;
 
 class UserFactory extends Factory
 {
-	/**
-	 * Configure the model factory.
-	 *
-	 * @return $this
-	 */
-	public function configure()
-	{
-		return $this->afterCreating(function (User $user) {
-			$user->assignRole('User');
-		});
-	}
+    /**
+     * Configure the model factory.
+     *
+     * @return $this
+     */
+    public function configure()
+    {
+        return $this->afterCreating(function (User $user) {
+            $user->assignRole('User');
+        });
+    }
 
     /**
      * Define the model's default state.

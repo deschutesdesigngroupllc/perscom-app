@@ -7,10 +7,9 @@
     <title>{{ config('app.name', 'Laravel') }}</title>
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
+    <link href="https://fonts.bunny.net/css?family=Nunito:400,600,700" rel="stylesheet">
 
     <!-- Scripts -->
-    <script src="https://js.stripe.com/v3/"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.27.0/moment.min.js" integrity="sha512-rmZcZsyhe0/MAjquhTgiUcb4d9knaFc7b5xAfju483gbEXTkeJRUMIPk6s3ySZMYUHEcjKbjLjyddGWMrNEvZg==" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js" integrity="sha512-90vH1Z83AJY9DmlWa8WkjkV79yfS2n2Oxhsi2dZbIv0nC4E6m5AbH8Nh156kkM7JePmqD6tcZsfad1ueoaovww==" crossorigin="anonymous"></script>
 
@@ -19,7 +18,17 @@
         {!! file_get_contents($cssPath) !!}
     </style>
 
-    @if (strpos(config('spark.brand.color'), '#') === 0)
+    <style>
+        #logo {
+            height: 50px !important;
+            width: auto !important;
+        }
+        .font-sans {
+            font-family: Nunito Sans, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji;
+        }
+    </style>
+
+    @if (strpos((string) config('spark.brand.color'), '#') === 0)
     <style>
         .bg-custom-hex {
             background-color: {!! config('spark.brand.color') !!};

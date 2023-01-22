@@ -15,15 +15,16 @@ class FieldFactory extends Factory
      */
     public function definition()
     {
-    	$field = "Field {$this->faker->unique()->randomNumber()}";
-    	return [
+        $field = "Field {$this->faker->unique()->randomNumber()}";
+
+        return [
             'name' => $field,
-		    'key' => Str::slug($field),
-		    'description' => $this->faker->paragraph,
-		    'required' => $this->faker->boolean,
-		    'help' => $this->faker->sentence,
-		    'placeholder' => $this->faker->sentence(3),
-		    'type' => $this->faker->randomElement(collect(Field::$fieldTypes)->keys())
+            'key' => Str::slug($field),
+            'description' => $this->faker->paragraph,
+            'required' => $this->faker->boolean,
+            'help' => $this->faker->sentence,
+            'placeholder' => $this->faker->sentence(3),
+            'type' => $this->faker->randomElement(collect(Field::$fieldTypes)->keys()),
         ];
     }
 }

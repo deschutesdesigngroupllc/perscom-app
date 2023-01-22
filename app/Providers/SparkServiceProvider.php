@@ -34,19 +34,14 @@ class SparkServiceProvider extends ServiceProvider
 
         Spark::billable(Tenant::class)->authorize(function (Tenant $billable, Request $request) {
             return \tenant() &&
-                \tenant()->getTenantKey() === $billable->id &&
-                $request->user()->hasPermissionTo('manage:billing') &&
-                !$request->isDemoMode() &&
-                !$request->isCentralRequest() &&
-                FeatureFlag::isOn('billing');
+                   \tenant()->getTenantKey() === $billable->id &&
+                   $request->user()->hasPermissionTo('manage:billing') &&
+                   ! $request->isDemoMode() &&
+                   ! $request->isCentralRequest() &&
+                   FeatureFlag::isOn('billing');
         });
 
         Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {
-            // if ($billable->projects > 5 && $plan->name == 'Basic') {
-            //     throw ValidationException::withMessages([
-            //         'plan' => 'You have too many projects for the selected plan.'
-            //     ]);
-            // }
         });
     }
 }

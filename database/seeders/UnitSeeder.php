@@ -14,6 +14,8 @@ class UnitSeeder extends Seeder
      */
     public function run()
     {
-	    Unit::factory()->count(10)->create();
+        Unit::factory()->count(5)->sequence(fn ($sequence) => [
+            'name' => 'Unit '.$sequence->index + 1,
+        ])->createQuietly();
     }
 }

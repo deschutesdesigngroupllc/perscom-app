@@ -1,8 +1,8 @@
 import React from "react";
 import clsx from "clsx";
 
-import { ButtonLink } from "../Components/Button";
-import { Container } from "../Components/Container";
+import {ButtonLink} from "../Components/Button";
+import {Container} from "../Components/Container";
 
 function Plan({ name, price, description, href, features, featured = false }) {
     return (
@@ -101,37 +101,26 @@ export function Pricing() {
                 </div>
                 <div className="-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8">
                     <Plan
-                        name="Platoon"
+                        name="Basic"
                         price="$9"
                         description="For small organizations with less than 25 personnel."
                         href={route("register.index")}
-                        features={[
-                            "Up to 25 personnel files",
-                            "Social login support",
-                            "Application provided subdomain",
-                            "Community support",
-                        ]}
+                        features={["Social login support", "Application provided subdomain", "Community support"]}
                     />{" "}
                     <Plan
                         featured
-                        name="Company"
+                        name="Pro"
                         price="$15"
                         description="For growing organizations with less than 100 personnel."
                         href={route("register.index")}
-                        features={[
-                            "Up to 100 personnel files",
-                            "Access to powerful API",
-                            "Custom subdomain",
-                            "Ticket and email support",
-                        ]}
+                        features={["Access to powerful API", "Custom subdomain", "Ticket and email support"]}
                     />{" "}
                     <Plan
-                        name="Battalion"
+                        name="Enterprise"
                         price="$39"
                         description="For large organizations that have more than 100 personnel."
                         href={route("register.index")}
                         features={[
-                            "Unlimited personnel files",
                             "Export and backup personnel data",
                             "Single sign-on integration",
                             "Priority support",

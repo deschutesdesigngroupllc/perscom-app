@@ -5,12 +5,10 @@ namespace App\Models;
 use App\Models\Forms\Form;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Tags\HasTags;
 
 class Field extends Model
 {
     use HasFactory;
-    use HasTags;
 
     /**
      * The attributes that should be cast to native types.
@@ -28,15 +26,25 @@ class Field extends Model
      * Fields
      */
     public const FIELD_CHECKBOX = 'checkbox';
+
     public const FIELD_EMAIL = 'email';
+
     public const FIELD_META = 'meta';
+
     public const FIELD_MULTISELECT = 'multiselect';
+
     public const FIELD_RADIO = 'radio';
+
     public const FIELD_RADIOGROUP = 'radiogroup';
+
     public const FIELD_SELECT = 'select';
+
     public const FIELD_STATIC = 'static';
+
     public const FIELD_TEXT = 'text';
+
     public const FIELD_TEXTAREA = 'textarea';
+
     public const FIELD_PASSWORD = 'password';
 
     /**
@@ -62,7 +70,8 @@ class Field extends Model
     public function forms()
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
-            ->withPivot(['order'])
-            ->withTimestamps();
+                    ->as('forms')
+                    ->withPivot(['order'])
+                    ->withTimestamps();
     }
 }

@@ -43,10 +43,10 @@ return [
     |
     */
 
-     'brand' =>  [
-	     'logo' => realpath(__DIR__.'/../public/svg/billing-logo.svg'),
-         'color' => 'bg-blue-600',
-     ],
+    'brand' => [
+        'logo' => realpath(__DIR__ . '/../public/svg/logo.svg'),
+        'color' => 'bg-blue-600',
+    ],
 
     /*
     |--------------------------------------------------------------------------
@@ -80,7 +80,6 @@ return [
         Features::paymentNotificationEmails(),
     ],
 
-
     /*
     |--------------------------------------------------------------------------
     | Receipt Configuration
@@ -95,9 +94,9 @@ return [
     'receipt_data' => [
         'vendor' => 'Deschutes Design Group LLC',
         'product' => 'PERSCOM Personnel Management System',
-        'street' => '111 Example St.',
-        'location' => 'Los Angeles, CA',
-        'phone' => '555-555-5555',
+        'street' => '2209 Sturnella Lane',
+        'location' => 'Belgrade, Montana',
+        'phone' => '541-213-9729',
     ],
 
     /*
@@ -118,46 +117,43 @@ return [
     'billables' => [
         'tenant' => [
             'model' => \App\Models\Tenant::class,
-            'trial_days' => 5,
+            'trial_days' => 7,
             'default_interval' => 'monthly',
             'plans' => [
                 [
-                    'name' => 'Platoon',
+                    'name' => 'Basic',
                     'short_description' => 'For small organizations with less than 25 personnel.',
-                    'monthly_id' => 'price_1LGWsjGt8lrL0dgCSh82mHu3',
-                    'yearly_id' => 'price_1LGWsjGt8lrL0dgC0K9buQ89',
+                    'monthly_id' => env('STRIPE_PRODUCT_BASIC_MONTH'),
+                    'yearly_id' => env('STRIPE_PRODUCT_BASIC_YEAR'),
                     'features' => [
-                        'Up to 25 personnel files',
                         'Social login support',
                         'Application provided subdomain',
-	                    'Community support'
+                        'Community support',
                     ],
                 ],
-	            [
-		            'name' => 'Company',
-		            'short_description' => 'For growing organizations with less than 100 personnel.',
-		            'monthly_id' => 'price_1LGWtYGt8lrL0dgCAfBx95kG',
-		            'yearly_id' => 'price_1LGWtYGt8lrL0dgC03GRAj6K',
-		            'features' => [
-			            'Up to 100 personnel files',
-			            'Access to powerful API',
-			            'Custom subdomain',
-			            'Ticket and email support'
-		            ],
-	            ],
-	            [
-		            'name' => 'Battalion',
-		            'short_description' => 'For large organizations that have more than 100 personnel.',
-		            'monthly_id' => 'price_1LGWuVGt8lrL0dgCA8GM8Bpw',
-		            'yearly_id' => 'price_1LGWuVGt8lrL0dgCoKsh7puY',
-		            'features' => [
-			            'Unlimited personnel files',
-			            'Export and backup personnel data',
-			            'Single sign-on integration',
-			            'Priority support'
-		            ],
-	            ],
+                [
+                    'name' => 'Pro',
+                    'short_description' => 'For growing organizations with less than 100 personnel.',
+                    'monthly_id' => env('STRIPE_PRODUCT_PRO_MONTH'),
+                    'yearly_id' => env('STRIPE_PRODUCT_PRO_YEAR'),
+                    'features' => [
+                        'Access to powerful API',
+                        'Custom subdomain',
+                        'Ticket and email support',
+                    ],
+                ],
+                [
+                    'name' => 'Enterprise',
+                    'short_description' => 'For large organizations that have more than 100 personnel.',
+                    'monthly_id' => env('STRIPE_PRODUCT_ENTERPRISE_MONTH'),
+                    'yearly_id' => env('STRIPE_PRODUCT_ENTERPRISE_YEAR'),
+                    'features' => [
+                        'Export and backup personnel data',
+                        'Single sign-on integration',
+                        'Priority support',
+                    ],
+                ],
             ],
         ],
-    ]
+    ],
 ];

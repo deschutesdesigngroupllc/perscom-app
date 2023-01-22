@@ -3,16 +3,16 @@
 namespace App\Models\Forms;
 
 use App\Models\Field;
+use App\Models\Pivots\Element;
+use App\Models\Tag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
-use Spatie\Tags\HasTags;
 
 class Form extends Model
 {
     use Actionable;
     use HasFactory;
-    use HasTags;
 
     /**
      * The accessors to append to the model's array form.
@@ -42,11 +42,9 @@ class Form extends Model
      */
     public function getUrlAttribute()
     {
-        return $this->slug
-            ? route('form', [
-                'slug' => $this->slug,
-            ])
-            : null;
+        return $this->slug ? route('form', [
+            'slug' => $this->slug,
+        ]) : null;
     }
 
     /**
@@ -55,12 +53,25 @@ class Form extends Model
     public function fields()
     {
         return $this->morphToMany(Field::class, 'model', 'model_has_fields')
-            ->withPivot(['order'])
-            ->withTimestamps();
+                    ->using(Element::class)
+                    ->as('fields')
+                    ->withPivot(['order'])
+                    ->withTimestamps();
     }
 
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function submissions()
     {
         return $this->hasMany(Submission::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'forms_tags');
     }
 }

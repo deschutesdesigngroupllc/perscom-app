@@ -18,10 +18,21 @@ class Rank extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text'];
+
+    /**
      * Record types
      */
     public const RECORD_RANK_PROMOTION = 0;
+
     public const RECORD_RANK_DEMOTION = 1;
+
+    /**
+     * @var string[]
+     */
+    protected $with = ['rank'];
 
     /**
      * The table associated with the model.
@@ -29,6 +40,21 @@ class Rank extends Model
      * @var string
      */
     protected $table = 'records_ranks';
+
+    /**
+     * Boot
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::created(function (Rank $record) {
+            if ($record->user) {
+                $record->user->rank_id = $record->rank?->id;
+                $record->user->save();
+            }
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

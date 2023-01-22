@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Database\Seeders\Forms\FormSeeder;
 use Illuminate\Database\Seeder;
 
 class TenantSeeder extends Seeder
@@ -15,9 +14,9 @@ class TenantSeeder extends Seeder
     public function run()
     {
         $this->call([
-        	PassportSeeder::class,
-        	PermissionSeeder::class,
-	        RoleSeeder::class
+            PassportSeeder::class,
+            PermissionSeeder::class,
+            RoleSeeder::class,
         ]);
     }
 }

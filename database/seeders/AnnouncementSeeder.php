@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Models\Announcement;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class AnnouncementSeeder extends Seeder
@@ -15,6 +14,6 @@ class AnnouncementSeeder extends Seeder
      */
     public function run()
     {
-	    Announcement::factory()->count(2)->create();
+        Announcement::factory()->count(2)->createQuietly();
     }
 }

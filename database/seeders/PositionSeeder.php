@@ -14,6 +14,44 @@ class PositionSeeder extends Seeder
      */
     public function run()
     {
-        Position::factory()->count(10)->create();
+        $positions = [
+            [
+                'name' => 'Fireteam Member',
+            ],
+            [
+                'name' => 'Fireteam Leader',
+            ],
+            [
+                'name' => 'Squad Medic',
+            ],
+            [
+                'name' => 'Squad Leader',
+            ],
+            [
+                'name' => 'Forward Observer',
+            ],
+            [
+                'name' => 'Platoon Medic',
+            ],
+            [
+                'name' => 'Platoon Sergeant',
+            ],
+            [
+                'name' => 'Platoon Leader',
+            ],
+            [
+                'name' => 'Company First Sergeant',
+            ],
+            [
+                'name' => 'Company Executive Officer',
+            ],
+            [
+                'name' => 'Company Commander',
+            ],
+        ];
+
+        foreach (array_reverse($positions) as $position) {
+            Position::factory()->state($position)->createQuietly();
+        }
     }
 }

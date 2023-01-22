@@ -17,9 +17,9 @@ class CreateRecordsRanksTable extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('rank_id');
-	        $table->unsignedBigInteger('document_id')->nullable();
-	        $table->unsignedBigInteger('author_id')->nullable();
-	        $table->text('text')->nullable();
+            $table->unsignedBigInteger('document_id')->nullable();
+            $table->unsignedBigInteger('author_id')->nullable();
+            $table->text('text')->nullable();
             $table->integer('type')->default(\App\Models\Records\Rank::RECORD_RANK_PROMOTION);
             $table->timestamps();
         });

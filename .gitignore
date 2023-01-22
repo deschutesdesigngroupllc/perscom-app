@@ -5,7 +5,6 @@
 /public/css
 /public/js
 /public/images
-/public/svg
 /public/mix-manifest.json
 /storage/*.key
 /vendor
@@ -21,9 +20,5 @@ yarn-error.log
 /.idea
 /.vscode
 auth.json
-# Project exclude paths
-/nova-components/DashboardQuickActions/dist/
-/nova-components/DocumentViewerTool/dist/
-/nova-components/HtmlField/dist/
 .editorconfig
 .styleci.yml

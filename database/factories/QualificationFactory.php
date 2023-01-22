@@ -14,8 +14,8 @@ class QualificationFactory extends Factory
     public function definition()
     {
         return [
-	        'name' => "Qualification {$this->faker->unique()->randomNumber()}",
-	        'description' => $this->faker->paragraph,
+            'name' => "Qualification {$this->faker->unique()->randomNumber()}",
+            'description' => $this->faker->paragraph,
         ];
     }
 }

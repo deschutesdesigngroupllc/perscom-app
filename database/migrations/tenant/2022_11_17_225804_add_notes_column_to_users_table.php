@@ -22,7 +22,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->text('notes')->after('remember_token')->nullable();
-	        $table->timestamp('notes_updated_at')->after('notes')->nullable();
+            $table->timestamp('notes_updated_at')->after('notes')->nullable();
         });
     }
 

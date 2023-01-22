@@ -16,10 +16,10 @@ class AwardFactory extends Factory
     public function definition()
     {
         return [
-	        'text' => $this->faker->sentence(),
-	        'author_id' => User::factory(),
-	        'user_id' => User::factory(),
-	        'award_id' => Award::factory()
+            'text' => $this->faker->sentence(),
+            'author_id' => User::factory(),
+            'user_id' => User::factory(),
+            'award_id' => Award::factory(),
         ];
     }
 }

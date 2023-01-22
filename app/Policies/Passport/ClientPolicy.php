@@ -19,6 +19,10 @@ class ClientPolicy
         if (Request::isCentralRequest()) {
             return false;
         }
+
+        if (! tenant()->canAccessApi()) {
+            return false;
+        }
     }
 
     /**
@@ -29,7 +33,7 @@ class ClientPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -45,7 +49,7 @@ class ClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -56,7 +60,7 @@ class ClientPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -72,7 +76,7 @@ class ClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -88,7 +92,7 @@ class ClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api');
+        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
     }
 
     /**

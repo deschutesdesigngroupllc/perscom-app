@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StatusFactory extends Factory
@@ -13,9 +14,11 @@ class StatusFactory extends Factory
      */
     public function definition()
     {
-	    return [
-		    'name' => "Status {$this->faker->unique()->randomNumber()}",
-		    'color' => $this->faker->hexColor
-	    ];
+        $colors = collect(Status::$colors)->keys();
+
+        return [
+            'name' => $this->faker->word,
+            'color' => $this->faker->randomElement($colors),
+        ];
     }
 }

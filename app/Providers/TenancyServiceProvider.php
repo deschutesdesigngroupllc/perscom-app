@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Http\Middleware\CheckUniversalRouteForTenantOrAdmin;
+use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Jobs\CreateInitialTenantUser;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
@@ -31,11 +32,10 @@ class TenancyServiceProvider extends ServiceProvider
                     Jobs\MigrateDatabase::class,
                     Jobs\SeedDatabase::class,
                     CreateInitialTenantUser::class,
-                ])
-                    ->send(function (Events\TenantCreated $event) {
-                        return $event->tenant;
-                    })
-                    ->shouldBeQueued(), // `false` by default, but you probably want to make this `true` for production.
+                ])->send(function (Events\TenantCreated $event) {
+                    return $event->tenant;
+                })->shouldBeQueued(),
+                // `false` by default, but you probably want to make this `true` for production.
             ],
             Events\SavingTenant::class => [],
             Events\TenantSaved::class => [],
@@ -43,11 +43,10 @@ class TenancyServiceProvider extends ServiceProvider
             Events\TenantUpdated::class => [],
             Events\DeletingTenant::class => [],
             Events\TenantDeleted::class => [
-                JobPipeline::make([Jobs\DeleteDatabase::class])
-                    ->send(function (Events\TenantDeleted $event) {
-                        return $event->tenant;
-                    })
-                    ->shouldBeQueued(), // `false` by default, but you probably want to make this `true` for production.
+                JobPipeline::make([Jobs\DeleteDatabase::class])->send(function (Events\TenantDeleted $event) {
+                    return $event->tenant;
+                })->shouldBeQueued(),
+                // `false` by default, but you probably want to make this `true` for production.
             ],
 
             // Domain events
@@ -129,6 +128,7 @@ class TenancyServiceProvider extends ServiceProvider
             Middleware\InitializeTenancyByDomainOrSubdomain::class,
             Middleware\InitializeTenancyByPath::class,
             Middleware\InitializeTenancyByRequestData::class,
+            InitializeTenancyByRequestData::class,
             CheckUniversalRouteForTenantOrAdmin::class,
         ];
 

@@ -33,11 +33,11 @@ return new class extends Migration
         $this->schema->create('oauth_access_tokens', function (Blueprint $table) {
             $table->string('id', 100)->primary();
             $table->unsignedBigInteger('user_id')->nullable()->index();
-	        $table->uuid('client_id');
-	        $table->string('name')->nullable();
+            $table->uuid('client_id');
+            $table->string('name')->nullable();
             $table->text('scopes')->nullable();
-	        $table->text('token')->nullable();
-	        $table->boolean('revoked');
+            $table->text('token')->nullable();
+            $table->boolean('revoked');
             $table->timestamps();
             $table->dateTime('expires_at')->nullable();
         });

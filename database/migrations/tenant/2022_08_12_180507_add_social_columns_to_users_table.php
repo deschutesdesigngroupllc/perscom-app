@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->after('remember_token', function (Blueprint $table) {
-				$table->string('social_id')->nullable();
-	            $table->string('social_driver')->nullable();
-	            $table->string('social_token')->nullable();
-	            $table->string('social_refresh_token')->nullable();
-	            $table->string('password')->nullable()->change();
+                $table->string('social_id')->nullable();
+                $table->string('social_driver')->nullable();
+                $table->string('social_token')->nullable();
+                $table->string('social_refresh_token')->nullable();
+                $table->string('password')->nullable()->change();
             });
         });
     }

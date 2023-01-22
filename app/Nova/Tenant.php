@@ -72,41 +72,29 @@ class Tenant extends Resource
                 ->sortable()
                 ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
                 ->copyable(),
-            Email::make('Email')
-                ->sortable()
-                ->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
-            Text::make('Website')->sortable(),
-            URL::make('Domain', 'url')
-                ->sortable()
-                ->displayUsing(function ($url) {
-                    return $url;
-                })
-                ->exceptOnForms(),
+            Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
+            Text::make('Website')->hideFromIndex(),
+            URL::make('Domain', 'url')->sortable()->displayUsing(function ($url) {
+                return $url;
+            })->exceptOnForms(),
             Boolean::make('Demo Account', function () {
                 return (string) $this->id === (string) env('TENANT_DEMO_ID');
             })->readonly(),
-            Text::make('Domain', 'domain')
-                ->rules(['required', 'string', 'max:255', Rule::unique(Domain::class, 'domain')])
-                ->onlyOnForms()
-                ->hideWhenUpdating()
-                ->fillUsing(function ($request) {
-                    return null;
-                }),
+            Text::make('Domain', 'domain')->rules([
+                'required',
+                'string',
+                'max:255',
+                Rule::unique(Domain::class, 'domain'),
+            ])->onlyOnForms()->hideWhenUpdating()->fillUsing(function ($request) {
+                return null;
+            }),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->sortable()
-                ->exceptOnForms(),
-            DateTime::make('Updated At')
-                ->sortable()
-                ->exceptOnForms()
-                ->onlyOnDetail(),
+            DateTime::make('Created At')->sortable()->exceptOnForms()->onlyOnDetail(),
+            DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
             Tabs::make('Relations', [
                 Tab::make('Database', [
                     Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
-                    Status::make('Database Status')
-                        ->loadingWhen(['creating'])
-                        ->failedWhen([])
-                        ->readonly(),
+                    Status::make('Database Status')->loadingWhen(['creating'])->failedWhen([])->readonly(),
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Billing Settings', [
@@ -126,17 +114,15 @@ class Tenant extends Resource
                     Boolean::make('On Trial', function ($model) {
                         return $model->onGenericTrial();
                     }),
-                    Text::make('Stripe ID')
-                        ->onlyOnDetail()
-                        ->readonly()
-                        ->copyable(),
-                    Text::make('Card Brand')
-                        ->onlyOnDetail()
-                        ->readonly(),
-                    Text::make('Card Last Four')
-                        ->onlyOnDetail()
-                        ->readonly(),
+                    Text::make('Plan', function () {
+                        return $this->sparkPlan()->name ?? null;
+                    }),
+                    Text::make('Stripe ID')->hideFromIndex()->copyable(),
+                    Text::make('Card Brand', 'pm_type')->hideFromIndex(),
+                    Text::make('Card Last Four', 'pm_last_four')->hideFromIndex(),
+                    Text::make('Card Expiration', 'pm_expiration')->hideFromIndex(),
                     DateTime::make('Trial Ends At')->hideFromIndex(),
+                    DateTime::make('Plan Ends At')->hideFromIndex(),
                     Text::make('Receipt Emails')->hideFromIndex(),
                 ]),
                 Tab::make('All Subscriptions', [HasMany::make('Subscriptions')]),
@@ -166,9 +152,9 @@ class Tenant extends Resource
         $model->load('domains');
 
         Event::dispatch(new TenantCreated($model));
-        event('eloquent.created: ' . TenantModel::class, $model);
+        event('eloquent.created: '.TenantModel::class, $model);
         Event::dispatch(new DomainCreated($domain));
-        event('eloquent.created: ' . Domain::class, $domain);
+        event('eloquent.created: '.Domain::class, $domain);
     }
 
     /**

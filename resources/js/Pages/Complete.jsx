@@ -1,9 +1,10 @@
 import React from "react";
 
-import { AuthLayout } from "@/Components/AuthLayout";
-import { Logo } from "@/Components/Logo";
+import {AuthLayout} from "@/Components/AuthLayout";
+import {ButtonLink} from "@/Components/Button";
+import {Logo} from "@/Components/Logo";
 
-export default function Complete() {
+export default function Complete({ url }) {
     return (
         <AuthLayout position="justify-start">
             <div className="flex flex-col items-start justify-start">
@@ -16,6 +17,9 @@ export default function Complete() {
                 <p className="mt-2 text-sm text-gray-700">
                     Plese check your email with instructions on how to access your account.
                 </p>
+                <ButtonLink color="blue" className="mt-4 w-full" href={url}>
+                    Go to Dashboard <span aria-hidden="true">&nbsp;&rarr;</span>
+                </ButtonLink>
             </div>
         </AuthLayout>
     );

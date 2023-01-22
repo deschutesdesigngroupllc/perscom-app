@@ -74,7 +74,7 @@ return [
     'columns' => [
         'element' => 12,
         'label' => 12,
-        'field' => 12
+        'field' => 12,
     ],
 
     /*
@@ -93,8 +93,8 @@ return [
     |--------------------------------------------------------------------------
     |
     | When user inputs should be validated.
-    | 
-    | Possible values: 
+    |
+    | Possible values:
     |   submit: upon form submission
     |   change: instantly upon user input
     |   step: before moving to the next step when using Wizard
