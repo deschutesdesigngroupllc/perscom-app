@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Jobs\CreateInitialTenantUser;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
@@ -50,6 +51,8 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
             Artisan::call('tenants:seed', [
                 '--tenants' => $model->getTenantKey(),
             ]);
+
+            CreateInitialTenantUser::dispatch($model);
         }
 
         return Action::message('The tenant\'s database has been reset to factory.');

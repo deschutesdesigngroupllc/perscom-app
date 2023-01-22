@@ -40,14 +40,14 @@ class DemoDataSeeder extends Seeder
             UnitSeeder::class,
         ]);
 
-        $user = User::factory()->create([
+        $user = User::factory()->createQuietly([
             'name' => 'Demo User',
             'email' => 'demo@perscom.io',
         ]);
         $user->assignRole('Admin');
 
         Unit::all()->each(static function ($unit) {
-            User::factory()->count(5)->create()->each(static function (User $user) use ($unit) {
+            User::factory()->count(5)->createQuietly()->each(static function (User $user) use ($unit) {
                 $user->statuses()->attach(Status::all()->random());
 
                 Assignment::factory()->for($user)->for($unit)->state(new Sequence(function ($sequence) use ($user) {
@@ -56,36 +56,36 @@ class DemoDataSeeder extends Seeder
                         'specialty_id' => \App\Models\Specialty::all()->random(),
                         'author_id' => $user,
                     ];
-                }))->create();
+                }))->createQuietly();
 
                 Rank::factory()->for($user)->state(new Sequence(function ($sequence) use ($user) {
                     return [
                         'rank_id' => \App\Models\Rank::all()->random(),
                         'author_id' => $user,
                     ];
-                }))->create();
+                }))->createQuietly();
 
                 Award::factory()->count(5)->for($user)->state(new Sequence(function ($sequence) use ($user) {
                     return [
                         'award_id' => \App\Models\Award::all()->random(),
                         'author_id' => $user,
                     ];
-                }))->create();
+                }))->createQuietly();
 
                 Qualification::factory()->count(5)->for($user)->state(new Sequence(function ($sequence) use ($user) {
                     return [
                         'qualification_id' => \App\Models\Qualification::all()->random(),
                         'author_id' => $user,
                     ];
-                }))->create();
+                }))->createQuietly();
 
                 Service::factory()->count(5)->for($user)->state([
                     'author_id' => $user,
-                ])->create();
+                ])->createQuietly();
 
                 Combat::factory()->count(5)->for($user)->state([
                     'author_id' => $user,
-                ])->create();
+                ])->createQuietly();
             });
         });
     }

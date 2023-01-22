@@ -19,7 +19,7 @@ class RoleSeeder extends Seeder
         foreach (config('permissions.roles') as $roleName => $roleDescription) {
             $role = Role::where('name', $roleName)->first();
             if (! $role) {
-                $role = Role::factory()->create([
+                $role = Role::factory()->createQuietly([
                     'name' => $roleName,
                     'description' => $roleDescription,
                 ]);

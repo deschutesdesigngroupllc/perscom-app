@@ -51,7 +51,7 @@ class PositionSeeder extends Seeder
         ];
 
         foreach (array_reverse($positions) as $position) {
-            Position::factory()->state($position)->create();
+            Position::factory()->state($position)->createQuietly();
         }
     }
 }

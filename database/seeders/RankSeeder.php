@@ -58,7 +58,7 @@ class RankSeeder extends Seeder
         ];
 
         foreach (array_reverse($ranks) as $rank) {
-            Rank::factory()->state($rank)->create();
+            Rank::factory()->state($rank)->createQuietly();
         }
     }
 }

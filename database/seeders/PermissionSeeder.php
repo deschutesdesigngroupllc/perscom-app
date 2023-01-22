@@ -17,7 +17,7 @@ class PermissionSeeder extends Seeder
         foreach (config('permissions.guards') as $guard) {
             foreach (config('permissions.permissions') as $permission => $description) {
                 if (! Permission::query()->where('name', '=', $permission)->where('guard_name', '=', $guard)->exists()) {
-                    Permission::factory()->create([
+                    Permission::factory()->createQuietly([
                         'name' => $permission,
                         'description' => $description,
                         'guard_name' => $guard,

@@ -30,7 +30,7 @@ class StatusSeeder extends Seeder
         ];
 
         foreach ($statuses as $status) {
-            Status::factory()->state($status)->create();
+            Status::factory()->state($status)->createQuietly();
         }
     }
 }

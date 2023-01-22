@@ -14,6 +14,6 @@ class AwardSeeder extends Seeder
      */
     public function run()
     {
-        Award::factory()->count(10)->create();
+        Award::factory()->count(10)->createQuietly();
     }
 }

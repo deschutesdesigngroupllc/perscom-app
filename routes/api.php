@@ -35,7 +35,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 |
 */
 Route::group(['prefix' => 'v1', 'as' => 'api.'], static function () {
-
     // Spec
     Route::get('spec.yaml', [SpecController::class, 'index'])->name('spec');
 

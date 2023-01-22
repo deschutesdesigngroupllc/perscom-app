@@ -60,7 +60,7 @@ class SpecialtySeeder extends Seeder
         ];
 
         foreach ($specialties as $specialty) {
-            Specialty::factory()->state($specialty)->create();
+            Specialty::factory()->state($specialty)->createQuietly();
         }
     }
 }
