@@ -76,7 +76,7 @@ class Main extends Dashboard
         }
 
         if (Request::isDemoMode()) {
-            $card->withSystemMessage('You are currently in demo mode. Not all features will be available.');
+            $card->withSystemMessage('Demo Mode', 'You are currently in demo mode. Not all features will be available.');
         }
 
         return $card;
