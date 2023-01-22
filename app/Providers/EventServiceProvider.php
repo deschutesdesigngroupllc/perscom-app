@@ -41,13 +41,13 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Login::class => [
-            UserLoggedIn::class
+            UserLoggedIn::class,
         ],
         Registered::class => [
-            SendEmailVerificationNotification::class
+            SendEmailVerificationNotification::class,
         ],
         TenantCouldNotBeIdentifiedOnDomainException::class => [
-            TenantCouldNotBeIdentified::class
+            TenantCouldNotBeIdentified::class,
         ],
 
     ];
