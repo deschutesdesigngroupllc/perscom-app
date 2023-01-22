@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "15f4d6b9039c141e72e1632ce8c62b37",
+    "content-hash": "dfe303f5c12f818db4620400c410e0d0",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2258,69 +2258,6 @@
                 }
             ],
             "time": "2023-01-17T01:02:51+00:00"
-        },
-        {
-            "name": "kalnoy/nestedset",
-            "version": "v6.0.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/lazychaser/laravel-nestedset.git",
-                "reference": "bcfbccea5e3ddf31cb22e1bc3c6124da584505fc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/lazychaser/laravel-nestedset/zipball/bcfbccea5e3ddf31cb22e1bc3c6124da584505fc",
-                "reference": "bcfbccea5e3ddf31cb22e1bc3c6124da584505fc",
-                "shasum": ""
-            },
-            "require": {
-                "illuminate/database": "^7.0|^8.0|^9.0",
-                "illuminate/events": "^7.0|^8.0|^9.0",
-                "illuminate/support": "^7.0|^8.0|^9.0",
-                "php": "^7.2.5|^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "7.*|8.*|9.*"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "v5.0.x-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Kalnoy\\Nestedset\\NestedSetServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Kalnoy\\Nestedset\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Alexander Kalnoy",
-                    "email": "lazychaser@gmail.com"
-                }
-            ],
-            "description": "Nested Set Model for Laravel 5.7 and up",
-            "keywords": [
-                "database",
-                "hierarchy",
-                "laravel",
-                "nested sets",
-                "nsm"
-            ],
-            "support": {
-                "issues": "https://github.com/lazychaser/laravel-nestedset/issues",
-                "source": "https://github.com/lazychaser/laravel-nestedset/tree/v6.0.1"
-            },
-            "time": "2022-02-11T06:17:57+00:00"
         },
         {
             "name": "laraform/laraform-laravel",
@@ -5145,66 +5082,6 @@
                 "source": "https://github.com/nova-kit/nova-packages-tool/tree/v1.6.4"
             },
             "time": "2023-01-17T22:08:52+00:00"
-        },
-        {
-            "name": "novius/laravel-nova-order-nestedset-field",
-            "version": "v4.0.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/novius/laravel-nova-order-nestedset-field.git",
-                "reference": "040a37bd1cb7ec90fe28a2a94d4e02813f3e1ab4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/novius/laravel-nova-order-nestedset-field/zipball/040a37bd1cb7ec90fe28a2a94d4e02813f3e1ab4",
-                "reference": "040a37bd1cb7ec90fe28a2a94d4e02813f3e1ab4",
-                "shasum": ""
-            },
-            "require": {
-                "kalnoy/nestedset": "^6.0.0",
-                "laravel/nova": "^4.0",
-                "php": ">=8.1"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Novius\\LaravelNovaOrderNestedsetField\\OrderNestedsetFieldServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Novius\\LaravelNovaOrderNestedsetField\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "AGPL-3.0-or-later"
-            ],
-            "authors": [
-                {
-                    "name": "Novius Agency",
-                    "email": "team-developpeurs@novius.com",
-                    "homepage": "https://www.novius.com"
-                }
-            ],
-            "description": "A Laravel Nova field that make your resources orderable",
-            "keywords": [
-                "hierarchies",
-                "laravel",
-                "nestedset",
-                "nova",
-                "trees"
-            ],
-            "support": {
-                "issues": "https://github.com/novius/laravel-nova-order-nestedset-field/issues",
-                "source": "https://github.com/novius/laravel-nova-order-nestedset-field/tree/v4.0.0"
-            },
-            "time": "2022-04-26T12:07:24+00:00"
         },
         {
             "name": "nunomaduro/termwind",
