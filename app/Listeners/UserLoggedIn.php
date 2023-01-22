@@ -14,8 +14,10 @@ class UserLoggedIn
      */
     public function handle(Login $event)
     {
-        tenant()->update([
-            'last_login_at' => now(),
-        ]);
+        if (tenant()) {
+            tenant()->update([
+                'last_login_at' => now(),
+            ]);
+        }
     }
 }
