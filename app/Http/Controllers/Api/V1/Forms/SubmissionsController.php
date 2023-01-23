@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Forms;
 
 use App\Http\Requests\SubmissionRequest;
-use App\Models\Forms\Submission;
+use App\Models\Submission;
 use App\Policies\SubmissionPolicy;
 use Orion\Http\Controllers\Controller;
 

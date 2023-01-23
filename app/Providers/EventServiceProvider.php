@@ -3,30 +3,28 @@
 namespace App\Providers;
 
 use App\Listeners\TenantCouldNotBeIdentified;
-use App\Listeners\UserLoggedIn;
+use App\Models\AssignmentRecord;
+use App\Models\AwardRecord;
+use App\Models\CombatRecord;
 use App\Models\Domain;
 use App\Models\Mail;
-use App\Models\Records\Assignment;
-use App\Models\Records\Award;
-use App\Models\Records\Combat;
-use App\Models\Records\Qualification;
-use App\Models\Records\Rank;
-use App\Models\Records\Service;
+use App\Models\QualificationRecord;
+use App\Models\RankRecord;
+use App\Models\ServiceRecord;
 use App\Models\Settings;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Observers\AssignmentRecordObserver;
+use App\Observers\AwardRecordObserver;
+use App\Observers\CombatRecordObserver;
 use App\Observers\DomainObserver;
 use App\Observers\MailObserver;
-use App\Observers\Records\AssignmentRecordObserver;
-use App\Observers\Records\AwardRecordObserver;
-use App\Observers\Records\CombatRecordObserver;
-use App\Observers\Records\QualificationRecordObserver;
-use App\Observers\Records\RankRecordObserver;
-use App\Observers\Records\ServiceRecordObserver;
+use App\Observers\QualificationRecordObserver;
+use App\Observers\RankRecordObserver;
+use App\Observers\ServiceRecordObserver;
 use App\Observers\SettingsObserver;
 use App\Observers\TenantObserver;
 use App\Observers\UserObserver;
-use Illuminate\Auth\Events\Login;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -40,16 +38,8 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Login::class => [
-            UserLoggedIn::class,
-        ],
-        Registered::class => [
-            SendEmailVerificationNotification::class,
-        ],
-        TenantCouldNotBeIdentifiedOnDomainException::class => [
-            TenantCouldNotBeIdentified::class,
-        ],
-
+        Registered::class => [SendEmailVerificationNotification::class],
+        TenantCouldNotBeIdentifiedOnDomainException::class => [TenantCouldNotBeIdentified::class],
     ];
 
     /**
@@ -66,14 +56,14 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Assignment::observe(AssignmentRecordObserver::class);
-        Award::observe(AwardRecordObserver::class);
-        Combat::observe(CombatRecordObserver::class);
+        AssignmentRecord::observe(AssignmentRecordObserver::class);
+        AwardRecord::observe(AwardRecordObserver::class);
+        CombatRecord::observe(CombatRecordObserver::class);
         Domain::observe(DomainObserver::class);
         Mail::observe(MailObserver::class);
-        Qualification::observe(QualificationRecordObserver::class);
-        Rank::observe(RankRecordObserver::class);
-        Service::observe(ServiceRecordObserver::class);
+        QualificationRecord::observe(QualificationRecordObserver::class);
+        RankRecord::observe(RankRecordObserver::class);
+        ServiceRecord::observe(ServiceRecordObserver::class);
         Settings::observe(SettingsObserver::class);
         Tenant::observe(TenantObserver::class);
         User::observe(UserObserver::class);

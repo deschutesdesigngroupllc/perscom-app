@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Records\Qualification;
+use App\Models\QualificationRecord;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
@@ -36,10 +36,10 @@ class QualificationRecordsPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Qualification  $qualification
+     * @param  \App\Models\QualificationRecord  $qualification
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Qualification $qualification)
+    public function view(User $user, QualificationRecord $qualification)
     {
         return $user->hasPermissionTo('view:qualificationrecord') ||
                $qualification->user?->id === $user->id ||
@@ -62,10 +62,10 @@ class QualificationRecordsPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Qualification  $qualification
+     * @param  \App\Models\QualificationRecord  $qualification
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Qualification $qualification)
+    public function update(User $user, QualificationRecord $qualification)
     {
         return $user->hasPermissionTo('update:qualificationrecord', 'web') ||
                $user->tokenCan('update:qualificationrecord');
@@ -75,10 +75,10 @@ class QualificationRecordsPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Qualification  $qualification
+     * @param  \App\Models\QualificationRecord  $qualification
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Qualification $qualification)
+    public function delete(User $user, QualificationRecord $qualification)
     {
         return $user->hasPermissionTo('delete:qualificationrecord', 'web') ||
                $user->tokenCan('delete:qualificationrecord');
@@ -88,10 +88,10 @@ class QualificationRecordsPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Qualification  $qualification
+     * @param  \App\Models\QualificationRecord  $qualification
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Qualification $qualification)
+    public function restore(User $user, QualificationRecord $qualification)
     {
         //
     }
@@ -100,10 +100,10 @@ class QualificationRecordsPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Qualification  $qualification
+     * @param  \App\Models\QualificationRecord  $qualification
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Qualification $qualification)
+    public function forceDelete(User $user, QualificationRecord $qualification)
     {
         //
     }

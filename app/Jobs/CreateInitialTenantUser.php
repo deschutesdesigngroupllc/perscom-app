@@ -18,16 +18,12 @@ class CreateInitialTenantUser implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
-     * @var TenantWithDatabase
-     */
-    protected $tenant;
-
-    /**
      * @param  TenantWithDatabase  $tenant
+     * @param  bool  $sendMail
      */
-    public function __construct(TenantWithDatabase $tenant)
+    public function __construct(protected TenantWithDatabase $tenant, protected bool $sendMail = true)
     {
-        $this->tenant = $tenant;
+        //
     }
 
     /**
@@ -51,6 +47,8 @@ class CreateInitialTenantUser implements ShouldQueue
             return $user;
         });
 
-        Mail::to($user)->send(new NewTenantMail($this->tenant, $user, $password));
+        if ($this->sendMail) {
+            Mail::to($user)->send(new NewTenantMail($this->tenant, $user, $password));
+        }
     }
 }

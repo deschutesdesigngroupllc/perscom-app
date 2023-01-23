@@ -2,16 +2,15 @@
 
 namespace Database\Seeders;
 
-use App\Models\Records\Assignment;
-use App\Models\Records\Award;
-use App\Models\Records\Combat;
-use App\Models\Records\Qualification;
-use App\Models\Records\Rank;
-use App\Models\Records\Service;
+use App\Models\AssignmentRecord;
+use App\Models\AwardRecord;
+use App\Models\CombatRecord;
+use App\Models\QualificationRecord;
+use App\Models\RankRecord;
+use App\Models\ServiceRecord;
 use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
-use Database\Seeders\Forms\FormSeeder;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
@@ -40,52 +39,52 @@ class DemoDataSeeder extends Seeder
             UnitSeeder::class,
         ]);
 
-        $user = User::factory()->createQuietly([
+        $user = User::factory()->create([
             'name' => 'Demo User',
             'email' => 'demo@perscom.io',
         ]);
         $user->assignRole('Admin');
 
         Unit::all()->each(static function ($unit) {
-            User::factory()->count(5)->createQuietly()->each(static function (User $user) use ($unit) {
+            User::factory()->count(5)->create()->each(static function (User $user) use ($unit) {
                 $user->statuses()->attach(Status::all()->random());
 
-                Assignment::factory()->for($user)->for($unit)->state(new Sequence(function ($sequence) use ($user) {
+                AssignmentRecord::factory()->for($user)->for($unit)->state(new Sequence(function ($sequence) use ($user) {
                     return [
                         'position_id' => \App\Models\Position::all()->random(),
                         'specialty_id' => \App\Models\Specialty::all()->random(),
                         'author_id' => $user,
                     ];
-                }))->createQuietly();
+                }))->create();
 
-                Rank::factory()->for($user)->state(new Sequence(function ($sequence) use ($user) {
+                RankRecord::factory()->for($user)->state(new Sequence(function ($sequence) use ($user) {
                     return [
                         'rank_id' => \App\Models\Rank::all()->random(),
                         'author_id' => $user,
                     ];
-                }))->createQuietly();
+                }))->create();
 
-                Award::factory()->count(5)->for($user)->state(new Sequence(function ($sequence) use ($user) {
+                AwardRecord::factory()->count(5)->for($user)->state(new Sequence(function ($sequence) use ($user) {
                     return [
                         'award_id' => \App\Models\Award::all()->random(),
                         'author_id' => $user,
                     ];
-                }))->createQuietly();
+                }))->create();
 
-                Qualification::factory()->count(5)->for($user)->state(new Sequence(function ($sequence) use ($user) {
+                QualificationRecord::factory()->count(5)->for($user)->state(new Sequence(function ($sequence) use ($user) {
                     return [
                         'qualification_id' => \App\Models\Qualification::all()->random(),
                         'author_id' => $user,
                     ];
-                }))->createQuietly();
+                }))->create();
 
-                Service::factory()->count(5)->for($user)->state([
+                ServiceRecord::factory()->count(5)->for($user)->state([
                     'author_id' => $user,
-                ])->createQuietly();
+                ])->create();
 
-                Combat::factory()->count(5)->for($user)->state([
+                CombatRecord::factory()->count(5)->for($user)->state([
                     'author_id' => $user,
-                ])->createQuietly();
+                ])->create();
             });
         });
     }

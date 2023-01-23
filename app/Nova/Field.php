@@ -2,7 +2,6 @@
 
 namespace App\Nova;
 
-use App\Nova\Forms\Form;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
@@ -13,7 +12,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphedByMany;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
@@ -82,7 +80,8 @@ class Field extends Resource
             Slug::make('Slug', 'key')->from('Name')->rules([
                 'required',
                 Rule::unique('fields', 'key')->ignore($this->id),
-            ])->help('The slug will be used as the field key when saving the form submission.'),
+                'regex:/^[0-9a-zA-Z_]+$/',
+            ])->separator('_')->help('The slug will be used as the field key when saving the form submission. Allowed characters: 0-9, a-z, A-Z, or underscore.'),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
@@ -152,11 +151,7 @@ class Field extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            MorphedByMany::make('Assigned Forms', 'forms', Form::class)->fields(function ($request, $relatedModel) {
-                return [
-                    Number::make('Order')->sortable()->rules('required'),
-                ];
-            }),
+            MorphedByMany::make('Assigned Forms', 'forms', Form::class),
         ];
     }
 

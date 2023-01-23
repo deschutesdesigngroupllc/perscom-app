@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Records\Rank;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -149,7 +148,7 @@ class Document extends Model
                 return $attachedModel->rank->name ?? null;
                 break;
             case '{rank_record_type}':
-                return $attachedModel->type === Rank::RECORD_RANK_PROMOTION ? 'Promotion' : 'Demotion';
+                return $attachedModel->type === RankRecord::RECORD_RANK_PROMOTION ? 'Promotion' : 'Demotion';
                 break;
             case '{rank_record_text}':
                 return $attachedModel->text ?? null;
