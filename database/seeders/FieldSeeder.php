@@ -14,6 +14,6 @@ class FieldSeeder extends Seeder
      */
     public function run()
     {
-        Field::factory()->count(10)->createQuietly();
+        Field::factory()->count(10)->create();
     }
 }
