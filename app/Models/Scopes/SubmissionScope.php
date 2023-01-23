@@ -19,7 +19,7 @@ class SubmissionScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        if (! Gate::check('update', $model)) {
+        if (! Gate::check('update', $model) && Auth::check()) {
             return $builder->where('user_id', '=', Auth::user()->getAuthIdentifier());
         }
 

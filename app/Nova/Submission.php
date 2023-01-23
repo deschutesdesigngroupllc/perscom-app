@@ -9,8 +9,11 @@
 
 namespace App\Nova;
 
+use Eminiarts\Tabs\Tab;
+use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
@@ -20,7 +23,9 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Perscom\HtmlField\HtmlField;
@@ -72,6 +77,19 @@ class Submission extends Resource
     }
 
     /**
+     * Determine if the current user can create new resources.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return bool
+     */
+    public static function authorizedToCreate(Request $request)
+    {
+        $novaRequest = NovaRequest::createFrom($request);
+
+        return $novaRequest->viaResource && $novaRequest->viaResourceId;
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -83,14 +101,7 @@ class Submission extends Resource
             ID::make()->sortable(),
             $this->getDetailFields($request),
             $this->getInstructionFields($request),
-            Badge::make('Status', function () {
-                return $this->status->name ?? 'none';
-            })->types([
-                'none' => 'bg-gray-100 text-gray-600',
-                $this->status?->name => $this->status?->color,
-            ])->label(function () {
-                return $this->status->name ?? 'No Current Status';
-            }),
+            $this->generateBadgeField($this),
             Code::make('Data', static function ($model) {
                 return json_encode($model->getAttributes(), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
             })->hideFromIndex()->json()->canSeeWhen('update', $request->model()),
@@ -98,43 +109,47 @@ class Submission extends Resource
             DateTime::make('Created At')->exceptOnForms()->sortable(),
             DateTime::make('Updated At')->exceptOnForms()->sortable(),
             $this->getCustomFields($request),
-            //            Tabs::make('Relations', [
-            //                Tab::make('Status History', [
-            //                    MorphToMany::make('Status', 'statuses', Status::class)
-            //                               ->allowDuplicateRelations()
-            //                               ->fields(function () {
-            //                                   return [
-            //                                       Textarea::make('Text'),
-            //                                       Text::make('Text', function ($model) {
-            //                                           return $model->text;
-            //                                       }),
-            //                                       DateTime::make('Updated At')->sortable()->onlyOnIndex(),
-            //                                   ];
-            //                               }),
-            //                ]),
-            //                Tab::make('Logs', [$this->actionfield()]),
-            //            ]),
+            Tabs::make('Relations', [
+                Tab::make('Status History', [
+                    MorphToMany::make('Status', 'statuses', Status::class)
+                               ->allowDuplicateRelations()
+                               ->fields(function () {
+                                   return [
+                                       Textarea::make('Text'),
+                                       Text::make('Text', function ($model) {
+                                           return $model->text;
+                                       }),
+                                       DateTime::make('Updated At')->sortable()->onlyOnIndex(),
+                                   ];
+                               }),
+                ]),
+                Tab::make('Logs', [$this->actionfield()]),
+            ]),
         ];
     }
 
     /**
-     * @param  NovaRequest  $request
-     * @return mixed|null
+     * @param $submission
      */
-    protected function getForm(NovaRequest $request)
+    protected function generateBadgeField($submission)
     {
-        $form = null;
+        $status = $submission->statuses()->first();
 
-        if (($resourceId = $request->viaResourceId) && $request->isCreateOrAttachRequest()) {
-            $form = \App\Models\Form::find($resourceId);
+        $badge = Badge::make('Status', static function () use ($status) {
+            return $status->name ?? 'No Current Status';
+        })->types([
+            'No Current Status' => 'bg-gray-100 text-gray-600',
+        ])->label(function ($status) {
+            return $status ?? 'No Current Status';
+        });
+
+        if ($status) {
+            $badge->addTypes([
+                $status->name => $status->color,
+            ]);
         }
 
-        if (($submission = $request->findModel()) &&
-            ($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest())) {
-            return $submission->form;
-        }
-
-        return $form;
+        return $badge;
     }
 
     /**
@@ -183,6 +198,28 @@ class Submission extends Resource
 
     /**
      * @param  NovaRequest  $request
+     * @return mixed|null
+     */
+    protected function getForm(NovaRequest $request)
+    {
+        $form = null;
+
+        if ($request->resource() === __CLASS__) {
+            if (($resourceId = $request->viaResourceId) && $request->isCreateOrAttachRequest()) {
+                $form = \App\Models\Form::findOrFail($resourceId);
+            }
+
+            if (($submission = $request->findModel()) &&
+                ($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest())) {
+                return $submission->form;
+            }
+        }
+
+        return $form;
+    }
+
+    /**
+     * @param  NovaRequest  $request
      * @return Panel
      */
     protected function getInstructionFields(NovaRequest $request)
@@ -192,8 +229,8 @@ class Submission extends Resource
         return new Panel('Instructions', [
             HtmlField::make('Instructions')->view('fields.html.form-instructions', [
                 'instructions' => Str::markdown($form->instructions ?? ''),
-            ])->canSee(function () use ($form) {
-                return isset($form->instructions) && $form->instructions !== '';
+            ])->canSee(function () {
+                return true;
             })->onlyOnForms(),
         ]);
     }

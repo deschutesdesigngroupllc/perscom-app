@@ -13,9 +13,10 @@ trait HasStatuses
     public function statuses()
     {
         return $this->morphToMany(Status::class, 'model', 'model_has_statuses')
-                    ->withPivot('text')
+                    ->withPivot('text', 'created_at')
                     ->withTimestamps()
                     ->as('record')
+                    ->orderByPivot('created_at', 'desc')
                     ->using(StatusRecord::class);
     }
 }
