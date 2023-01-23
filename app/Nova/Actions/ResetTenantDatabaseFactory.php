@@ -63,6 +63,12 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
                 ]);
             }
 
+            if ($fields->remove_subscription) {
+                foreach ($model->subscriptions as $subscription) {
+                    $subscription->cancelNow();
+                }
+            }
+
             if ($fields->new_admin) {
                 CreateInitialTenantUser::dispatch($model, $fields->send_email);
             }
@@ -100,6 +106,9 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
                            $field->show();
                        }
                    }),
+            Boolean::make('Remove Subscription', 'remove_subscription')
+                   ->default(true)
+                   ->help('Remove and cancel all subscriptions.'),
         ];
     }
 }
