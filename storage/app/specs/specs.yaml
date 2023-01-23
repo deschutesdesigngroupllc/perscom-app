@@ -2104,7 +2104,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Assignment'
+              $ref: '#/components/schemas/AssignmentRecord'
       responses:
         201:
           description: OK
@@ -2114,7 +2114,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AssignmentResource'
+                    $ref: '#/components/schemas/AssignmentRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2143,7 +2143,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AssignmentResource'
+                      $ref: '#/components/schemas/AssignmentRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -2175,7 +2175,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AssignmentResource'
+                      $ref: '#/components/schemas/AssignmentRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -2211,7 +2211,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AssignmentResource'
+                    $ref: '#/components/schemas/AssignmentRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2239,7 +2239,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Assignment'
+              $ref: '#/components/schemas/AssignmentRecord'
       responses:
         200:
           description: OK
@@ -2249,7 +2249,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AssignmentResource'
+                    $ref: '#/components/schemas/AssignmentRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2284,7 +2284,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AssignmentResource'
+                    $ref: '#/components/schemas/AssignmentRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2312,7 +2312,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Assignment'
+                    $ref: '#/components/schemas/AssignmentRecord'
       responses:
         200:
           description: OK
@@ -2324,7 +2324,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AssignmentResource'
+                      $ref: '#/components/schemas/AssignmentRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -2354,7 +2354,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/Assignment'
+                      $ref: '#/components/schemas/AssignmentRecord'
       responses:
         200:
           description: OK
@@ -2366,7 +2366,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AssignmentResource'
+                      $ref: '#/components/schemas/AssignmentRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -2408,7 +2408,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AssignmentResource'
+                      $ref: '#/components/schemas/AssignmentRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -2438,7 +2438,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AssignmentResource'
+                    $ref: '#/components/schemas/AssignmentRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2474,7 +2474,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AssignmentResource'
+                    $ref: '#/components/schemas/AssignmentRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2499,7 +2499,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Award'
+              $ref: '#/components/schemas/AwardRecord'
       responses:
         201:
           description: OK
@@ -2509,7 +2509,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AwardResource'
+                    $ref: '#/components/schemas/AwardRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2538,7 +2538,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AwardResource'
+                      $ref: '#/components/schemas/AwardRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -2570,7 +2570,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AwardResource'
+                      $ref: '#/components/schemas/AwardRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -2606,7 +2606,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AwardResource'
+                    $ref: '#/components/schemas/AwardRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2634,7 +2634,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Award'
+              $ref: '#/components/schemas/AwardRecord'
       responses:
         200:
           description: OK
@@ -2644,7 +2644,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AwardResource'
+                    $ref: '#/components/schemas/AwardRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2679,7 +2679,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AwardResource'
+                    $ref: '#/components/schemas/AwardRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2707,7 +2707,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Award'
+                    $ref: '#/components/schemas/AwardRecord'
       responses:
         200:
           description: OK
@@ -2719,7 +2719,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AwardResource'
+                      $ref: '#/components/schemas/AwardRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -2749,7 +2749,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/Award'
+                      $ref: '#/components/schemas/AwardRecord'
       responses:
         200:
           description: OK
@@ -2761,7 +2761,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AwardResource'
+                      $ref: '#/components/schemas/AwardRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -2803,7 +2803,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/AwardResource'
+                      $ref: '#/components/schemas/AwardRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -2833,7 +2833,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AwardResource'
+                    $ref: '#/components/schemas/AwardRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2869,7 +2869,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/AwardResource'
+                    $ref: '#/components/schemas/AwardRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2894,7 +2894,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Combat'
+              $ref: '#/components/schemas/CombatRecord'
       responses:
         201:
           description: OK
@@ -2904,7 +2904,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/CombatResource'
+                    $ref: '#/components/schemas/CombatRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -2933,7 +2933,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CombatResource'
+                      $ref: '#/components/schemas/CombatRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -2965,7 +2965,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CombatResource'
+                      $ref: '#/components/schemas/CombatRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -3001,7 +3001,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/CombatResource'
+                    $ref: '#/components/schemas/CombatRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3029,7 +3029,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Combat'
+              $ref: '#/components/schemas/CombatRecord'
       responses:
         200:
           description: OK
@@ -3039,7 +3039,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/CombatResource'
+                    $ref: '#/components/schemas/CombatRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3074,7 +3074,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/CombatResource'
+                    $ref: '#/components/schemas/CombatRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3102,7 +3102,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Combat'
+                    $ref: '#/components/schemas/CombatRecord'
       responses:
         200:
           description: OK
@@ -3114,7 +3114,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CombatResource'
+                      $ref: '#/components/schemas/CombatRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -3144,7 +3144,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/Combat'
+                      $ref: '#/components/schemas/CombatRecord'
       responses:
         200:
           description: OK
@@ -3156,7 +3156,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CombatResource'
+                      $ref: '#/components/schemas/CombatRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -3198,7 +3198,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/CombatResource'
+                      $ref: '#/components/schemas/CombatRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -3228,7 +3228,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/CombatResource'
+                    $ref: '#/components/schemas/CombatRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3264,7 +3264,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/CombatResource'
+                    $ref: '#/components/schemas/CombatRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3289,7 +3289,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Qualification'
+              $ref: '#/components/schemas/QualificationRecord'
       responses:
         201:
           description: OK
@@ -3299,7 +3299,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/QualificationResource'
+                    $ref: '#/components/schemas/QualificationRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3328,7 +3328,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/QualificationResource'
+                      $ref: '#/components/schemas/QualificationRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -3360,7 +3360,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/QualificationResource'
+                      $ref: '#/components/schemas/QualificationRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -3396,7 +3396,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/QualificationResource'
+                    $ref: '#/components/schemas/QualificationRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3424,7 +3424,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Qualification'
+              $ref: '#/components/schemas/QualificationRecord'
       responses:
         200:
           description: OK
@@ -3434,7 +3434,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/QualificationResource'
+                    $ref: '#/components/schemas/QualificationRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3469,7 +3469,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/QualificationResource'
+                    $ref: '#/components/schemas/QualificationRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3497,7 +3497,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Qualification'
+                    $ref: '#/components/schemas/QualificationRecord'
       responses:
         200:
           description: OK
@@ -3509,7 +3509,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/QualificationResource'
+                      $ref: '#/components/schemas/QualificationRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -3539,7 +3539,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/Qualification'
+                      $ref: '#/components/schemas/QualificationRecord'
       responses:
         200:
           description: OK
@@ -3551,7 +3551,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/QualificationResource'
+                      $ref: '#/components/schemas/QualificationRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -3593,7 +3593,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/QualificationResource'
+                      $ref: '#/components/schemas/QualificationRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -3623,7 +3623,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/QualificationResource'
+                    $ref: '#/components/schemas/QualificationRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3659,7 +3659,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/QualificationResource'
+                    $ref: '#/components/schemas/QualificationRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3684,7 +3684,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Rank'
+              $ref: '#/components/schemas/RankRecord'
       responses:
         201:
           description: OK
@@ -3694,7 +3694,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/RankResource'
+                    $ref: '#/components/schemas/RankRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3723,7 +3723,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/RankResource'
+                      $ref: '#/components/schemas/RankRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -3755,7 +3755,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/RankResource'
+                      $ref: '#/components/schemas/RankRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -3791,7 +3791,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/RankResource'
+                    $ref: '#/components/schemas/RankRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3819,7 +3819,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Rank'
+              $ref: '#/components/schemas/RankRecord'
       responses:
         200:
           description: OK
@@ -3829,7 +3829,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/RankResource'
+                    $ref: '#/components/schemas/RankRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3864,7 +3864,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/RankResource'
+                    $ref: '#/components/schemas/RankRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -3892,7 +3892,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Rank'
+                    $ref: '#/components/schemas/RankRecord'
       responses:
         200:
           description: OK
@@ -3904,7 +3904,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/RankResource'
+                      $ref: '#/components/schemas/RankRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -3934,7 +3934,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/Rank'
+                      $ref: '#/components/schemas/RankRecord'
       responses:
         200:
           description: OK
@@ -3946,7 +3946,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/RankResource'
+                      $ref: '#/components/schemas/RankRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -3988,7 +3988,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/RankResource'
+                      $ref: '#/components/schemas/RankRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -4018,7 +4018,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/RankResource'
+                    $ref: '#/components/schemas/RankRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -4054,7 +4054,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/RankResource'
+                    $ref: '#/components/schemas/RankRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -4079,7 +4079,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Service'
+              $ref: '#/components/schemas/ServiceRecord'
       responses:
         201:
           description: OK
@@ -4089,7 +4089,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/ServiceResource'
+                    $ref: '#/components/schemas/ServiceRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -4118,7 +4118,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ServiceResource'
+                      $ref: '#/components/schemas/ServiceRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -4150,7 +4150,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ServiceResource'
+                      $ref: '#/components/schemas/ServiceRecordResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -4186,7 +4186,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/ServiceResource'
+                    $ref: '#/components/schemas/ServiceRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -4214,7 +4214,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Service'
+              $ref: '#/components/schemas/ServiceRecord'
       responses:
         200:
           description: OK
@@ -4224,7 +4224,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/ServiceResource'
+                    $ref: '#/components/schemas/ServiceRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -4259,7 +4259,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/ServiceResource'
+                    $ref: '#/components/schemas/ServiceRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -4287,7 +4287,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Service'
+                    $ref: '#/components/schemas/ServiceRecord'
       responses:
         200:
           description: OK
@@ -4299,7 +4299,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ServiceResource'
+                      $ref: '#/components/schemas/ServiceRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -4329,7 +4329,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/Service'
+                      $ref: '#/components/schemas/ServiceRecord'
       responses:
         200:
           description: OK
@@ -4341,7 +4341,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ServiceResource'
+                      $ref: '#/components/schemas/ServiceRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -4383,7 +4383,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/ServiceResource'
+                      $ref: '#/components/schemas/ServiceRecordResource'
         422:
           description: 'Validation error'
         401:
@@ -4413,7 +4413,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/ServiceResource'
+                    $ref: '#/components/schemas/ServiceRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -4449,7 +4449,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/ServiceResource'
+                    $ref: '#/components/schemas/ServiceRecordResource'
         401:
           description: Unauthenticated
         403:
@@ -5359,6 +5359,9 @@ components:
               type: string
               nullable: true
               format: date-time
+            data:
+              type: object
+              additionalProperties: true
     Unit:
       title: Unit
       type: object
@@ -5608,6 +5611,8 @@ components:
         description:
           type: string
           nullable: true
+        order:
+          type: integer
     PositionResource:
       title: PositionResource
       allOf:
@@ -5716,6 +5721,216 @@ components:
           type: integer
         total:
           type: integer
+    AssignmentRecord:
+      title: AssignmentRecord
+      type: object
+      properties:
+        user_id:
+          type: integer
+        unit_id:
+          type: integer
+        position_id:
+          type: integer
+        specialty_id:
+          type: integer
+        document_id:
+          type: integer
+          nullable: true
+        author_id:
+          type: integer
+          nullable: true
+        text:
+          type: string
+          nullable: true
+    AssignmentRecordResource:
+      title: AssignmentRecordResource
+      allOf:
+        -
+          $ref: '#/components/schemas/AssignmentRecord'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    AwardRecord:
+      title: AwardRecord
+      type: object
+      properties:
+        user_id:
+          type: integer
+        award_id:
+          type: integer
+        document_id:
+          type: integer
+          nullable: true
+        author_id:
+          type: integer
+          nullable: true
+        text:
+          type: string
+          nullable: true
+    AwardRecordResource:
+      title: AwardRecordResource
+      allOf:
+        -
+          $ref: '#/components/schemas/AwardRecord'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    CombatRecord:
+      title: CombatRecord
+      type: object
+      properties:
+        user_id:
+          type: integer
+        document_id:
+          type: integer
+          nullable: true
+        author_id:
+          type: integer
+          nullable: true
+        text:
+          type: string
+    CombatRecordResource:
+      title: CombatRecordResource
+      allOf:
+        -
+          $ref: '#/components/schemas/CombatRecord'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    QualificationRecord:
+      title: QualificationRecord
+      type: object
+      properties:
+        user_id:
+          type: integer
+        qualification_id:
+          type: integer
+        document_id:
+          type: integer
+          nullable: true
+        author_id:
+          type: integer
+          nullable: true
+        text:
+          type: string
+          nullable: true
+    QualificationRecordResource:
+      title: QualificationRecordResource
+      allOf:
+        -
+          $ref: '#/components/schemas/QualificationRecord'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    RankRecord:
+      title: RankRecord
+      type: object
+      properties:
+        user_id:
+          type: integer
+        rank_id:
+          type: integer
+        document_id:
+          type: integer
+          nullable: true
+        author_id:
+          type: integer
+          nullable: true
+        text:
+          type: string
+          nullable: true
+    RankRecordResource:
+      title: RankRecordResource
+      allOf:
+        -
+          $ref: '#/components/schemas/RankRecord'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            type:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    ServiceRecord:
+      title: ServiceRecord
+      type: object
+      properties:
+        user_id:
+          type: integer
+        document_id:
+          type: integer
+          nullable: true
+        author_id:
+          type: integer
+          nullable: true
+        text:
+          type: string
+    ServiceRecordResource:
+      title: ServiceRecordResource
+      allOf:
+        -
+          $ref: '#/components/schemas/ServiceRecord'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
 tags:
   -
     name: Me
