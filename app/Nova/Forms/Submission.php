@@ -3,9 +3,6 @@
 namespace App\Nova\Forms;
 
 use App\Nova\Resource;
-use App\Nova\Status;
-use Eminiarts\Tabs\Tab;
-use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +14,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -97,32 +92,7 @@ class Submission extends Resource
     {
         return [
             ID::make()->sortable(),
-            Hidden::make('User', 'user_id')->default(function (NovaRequest $request) {
-                return $request->user()->id;
-            })->showOnDetail(),
-            Hidden::make('Form', 'form_id')->default(function (NovaRequest $request) {
-                return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
-            })->showOnDetail(),
-            BelongsTo::make('Form')->showOnPreview()->default(function (NovaRequest $request) {
-                return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
-            })->canSeeWhen('update:submission'),
-            BelongsTo::make('User')
-                     ->showOnPreview()
-                     ->default(function (NovaRequest $request) {
-                         return $request->user()->id;
-                     })
-                     ->readonly(function (NovaRequest $request) {
-                         return !Auth::user()->hasPermissionTo('update:submission');
-                     })
-                     ->onlyOnForms()
-                     ->nullable()
-                     ->help('The user will be set to guest if left blank.')
-                     ->canSeeWhen('update:submission'),
-            Text::make('User', function () {
-                return optional($this->user, function ($user) {
-                        return $user->name;
-                    }) ?? 'Guest';
-            }),
+            $this->getDetailFields($request),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })->types([
@@ -134,33 +104,80 @@ class Submission extends Resource
             Code::make('Data', static function ($model) {
                 return json_encode($model->getAttributes(), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
             })->hideFromIndex()->json()->canSeeWhen('update:submission'),
-            Heading::make('Meta')->onlyOnDetail()->canSeeWhen('update:submission'),
-            DateTime::make('Created At')->exceptOnForms()->sortable()->canSeeWhen('update:submission'),
-            DateTime::make('Updated At')->exceptOnForms()->sortable()->canSeeWhen('update:submission'),
+            Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Created At')->exceptOnForms()->sortable(),
+            DateTime::make('Updated At')->exceptOnForms()->sortable(),
             $this->getCustomFields($request),
-            Tabs::make('Relations', [
-                Tab::make('Status History', [
-                    MorphToMany::make('Status', 'statuses', Status::class)
-                               ->allowDuplicateRelations()
-                               ->fields(function () {
-                                   return [
-                                       Textarea::make('Text'),
-                                       Text::make('Text', function ($model) {
-                                           return $model->text;
-                                       }),
-                                       DateTime::make('Updated At')->sortable()->onlyOnIndex(),
-                                   ];
-                               }),
-                ]),
-                Tab::make('Logs', [$this->actionfield()]),
-            ]),
+            //            Tabs::make('Relations', [
+            //                Tab::make('Status History', [
+            //                    MorphToMany::make('Status', 'statuses', Status::class)
+            //                               ->allowDuplicateRelations()
+            //                               ->fields(function () {
+            //                                   return [
+            //                                       Textarea::make('Text'),
+            //                                       Text::make('Text', function ($model) {
+            //                                           return $model->text;
+            //                                       }),
+            //                                       DateTime::make('Updated At')->sortable()->onlyOnIndex(),
+            //                                   ];
+            //                               }),
+            //                ]),
+            //                Tab::make('Logs', [$this->actionfield()]),
+            //            ]),
         ];
     }
 
     /**
+     * @param NovaRequest $request
+     *
      * @return Panel
      */
-    protected function getCustomFields(NovaRequest $request)
+    protected function getDetailFields(NovaRequest $request)
+    {
+        $form = $this->getForm($request);
+
+        if (Auth::user()->hasPermissionTo('update:submission')) {
+            return new Panel('Details', [
+                BelongsTo::make('Form')->showOnPreview()->default(function (NovaRequest $request) {
+                    return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
+                }),
+                BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
+                    return $request->user()->id;
+                })->help('The user will be set to guest if left blank.')
+            ]);
+        }
+
+        $fields = [];
+
+        if ($request->isFormRequest()) {
+            $fields[] = Hidden::make('User', 'user_id')->default(function (NovaRequest $request) {
+                return $request->user()->id;
+            })->showOnDetail();
+            $fields[] = Hidden::make('Form', 'form_id')->default(function (NovaRequest $request) {
+                return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
+            })->showOnDetail();
+        }
+
+        return new Panel($form->name ?? 'Form', array_merge($fields, [
+            Text::make('User', static function ($submission) {
+                return optional($submission->user, static function ($user) {
+                        return $user->name;
+                    }) ?? 'Guest';
+            })->onlyOnIndex(),
+            Text::make('Form', static function ($submission) {
+                return optional($submission->form, static function ($form) {
+                        return $form->name;
+                    }) ?? 'Form';
+            })->onlyOnIndex(),
+        ]));
+    }
+
+    /**
+     * @param NovaRequest $request
+     *
+     * @return mixed|null
+     */
+    protected function getForm(NovaRequest $request)
     {
         $form = null;
 
@@ -170,8 +187,18 @@ class Submission extends Resource
 
         if (($submission = $request->findModel()) &&
             ($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest())) {
-            $form = $submission->form;
+            return $submission->form;
         }
+
+        return $form;
+    }
+
+    /**
+     * @return Panel
+     */
+    protected function getCustomFields(NovaRequest $request)
+    {
+        $form = $this->getForm($request);
 
         $fields = [];
         if ($form) {
