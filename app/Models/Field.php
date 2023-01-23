@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Forms\Form;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Fields\Boolean;

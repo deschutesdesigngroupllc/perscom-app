@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Forms\Form;
+use App\Models\Form;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
@@ -35,8 +35,8 @@ class FormPolicy
     /**x
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\User       $user
-     * @param \App\Models\Forms\Form $form
+     * @param \App\Models\User $user
+     * @param \App\Models\Form $form
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
@@ -60,7 +60,7 @@ class FormPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Forms\Form  $form
+     * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Form $form)
@@ -72,7 +72,7 @@ class FormPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Forms\Form  $form
+     * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, Form $form)
@@ -84,7 +84,7 @@ class FormPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Forms\Form  $form
+     * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, Form $form)
@@ -96,7 +96,7 @@ class FormPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Forms\Form  $form
+     * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, Form $form)

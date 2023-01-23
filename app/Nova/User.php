@@ -2,16 +2,15 @@
 
 namespace App\Nova;
 
-use App\Nova\Forms\Submission;
+use App\Nova\AssignmentRecord as AssignmentRecords;
+use App\Nova\AwardRecord as AwardRecords;
+use App\Nova\CombatRecord as CombatRecords;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\TotalUsers;
 use App\Nova\Metrics\UsersOnline;
-use App\Nova\Records\Assignment as AssignmentRecords;
-use App\Nova\Records\Award as AwardRecords;
-use App\Nova\Records\Combat as CombatRecords;
-use App\Nova\Records\Qualification as QualificationRecords;
-use App\Nova\Records\Rank as RankRecords;
-use App\Nova\Records\Service as ServiceRecords;
+use App\Nova\QualificationRecord as QualificationRecords;
+use App\Nova\RankRecord as RankRecords;
+use App\Nova\ServiceRecord as ServiceRecords;
 use Carbon\CarbonInterval;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;

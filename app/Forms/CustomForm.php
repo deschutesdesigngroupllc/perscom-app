@@ -3,7 +3,7 @@
 namespace App\Forms;
 
 use App\Models\Field;
-use App\Models\Forms\Submission;
+use App\Models\Submission;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;

@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Records\Assignment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
@@ -25,7 +24,7 @@ class Unit extends Model implements Sortable
      */
     public function assignment_records()
     {
-        return $this->hasMany(Assignment::class);
+        return $this->hasMany(AssignmentRecord::class);
     }
 
     /**

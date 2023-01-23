@@ -31,8 +31,6 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     protected static function booted()
     {
-        parent::booted();
-
         static::creating(function ($tenant) {
             Nova::whenServing(function () use ($tenant) {
                 self::$eventDispatcher = $tenant::getEventDispatcher();

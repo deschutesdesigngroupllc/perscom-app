@@ -2,38 +2,38 @@
 
 namespace App\Providers;
 
-use App\Models\Forms\Submission as SubmissionModel;
+use App\Models\Submission as SubmissionModel;
 use App\Nova\Action;
 use App\Nova\Admin as AdminResource;
 use App\Nova\Announcement;
+use App\Nova\AssignmentRecord as AssignmentRecords;
 use App\Nova\Award;
+use App\Nova\AwardRecord as AwardRecords;
+use App\Nova\CombatRecord as CombatRecords;
 use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
 use App\Nova\Feature;
 use App\Nova\Field;
-use App\Nova\Forms\Form;
-use App\Nova\Forms\Submission;
+use App\Nova\Form;
 use App\Nova\Mail;
 use App\Nova\Message;
-use App\Nova\Passport\AuthorizedApplications;
-use App\Nova\Passport\Client;
-use App\Nova\Passport\Log;
-use App\Nova\Passport\PersonalAccessToken;
+use App\Nova\PassportAuthorizedApplications;
+use App\Nova\PassportClient;
+use App\Nova\PassportLog;
+use App\Nova\PassportPersonalAccessToken;
 use App\Nova\Permission;
 use App\Nova\Position;
 use App\Nova\Qualification;
+use App\Nova\QualificationRecord as QualificationRecords;
 use App\Nova\Rank;
-use App\Nova\Records\Assignment as AssignmentRecords;
-use App\Nova\Records\Award as AwardRecords;
-use App\Nova\Records\Combat as CombatRecords;
-use App\Nova\Records\Qualification as QualificationRecords;
-use App\Nova\Records\Rank as RankRecords;
-use App\Nova\Records\Service as ServiceRecords;
+use App\Nova\RankRecord as RankRecords;
 use App\Nova\Role;
+use App\Nova\ServiceRecord as ServiceRecords;
 use App\Nova\Specialty;
 use App\Nova\Status;
+use App\Nova\Submission;
 use App\Nova\Subscription;
 use App\Nova\Tenant;
 use App\Nova\Unit;
@@ -199,14 +199,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Field::class),
                         MenuItem::resource(Form::class),
                         MenuItem::resource(Submission::class)->withBadgeIf(function () {
-                            if (Auth::user()->hasPermissionTo('update:submission')) {
-                                return SubmissionModel::query()->whereDoesntHave('statuses')->count();
-                            }
-
-                            return SubmissionModel::query()
-                                                  ->where('user_id', '=', Auth::user()->getAuthIdentifier())
-                                                  ->whereDoesntHave('statuses')
-                                                  ->count();
+                            return SubmissionModel::query()->whereDoesntHave('statuses')->count();
                         }, 'info', function () {
                             return SubmissionModel::query()->whereDoesntHave('statuses')->exists();
                         }),
@@ -222,15 +215,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])->icon('document-text')->collapsable(),
 
                     MenuSection::make('External Integration', [
-                        MenuItem::resource(AuthorizedApplications::class),
-                        MenuItem::resource(Client::class)->name('My Apps'),
-                        MenuItem::resource(PersonalAccessToken::class),
+                        MenuItem::resource(PassportAuthorizedApplications::class),
+                        MenuItem::resource(PassportClient::class)->name('My Apps'),
+                        MenuItem::resource(PassportPersonalAccessToken::class),
                         MenuItem::externalLink('Documentation', config('app.url').'/documentation/api')
                                 ->openInNewTab()
                                 ->canSee(function () {
                                     return Auth::user()->hasPermissionTo('manage:api');
                                 }),
-                        MenuItem::resource(Log::class),
+                        MenuItem::resource(PassportLog::class),
                     ])->icon('link')->collapsable()->canSee(function () {
                         return \tenant()->canAccessApi();
                     }),

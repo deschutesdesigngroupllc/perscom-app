@@ -2,8 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Records\Rank;
-use Illuminate\Support\Facades\Gate;
+use App\Models\RankRecord;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Partition;
@@ -18,21 +17,16 @@ class RankRecordsByType extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        $query = Rank::query();
-        if (! Gate::check('update', $request->findModel())) {
-            $query = $query->where('user_id', $request->user()->id);
-        }
-
-        return $this->count($request, $query, 'type')->label(function ($value) {
+        return $this->count($request, RankRecord::class, 'type')->label(function ($value) {
             $labels = [
-                Rank::RECORD_RANK_PROMOTION => 'Promotion',
-                Rank::RECORD_RANK_DEMOTION => 'Demotion',
+                RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
+                RankRecord::RECORD_RANK_DEMOTION => 'Demotion',
             ];
 
             return $labels[$value];
         })->colors([
-            Rank::RECORD_RANK_PROMOTION => '#16A34A',
-            Rank::RECORD_RANK_DEMOTION => '#DC2626',
+            RankRecord::RECORD_RANK_PROMOTION => '#16A34A',
+            RankRecord::RECORD_RANK_DEMOTION => '#DC2626',
         ]);
     }
 

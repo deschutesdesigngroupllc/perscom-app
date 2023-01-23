@@ -6,7 +6,7 @@ return [
         'User' => 'Has permission to view all necessary records only pertaining to the user.',
     ],
     'guards' => [
-        'web'
+        'web',
     ],
     'default' => [
         'User' => [
@@ -19,7 +19,7 @@ return [
             'view:qualificationrecord',
             'view:rankrecord',
             'view:servicerecord',
-            'create:submission'
+            'create:submission',
         ],
     ],
     'permissions' => [

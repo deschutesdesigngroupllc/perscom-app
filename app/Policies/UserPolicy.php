@@ -103,4 +103,16 @@ class UserPolicy
     {
         //
     }
+
+    /**
+     * Determine whether the user can impersonate another model.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function impersonate(User $user, User $model)
+    {
+        return $user->hasPermissionTo('impersonate:user', 'web') || $user->tokenCan('impersonate:user');
+    }
 }

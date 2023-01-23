@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Records\Assignment;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -20,7 +19,7 @@ class Specialty extends Model
      */
     public function assignment_records()
     {
-        return $this->hasMany(Assignment::class);
+        return $this->hasMany(AssignmentRecord::class);
     }
 
     /**

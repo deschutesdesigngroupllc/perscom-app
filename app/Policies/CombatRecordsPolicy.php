@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Records\Combat;
+use App\Models\CombatRecord;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
@@ -36,10 +36,10 @@ class CombatRecordsPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Combat  $combat
+     * @param  \App\Models\CombatRecord  $combat
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Combat $combat)
+    public function view(User $user, CombatRecord $combat)
     {
         return $user->hasPermissionTo('view:combatrecord', 'web') ||
                $combat->user?->id === $user->id ||
@@ -61,10 +61,10 @@ class CombatRecordsPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Combat  $combat
+     * @param  \App\Models\CombatRecord  $combat
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Combat $combat)
+    public function update(User $user, CombatRecord $combat)
     {
         return $user->hasPermissionTo('update:combatrecord', 'web') || $user->tokenCan('update:combatrecord');
     }
@@ -73,10 +73,10 @@ class CombatRecordsPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Combat  $combat
+     * @param  \App\Models\CombatRecord  $combat
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Combat $combat)
+    public function delete(User $user, CombatRecord $combat)
     {
         return $user->hasPermissionTo('delete:combatrecord', 'web') || $user->tokenCan('delete:combatrecord');
     }
@@ -85,10 +85,10 @@ class CombatRecordsPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Combat  $combat
+     * @param  \App\Models\CombatRecord  $combat
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Combat $combat)
+    public function restore(User $user, CombatRecord $combat)
     {
         //
     }
@@ -97,10 +97,10 @@ class CombatRecordsPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Combat  $combat
+     * @param  \App\Models\CombatRecord  $combat
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Combat $combat)
+    public function forceDelete(User $user, CombatRecord $combat)
     {
         //
     }

@@ -2,8 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Records\Rank;
-use Illuminate\Support\Facades\Gate;
+use App\Models\RankRecord;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
@@ -25,12 +24,7 @@ class TotalRankRecords extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $query = Rank::query();
-        if (! Gate::check('update', $request->findModel())) {
-            $query = $query->where('user_id', $request->user()->id);
-        }
-
-        return $this->count($request, $query);
+        return $this->count($request, RankRecord::class);
     }
 
     /**

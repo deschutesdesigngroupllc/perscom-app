@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Nova;
 
-use App\Models\Passport\Client;
-use App\Models\Passport\Token;
+use App\Models\PassportClient;
+use App\Models\PassportToken;
 use Laravel\Nova\Http\Requests\DeleteResourceRequest;
 
 class ResourceDestroyController extends \Laravel\Nova\Http\Controllers\ResourceDestroyController
@@ -16,7 +16,7 @@ class ResourceDestroyController extends \Laravel\Nova\Http\Controllers\ResourceD
      */
     public function __invoke(DeleteResourceRequest $request)
     {
-        if (\in_array(\get_class($request->findModel()), [Token::class, Client::class], true)) {
+        if (\in_array(\get_class($request->findModel()), [PassportToken::class, PassportClient::class], true)) {
             config()->set('nova.actions.resource', null);
         }
 

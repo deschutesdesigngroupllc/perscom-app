@@ -2,8 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Records\Service;
-use Illuminate\Support\Facades\Gate;
+use App\Models\ServiceRecord;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Trend;
 
@@ -31,12 +30,7 @@ class NewServiceRecords extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        $query = Service::query();
-        if (! Gate::check('update', $request->findModel())) {
-            $query = $query->where('user_id', $request->user()->id);
-        }
-
-        return $this->countByDays($request, $query);
+        return $this->countByDays($request, ServiceRecord::class);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Forms\CustomForm;
-use App\Models\Forms\Form;
+use App\Models\Form;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
