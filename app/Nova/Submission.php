@@ -93,7 +93,7 @@ class Submission extends Resource
             }),
             Code::make('Data', static function ($model) {
                 return json_encode($model->getAttributes(), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
-            })->hideFromIndex()->json()->canSeeWhen('update:submission'),
+            })->hideFromIndex()->json()->canSeeWhen('update', $request->model()),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms()->sortable(),
             DateTime::make('Updated At')->exceptOnForms()->sortable(),

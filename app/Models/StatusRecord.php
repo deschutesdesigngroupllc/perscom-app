@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Models\Pivots;
+namespace App\Models;
 
-use App\Models\Status as StatusModel;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 
-class Status extends MorphPivot
+class StatusRecord extends MorphPivot
 {
     use HasFactory;
 
@@ -18,7 +16,7 @@ class Status extends MorphPivot
     {
         parent::boot();
 
-        static::created(function (Status $record) {
+        static::created(function (StatusRecord $record) {
             if ($record->model && $record->model instanceof User) {
                 $record->model->status_id = $record->status?->id;
                 $record->model->save();
@@ -39,6 +37,6 @@ class Status extends MorphPivot
      */
     public function status()
     {
-        return $this->belongsTo(StatusModel::class);
+        return $this->belongsTo(Status::class);
     }
 }

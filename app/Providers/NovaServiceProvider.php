@@ -159,12 +159,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                                                           '/'.
                                                                           config('horizon.path'))
                                                              ->withScheme(config('app.scheme'))
-                                                             ->__toString()),
+                                                             ->__toString())->openInNewTab(),
                         MenuItem::externalLink('Telescope', Url::fromString(config('app.url').
                                                                             '/'.
                                                                             config('telescope.path'))
                                                                ->withScheme(config('app.scheme'))
-                                                               ->__toString()),
+                                                               ->__toString())->openInNewTab(),
                     ])->icon('external-link')->collapsable(),
                 ];
             });

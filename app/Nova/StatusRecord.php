@@ -1,20 +1,19 @@
 <?php
 
-namespace App\Nova\Pivots;
+namespace App\Nova;
 
-use App\Nova\Resource;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class Status extends Resource
+class StatusRecord extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\Pivots\Status::class;
+    public static $model = \App\Models\StatusRecord::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.

@@ -2,15 +2,9 @@
 
 namespace App\Nova;
 
-use App\Nova\AssignmentRecord as AssignmentRecords;
-use App\Nova\AwardRecord as AwardRecords;
-use App\Nova\CombatRecord as CombatRecords;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\TotalUsers;
 use App\Nova\Metrics\UsersOnline;
-use App\Nova\QualificationRecord as QualificationRecords;
-use App\Nova\RankRecord as RankRecords;
-use App\Nova\ServiceRecord as ServiceRecords;
 use Carbon\CarbonInterval;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
@@ -140,30 +134,31 @@ class User extends Resource
                          ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
                          ->nullable()
                          ->onlyOnForms()
-                         ->canSeeWhen('create:assignmentrecord'),
+                         ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
                          ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
                          ->nullable()
                          ->onlyOnForms()
-                         ->canSeeWhen('create:assignmentrecord'),
+                         ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
                          ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
                          ->nullable()
                          ->onlyOnForms()
-                         ->canSeeWhen('create:assignmentrecord'),
+                         ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)
                          ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
                          ->nullable()
                          ->onlyOnForms()
-                         ->canSeeWhen('create:rankrecord'),
+                         ->canSeeWhen('create', \App\Models\RankRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
                          ->help('You can manually set the user\'s status. Creating a status record will also change their status.')
                          ->nullable()
-                         ->onlyOnForms(),
+                         ->onlyOnForms()
+                         ->canSeeWhen('create', \App\Models\StatusRecord::class),
             ]),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
@@ -258,16 +253,16 @@ class User extends Resource
                 Tab::make('Logs', [$this->actionfield()]),
             ])->showTitle(true),
             Tabs::make('Records', [
-                HasMany::make('Assignment Records', 'assignment_records', AssignmentRecords::class),
+                HasMany::make('Assignment Records', 'assignment_records', AssignmentRecord::class),
                 HasMany::make(Str::singular(Str::title(setting('localization_awards', 'Award'))).
-                              ' Records', 'award_records', AwardRecords::class),
-                HasMany::make('Combat Records', 'combat_records', CombatRecords::class),
+                              ' Records', 'award_records', AwardRecord::class),
+                HasMany::make('Combat Records', 'combat_records', CombatRecord::class),
                 HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
-                              ' Records', 'rank_records', RankRecords::class),
-                HasMany::make('Service Records', 'service_records', ServiceRecords::class),
+                              ' Records', 'rank_records', RankRecord::class),
+                HasMany::make('Service Records', 'service_records', ServiceRecord::class),
                 HasMany::make('Submission Records', 'submissions', Submission::class),
                 HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).
-                              ' Records', 'qualification_records', QualificationRecords::class),
+                              ' Records', 'qualification_records', QualificationRecord::class),
             ])->showTitle(true),
             MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'statuses', Status::class)
                        ->allowDuplicateRelations()
@@ -281,8 +276,8 @@ class User extends Resource
                            ];
                        }),
             new Panel('Notes', [
-                Trix::make('Notes')->alwaysShow()->canSeeWhen('note:user'),
-                DateTime::make('Notes Last Updated At', 'notes_updated_at')->canSeeWhen('note:user')->onlyOnDetail(),
+                Trix::make('Notes')->alwaysShow()->canSeeWhen('note', \App\Models\User::class),
+                DateTime::make('Notes Last Updated At', 'notes_updated_at')->canSeeWhen('note', \App\Models\User::class)->onlyOnDetail(),
             ]),
             Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])
                 ->showTitle(true),

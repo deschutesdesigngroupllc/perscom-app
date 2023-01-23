@@ -26,6 +26,7 @@ use App\Models\Role;
 use App\Models\ServiceRecord;
 use App\Models\Specialty;
 use App\Models\Status;
+use App\Models\StatusRecord;
 use App\Models\Unit;
 use App\Models\User;
 use App\Policies\ActionPolicy;
@@ -52,6 +53,7 @@ use App\Policies\RolePolicy;
 use App\Policies\ServiceRecordsPolicy;
 use App\Policies\SpecialtyPolicy;
 use App\Policies\StatusPolicy;
+use App\Policies\StatusRecordPolicy;
 use App\Policies\SubscriptionItemPolicy;
 use App\Policies\SubscriptionPolicy;
 use App\Policies\UnitPolicy;
@@ -92,6 +94,7 @@ class AuthServiceProvider extends ServiceProvider
         ServiceRecord::class => ServiceRecordsPolicy::class,
         Specialty::class => SpecialtyPolicy::class,
         Status::class => StatusPolicy::class,
+        StatusRecord::class => StatusRecordPolicy::class,
         Subscription::class => SubscriptionPolicy::class,
         SubscriptionItem::class => SubscriptionItemPolicy::class,
         Unit::class => UnitPolicy::class,

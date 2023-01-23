@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Pivots\Element;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
@@ -56,6 +55,7 @@ class Form extends Model
                     ->using(Element::class)
                     ->as('fields')
                     ->withPivot(['order'])
+                    ->orderBy('order')
                     ->withTimestamps();
     }
 

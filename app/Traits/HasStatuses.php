@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\Pivots\Status as StatusRecord;
 use App\Models\Status;
+use App\Models\StatusRecord;
 
 trait HasStatuses
 {

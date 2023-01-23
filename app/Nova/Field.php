@@ -12,7 +12,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphedByMany;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
@@ -152,11 +151,7 @@ class Field extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            MorphedByMany::make('Assigned Forms', 'forms', Form::class)->fields(function ($request, $relatedModel) {
-                return [
-                    Number::make('Order')->sortable()->rules('required'),
-                ];
-            }),
+            MorphedByMany::make('Assigned Forms', 'forms', Form::class),
         ];
     }
 

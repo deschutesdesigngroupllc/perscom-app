@@ -115,4 +115,16 @@ class UserPolicy
     {
         return $user->hasPermissionTo('impersonate:user', 'web') || $user->tokenCan('impersonate:user');
     }
+
+    /**
+     * Determine whether the user can add a note.
+     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\User  $model
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function note(User $user)
+    {
+        return $user->hasPermissionTo('note:user', 'web') || $user->tokenCan('note:user');
+    }
 }
