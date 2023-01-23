@@ -130,6 +130,8 @@ class Submission extends Resource
 
     /**
      * @param $submission
+     *
+     * @return Badge
      */
     protected function generateBadgeField($submission)
     {
@@ -229,8 +231,8 @@ class Submission extends Resource
         return new Panel('Instructions', [
             HtmlField::make('Instructions')->view('fields.html.form-instructions', [
                 'instructions' => Str::markdown($form->instructions ?? ''),
-            ])->canSee(function () {
-                return true;
+            ])->canSee(function () use ($form) {
+                return isset($form->instructions) && $form->instructions !== '';
             })->onlyOnForms(),
         ]);
     }
