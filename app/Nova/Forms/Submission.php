@@ -7,6 +7,7 @@ use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Code;
@@ -17,6 +18,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Perscom\HtmlField\HtmlField;
 
 class Submission extends Resource
 {
@@ -67,9 +69,8 @@ class Submission extends Resource
     /**
      * Build an "index" query for the given resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Builder   $query
-     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
@@ -84,8 +85,7 @@ class Submission extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -93,10 +93,11 @@ class Submission extends Resource
         return [
             ID::make()->sortable(),
             $this->getDetailFields($request),
+            $this->getInstructionFields($request),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })->types([
-                'none'               => 'bg-gray-100 text-gray-600',
+                'none' => 'bg-gray-100 text-gray-600',
                 $this->status?->name => $this->status?->color,
             ])->label(function () {
                 return $this->status->name ?? 'No Current Status';
@@ -128,8 +129,27 @@ class Submission extends Resource
     }
 
     /**
-     * @param NovaRequest $request
-     *
+     * @param  NovaRequest  $request
+     * @return mixed|null
+     */
+    protected function getForm(NovaRequest $request)
+    {
+        $form = null;
+
+        if (($resourceId = $request->viaResourceId) && $request->isCreateOrAttachRequest()) {
+            $form = \App\Models\Forms\Form::find($resourceId);
+        }
+
+        if (($submission = $request->findModel()) &&
+            ($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest())) {
+            return $submission->form;
+        }
+
+        return $form;
+    }
+
+    /**
+     * @param  NovaRequest  $request
      * @return Panel
      */
     protected function getDetailFields(NovaRequest $request)
@@ -143,7 +163,7 @@ class Submission extends Resource
                 }),
                 BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
                     return $request->user()->id;
-                })->help('The user will be set to guest if left blank.')
+                })->help('The user will be set to guest if left blank.'),
             ]);
         }
 
@@ -161,36 +181,32 @@ class Submission extends Resource
         return new Panel($form->name ?? 'Form', array_merge($fields, [
             Text::make('User', static function ($submission) {
                 return optional($submission->user, static function ($user) {
-                        return $user->name;
-                    }) ?? 'Guest';
+                    return $user->name;
+                }) ?? 'Guest';
             })->onlyOnIndex(),
             Text::make('Form', static function ($submission) {
                 return optional($submission->form, static function ($form) {
-                        return $form->name;
-                    }) ?? 'Form';
+                    return $form->name;
+                }) ?? 'Form';
             })->onlyOnIndex(),
         ]));
     }
 
     /**
-     * @param NovaRequest $request
-     *
-     * @return mixed|null
+     * @param  NovaRequest  $request
+     * @return Panel
      */
-    protected function getForm(NovaRequest $request)
+    protected function getInstructionFields(NovaRequest $request)
     {
-        $form = null;
+        $form = $this->getForm($request);
 
-        if (($resourceId = $request->viaResourceId) && $request->isCreateOrAttachRequest()) {
-            $form = \App\Models\Forms\Form::find($resourceId);
-        }
-
-        if (($submission = $request->findModel()) &&
-            ($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest())) {
-            return $submission->form;
-        }
-
-        return $form;
+        return new Panel('Instructions', [
+            HtmlField::make('Instructions')->view('fields.html.form-instructions', [
+                'instructions' => Str::markdown($form->instructions ?? ''),
+            ])->canSee(function () use ($form) {
+                return isset($form->instructions) && $form->instructions !== '';
+            })->onlyOnForms(),
+        ]);
     }
 
     /**
@@ -213,8 +229,7 @@ class Submission extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -225,8 +240,7 @@ class Submission extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -237,8 +251,7 @@ class Submission extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -249,8 +262,7 @@ class Submission extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

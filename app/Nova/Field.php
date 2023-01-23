@@ -82,7 +82,7 @@ class Field extends Resource
             Slug::make('Slug', 'key')->from('Name')->rules([
                 'required',
                 Rule::unique('fields', 'key')->ignore($this->id),
-                'regex:/^[0-9a-zA-Z_]+$/'
+                'regex:/^[0-9a-zA-Z_]+$/',
             ])->separator('_')->help('The slug will be used as the field key when saving the form submission. Allowed characters: 0-9, a-z, A-Z, or underscore.'),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Text::make('Description', function () {

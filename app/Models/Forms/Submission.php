@@ -46,7 +46,7 @@ class Submission extends Model
             'user_id',
             'data',
             'created_at',
-            'updated_at'
+            'updated_at',
         ];
     }
 

@@ -25,6 +25,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class Form extends Resource
 {
@@ -60,7 +61,8 @@ class Form extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -83,16 +85,18 @@ class Form extends Resource
             })->showOnPreview(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
-            Heading::make('Access')->hideFromIndex(),
-            Boolean::make('Public', 'is_public')
-                   ->help('Check to make this form available to the public.')
-                   ->canSee(function (NovaRequest $request) {
-                       return Gate::check('update', $request->findModel());
-                   }),
-            Heading::make('Submission')->hideFromIndex(),
-            Textarea::make('Success Message')
-                    ->help('The message displayed when the form is successfully submitted.')
-                    ->alwaysShow(),
+            new Panel('Access', [
+                Boolean::make('Public', 'is_public')
+                       ->help('Check to make this form available to the public.')
+                       ->canSee(function (NovaRequest $request) {
+                           return Gate::check('update', $request->findModel());
+                       }),
+            ]),
+            new Panel('Submission', [
+                Textarea::make('Success Message')
+                        ->help('The message displayed when the form is successfully submitted.')
+                        ->alwaysShow(),
+            ]),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
@@ -105,7 +109,8 @@ class Form extends Resource
     }
 
     /**
-     * @param  Request  $request
+     * @param Request $request
+     *
      * @return bool
      */
     public function authorizedToView(Request $request)
@@ -116,7 +121,8 @@ class Form extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -127,7 +133,8 @@ class Form extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -138,7 +145,8 @@ class Form extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -149,7 +157,8 @@ class Form extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function actions(NovaRequest $request)

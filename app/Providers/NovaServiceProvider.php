@@ -199,7 +199,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Field::class),
                         MenuItem::resource(Form::class),
                         MenuItem::resource(Submission::class)->withBadgeIf(function () {
-                            return SubmissionModel::query()->whereDoesntHave('statuses')->count();
+                            if (Auth::user()->hasPermissionTo('update:submission')) {
+                                return SubmissionModel::query()->whereDoesntHave('statuses')->count();
+                            }
+
+                            return SubmissionModel::query()
+                                                  ->where('user_id', '=', Auth::user()->getAuthIdentifier())
+                                                  ->whereDoesntHave('statuses')
+                                                  ->count();
                         }, 'info', function () {
                             return SubmissionModel::query()->whereDoesntHave('statuses')->exists();
                         }),

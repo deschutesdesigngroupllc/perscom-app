@@ -136,7 +136,6 @@ class Field extends Model
 
     /**
      * @param $key
-     *
      * @return string
      */
     public static function getSchemaSafeKey($key): string
