@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c7ab46f818dd11e575cf99ecc29392cf",
+    "content-hash": "4aba9e962f18f20a2ac2ac23ad0bf5f6",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -2118,76 +2118,6 @@
             "time": "2022-10-26T14:07:24+00:00"
         },
         {
-            "name": "hashids/hashids",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/vinkla/hashids.git",
-                "reference": "8cab111f78e0bd9c76953b082919fc9e251761be"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/vinkla/hashids/zipball/8cab111f78e0bd9c76953b082919fc9e251761be",
-                "reference": "8cab111f78e0bd9c76953b082919fc9e251761be",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "php": "^7.2 || ^8.0"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "^8.0 || ^9.4",
-                "squizlabs/php_codesniffer": "^3.5"
-            },
-            "suggest": {
-                "ext-bcmath": "Required to use BC Math arbitrary precision mathematics (*).",
-                "ext-gmp": "Required to use GNU multiple precision mathematics (*)."
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.1-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Hashids\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ivan Akimov",
-                    "email": "ivan@barreleye.com"
-                },
-                {
-                    "name": "Vincent Klaiber",
-                    "email": "hello@doubledip.se"
-                }
-            ],
-            "description": "Generate short, unique, non-sequential ids (like YouTube and Bitly) from numbers",
-            "homepage": "https://hashids.org/php",
-            "keywords": [
-                "bitly",
-                "decode",
-                "encode",
-                "hash",
-                "hashid",
-                "hashids",
-                "ids",
-                "obfuscate",
-                "youtube"
-            ],
-            "support": {
-                "issues": "https://github.com/vinkla/hashids/issues",
-                "source": "https://github.com/vinkla/hashids/tree/4.1.0"
-            },
-            "time": "2020-11-26T19:24:33+00:00"
-        },
-        {
             "name": "inertiajs/inertia-laravel",
             "version": "v0.6.9",
             "source": {
@@ -2258,69 +2188,6 @@
                 }
             ],
             "time": "2023-01-17T01:02:51+00:00"
-        },
-        {
-            "name": "laraform/laraform-laravel",
-            "version": "1.2.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/laraform/laraform-laravel.git",
-                "reference": "711cdbed55141d7a33057a77de26ef8e4c81ed7a"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/laraform/laraform-laravel/zipball/711cdbed55141d7a33057a77de26ef8e4c81ed7a",
-                "reference": "711cdbed55141d7a33057a77de26ef8e4c81ed7a",
-                "shasum": ""
-            },
-            "require": {
-                "hashids/hashids": "^3.0 || ^4.0",
-                "php": ">=5.5.9"
-            },
-            "require-dev": {
-                "orchestra/testbench": "~3.0",
-                "phpunit/phpunit": "^7.5"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Laraform\\LaraformServiceProvider"
-                    ],
-                    "aliases": {
-                        "Laraform": "Laraform\\Laraform"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Laraform\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Adam Berecz",
-                    "email": "adam@laraform.io"
-                }
-            ],
-            "description": "Laraform Community Edition (Laravel)",
-            "homepage": "https://laraform.io",
-            "keywords": [
-                "builder",
-                "form",
-                "generator",
-                "laravel"
-            ],
-            "support": {
-                "docs": "https://laraform.io/docs",
-                "issues": "https://github.com/laraform/laraform/issues",
-                "source": "https://github.com/laraform/laraform-laravel/tree/1.2.1"
-            },
-            "time": "2021-06-03T07:05:05+00:00"
         },
         {
             "name": "laravel/cashier",
