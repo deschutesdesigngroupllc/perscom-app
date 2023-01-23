@@ -42,9 +42,11 @@ class Form extends Model
      */
     public function getUrlAttribute()
     {
-        return $this->slug ? route('form', [
-            'slug' => $this->slug,
-        ]) : null;
+        return route('nova.pages.create', [
+            'resource' => \App\Nova\Forms\Submission::uriKey(),
+            'viaResource' => \App\Nova\Forms\Form::uriKey(),
+            'viaResourceId' => $this->id
+        ]);
     }
 
     /**

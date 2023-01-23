@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "dfe303f5c12f818db4620400c410e0d0",
+    "content-hash": "c7ab46f818dd11e575cf99ecc29392cf",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5626,7 +5626,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-prerelease",
+            "version": "dev-form-virtual-columns",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5662,7 +5662,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-prerelease",
+            "version": "dev-form-virtual-columns",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -5698,7 +5698,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-prerelease",
+            "version": "dev-form-virtual-columns",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -5734,7 +5734,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-prerelease",
+            "version": "dev-form-virtual-columns",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -5770,7 +5770,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-prerelease",
+            "version": "dev-form-virtual-columns",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -5806,7 +5806,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-prerelease",
+            "version": "dev-form-virtual-columns",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",

@@ -219,7 +219,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Client::class)->name('My Apps'),
                         MenuItem::resource(PersonalAccessToken::class),
                         MenuItem::externalLink('Documentation', config('app.url').'/documentation/api')
-                                ->openInNewTab(),
+                                ->openInNewTab()
+                                ->canSee(function () {
+                                    return Auth::user()->hasPermissionTo('manage:api');
+                                }),
                         MenuItem::resource(Log::class),
                     ])->icon('link')->collapsable()->canSee(function () {
                         return \tenant()->canAccessApi();

@@ -7,12 +7,19 @@ use App\Traits\HasStatuses;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
+use Stancl\VirtualColumn\VirtualColumn;
 
 class Submission extends Model
 {
     use Actionable;
     use HasFactory;
     use HasStatuses;
+    use VirtualColumn;
+
+    /**
+     * @var array
+     */
+    public $guarded = [];
 
     /**
      * The relations to eager load on every query.
@@ -26,16 +33,22 @@ class Submission extends Model
      *
      * @var array
      */
-    protected $fillable = ['user_id', 'form_id', 'data'];
+    protected $fillable = ['user_id', 'form_id'];
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array
+     * @return string[]
      */
-    protected $casts = [
-        'data' => 'json',
-    ];
+    public static function getCustomColumns(): array
+    {
+        return [
+            'id',
+            'form_id',
+            'user_id',
+            'data',
+            'created_at',
+            'updated_at'
+        ];
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasOne

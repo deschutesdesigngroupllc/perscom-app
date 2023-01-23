@@ -69,8 +69,7 @@ class CustomForm extends Laraform
                     Arr::set($definition, 'text', $field->name);
                 }
 
-                $key = $field->key ?? Str::slug($field->name);
-                $elements[$key] = $definition;
+                $elements[Field::getSchemaSafeKey($field->key)] = $definition;
             }
         }
 
@@ -82,11 +81,11 @@ class CustomForm extends Laraform
      */
     public function after()
     {
-        Submission::create([
-            'data' => Arr::except($this->data, 'form_id'),
-            'form_id' => $this->data['form_id'],
+        $submission = new Submission();
+        $submission->forceFill(array_merge($this->data, [
             'user_id' => Auth::user() ? Auth::user()->getAuthIdentifier() : null,
-        ]);
+        ]));
+        $submission->save();
     }
 
     /**

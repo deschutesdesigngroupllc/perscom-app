@@ -19,6 +19,7 @@ return [
             'view:qualificationrecord',
             'view:rankrecord',
             'view:servicerecord',
+            'create:submission'
         ],
     ],
     'permissions' => [

@@ -8,6 +8,7 @@ use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -20,6 +21,7 @@ use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 
 class Submission extends Resource
 {
@@ -60,10 +62,19 @@ class Submission extends Resource
     public static $orderBy = ['created_at' => 'desc'];
 
     /**
+     * @return string
+     */
+    public static function createButtonLabel()
+    {
+        return 'Submit Form';
+    }
+
+    /**
      * Build an "index" query for the given resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     * @param \Illuminate\Database\Eloquent\Builder   $query
+     *
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
@@ -78,7 +89,8 @@ class Submission extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -88,27 +100,44 @@ class Submission extends Resource
             Hidden::make('User', 'user_id')->default(function (NovaRequest $request) {
                 return $request->user()->id;
             })->showOnDetail(),
-            BelongsTo::make('Form')->showOnPreview(),
-            BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
-                return $request->user()->id;
-            })->onlyOnForms()->nullable()->help('The user will be set to guest if left blank.'),
+            Hidden::make('Form', 'form_id')->default(function (NovaRequest $request) {
+                return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
+            })->showOnDetail(),
+            BelongsTo::make('Form')->showOnPreview()->default(function (NovaRequest $request) {
+                return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
+            })->canSeeWhen('update:submission'),
+            BelongsTo::make('User')
+                     ->showOnPreview()
+                     ->default(function (NovaRequest $request) {
+                         return $request->user()->id;
+                     })
+                     ->readonly(function (NovaRequest $request) {
+                         return !Auth::user()->hasPermissionTo('update:submission');
+                     })
+                     ->onlyOnForms()
+                     ->nullable()
+                     ->help('The user will be set to guest if left blank.')
+                     ->canSeeWhen('update:submission'),
             Text::make('User', function () {
                 return optional($this->user, function ($user) {
-                    return $user->name;
-                }) ?? 'Guest';
+                        return $user->name;
+                    }) ?? 'Guest';
             }),
             Badge::make('Status', function () {
                 return $this->status->name ?? 'none';
             })->types([
-                'none' => 'bg-gray-100 text-gray-600',
+                'none'               => 'bg-gray-100 text-gray-600',
                 $this->status?->name => $this->status?->color,
             ])->label(function () {
                 return $this->status->name ?? 'No Current Status';
             }),
-            Code::make('Data')->hideFromIndex()->rules('json')->json(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->exceptOnForms()->sortable(),
-            DateTime::make('Updated At')->exceptOnForms()->sortable(),
+            Code::make('Data', static function ($model) {
+                return json_encode($model->getAttributes(), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+            })->hideFromIndex()->json()->canSeeWhen('update:submission'),
+            Heading::make('Meta')->onlyOnDetail()->canSeeWhen('update:submission'),
+            DateTime::make('Created At')->exceptOnForms()->sortable()->canSeeWhen('update:submission'),
+            DateTime::make('Updated At')->exceptOnForms()->sortable()->canSeeWhen('update:submission'),
+            $this->getCustomFields($request),
             Tabs::make('Relations', [
                 Tab::make('Status History', [
                     MorphToMany::make('Status', 'statuses', Status::class)
@@ -129,9 +158,36 @@ class Submission extends Resource
     }
 
     /**
+     * @return Panel
+     */
+    protected function getCustomFields(NovaRequest $request)
+    {
+        $form = null;
+
+        if (($resourceId = $request->viaResourceId) && $request->isCreateOrAttachRequest()) {
+            $form = \App\Models\Forms\Form::find($resourceId);
+        }
+
+        if (($submission = $request->findModel()) &&
+            ($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest())) {
+            $form = $submission->form;
+        }
+
+        $fields = [];
+        if ($form) {
+            foreach ($form->fields as $field) {
+                $fields[] = $field->constructNovaField();
+            }
+        }
+
+        return new Panel($form->name ?? 'Form', $fields);
+    }
+
+    /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -142,7 +198,8 @@ class Submission extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -153,7 +210,8 @@ class Submission extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -164,7 +222,8 @@ class Submission extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return array
      */
     public function actions(NovaRequest $request)

@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('tenants', function (Blueprint $table) {
-            $table->dateTime('last_login_at')->after('billing_country')->nullable();
+        Schema::table('fields', function (Blueprint $table) {
+            $table->string('nova_type')->after('type')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('tenants', function (Blueprint $table) {
-            $table->dropColumn('last_login_at');
+        Schema::table('fields', function (Blueprint $table) {
+            $table->dropColumn('nova_type');
         });
     }
 };
