@@ -77,9 +77,7 @@ class Form extends Resource
             Tag::make('Tags')->showCreateRelationButton()->withPreview()->showOnPreview(),
             URL::make('URL')->displayUsing(function ($url) {
                 return 'Click To Open Form';
-            })->exceptOnForms()->copyable()->readonly()->canSee(function (NovaRequest $request) {
-                return Gate::check('update', $request->findModel());
-            })->showOnPreview(),
+            })->exceptOnForms()->copyable()->readonly()->showOnPreview(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
             new Panel('Access', [
