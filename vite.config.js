@@ -16,8 +16,7 @@ export default defineConfig({
         }),
         laravel({
             input: [
-                'resources/js/app.js',
-                'resources/js/form.js',
+                'resources/js/app.js'
             ],
             refresh: true
         }),
