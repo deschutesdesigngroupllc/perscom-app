@@ -76,7 +76,7 @@ class Form extends Resource
                 }),
             Tag::make('Tags')->showCreateRelationButton()->withPreview()->showOnPreview(),
             URL::make('URL')->displayUsing(function ($url) {
-                return $url;
+                return 'Click To Open Form';
             })->exceptOnForms()->copyable()->readonly()->canSee(function (NovaRequest $request) {
                 return Gate::check('update', $request->findModel());
             })->showOnPreview(),
