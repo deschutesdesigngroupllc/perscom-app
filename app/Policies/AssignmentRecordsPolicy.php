@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Records\Assignment;
+use App\Models\AssignmentRecord;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
@@ -36,10 +36,10 @@ class AssignmentRecordsPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\AssignmentRecord  $assignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Assignment $assignment)
+    public function view(User $user, AssignmentRecord $assignment)
     {
         return $user->hasPermissionTo('view:assignmentrecord', 'web') ||
                $assignment->user?->id === $user->id ||
@@ -61,10 +61,10 @@ class AssignmentRecordsPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\AssignmentRecord  $assignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Assignment $assignment)
+    public function update(User $user, AssignmentRecord $assignment)
     {
         return $user->hasPermissionTo('update:assignmentrecord', 'web') || $user->tokenCan('update:assignmentrecord');
     }
@@ -73,10 +73,10 @@ class AssignmentRecordsPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\AssignmentRecord  $assignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Assignment $assignment)
+    public function delete(User $user, AssignmentRecord $assignment)
     {
         return $user->hasPermissionTo('delete:assignmentrecord', 'web') || $user->tokenCan('delete:assignmentrecord');
     }
@@ -85,10 +85,10 @@ class AssignmentRecordsPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\AssignmentRecord  $assignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Assignment $assignment)
+    public function restore(User $user, AssignmentRecord $assignment)
     {
         //
     }
@@ -97,10 +97,10 @@ class AssignmentRecordsPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Assignment  $assignment
+     * @param  \App\Models\AssignmentRecord  $assignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Assignment $assignment)
+    public function forceDelete(User $user, AssignmentRecord $assignment)
     {
         //
     }

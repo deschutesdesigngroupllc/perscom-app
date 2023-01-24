@@ -2,7 +2,7 @@
 
 namespace App\Policies;
 
-use App\Models\Records\Rank;
+use App\Models\RankRecord;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
@@ -36,10 +36,10 @@ class RankRecordsPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\RankRecord  $rank
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Rank $rank)
+    public function view(User $user, RankRecord $rank)
     {
         return $user->hasPermissionTo('view:rankrecord', 'web') ||
                $rank->user?->id === $user->id ||
@@ -61,10 +61,10 @@ class RankRecordsPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\RankRecord  $rank
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Rank $rank)
+    public function update(User $user, RankRecord $rank)
     {
         return $user->hasPermissionTo('update:rankrecord', 'web') || $user->tokenCan('update:rankrecord');
     }
@@ -73,10 +73,10 @@ class RankRecordsPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\RankRecord  $rank
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Rank $rank)
+    public function delete(User $user, RankRecord $rank)
     {
         return $user->hasPermissionTo('delete:rankrecord', 'web') || $user->tokenCan('delete:rankrecord');
     }
@@ -85,10 +85,10 @@ class RankRecordsPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\RankRecord  $rank
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Rank $rank)
+    public function restore(User $user, RankRecord $rank)
     {
         //
     }
@@ -97,10 +97,10 @@ class RankRecordsPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Records\Rank  $rank
+     * @param  \App\Models\RankRecord  $rank
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Rank $rank)
+    public function forceDelete(User $user, RankRecord $rank)
     {
         //
     }

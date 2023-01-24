@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Passport\Client;
-use App\Models\Passport\Token;
+use App\Models\PassportClient;
+use App\Models\PassportToken;
 use App\Models\Permission;
 use App\Models\Tenant;
 use Illuminate\Support\Facades\Config;
@@ -43,8 +43,8 @@ class AppServiceProvider extends ServiceProvider
         Passport::ignoreRoutes();
         Passport::ignoreMigrations();
         Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
-        Passport::useTokenModel(Token::class);
-        Passport::useClientModel(Client::class);
+        Passport::useTokenModel(PassportToken::class);
+        Passport::useClientModel(PassportClient::class);
         Passport::authorizationView(function ($parameters) {
             return Inertia::render('Passport/Authorize', [
                 'client' => $parameters['client']->id,

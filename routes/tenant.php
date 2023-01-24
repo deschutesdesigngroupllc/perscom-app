@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\FormController;
 use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Features\UserImpersonation;
@@ -20,11 +19,11 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 // Initialize tenancy
 Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web']], function () {
-    // Forms
-    Route::group(['prefix' => 'forms'], function () {
-        Route::get('{slug}', [FormController::class, 'index'])->name('form');
-        Route::post('process', [FormController::class, 'process'])->name('form.process');
-    });
+//    // Forms
+//    Route::group(['prefix' => 'forms'], function () {
+//        Route::get('{slug}', [FormController::class, 'index'])->name('form');
+//        Route::post('process', [FormController::class, 'process'])->name('form.process');
+//    });
 
     // Impersonation
     Route::get('/impersonate/{token}', function ($token) {

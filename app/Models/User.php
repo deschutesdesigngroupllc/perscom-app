@@ -2,13 +2,6 @@
 
 namespace App\Models;
 
-use App\Models\Forms\Submission;
-use App\Models\Records\Assignment as AssignmentRecords;
-use App\Models\Records\Award as AwardRecords;
-use App\Models\Records\Combat as CombatRecords;
-use App\Models\Records\Qualification as QualificationRecords;
-use App\Models\Records\Rank as RankRecords;
-use App\Models\Records\Service as ServiceRecords;
 use App\Traits\HasStatuses;
 use Carbon\CarbonInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -17,6 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Passport\HasApiTokens;
@@ -103,7 +97,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function canImpersonate()
     {
-        return $this->hasPermissionTo('impersonate:user');
+        return Gate::check('impersonate', $this);
     }
 
     /**
@@ -163,7 +157,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function assignment_records()
     {
-        return $this->hasMany(AssignmentRecords::class);
+        return $this->hasMany(AssignmentRecord::class);
     }
 
     /**
@@ -171,7 +165,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function award_records()
     {
-        return $this->hasMany(AwardRecords::class);
+        return $this->hasMany(AwardRecord::class);
     }
 
     /**
@@ -179,7 +173,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function combat_records()
     {
-        return $this->hasMany(CombatRecords::class);
+        return $this->hasMany(CombatRecord::class);
     }
 
     /**
@@ -203,7 +197,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function qualification_records()
     {
-        return $this->hasMany(QualificationRecords::class);
+        return $this->hasMany(QualificationRecord::class);
     }
 
     /**
@@ -230,7 +224,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function rank_records()
     {
-        return $this->hasMany(RankRecords::class);
+        return $this->hasMany(RankRecord::class);
     }
 
     /**
@@ -238,7 +232,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     public function service_records()
     {
-        return $this->hasMany(ServiceRecords::class);
+        return $this->hasMany(ServiceRecord::class);
     }
 
     /**

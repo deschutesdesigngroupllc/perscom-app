@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use App\Models\Pivots\Status as StatusRecord;
 use App\Models\Status;
+use App\Models\StatusRecord;
 
 trait HasStatuses
 {
@@ -13,9 +13,10 @@ trait HasStatuses
     public function statuses()
     {
         return $this->morphToMany(Status::class, 'model', 'model_has_statuses')
-                    ->withPivot('text')
+                    ->withPivot('text', 'created_at')
                     ->withTimestamps()
                     ->as('record')
+                    ->orderByPivot('created_at', 'desc')
                     ->using(StatusRecord::class);
     }
 }

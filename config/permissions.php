@@ -6,7 +6,7 @@ return [
         'User' => 'Has permission to view all necessary records only pertaining to the user.',
     ],
     'guards' => [
-        'web'
+        'web',
     ],
     'default' => [
         'User' => [
@@ -19,6 +19,8 @@ return [
             'view:qualificationrecord',
             'view:rankrecord',
             'view:servicerecord',
+            'view:statusrecord',
+            'create:submission',
         ],
     ],
     'permissions' => [
@@ -108,6 +110,10 @@ return [
         'create:servicerecord' => 'Can create a service record',
         'update:servicerecord' => 'Can update a service record',
         'delete:servicerecord' => 'Can delete a service record',
+        'view:statusrecord' => 'Can view a status record',
+        'create:statusrecord' => 'Can create a status record',
+        'update:statusrecord' => 'Can update a status record',
+        'delete:statusrecord' => 'Can delete a status record',
         'view:log' => 'Can view application logs',
         'manage:billing' => 'Can manage billing and subscription',
         'manage:api' => 'Can manage API keys and external applications',

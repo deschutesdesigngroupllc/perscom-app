@@ -2,8 +2,7 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Records\Combat;
-use Illuminate\Support\Facades\Gate;
+use App\Models\CombatRecord;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
 
@@ -31,12 +30,7 @@ class TotalCombatRecords extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $query = Combat::query();
-        if (! Gate::check('update', $request->findModel())) {
-            $query = $query->where('user_id', $request->user()->id);
-        }
-
-        return $this->count($request, $query);
+        return $this->count($request, CombatRecord::class);
     }
 
     /**
@@ -64,7 +58,7 @@ class TotalCombatRecords extends Value
      */
     public function cacheFor()
     {
-        // return now()->addMinutes(5);
+        return now()->addMinutes(5);
     }
 
     /**
