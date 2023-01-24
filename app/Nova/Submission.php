@@ -130,7 +130,6 @@ class Submission extends Resource
 
     /**
      * @param $submission
-     *
      * @return Badge
      */
     protected function generateBadgeField($submission)

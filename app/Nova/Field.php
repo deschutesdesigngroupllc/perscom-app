@@ -10,7 +10,6 @@ use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\KeyValue;
-use Laravel\Nova\Fields\Markdown;
 use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Slug;
@@ -87,28 +86,8 @@ class Field extends Resource
                 return Str::limit($this->description);
             })->onlyOnIndex(),
             Select::make('Type')->options(\App\Models\Field::$fieldTypes)->sortable()->displayUsingLabels(),
-            Boolean::make('Required')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                if ($formData->type === \App\Models\Field::FIELD_STATIC) {
-                    $field->hide();
-                }
-            }),
-            Boolean::make('Readonly')
-                   ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                       if ($formData->type === \App\Models\Field::FIELD_RADIOGROUP ||
-                           $formData->type === \App\Models\Field::FIELD_RADIO ||
-                           $formData->type === \App\Models\Field::FIELD_STATIC ||
-                           $formData->type === \App\Models\Field::FIELD_CHECKBOX ||
-                           $formData->type === \App\Models\Field::FIELD_SELECT ||
-                           $formData->type === \App\Models\Field::FIELD_MULTISELECT) {
-                           $field->hide();
-                       }
-                   })
-                   ->help('A readonly input field cannot be modified (however, a user can tab to it, highlight it, and copy the text from it).'),
-            Boolean::make('Disabled')->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                if ($formData->type === \App\Models\Field::FIELD_STATIC) {
-                    $field->hide();
-                }
-            })->help('A disabled input element is unusable and un-clickable.'),
+            Boolean::make('Required'),
+            Boolean::make('Readonly')->help('A readonly input field cannot be modified (however, a user can tab to it, highlight it, and copy the text from it).'),
             Text::make('Placeholder')
                 ->hideFromIndex()
                 ->hide()
@@ -123,28 +102,11 @@ class Field extends Resource
                 }),
             Text::make('Help')
                 ->hideFromIndex()
-                ->help('Like this text, this is a short description that should help the user fill out the field.')
-                ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                    if ($formData->type === \App\Models\Field::FIELD_STATIC) {
-                        $field->hide();
-                    }
-                }),
-            Markdown::make('Text')
-                    ->hideFromIndex()
-                    ->hide()
-                    ->help('Like this text, this is a short description that should help the user fill out the field.')
-                    ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                        if ($formData->type === \App\Models\Field::FIELD_STATIC ||
-                            $formData->type === \App\Models\Field::FIELD_RADIO) {
-                            $field->show();
-                        }
-                    }),
+                ->help('Like this text, this is a short description that should help the user fill out the field.'),
             KeyValue::make('Options')
                     ->hide()
                     ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                        if ($formData->type === \App\Models\Field::FIELD_SELECT ||
-                            $formData->type === \App\Models\Field::FIELD_RADIOGROUP ||
-                            $formData->type === \App\Models\Field::FIELD_MULTISELECT) {
+                        if ($formData->type === \App\Models\Field::FIELD_SELECT) {
                             $field->show();
                         }
                     }),

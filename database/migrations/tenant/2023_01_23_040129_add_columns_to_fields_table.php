@@ -14,7 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::table('fields', function (Blueprint $table) {
-            $table->string('nova_type')->after('type')->nullable();
+            $table->after('type', function (Blueprint $table) {
+                $table->string('nova_type')->nullable();
+                $table->string('cast')->nullable();
+            });
+
+            $table->dropColumn('disabled');
+            $table->dropColumn('text');
         });
     }
 
@@ -27,6 +33,9 @@ return new class extends Migration
     {
         Schema::table('fields', function (Blueprint $table) {
             $table->dropColumn('nova_type');
+            $table->dropColumn('cast');
+            $table->boolean('disabled')->default(false);
+            $table->text('text')->nullable();
         });
     }
 };
