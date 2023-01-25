@@ -17,6 +17,7 @@ use App\Nova\Domain;
 use App\Nova\Feature;
 use App\Nova\Field;
 use App\Nova\Form;
+use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
 use App\Nova\PassportAuthorizedApplications;
@@ -35,6 +36,8 @@ use App\Nova\Specialty;
 use App\Nova\Status;
 use App\Nova\Submission;
 use App\Nova\Subscription;
+use App\Nova\Task;
+use App\Nova\TaskAssignment;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
@@ -180,6 +183,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resource' => User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
+                        MenuItem::lens(TaskAssignment::class, MyTasks::class)
                     ])->icon('user-circle'),
 
                     MenuSection::make('Organization', [
@@ -191,6 +195,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Rank::class),
                         MenuItem::resource(Specialty::class),
                         MenuItem::resource(Status::class),
+                        MenuItem::resource(Task::class),
                         MenuItem::resource(Unit::class),
                         MenuItem::resource(User::class),
                     ])->icon('office-building')->collapsable(),

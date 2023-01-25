@@ -27,6 +27,8 @@ use App\Models\ServiceRecord;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\StatusRecord;
+use App\Models\Task;
+use App\Models\TaskAssignment;
 use App\Models\Unit;
 use App\Models\User;
 use App\Policies\ActionPolicy;
@@ -56,6 +58,8 @@ use App\Policies\StatusPolicy;
 use App\Policies\StatusRecordPolicy;
 use App\Policies\SubscriptionItemPolicy;
 use App\Policies\SubscriptionPolicy;
+use App\Policies\TaskAssignmentPolicy;
+use App\Policies\TaskPolicy;
 use App\Policies\UnitPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -97,6 +101,8 @@ class AuthServiceProvider extends ServiceProvider
         StatusRecord::class => StatusRecordPolicy::class,
         Subscription::class => SubscriptionPolicy::class,
         SubscriptionItem::class => SubscriptionItemPolicy::class,
+        TaskAssignment::class => TaskAssignmentPolicy::class,
+        Task::class => TaskPolicy::class,
         Unit::class => UnitPolicy::class,
         User::class => UserPolicy::class,
     ];
