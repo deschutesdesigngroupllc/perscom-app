@@ -31,8 +31,8 @@
                                         <div class="roster-flex-grow-0">
                                             <img
                                                 class="roster-h-10"
-                                                :src="user.rank.image_url"
-                                                v-if="user.rank?.image_url"
+                                                :src="user.rank.image.image_url"
+                                                v-if="user.rank?.image?.image_url"
                                             />
                                             <span
                                                 class="roster-whitespace-nowrap roster-font-bold"

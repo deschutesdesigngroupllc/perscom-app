@@ -6,22 +6,20 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\MorphOne;
+use Laravel\Nova\Fields\Image as ImageField;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
-class Rank extends Resource
+class Image extends Resource
 {
-    use HasSortableRows;
-
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<\App\Models\Image>
      */
-    public static $model = \App\Models\Rank::class;
+    public static $model = \App\Models\Image::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -35,32 +33,9 @@ class Rank extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
-
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['order' => 'asc'];
-
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
-    {
-        return Str::plural(Str::title(setting('localization_ranks', 'Ranks')));
-    }
-
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
-    {
-        return Str::plural(Str::slug(setting('localization_ranks', 'ranks')));
-    }
+    public static $search = [
+        'id',
+    ];
 
     /**
      * Get the fields displayed by the resource.
@@ -71,12 +46,18 @@ class Rank extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->hideFromIndex(),
-            Text::make('Name')->rules(['required'])->sortable()->showOnPreview(),
-            Text::make('Abbreviation')->nullable()->sortable()->showOnPreview(),
-            Text::make('Paygrade')->nullable()->sortable()->showOnPreview(),
-            MorphOne::make('Image', 'image'),
-            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
+            ID::make()->sortable(),
+            Text::make('Name')->nullable(),
+            Textarea::make('Description')->alwaysShow()->nullable(),
+            Text::make('Description', function () {
+                return Str::limit($this->description);
+            })->onlyOnIndex(),
+            URL::make('Image URL', function () {
+                return $this->image_url;
+            })->displayUsing(function () {
+                return $this->image_url;
+            })->copyable(),
+            ImageField::make('Image', 'path')->storeOriginalName('filename')->disk('s3_public')->prunable(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

@@ -11,6 +11,7 @@ use App\Models\AwardRecord;
 use App\Models\CombatRecord;
 use App\Models\Document;
 use App\Models\Form;
+use App\Models\Image;
 use App\Models\Mail;
 use App\Models\Message;
 use App\Models\PassportClient;
@@ -40,6 +41,7 @@ use App\Policies\AwardRecordsPolicy;
 use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
 use App\Policies\FormPolicy;
+use App\Policies\ImagePolicy;
 use App\Policies\MailPolicy;
 use App\Policies\MessagePolicy;
 use App\Policies\PassportClientPolicy;
@@ -83,6 +85,7 @@ class AuthServiceProvider extends ServiceProvider
         CombatRecord::class => CombatRecordsPolicy::class,
         Document::class => DocumentPolicy::class,
         Form::class => FormPolicy::class,
+        Image::class => ImagePolicy::class,
         Mail::class => MailPolicy::class,
         Message::class => MessagePolicy::class,
         PassportClient::class => PassportClientPolicy::class,

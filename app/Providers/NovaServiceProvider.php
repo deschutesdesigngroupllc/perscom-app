@@ -19,6 +19,7 @@ use App\Nova\Domain;
 use App\Nova\Feature;
 use App\Nova\Field;
 use App\Nova\Form;
+use App\Nova\Image;
 use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
@@ -237,6 +238,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                     MenuSection::make('System', [
                         MenuItem::resource(Attachment::class),
+                        MenuItem::resource(Image::class),
                         MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),

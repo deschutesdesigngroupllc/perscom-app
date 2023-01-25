@@ -111,6 +111,7 @@ return [
         'delete:task' => 'Can delete a task',
         'view:log' => 'Can view application logs',
         'create:attachment' => 'Can create an attachment',
+        'create:image' => 'Can create an image',
         'manage:billing' => 'Can manage billing and subscription',
         'manage:api' => 'Can manage API keys and external applications',
     ],
