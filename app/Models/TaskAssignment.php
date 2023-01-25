@@ -6,10 +6,12 @@ use App\Models\Scopes\TaskAssignmentScope;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 class TaskAssignment extends Pivot
 {
     use HasFactory;
+    use HasRelationships;
 
     /**
      * @var string
@@ -78,8 +80,15 @@ class TaskAssignment extends Pivot
         return $this->belongsTo(Task::class);
     }
 
+    /**
+     * @return \Staudenmeir\EloquentHasManyDeep\HasManyDeep
+     */
     public function attachments()
     {
-        return $this->hasManyThrough(Attachment::class, Task::class);
+        return $this->hasManyDeep(
+            Attachment::class,
+            [Task::class],
+            [null, ['model_type', 'model_id']]
+        );
     }
 }
