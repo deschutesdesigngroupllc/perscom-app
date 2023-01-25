@@ -6,6 +6,7 @@ use App\Models\Scopes\QualificationRecordScope;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
+use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,7 @@ class QualificationRecord extends Model
     use HasAuthor;
     use HasDocument;
     use HasFactory;
+    use HasUser;
 
     /**
      * @var string[]

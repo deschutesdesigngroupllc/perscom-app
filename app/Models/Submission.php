@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Scopes\SubmissionScope;
 use App\Traits\HasStatuses;
+use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
@@ -14,6 +15,7 @@ class Submission extends Model
     use Actionable;
     use HasFactory;
     use HasStatuses;
+    use HasUser;
     use VirtualColumn;
 
     /**

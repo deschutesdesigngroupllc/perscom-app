@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Enums\TaskAssignmentStatus;
 use App\Models\Scopes\TaskAssignmentScope;
+use App\Traits\HasUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -15,6 +16,7 @@ class TaskAssignment extends Pivot
 {
     use HasFactory;
     use HasRelationships;
+    use HasUser;
 
     /**
      * @var string
