@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Fields\TaskAssignmentFields;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
@@ -54,7 +55,7 @@ class Task extends Resource
             Text::make('Title')->rules('required'),
             Textarea::make('Description')->alwaysShow(),
             Text::make('Description', function () {
-                return $this->description;
+                return Str::limit($this->description);
             })->onlyOnIndex(),
             Markdown::make('Instructions')->nullable()->help('Set to add some instructions to the task.'),
             Heading::make('Meta')->onlyOnDetail(),

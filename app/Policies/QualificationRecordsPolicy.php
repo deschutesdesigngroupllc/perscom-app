@@ -29,7 +29,7 @@ class QualificationRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:qualificationrecord', 'web') || $user->tokenCan('view:qualificationrecord');
+        return true;
     }
 
     /**

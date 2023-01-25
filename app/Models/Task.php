@@ -12,15 +12,6 @@ class Task extends Model
     use HasFactory;
 
     /**
-     * Task status'
-     */
-    public const TASK_ASSIGNED = 'assigned';
-
-    public const TASK_COMPLETE = 'complete';
-
-    public const TASK_EXPIRED = 'expired';
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function form()

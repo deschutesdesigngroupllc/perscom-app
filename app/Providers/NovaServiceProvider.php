@@ -3,13 +3,15 @@
 namespace App\Providers;
 
 use App\Models\Submission as SubmissionModel;
+use App\Models\TaskAssignment as TaskAssignmentModel;
 use App\Nova\Action;
 use App\Nova\Admin as AdminResource;
 use App\Nova\Announcement;
-use App\Nova\AssignmentRecord as AssignmentRecords;
+use App\Nova\AssignmentRecord;
+use App\Nova\Attachment;
 use App\Nova\Award;
-use App\Nova\AwardRecord as AwardRecords;
-use App\Nova\CombatRecord as CombatRecords;
+use App\Nova\AwardRecord;
+use App\Nova\CombatRecord;
 use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
@@ -27,11 +29,11 @@ use App\Nova\PassportPersonalAccessToken;
 use App\Nova\Permission;
 use App\Nova\Position;
 use App\Nova\Qualification;
-use App\Nova\QualificationRecord as QualificationRecords;
+use App\Nova\QualificationRecord;
 use App\Nova\Rank;
-use App\Nova\RankRecord as RankRecords;
+use App\Nova\RankRecord;
 use App\Nova\Role;
-use App\Nova\ServiceRecord as ServiceRecords;
+use App\Nova\ServiceRecord;
 use App\Nova\Specialty;
 use App\Nova\Status;
 use App\Nova\Submission;
@@ -183,7 +185,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resource' => User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
-                        MenuItem::lens(TaskAssignment::class, MyTasks::class),
+                        MenuItem::lens(TaskAssignment::class, MyTasks::class)->withBadge(function () {
+                            return TaskAssignmentModel::query()->where('user_id', '=', Auth::user()->getAuthIdentifier())->assigned()->count();
+                        }),
                     ])->icon('user-circle'),
 
                     MenuSection::make('Organization', [
@@ -203,20 +207,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Forms', [
                         MenuItem::resource(Field::class),
                         MenuItem::resource(Form::class),
-                        MenuItem::resource(Submission::class)->withBadgeIf(function () {
+                        MenuItem::resource(Submission::class)->withBadge(function () {
                             return SubmissionModel::query()->whereDoesntHave('statuses')->count();
-                        }, 'info', function () {
-                            return SubmissionModel::query()->whereDoesntHave('statuses')->exists();
                         }),
                     ])->icon('pencil-alt')->collapsable(),
 
                     MenuSection::make('Records', [
-                        MenuItem::resource(AssignmentRecords::class),
-                        MenuItem::resource(AwardRecords::class),
-                        MenuItem::resource(CombatRecords::class),
-                        MenuItem::resource(QualificationRecords::class),
-                        MenuItem::resource(RankRecords::class),
-                        MenuItem::resource(ServiceRecords::class),
+                        MenuItem::resource(AssignmentRecord::class),
+                        MenuItem::resource(AwardRecord::class),
+                        MenuItem::resource(CombatRecord::class),
+                        MenuItem::resource(QualificationRecord::class),
+                        MenuItem::resource(RankRecord::class),
+                        MenuItem::resource(ServiceRecord::class),
                     ])->icon('document-text')->collapsable(),
 
                     MenuSection::make('External Integration', [
@@ -234,6 +236,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     }),
 
                     MenuSection::make('System', [
+                        MenuItem::resource(Attachment::class),
                         MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),

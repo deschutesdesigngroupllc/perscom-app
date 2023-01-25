@@ -43,7 +43,7 @@ class TaskAssignmentPolicy
      */
     public function view(User $user, TaskAssignment $taskAssignment)
     {
-        return Gate::check('view', $taskAssignment->task) || $taskAssignment->user?->id === $user->id;
+        return Gate::check('view', $taskAssignment->task ?? Task::make()) || $taskAssignment->user?->id === $user->id;
     }
 
     /**
@@ -66,7 +66,7 @@ class TaskAssignmentPolicy
      */
     public function update(User $user, TaskAssignment $taskAssignment)
     {
-        return Gate::check('update', $taskAssignment->task);
+        return Gate::check('update', $taskAssignment->task ?? Task::make());
     }
 
     /**
@@ -78,7 +78,7 @@ class TaskAssignmentPolicy
      */
     public function delete(User $user, TaskAssignment $taskAssignment)
     {
-        return Gate::check('delete', $taskAssignment->task);
+        return Gate::check('delete', $taskAssignment->task ?? Task::make());
     }
 
     /**

@@ -9,6 +9,7 @@ use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -74,10 +75,13 @@ class Form extends Resource
                 ->canSee(function (NovaRequest $request) {
                     return Gate::check('update', $request->findModel());
                 }),
+            Text::make('Description', function () {
+                return Str::limit($this->description);
+            })->onlyOnIndex(),
             Tag::make('Tags')->showCreateRelationButton()->withPreview()->showOnPreview(),
             URL::make('URL')->displayUsing(function ($url) {
                 return 'Click To Open Form';
-            })->exceptOnForms()->copyable()->readonly()->showOnPreview(),
+            })->canSeeWhen('create', \App\Models\Submission::class)->exceptOnForms()->copyable()->readonly()->showOnPreview(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
             new Panel('Access', [

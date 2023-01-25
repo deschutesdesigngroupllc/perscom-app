@@ -12,8 +12,6 @@ class AttachmentPolicy
 {
     use HandlesAuthorization;
 
-    //TODO: Finish policy
-
     /**
      * @return bool
      */
@@ -55,7 +53,7 @@ class AttachmentPolicy
      */
     public function create(User $user)
     {
-        return true;
+        return $user->hasPermissionTo('create:attachment', 'web') || $user->tokenCan('create:attachment');
     }
 
     /**

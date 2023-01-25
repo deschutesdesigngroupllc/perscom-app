@@ -71,6 +71,14 @@ class Submission extends Resource
     /**
      * @return string
      */
+    public function title()
+    {
+        return $this->form->name;
+    }
+
+    /**
+     * @return string
+     */
     public static function createButtonLabel()
     {
         return 'Submit Form';
@@ -86,7 +94,7 @@ class Submission extends Resource
     {
         $novaRequest = NovaRequest::createFrom($request);
 
-        return $novaRequest->viaResource && $novaRequest->viaResourceId;
+        return $novaRequest->viaResource && $novaRequest->viaResourceId && parent::authorizedToCreate($request);
     }
 
     /**

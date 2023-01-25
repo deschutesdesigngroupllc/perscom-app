@@ -10,17 +10,8 @@ return [
     ],
     'default' => [
         'User' => [
-            'view:user',
-            'view:form',
-            'view:submission',
-            'view:assignmentrecord',
-            'view:awardrecord',
-            'view:combatrecord',
-            'view:qualificationrecord',
-            'view:rankrecord',
-            'view:servicerecord',
-            'view:statusrecord',
             'create:submission',
+            'view:user',
         ],
     ],
     'permissions' => [
@@ -119,6 +110,7 @@ return [
         'update:task' => 'Can update a task',
         'delete:task' => 'Can delete a task',
         'view:log' => 'Can view application logs',
+        'create:attachment' => 'Can create an attachment',
         'manage:billing' => 'Can manage billing and subscription',
         'manage:api' => 'Can manage API keys and external applications',
     ],

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nullable();
             $table->text('instructions')->nullable();
-            $table->unsignedBigInteger('form_id');
+            $table->unsignedBigInteger('form_id')->nullable();
             $table->timestamps();
         });
     }

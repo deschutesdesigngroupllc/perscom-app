@@ -29,7 +29,7 @@ class ServiceRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:servicerecord', 'web') || $user->tokenCan('view:servicerecord');
+        return true;
     }
 
     /**

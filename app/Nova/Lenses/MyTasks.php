@@ -2,11 +2,11 @@
 
 namespace App\Nova\Lenses;
 
-use App\Models\Task;
+use App\Models\Enums\TaskAssignmentStatus;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -47,21 +47,26 @@ class MyTasks extends Lens
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make('Task'),
+            BelongsTo::make('Task')->sortable(),
             Text::make('Description', function () {
-                return $this->description;
+                return Str::limit($this->task->description);
             }),
-            Badge::make('Status')->map([
-                Task::TASK_ASSIGNED => 'info',
-                Task::TASK_COMPLETE => 'success',
-                Task::TASK_EXPIRED => 'danger',
-            ]),
-            DateTime::make('Assigned At'),
-            DateTime::make('Dute At'),
-            DateTime::make('Expires At'),
-            Boolean::make('Expired', function () {
-                return $this->expired;
+            Badge::make('Status', function ($model) {
+                return $model->status->value;
+            })->map([
+                TaskAssignmentStatus::TASK_ASSIGNED->value => 'info',
+                TaskAssignmentStatus::TASK_COMPLETE->value => 'success',
+                TaskAssignmentStatus::TASK_COMPLETE_EXPIRED->value => 'warning',
+                TaskAssignmentStatus::TASK_COMPLETE_PAST_DUE->value => 'warning',
+                TaskAssignmentStatus::TASK_EXPIRED->value => 'danger',
+                TaskAssignmentStatus::TASK_PASTDUE->value => 'danger',
+            ])->withIcons()->label(function ($value) {
+                return Str::replace('_', ' ', $value);
             }),
+            DateTime::make('Assigned At')->sortable(),
+            DateTime::make('Due At')->sortable(),
+            DateTime::make('Completed At')->sortable(),
+            DateTime::make('Expires At')->sortable(),
         ];
     }
 
