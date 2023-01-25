@@ -59,9 +59,9 @@ class TaskAssignment extends Resource
             new Panel('Details', [
                 Markdown::make('Instructions', function () {
                     return $this->task->instructions;
-                })->alwaysShow()
+                })->alwaysShow(),
             ]),
-            HasManyThrough::make('Attachments')
+            HasManyThrough::make('Attachments'),
         ];
     }
 
@@ -96,7 +96,7 @@ class TaskAssignment extends Resource
     public function lenses(NovaRequest $request)
     {
         return [
-            new MyTasks
+            new MyTasks,
         ];
     }
 

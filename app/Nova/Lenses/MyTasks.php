@@ -54,14 +54,14 @@ class MyTasks extends Lens
             Badge::make('Status')->map([
                 Task::TASK_ASSIGNED => 'info',
                 Task::TASK_COMPLETE => 'success',
-                Task::TASK_EXPIRED => 'danger'
+                Task::TASK_EXPIRED => 'danger',
             ]),
             DateTime::make('Assigned At'),
             DateTime::make('Dute At'),
             DateTime::make('Expires At'),
             Boolean::make('Expired', function () {
                 return $this->expired;
-            })
+            }),
         ];
     }
 

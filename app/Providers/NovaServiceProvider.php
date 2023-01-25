@@ -183,7 +183,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resource' => User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
-                        MenuItem::lens(TaskAssignment::class, MyTasks::class)
+                        MenuItem::lens(TaskAssignment::class, MyTasks::class),
                     ])->icon('user-circle'),
 
                     MenuSection::make('Organization', [

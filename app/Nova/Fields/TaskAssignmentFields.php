@@ -11,9 +11,8 @@ class TaskAssignmentFields
     /**
      * Get the pivot fields for the relationship.
      *
-     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
-     * @param \Illuminate\Database\Eloquent\Model     $relatedModel
-     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Model  $relatedModel
      * @return array
      */
     public function __invoke($request, $relatedModel)

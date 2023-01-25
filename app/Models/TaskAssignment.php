@@ -29,7 +29,7 @@ class TaskAssignment extends Pivot
         'assigned_at' => 'datetime',
         'due_at' => 'datetime',
         'expires_at' => 'datetime',
-        'expired' => 'boolean'
+        'expired' => 'boolean',
     ];
 
     /**

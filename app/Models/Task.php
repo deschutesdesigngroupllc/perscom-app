@@ -15,7 +15,9 @@ class Task extends Model
      * Task status'
      */
     public const TASK_ASSIGNED = 'assigned';
+
     public const TASK_COMPLETE = 'complete';
+
     public const TASK_EXPIRED = 'expired';
 
     /**
