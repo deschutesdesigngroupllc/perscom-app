@@ -33,7 +33,7 @@ class MyTasks extends Lens
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering($request->withFilters(
-            $query->where('user_id', '=', Auth::user()->getAuthIdentifier())
+            $query->forUser(Auth::user())
         ));
     }
 

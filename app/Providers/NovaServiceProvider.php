@@ -186,7 +186,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
                         MenuItem::lens(TaskAssignment::class, MyTasks::class)->withBadge(function () {
-                            return TaskAssignmentModel::query()->where('user_id', '=', Auth::user()->getAuthIdentifier())->assigned()->count();
+                            return TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
                         }),
                     ])->icon('user-circle'),
 

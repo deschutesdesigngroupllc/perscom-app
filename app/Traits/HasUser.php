@@ -15,6 +15,14 @@ trait HasUser
      */
     public function scopeForUser(Builder $query, User $user)
     {
-        return $query->where('user_id', '=', $user->id);
+        return $query->whereBelongsTo($user);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }
