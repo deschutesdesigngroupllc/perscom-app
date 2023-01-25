@@ -2,12 +2,14 @@
 
 namespace App\Policies;
 
-use App\Models\AssignmentRecord;
+use App\Models\Task;
+use App\Models\TaskAssignment;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class AssignmentRecordsPolicy
+class TaskAssignmentPolicy
 {
     use HandlesAuthorization;
 
@@ -36,14 +38,12 @@ class AssignmentRecordsPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, AssignmentRecord $assignment)
+    public function view(User $user, TaskAssignment $taskAssignment)
     {
-        return $user->hasPermissionTo('view:assignmentrecord', 'web') ||
-               $assignment->user?->id === $user->id ||
-               $user->tokenCan('view:assignmentrecord');
+        return Gate::check('view', $taskAssignment->task ?? Task::make()) || $taskAssignment->user?->id === $user->id;
     }
 
     /**
@@ -54,41 +54,41 @@ class AssignmentRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:assignmentrecord', 'web') || $user->tokenCan('create:assignmentrecord');
+        return Gate::check('create', Task::class);
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, AssignmentRecord $assignment)
+    public function update(User $user, TaskAssignment $taskAssignment)
     {
-        return $user->hasPermissionTo('update:assignmentrecord', 'web') || $user->tokenCan('update:assignmentrecord');
+        return Gate::check('update', $taskAssignment->task ?? Task::make());
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, AssignmentRecord $assignment)
+    public function delete(User $user, TaskAssignment $taskAssignment)
     {
-        return $user->hasPermissionTo('delete:assignmentrecord', 'web') || $user->tokenCan('delete:assignmentrecord');
+        return Gate::check('delete', $taskAssignment->task ?? Task::make());
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, AssignmentRecord $assignment)
+    public function restore(User $user, TaskAssignment $taskAssignment)
     {
         //
     }
@@ -97,10 +97,10 @@ class AssignmentRecordsPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, AssignmentRecord $assignment)
+    public function forceDelete(User $user, TaskAssignment $taskAssignment)
     {
         //
     }

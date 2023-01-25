@@ -11,6 +11,7 @@ use App\Models\AwardRecord;
 use App\Models\CombatRecord;
 use App\Models\Document;
 use App\Models\Form;
+use App\Models\Image;
 use App\Models\Mail;
 use App\Models\Message;
 use App\Models\PassportClient;
@@ -27,6 +28,8 @@ use App\Models\ServiceRecord;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\StatusRecord;
+use App\Models\Task;
+use App\Models\TaskAssignment;
 use App\Models\Unit;
 use App\Models\User;
 use App\Policies\ActionPolicy;
@@ -38,6 +41,7 @@ use App\Policies\AwardRecordsPolicy;
 use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
 use App\Policies\FormPolicy;
+use App\Policies\ImagePolicy;
 use App\Policies\MailPolicy;
 use App\Policies\MessagePolicy;
 use App\Policies\PassportClientPolicy;
@@ -56,6 +60,8 @@ use App\Policies\StatusPolicy;
 use App\Policies\StatusRecordPolicy;
 use App\Policies\SubscriptionItemPolicy;
 use App\Policies\SubscriptionPolicy;
+use App\Policies\TaskAssignmentPolicy;
+use App\Policies\TaskPolicy;
 use App\Policies\UnitPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -79,6 +85,7 @@ class AuthServiceProvider extends ServiceProvider
         CombatRecord::class => CombatRecordsPolicy::class,
         Document::class => DocumentPolicy::class,
         Form::class => FormPolicy::class,
+        Image::class => ImagePolicy::class,
         Mail::class => MailPolicy::class,
         Message::class => MessagePolicy::class,
         PassportClient::class => PassportClientPolicy::class,
@@ -97,6 +104,8 @@ class AuthServiceProvider extends ServiceProvider
         StatusRecord::class => StatusRecordPolicy::class,
         Subscription::class => SubscriptionPolicy::class,
         SubscriptionItem::class => SubscriptionItemPolicy::class,
+        TaskAssignment::class => TaskAssignmentPolicy::class,
+        Task::class => TaskPolicy::class,
         Unit::class => UnitPolicy::class,
         User::class => UserPolicy::class,
     ];

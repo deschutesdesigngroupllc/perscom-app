@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Scope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 
-class AssignmentRecordScope implements Scope
+class TaskAssignmentScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
@@ -19,7 +19,7 @@ class AssignmentRecordScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        if (! Gate::check('view', $model) && Auth::check()) {
+        if (! Gate::check('update', $model) && Auth::check()) {
             return $builder->forUser(Auth::user());
         }
 

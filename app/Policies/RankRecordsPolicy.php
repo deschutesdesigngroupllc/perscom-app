@@ -29,7 +29,7 @@ class RankRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:rankrecord', 'web') || $user->tokenCan('view:rankrecord');
+        return true;
     }
 
     /**

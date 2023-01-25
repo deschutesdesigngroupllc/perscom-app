@@ -19,8 +19,8 @@ class QualificationRecordScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
-        if (! Gate::check('update', $model) && Auth::check()) {
-            return $builder->where('user_id', '=', Auth::user()->getAuthIdentifier());
+        if (! Gate::check('view', $model) && Auth::check()) {
+            return $builder->forUser(Auth::user());
         }
 
         return $builder;

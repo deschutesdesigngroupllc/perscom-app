@@ -2,12 +2,13 @@
 
 namespace App\Policies;
 
-use App\Models\AssignmentRecord;
+use App\Models\Image;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class AssignmentRecordsPolicy
+class ImagePolicy
 {
     use HandlesAuthorization;
 
@@ -36,14 +37,12 @@ class AssignmentRecordsPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\Image  $image
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, AssignmentRecord $assignment)
+    public function view(User $user, Image $image)
     {
-        return $user->hasPermissionTo('view:assignmentrecord', 'web') ||
-               $assignment->user?->id === $user->id ||
-               $user->tokenCan('view:assignmentrecord');
+        return Gate::check('view', $image->model);
     }
 
     /**
@@ -54,41 +53,41 @@ class AssignmentRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:assignmentrecord', 'web') || $user->tokenCan('create:assignmentrecord');
+        return $user->hasPermissionTo('create:image', 'web') || $user->tokenCan('create:image');
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\Image  $image
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, AssignmentRecord $assignment)
+    public function update(User $user, Image $image)
     {
-        return $user->hasPermissionTo('update:assignmentrecord', 'web') || $user->tokenCan('update:assignmentrecord');
+        return Gate::check('update', $image->model);
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\Image  $image
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, AssignmentRecord $assignment)
+    public function delete(User $user, Image $image)
     {
-        return $user->hasPermissionTo('delete:assignmentrecord', 'web') || $user->tokenCan('delete:assignmentrecord');
+        return Gate::check('delete', $image->model);
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\Image  $image
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, AssignmentRecord $assignment)
+    public function restore(User $user, Image $image)
     {
         //
     }
@@ -97,10 +96,10 @@ class AssignmentRecordsPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\AssignmentRecord  $assignment
+     * @param  \App\Models\Image  $image
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, AssignmentRecord $assignment)
+    public function forceDelete(User $user, Image $image)
     {
         //
     }

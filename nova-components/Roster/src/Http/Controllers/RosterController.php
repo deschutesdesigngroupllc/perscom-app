@@ -5,6 +5,7 @@ namespace Perscom\Roster\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class RosterController extends Controller
@@ -18,6 +19,7 @@ class RosterController extends Controller
             'new_unit_url' => route('nova.pages.create', [
                 'resource' => \App\Nova\Unit::uriKey(),
             ], false),
+            'can_create_unit' => Gate::check('create', Unit::class),
             'units' => Unit::query()->ordered()->select(['name', 'id'])->with([
                 'users' => function (HasMany $query) {
                     $query->without(['unit'])

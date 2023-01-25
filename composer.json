@@ -41,6 +41,7 @@
         "spatie/url": "^2.1.0",
         "stancl/tenancy": "^3.5",
         "stancl/virtualcolumn": "^1.3",
+        "staudenmeir/eloquent-has-many-deep": "^1.7",
         "tailflow/laravel-orion": "^2.19",
         "tightenco/ziggy": "^1.4",
         "treblle/treblle-laravel": "^2.8"

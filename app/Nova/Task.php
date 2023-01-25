@@ -2,65 +2,45 @@
 
 namespace App\Nova;
 
+use App\Nova\Fields\TaskAssignmentFields;
 use Illuminate\Support\Str;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\MorphOne;
+use Laravel\Nova\Fields\Markdown;
+use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Outl1ne\NovaSortable\Traits\HasSortableRows;
+use Laravel\Nova\Panel;
 
-class Rank extends Resource
+class Task extends Resource
 {
-    use HasSortableRows;
-
     /**
      * The model the resource corresponds to.
      *
-     * @var string
+     * @var class-string<\App\Models\Task>
      */
-    public static $model = \App\Models\Rank::class;
+    public static $model = \App\Models\Task::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
      */
-    public static $title = 'name';
+    public static $title = 'title';
 
     /**
      * The columns that should be searched.
      *
      * @var array
      */
-    public static $search = ['id', 'name'];
-
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['order' => 'asc'];
-
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
-    {
-        return Str::plural(Str::title(setting('localization_ranks', 'Ranks')));
-    }
-
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
-    {
-        return Str::plural(Str::slug(setting('localization_ranks', 'ranks')));
-    }
+    public static $search = [
+        'id',
+        'title',
+    ];
 
     /**
      * Get the fields displayed by the resource.
@@ -71,15 +51,26 @@ class Rank extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->hideFromIndex(),
-            Text::make('Name')->rules(['required'])->sortable()->showOnPreview(),
-            Text::make('Abbreviation')->nullable()->sortable()->showOnPreview(),
-            Text::make('Paygrade')->nullable()->sortable()->showOnPreview(),
-            MorphOne::make('Image', 'image'),
-            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
+            ID::make()->sortable(),
+            Text::make('Title')->rules('required'),
+            Textarea::make('Description')->alwaysShow(),
+            Text::make('Description', function () {
+                return Str::limit($this->description);
+            })->onlyOnIndex(),
+            Markdown::make('Instructions')->nullable()->help('Set to add some instructions to the task.'),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            DateTime::make('Created At')->sortable()->onlyOnDetail(),
+            DateTime::make('Updated At')->sortable()->onlyOnDetail(),
+            new Panel('Details', [
+                BelongsTo::make('Form')
+                         ->nullable()
+                         ->help('Set to assign a form that needs to be completed as apart of the task.')
+                         ->hideFromIndex(),
+            ]),
+            BelongsToMany::make('Assigned To', 'users', User::class)
+                         ->fields(new TaskAssignmentFields)
+                         ->referToPivotAs('assignment'),
+            MorphMany::make('Attachments'),
         ];
     }
 

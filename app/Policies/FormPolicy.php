@@ -3,8 +3,10 @@
 namespace App\Policies;
 
 use App\Models\Form;
+use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class FormPolicy
@@ -29,7 +31,7 @@ class FormPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:form', 'web') || $user->tokenCan('view:form');
+        return Gate::check('create', Submission::class);
     }
 
     /**x
