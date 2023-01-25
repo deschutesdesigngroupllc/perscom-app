@@ -141,7 +141,7 @@
             </Card>
         </div>
 
-        <div class="roster-text-center" v-else-if="roster?.value?.units?.length === 0 && !loading.value">
+        <div class="roster-text-center" v-else-if="roster?.value?.units?.length === 0 && !loading.value && roster?.value?.can_create_unit">
             <button
                 @click="createANewUnit"
                 type="button"
@@ -186,7 +186,6 @@ onMounted(() => {
 });
 
 function createANewUnit() {
-    console.log(roster.value.new_unit_url);
     Nova.visit(roster.value.new_unit_url);
 }
 
