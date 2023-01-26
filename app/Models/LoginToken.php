@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -9,6 +10,7 @@ use Illuminate\Support\Str;
 class LoginToken extends Model
 {
     use HasFactory;
+    use HasUser;
 
     /**
      * @var bool
@@ -37,13 +39,5 @@ class LoginToken extends Model
         static::creating(function ($model) {
             $model->token = $model->token ?? Str::random(128);
         });
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }

@@ -6,6 +6,7 @@ use App\Models\Scopes\CombatRecordScope;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
+use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -15,6 +16,7 @@ class CombatRecord extends Model
     use HasAuthor;
     use HasDocument;
     use HasFactory;
+    use HasUser;
 
     /**
      * @var string[]
@@ -36,13 +38,5 @@ class CombatRecord extends Model
     protected static function booted()
     {
         static::addGlobalScope(new CombatRecordScope);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function user()
-    {
-        return $this->belongsTo(User::class);
     }
 }

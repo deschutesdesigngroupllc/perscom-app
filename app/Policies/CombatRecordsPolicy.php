@@ -29,7 +29,7 @@ class CombatRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:combatrecord', 'web') || $user->tokenCan('view:combatrecord');
+        return true;
     }
 
     /**

@@ -29,7 +29,7 @@ class AwardRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:awardrecord', 'web') || $user->tokenCan('view:awardrecord');
+        return true;
     }
 
     /**

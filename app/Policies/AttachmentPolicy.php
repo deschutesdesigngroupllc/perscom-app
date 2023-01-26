@@ -5,13 +5,12 @@ namespace App\Policies;
 use App\Models\Attachment;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class AttachmentPolicy
 {
     use HandlesAuthorization;
-
-    //TODO: Finish policy
 
     /**
      * @return bool
@@ -21,8 +20,6 @@ class AttachmentPolicy
         if (Request::isCentralRequest()) {
             return false;
         }
-
-        return true;
     }
 
     /**
@@ -33,7 +30,7 @@ class AttachmentPolicy
      */
     public function viewAny(User $user)
     {
-        //
+        return true;
     }
 
     /**
@@ -45,7 +42,7 @@ class AttachmentPolicy
      */
     public function view(User $user, Attachment $attachment)
     {
-        //
+        return Gate::check('view', $attachment->model);
     }
 
     /**
@@ -56,7 +53,7 @@ class AttachmentPolicy
      */
     public function create(User $user)
     {
-        //
+        return $user->hasPermissionTo('create:attachment', 'web') || $user->tokenCan('create:attachment');
     }
 
     /**
@@ -68,7 +65,7 @@ class AttachmentPolicy
      */
     public function update(User $user, Attachment $attachment)
     {
-        //
+        return Gate::check('update', $attachment->model);
     }
 
     /**
@@ -80,7 +77,7 @@ class AttachmentPolicy
      */
     public function delete(User $user, Attachment $attachment)
     {
-        //
+        return Gate::check('delete', $attachment->model);
     }
 
     /**

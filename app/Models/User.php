@@ -69,7 +69,7 @@ class User extends Authenticatable implements MustVerifyEmail
     /**
      * @var string[]
      */
-    protected $with = ['position', 'specialty', 'rank', 'status', 'unit'];
+    protected $with = ['position', 'specialty', 'rank', 'status', 'unit', 'tasks'];
 
     /**
      * The accessors to append to the model's array form.
@@ -257,6 +257,18 @@ class User extends Authenticatable implements MustVerifyEmail
     public function submissions()
     {
         return $this->hasMany(Submission::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function tasks()
+    {
+        return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')
+            ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
+            ->as('assignment')
+            ->using(TaskAssignment::class)
+            ->withTimestamps();
     }
 
     /**

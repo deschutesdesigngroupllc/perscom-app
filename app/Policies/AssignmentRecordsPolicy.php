@@ -29,7 +29,7 @@ class AssignmentRecordsPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:assignmentrecord', 'web') || $user->tokenCan('view:assignmentrecord');
+        return true;
     }
 
     /**

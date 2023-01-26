@@ -31,8 +31,8 @@
                                         <div class="roster-flex-grow-0">
                                             <img
                                                 class="roster-h-10"
-                                                :src="user.rank.image_url"
-                                                v-if="user.rank?.image_url"
+                                                :src="user.rank.image.image_url"
+                                                v-if="user.rank?.image?.image_url"
                                             />
                                             <span
                                                 class="roster-whitespace-nowrap roster-font-bold"
@@ -141,7 +141,7 @@
             </Card>
         </div>
 
-        <div class="roster-text-center" v-else-if="roster?.value?.units?.length === 0 && !loading.value">
+        <div class="roster-text-center" v-else-if="roster?.value?.units?.length === 0 && !loading.value && roster?.value?.can_create_unit">
             <button
                 @click="createANewUnit"
                 type="button"
@@ -186,7 +186,6 @@ onMounted(() => {
 });
 
 function createANewUnit() {
-    console.log(roster.value.new_unit_url);
     Nova.visit(roster.value.new_unit_url);
 }
 

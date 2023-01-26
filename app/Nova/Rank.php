@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Image;
+use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -75,7 +75,7 @@ class Rank extends Resource
             Text::make('Name')->rules(['required'])->sortable()->showOnPreview(),
             Text::make('Abbreviation')->nullable()->sortable()->showOnPreview(),
             Text::make('Paygrade')->nullable()->sortable()->showOnPreview(),
-            Image::make('Image')->disk('s3_public')->prunable(),
+            MorphOne::make('Image', 'image'),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),

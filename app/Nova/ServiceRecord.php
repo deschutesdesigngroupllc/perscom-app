@@ -68,7 +68,7 @@ class ServiceRecord extends Resource
      */
     public function title()
     {
-        return $this->user->full_name;
+        return $this->user->name;
     }
 
     /**

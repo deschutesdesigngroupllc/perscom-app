@@ -36,6 +36,14 @@ class Attachment extends Resource
     public static $search = ['id', 'name'];
 
     /**
+     * @return string|null
+     */
+    public static function createButtonLabel()
+    {
+        return 'Add Attachment';
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -52,7 +60,15 @@ class Attachment extends Resource
                     'disk' => 's3',
                 ]);
             })->onlyOnIndex(),
-            MorphTo::make('Resource', 'model')->exceptOnForms(),
+            MorphTo::make('Resource', 'model')->types([
+                AssignmentRecord::class,
+                AwardRecord::class,
+                CombatRecord::class,
+                QualificationRecord::class,
+                RankRecord::class,
+                ServiceRecord::class,
+                Task::class,
+            ]),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

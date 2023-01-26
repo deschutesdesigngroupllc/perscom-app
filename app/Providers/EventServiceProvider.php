@@ -12,6 +12,7 @@ use App\Models\QualificationRecord;
 use App\Models\RankRecord;
 use App\Models\ServiceRecord;
 use App\Models\Settings;
+use App\Models\TaskAssignment;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Observers\AssignmentRecordObserver;
@@ -23,6 +24,7 @@ use App\Observers\QualificationRecordObserver;
 use App\Observers\RankRecordObserver;
 use App\Observers\ServiceRecordObserver;
 use App\Observers\SettingsObserver;
+use App\Observers\TaskAssignmentObserver;
 use App\Observers\TenantObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
@@ -65,6 +67,7 @@ class EventServiceProvider extends ServiceProvider
         RankRecord::observe(RankRecordObserver::class);
         ServiceRecord::observe(ServiceRecordObserver::class);
         Settings::observe(SettingsObserver::class);
+        TaskAssignment::observe(TaskAssignmentObserver::class);
         Tenant::observe(TenantObserver::class);
         User::observe(UserObserver::class);
     }
