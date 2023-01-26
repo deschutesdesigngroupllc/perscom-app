@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\Users\UsersServiceRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersSpecialtyController;
 use App\Http\Controllers\Api\V1\Users\UsersStatusController;
 use App\Http\Controllers\Api\V1\Users\UsersUnitController;
+use App\Http\Controllers\Api\V1\Widget\RosterController;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequests;
 use Illuminate\Support\Facades\Route;
@@ -74,6 +75,9 @@ Route::group(['prefix' => 'v1', 'as' => 'api.'], static function () {
         Orion::hasOneResource('users', 'specialty', UsersSpecialtyController::class);
         Orion::hasOneResource('users', 'status', UsersStatusController::class);
         Orion::belongsToResource('users', 'unit', UsersUnitController::class);
+
+        // Widget
+        Orion::resource('widget/roster', RosterController::class)->only('index')->middleware('scope:access:widget')->name('index', 'widget.roster.index');
     });
 
     // Route not found
