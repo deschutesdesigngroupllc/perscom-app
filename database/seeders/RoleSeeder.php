@@ -25,10 +25,7 @@ class RoleSeeder extends Seeder
                 ]);
             }
 
-            $existingPermissions = $role->permissions->map(function ($permission) {
-                return $permission->name;
-            })->values();
-
+            $existingPermissions = $role->permissions->pluck('name');
             if ($defaultPermissions->has($role->name)) {
                 $defaultPermissionsForRole = collect($defaultPermissions->get($role->name));
                 $newPermissions = $defaultPermissionsForRole->diff($existingPermissions);
