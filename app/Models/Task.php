@@ -25,7 +25,7 @@ class Task extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_tasks')
-                    ->withPivot(['assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
+                    ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
                     ->as('assignment')
                     ->using(TaskAssignment::class)
                     ->withTimestamps();

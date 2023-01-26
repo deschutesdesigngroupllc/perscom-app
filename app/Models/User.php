@@ -265,7 +265,7 @@ class User extends Authenticatable implements MustVerifyEmail
     public function tasks()
     {
         return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')
-            ->withPivot(['assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
+            ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
             ->as('assignment')
             ->using(TaskAssignment::class)
             ->withTimestamps();
