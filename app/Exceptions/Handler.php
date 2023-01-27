@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
@@ -63,6 +64,10 @@ class Handler extends ExceptionHandler
             ]);
 
             if ($e instanceof AuthorizationException) {
+                $response->setStatusCode(403);
+            }
+
+            if ($e instanceof AuthenticationException) {
                 $response->setStatusCode(401);
             }
 

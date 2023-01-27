@@ -29,6 +29,16 @@ export function Footer() {
                                     Pricing{" "}
                                 </a>
                             </li>
+                            <li>
+                                <a
+                                    href="https://docs.perscom.io"
+                                    target="_blank"
+                                    className="rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                                >
+                                    {" "}
+                                    Documentation{" "}
+                                </a>
+                            </li>
                         </ul>
                     </nav>
                 </div>
