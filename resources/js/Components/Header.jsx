@@ -1,10 +1,10 @@
-import React, { Fragment } from "react";
-import { Popover, Transition } from "@headlessui/react";
+import React, {Fragment} from "react";
+import {Popover, Transition} from "@headlessui/react";
 import clsx from "clsx";
 
-import { ButtonLink } from "../Components/Button";
-import { Container } from "../Components/Container";
-import { Logo } from "../Components/Logo";
+import {ButtonLink} from "../Components/Button";
+import {Container} from "../Components/Container";
+import {Logo} from "../Components/Logo";
 
 function MobileNavigation() {
     return (
@@ -69,6 +69,16 @@ function MobileNavigation() {
                                         Pricing
                                     </a>
                                 </li>
+                                <li>
+                                    <a
+                                        href="https://docs.perscom.io"
+                                        target="_blank"
+                                        className="block w-full"
+                                        onClick={() => close()}
+                                    >
+                                        Documentation
+                                    </a>
+                                </li>
                             </Popover.Panel>
                         </Transition.Child>
                     </Transition.Root>
@@ -104,6 +114,15 @@ export function Header() {
                                 className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
                             >
                                 Pricing
+                            </a>
+                        </li>
+                        <li className="ml-6 hidden md:block">
+                            <a
+                                href="https://docs.perscom.io"
+                                target="_blank"
+                                className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                            >
+                                Documentation
                             </a>
                         </li>
                         <li className="ml-auto">
