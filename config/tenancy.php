@@ -100,7 +100,8 @@ return [
         'disks' => [
             'local',
             'public',
-            //'s3',
+            's3',
+            's3_public'
         ],
 
         /**
@@ -120,7 +121,7 @@ return [
          * Note: Disabling this will likely break local disk tenancy. Only disable this if you're using an external file storage service like S3.
          *
          * For the vast majority of applications, this feature should be enabled. But in some
-         * edge cases, it can cause issues (like using Passport with Vapor - see #196), so
+         * edge cases, it can cause issxues (like using Passport with Vapor - see #196), so
          * you may want to disable this if you are experiencing these edge case issues.
          */
         'suffix_storage_path' => false,

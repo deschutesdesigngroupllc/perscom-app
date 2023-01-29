@@ -6,8 +6,7 @@
 
     <title>@yield('title')</title>
 
-    {{ app(\Illuminate\Foundation\Vite::class)->reactRefresh() }}
-    {{ app(\Illuminate\Foundation\Vite::class)('resources/js/app.js') }}
+    @vite('resources/js/app.js')
 </head>
 <body class="h-full">
 <div class="min-h-full pt-16 pb-12 flex flex-col bg-white">

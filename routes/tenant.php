@@ -19,11 +19,6 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 // Initialize tenancy
 Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web']], function () {
-//    // Forms
-//    Route::group(['prefix' => 'forms'], function () {
-//        Route::get('{slug}', [FormController::class, 'index'])->name('form');
-//        Route::post('process', [FormController::class, 'process'])->name('form.process');
-//    });
 
     // Impersonation
     Route::get('/impersonate/{token}', function ($token) {
