@@ -6,8 +6,7 @@
 
     <title>@yield('title')</title>
 
-    {{ app(\Illuminate\Foundation\Vite::class)->reactRefresh() }}
-    {{ app(\Illuminate\Foundation\Vite::class)('resources/js/app.js') }}
+    @vite('resources/css/app.css')
 </head>
 <body class="h-full">
 <div class="min-h-full pt-16 pb-12 flex flex-col bg-white">
@@ -16,7 +15,7 @@
             <a href="/" class="inline-flex">
                 <span class="sr-only">PERSCOM</span>
                 <img class="h-12 w-auto"
-                     src="{{ asset('svg/logo.svg') }}" alt="">
+                     src="{{ global_asset('svg/logo.svg') }}" alt="">
             </a>
         </div>
         <div class="py-16">

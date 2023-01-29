@@ -19,15 +19,6 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 // Initialize tenancy
 Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web']], function () {
-    Route::get('test', function () {
-        return (new \App\Mail\Tenant\NewMail(\App\Models\Mail::first()));
-
-    });
-//    // Forms
-//    Route::group(['prefix' => 'forms'], function () {
-//        Route::get('{slug}', [FormController::class, 'index'])->name('form');
-//        Route::post('process', [FormController::class, 'process'])->name('form.process');
-//    });
 
     // Impersonation
     Route::get('/impersonate/{token}', function ($token) {
