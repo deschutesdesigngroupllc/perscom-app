@@ -26,7 +26,7 @@ class Subscribed extends VerifyBillableIsSubscribed
             FeatureFlag::isOff('billing') ||
             $request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*') ||
             Str::contains($request->path(), 'nova-vendor') ||
-            Str::contains($request->path(), 'roster')) {
+            Str::contains($request->path(), ['widget', 'roster'])) {
             return $next($request);
         }
 

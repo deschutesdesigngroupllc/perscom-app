@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Events\NullDispatcher;
 use Illuminate\Notifications\Notifiable;
@@ -151,7 +152,11 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     {
         $plan = $this->sparkPlan();
 
-        return request()->isDemoMode() || ($plan && $plan->name !== 'Basic') || $this->onTrial();
+        if (FeatureFlag::isOn('billing') && (($plan && $plan->name !== 'Basic') || $this->onTrial())) {
+            return true;
+        }
+
+        return request()->isDemoMode() || FeatureFlag::isOff('billing');
     }
 
     /**

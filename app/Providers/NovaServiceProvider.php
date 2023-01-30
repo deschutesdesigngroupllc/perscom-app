@@ -231,6 +231,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 ->canSee(function () {
                                     return Auth::user()->hasPermissionTo('manage:api');
                                 }),
+                        MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widget/')
+                                ->openInNewTab()
+                                ->canSee(function () {
+                                    return Auth::user()->hasPermissionTo('manage:api');
+                                }),
                         MenuItem::resource(PassportLog::class),
                     ])->icon('link')->collapsable()->canSee(function () {
                         return \tenant()->canAccessApi();
