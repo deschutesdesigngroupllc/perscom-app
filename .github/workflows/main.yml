@@ -42,7 +42,7 @@ jobs:
           append_to_pre_release_tag: prerelease
 
       - name: Deploy Application for Staging
-        if: github.ref == 'refs/heads/prerelease'
+        if: startsWith(github.ref, 'ref/head/release/')
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
           forge deploy ${{ secrets.FORGE_STAGING_SERVER_SITE }}
