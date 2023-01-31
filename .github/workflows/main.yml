@@ -59,6 +59,17 @@ jobs:
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
 
+      - name: Create Sentry Release
+        if: github.ref == 'refs/heads/master'
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          version: ${{ steps.tag_version.outputs.new_tag }}
+
       - name: Create Release
         uses: ncipollo/release-action@v1
         if: github.ref == 'refs/heads/master'
