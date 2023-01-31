@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - master
-      - prerelease
+      - release/*
 
 jobs:
   build-application:
@@ -38,7 +38,7 @@ jobs:
           default_bump: patch
           default_prerelease_bump: prerelease
           release_branches: master
-          pre_release_branches: prerelease
+          pre_release_branches: release/*
           append_to_pre_release_tag: prerelease
 
       - name: Deploy Application for Staging
@@ -58,15 +58,6 @@ jobs:
           forge command ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }} --command="php artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        if: github.ref == 'refs/heads/prerelease'
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
-          prerelease: true
 
       - name: Create Release
         uses: ncipollo/release-action@v1
