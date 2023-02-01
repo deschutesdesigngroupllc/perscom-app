@@ -2,9 +2,9 @@
 
 namespace App\Http\Resources\Api\Widget;
 
-use Illuminate\Http\Resources\Json\JsonResource;
+use Orion\Http\Resources\Resource;
 
-class AwardResource extends JsonResource
+class AwardResource extends Resource
 {
     /**
      * @param  \Illuminate\Http\Request  $request
@@ -13,9 +13,10 @@ class AwardResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name' => $this->name,
-            'description' => $this->description,
-            'image_url' => $this->image->image_url ?? null,
+            'id' => $this->resource->id,
+            'name' => $this->resource->name,
+            'description' => $this->resource->description,
+            'image_url' => $this->resource->image->image_url ?? null,
         ];
     }
 }
