@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\Users\UsersServiceRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersSpecialtyController;
 use App\Http\Controllers\Api\V1\Users\UsersStatusController;
 use App\Http\Controllers\Api\V1\Users\UsersUnitController;
+use App\Http\Controllers\Api\V1\Widget\AwardsController;
 use App\Http\Controllers\Api\V1\Widget\RosterController;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequests;
@@ -78,6 +79,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.'], static function () {
 
         // Widget
         Orion::resource('widget/roster', RosterController::class)->only('index')->middleware('scope:access:widget')->name('index', 'widget.roster.index');
+        Orion::resource('widget/awards', AwardsController::class)->only('index')->middleware('scope:access:widget')->name('index', 'widget.awards.index');
     });
 
     // Route not found
