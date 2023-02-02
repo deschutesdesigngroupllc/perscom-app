@@ -2,32 +2,25 @@
 
 namespace App\Notifications\Admin;
 
-use App\Mail\Admin\TenantDeletedMail;
-use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
-use Laravel\Nova\URL;
 
 class TenantDeleted extends Notification implements ShouldQueue
 {
     use Queueable;
 
     /**
-     * @var
-     */
-    protected $tenant;
-
-    /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Tenant $tenant)
+    public function __construct(protected string $tenant, protected string $email)
     {
-        $this->tenant = $tenant;
+        //
     }
 
     /**
@@ -49,7 +42,13 @@ class TenantDeleted extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new TenantDeletedMail($this->tenant))->to($notifiable->email);
+        return (new MailMessage())->markdown('emails.admin.tenant.deleted', [
+            'organization' => $this->tenant,
+            'email' => $this->email,
+            'url' => route('nova.pages.index', [
+                'resource' => \App\Nova\Tenant::uriKey(),
+            ]),
+        ])->subject('Tenant Deleted');
     }
 
     /**
@@ -60,10 +59,6 @@ class TenantDeleted extends Notification implements ShouldQueue
     public function toNova()
     {
         return (new NovaNotification())->message('A tenant has been deleted.')
-                                       ->action('View Tenant', URL::remote(route('nova.pages.detail', [
-                                           'resource' => 'tenants',
-                                           'resourceId' => $this->tenant->getTenantKey(),
-                                       ])))
                                        ->icon('user-remove')
                                        ->type('danger');
     }
