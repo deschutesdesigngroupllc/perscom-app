@@ -74,6 +74,17 @@ function MobileNavigation() {
                     Documentation
                   </a>
                 </li>
+                <li>
+                  <a
+                    href={route('find-my-organization.index')}
+                    target='_blank'
+                    className='block w-full'
+                    onClick={() => close()}
+                    rel='noreferrer'
+                  >
+                    Find My Organization
+                  </a>
+                </li>
               </Popover.Panel>
             </Transition.Child>
           </Transition.Root>
