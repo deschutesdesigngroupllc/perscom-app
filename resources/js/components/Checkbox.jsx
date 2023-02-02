@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export function Checkbox({ name, value, onChange }) {
   return (
@@ -11,3 +12,11 @@ export function Checkbox({ name, value, onChange }) {
     />
   )
 }
+
+Checkbox.propTypes = {
+  name: PropTypes.string,
+  value: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+  onChange: PropTypes.func
+}
+
+export default Checkbox

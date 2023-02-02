@@ -1,8 +1,9 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Logo } from '../components/Logo'
 import { Link } from '@inertiajs/inertia-react'
 
-export function Auth({ children }) {
+export function AuthLayout({ children }) {
   return (
     <div className='flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0'>
       <div>
@@ -14,3 +15,9 @@ export function Auth({ children }) {
     </div>
   )
 }
+
+AuthLayout.propTypes = {
+  children: PropTypes.array
+}
+
+export default AuthLayout

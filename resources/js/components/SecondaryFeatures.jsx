@@ -1,8 +1,8 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
 import { CollectionIcon, PencilAltIcon, SearchIcon } from '@heroicons/react/outline'
-
 import { Container } from './/Container'
 import customFieldsImage from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
@@ -67,6 +67,12 @@ function Feature({ feature, isActive, className, ...props }) {
       <p className='mt-4 text-sm text-slate-600'>{feature.description}</p>
     </div>
   )
+}
+
+Feature.propTypes = {
+  feature: PropTypes.object,
+  isActive: PropTypes.bool,
+  className: PropTypes.string
 }
 
 function FeaturesMobile() {

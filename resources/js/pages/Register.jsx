@@ -1,13 +1,12 @@
 import React from 'react'
 import { useForm } from '@inertiajs/inertia-react'
+import { RegisterLayout } from '../layouts/Register'
+import { Button } from '../components/Button'
+import { Input } from '../components/Input'
+import { Logo } from '../components/Logo'
+import { ValidationErrors } from '../components/ValidationErrors'
 
-import { AuthLayout } from '@/components/AuthLayout'
-import { Button } from '@/components/Button'
-import { Input } from '@/components/Input'
-import { Logo } from '@/components/Logo'
-import { ValidationErrors } from '@/components/ValidationErrors'
-
-export default function Register({ baseUrl }) {
+export default function Register() {
   const { data, setData, post, processing, errors } = useForm({
     organization: '',
     email: '',
@@ -24,7 +23,7 @@ export default function Register({ baseUrl }) {
   }
 
   return (
-    <AuthLayout position='justify-start'>
+    <RegisterLayout position='justify-start'>
       <div className='flex flex-col items-start justify-start'>
         <div className='flex w-full items-center justify-center'>
           <a href={route('landing.home')}>
@@ -69,6 +68,6 @@ export default function Register({ baseUrl }) {
           </div>
         </form>
       </div>
-    </AuthLayout>
+    </RegisterLayout>
   )
 }

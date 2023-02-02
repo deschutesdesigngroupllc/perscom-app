@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 
 export function ValidationErrors({ errors }) {
   return (
@@ -15,3 +16,9 @@ export function ValidationErrors({ errors }) {
     )
   )
 }
+
+ValidationErrors.propTypes = {
+  errors: PropTypes.object
+}
+
+export default ValidationErrors

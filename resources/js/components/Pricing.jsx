@@ -3,6 +3,7 @@ import clsx from 'clsx'
 
 import { ButtonLink } from './/Button'
 import { Container } from './/Container'
+import PropTypes from 'prop-types'
 
 function Plan({ name, price, description, href, features, featured = false }) {
   return (
@@ -59,6 +60,15 @@ function Plan({ name, price, description, href, features, featured = false }) {
       </ButtonLink>
     </section>
   )
+}
+
+Plan.propTypes = {
+  name: PropTypes.string,
+  price: PropTypes.string,
+  description: PropTypes.string,
+  href: PropTypes.string,
+  features: PropTypes.array,
+  featured: PropTypes.bool
 }
 
 export function Pricing() {

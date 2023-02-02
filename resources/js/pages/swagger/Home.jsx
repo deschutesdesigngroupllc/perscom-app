@@ -1,6 +1,14 @@
-import SwaggerUI from "swagger-ui-react";
-import "swagger-ui-react/swagger-ui.css";
+import React from 'react'
+import PropTypes from 'prop-types'
+import SwaggerUI from 'swagger-ui-react'
+import 'swagger-ui-react/swagger-ui.css'
 
-export default function App({ url }) {
-    return <SwaggerUI url={url} />;
+export function App({ url }) {
+  return <SwaggerUI url={url} />
 }
+
+App.propTypes = {
+  url: PropTypes.string
+}
+
+export default App

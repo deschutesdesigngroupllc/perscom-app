@@ -3,8 +3,8 @@
     "scripts": {
         "dev": "vite",
         "build": "vite build",
-        "lint": "eslint --fix resources/**/*.js ./*.js",
-        "format": "prettier resources/js/**/*.{js,jsx} ./*.js --write --config ./.prettierrc",
+        "lint": "eslint --fix './resources/**/*.{js,jsx}' './*.js'",
+        "format": "prettier './resources/js/**/*.{js,jsx}' './*.js' --write --config ./.prettierrc",
         "build-components": "chmod +x ./nova-components/build.sh && ./nova-components/build.sh"
     },
     "dependencies": {

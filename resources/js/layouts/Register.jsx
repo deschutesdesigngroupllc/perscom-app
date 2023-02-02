@@ -1,10 +1,10 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import clsx from 'clsx'
-
 import backgroundImage from '../../images/register1.jpeg'
-import { OpenBetaWarning } from './/OpenBetaWarning'
+import { OpenBetaWarning } from '../components/OpenBetaWarning'
 
-export function AuthLayout({ children, position = 'justify-center' }) {
+export function RegisterLayout({ children, position = 'justify-center' }) {
   return (
     <>
       <OpenBetaWarning />
@@ -27,3 +27,10 @@ export function AuthLayout({ children, position = 'justify-center' }) {
     </>
   )
 }
+
+RegisterLayout.propTypes = {
+  children: PropTypes.array,
+  position: PropTypes.string
+}
+
+export default RegisterLayout

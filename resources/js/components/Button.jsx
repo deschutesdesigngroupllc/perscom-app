@@ -1,5 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
+import PropTypes from 'prop-types'
 
 const baseStyles = {
   solid:
@@ -31,6 +32,20 @@ export function Button({ variant = 'solid', color = 'slate', className, processi
   )
 }
 
+Button.propTypes = {
+  variant: PropTypes.string,
+  color: PropTypes.string,
+  className: PropTypes.string,
+  processing: PropTypes.bool
+}
+
 export function ButtonLink({ variant = 'solid', color = 'slate', href, className, ...props }) {
   return <a href={href} className={clsx(baseStyles[variant], variantStyles[variant][color], className)} {...props} />
+}
+
+ButtonLink.propTypes = {
+  variant: PropTypes.string,
+  color: PropTypes.string,
+  className: PropTypes.string,
+  href: PropTypes.string
 }

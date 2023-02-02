@@ -1,12 +1,12 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { RegisterLayout } from '../layouts/Register'
+import { ButtonLink } from '../components/Button'
+import { Logo } from '../components/Logo'
 
-import { AuthLayout } from '@/components/AuthLayout'
-import { ButtonLink } from '@/components/Button'
-import { Logo } from '@/components/Logo'
-
-export default function Complete({ url }) {
+export function Complete({ url }) {
   return (
-    <AuthLayout position='justify-start'>
+    <RegisterLayout position='justify-start'>
       <div className='flex flex-col items-start justify-start'>
         <div className='flex w-full items-center justify-center'>
           <a href={route('landing.home')}>
@@ -19,6 +19,12 @@ export default function Complete({ url }) {
           Go to Dashboard <span aria-hidden='true'>&nbsp;&rarr;</span>
         </ButtonLink>
       </div>
-    </AuthLayout>
+    </RegisterLayout>
   )
 }
+
+Complete.propTypes = {
+  url: PropTypes.string
+}
+
+export default Complete
