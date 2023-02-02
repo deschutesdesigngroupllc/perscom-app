@@ -13,6 +13,7 @@ use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Queue;
 
 class DemoDataSeeder extends Seeder
 {
@@ -23,6 +24,8 @@ class DemoDataSeeder extends Seeder
      */
     public function run()
     {
+        Queue::fake();
+
         $this->call([
             PassportSeeder::class,
             PermissionSeeder::class,
