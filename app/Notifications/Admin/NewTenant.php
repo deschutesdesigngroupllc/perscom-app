@@ -2,10 +2,10 @@
 
 namespace App\Notifications\Admin;
 
-use App\Mail\Admin\NewTenantMail;
 use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -44,7 +44,17 @@ class NewTenant extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new NewTenantMail($this->tenant))->to($notifiable->email);
+        return (new MailMessage())
+            ->markdown('emails.admin.tenant.new', [
+                'organization' => $this->tenant->name,
+                'email' => $this->tenant->email,
+                'domain' => $this->tenant->url,
+                'url' => route('nova.pages.detail', [
+                    'resource' => 'tenants',
+                    'resourceId' => $this->tenant->getTenantKey(),
+                ]),
+            ])
+            ->subject('New Tenant Created');
     }
 
     /**

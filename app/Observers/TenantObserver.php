@@ -40,7 +40,7 @@ class TenantObserver
      */
     public function deleted(Tenant $tenant)
     {
-        Notification::send(Admin::all(), new TenantDeleted($tenant));
+        Notification::send(Admin::all(), new TenantDeleted($tenant->name, $tenant->email));
     }
 
     /**

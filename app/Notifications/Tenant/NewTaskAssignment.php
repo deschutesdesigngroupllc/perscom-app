@@ -60,7 +60,7 @@ class NewTaskAssignment extends Notification implements ShouldQueue
                                                                 ->toDayDateTimeString() : 'No Due Date',
             'assigned' => $this->taskAssignment->assigned_by->name,
             'url' => $this->url,
-        ]);
+        ])->subject('New Task Assignment');
     }
 
     /**
