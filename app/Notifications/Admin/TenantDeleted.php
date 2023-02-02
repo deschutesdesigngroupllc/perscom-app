@@ -2,9 +2,9 @@
 
 namespace App\Notifications\Admin;
 
+use App\Mail\Admin\TenantDeletedMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -42,13 +42,7 @@ class TenantDeleted extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())->markdown('emails.admin.tenant.deleted', [
-            'organization' => $this->tenant,
-            'email' => $this->email,
-            'url' => route('nova.pages.index', [
-                'resource' => \App\Nova\Tenant::uriKey(),
-            ]),
-        ])->subject('Tenant Deleted');
+        return (new TenantDeletedMail($this->tenant, $this->email))->to($notifiable->email);
     }
 
     /**

@@ -5,7 +5,9 @@
 
 **Task**: {{ $task }}<br>
 **Due At**: {{ $due }}<br>
-**Assigned By**: {{ $assigned }}
+**Expires At**: {{ $expires }}<br>
+**Assigned By**: {{ $assigned }}<br>
+**Assigned**: {{ $date }}<br>
 
 @component('mail::button', ['url' => $url])
     View Tasks

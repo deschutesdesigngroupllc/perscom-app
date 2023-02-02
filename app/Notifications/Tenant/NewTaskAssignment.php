@@ -2,12 +2,11 @@
 
 namespace App\Notifications\Tenant;
 
+use App\Mail\Tenant\NewTaskAssignmentMail;
 use App\Models\TaskAssignment;
 use App\Nova\Lenses\MyTasks;
-use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -54,13 +53,7 @@ class NewTaskAssignment extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())->markdown('emails.tenant.new-task', [
-            'task' => $this->taskAssignment->task->title,
-            'due' => $this->taskAssignment->due_at ? Carbon::parse($this->taskAssignment->due_at)
-                                                                ->toDayDateTimeString() : 'No Due Date',
-            'assigned' => $this->taskAssignment->assigned_by->name,
-            'url' => $this->url,
-        ])->subject('New Task Assignment');
+        return (new NewTaskAssignmentMail($this->taskAssignment, $this->url))->to($notifiable->email);
     }
 
     /**

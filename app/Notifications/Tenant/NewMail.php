@@ -2,13 +2,13 @@
 
 namespace App\Notifications\Tenant;
 
-use App\Mail\Tenant\NewMail;
+use App\Mail\Tenant\NewMail as NewMailMailable;
 use App\Models\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class MailNotification extends Notification implements ShouldQueue
+class NewMail extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -41,6 +41,6 @@ class MailNotification extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new NewMail($this->mail))->to($notifiable->email);
+        return (new NewMailMailable($this->mail))->to($notifiable->email);
     }
 }
