@@ -5,7 +5,7 @@
 
 **Organization**: {{ $organization }}<br>
 **Email**: {{ $email }}<br>
-**Domain**: [{{ $domain }}]({{ $url }})
+**Domain**: [{{ $domain }}]({{ $domain }})
 
 @component('mail::button', ['url' => $url])
     View Tenant
