@@ -70,7 +70,7 @@ function MobileNavigation() {
                   </a>
                 </li>
                 <li>
-                  <a href='https://docs.perscom.io' target='_blank' className='block w-full' onClick={() => close()}>
+                  <a href='https://docs.perscom.io' target='_blank' className='block w-full' onClick={() => close()} rel='noreferrer'>
                     Documentation
                   </a>
                 </li>
@@ -95,26 +95,37 @@ export function Header() {
                 <Logo className='h-8 w-auto sm:h-10 md:h-12' />
               </a>
             </li>
-            <li className='ml-12 hidden md:block'>
+            <li className='ml-6 hidden lg:block'>
               <a href='#features' className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
                 Features
               </a>
             </li>
-            <li className='ml-6 hidden md:block'>
+            <li className='ml-6 hidden lg:block'>
               <a href='#pricing' className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
                 Pricing
               </a>
             </li>
-            <li className='ml-6 hidden md:block'>
+            <li className='ml-6 hidden lg:block'>
               <a
                 href='https://docs.perscom.io'
                 target='_blank'
                 className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                rel='noreferrer'
               >
                 Documentation
               </a>
             </li>
-            <li className='ml-auto'>
+            <li className='ml-6 hidden lg:block ml-auto'>
+              <a
+                href={route('find-my-organization.index')}
+                target='_blank'
+                className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                rel='noreferrer'
+              >
+                Find My Organization
+              </a>
+            </li>
+            <li className='lg:ml-6 ml-auto'>
               <ButtonLink href={route('register.index')} color='blue'>
                 <span>
                   Get started
@@ -122,7 +133,7 @@ export function Header() {
                 </span>
               </ButtonLink>
             </li>
-            <li className='ml-5 -mr-1 md:hidden'>
+            <li className='ml-5 -mr-1 lg:hidden'>
               <MobileNavigation />
             </li>
           </ul>
