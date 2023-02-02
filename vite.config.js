@@ -1,24 +1,13 @@
-import {defineConfig} from 'vite';
-import laravel from 'laravel-vite-plugin';
-import viteReact from "@vitejs/plugin-react";
-import vue from "@vitejs/plugin-vue2";
+import { defineConfig } from 'vite'
+import laravel from 'laravel-vite-plugin'
+import viteReact from '@vitejs/plugin-react'
 
 export default defineConfig({
-    plugins: [
-        viteReact(),
-        vue({
-            template: {
-                transformAssetUrls: {
-                    base: null,
-                    includeAbsolute: false,
-                },
-            },
-        }),
-        laravel({
-            input: [
-                'resources/js/app.js'
-            ],
-            refresh: true
-        }),
-    ],
-});
+  plugins: [
+    viteReact(),
+    laravel({
+      input: ['resources/js/app.js'],
+      refresh: true
+    })
+  ]
+})

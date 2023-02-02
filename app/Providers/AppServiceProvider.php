@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
         Passport::authorizationView(function ($parameters) {
-            return Inertia::render('Passport/Authorize', [
+            return Inertia::render('passport/Authorize', [
                 'client' => $parameters['client']->id,
                 'name' => $parameters['client']->name,
                 'scopes' => $parameters['scopes'],

@@ -1,13 +1,8 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require("tailwindcss/colors");
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-      './app/Nova/**/*.{js,jsx,php}',
-      './resources/**/*.{js,jsx,php}',
-      './nova-components/**/*.{vue,php}'
-  ],
+  content: ['./app/Nova/**/*.{js,jsx,php}', './resources/**/*.{js,jsx,php}', './nova-components/**/*.{vue,php}'],
   theme: {
     fontSize: {
       xs: ['0.75rem', { lineHeight: '1rem' }],
@@ -22,25 +17,25 @@ module.exports = {
       '6xl': ['3.75rem', { lineHeight: '1' }],
       '7xl': ['4.5rem', { lineHeight: '1.1' }],
       '8xl': ['6rem', { lineHeight: '1' }],
-      '9xl': ['8rem', { lineHeight: '1' }],
+      '9xl': ['8rem', { lineHeight: '1' }]
     },
     extend: {
       borderRadius: {
-        '4xl': '2rem',
+        '4xl': '2rem'
       },
       fontFamily: {
         sans: [...defaultTheme.fontFamily.sans],
-        display: [...defaultTheme.fontFamily.sans],
+        display: [...defaultTheme.fontFamily.sans]
       },
       maxWidth: {
-        '2xl': '40rem',
+        '2xl': '40rem'
       },
       spacing: {
         5: '1.25rem',
         9: '2.25rem',
-        11: '2.75rem',
-      },
-    },
+        11: '2.75rem'
+      }
+    }
   },
-  plugins: [require('@tailwindcss/forms')],
+  plugins: [require('@tailwindcss/forms')]
 }
