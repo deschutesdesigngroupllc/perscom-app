@@ -1,32 +1,30 @@
 module.exports = {
-  env: {
-    browser: true,
-    node: true,
-  },
-  globals: {
-    route: "readonly"
-  },
-  parserOptions: {
-    ecmaFeatures: {
-      jsx: true,
+    root: true,
+    parserOptions: {
+        ecmaVersion: 2020,
+        sourceType: 'module',
+        ecmaFeatures: {
+            jsx: true
+        }
     },
-    ecmaVersion: 2018,
-    sourceType: "module"
-  },
-  extends: [
-    'eslint:recommended',
-    'plugin:react/recommended',
-    'prettier'
-  ],
-  rules: {
-    'react/prop-types': 0
-  },
-  ignorePatterns: [
-      "temp.js", "**/vendor/*.js"
-  ],
-  settings: {
-    react: {
-      version: 'detect'
+    settings: {
+        react: {
+            version: 'detect'
+        }
+    },
+    env: {
+        jest: true,
+        browser: true,
+        amd: true,
+        node: true
+    },
+    extends: [
+        'eslint:recommended',
+        'plugin:react/recommended',
+        'plugin:prettier/recommended' // Make this the last element so prettier config overrides other formatting rules
+    ],
+    rules: {
+        'no-unused-vars': ['error', { vars: 'all', args: 'after-used', ignoreRestSiblings: false }],
+        'prettier/prettier': ['error', {}, { usePrettierrc: true }]
     }
-  }
 }
