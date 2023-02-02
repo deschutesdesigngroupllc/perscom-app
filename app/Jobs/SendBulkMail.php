@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Mail;
-use App\Notifications\Tenant\MailNotification;
+use App\Notifications\Tenant\NewMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -36,6 +36,6 @@ class SendBulkMail implements ShouldQueue
             'sent_at' => now(),
         ]);
 
-        Notification::send($this->tenants, new MailNotification($this->mail));
+        Notification::send($this->tenants, new NewMail($this->mail));
     }
 }

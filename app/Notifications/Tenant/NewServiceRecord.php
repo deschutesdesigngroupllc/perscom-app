@@ -2,10 +2,10 @@
 
 namespace App\Notifications\Tenant;
 
+use App\Mail\Tenant\NewServiceRecordMail;
 use App\Models\ServiceRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -14,11 +14,6 @@ use Laravel\Nova\URL;
 class NewServiceRecord extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * @var ServiceRecord
-     */
-    protected $record;
 
     /**
      * @var array|string|string[]
@@ -30,12 +25,11 @@ class NewServiceRecord extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(ServiceRecord $record)
+    public function __construct(protected ServiceRecord $serviceRecord)
     {
-        $this->record = $record;
         $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\ServiceRecord::uriKey(),
-            'resourceId' => $this->record->id,
+            'resourceId' => $this->serviceRecord->id,
         ]);
     }
 
@@ -58,9 +52,7 @@ class NewServiceRecord extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())->subject('New Service Record Added')
-                                  ->line('A new service record has been added to your personnel file.')
-                                  ->action('View Record', $this->url);
+        return (new NewServiceRecordMail($this->serviceRecord, $this->url))->to($notifiable->email);
     }
 
     /**

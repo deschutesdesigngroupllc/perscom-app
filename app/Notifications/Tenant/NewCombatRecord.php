@@ -2,10 +2,10 @@
 
 namespace App\Notifications\Tenant;
 
+use App\Mail\Tenant\NewCombatRecordMail;
 use App\Models\CombatRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -14,11 +14,6 @@ use Laravel\Nova\URL;
 class NewCombatRecord extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * @var CombatRecord
-     */
-    protected $record;
 
     /**
      * @var array|string|string[]
@@ -30,12 +25,11 @@ class NewCombatRecord extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(CombatRecord $record)
+    public function __construct(protected CombatRecord $combatRecord)
     {
-        $this->record = $record;
         $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\CombatRecord::uriKey(),
-            'resourceId' => $this->record->id,
+            'resourceId' => $this->combatRecord->id,
         ]);
     }
 
@@ -58,9 +52,7 @@ class NewCombatRecord extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())->subject('New Combat Record Added')
-                                  ->line('A new combat record has been added to your personnel file.')
-                                  ->action('View Record', $this->url);
+        return (new NewCombatRecordMail($this->combatRecord, $this->url))->to($notifiable->email);
     }
 
     /**

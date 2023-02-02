@@ -2,10 +2,10 @@
 
 namespace App\Notifications\Tenant;
 
+use App\Mail\Tenant\NewRankRecordMail;
 use App\Models\RankRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -14,11 +14,6 @@ use Laravel\Nova\URL;
 class NewRankRecord extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * @var RankRecord
-     */
-    protected $record;
 
     /**
      * @var array|string|string[]
@@ -30,12 +25,11 @@ class NewRankRecord extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(RankRecord $record)
+    public function __construct(protected RankRecord $rankRecord)
     {
-        $this->record = $record;
         $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\RankRecord::uriKey(),
-            'resourceId' => $this->record->id,
+            'resourceId' => $this->rankRecord->id,
         ]);
     }
 
@@ -58,9 +52,7 @@ class NewRankRecord extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())->subject('New Rank Record Added')
-                                  ->line('A new rank record has been added to your personnel file.')
-                                  ->action('View Record', $this->url);
+        return (new NewRankRecordMail($this->rankRecord, $this->url))->to($notifiable->email);
     }
 
     /**

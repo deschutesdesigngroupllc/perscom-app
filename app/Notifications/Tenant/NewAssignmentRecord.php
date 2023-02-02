@@ -2,10 +2,10 @@
 
 namespace App\Notifications\Tenant;
 
+use App\Mail\Tenant\NewAssignmentRecordMail;
 use App\Models\AssignmentRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -14,11 +14,6 @@ use Laravel\Nova\URL;
 class NewAssignmentRecord extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * @var AssignmentRecord
-     */
-    protected $record;
 
     /**
      * @var array|string|string[]
@@ -30,12 +25,11 @@ class NewAssignmentRecord extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(AssignmentRecord $record)
+    public function __construct(protected AssignmentRecord $assignmentRecord)
     {
-        $this->record = $record;
         $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\AssignmentRecord::uriKey(),
-            'resourceId' => $this->record->id,
+            'resourceId' => $this->assignmentRecord->id,
         ]);
     }
 
@@ -58,9 +52,7 @@ class NewAssignmentRecord extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())->subject('New Assignment Record Added')
-                                  ->line('A new assignment record has been added to your personnel file.')
-                                  ->action('View Record', $this->url);
+        return (new NewAssignmentRecordMail($this->assignmentRecord, $this->url))->to($notifiable->email);
     }
 
     /**

@@ -2,10 +2,10 @@
 
 namespace App\Notifications\Tenant;
 
+use App\Mail\Tenant\NewQualificationRecordMail;
 use App\Models\QualificationRecord;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Laravel\Nova\Notifications\NovaChannel;
 use Laravel\Nova\Notifications\NovaNotification;
@@ -14,11 +14,6 @@ use Laravel\Nova\URL;
 class NewQualificationRecord extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * @var QualificationRecord
-     */
-    protected $record;
 
     /**
      * @var array|string|string[]
@@ -30,12 +25,11 @@ class NewQualificationRecord extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(QualificationRecord $record)
+    public function __construct(protected QualificationRecord $qualificationRecord)
     {
-        $this->record = $record;
         $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\QualificationRecord::uriKey(),
-            'resourceId' => $this->record->id,
+            'resourceId' => $this->qualificationRecord->id,
         ]);
     }
 
@@ -58,9 +52,7 @@ class NewQualificationRecord extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new MailMessage())->subject('New Qualification Record Added')
-                                  ->line('A new qualification record has been added to your personnel file.')
-                                  ->action('View Record', $this->url);
+        return (new NewQualificationRecordMail($this->qualificationRecord, $this->url))->to($notifiable->email);
     }
 
     /**

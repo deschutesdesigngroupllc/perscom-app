@@ -24,20 +24,14 @@ class NewTenantMail extends Mailable implements ShouldQueue
     protected $email;
 
     /**
-     * @var
-     */
-    protected $password;
-
-    /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(Tenant $tenant, User $user, $password)
+    public function __construct(Tenant $tenant, User $user, protected string $password)
     {
         $this->url = $tenant->url;
         $this->email = $user->email;
-        $this->password = $password;
     }
 
     /**
