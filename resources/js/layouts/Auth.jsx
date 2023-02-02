@@ -1,6 +1,6 @@
 import React from "react";
-import { Logo } from "../Components/Logo";
-import { Link } from "@inertiajs/inertia-react";
+import {Logo} from "../components/Logo";
+import {Link} from "@inertiajs/inertia-react";
 
 export function Auth({ children }) {
     return (

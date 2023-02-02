@@ -1,7 +1,7 @@
 import React from "react";
 
-import { ButtonLink } from "@/Components/Button";
-import { Container } from "../Components/Container";
+import {ButtonLink} from "@/components/Button";
+import {Container} from ".//Container";
 import logoLaravel from "../../images/logos/laravel.svg";
 import logoDocker from "../../images/logos/docker.png";
 import logoVue from "../../images/logos/vue.png";

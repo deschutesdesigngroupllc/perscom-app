@@ -12,7 +12,7 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Swagger/Home', [
+        return Inertia::render('swagger/Home', [
             'url' => config('app.api_url').'/'.config('app.api_version').'/spec.yaml',
         ]);
     }

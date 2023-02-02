@@ -2,9 +2,9 @@ import React, {Fragment} from "react";
 import {Popover, Transition} from "@headlessui/react";
 import clsx from "clsx";
 
-import {ButtonLink} from "../../Components/Button";
-import {Container} from "../../Components/Container";
-import {Logo} from "../../Components/Logo";
+import {ButtonLink} from ".//Button";
+import {Container} from ".//Container";
+import {Logo} from ".//Logo";
 
 function MobileNavigation() {
     return (
@@ -58,7 +58,28 @@ function MobileNavigation() {
                             <Popover.Panel
                                 as="ul"
                                 className="absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5"
-                            ></Popover.Panel>
+                            >
+                                <li>
+                                    <a href="#features" className="block w-full" onClick={() => close()}>
+                                        Features
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#pricing" className="block w-full" onClick={() => close()}>
+                                        Pricing
+                                    </a>
+                                </li>
+                                <li>
+                                    <a
+                                        href="https://docs.perscom.io"
+                                        target="_blank"
+                                        className="block w-full"
+                                        onClick={() => close()}
+                                    >
+                                        Documentation
+                                    </a>
+                                </li>
+                            </Popover.Panel>
                         </Transition.Child>
                     </Transition.Root>
                 </>
@@ -79,11 +100,36 @@ export function Header() {
                                 <Logo className="h-8 w-auto sm:h-10 md:h-12" />
                             </a>
                         </li>
+                        <li className="ml-12 hidden md:block">
+                            <a
+                                href="#features"
+                                className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                            >
+                                Features
+                            </a>
+                        </li>
+                        <li className="ml-6 hidden md:block">
+                            <a
+                                href="#pricing"
+                                className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                            >
+                                Pricing
+                            </a>
+                        </li>
+                        <li className="ml-6 hidden md:block">
+                            <a
+                                href="https://docs.perscom.io"
+                                target="_blank"
+                                className="rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900"
+                            >
+                                Documentation
+                            </a>
+                        </li>
                         <li className="ml-auto">
-                            <ButtonLink href={route("nova.pages.dashboard")} color="blue">
+                            <ButtonLink href={route("register.index")} color="blue">
                                 <span>
-                                    <span className="hidden lg:inline">Go to </span>
-                                    Dashboard
+                                    Get started
+                                    <span className="hidden lg:inline"> today</span>
                                 </span>
                             </ButtonLink>
                         </li>

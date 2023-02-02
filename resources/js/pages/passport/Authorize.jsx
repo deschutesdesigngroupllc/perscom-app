@@ -1,9 +1,9 @@
 import React from "react";
 
-import { Button } from "@/Components/Button";
-import { Auth } from "@/Layouts/Auth";
-import { ValidationErrors } from "@/Components/ValidationErrors";
-import { Head, Link, useForm } from "@inertiajs/inertia-react";
+import {Button} from "@/components/Button";
+import {Auth} from "@/layouts/Auth";
+import {ValidationErrors} from "@/components/ValidationErrors";
+import {Head, Link, useForm} from "@inertiajs/inertia-react";
 
 export default function Authorize({ client, name, scopes, state, authToken, csrfToken }) {
     const { post, processing, errors } = useForm({

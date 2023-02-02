@@ -1,9 +1,9 @@
 import React from "react";
-import { Tab } from "@headlessui/react";
+import {Tab} from "@headlessui/react";
 import clsx from "clsx";
-import { CollectionIcon, PencilAltIcon, SearchIcon } from "@heroicons/react/outline";
+import {CollectionIcon, PencilAltIcon, SearchIcon} from "@heroicons/react/outline";
 
-import { Container } from "../Components/Container";
+import {Container} from ".//Container";
 import customFieldsImage from "../../images/features/secondary1.png";
 import recordsImage from "../../images/features/secondary2.png";
 import searchImage from "../../images/features/secondary3.png";

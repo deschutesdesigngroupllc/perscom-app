@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Container} from "../Components/Container";
+import {Container} from "../components/Container";
 import {Header} from "@/Pages/Pages/Header";
 
 export function Tenant({ children }) {

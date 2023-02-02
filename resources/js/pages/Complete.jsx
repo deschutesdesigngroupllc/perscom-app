@@ -1,8 +1,8 @@
 import React from "react";
 
-import {AuthLayout} from "@/Components/AuthLayout";
-import {ButtonLink} from "@/Components/Button";
-import {Logo} from "@/Components/Logo";
+import {AuthLayout} from "@/components/AuthLayout";
+import {ButtonLink} from "@/components/Button";
+import {Logo} from "@/components/Logo";
 
 export default function Complete({ url }) {
     return (

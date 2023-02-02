@@ -1,7 +1,7 @@
 import React from "react";
 
-import { ButtonLink } from "../Components/Button";
-import { Container } from "../Components/Container";
+import {ButtonLink} from ".//Button";
+import {Container} from ".//Container";
 import backgroundImage from "../../images/background-call-to-action.jpg";
 
 export function CallToAction() {
