@@ -52,7 +52,7 @@ class NewTenant extends Notification implements ShouldQueue
                 'url' => route('nova.pages.detail', [
                     'resource' => 'tenants',
                     'resourceId' => $this->tenant->getTenantKey(),
-                ])
+                ]),
             ])
             ->subject('New Tenant Created');
     }
