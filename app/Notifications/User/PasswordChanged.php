@@ -1,26 +1,15 @@
 <?php
 
-namespace App\Notifications\Admin;
+namespace App\Notifications\User;
 
-use App\Mail\Admin\NewSubscriptionMail;
+use App\Mail\user\PasswordChangedMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use Laravel\Cashier\Subscription;
 
-class NewSubscription extends Notification implements ShouldQueue
+class PasswordChanged extends Notification implements ShouldQueue
 {
     use Queueable;
-
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
-    public function __construct(protected Subscription $subscription)
-    {
-        //
-    }
 
     /**
      * Get the notification's delivery channels.
@@ -41,6 +30,6 @@ class NewSubscription extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new NewSubscriptionMail($this->subscription))->to($notifiable->email);
+        return (new PasswordChangedMail())->to($notifiable->email);
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Models\User;
+use App\Notifications\User\PasswordChanged;
+use Illuminate\Support\Facades\Notification;
 
 class UserObserver
 {
@@ -28,6 +30,10 @@ class UserObserver
         if ($user->isDirty('notes')) {
             $user->notes_updated_at = now();
             $user->saveQuietly();
+        }
+
+        if ($user->isDirty('password')) {
+            Notification::send($user, new PasswordChanged());
         }
     }
 
