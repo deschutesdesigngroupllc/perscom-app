@@ -24,12 +24,14 @@ use App\Observers\QualificationRecordObserver;
 use App\Observers\RankRecordObserver;
 use App\Observers\ServiceRecordObserver;
 use App\Observers\SettingsObserver;
+use App\Observers\SubscriptionObserver;
 use App\Observers\TaskAssignmentObserver;
 use App\Observers\TenantObserver;
 use App\Observers\UserObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Laravel\Cashier\Subscription;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
 
 class EventServiceProvider extends ServiceProvider
@@ -67,6 +69,7 @@ class EventServiceProvider extends ServiceProvider
         RankRecord::observe(RankRecordObserver::class);
         ServiceRecord::observe(ServiceRecordObserver::class);
         Settings::observe(SettingsObserver::class);
+        Subscription::observe(SubscriptionObserver::class);
         TaskAssignment::observe(TaskAssignmentObserver::class);
         Tenant::observe(TenantObserver::class);
         User::observe(UserObserver::class);
