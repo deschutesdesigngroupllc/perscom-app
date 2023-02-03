@@ -2,7 +2,7 @@
 
 namespace App\Notifications\User;
 
-use App\Mail\user\PasswordChangedMail;
+use App\Mail\User\PasswordChangedMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
