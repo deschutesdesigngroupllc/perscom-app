@@ -15,4 +15,9 @@ class Qualification extends Model
      * @var string[]
      */
     protected $fillable = ['name', 'description'];
+
+    /**
+     * @var string[]
+     */
+    protected $with = ['image'];
 }
