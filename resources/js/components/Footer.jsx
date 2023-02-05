@@ -12,6 +12,12 @@ export function Footer() {
           <nav className='mt-10 text-sm' aria-label='quick links'>
             <ul className='-my-1 flex flex-wrap justify-center space-x-6'>
               <li>
+                <a href={route('landing.home')} className='rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
+                  {' '}
+                  Home{' '}
+                </a>
+              </li>
+              <li>
                 <a href='#features' className='rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
                   {' '}
                   Features{' '}
@@ -43,6 +49,15 @@ export function Footer() {
                 >
                   {' '}
                   Find My Organization{' '}
+                </a>
+              </li>
+              <li>
+                <a
+                  href={route('privacy-policy.index')}
+                  className='rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                >
+                  {' '}
+                  Privacy Policy{' '}
                 </a>
               </li>
             </ul>
