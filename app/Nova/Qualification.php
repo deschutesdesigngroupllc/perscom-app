@@ -10,9 +10,12 @@ use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
 class Qualification extends Resource
 {
+    use HasSortableRows;
+
     /**
      * The model the resource corresponds to.
      *
@@ -37,7 +40,7 @@ class Qualification extends Resource
     /**
      * @var string[]
      */
-    public static $orderBy = ['name' => 'asc'];
+    public static $orderBy = ['order' => 'asc'];
 
     /**
      * Get the displayable label of the resource.
