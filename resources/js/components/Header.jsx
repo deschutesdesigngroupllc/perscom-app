@@ -60,6 +60,11 @@ function MobileNavigation() {
                 className='absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5'
               >
                 <li>
+                  <a href={route('landing.home')} className='block w-full' onClick={() => close()}>
+                    Home
+                  </a>
+                </li>
+                <li>
                   <a href='#features' className='block w-full' onClick={() => close()}>
                     Features
                   </a>
@@ -85,6 +90,11 @@ function MobileNavigation() {
                     Find My Organization
                   </a>
                 </li>
+                <li>
+                  <a href={route('privacy-policy.index')} className='block w-full' onClick={() => close()}>
+                    Privacy Policy
+                  </a>
+                </li>
               </Popover.Panel>
             </Transition.Child>
           </Transition.Root>
@@ -104,6 +114,11 @@ export function Header() {
               <a href={route('landing.home')}>
                 <span className='sr-only'>Home</span>
                 <Logo className='h-8 w-auto sm:h-10 md:h-12' />
+              </a>
+            </li>
+            <li className='ml-6 hidden lg:block'>
+              <a href={route('landing.home')} className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
+                Home
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
