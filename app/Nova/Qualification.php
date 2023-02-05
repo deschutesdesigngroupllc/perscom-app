@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -69,6 +70,7 @@ class Qualification extends Resource
         return [
             ID::make()->hideFromIndex(),
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            MorphOne::make('Image', 'image'),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
