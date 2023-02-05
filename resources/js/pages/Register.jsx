@@ -5,6 +5,7 @@ import { Button } from '../components/Button'
 import { Input } from '../components/Input'
 import { Logo } from '../components/Logo'
 import { ValidationErrors } from '../components/ValidationErrors'
+import Checkbox from '../components/Checkbox'
 
 export default function Register() {
   const { data, setData, post, processing, errors } = useForm({
@@ -60,6 +61,19 @@ export default function Register() {
               value={data.email}
               onChange={onHandleChange}
             />
+          </div>
+          <div className='flex items-center justify-between'>
+            <div className='flex items-center'>
+              <label className='flex items-center'>
+                <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} />
+                <span className='ml-2 text-sm text-gray-600'>
+                  I have read and agree to the{' '}
+                  <a className='underline' target='_blank' rel='noreferrer' href={route('privacy-policy.index')}>
+                    Privacy Policy
+                  </a>
+                </span>
+              </label>
+            </div>
           </div>
           <div className='pt-5'>
             <Button type='submit' processing={processing} color='blue' className='w-full'>
