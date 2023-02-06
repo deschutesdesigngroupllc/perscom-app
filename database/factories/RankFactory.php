@@ -17,8 +17,7 @@ class RankFactory extends Factory
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'abbreviation' => $this->faker->word,
-            'paygrade' => $this->faker->word,
-            'order' => $this->faker->numberBetween(1, 10),
+            'paygrade' => $this->faker->word
         ];
     }
 }

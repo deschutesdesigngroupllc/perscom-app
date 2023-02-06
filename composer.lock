@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "76147fcb67ead5606082430622f2acea",
+    "content-hash": "125c37dbd63709a711e98a7a5b3c52d9",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -5676,7 +5676,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/add-sentry",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5712,7 +5712,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/add-sentry",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -5748,7 +5748,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/add-sentry",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -5784,7 +5784,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/add-sentry",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -5820,7 +5820,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/add-sentry",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -5856,7 +5856,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/add-sentry",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
