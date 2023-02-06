@@ -4,9 +4,8 @@ namespace App\Http\Controllers\Api\V1\Widget;
 
 use App\Http\Resources\Api\Widget\RosterResource;
 use App\Models\Unit;
-use Orion\Http\Controllers\Controller;
 
-class RosterController extends Controller
+class RosterController extends WidgetController
 {
     /**
      * @var string
@@ -17,4 +16,12 @@ class RosterController extends Controller
      * @var string
      */
     protected $resource = RosterResource::class;
+
+    /**
+     * @return int
+     */
+    public function limit(): int
+    {
+        return 0;
+    }
 }

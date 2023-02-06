@@ -6,9 +6,8 @@ use App\Http\Resources\Api\Widget\QualificationResource;
 use App\Models\Qualification;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Orion\Http\Controllers\Controller;
 
-class QualificationsController extends Controller
+class QualificationsController extends WidgetController
 {
     /**
      * @var string

@@ -6,9 +6,8 @@ use App\Http\Resources\Api\Widget\RankResource;
 use App\Models\Rank;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Orion\Http\Controllers\Controller;
 
-class RanksController extends Controller
+class RanksController extends WidgetController
 {
     /**
      * @var string
