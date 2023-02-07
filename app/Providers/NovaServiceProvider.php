@@ -307,9 +307,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         NovaSettings::addSettingsFields(function () {
             return [
                 Panel::make('Account', [
-                    Text::make('Account ID', function () {
+                    Text::make('PERSCOM ID', function () {
                         return \tenant()->getTenantKey();
-                    })->help('Your Account ID that must be used in all API requests.')->readonly(),
+                    })->help('Your PERSCOM ID that must be used in all external integrations.')->readonly(),
                     Text::make('Organization', 'organization')
                         ->help('The name of your organization.')
                         ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')

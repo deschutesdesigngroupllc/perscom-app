@@ -52,7 +52,7 @@
 
             <div class="dashboard-actions-mt-6" v-if="numberOfAdminRoutes?.value > 0">
                 <Heading>Administrative Quick Actions</Heading>
-                <p class="text-90 dashboard-actions-leading-tight">Perform most common tasks in PERSCOM</p>
+                <p class="text-90 dashboard-actions-leading-tight">Perform the most common tasks in PERSCOM</p>
 
                 <Card class="dashboard-actions-mt-4 dashboard-actions-rounded-lg">
                     <div class="md:dashboard-actions-grid md:dashboard-actions-grid-cols-2">
@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive} from "vue";
+import { onMounted, reactive } from 'vue'
 
 const routes = reactive({});
 const numberOfAdminRoutes = reactive({});
