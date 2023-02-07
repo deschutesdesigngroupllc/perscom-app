@@ -43,23 +43,46 @@ jobs:
 
       - name: Deploy Application for Staging
         if: github.ref == 'refs/heads/staging'
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.ENVOYER_STAGING_DEPLOY_URL }}
+          method: 'GET'
+
+      - name: Deploy Application for Production
+        if: github.ref == 'refs/heads/master'
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.ENVOYER_PRODUCTION_DEPLOY_URL }}
+          method: 'GET'
+
+      - name: Update Application Version for Staging
+        if: github.ref == 'refs/heads/staging'
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
-          forge deploy ${{ secrets.FORGE_STAGING_SERVER_SITE }}
           forge command ${{ secrets.FORGE_STAGING_SERVER_SITE }} --command="php artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
 
-      - name: Deploy Application for Production
+      - name: Update Application Version for Production
         if: github.ref == 'refs/heads/master'
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
-          forge deploy ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }}
           forge command ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }} --command="php artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
 
-      - name: Create Sentry Release
+      - name: Create Sentry Release Staging
+        if: github.ref == 'refs/heads/staging'
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: staging
+          version: ${{ steps.tag_version.outputs.new_tag }}
+
+      - name: Create Sentry Release Production
         if: github.ref == 'refs/heads/master'
         uses: getsentry/action-release@v1
         env:
