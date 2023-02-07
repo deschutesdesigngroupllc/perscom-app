@@ -55,6 +55,31 @@ class RankSeeder extends Seeder
                 'abbreviation' => 'SFC',
                 'paygrade' => 'E-7',
             ],
+            [
+                'name' => 'Master Sergeant',
+                'abbreviation' => 'MSG',
+                'paygrade' => 'E-8',
+            ],
+            [
+                'name' => 'First Sergeant',
+                'abbreviation' => '1SG',
+                'paygrade' => 'E-8',
+            ],
+            [
+                'name' => 'Sergeant Major',
+                'abbreviation' => 'SGM',
+                'paygrade' => 'E-9',
+            ],
+            [
+                'name' => 'Command Sergeant Major',
+                'abbreviation' => 'CSM',
+                'paygrade' => 'E-9',
+            ],
+            [
+                'name' => 'Sergeant Major of the Army',
+                'abbreviation' => 'SMA',
+                'paygrade' => 'E-9S',
+            ]
         ];
 
         foreach (array_reverse($ranks) as $rank) {

@@ -6,9 +6,8 @@ use App\Http\Resources\Api\Widget\AwardResource;
 use App\Models\Award;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Orion\Http\Controllers\Controller;
 
-class AwardsController extends Controller
+class AwardsController extends WidgetController
 {
     /**
      * @var string
