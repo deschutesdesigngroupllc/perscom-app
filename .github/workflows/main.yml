@@ -59,7 +59,7 @@ jobs:
         if: github.ref == 'refs/heads/staging'
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
-          forge command ${{ secrets.FORGE_STAGING_SERVER_SITE }} --command="php artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
+          forge command ${{ secrets.FORGE_STAGING_SERVER_SITE }} --command="php current/artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
 
@@ -67,7 +67,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
-          forge command ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }} --command="php artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
+          forge command ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }} --command="php current/artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
 
