@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Queue;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,6 +14,8 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        Queue::fake();
+
         $this->call([
             PermissionSeeder::class,
             RoleSeeder::class,
@@ -26,6 +29,7 @@ class DatabaseSeeder extends Seeder
             QualificationRecordSeeder::class,
             RankRecordSeeder::class,
             ServiceRecordSeeder::class,
+            TaskSeeder::class,
             UserSeeder::class,
         ]);
     }

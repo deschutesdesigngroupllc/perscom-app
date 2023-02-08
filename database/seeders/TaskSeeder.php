@@ -2,18 +2,18 @@
 
 namespace Database\Seeders;
 
-use App\Models\RankRecord;
+use App\Models\Task;
 use Illuminate\Database\Seeder;
 
-class RankRecordSeeder extends Seeder
+class TaskSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Seed the application's database.
      *
      * @return void
      */
     public function run()
     {
-        RankRecord::factory()->count(10)->create();
+        Task::factory()->count(10)->create();
     }
 }
