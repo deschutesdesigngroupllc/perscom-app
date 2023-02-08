@@ -17,7 +17,8 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         $schedule->command('telescope:prune --hours=96')->daily();
-        $schedule->job(new ResetDemoAccount())->daily();
+        $schedule->command('perscom:heartbeat')->environments(['staging', 'production'])->everyTenMinutes();
+        $schedule->job(new ResetDemoAccount())->environments(['production'])->daily();
     }
 
     /**
