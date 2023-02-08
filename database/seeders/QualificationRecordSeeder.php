@@ -14,8 +14,6 @@ class QualificationRecordSeeder extends Seeder
      */
     public function run()
     {
-        QualificationRecord::withoutEvents(function () {
-            QualificationRecord::factory()->count(10)->create();
-        });
+        QualificationRecord::factory()->count(10)->create();
     }
 }

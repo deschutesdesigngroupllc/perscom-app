@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Actions\Passport\CreatePersonalAccessToken;
+use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
 use App\Models\Permission;
@@ -75,5 +77,7 @@ class AppServiceProvider extends ServiceProvider
             PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->id;
             Config::set('app.timezone', NovaSettings::getSetting('timezone', \config('app.timezone')));
         });
+
+        $this->app->bind(CreatesPersonalAccessToken::class, CreatePersonalAccessToken::class);
     }
 }

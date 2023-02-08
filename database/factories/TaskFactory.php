@@ -17,7 +17,9 @@ class TaskFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'title' => "Task {$this->faker->unique()->randomNumber()}",
+            'description' => $this->faker->paragraph,
+            'instructions' => $this->faker->paragraph
         ];
     }
 }

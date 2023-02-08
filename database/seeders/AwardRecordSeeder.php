@@ -14,8 +14,6 @@ class AwardRecordSeeder extends Seeder
      */
     public function run()
     {
-        AwardRecord::withoutEvents(function () {
-            AwardRecord::factory()->count(10)->create();
-        });
+        AwardRecord::factory()->count(10)->create();
     }
 }

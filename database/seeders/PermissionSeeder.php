@@ -17,7 +17,7 @@ class PermissionSeeder extends Seeder
         $existingPermissions = Permission::query()->get()->pluck('description', 'name');
         foreach (config('permissions.guards') as $guard) {
             foreach (config('permissions.permissions') as $permission => $description) {
-                if (!$existingPermissions->has($permission)) {
+                if (! $existingPermissions->has($permission)) {
                     Permission::factory()->createQuietly([
                         'name' => $permission,
                         'description' => $description,

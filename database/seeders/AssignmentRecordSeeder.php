@@ -1,6 +1,6 @@
 <?php
 
-namespace Database\Seders;
+namespace Database\Seeders;
 
 use App\Models\AssignmentRecord;
 use Illuminate\Database\Seeder;
@@ -14,8 +14,6 @@ class AssignmentRecordSeeder extends Seeder
      */
     public function run()
     {
-        AssignmentRecord::withoutEvents(function () {
-            AssignmentRecord::factory()->count(10)->create();
-        });
+        AssignmentRecord::factory()->count(10)->create();
     }
 }

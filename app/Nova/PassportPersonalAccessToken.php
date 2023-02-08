@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
@@ -40,6 +41,11 @@ class PassportPersonalAccessToken extends Resource
      * @var array
      */
     public static $search = ['id', 'name'];
+
+    /**
+     * @var string[]
+     */
+    public static $orderBy = ['created_at' => 'desc'];
 
     /**
      * Get the text for the create resource button.
@@ -141,11 +147,8 @@ class PassportPersonalAccessToken extends Resource
      */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
-        $tokenResult = Auth::user()->createToken($model->name, $model->scopes);
-        $tokenResult->token->forceFill([
-            'token' => Crypt::encryptString($tokenResult->accessToken),
-        ]);
-        $tokenResult->token->save();
+        $createPersonalAccessToken = app(CreatesPersonalAccessToken::class);
+        $createPersonalAccessToken->create(Auth::user(), $model->name, $model->scopes);
 
         $model->delete();
     }

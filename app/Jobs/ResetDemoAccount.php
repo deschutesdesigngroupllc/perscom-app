@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Tenant;
+use Database\Seeders\Demo\Military\DemoDataSeeder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -28,7 +29,7 @@ class ResetDemoAccount implements ShouldQueue
 
             Artisan::call('tenants:seed', [
                 '--tenants' => $tenant->getTenantKey(),
-                '--class' => 'DemoDataSeeder',
+                '--class' => DemoDataSeeder::class,
             ]);
         }
     }
