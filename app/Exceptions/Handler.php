@@ -6,6 +6,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
+use Sentry\Laravel\Integration;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
 use Throwable;
 
@@ -42,6 +43,10 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (SubscriptionRequired $e, $request) {
             return response()->view('errors.subscription-required');
+        });
+
+        $this->reportable(function (Throwable $e) {
+            Integration::captureUnhandledException($e);
         });
     }
 
