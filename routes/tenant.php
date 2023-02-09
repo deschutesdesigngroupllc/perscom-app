@@ -18,20 +18,19 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 */
 
 // Initialize tenancy
-Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web']], function () {
-
+Route::group(['as' => 'tenant.', 'middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web']], function () {
     // Impersonation
     Route::get('/impersonate/{token}', function ($token) {
         return UserImpersonation::makeResponse($token);
-    })->name('impersonate.tenant');
+    })->name('impersonate');
 
     // Socialite
     Route::group(['prefix' => 'auth'], function () {
         Route::get('/{driver}/redirect', [SocialLoginController::class, 'tenant'])
              ->middleware('feature:social-login')
-             ->name('auth.social.tenant.redirect');
+             ->name('auth.social.redirect');
         Route::get('/login/{loginToken}', [SocialLoginController::class, 'login'])
              ->middleware('feature:social-login')
-             ->name('auth.social.tenant.login');
+             ->name('auth.social.login');
     });
 });

@@ -25,7 +25,7 @@ class SentryContext
                     $scope->setUser([
                         'id' => Auth::user()->getAuthIdentifier(),
                         'username' => Auth::user()->name,
-                        'email' => Auth::user()->email
+                        'email' => Auth::user()->email,
                     ]);
                 });
             }
@@ -36,7 +36,7 @@ class SentryContext
                     $scope->setContext('tenant', [
                         'ID' => tenant()->getTenantKey(),
                         'Name' => tenant('name'),
-                        'Email' => tenant('email')
+                        'Email' => tenant('email'),
                     ]);
                 });
             }

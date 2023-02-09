@@ -25,7 +25,7 @@
                 <p class="mt-2 text-base text-gray-500">@yield('message')</p>
                 @if(!isset($showLink) || $showLink)
                     <div class="mt-6">
-                        <a href="{{ route('landing.home') }}"
+                        <a href="{{ route('web.landing.home') }}"
                            class="text-base font-medium text-blue-600 hover:text-blue-500">Go back home<span
                                 aria-hidden="true"> &rarr;</span></a>
                     </div>

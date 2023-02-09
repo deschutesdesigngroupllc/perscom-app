@@ -2903,26 +2903,26 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/JonErickson/passport.git",
-                "reference": "061f2b3fe1dd187da5e2a94804d529d351ff9734"
+                "reference": "af62ae8dc484c7fbe572c822bdef243c040b93e8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/JonErickson/passport/zipball/061f2b3fe1dd187da5e2a94804d529d351ff9734",
-                "reference": "061f2b3fe1dd187da5e2a94804d529d351ff9734",
+                "url": "https://api.github.com/repos/JonErickson/passport/zipball/af62ae8dc484c7fbe572c822bdef243c040b93e8",
+                "reference": "af62ae8dc484c7fbe572c822bdef243c040b93e8",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "firebase/php-jwt": "^6.3.1",
-                "illuminate/auth": "^9.0",
-                "illuminate/console": "^9.0",
-                "illuminate/container": "^9.0",
-                "illuminate/contracts": "^9.0",
-                "illuminate/cookie": "^9.0",
-                "illuminate/database": "^9.0",
-                "illuminate/encryption": "^9.0",
-                "illuminate/http": "^9.0",
-                "illuminate/support": "^9.0",
+                "illuminate/auth": "^9.0|^10.0",
+                "illuminate/console": "^9.0|^10.0",
+                "illuminate/container": "^9.0|^10.0",
+                "illuminate/contracts": "^9.0|^10.0",
+                "illuminate/cookie": "^9.0|^10.0",
+                "illuminate/database": "^9.0|^10.0",
+                "illuminate/encryption": "^9.0|^10.0",
+                "illuminate/http": "^9.0|^10.0",
+                "illuminate/support": "^9.0|^10.0",
                 "lcobucci/jwt": "^3.4|^4.0",
                 "league/oauth2-server": "^8.2",
                 "nyholm/psr7": "^1.3",
@@ -2932,7 +2932,7 @@
             },
             "require-dev": {
                 "mockery/mockery": "^1.0",
-                "orchestra/testbench": "^7.0",
+                "orchestra/testbench": "^7.0|^8.0",
                 "phpunit/phpunit": "^9.3"
             },
             "type": "library",
@@ -2976,7 +2976,7 @@
                 "issues": "https://github.com/laravel/passport/issues",
                 "source": "https://github.com/laravel/passport"
             },
-            "time": "2022-12-13T21:34:32+00:00"
+            "time": "2023-02-08T23:22:56+00:00"
         },
         {
             "name": "laravel/serializable-closure",

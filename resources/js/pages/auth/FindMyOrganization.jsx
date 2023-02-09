@@ -17,7 +17,7 @@ function FindMyOrganization({ url, tenant }) {
 
   const submit = (e) => {
     e.preventDefault()
-    post(route('find-my-organization.store'))
+    post(route('web.find-my-organization.store'))
   }
 
   return (

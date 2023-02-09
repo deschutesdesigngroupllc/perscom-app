@@ -9,7 +9,7 @@ export function Complete({ url }) {
     <RegisterLayout position='justify-start'>
       <div className='flex flex-col items-start justify-start'>
         <div className='flex w-full items-center justify-center'>
-          <a href={route('landing.home')}>
+          <a href={route('web.landing.home')}>
             <Logo className='sm:h-18 mb-2 h-16 w-auto md:h-20' />
           </a>
         </div>

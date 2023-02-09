@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\LoginToken;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
@@ -38,17 +37,20 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->routes(function () {
             Route::domain(config('app.api_url'))
+                 ->as('api.')
                  ->middleware('api')
                  ->namespace($this->namespace)
                  ->group(base_path('routes/api.php'));
 
             Route::domain(config('app.auth_url'))
+                 ->as('auth.')
                  ->middleware('auth_web')
                  ->namespace($this->namespace)
                  ->group(base_path('routes/auth.php'));
 
-            Route::middleware('web')
-                 ->domain(config('app.url'))
+            Route::domain(config('app.url'))
+                 ->as('web.')
+                 ->middleware('web')
                  ->namespace($this->namespace)
                  ->group(base_path('routes/web.php'));
 
@@ -56,10 +58,6 @@ class RouteServiceProvider extends ServiceProvider
                  ->as('passport.')
                  ->namespace('Laravel\Passport\Http\Controllers')
                  ->group(base_path('routes/passport.php'));
-        });
-
-        $this->app['router']->model('loginToken', LoginToken::class, function () {
-            abort(403);
         });
     }
 
