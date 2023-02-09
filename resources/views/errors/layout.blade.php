@@ -30,19 +30,23 @@
                                 aria-hidden="true"> &rarr;</span></a>
                     </div>
                 @endif
+                @yield('extra')
             </div>
         </div>
     </main>
     <footer class="flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <nav class="flex justify-center space-x-4">
+        <nav class="flex flex-col sm:flex-row justify-center items-center space-x-4">
             <a href="https://community.deschutesdesigngroup.com/"
-               class="text-sm font-medium text-gray-500 hover:text-gray-600">Community Forums</a>
+               class="text-sm font-medium text-gray-500 hover:text-gray-600" target='_blank'>Community Forums</a>
+            <span class="inline-block border-l border-gray-300" aria-hidden="true"></span>
+            <a href="https://docs.perscom.io"
+               class="text-sm font-medium text-gray-500 hover:text-gray-600" target='_blank'>Documentation</a>
             <span class="inline-block border-l border-gray-300" aria-hidden="true"></span>
             <a href="https://support.deschutesdesigngroup.com/"
-               class="text-sm font-medium text-gray-500 hover:text-gray-600">Help Desk</a>
+               class="text-sm font-medium text-gray-500 hover:text-gray-600" target='_blank'>Help Desk</a>
             <span class="inline-block border-l border-gray-300" aria-hidden="true"></span>
             <a href="https://support.deschutesdesigngroup.com/hc/en-us/requests/new"
-               class="text-sm font-medium text-gray-500 hover:text-gray-600">Submit A Ticket</a>
+               class="text-sm font-medium text-gray-500 hover:text-gray-600" target='_blank'>Submit A Ticket</a>
         </nav>
     </footer>
 </div>

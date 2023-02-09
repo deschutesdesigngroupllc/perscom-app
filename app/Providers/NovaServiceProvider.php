@@ -246,9 +246,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     })->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
-                        MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
-                                ->openInNewTab(),
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
+                                ->openInNewTab(),
+                        MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
                                 ->openInNewTab(),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
                         MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')

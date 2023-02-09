@@ -26,7 +26,7 @@ class LogApiRequests
             'ip' => $request->getClientIp(),
             'request_headers' => (string) $request->headers,
             'response_headers' => (string) $response->headers,
-            'content' => json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR)
+            'content' => json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR),
         ]);
 
         if (Auth::guard('api')->check()) {
