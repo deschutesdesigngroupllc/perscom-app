@@ -13,6 +13,76 @@ use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 
+/**
+ * App\Models\Tenant
+ *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property string|null $website
+ * @property string|null $stripe_id
+ * @property string|null $pm_type
+ * @property string|null $pm_last_four
+ * @property string|null $pm_expiration
+ * @property string|null $extra_billing_information
+ * @property \Illuminate\Support\Carbon|null $trial_ends_at
+ * @property string|null $billing_address
+ * @property string|null $billing_address_line_2
+ * @property string|null $billing_city
+ * @property string|null $billing_state
+ * @property string|null $billing_postal_code
+ * @property string|null $vat_id
+ * @property array $receipt_emails
+ * @property string|null $billing_country
+ * @property string|null $last_login_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property array|null $data
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
+ * @property-read int|null $actions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
+ * @property-read int|null $domains_count
+ * @property-read string $database_status
+ * @property-read mixed|null $domain
+ * @property-read mixed|null $url
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spark\Receipt> $localReceipts
+ * @property-read int|null $local_receipts_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Cashier\Subscription> $subscriptions
+ * @property-read int|null $subscriptions_count
+ *
+ * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
+ * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> get($columns = ['*'])
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant hasExpiredGenericTrial()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant onGenericTrial()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingAddress($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingAddressLine2($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingCity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingCountry($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingPostalCode($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingState($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereExtraBillingInformation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereLastLoginAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant wherePmExpiration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant wherePmLastFour($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant wherePmType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereReceiptEmails($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereStripeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereTrialEndsAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereVatId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereWebsite($value)
+ * @mixin \Eloquent
+ */
 class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase
 {
     use Actionable;

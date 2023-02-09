@@ -5,6 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\Announcement
+ *
+ * @method static \Database\Factories\AnnouncementFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Announcement query()
+ * @mixin \Eloquent
+ */
 class Announcement extends Model
 {
     use HasFactory;

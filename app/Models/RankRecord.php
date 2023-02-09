@@ -10,6 +10,25 @@ use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\RankRecord
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read \App\Models\User|null $author
+ * @property-read \App\Models\Document|null $document
+ * @property-read \App\Models\Rank|null $rank
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static \Database\Factories\RankRecordFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forAuthor($user)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forDocument($document)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forUser(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord query()
+ * @mixin \Eloquent
+ */
 class RankRecord extends Model
 {
     use HasAttachments;

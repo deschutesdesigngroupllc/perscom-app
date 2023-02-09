@@ -7,6 +7,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
+/**
+ * App\Models\LoginToken
+ *
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static \Database\Factories\LoginTokenFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginToken forUser(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginToken newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginToken newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginToken query()
+ * @mixin \Eloquent
+ */
 class LoginToken extends Model
 {
     use HasFactory;

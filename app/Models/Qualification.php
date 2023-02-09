@@ -8,6 +8,20 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
+/**
+ * App\Models\Qualification
+ *
+ * @property-read \App\Models\Image|null $image
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read int|null $images_count
+ *
+ * @method static \Database\Factories\QualificationFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification query()
+ * @mixin \Eloquent
+ */
 class Qualification extends Model implements Sortable
 {
     use HasFactory;

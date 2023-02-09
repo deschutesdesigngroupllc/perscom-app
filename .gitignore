@@ -9,6 +9,7 @@
 .env.backup
 .env.*
 .phpunit.result.cache
+.phpstorm.meta.php
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
@@ -19,3 +20,4 @@ yarn-error.log
 auth.json
 .editorconfig
 .styleci.yml
+_ide_helper.php
