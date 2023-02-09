@@ -107,8 +107,10 @@ class PassportLog extends Resource
                     return 'No Status Logged';
                 }),
                 MorphTo::make('Subject')->onlyOnDetail(),
-                Code::make('Content', function () {
-                    return $this->description;
+                Code::make('Content', function (Activity $log) {
+                    return optional($log->properties->get('content'), function ($data) {
+                        return json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+                    });
                 })->json()->onlyOnDetail(),
                 Code::make('Headers', function (Activity $log) {
                     return $log->properties->get('response_headers');

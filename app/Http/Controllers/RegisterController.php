@@ -26,7 +26,7 @@ class RegisterController extends Controller
     {
         $tenant = $createNewTenant->create($request->all());
 
-        return redirect()->signedRoute('register.complete', [
+        return redirect()->signedRoute('web.register.complete', [
             'id' => $tenant->id,
         ]);
     }
@@ -39,7 +39,7 @@ class RegisterController extends Controller
     {
         $tenant = Tenant::find($id);
         if (! $tenant) {
-            return redirect()->route('register.index');
+            return redirect()->route('web.register.index');
         }
 
         return Inertia::render('Complete', [

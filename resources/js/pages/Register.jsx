@@ -20,14 +20,14 @@ export default function Register() {
 
   const submit = (e) => {
     e.preventDefault()
-    post(route('register.store'))
+    post(route('web.register.store'))
   }
 
   return (
     <RegisterLayout position='justify-start'>
       <div className='flex flex-col items-start justify-start'>
         <div className='flex w-full items-center justify-center'>
-          <a href={route('landing.home')}>
+          <a href={route('web.landing.home')}>
             <Logo className='sm:h-18 mb-2 h-16 w-auto md:h-20' />
           </a>
         </div>
@@ -68,7 +68,7 @@ export default function Register() {
                 <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} />
                 <span className='ml-2 text-sm text-gray-600'>
                   I have read and agree to the{' '}
-                  <a className='underline' target='_blank' rel='noreferrer' href={route('privacy-policy.index')}>
+                  <a className='underline' target='_blank' rel='noreferrer' href={route('web.privacy-policy.index')}>
                     Privacy Policy
                   </a>
                 </span>

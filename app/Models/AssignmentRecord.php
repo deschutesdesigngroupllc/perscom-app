@@ -10,6 +10,27 @@ use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+/**
+ * App\Models\AssignmentRecord
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read \App\Models\User|null $author
+ * @property-read \App\Models\Document|null $document
+ * @property-read \App\Models\Position|null $position
+ * @property-read \App\Models\Specialty|null $specialty
+ * @property-read \App\Models\Unit|null $unit
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static \Database\Factories\AssignmentRecordFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord forAuthor($user)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord forDocument($document)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord forUser(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord query()
+ * @mixin \Eloquent
+ */
 class AssignmentRecord extends Model
 {
     use HasAttachments;

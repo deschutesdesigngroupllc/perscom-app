@@ -60,7 +60,7 @@ function MobileNavigation() {
                 className='absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5'
               >
                 <li>
-                  <a href={route('landing.home')} className='block w-full' onClick={() => close()}>
+                  <a href={route('web.landing.home')} className='block w-full' onClick={() => close()}>
                     Home
                   </a>
                 </li>
@@ -81,7 +81,7 @@ function MobileNavigation() {
                 </li>
                 <li>
                   <a
-                    href={route('find-my-organization.index')}
+                    href={route('web.find-my-organization.index')}
                     target='_blank'
                     className='block w-full'
                     onClick={() => close()}
@@ -91,7 +91,7 @@ function MobileNavigation() {
                   </a>
                 </li>
                 <li>
-                  <a href={route('privacy-policy.index')} className='block w-full' onClick={() => close()}>
+                  <a href={route('web.privacy-policy.index')} className='block w-full' onClick={() => close()}>
                     Privacy Policy
                   </a>
                 </li>
@@ -111,13 +111,13 @@ export function Header() {
         <nav className='relative z-50 text-sm'>
           <ul className='flex items-center'>
             <li>
-              <a href={route('landing.home')}>
+              <a href={route('web.landing.home')}>
                 <span className='sr-only'>Home</span>
                 <Logo className='h-8 w-auto sm:h-10 md:h-12' />
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href={route('landing.home')} className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
+              <a href={route('web.landing.home')} className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
                 Home
               </a>
             </li>
@@ -143,7 +143,7 @@ export function Header() {
             </li>
             <li className='ml-6 hidden lg:block ml-auto'>
               <a
-                href={route('find-my-organization.index')}
+                href={route('web.find-my-organization.index')}
                 target='_blank'
                 className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                 rel='noreferrer'
@@ -152,7 +152,7 @@ export function Header() {
               </a>
             </li>
             <li className='lg:ml-6 ml-auto'>
-              <ButtonLink href={route('register.index')} color='blue'>
+              <ButtonLink href={route('web.register.index')} color='blue'>
                 <span>
                   Get started
                   <span className='hidden lg:inline'> today</span>

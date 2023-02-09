@@ -11,7 +11,7 @@ export function OpenBetaBanner() {
               Big news! We&apos;re excited to announce our Open Beta has opened for public use. Get signed up today.
             </span>
             <span className='block sm:ml-2 sm:inline-block'>
-              <a href={route('register.index')} className='font-bold text-white underline'>
+              <a href={route('web.register.index')} className='font-bold text-white underline'>
                 {' '}
                 Sign up <span aria-hidden='true'>&rarr;</span>
               </a>

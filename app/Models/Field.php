@@ -20,6 +20,18 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Timezone;
 
+/**
+ * App\Models\Field
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
+ * @property-read int|null $forms_count
+ *
+ * @method static \Database\Factories\FieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field query()
+ * @mixin \Eloquent
+ */
 class Field extends Model
 {
     use HasFactory;

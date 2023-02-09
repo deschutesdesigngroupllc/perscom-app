@@ -10,6 +10,23 @@ use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\VirtualColumn\VirtualColumn;
 
+/**
+ * App\Models\Submission
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
+ * @property-read int|null $actions_count
+ * @property-read \App\Models\Form|null $form
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
+ * @property-read int|null $statuses_count
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission forUser(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission query()
+ * @mixin \Eloquent
+ */
 class Submission extends Model
 {
     use Actionable;

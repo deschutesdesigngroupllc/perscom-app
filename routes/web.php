@@ -34,4 +34,4 @@ Route::group(['prefix' => 'find-my-organization'], function () {
 
 Route::get('/privacy-policy', [PrivacyPolicyController::class, 'index'])->name('privacy-policy.index');
 
-Route::get('documentation/api', [SwaggerController::class, 'index']);
+Route::get('documentation/api', [SwaggerController::class, 'index'])->name('api.documentation');

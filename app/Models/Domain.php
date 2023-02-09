@@ -6,6 +6,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
 
+/**
+ * App\Models\Domain
+ *
+ * @property int $id
+ * @property string $domain
+ * @property int $tenant_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read mixed|null $url
+ * @property-read \App\Models\Tenant $tenant
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereDomain($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereUpdatedAt($value)
+ * @mixin \Eloquent
+ */
 class Domain extends \Stancl\Tenancy\Database\Models\Domain
 {
     use HasFactory;

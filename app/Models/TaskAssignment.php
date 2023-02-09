@@ -12,6 +12,26 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\DB;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
+/**
+ * App\Models\TaskAssignment
+ *
+ * @property-read \App\Models\User|null $assigned_by
+ * @property-read bool $complete
+ * @property-read bool $expired
+ * @property-read bool $past_due
+ * @property-read TaskAssignmentStatus $status
+ * @property-read \App\Models\Task|null $task
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static Builder|TaskAssignment assigned()
+ * @method static Builder|TaskAssignment expired()
+ * @method static Builder|TaskAssignment forUser(\App\Models\User $user)
+ * @method static Builder|TaskAssignment newModelQuery()
+ * @method static Builder|TaskAssignment newQuery()
+ * @method static Builder|TaskAssignment pastDue()
+ * @method static Builder|TaskAssignment query()
+ * @mixin \Eloquent
+ */
 class TaskAssignment extends Pivot
 {
     use HasFactory;

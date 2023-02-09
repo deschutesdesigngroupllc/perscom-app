@@ -39,7 +39,7 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
             \App\Http\Middleware\CaptureUserOnlineStatus::class,
-            \App\Http\Middleware\SentryContext::class
+            \App\Http\Middleware\SentryContext::class,
         ],
 
         'auth_web' => [
@@ -49,14 +49,14 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\SentryContext::class
+            \App\Http\Middleware\SentryContext::class,
         ],
 
         'api' => [
             'throttle:api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\ForceJsonResponse::class,
-            \App\Http\Middleware\SentryContext::class
+            \App\Http\Middleware\SentryContext::class,
         ],
 
         'universal' => [CheckUniversalRouteForTenantOrAdmin::class],

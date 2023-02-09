@@ -47,15 +47,15 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
-        Passport::authorizationView(function ($parameters) {
+        Passport::authorizationView(function ($client, $user, $scopes, $request, $authToken) {
             return Inertia::render('passport/Authorize', [
-                'client' => $parameters['client']->id,
-                'name' => $parameters['client']->name,
-                'scopes' => $parameters['scopes'],
-                'state' => $parameters['request']->state,
-                'authToken' => $parameters['authToken'],
+                'client' => $client->id,
+                'name' => $client->name,
+                'scopes' => $scopes,
+                'state' => $request->state,
+                'authToken' => $authToken,
                 'csrfToken' => csrf_token(),
-            ])->toResponse($parameters['request']);
+            ]);
         });
     }
 

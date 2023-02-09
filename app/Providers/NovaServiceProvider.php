@@ -226,16 +226,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(PassportAuthorizedApplications::class),
                         MenuItem::resource(PassportClient::class)->name('My Apps'),
                         MenuItem::resource(PassportPersonalAccessToken::class),
-                        MenuItem::externalLink('Documentation', config('app.url').'/documentation/api')
-                                ->openInNewTab()
-                                ->canSee(function () {
-                                    return Auth::user()->hasPermissionTo('manage:api');
-                                }),
-                        MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widget/')
-                                ->openInNewTab()
-                                ->canSee(function () {
-                                    return Auth::user()->hasPermissionTo('manage:api');
-                                }),
                         MenuItem::resource(PassportLog::class),
                     ])->icon('link')->collapsable()->canSee(function () {
                         return \tenant()->canAccessApi();
@@ -256,9 +246,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     })->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
-                        MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
-                                ->openInNewTab(),
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
+                                ->openInNewTab(),
+                        MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
                                 ->openInNewTab(),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
                         MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')

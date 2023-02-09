@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/{driver}/{tenant}/redirect', [SocialLoginController::class, 'redirect'])
      ->middleware('feature:social-login')
-     ->name('auth.social.redirect');
+     ->name('social.redirect');
 Route::get('/{driver}/callback', [SocialLoginController::class, 'callback'])
      ->middleware('feature:social-login')
-     ->name('auth.social.callback');
+     ->name('social.callback');

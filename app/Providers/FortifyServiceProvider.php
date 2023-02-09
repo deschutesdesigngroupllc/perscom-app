@@ -52,10 +52,10 @@ class FortifyServiceProvider extends ServiceProvider
                 'enableSocialLogin' => ! Request::isCentralRequest() &&
                                        ! Request::isDemoMode() &&
                                        FeatureFlag::isOn('social-login'),
-                'githubLogin' => \route('auth.social.tenant.redirect', [
+                'githubLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'github',
                 ]),
-                'discordLogin' => \route('auth.social.tenant.redirect', [
+                'discordLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'discord',
                 ]),
             ]);

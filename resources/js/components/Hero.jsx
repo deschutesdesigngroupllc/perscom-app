@@ -32,7 +32,7 @@ export function Hero() {
         customizable to support any organization.
       </p>
       <div className='mt-10 flex justify-center space-x-6'>
-        <ButtonLink href={route('register.index')}>Get 1 week free</ButtonLink>
+        <ButtonLink href={route('web.register.index')}>Get 1 week free</ButtonLink>
         <ButtonLink href='mailto:sales@deschutesdesigngroup.com' variant='outline'>
           <svg
             xmlns='http://www.w3.org/2000/svg'

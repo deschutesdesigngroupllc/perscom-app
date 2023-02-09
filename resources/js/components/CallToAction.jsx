@@ -16,7 +16,7 @@ export function CallToAction() {
           <p className='mt-4 text-lg tracking-tight text-white'>
             Our platform requires no setup and is ready-to-use as soon as you&apos;re ready to start.
           </p>
-          <ButtonLink href={route('register.index')} color='white' className='mt-10'>
+          <ButtonLink href={route('web.register.index')} color='white' className='mt-10'>
             {' '}
             Get 1 week free{' '}
           </ButtonLink>

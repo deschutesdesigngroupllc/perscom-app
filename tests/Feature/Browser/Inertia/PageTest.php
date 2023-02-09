@@ -40,7 +40,7 @@ class PageTest extends TestCase
     public function test_register_completion_redirect_back_without_tenant_data()
     {
         $this->get('/register/complete/'.random_int(1, 10))
-             ->assertRedirectToRoute('register.index')
+             ->assertRedirectToRoute('web.register.index')
              ->assertRedirect('/register');
     }
 

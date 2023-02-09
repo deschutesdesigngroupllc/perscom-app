@@ -12,7 +12,7 @@ export function Footer() {
           <nav className='mt-10 text-sm' aria-label='quick links'>
             <ul className='-my-1 flex flex-wrap justify-center space-x-6'>
               <li>
-                <a href={route('landing.home')} className='rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
+                <a href={route('web.landing.home')} className='rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
                   {' '}
                   Home{' '}
                 </a>
@@ -42,7 +42,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={route('find-my-organization.index')}
+                  href={route('web.find-my-organization.index')}
                   target='_blank'
                   className='rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                   rel='noreferrer'
@@ -53,7 +53,7 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href={route('privacy-policy.index')}
+                  href={route('web.privacy-policy.index')}
                   className='rounded-lg px-2 py-1 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
                 >
                   {' '}

@@ -32,7 +32,7 @@ class FindMyOrganizationController extends Controller
 
         $tenant = Tenant::where('email', '=', $request->get('email'))->firstOrFail();
 
-        return redirect()->signedRoute('find-my-organization.show', [
+        return redirect()->signedRoute('web.find-my-organization.show', [
             'tenant' => $tenant,
         ]);
     }

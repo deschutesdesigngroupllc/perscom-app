@@ -22,8 +22,8 @@ class QualificationsController extends WidgetController
     /**
      * Builds Eloquent query for fetching entities in index method.
      *
-     * @param Request $request
-     * @param array $requestedRelations
+     * @param  Request  $request
+     * @param  array  $requestedRelations
      * @return Builder
      */
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder

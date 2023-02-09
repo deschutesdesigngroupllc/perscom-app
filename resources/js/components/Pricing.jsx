@@ -106,7 +106,7 @@ export function Pricing() {
             name='Basic'
             price='$9'
             description='For small organizations with less than 25 personnel.'
-            href={route('register.index')}
+            href={route('web.register.index')}
             features={['Social login support', 'Application provided subdomain', 'Community support']}
           />{' '}
           <Plan
@@ -114,14 +114,14 @@ export function Pricing() {
             name='Pro'
             price='$15'
             description='For growing organizations with less than 100 personnel.'
-            href={route('register.index')}
+            href={route('web.register.index')}
             features={['Access to powerful API', 'Custom subdomain', 'Ticket and email support']}
           />{' '}
           <Plan
             name='Enterprise'
             price='$39'
             description='For large organizations that have more than 100 personnel.'
-            href={route('register.index')}
+            href={route('web.register.index')}
             features={['Export and backup personnel data', 'Single sign-on integration', 'Priority support']}
           />
         </div>

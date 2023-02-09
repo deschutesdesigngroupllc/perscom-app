@@ -9,13 +9,12 @@ use Illuminate\Support\Facades\Crypt;
 class CreatePersonalAccessToken implements CreatesPersonalAccessToken
 {
     /**
-     * @param User  $user
-     * @param       $name
-     * @param array $scopes
-     *
+     * @param  User  $user
+     * @param    $name
+     * @param  array  $scopes
      * @return \Laravel\Passport\PersonalAccessTokenResult
      */
-    public function create(User $user, $name, array $scopes = array())
+    public function create(User $user, $name, array $scopes = [])
     {
         $token = $user->createToken($name, $scopes);
         $token->token->forceFill([
