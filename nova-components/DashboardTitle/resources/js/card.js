@@ -1,5 +1,5 @@
-import Card from "./components/Card";
+import Card from './components/Card'
 
 Nova.booting((app, store) => {
-    app.component("dashboard-title", Card);
-});
+  app.component('dashboard-title', Card)
+})

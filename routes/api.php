@@ -80,10 +80,10 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::belongsToResource('users', 'unit', UsersUnitController::class);
 
         // Widget
-        Orion::resource('widget/roster', RosterController::class)->only('index')->middleware('scope:access:widget')->name('index', 'widget.roster.index');
-        Orion::resource('widget/awards', AwardsController::class)->only('index')->middleware('scope:access:widget')->name('index', 'widget.awards.index');
-        Orion::resource('widget/ranks', RanksController::class)->only('index')->middleware('scope:access:widget')->name('index', 'widget.ranks.index');
-        Orion::resource('widget/qualifications', QualificationsController::class)->only('index')->middleware('scope:access:widget')->name('index', 'widget.qualifications.index');
+        Orion::resource('widget/roster', RosterController::class)->only('index')->middleware('can:widget,App\Models\User')->name('index', 'widget.roster.index');
+        Orion::resource('widget/awards', AwardsController::class)->only('index')->middleware('can:widget,App\Models\User')->name('index', 'widget.awards.index');
+        Orion::resource('widget/ranks', RanksController::class)->only('index')->middleware('can:widget,App\Models\User')->name('index', 'widget.ranks.index');
+        Orion::resource('widget/qualifications', QualificationsController::class)->only('index')->middleware('can:widget,App\Models\User')->name('index', 'widget.qualifications.index');
     });
 
     // Route not found
