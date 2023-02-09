@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Passport\HasApiTokens;
+use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -73,7 +74,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements MustVerifyEmail
+class User extends Authenticatable implements MustVerifyEmail, JWTSubject
 {
     use Actionable;
     use HasApiTokens;
@@ -145,6 +146,30 @@ class User extends Authenticatable implements MustVerifyEmail
         'notes_updated_at' => 'datetime',
         'online' => 'boolean',
     ];
+
+    /**
+     * Get the identifier that will be stored in the subject claim of the JWT.
+     *
+     * @return mixed
+     */
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    /**
+     * Return a key value array, containing any custom claims to be added to the JWT.
+     *
+     * @return array
+     */
+    public function getJWTCustomClaims()
+    {
+        return [
+            'tenant' => tenant()->getTenantKey(),
+            'permissions' => $this->permissions->map(fn($permission) => $permission->name)->toArray(),
+            'roles' => $this->roles->map(fn($role) => $role->name)->toArray()
+        ];
+    }
 
     /**
      * Determine if the user can impersonate another user.
