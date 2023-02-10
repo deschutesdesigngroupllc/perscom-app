@@ -13,10 +13,10 @@ class CreateNewUser implements CreatesNewUsers
     use PasswordValidationRules;
 
     /**
-     * Validate and create a newly registered user.
-     *
      * @param  array  $input
-     * @return \App\Models\User
+     * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Foundation\Auth\User
+     *
+     * @throws \Illuminate\Validation\ValidationException
      */
     public function create(array $input)
     {
@@ -26,10 +26,14 @@ class CreateNewUser implements CreatesNewUsers
             'password' => $this->passwordRules(),
         ])->validate();
 
-        return User::create([
+        $user = User::create([
             'name' => $input['name'],
             'email' => $input['email'],
             'password' => Hash::make($input['password']),
         ]);
+
+        $user->assignRole('User');
+
+        return $user;
     }
 }

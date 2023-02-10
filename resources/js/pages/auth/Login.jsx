@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '../../components/Button'
+import { Button, ButtonLink } from '../../components/Button'
 import { Checkbox } from '../../components/Checkbox'
 import { Input } from '../../components/Input'
 import { Label } from '../../components/Label'
@@ -95,10 +95,18 @@ export function Login({ status, canResetPassword, demoMode, enableSocialLogin, g
             )}
           </div>
         </div>
-        <div>
-          <Button color='blue' type='submit' className='w-full' processing={processing}>
-            Log in
-          </Button>
+        <div className='flex flex-col space-y-2'>
+          <div>
+            <Button color='blue' type='submit' className='w-full' processing={processing}>
+              Log in
+            </Button>
+          </div>
+
+          <div>
+            <ButtonLink color='gray' href={route('register')} className='w-full' processing={processing}>
+              Create a new account
+            </ButtonLink>
+          </div>
         </div>
       </form>
 

@@ -166,8 +166,8 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     {
         return [
             'tenant' => tenant()->getTenantKey(),
-            'permissions' => $this->permissions->map(fn($permission) => $permission->name)->toArray(),
-            'roles' => $this->roles->map(fn($role) => $role->name)->toArray()
+            'permissions' => $this->permissions->map(fn ($permission) => $permission->name)->toArray(),
+            'roles' => $this->roles->map(fn ($role) => $role->name)->toArray(),
         ];
     }
 
