@@ -8,6 +8,7 @@ Route::group([
     'middleware' => [
         InitializeTenancyByDomainOrSubdomain::class,
         PreventAccessFromCentralDomains::class,
+        'subscribed',
     ],
 ], function () {
     Route::post('/token', [

@@ -38,7 +38,9 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (SubscriptionRequired $e, $request) {
-            return response()->view('errors.subscription-required');
+            return response()->view('errors.subscription-required', [
+                'message' => $e->getMessage(),
+            ]);
         });
 
         $this->reportable(function (Throwable $e) {
