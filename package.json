@@ -5,7 +5,7 @@
         "build": "vite build",
         "lint": "eslint --fix './resources/**/*.{js,jsx}' './*.js'",
         "format": "prettier './resources/js/**/*.{js,jsx}' './*.js' --write --config ./.prettierrc",
-        "format-components": "prettier './nova-components/*/resources/js/**/*.{js,jsx,vue}' './*.js' --write --config ./.prettierrc",
+        "format-components": "prettier './nova-components/*/resources/js/**/*.{js,vue}' --write --config ./.prettierrc",
         "build-components": "chmod +x ./nova-components/build.sh && ./nova-components/build.sh"
     },
     "dependencies": {
