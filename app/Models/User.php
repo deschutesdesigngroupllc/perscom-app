@@ -182,14 +182,13 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     }
 
     /**
-     * @return mixed|null
+     * @return \Illuminate\Support\Optional|mixed
      */
     public function getTimeInAssignmentAttribute()
     {
-        return $this->assignment_records()->count() ? Carbon::now()->diff($this->assignment_records()
-                                                                               ->latest()
-                                                                               ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
-            : null;
+        return optional($this->assignment_records->first()?->created_at, function ($date) {
+            return Carbon::now()->diff($date, CarbonInterface::DIFF_ABSOLUTE, false, 3);
+        });
     }
 
     /**
@@ -223,14 +222,13 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     }
 
     /**
-     * @return mixed|null
+     * @return \Illuminate\Support\Optional|mixed
      */
     public function getTimeInGradeAttribute()
     {
-        return $this->rank_records->count() ? Carbon::now()->diff($this->rank_records()
-                                                                       ->latest()
-                                                                       ->first()->created_at, CarbonInterface::DIFF_ABSOLUTE, false, 3)
-            : null;
+        return optional($this->rank_records->first()?->created_at, function ($date) {
+            return Carbon::now()->diff($date, CarbonInterface::DIFF_ABSOLUTE, false, 3);
+        });
     }
 
     /**
@@ -238,7 +236,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      */
     public function assignment_records()
     {
-        return $this->hasMany(AssignmentRecord::class);
+        return $this->hasMany(AssignmentRecord::class)->latest();
     }
 
     /**
@@ -246,7 +244,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      */
     public function award_records()
     {
-        return $this->hasMany(AwardRecord::class);
+        return $this->hasMany(AwardRecord::class)->latest();
     }
 
     /**
@@ -254,7 +252,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      */
     public function combat_records()
     {
-        return $this->hasMany(CombatRecord::class);
+        return $this->hasMany(CombatRecord::class)->latest();
     }
 
     /**
@@ -278,7 +276,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      */
     public function qualification_records()
     {
-        return $this->hasMany(QualificationRecord::class);
+        return $this->hasMany(QualificationRecord::class)->latest();
     }
 
     /**
@@ -305,7 +303,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      */
     public function rank_records()
     {
-        return $this->hasMany(RankRecord::class);
+        return $this->hasMany(RankRecord::class)->latest();
     }
 
     /**
@@ -313,7 +311,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      */
     public function service_records()
     {
-        return $this->hasMany(ServiceRecord::class);
+        return $this->hasMany(ServiceRecord::class)->latest();
     }
 
     /**
@@ -347,6 +345,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     {
         return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')
             ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
+            ->latest()
             ->as('assignment')
             ->using(TaskAssignment::class)
             ->withTimestamps();

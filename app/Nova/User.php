@@ -66,16 +66,6 @@ class User extends Resource
     public static $orderBy = ['name' => 'asc'];
 
     /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
-    {
-        return Str::plural(Str::title(setting('localization_users', 'Users')));
-    }
-
-    /**
      * Get the URI key for the resource.
      *
      * @return string
@@ -170,7 +160,7 @@ class User extends Resource
                             return $model->rank->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Rank Change Date', function ($model) {
-                            return optional($model->rank_records()->latest()->first()?->created_at, function ($date) {
+                            return optional($model->rank_records->first()?->created_at, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
                         })->asSmall(),
@@ -180,11 +170,9 @@ class User extends Resource
                             return $model->specialty->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment_records()
-                                                  ->latest()
-                                                  ->first()?->created_at, function ($date) {
-                                                      return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
-                                                  });
+                            return optional($model->assignment_records->first()?->created_at, function ($date) {
+                                return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            });
                         })->asSmall(),
                     ])->onlyOnIndex()->showOnPreview(),
                     Stack::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), [
@@ -192,11 +180,9 @@ class User extends Resource
                             return $model->position->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment_records()
-                                                  ->latest()
-                                                  ->first()?->created_at, function ($date) {
-                                                      return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
-                                                  });
+                            return optional($model->assignment_records->first()?->created_at, function ($date) {
+                                return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            });
                         })->asSmall(),
                     ])->onlyOnIndex()->showOnPreview(),
                     Stack::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), [
@@ -204,11 +190,9 @@ class User extends Resource
                             return $model->unit->name ?? null;
                         })->asSubTitle(),
                         Line::make('Last Assignment Date', function ($model) {
-                            return optional($model->assignment_records()
-                                                  ->latest()
-                                                  ->first()?->created_at, function ($date) {
-                                                      return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
-                                                  });
+                            return optional($model->assignment_records->first()?->created_at, function ($date) {
+                                return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                            });
                         })->asSmall(),
                     ])->onlyOnIndex()->showOnPreview(),
                     DateTime::make('Last Seen At')->displayUsing(function ($lastSeenAt) {
@@ -230,11 +214,12 @@ class User extends Resource
                         return $model->unit->name ?? null;
                     })->onlyOnDetail(),
                     DateTime::make('Last Assignment Change Date', function ($model) {
-                        return $model->assignment_records()->latest()->first()->created_at ?? null;
+                        return $model->assignment_records->first()->created_at ?? null;
                     })->onlyOnDetail(),
                     Text::make('Time In Assignment', function ($model) {
-                        return $model->time_in_assignment ? CarbonInterval::make($model->time_in_assignment)
-                                                                          ->forHumans() : null;
+                        return optional($model->time_in_assignment, function ($date) {
+                            return CarbonInterval::make($date)->forHumans();
+                        });
                     })->onlyOnDetail(),
                 ]),
                 Tab::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
@@ -244,10 +229,12 @@ class User extends Resource
                     DateTime::make('Last '.
                                    Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
                                    ' Change Date', function ($model) {
-                                       return $model->rank_records()->latest()->first()->created_at ?? null;
+                                       return $model->rank_records->first()->created_at ?? null;
                                    })->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {
-                        return $model->time_in_grade ? CarbonInterval::make($model->time_in_grade)->forHumans() : null;
+                        return optional($model->time_in_grade, function ($date) {
+                            return CarbonInterval::make($date)->forHumans();
+                        });
                     })->onlyOnDetail(),
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),
@@ -277,11 +264,23 @@ class User extends Resource
                        }),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note', \App\Models\User::class),
-                DateTime::make('Notes Last Updated At', 'notes_updated_at')->canSeeWhen('note', \App\Models\User::class)->onlyOnDetail(),
+                DateTime::make('Notes Last Updated At', 'notes_updated_at')
+                        ->canSeeWhen('note', \App\Models\User::class)
+                        ->onlyOnDetail(),
             ]),
             Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])
                 ->showTitle(true),
         ];
+    }
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return Str::plural(Str::title(setting('localization_users', 'Users')));
     }
 
     /**
