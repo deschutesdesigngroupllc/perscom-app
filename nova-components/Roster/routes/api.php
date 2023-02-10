@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use Perscom\Roster\Http\Controllers\RosterController;
 
 /*
@@ -13,5 +12,3 @@ use Perscom\Roster\Http\Controllers\RosterController;
 | by your tool's "Authorize" middleware by default. Now, go build!
 |
 */
-
-Route::get('/', [RosterController::class, 'index']);

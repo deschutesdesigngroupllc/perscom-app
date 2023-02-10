@@ -65,6 +65,9 @@ use App\Policies\TaskPolicy;
 use App\Policies\UnitPolicy;
 use App\Policies\UserPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Cashier\Subscription;
 use Laravel\Cashier\SubscriptionItem;
 
@@ -119,6 +122,18 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        //
+        // Scope JWTs to the tenant they belong to
+        Gate::before(function ($user) {
+            if ($jwtUser = Auth::guard('jwt')->user()) {
+                $payload = Auth::guard('jwt')->payload();
+                if ($payload->get('tenant') !== tenant()->getTenantKey()) {
+                    abort(401, 'You are not authorized to access this account.');
+                }
+            }
+        });
+
+        Auth::viaRequest('api', function (Request $request) {
+            return Auth::guard('passport')->user() ?? Auth::guard('jwt')->user();
+        });
     }
 }

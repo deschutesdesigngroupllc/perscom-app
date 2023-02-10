@@ -3,6 +3,7 @@
 namespace Perscom\Roster;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\Tool;
@@ -29,5 +30,13 @@ class Roster extends Tool
     public function menu(Request $request)
     {
         return MenuSection::make('Roster')->path('/roster')->icon('user-group');
+    }
+
+    /**
+     * @return null
+     */
+    public static function generateJwt()
+    {
+        return Auth::guard('jwt')->login(Auth::guard('web')->user());
     }
 }

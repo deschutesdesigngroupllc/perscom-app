@@ -15,5 +15,9 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 */
 
 Route::get('/', function (NovaRequest $request) {
-    return inertia('Roster');
+    return inertia('Roster', [
+        'jwt' => \Perscom\Roster\Roster::generateJwt(),
+        'tenant_id' => tenant()->getTenantKey(),
+        'widget_url' => env('WIDGET_ROSTER_URL')
+    ]);
 });
