@@ -8,7 +8,7 @@ import { ValidationErrors } from '../../components/ValidationErrors'
 import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react'
 import { AuthLayout } from '../../layouts/Auth'
 
-export function Login({ status, canResetPassword, demoMode, enableSocialLogin, githubLogin, discordLogin }) {
+export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, enableSocialLogin, githubLogin, discordLogin }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',
@@ -101,12 +101,13 @@ export function Login({ status, canResetPassword, demoMode, enableSocialLogin, g
               Log in
             </Button>
           </div>
-
-          <div>
-            <ButtonLink color='gray' href={route('register')} className='w-full' processing={processing}>
-              Create a new account
-            </ButtonLink>
-          </div>
+          {canCreateAnAccount && (
+            <div>
+              <ButtonLink color='gray' href={route('register')} className='w-full' processing={processing}>
+                Create a new account
+              </ButtonLink>
+            </div>
+          )}
         </div>
       </form>
 

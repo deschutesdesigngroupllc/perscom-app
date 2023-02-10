@@ -48,6 +48,7 @@ class FortifyServiceProvider extends ServiceProvider
             return Inertia::render('auth/Login', [
                 'status' => session('status'),
                 'canResetPassword' => Route::has('password.request'),
+                'canCreateAnAccount' => Route::has('register'),
                 'demoMode' => Request::isDemoMode(),
                 'enableSocialLogin' => ! Request::isCentralRequest() &&
                                        ! Request::isDemoMode() &&
