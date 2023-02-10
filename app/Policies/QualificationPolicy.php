@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class QualificationPolicy
+class QualificationPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class QualificationPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:qualification', 'web') || $user->tokenCan('view:qualification');
+        return $this->hasPermissionTo($user, 'view:qualification') || $user->tokenCan('view:qualification');
     }
 
     /**
@@ -41,7 +41,7 @@ class QualificationPolicy
      */
     public function view(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('view:qualification', 'web') || $user->tokenCan('view:qualification');
+        return $this->hasPermissionTo($user, 'view:qualification') || $user->tokenCan('view:qualification');
     }
 
     /**
@@ -52,7 +52,7 @@ class QualificationPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:qualification', 'web') || $user->tokenCan('create:qualification');
+        return $this->hasPermissionTo($user, 'create:qualification') || $user->tokenCan('create:qualification');
     }
 
     /**
@@ -64,7 +64,7 @@ class QualificationPolicy
      */
     public function update(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('update:qualification', 'web') || $user->tokenCan('update:qualification');
+        return $this->hasPermissionTo($user, 'update:qualification') || $user->tokenCan('update:qualification');
     }
 
     /**
@@ -76,7 +76,7 @@ class QualificationPolicy
      */
     public function delete(User $user, Qualification $qualification)
     {
-        return $user->hasPermissionTo('delete:qualification', 'web') || $user->tokenCan('delete:qualification');
+        return $this->hasPermissionTo($user, 'delete:qualification') || $user->tokenCan('delete:qualification');
     }
 
     /**

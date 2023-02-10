@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class QualificationRecordsPolicy
+class QualificationRecordsPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -41,7 +41,7 @@ class QualificationRecordsPolicy
      */
     public function view(User $user, QualificationRecord $qualification)
     {
-        return $user->hasPermissionTo('view:qualificationrecord') ||
+        return $this->hasPermissionTo($user, 'view:qualificationrecord') ||
                $qualification->user?->id === $user->id ||
                $user->tokenCan('view:qualificationrecord');
     }
@@ -54,7 +54,7 @@ class QualificationRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:qualificationrecord', 'web') ||
+        return $this->hasPermissionTo($user, 'create:qualificationrecord') ||
                $user->tokenCan('create:qualificationrecord');
     }
 
@@ -67,7 +67,7 @@ class QualificationRecordsPolicy
      */
     public function update(User $user, QualificationRecord $qualification)
     {
-        return $user->hasPermissionTo('update:qualificationrecord', 'web') ||
+        return $this->hasPermissionTo($user, 'update:qualificationrecord') ||
                $user->tokenCan('update:qualificationrecord');
     }
 
@@ -80,7 +80,7 @@ class QualificationRecordsPolicy
      */
     public function delete(User $user, QualificationRecord $qualification)
     {
-        return $user->hasPermissionTo('delete:qualificationrecord', 'web') ||
+        return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
                $user->tokenCan('delete:qualificationrecord');
     }
 

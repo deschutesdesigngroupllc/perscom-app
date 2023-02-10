@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class CombatRecordsPolicy
+class CombatRecordsPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -41,7 +41,7 @@ class CombatRecordsPolicy
      */
     public function view(User $user, CombatRecord $combat)
     {
-        return $user->hasPermissionTo('view:combatrecord', 'web') ||
+        return $this->hasPermissionTo($user, 'view:combatrecord') ||
                $combat->user?->id === $user->id ||
                $user->tokenCan('view:combatrecord');
     }
@@ -54,7 +54,7 @@ class CombatRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:combatrecord', 'web') || $user->tokenCan('create:combatrecord');
+        return $this->hasPermissionTo($user, 'create:combatrecord') || $user->tokenCan('create:combatrecord');
     }
 
     /**
@@ -66,7 +66,7 @@ class CombatRecordsPolicy
      */
     public function update(User $user, CombatRecord $combat)
     {
-        return $user->hasPermissionTo('update:combatrecord', 'web') || $user->tokenCan('update:combatrecord');
+        return $this->hasPermissionTo($user, 'update:combatrecord') || $user->tokenCan('update:combatrecord');
     }
 
     /**
@@ -78,7 +78,7 @@ class CombatRecordsPolicy
      */
     public function delete(User $user, CombatRecord $combat)
     {
-        return $user->hasPermissionTo('delete:combatrecord', 'web') || $user->tokenCan('delete:combatrecord');
+        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user->tokenCan('delete:combatrecord');
     }
 
     /**

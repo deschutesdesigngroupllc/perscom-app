@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class PassportTokenPolicy
+class PassportTokenPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -33,7 +33,7 @@ class PassportTokenPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -45,7 +45,7 @@ class PassportTokenPolicy
      */
     public function view(User $user, PassportToken $token)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -56,7 +56,7 @@ class PassportTokenPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -68,7 +68,7 @@ class PassportTokenPolicy
      */
     public function update(User $user, PassportToken $token)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -80,7 +80,7 @@ class PassportTokenPolicy
      */
     public function delete(User $user, PassportToken $token)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**

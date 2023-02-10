@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Exceptions\SubscriptionRequired;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
@@ -13,10 +14,11 @@ class Subscribed extends VerifyBillableIsSubscribed
     /**
      * Verify the incoming request's user has a subscription.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
-     * @param  string  $billableType
-     * @param  string  $plan
+     * @param \Illuminate\Http\Request $request
+     * @param \Closure                 $next
+     * @param string                   $billableType
+     * @param string                   $plan
+     *
      * @return \Illuminate\Http\Response
      */
     public function handle($request, $next, $billableType = null, $plan = null)
@@ -33,19 +35,22 @@ class Subscribed extends VerifyBillableIsSubscribed
         $response = parent::handle($request, $next, $billableType, $plan);
         $unsubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
 
-        if ($request->routeIs('api.*')) {
-            if ($unsubscribed) {
-                throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
-            }
+        throw_if($unsubscribed && $request->routeIs('api.*'),
+            SubscriptionRequired::class,
+            402,
+            'A subscription is required to make an API request.'
+        );
 
-            if (! tenant()->canAccessApi()) {
-                throw new SubscriptionRequired(403, 'Your plan does not include the API. Please upgrade your plan to use the API.');
-            }
-        }
+        throw_if(! ztenant()->canAccessApi() && $request->routeIs('api.*'),
+            SubscriptionRequired::class,
+            402,
+            'Your plan does not include the API. Please upgrade your plan to use the API.'
+        );
 
-        if ($unsubscribed && ! Auth::user()->hasPermissionTo('manage:billing')) {
-            throw new SubscriptionRequired(403, 'The account requires a subscription to continue. Please contact your account administrator.');
-        }
+        throw_if($unsubscribed && Gate::check('billing', Auth::user()),
+            SubscriptionRequired::class,
+            'The account requires a subscription to continue. Please contact your account administrator.'
+        );
 
         return $response;
     }

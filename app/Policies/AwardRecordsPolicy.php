@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class AwardRecordsPolicy
+class AwardRecordsPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -41,7 +41,7 @@ class AwardRecordsPolicy
      */
     public function view(User $user, AwardRecord $award)
     {
-        return $user->hasPermissionTo('view:awardrecord', 'web') ||
+        return $this->hasPermissionTo($user, 'view:awardrecord') ||
                $award->user?->id === $user->id ||
                $user->tokenCan('view:awardrecord');
     }
@@ -54,7 +54,7 @@ class AwardRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:awardrecord', 'web') || $user->tokenCan('create:awardrecord');
+        return $this->hasPermissionTo($user, 'create:awardrecord') || $user->tokenCan('create:awardrecord');
     }
 
     /**
@@ -66,7 +66,7 @@ class AwardRecordsPolicy
      */
     public function update(User $user, AwardRecord $award)
     {
-        return $user->hasPermissionTo('update:awardrecord', 'web') || $user->tokenCan('update:awardrecord');
+        return $this->hasPermissionTo($user, 'update:awardrecord') || $user->tokenCan('update:awardrecord');
     }
 
     /**
@@ -78,7 +78,7 @@ class AwardRecordsPolicy
      */
     public function delete(User $user, AwardRecord $award)
     {
-        return $user->hasPermissionTo('delete:awardrecord', 'web') || $user->tokenCan('delete:awardrecord');
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user->tokenCan('delete:awardrecord');
     }
 
     /**

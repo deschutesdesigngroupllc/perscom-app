@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class RankPolicy
+class RankPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class RankPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:rank', 'web') || $user->tokenCan('view:rank');
+        return $this->hasPermissionTo($user, 'view:rank') || $user->tokenCan('view:rank');
     }
 
     /**
@@ -41,7 +41,7 @@ class RankPolicy
      */
     public function view(User $user, Rank $rank)
     {
-        return $user->hasPermissionTo('view:rank', 'web') || $user->tokenCan('view:rank');
+        return $this->hasPermissionTo($user, 'view:rank') || $user->tokenCan('view:rank');
     }
 
     /**
@@ -52,7 +52,7 @@ class RankPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:rank', 'web') || $user->tokenCan('create:rank');
+        return $this->hasPermissionTo($user, 'create:rank') || $user->tokenCan('create:rank');
     }
 
     /**
@@ -64,7 +64,7 @@ class RankPolicy
      */
     public function update(User $user, Rank $rank)
     {
-        return $user->hasPermissionTo('update:rank', 'web') || $user->tokenCan('update:rank');
+        return $this->hasPermissionTo($user, 'update:rank') || $user->tokenCan('update:rank');
     }
 
     /**
@@ -76,7 +76,7 @@ class RankPolicy
      */
     public function delete(User $user, Rank $rank)
     {
-        return $user->hasPermissionTo('delete:rank', 'web') || $user->tokenCan('delete:rank');
+        return $this->hasPermissionTo($user, 'delete:rank') || $user->tokenCan('delete:rank');
     }
 
     /**

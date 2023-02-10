@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class DocumentPolicy
+class DocumentPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class DocumentPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:document', 'web') || $user->tokenCan('view:document');
+        return $this->hasPermissionTo($user, 'view:document') || $user->tokenCan('view:document');
     }
 
     /**
@@ -41,7 +41,7 @@ class DocumentPolicy
      */
     public function view(User $user, Document $document)
     {
-        return $user->hasPermissionTo('view:document', 'web') || $user->tokenCan('view:document');
+        return $this->hasPermissionTo($user, 'view:document') || $user->tokenCan('view:document');
     }
 
     /**
@@ -52,7 +52,7 @@ class DocumentPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:document', 'web') || $user->tokenCan('create:document');
+        return $this->hasPermissionTo($user, 'create:document') || $user->tokenCan('create:document');
     }
 
     /**
@@ -64,7 +64,7 @@ class DocumentPolicy
      */
     public function update(User $user, Document $document)
     {
-        return $user->hasPermissionTo('update:document', 'web') || $user->tokenCan('update:document');
+        return $this->hasPermissionTo($user, 'update:document') || $user->tokenCan('update:document');
     }
 
     /**
@@ -76,7 +76,7 @@ class DocumentPolicy
      */
     public function delete(User $user, Document $document)
     {
-        return $user->hasPermissionTo('delete:document', 'web') || $user->tokenCan('delete:document');
+        return $this->hasPermissionTo($user, 'delete:document') || $user->tokenCan('delete:document');
     }
 
     /**

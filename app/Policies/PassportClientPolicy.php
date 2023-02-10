@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 use Laravel\Passport\Client;
 
-class PassportClientPolicy
+class PassportClientPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -33,7 +33,7 @@ class PassportClientPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -49,7 +49,7 @@ class PassportClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -60,7 +60,7 @@ class PassportClientPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -76,7 +76,7 @@ class PassportClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -92,7 +92,7 @@ class PassportClientPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**

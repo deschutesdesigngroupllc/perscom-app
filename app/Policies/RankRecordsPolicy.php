@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class RankRecordsPolicy
+class RankRecordsPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -41,7 +41,7 @@ class RankRecordsPolicy
      */
     public function view(User $user, RankRecord $rank)
     {
-        return $user->hasPermissionTo('view:rankrecord', 'web') ||
+        return $this->hasPermissionTo($user, 'view:rankrecord') ||
                $rank->user?->id === $user->id ||
                $user->tokenCan('view:rankrecord');
     }
@@ -54,7 +54,7 @@ class RankRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:rankrecord', 'web') || $user->tokenCan('create:rankrecord');
+        return $this->hasPermissionTo($user, 'create:rankrecord') || $user->tokenCan('create:rankrecord');
     }
 
     /**
@@ -66,7 +66,7 @@ class RankRecordsPolicy
      */
     public function update(User $user, RankRecord $rank)
     {
-        return $user->hasPermissionTo('update:rankrecord', 'web') || $user->tokenCan('update:rankrecord');
+        return $this->hasPermissionTo($user, 'update:rankrecord') || $user->tokenCan('update:rankrecord');
     }
 
     /**
@@ -78,7 +78,7 @@ class RankRecordsPolicy
      */
     public function delete(User $user, RankRecord $rank)
     {
-        return $user->hasPermissionTo('delete:rankrecord', 'web') || $user->tokenCan('delete:rankrecord');
+        return $this->hasPermissionTo($user, 'delete:rankrecord') || $user->tokenCan('delete:rankrecord');
     }
 
     /**

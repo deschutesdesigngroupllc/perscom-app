@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class SpecialtyPolicy
+class SpecialtyPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class SpecialtyPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:specialty', 'web') || $user->tokenCan('view:specialty');
+        return $this->hasPermissionTo($user, 'view:specialty') || $user->tokenCan('view:specialty');
     }
 
     /**
@@ -41,7 +41,7 @@ class SpecialtyPolicy
      */
     public function view(User $user, Specialty $mos)
     {
-        return $user->hasPermissionTo('view:specialty', 'web') || $user->tokenCan('view:specialty');
+        return $this->hasPermissionTo($user, 'view:specialty') || $user->tokenCan('view:specialty');
     }
 
     /**
@@ -52,7 +52,7 @@ class SpecialtyPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:specialty', 'web') || $user->tokenCan('create:specialty');
+        return $this->hasPermissionTo($user, 'create:specialty') || $user->tokenCan('create:specialty');
     }
 
     /**
@@ -64,7 +64,7 @@ class SpecialtyPolicy
      */
     public function update(User $user, Specialty $mos)
     {
-        return $user->hasPermissionTo('update:specialty', 'web') || $user->tokenCan('update:specialty');
+        return $this->hasPermissionTo($user, 'update:specialty') || $user->tokenCan('update:specialty');
     }
 
     /**
@@ -76,7 +76,7 @@ class SpecialtyPolicy
      */
     public function delete(User $user, Specialty $mos)
     {
-        return $user->hasPermissionTo('delete:specialty', 'web') || $user->tokenCan('delete:specialty');
+        return $this->hasPermissionTo($user, 'delete:specialty') || $user->tokenCan('delete:specialty');
     }
 
     /**

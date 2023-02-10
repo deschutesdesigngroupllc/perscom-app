@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class PermissionPolicy
+class PermissionPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -30,7 +30,7 @@ class PermissionPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:permission', 'web') || $user->tokenCan('view:permission');
+        return $this->hasPermissionTo($user, 'view:permission') || $user->tokenCan('view:permission');
     }
 
     /**
@@ -42,7 +42,7 @@ class PermissionPolicy
      */
     public function view(User $user, Permission $permission)
     {
-        return $user->hasPermissionTo('view:permission', 'web') || $user->tokenCan('view:permission');
+        return $this->hasPermissionTo($user, 'view:permission') || $user->tokenCan('view:permission');
     }
 
     /**
@@ -53,7 +53,7 @@ class PermissionPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:permission', 'web') || $user->tokenCan('create:permission');
+        return $this->hasPermissionTo($user, 'create:permission') || $user->tokenCan('create:permission');
     }
 
     /**
@@ -69,7 +69,7 @@ class PermissionPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('update:permission', 'web') || $user->tokenCan('update:permission');
+        return $this->hasPermissionTo($user, 'update:permission') || $user->tokenCan('update:permission');
     }
 
     /**
@@ -85,7 +85,7 @@ class PermissionPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('delete:permission', 'web') || $user->tokenCan('delete:permission');
+        return $this->hasPermissionTo($user, 'delete:permission') || $user->tokenCan('delete:permission');
     }
 
     /**
@@ -102,7 +102,7 @@ class PermissionPolicy
             return false;
         }
 
-        return $user->hasPermissionTo('update:permission');
+        return $this->hasPermissionTo($user, 'update:permission');
     }
 
     /**

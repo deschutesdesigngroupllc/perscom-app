@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class DomainPolicy
+class DomainPolicy extends Policy
 {
     use HandlesAuthorization;
 

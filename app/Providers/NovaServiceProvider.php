@@ -277,7 +277,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
                     return ! $request->isDemoMode() &&
                            ! $request->isCentralRequest() &&
-                           $request->user()->hasPermissionTo('manage:billing') &&
+                           Gate::check('billing', $request->user()) &&
                            FeatureFlag::isOn('billing');
                 }),
                 MenuItem::make('Logout', 'logout')->method('POST', [

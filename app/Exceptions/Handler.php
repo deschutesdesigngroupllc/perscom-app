@@ -33,10 +33,6 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->reportable(function (Throwable $e) {
-            //
-        });
-
         $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
             return response()->view('errors.tenant-not-found');
         });

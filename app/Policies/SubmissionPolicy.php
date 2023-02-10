@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class SubmissionPolicy
+class SubmissionPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -42,7 +42,7 @@ class SubmissionPolicy
      */
     public function view(User $user, Submission $submission)
     {
-        return $user->hasPermissionTo('view:submission', 'web') ||
+        return $this->hasPermissionTo($user, 'view:submission') ||
                $user->id === $submission->user?->id ||
                $user->tokenCan('view:submission');
     }
@@ -55,7 +55,7 @@ class SubmissionPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:submission', 'web') || $user->tokenCan('create:submission');
+        return $this->hasPermissionTo($user, 'create:submission') || $user->tokenCan('create:submission');
     }
 
     /**
@@ -67,7 +67,7 @@ class SubmissionPolicy
      */
     public function update(User $user, Submission $submission)
     {
-        return $user->hasPermissionTo('update:submission', 'web') || $user->tokenCan('update:submission');
+        return $this->hasPermissionTo($user, 'update:submission') || $user->tokenCan('update:submission');
     }
 
     /**
@@ -79,7 +79,7 @@ class SubmissionPolicy
      */
     public function delete(User $user, Submission $submission)
     {
-        return $user->hasPermissionTo('delete:submission', 'web') || $user->tokenCan('delete:submission');
+        return $this->hasPermissionTo($user, 'delete:submission') || $user->tokenCan('delete:submission');
     }
 
     /**

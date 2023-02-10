@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class AwardPolicy
+class AwardPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class AwardPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:award', 'web') || $user->tokenCan('view:award');
+        return $this->hasPermissionTo($user, 'view:award') || $user->tokenCan('view:award');
     }
 
     /**
@@ -41,7 +41,7 @@ class AwardPolicy
      */
     public function view(User $user, Award $award)
     {
-        return $user->hasPermissionTo('view:award', 'web') || $user->tokenCan('view:award');
+        return $this->hasPermissionTo($user, 'view:award') || $user->tokenCan('view:award');
     }
 
     /**
@@ -52,7 +52,7 @@ class AwardPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:award', 'web') || $user->tokenCan('create:award');
+        return $this->hasPermissionTo($user, 'create:award') || $user->tokenCan('create:award');
     }
 
     /**
@@ -64,7 +64,7 @@ class AwardPolicy
      */
     public function update(User $user, Award $award)
     {
-        return $user->hasPermissionTo('update:award', 'web') || $user->tokenCan('update:award');
+        return $this->hasPermissionTo($user, 'update:award') || $user->tokenCan('update:award');
     }
 
     /**
@@ -76,7 +76,7 @@ class AwardPolicy
      */
     public function delete(User $user, Award $award)
     {
-        return $user->hasPermissionTo('delete:award', 'web') || $user->tokenCan('delete:award');
+        return $this->hasPermissionTo($user, 'delete:award') || $user->tokenCan('delete:award');
     }
 
     /**

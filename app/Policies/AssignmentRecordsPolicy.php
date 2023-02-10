@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class AssignmentRecordsPolicy
+class AssignmentRecordsPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -41,7 +41,7 @@ class AssignmentRecordsPolicy
      */
     public function view(User $user, AssignmentRecord $assignment)
     {
-        return $user->hasPermissionTo('view:assignmentrecord', 'web') ||
+        return $this->hasPermissionTo($user, 'view:assignmentrecord') ||
                $assignment->user?->id === $user->id ||
                $user->tokenCan('view:assignmentrecord');
     }
@@ -54,7 +54,7 @@ class AssignmentRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:assignmentrecord', 'web') || $user->tokenCan('create:assignmentrecord');
+        return $this->hasPermissionTo($user, 'create:assignmentrecord') || $user->tokenCan('create:assignmentrecord');
     }
 
     /**
@@ -66,7 +66,7 @@ class AssignmentRecordsPolicy
      */
     public function update(User $user, AssignmentRecord $assignment)
     {
-        return $user->hasPermissionTo('update:assignmentrecord', 'web') || $user->tokenCan('update:assignmentrecord');
+        return $this->hasPermissionTo($user, 'update:assignmentrecord') || $user->tokenCan('update:assignmentrecord');
     }
 
     /**
@@ -78,7 +78,7 @@ class AssignmentRecordsPolicy
      */
     public function delete(User $user, AssignmentRecord $assignment)
     {
-        return $user->hasPermissionTo('delete:assignmentrecord', 'web') || $user->tokenCan('delete:assignmentrecord');
+        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user->tokenCan('delete:assignmentrecord');
     }
 
     /**
