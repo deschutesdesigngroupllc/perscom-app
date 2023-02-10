@@ -15,6 +15,7 @@ class RankResource extends Resource
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
+            'abbreviation' => $this->resource->abbreviation,
             'description' => $this->resource->description,
             'image_url' => $this->resource->image->image_url ?? null,
         ];
