@@ -66,7 +66,7 @@ class HandleInertiaRequests extends Middleware
     {
         return array_merge(parent::share($request), [
             'tenant' => tenant('name'),
-            'tenant_id' => tenant()->getTenantKey(),
+            'tenant_id' => tenant('id'),
         ]);
     }
 }
