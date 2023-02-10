@@ -7,6 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
+use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedByRequestDataException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
 use Throwable;
 
@@ -17,7 +18,11 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, class-string<Throwable>>
      */
-    protected $dontReport = [TenantCouldNotBeIdentifiedByRequestDataException::class, OAuthServerException::class];
+    protected $dontReport = [
+        TenantCouldNotBeIdentifiedOnDomainException::class,
+        TenantCouldNotBeIdentifiedByRequestDataException::class,
+        OAuthServerException::class,
+    ];
 
     /**
      * A list of the inputs that are never flashed for validation exceptions.
