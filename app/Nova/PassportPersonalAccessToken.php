@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
@@ -129,6 +130,15 @@ class PassportPersonalAccessToken extends Resource
             DateTime::make('Updated At')->onlyOnDetail(),
             DateTime::make('Expires At')->sortable()->exceptOnForms(),
         ];
+    }
+
+    /**
+     * @param  Request  $request
+     * @return bool
+     */
+    public static function authorizedToViewAny(Request $request)
+    {
+        return tenant()->canAccessApi();
     }
 
     /**

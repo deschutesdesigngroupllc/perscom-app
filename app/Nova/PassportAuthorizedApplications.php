@@ -91,6 +91,15 @@ class PassportAuthorizedApplications extends Resource
 
     /**
      * @param  Request  $request
+     * @return bool
+     */
+    public static function authorizedToViewAny(Request $request)
+    {
+        return tenant()->canAccessSingleSignOn();
+    }
+
+    /**
+     * @param  Request  $request
      * @return false
      */
     public static function authorizedToCreate(Request $request)

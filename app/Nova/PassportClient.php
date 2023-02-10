@@ -109,6 +109,15 @@ class PassportClient extends Resource
 
     /**
      * @param  Request  $request
+     * @return bool
+     */
+    public static function authorizedToViewAny(Request $request)
+    {
+        return tenant()->canAccessSingleSignOn();
+    }
+
+    /**
+     * @param  Request  $request
      * @return false
      */
     public function authorizedToReplicate(Request $request)
