@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
-class UserPolicy
+class UserPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:user', 'web') || $user->tokenCan('view:user');
+        return $this->hasPermissionTo($user, 'view:user') || $user->tokenCan('view:user');
     }
 
     /**
@@ -41,7 +41,7 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return $user->hasPermissionTo('view:user', 'web') || $user->id === $model->id || $user->tokenCan('view:user');
+        return $this->hasPermissionTo($user, 'view:user') || $user->id === $model->id || $user->tokenCan('view:user');
     }
 
     /**
@@ -52,7 +52,7 @@ class UserPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:user', 'web') || $user->tokenCan('create:user');
+        return $this->hasPermissionTo($user, 'create:user') || $user->tokenCan('create:user');
     }
 
     /**
@@ -64,7 +64,7 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->hasPermissionTo('update:user', 'web') ||
+        return $this->hasPermissionTo($user, 'update:user') ||
                $user->id === $model->id ||
                $user->tokenCan('update:user');
     }
@@ -78,7 +78,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->hasPermissionTo('delete:user', 'web') || $user->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:user') || $user->tokenCan('delete:user');
     }
 
     /**
@@ -114,7 +114,7 @@ class UserPolicy
      */
     public function impersonate(User $user, User $model)
     {
-        return $user->hasPermissionTo('impersonate:user', 'web') || $user->tokenCan('impersonate:user');
+        return $this->hasPermissionTo($user, 'impersonate:user') || $user->tokenCan('impersonate:user');
     }
 
     /**
@@ -126,7 +126,7 @@ class UserPolicy
      */
     public function note(User $user)
     {
-        return $user->hasPermissionTo('note:user', 'web') || $user->tokenCan('note:user');
+        return $this->hasPermissionTo($user, 'note:user') || $user->tokenCan('note:user');
     }
 
     /**
@@ -135,6 +135,15 @@ class UserPolicy
      */
     public function widget(User $user)
     {
-        return $user->hasPermissionTo('access:widget', 'web') || $user->tokenCan('access:widget') || Auth::guard('jwt')->check();
+        return $this->hasPermissionTo($user, 'access:widget') || $user->tokenCan('access:widget') || Auth::guard('jwt')->check();
+    }
+
+    /**
+     * @param  User  $user
+     * @return bool
+     */
+    public function billing(User $user)
+    {
+        return $this->hasPermissionTo($user, 'manage:billing') || $user->tokenCan('manage:billing');
     }
 }

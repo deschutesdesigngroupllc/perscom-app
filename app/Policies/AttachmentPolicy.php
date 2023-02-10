@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class AttachmentPolicy
+class AttachmentPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -53,7 +53,7 @@ class AttachmentPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:attachment', 'web') || $user->tokenCan('create:attachment');
+        return $this->hasPermissionTo($user, 'create:attachment') || $user->tokenCan('create:attachment');
     }
 
     /**

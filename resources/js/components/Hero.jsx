@@ -11,7 +11,7 @@ import logoGithub from '../../images/logos/github.png'
 
 export function Hero() {
   return (
-    <Container className='lg:pt-26 pt-20 pb-16 text-center'>
+    <Container className='lg:pt-20 py-16 text-center'>
       <h1 className='mx-auto max-w-6xl font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl'>
         Providing cutting-edge{' '}
         <span className='relative whitespace-nowrap text-blue-600'>
@@ -51,11 +51,11 @@ export function Hero() {
           <span className='ml-3'>Contact sales</span>
         </ButtonLink>
       </div>
-      <div className='mt-16 lg:mt-20'>
+      <div className='mt-12 lg:mt-16'>
         <p className='font-display text-base text-slate-900'>Powered and backed by leading technology.</p>
         <ul className='mt-8 flex items-center justify-center space-x-8 sm:flex-col sm:space-x-0 sm:space-y-10 xl:flex-row xl:space-y-0 xl:space-x-12'>
           <li>
-            <ul className='flex flex-col items-center space-y-8 sm:flex-row sm:space-y-0 sm:space-x-12'>
+            <ul className='flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-12'>
               <li className='flex'>
                 <img src={logoAws} alt='AWS' className='h-20' />
               </li>
@@ -68,7 +68,7 @@ export function Hero() {
             </ul>
           </li>
           <li>
-            <ul className='flex flex-col items-center space-y-8 sm:flex-row sm:space-y-0 sm:space-x-12'>
+            <ul className='flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-12'>
               <li className='flex'>
                 <img src={logoDocker} alt='Docker' className='h-20' />
               </li>

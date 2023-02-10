@@ -101,7 +101,7 @@ return [
             'local',
             'public',
             's3',
-            's3_public'
+            's3_public',
         ],
 
         /**

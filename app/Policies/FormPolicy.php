@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class FormPolicy
+class FormPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -44,7 +44,7 @@ class FormPolicy
      */
     public function view(User $user, Form $form)
     {
-        return $user->hasPermissionTo('view:form', 'web') || $user->tokenCan('view:form');
+        return $this->hasPermissionTo($user, 'view:form') || $user->tokenCan('view:form');
     }
 
     /**
@@ -55,7 +55,7 @@ class FormPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:form', 'web') || $user->tokenCan('create:form');
+        return $this->hasPermissionTo($user, 'create:form') || $user->tokenCan('create:form');
     }
 
     /**
@@ -67,7 +67,7 @@ class FormPolicy
      */
     public function update(User $user, Form $form)
     {
-        return $user->hasPermissionTo('update:form', 'web') || $user->tokenCan('update:form');
+        return $this->hasPermissionTo($user, 'update:form') || $user->tokenCan('update:form');
     }
 
     /**
@@ -79,7 +79,7 @@ class FormPolicy
      */
     public function delete(User $user, Form $form)
     {
-        return $user->hasPermissionTo('delete:form', 'web') || $user->tokenCan('delete:form');
+        return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
     }
 
     /**

@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class StatusRecordPolicy
+class StatusRecordPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -30,7 +30,7 @@ class StatusRecordPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:statusrecord', 'web') || $user->tokenCan('view:statusrecord');
+        return $this->hasPermissionTo($user, 'view:statusrecord') || $user->tokenCan('view:statusrecord');
     }
 
     /**
@@ -42,7 +42,7 @@ class StatusRecordPolicy
      */
     public function view(User $user, StatusRecord $statusRecord)
     {
-        return ($user->hasPermissionTo('view:statusrecord', 'web') || $user->tokenCan('view:statusrecord')) &&
+        return ($this->hasPermissionTo($user, 'view:statusrecord') || $user->tokenCan('view:statusrecord')) &&
                Gate::check('view', $statusRecord->model);
     }
 
@@ -54,7 +54,7 @@ class StatusRecordPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:statusrecord', 'web') || $user->tokenCan('create:statusrecord');
+        return $this->hasPermissionTo($user, 'create:statusrecord') || $user->tokenCan('create:statusrecord');
     }
 
     /**
@@ -66,7 +66,7 @@ class StatusRecordPolicy
      */
     public function update(User $user, StatusRecord $statusRecord)
     {
-        return ($user->hasPermissionTo('update:statusrecord', 'web') || $user->tokenCan('update:statusrecord')) &&
+        return ($this->hasPermissionTo($user, 'update:statusrecord') || $user->tokenCan('update:statusrecord')) &&
                Gate::check('update', $statusRecord->model);
     }
 
@@ -79,7 +79,7 @@ class StatusRecordPolicy
      */
     public function delete(User $user, StatusRecord $statusRecord)
     {
-        return ($user->hasPermissionTo('delete:statusrecord', 'web') || $user->tokenCan('delete:statusrecord')) &&
+        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user->tokenCan('delete:statusrecord')) &&
                Gate::check('delete', $statusRecord->model);
     }
 

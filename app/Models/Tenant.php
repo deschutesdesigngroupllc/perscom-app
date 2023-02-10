@@ -232,6 +232,20 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     /**
      * @return bool
      */
+    public function canAccessSingleSignOn()
+    {
+        $plan = $this->sparkPlan();
+
+        if (FeatureFlag::isOn('billing') && (($plan && $plan->name === 'Enterprise') || $this->onTrial())) {
+            return true;
+        }
+
+        return request()->isDemoMode() || FeatureFlag::isOff('billing');
+    }
+
+    /**
+     * @return bool
+     */
     public function canAccessCustomSubdomain()
     {
         $plan = $this->sparkPlan();

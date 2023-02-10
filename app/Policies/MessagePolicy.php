@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class MessagePolicy
+class MessagePolicy extends Policy
 {
     use HandlesAuthorization;
 

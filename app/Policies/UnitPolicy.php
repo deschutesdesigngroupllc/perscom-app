@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class UnitPolicy
+class UnitPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class UnitPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:unit', 'web') || $user->tokenCan('view:unit');
+        return $this->hasPermissionTo($user, 'view:unit') || $user->tokenCan('view:unit');
     }
 
     /**
@@ -41,7 +41,7 @@ class UnitPolicy
      */
     public function view(User $user, Unit $unit)
     {
-        return $user->hasPermissionTo('view:unit', 'web') || $user->tokenCan('view:unit');
+        return $this->hasPermissionTo($user, 'view:unit') || $user->tokenCan('view:unit');
     }
 
     /**
@@ -52,7 +52,7 @@ class UnitPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:unit', 'web') || $user->tokenCan('create:user');
+        return $this->hasPermissionTo($user, 'create:unit') || $user->tokenCan('create:user');
     }
 
     /**
@@ -64,7 +64,7 @@ class UnitPolicy
      */
     public function update(User $user, Unit $unit)
     {
-        return $user->hasPermissionTo('update:unit', 'web') || $user->tokenCan('update:user');
+        return $this->hasPermissionTo($user, 'update:unit') || $user->tokenCan('update:user');
     }
 
     /**
@@ -76,7 +76,7 @@ class UnitPolicy
      */
     public function delete(User $user, Unit $unit)
     {
-        return $user->hasPermissionTo('delete:unit', 'web') || $user->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
     }
 
     /**

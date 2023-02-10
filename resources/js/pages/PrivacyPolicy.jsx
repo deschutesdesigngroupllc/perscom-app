@@ -7,8 +7,8 @@ function PrivacyPolicy() {
   return (
     <>
       <Header />
-      <Container className='lg:pt-26 pt-20 pb-16 text-slate-600 flex flex-col space-y-4'>
-        <h1 className='font-bold h1 text-3xl mb-3 text-black'>PERSCOM.io Privacy Policy</h1>
+      <Container className='lg:pt-20 py-16 text-slate-600 flex flex-col space-y-4'>
+        <h1 className='font-bold h1 text-2xl sm:text-3xl mb-3 text-black'>PERSCOM.io Privacy Policy</h1>
         <p>
           Your privacy is important to us. It is Deschutes Design Group LLC&#39;s policy to respect your privacy and comply with any
           applicable law and regulation regarding any personal information we may collect about you, including across our website,{' '}
@@ -65,7 +65,7 @@ function PrivacyPolicy() {
           records, stored files, user profiles, analytics data and other metrics, as well as other types of information, created or
           generated, as users interact with our services.{' '}
         </p>
-        <h4>Legitimate Reasons for Processing Your Personal Information</h4>
+        <h4 className='font-bold text-black text-xl'>Legitimate Reasons for Processing Your Personal Information</h4>
         <p>
           We only collect and use your personal information when we have a legitimate reason for doing so. In which instance, we only
           collect personal information that is reasonably necessary to provide our services to you.{' '}
@@ -85,7 +85,7 @@ function PrivacyPolicy() {
           processed in a manner that is incompatible with these purposes:{' '}
         </p>
         <ul className='list-disc list-inside'>
-          <li>to provide you with our platform's core features and services</li>
+          <li>to provide you with our platform&apos;s core features and services</li>
           <li>to enable you to access and use our website, associated applications, and associated social media platforms</li>
           <li>for internal record keeping and administrative purposes</li>
         </ul>

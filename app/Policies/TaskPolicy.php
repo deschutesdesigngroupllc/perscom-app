@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class TaskPolicy
+class TaskPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class TaskPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:task', 'web') || $user->tokenCan('view:task');
+        return $this->hasPermissionTo($user, 'view:task') || $user->tokenCan('view:task');
     }
 
     /**
@@ -41,7 +41,7 @@ class TaskPolicy
      */
     public function view(User $user, Task $task)
     {
-        return $user->hasPermissionTo('view:task', 'web') || $user->tokenCan('view:task');
+        return $this->hasPermissionTo($user, 'view:task') || $user->tokenCan('view:task');
     }
 
     /**
@@ -52,7 +52,7 @@ class TaskPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:task', 'web') || $user->tokenCan('create:task');
+        return $this->hasPermissionTo($user, 'create:task') || $user->tokenCan('create:task');
     }
 
     /**
@@ -64,7 +64,7 @@ class TaskPolicy
      */
     public function update(User $user, Task $task)
     {
-        return $user->hasPermissionTo('update:task', 'web') || $user->tokenCan('update:task');
+        return $this->hasPermissionTo($user, 'update:task') || $user->tokenCan('update:task');
     }
 
     /**
@@ -76,7 +76,7 @@ class TaskPolicy
      */
     public function delete(User $user, Task $task)
     {
-        return $user->hasPermissionTo('delete:task', 'web') || $user->tokenCan('delete:task');
+        return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
     }
 
     /**

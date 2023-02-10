@@ -5,6 +5,7 @@ namespace App\Http\Middleware;
 use App\Exceptions\SubscriptionRequired;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
@@ -33,19 +34,23 @@ class Subscribed extends VerifyBillableIsSubscribed
         $response = parent::handle($request, $next, $billableType, $plan);
         $unsubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
 
-        if ($request->routeIs('api.*')) {
-            if ($unsubscribed) {
-                throw new SubscriptionRequired(402, 'A subscription is required to make an API request.');
-            }
+        throw_if(($unsubscribed || ! tenant()->canAccessApi()) && $request->routeIs('api.*'),
+            SubscriptionRequired::class,
+            402,
+            'A subscription is required to make an API request.'
+        );
 
-            if (! tenant()->canAccessApi()) {
-                throw new SubscriptionRequired(403, 'Your plan does not include the API. Please upgrade your plan to use the API.');
-            }
-        }
+        throw_if(($unsubscribed || ! tenant()->canAccessSingleSignOn()) && $request->routeIs('passport.*'),
+            SubscriptionRequired::class,
+            402,
+            'Your subscription does not include use of OAuth 2.0.'
+        );
 
-        if ($unsubscribed && ! Auth::user()->hasPermissionTo('manage:billing')) {
-            throw new SubscriptionRequired(403, 'The account requires a subscription to continue. Please contact your account administrator.');
-        }
+        throw_if($unsubscribed && ! Gate::check('billing', Auth::user()),
+            SubscriptionRequired::class,
+            402,
+            'The account requires a subscription to continue. Please contact your account administrator.'
+        );
 
         return $response;
     }

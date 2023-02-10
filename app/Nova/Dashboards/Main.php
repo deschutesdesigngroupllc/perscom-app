@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Dashboards\Main as Dashboard;
 use Perscom\AlertCard\AlertCard;
 use Perscom\DashboardQuickActions\DashboardQuickActions;
@@ -64,7 +65,7 @@ class Main extends Dashboard
             $card->withSystemMessage($message->title, $message->message, $message->link_text, $message->url);
         });
 
-        if (! Request::isDemoMode() && FeatureFlag::isOn('billing') && Auth::user()->hasPermissionTo('manage:billing')) {
+        if (! Request::isDemoMode() && FeatureFlag::isOn('billing') && Gate::check('billing', Auth::user())) {
             if (\tenant()->onTrial()) {
                 $date = \tenant()->trial_ends_at;
                 $ends = Carbon::parse($date)->toFormattedDateString();

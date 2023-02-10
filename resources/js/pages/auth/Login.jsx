@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '../../components/Button'
+import { Button, ButtonLink } from '../../components/Button'
 import { Checkbox } from '../../components/Checkbox'
 import { Input } from '../../components/Input'
 import { Label } from '../../components/Label'
@@ -8,7 +8,7 @@ import { ValidationErrors } from '../../components/ValidationErrors'
 import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react'
 import { AuthLayout } from '../../layouts/Auth'
 
-export function Login({ status, canResetPassword, demoMode, enableSocialLogin, githubLogin, discordLogin }) {
+export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, enableSocialLogin, githubLogin, discordLogin }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     email: '',
     password: '',
@@ -95,10 +95,19 @@ export function Login({ status, canResetPassword, demoMode, enableSocialLogin, g
             )}
           </div>
         </div>
-        <div>
-          <Button color='blue' type='submit' className='w-full' processing={processing}>
-            Log in
-          </Button>
+        <div className='flex flex-col space-y-2'>
+          <div>
+            <Button color='blue' type='submit' className='w-full' processing={processing}>
+              Log in
+            </Button>
+          </div>
+          {canCreateAnAccount && (
+            <div>
+              <ButtonLink color='gray' href={route('register')} className='w-full' processing={processing}>
+                Create a new account
+              </ButtonLink>
+            </div>
+          )}
         </div>
       </form>
 
@@ -151,6 +160,7 @@ export function Login({ status, canResetPassword, demoMode, enableSocialLogin, g
 Login.propTypes = {
   status: PropTypes.string,
   canResetPassword: PropTypes.bool,
+  canCreateAnAccount: PropTypes.bool,
   demoMode: PropTypes.bool,
   enableSocialLogin: PropTypes.bool,
   githubLogin: PropTypes.string,

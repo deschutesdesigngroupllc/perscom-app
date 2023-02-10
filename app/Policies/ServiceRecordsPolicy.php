@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class ServiceRecordsPolicy
+class ServiceRecordsPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -41,7 +41,7 @@ class ServiceRecordsPolicy
      */
     public function view(User $user, ServiceRecord $service)
     {
-        return $user->hasPermissionTo('view:servicerecord', 'web') ||
+        return $this->hasPermissionTo($user, 'view:servicerecord') ||
                $service->user?->id === $user->id ||
                $user->tokenCan('view:servicerecord');
     }
@@ -54,7 +54,7 @@ class ServiceRecordsPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:servicerecord', 'web') || $user->tokenCan('create:servicerecord');
+        return $this->hasPermissionTo($user, 'create:servicerecord') || $user->tokenCan('create:servicerecord');
     }
 
     /**
@@ -66,7 +66,7 @@ class ServiceRecordsPolicy
      */
     public function update(User $user, ServiceRecord $service)
     {
-        return $user->hasPermissionTo('update:servicerecord', 'web') || $user->tokenCan('update:servicerecord');
+        return $this->hasPermissionTo($user, 'update:servicerecord') || $user->tokenCan('update:servicerecord');
     }
 
     /**
@@ -78,7 +78,7 @@ class ServiceRecordsPolicy
      */
     public function delete(User $user, ServiceRecord $service)
     {
-        return $user->hasPermissionTo('delete:servicerecord', 'web') || $user->tokenCan('delete:servicerecord');
+        return $this->hasPermissionTo($user, 'delete:servicerecord') || $user->tokenCan('delete:servicerecord');
     }
 
     /**

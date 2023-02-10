@@ -8,7 +8,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class RolePolicy
+class RolePolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -30,7 +30,7 @@ class RolePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:role', 'web') || $user->tokenCan('view:role');
+        return $this->hasPermissionTo($user, 'view:role') || $user->tokenCan('view:role');
     }
 
     /**
@@ -42,7 +42,7 @@ class RolePolicy
      */
     public function view(User $user, Role $role)
     {
-        return $user->hasPermissionTo('view:role', 'web') || $user->tokenCan('view:role');
+        return $this->hasPermissionTo($user, 'view:role') || $user->tokenCan('view:role');
     }
 
     /**
@@ -53,7 +53,7 @@ class RolePolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:role', 'web') || $user->tokenCan('create:role');
+        return $this->hasPermissionTo($user, 'create:role') || $user->tokenCan('create:role');
     }
 
     /**
@@ -69,7 +69,7 @@ class RolePolicy
             return false;
         }
 
-        return $user->hasPermissionTo('update:role', 'web') || $user->tokenCan('update:role');
+        return $this->hasPermissionTo($user, 'update:role') || $user->tokenCan('update:role');
     }
 
     /**
@@ -85,7 +85,7 @@ class RolePolicy
             return false;
         }
 
-        return $user->hasPermissionTo('delete:role', 'web') || $user->tokenCan('delete:role');
+        return $this->hasPermissionTo($user, 'delete:role') || $user->tokenCan('delete:role');
     }
 
     /**
@@ -102,7 +102,7 @@ class RolePolicy
             return false;
         }
 
-        return $user->hasPermissionTo('update:role');
+        return $this->hasPermissionTo($user, 'update:role');
     }
 
     /**

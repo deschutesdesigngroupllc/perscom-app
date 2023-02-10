@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class AnnouncementPolicy
+class AnnouncementPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,7 +29,7 @@ class AnnouncementPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('view:announcement', 'web') || $user->tokenCan('view:announcement');
+        return $this->hasPermissionTo($user, 'view:announcement') || $user->tokenCan('view:announcement');
     }
 
     /**
@@ -41,7 +41,7 @@ class AnnouncementPolicy
      */
     public function view(User $user, Announcement $announcement)
     {
-        return $user->hasPermissionTo('view:announcement', 'web') || $user->tokenCan('view:announcement');
+        return $this->hasPermissionTo($user, 'view:announcement') || $user->tokenCan('view:announcement');
     }
 
     /**
@@ -52,7 +52,7 @@ class AnnouncementPolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:announcement', 'web') || $user->tokenCan('create:announcement');
+        return $this->hasPermissionTo($user, 'create:announcement') || $user->tokenCan('create:announcement');
     }
 
     /**
@@ -64,7 +64,7 @@ class AnnouncementPolicy
      */
     public function update(User $user, Announcement $announcement)
     {
-        return $user->hasPermissionTo('update:announcement', 'web') || $user->tokenCan('update:announcement');
+        return $this->hasPermissionTo($user, 'update:announcement') || $user->tokenCan('update:announcement');
     }
 
     /**
@@ -76,7 +76,7 @@ class AnnouncementPolicy
      */
     public function delete(User $user, Announcement $announcement)
     {
-        return $user->hasPermissionTo('delete:announcement', 'web') || $user->tokenCan('delete:announcement');
+        return $this->hasPermissionTo($user, 'delete:announcement') || $user->tokenCan('delete:announcement');
     }
 
     /**

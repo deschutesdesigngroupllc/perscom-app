@@ -8,7 +8,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class ImagePolicy
+class ImagePolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -53,7 +53,7 @@ class ImagePolicy
      */
     public function create(User $user)
     {
-        return $user->hasPermissionTo('create:image', 'web') || $user->tokenCan('create:image');
+        return $this->hasPermissionTo($user, 'create:image') || $user->tokenCan('create:image');
     }
 
     /**

@@ -7,7 +7,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 use Laravel\Cashier\SubscriptionItem;
 
-class SubscriptionItemPolicy
+class SubscriptionItemPolicy extends Policy
 {
     use HandlesAuthorization;
 

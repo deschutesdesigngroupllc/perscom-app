@@ -9,7 +9,7 @@ use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class TaskAssignmentPolicy
+class TaskAssignmentPolicy extends Policy
 {
     use HandlesAuthorization;
 

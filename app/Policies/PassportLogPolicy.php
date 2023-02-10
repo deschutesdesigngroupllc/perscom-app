@@ -7,7 +7,7 @@ use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
-class PassportLogPolicy
+class PassportLogPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -33,7 +33,7 @@ class PassportLogPolicy
      */
     public function viewAny(User $user)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -45,7 +45,7 @@ class PassportLogPolicy
      */
     public function view(User $user, PassportLog $log)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -80,7 +80,7 @@ class PassportLogPolicy
      */
     public function delete(User $user, PassportLog $log)
     {
-        return $user->hasPermissionTo('manage:api', 'web') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
