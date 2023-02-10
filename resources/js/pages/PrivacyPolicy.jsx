@@ -7,8 +7,8 @@ function PrivacyPolicy() {
   return (
     <>
       <Header />
-      <Container className='lg:pt-26 pt-20 pb-16 text-slate-600 flex flex-col space-y-4'>
-        <h1 className='font-bold h1 text-3xl mb-3 text-black'>PERSCOM.io Privacy Policy</h1>
+      <Container className='lg:pt-20 py-16 text-slate-600 flex flex-col space-y-4'>
+        <h1 className='font-bold h1 text-2xl sm:text-3xl mb-3 text-black'>PERSCOM.io Privacy Policy</h1>
         <p>
           Your privacy is important to us. It is Deschutes Design Group LLC&#39;s policy to respect your privacy and comply with any
           applicable law and regulation regarding any personal information we may collect about you, including across our website,{' '}
