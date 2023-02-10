@@ -160,6 +160,7 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
 Login.propTypes = {
   status: PropTypes.string,
   canResetPassword: PropTypes.bool,
+  canCreateAnAccount: PropTypes.bool,
   demoMode: PropTypes.bool,
   enableSocialLogin: PropTypes.bool,
   githubLogin: PropTypes.string,
