@@ -20,7 +20,7 @@ class PassportClientPolicy extends Policy
             return false;
         }
 
-        if (! tenant()->canAccessApi()) {
+        if (! tenant()->canAccessSingleSignOn()) {
             return false;
         }
     }
