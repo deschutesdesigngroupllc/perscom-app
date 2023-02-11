@@ -1,7 +1,7 @@
 <template>
   <div>
     <Head title="Roster" />
-    <Heading class="roster-mb-6">Roster</Heading>
+    <Heading class="mb-6">Roster</Heading>
     <div id="perscom_widget_wrapper">
       <component
         is="script"
