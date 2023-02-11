@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
@@ -20,7 +22,7 @@ class PassportClientPolicy extends Policy
             return false;
         }
 
-        if (! tenant()->canAccessSingleSignOn()) {
+        if (! Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON)) {
             return false;
         }
     }

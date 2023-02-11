@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Events\NullDispatcher;
 use Illuminate\Notifications\Notifiable;
@@ -213,43 +212,5 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     public function routeNotificationForMail($notification)
     {
         return $this->email;
-    }
-
-    /**
-     * @return bool
-     */
-    public function canAccessApi()
-    {
-        $plan = $this->sparkPlan();
-
-        if (FeatureFlag::isOn('billing') && (($plan && $plan->name !== 'Basic') || $this->onTrial())) {
-            return true;
-        }
-
-        return request()->isDemoMode() || FeatureFlag::isOff('billing');
-    }
-
-    /**
-     * @return bool
-     */
-    public function canAccessSingleSignOn()
-    {
-        $plan = $this->sparkPlan();
-
-        if (FeatureFlag::isOn('billing') && (($plan && $plan->name === 'Enterprise') || $this->onTrial())) {
-            return true;
-        }
-
-        return request()->isDemoMode() || FeatureFlag::isOff('billing');
-    }
-
-    /**
-     * @return bool
-     */
-    public function canAccessCustomSubdomain()
-    {
-        $plan = $this->sparkPlan();
-
-        return $plan && $plan->name !== 'Basic';
     }
 }

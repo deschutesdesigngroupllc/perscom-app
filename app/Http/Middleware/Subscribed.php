@@ -3,6 +3,8 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\SubscriptionRequired;
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -34,13 +36,13 @@ class Subscribed extends VerifyBillableIsSubscribed
         $response = parent::handle($request, $next, $billableType, $plan);
         $unsubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
 
-        throw_if(($unsubscribed || ! tenant()->canAccessApi()) && $request->routeIs('api.*'),
+        throw_if(($unsubscribed || ! Feature::isAccessible(FeatureIdentifier::FEATURE_API_ACCESS)) && $request->routeIs('api.*'),
             SubscriptionRequired::class,
             402,
             'A subscription is required to make an API request.'
         );
 
-        throw_if(($unsubscribed || ! tenant()->canAccessSingleSignOn()) && $request->routeIs('passport.*'),
+        throw_if(($unsubscribed || ! Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON)) && $request->routeIs('passport.*'),
             SubscriptionRequired::class,
             402,
             'Your subscription does not include use of OAuth 2.0.'

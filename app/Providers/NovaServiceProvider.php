@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Enums\FeatureIdentifier;
 use App\Models\Submission as SubmissionModel;
 use App\Models\TaskAssignment as TaskAssignmentModel;
 use App\Nova\Action;
@@ -227,9 +228,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(PassportClient::class)->name('My Apps'),
                         MenuItem::resource(PassportPersonalAccessToken::class),
                         MenuItem::resource(PassportLog::class),
-                    ])->icon('link')->collapsable()->canSee(function () {
-                        return \tenant()->canAccessApi();
-                    }),
+                    ])->icon('link')->collapsable(),
 
                     MenuSection::make('System', [
                         MenuItem::resource(Attachment::class),
@@ -327,7 +326,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             return \tenant()->domain->domain;
                         })
                         ->canSee(function () {
-                            return \tenant()->canAccessCustomSubdomain();
+                            return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN);
                         }),
                 ]),
                 Panel::make('Branding', [

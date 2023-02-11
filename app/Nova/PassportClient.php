@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use App\Nova\Actions\Passport\RegenerateClientSecret;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -113,7 +115,7 @@ class PassportClient extends Resource
      */
     public static function authorizedToViewAny(Request $request)
     {
-        return tenant()->canAccessSingleSignOn();
+        return Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON);
     }
 
     /**

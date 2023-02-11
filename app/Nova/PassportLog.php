@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Code;
@@ -117,6 +119,15 @@ class PassportLog extends Resource
                 })->language('vim')->onlyOnDetail(),
             ]),
         ];
+    }
+
+    /**
+     * @param  Request  $request
+     * @return bool
+     */
+    public static function authorizedToViewAny(Request $request)
+    {
+        return Feature::isAccessible(FeatureIdentifier::FEATURE_API_ACCESS);
     }
 
     /**
