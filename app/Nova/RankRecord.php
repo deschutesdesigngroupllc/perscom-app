@@ -2,10 +2,13 @@
 
 namespace App\Nova;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use App\Nova\Metrics\NewRankRecords;
 use App\Nova\Metrics\RankRecordsByType;
 use App\Nova\Metrics\TotalRankRecords;
 use Illuminate\Support\Str;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
@@ -142,6 +145,8 @@ class RankRecord extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+        })->nameable()];
     }
 }

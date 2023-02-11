@@ -2,7 +2,10 @@
 
 namespace App\Nova;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use Illuminate\Support\Str;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
@@ -118,6 +121,8 @@ class Specialty extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+        })->nameable()];
     }
 }

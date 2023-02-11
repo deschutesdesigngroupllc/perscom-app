@@ -251,7 +251,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 ->openInNewTab(),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
                         MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
-                                ->openInNewTab(),
+                                ->openInNewTab()
+                                ->canSee(function () {
+                                    return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_SUPPORT_TICKET);
+                                }),
                         MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
                                 ->openInNewTab(),
                     ])->icon('support')->collapsable()->collapsedByDefault(),

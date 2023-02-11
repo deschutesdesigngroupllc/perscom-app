@@ -2,8 +2,11 @@
 
 namespace App\Nova;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;
@@ -85,7 +88,7 @@ class Field extends Resource
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
-            Select::make('Type')->options(\App\Models\Field::$fieldTypes)->sortable()->displayUsingLabels(),
+            Select::make('Type')->rules('required')->options(\App\Models\Field::$fieldTypes)->sortable()->displayUsingLabels(),
             Boolean::make('Required'),
             Boolean::make('Readonly')->help('A readonly input field cannot be modified (however, a user can tab to it, highlight it, and copy the text from it).'),
             Text::make('Placeholder')
@@ -158,6 +161,8 @@ class Field extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+        })->nameable()];
     }
 }
