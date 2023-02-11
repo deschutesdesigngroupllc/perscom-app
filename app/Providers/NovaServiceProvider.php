@@ -329,7 +329,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             return \tenant()->domain->domain;
                         })
                         ->canSee(function () {
-                            return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN);
+                            return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN, false, false, false);
                         }),
                 ]),
                 Panel::make('Branding', [
