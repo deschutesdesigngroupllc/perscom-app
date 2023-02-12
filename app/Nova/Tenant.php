@@ -74,7 +74,7 @@ class Tenant extends Resource
                 ->copyable(),
             Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
             Text::make('Website')->hideFromIndex(),
-            URL::make('Domain', 'url')->sortable()->displayUsing(function ($url) {
+            URL::make('Domain', 'url')->displayUsing(function ($url) {
                 return $url;
             })->exceptOnForms(),
             Boolean::make('Demo Account', function () {
