@@ -24,7 +24,6 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           ini-values: error_reporting=E_ALL
-          coverage: none
           tools: composer
           coverage: none
 
