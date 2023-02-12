@@ -130,6 +130,9 @@ return [
                         'Application provided subdomain',
                         'Community support',
                     ],
+                    'options' => [
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_SOCIAL_LOGIN,
+                    ]
                 ],
                 [
                     'name' => 'Pro',
@@ -141,6 +144,12 @@ return [
                         'Custom subdomain',
                         'Ticket and email support',
                     ],
+                    'options' => [
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_SOCIAL_LOGIN,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_API_ACCESS,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_SUPPORT_TICKET,
+                    ]
                 ],
                 [
                     'name' => 'Enterprise',
@@ -152,6 +161,15 @@ return [
                         'Single sign-on integration',
                         'Priority support',
                     ],
+                    'options' => [
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_SOCIAL_LOGIN,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_API_ACCESS,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_SUPPORT_TICKET,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_CUSTOM_DOMAIN,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_EXPORT_DATA,
+                        \App\Models\Enums\FeatureIdentifier::FEATURE_SINGLE_SIGN_ON,
+                    ]
                 ],
             ],
         ],

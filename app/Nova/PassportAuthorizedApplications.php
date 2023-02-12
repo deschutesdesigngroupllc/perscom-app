@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -95,7 +97,7 @@ class PassportAuthorizedApplications extends Resource
      */
     public static function authorizedToViewAny(Request $request)
     {
-        return tenant()->canAccessSingleSignOn();
+        return Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON);
     }
 
     /**

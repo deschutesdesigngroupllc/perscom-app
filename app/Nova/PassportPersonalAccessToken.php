@@ -3,6 +3,8 @@
 namespace App\Nova;
 
 use App\Contracts\Passport\CreatesPersonalAccessToken;
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -138,7 +140,7 @@ class PassportPersonalAccessToken extends Resource
      */
     public static function authorizedToViewAny(Request $request)
     {
-        return tenant()->canAccessApi();
+        return Feature::isAccessible(FeatureIdentifier::FEATURE_API_ACCESS);
     }
 
     /**

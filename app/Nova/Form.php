@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use App\Nova\Actions\OpenForm;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
@@ -11,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -158,11 +161,15 @@ class Form extends Resource
     public function actions(NovaRequest $request)
     {
         return [
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+            })->nameable(),
             (new OpenForm())->showInline()->canRun(function (NovaRequest $request) {
                 return Gate::check('view', $request->findModel());
             })->canSee(function (NovaRequest $request) {
                 return Gate::check('view', $request->findModel());
             }),
+
         ];
     }
 }

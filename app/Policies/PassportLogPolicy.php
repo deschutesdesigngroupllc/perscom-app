@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use App\Models\PassportLog;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -20,7 +22,7 @@ class PassportLogPolicy extends Policy
             return false;
         }
 
-        if (! tenant()->canAccessApi()) {
+        if (! Feature::isAccessible(FeatureIdentifier::FEATURE_API_ACCESS)) {
             return false;
         }
     }

@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
@@ -53,6 +54,7 @@ class Domain extends Resource
             URL::make('Domain', 'url')->sortable()->displayUsing(function ($url) {
                 return $url;
             })->exceptOnForms(),
+            Boolean::make('Custom Subdomain', 'is_custom_subdomain'),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->sortable()->exceptOnForms(),
             DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),

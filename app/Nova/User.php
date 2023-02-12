@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Facades\Feature;
+use App\Models\Enums\FeatureIdentifier;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\TotalUsers;
 use App\Nova\Metrics\UsersOnline;
@@ -324,6 +326,8 @@ class User extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export Users')->nameable()];
+        return [ExportAsCsv::make('Export Users')->canSee(function () {
+            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+        })->nameable()];
     }
 }

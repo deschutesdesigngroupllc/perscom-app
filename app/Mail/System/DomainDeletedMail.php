@@ -2,13 +2,12 @@
 
 namespace App\Mail\System;
 
-use App\Models\Domain;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class DomainUpdatedMail extends Mailable implements ShouldQueue
+class DomainDeletedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -17,7 +16,7 @@ class DomainUpdatedMail extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected Domain $domain)
+    public function __construct(protected string $domain, protected string $url)
     {
         //
     }
@@ -29,9 +28,9 @@ class DomainUpdatedMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.system.domain-updated')->subject('Custom Domain Successfully Updated')->with([
-            'url' => $this->domain->url,
-            'fallback_url' => $this->domain->tenant->fallback_url,
+        return $this->markdown('emails.system.domain-deleted')->subject('Custom Domain Removed')->with([
+            'url' => $this->url,
+            'removed_url' => $this->domain,
         ]);
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class DomainUpdatedMail extends Mailable implements ShouldQueue
+class DomainCreatedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
@@ -29,7 +29,7 @@ class DomainUpdatedMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.system.domain-updated')->subject('Custom Domain Successfully Updated')->with([
+        return $this->markdown('emails.system.domain-created')->subject('Custom Domain Successfully Created')->with([
             'url' => $this->domain->url,
             'fallback_url' => $this->domain->tenant->fallback_url,
         ]);

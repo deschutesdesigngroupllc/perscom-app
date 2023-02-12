@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Enums\FeatureIdentifier;
 use App\Models\Submission as SubmissionModel;
 use App\Models\TaskAssignment as TaskAssignmentModel;
 use App\Nova\Action;
@@ -227,9 +228,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(PassportClient::class)->name('My Apps'),
                         MenuItem::resource(PassportPersonalAccessToken::class),
                         MenuItem::resource(PassportLog::class),
-                    ])->icon('link')->collapsable()->canSee(function () {
-                        return \tenant()->canAccessApi();
-                    }),
+                    ])->icon('link')->collapsable(),
 
                     MenuSection::make('System', [
                         MenuItem::resource(Attachment::class),
@@ -252,7 +251,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 ->openInNewTab(),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
                         MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
-                                ->openInNewTab(),
+                                ->openInNewTab()
+                                ->canSee(function () {
+                                    return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_SUPPORT_TICKET);
+                                }),
                         MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
                                 ->openInNewTab(),
                     ])->icon('support')->collapsable()->collapsedByDefault(),
@@ -323,11 +325,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->help('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
                         ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')
                                                                                                 ->ignore(\tenant()->getTenantKey(), 'tenant_id'))
-                        ->resolveUsing(function () {
-                            return \tenant()->domain->domain;
-                        })
                         ->canSee(function () {
-                            return \tenant()->canAccessCustomSubdomain();
+                            return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN, false, false, false);
                         }),
                 ]),
                 Panel::make('Branding', [
