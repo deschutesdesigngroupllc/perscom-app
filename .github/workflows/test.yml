@@ -1,0 +1,35 @@
+name: Test Application
+
+on:
+  workflow_call:
+  pull_request:
+
+jobs:
+  test-application:
+    name: Test Application
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: true
+      matrix:
+        php: [ '8.0', '8.1', '8.2' ]
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          ini-values: error_reporting=E_ALL
+          coverage: none
+          tools: composer
+          coverage: none
+
+      - name: Install Dependencies
+        run: composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Execute Tests
+        run: vendor/bin/phpunit --verbose

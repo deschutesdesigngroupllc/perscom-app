@@ -7,9 +7,15 @@ on:
       - staging
 
 jobs:
+  test-application:
+    name: Test Application
+    uses: DeschutesDesignGroupLLC/PERSCOM-3.0/.github/workflows/test.yml@master
+    secrets: inherit
+
   deploy-application:
     name: Deploy Application
     runs-on: ubuntu-latest
+    needs: test-application
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3

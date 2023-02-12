@@ -3,6 +3,9 @@ name: Release Application
 on:
   repository_dispatch:
     types: release-application
+  push:
+    branches:
+      - staging
 
 jobs:
   update-version:
