@@ -14,7 +14,7 @@ jobs:
 
       - name: Update Application Version
         id: update-version
-        uses: DeschutesDesignGroupLLC/PERSCOM-3.0/.github/workflows/version.yml@master
+        uses: DeschutesDesignGroupLLC/PERSCOM-3.0/.github/workflows/version.yml@staging
         secrets: inherit
 
       - name: Create Sentry Release Staging
