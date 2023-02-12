@@ -7,7 +7,7 @@ on:
 jobs:
   update-version:
     name: Update Version
-    uses: DeschutesDesignGroupLLC/PERSCOM-3.0/.github/workflows/version.yml@staging
+    uses: DeschutesDesignGroupLLC/PERSCOM-3.0/.github/workflows/version.yml@master
     secrets: inherit
 
   release-application:
