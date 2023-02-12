@@ -26,14 +26,6 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.FORGE_SSH_PRIVATE_KEY }}
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.1
-          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
-          coverage: none
-          tools: composer
-
       - name: Require Forge CLI
         run: composer global require laravel/forge-cli
 
