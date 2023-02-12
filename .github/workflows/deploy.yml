@@ -1,0 +1,29 @@
+name: Deploy Application
+
+on:
+  push:
+    branches:
+      - master
+      - staging
+
+jobs:
+  deploy-application:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Deploy Application for Staging
+        if: github.ref == 'refs/heads/staging'
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.ENVOYER_STAGING_DEPLOY_URL }}
+          method: 'GET'
+
+      - name: Deploy Application for Production
+        if: github.ref == 'refs/heads/master'
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: ${{ secrets.ENVOYER_PRODUCTION_DEPLOY_URL }}
+          method: 'GET'

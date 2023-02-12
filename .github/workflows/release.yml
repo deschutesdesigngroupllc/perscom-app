@@ -1,0 +1,51 @@
+name: Release Application
+
+on:
+  repository_dispatch:
+    types: release-application
+
+jobs:
+  release-application:
+    name: Release Application
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Update Application Version
+        id: update-version
+        uses: DeschutesDesignGroupLLC/PERSCOM-3.0/.github/workflows/version.yml@master
+        secrets: inherit
+
+      - name: Create Sentry Release Staging
+        needs: update-version
+        if: github.ref == 'refs/heads/staging'
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: staging
+          version: ${{ steps.update-version.outputs.new_tag }}
+
+      - name: Create Sentry Release Production
+        needs: update-version
+        if: github.ref == 'refs/heads/master'
+        uses: getsentry/action-release@v1
+        env:
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+        with:
+          environment: production
+          version: ${{ steps.update-version.outputs.new_tag }}
+
+      - name: Create Github Release
+        needs: update-version
+        uses: ncipollo/release-action@v1
+        if: github.ref == 'refs/heads/master'
+        with:
+          tag: ${{ steps.update-version.outputs.new_tag }}
+          name: ${{ steps.update-version.outputs.new_tag }}
+          body: ${{ steps.update-version.outputs.changelog }}
