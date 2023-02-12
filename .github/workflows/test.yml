@@ -26,6 +26,8 @@ jobs:
           ini-values: error_reporting=E_ALL
           tools: composer
           coverage: none
+        env:
+          COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configure Composer Authentication
         run: |
