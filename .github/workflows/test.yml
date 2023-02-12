@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '8.0', '8.1', '8.2' ]
+        php: [ '8.1', '8.2' ]
 
     steps:
       - name: Checkout Source Code
@@ -24,12 +24,27 @@ jobs:
           php-version: ${{ matrix.php }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           ini-values: error_reporting=E_ALL
-          coverage: none
           tools: composer
           coverage: none
 
+      - name: Configure Composer Authentication
+        run: |
+          composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
+          composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_API_TOKEN }}
+
       - name: Install Dependencies
         run: composer update --prefer-dist --no-interaction --no-progress
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+
+      - name: Install Javascript Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
 
       - name: Execute Tests
         run: vendor/bin/phpunit --verbose
