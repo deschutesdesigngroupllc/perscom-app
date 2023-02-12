@@ -27,7 +27,9 @@ class SettingsObserver
         }
 
         if ($settings->key === 'subdomain') {
-            tenant()->domain->update([
+            tenant()->domains()->updateOrCreate([
+                'is_custom_subdomain' => true,
+            ], [
                 'domain' => $settings->value,
             ]);
         }
@@ -54,7 +56,9 @@ class SettingsObserver
         }
 
         if ($settings->key === 'subdomain') {
-            tenant()->domain->update([
+            tenant()->domains()->updateOrCreate([
+                'is_custom_subdomain' => true,
+            ], [
                 'domain' => $settings->value,
             ]);
         }

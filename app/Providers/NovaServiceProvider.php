@@ -325,9 +325,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->help('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
                         ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')
                                                                                                 ->ignore(\tenant()->getTenantKey(), 'tenant_id'))
-                        ->resolveUsing(function () {
-                            return \tenant()->domain->domain;
-                        })
                         ->canSee(function () {
                             return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN, false, false, false);
                         }),

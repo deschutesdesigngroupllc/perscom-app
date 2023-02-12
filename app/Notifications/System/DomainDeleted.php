@@ -2,13 +2,12 @@
 
 namespace App\Notifications\System;
 
-use App\Mail\System\DomainUpdatedMail;
-use App\Models\Domain;
+use App\Mail\System\DomainDeletedMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 
-class DomainUpdated extends Notification implements ShouldQueue
+class DomainDeleted extends Notification implements ShouldQueue
 {
     use Queueable;
 
@@ -17,7 +16,7 @@ class DomainUpdated extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected Domain $domain)
+    public function __construct(protected string $domain, protected string $url)
     {
         //
     }
@@ -41,6 +40,6 @@ class DomainUpdated extends Notification implements ShouldQueue
      */
     public function toMail($notifiable)
     {
-        return (new DomainUpdatedMail($this->domain))->to($notifiable->email);
+        return (new DomainDeletedMail($this->domain, $this->url))->to($notifiable->email);
     }
 }

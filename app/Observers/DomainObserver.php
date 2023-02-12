@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Models\Domain;
+use App\Notifications\System\DomainCreated;
+use App\Notifications\System\DomainDeleted;
 use App\Notifications\System\DomainUpdated;
 use Illuminate\Support\Facades\Notification;
 
@@ -16,7 +18,7 @@ class DomainObserver
      */
     public function created(Domain $domain)
     {
-        //
+        Notification::send($domain->tenant, new DomainCreated($domain));
     }
 
     /**
@@ -27,7 +29,7 @@ class DomainObserver
      */
     public function updated(Domain $domain)
     {
-        Notification::send(tenant(), new DomainUpdated(tenant()));
+        Notification::send($domain->tenant, new DomainUpdated($domain));
     }
 
     /**
@@ -38,7 +40,7 @@ class DomainObserver
      */
     public function deleted(Domain $domain)
     {
-        //
+        Notification::send($domain->tenant, new DomainDeleted($domain->url, $domain->tenant->url));
     }
 
     /**

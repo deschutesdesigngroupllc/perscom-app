@@ -41,8 +41,12 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
  * @property-read int|null $domains_count
+ * @property-read mixed $custom_domain
+ * @property-read mixed|null $custom_url
  * @property-read string $database_status
  * @property-read mixed|null $domain
+ * @property-read mixed $fallback_domain
+ * @property-read mixed|null $fallback_url
  * @property-read mixed|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spark\Receipt> $localReceipts
  * @property-read int|null $local_receipts_count
@@ -97,6 +101,29 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     protected static $eventDispatcher = null;
 
     /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'trial_ends_at' => 'datetime',
+    ];
+
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['database_status', 'url', 'custom_url', 'fallback_url'];
+
+    /**
+     * The relations to eager load on every query.
+     *
+     * @var array
+     */
+    protected $with = ['domains'];
+
+    /**
      * Booted method
      */
     protected static function booted()
@@ -116,29 +143,6 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
             });
         });
     }
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'trial_ends_at' => 'datetime',
-    ];
-
-    /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
-     */
-    protected $appends = ['domain', 'database_status'];
-
-    /**
-     * The relations to eager load on every query.
-     *
-     * @var array
-     */
-    protected $with = ['domains'];
 
     /**
      * @return string[]
@@ -178,11 +182,47 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     }
 
     /**
+     * @return mixed
+     */
+    public function getCustomDomainAttribute()
+    {
+        return $this->domains->where('is_custom_subdomain', '=', true)
+                             ->sortBy('created_at', SORT_REGULAR, true)
+                             ->first();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getFallbackDomainAttribute()
+    {
+        return $this->domains->where('is_custom_subdomain', '=', false)
+                             ->sortBy('created_at', SORT_REGULAR, true)
+                             ->first();
+    }
+
+    /**
      * @return mixed|null
      */
     public function getDomainAttribute()
     {
-        return $this->domains->first();
+        return $this->custom_domain ?? $this->fallback_domain;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getCustomUrlAttribute()
+    {
+        return optional($this->custom_domain)->url;
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getFallbackUrlAttribute()
+    {
+        return optional($this->fallback_domain)->url;
     }
 
     /**
