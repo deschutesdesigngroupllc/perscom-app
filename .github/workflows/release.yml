@@ -10,7 +10,6 @@ jobs:
     uses: DeschutesDesignGroupLLC/PERSCOM-3.0/.github/workflows/version.yml@staging
     secrets: inherit
 
-jobs:
   release-application:
     name: Release Application
     runs-on: ubuntu-latest
