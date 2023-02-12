@@ -1,15 +1,22 @@
-name: PERSCOM CI/CD
+name: Update Version
 
 on:
-  push:
-    branches:
-      - master
-      - staging
+  workflow_call:
+    outputs:
+      new_tag:
+        description: "The application tag"
+        value: ${{ jobs.update-version.outputs.new_tag }}
+      changelog:
+        description: "The application changelog"
+        value: ${{ jobs.update-version.outputs.changelog }}
 
 jobs:
-  build-application:
-    name: Build Application
+  update-version:
+    name: Update Application Version
     runs-on: ubuntu-latest
+    outputs:
+      new_tag: ${{ steps.tag_version.outputs.new_tag }}
+      changelog: ${{ steps.tag_version.outputs.changelog }}
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
@@ -41,20 +48,6 @@ jobs:
           pre_release_branches: staging
           append_to_pre_release_tag: prerelease
 
-      - name: Deploy Application for Staging
-        if: github.ref == 'refs/heads/staging'
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: ${{ secrets.ENVOYER_STAGING_DEPLOY_URL }}
-          method: 'GET'
-
-      - name: Deploy Application for Production
-        if: github.ref == 'refs/heads/master'
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: ${{ secrets.ENVOYER_PRODUCTION_DEPLOY_URL }}
-          method: 'GET'
-
       - name: Update Application Version for Staging
         if: github.ref == 'refs/heads/staging'
         run: |
@@ -70,33 +63,3 @@ jobs:
           forge command ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }} --command="php current/artisan env:set APP_VERSION ${{ steps.tag_version.outputs.new_tag }}"
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
-
-      - name: Create Sentry Release Staging
-        if: github.ref == 'refs/heads/staging'
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: staging
-          version: ${{ steps.tag_version.outputs.new_tag }}
-
-      - name: Create Sentry Release Production
-        if: github.ref == 'refs/heads/master'
-        uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-        with:
-          environment: production
-          version: ${{ steps.tag_version.outputs.new_tag }}
-
-      - name: Create Release
-        uses: ncipollo/release-action@v1
-        if: github.ref == 'refs/heads/master'
-        with:
-          tag: ${{ steps.tag_version.outputs.new_tag }}
-          name: ${{ steps.tag_version.outputs.new_tag }}
-          body: ${{ steps.tag_version.outputs.changelog }}
