@@ -41,7 +41,6 @@ jobs:
           version: ${{ needs.update-version.outputs.new_tag }}
 
       - name: Create Github Release
-        needs: update-version
         uses: ncipollo/release-action@v1
         if: github.ref == 'refs/heads/master'
         with:
