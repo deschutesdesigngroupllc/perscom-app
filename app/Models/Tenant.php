@@ -107,6 +107,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     protected $casts = [
         'trial_ends_at' => 'datetime',
+        'last_login_at' => 'datetime',
     ];
 
     /**
@@ -166,6 +167,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
             'billing_state',
             'billing_postal_code',
             'billing_country',
+            'last_login_at',
             'vat_id',
             'receipt_emails',
             'created_at',
