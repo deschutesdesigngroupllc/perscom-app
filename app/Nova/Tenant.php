@@ -59,6 +59,11 @@ class Tenant extends Resource
     public static $search = ['id', 'name', 'website'];
 
     /**
+     * @var string[]
+     */
+    public static $orderBy = ['name' => 'asc'];
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -67,7 +72,7 @@ class Tenant extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make('PERSCOM ID', 'id')->sortable(),
             Text::make('Name')
                 ->sortable()
                 ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
@@ -79,7 +84,7 @@ class Tenant extends Resource
             })->exceptOnForms(),
             Boolean::make('Demo Account', function () {
                 return (string) $this->id === (string) env('TENANT_DEMO_ID');
-            })->readonly(),
+            })->hideFromIndex()->readonly(),
             Text::make('Domain', 'domain')->rules([
                 'required',
                 'string',
@@ -89,12 +94,13 @@ class Tenant extends Resource
                 return null;
             }),
             Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Last Login At')->sortable()->exceptOnForms(),
             DateTime::make('Created At')->sortable()->exceptOnForms()->onlyOnDetail(),
             DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
             Tabs::make('Relations', [
                 Tab::make('Database', [
                     Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
-                    Status::make('Database Status')->loadingWhen(['creating'])->failedWhen([])->readonly(),
+                    Status::make('Database Status')->hideFromIndex()->loadingWhen(['creating'])->failedWhen([])->readonly(),
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Billing Settings', [
