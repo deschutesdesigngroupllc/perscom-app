@@ -3,18 +3,21 @@ changelog:
     labels:
       - ignore-for-release
   categories:
-    - title: Breaking Changes 🛠
+    - title: Added
       labels:
-        - breaking-change
-    - title: Exciting New Features 🎉
+        - 'Type: Enhancement'
+    - title: Changed
       labels:
-        - enhancement
-    - title: Bug Fixes 🐞
+        - 'Type: Maintenance'
+    - title: Deprecated
       labels:
-        - bug
-    - title: Documentation 📋
+        - 'Type: Deprecation'
+    - title: Removed
       labels:
-        - documentation
-    - title: Other Changes
+        - 'Type: Removed'
+    - title: Fixed
       labels:
-        - "*"
+        - 'Type: Bug'
+    - title: Security
+      labels:
+        - 'Type: Vulnerability'
