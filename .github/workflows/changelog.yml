@@ -16,6 +16,7 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.release.target_commitish }}
+          token: ${{ secrets.CHANGELOG_TOKEN }}
 
       - name: Extract Release Date
         id: release_date
@@ -33,6 +34,6 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.release.target_commitish }}
-          commit_message: Update CHANGELOG
+          commit_message: Update CHANGELOG [skip deploy]
           file_pattern: CHANGELOG.md
           push_options: '--force'
