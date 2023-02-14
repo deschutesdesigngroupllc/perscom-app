@@ -8,12 +8,15 @@ jobs:
   update-changelog:
     name: Update Changelog
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
           ref: ${{ github.event.release.target_commitish }}
+          token: ${{ secrets.CHANGELOG_TOKEN }}
 
       - name: Extract Release Date
         id: release_date
