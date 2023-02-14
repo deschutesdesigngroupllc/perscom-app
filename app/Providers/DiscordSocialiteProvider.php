@@ -69,29 +69,8 @@ class DiscordSocialiteProvider extends AbstractProvider
     {
         return (new User())->setRaw($user)->map([
             'id' => $user['id'],
-            'nickname' => sprintf('%s#%s', $user['username'], $user['discriminator']),
             'name' => $user['username'],
             'email' => $user['email'] ?? null,
-            'avatar' => $this->formatAvatar($user),
         ]);
-    }
-
-    /**
-     * @param  array  $user
-     * @return string|null
-     *
-     * @see https://discord.com/developers/docs/reference#image-formatting-cdn-endpoints
-     */
-    protected function formatAvatar(array $user)
-    {
-        if (empty($user['avatar'])) {
-            return null;
-        }
-
-        $isGif = preg_match('/a_.+/m', $user['avatar']) === 1;
-        $extension = $this->getConfig('allow_gif_avatars', true) && $isGif ? 'gif'
-            : $this->getConfig('avatar_default_extension', 'jpg');
-
-        return sprintf('https://cdn.discordapp.com/avatars/%s/%s.%s', $user['id'], $user['avatar'], $extension);
     }
 }
