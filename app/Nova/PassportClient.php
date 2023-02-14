@@ -2,8 +2,6 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
 use App\Nova\Actions\Passport\RegenerateClientSecret;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -107,15 +105,6 @@ class PassportClient extends Resource
             DateTime::make('Updated At')->onlyOnDetail(),
             HasMany::make('Authorized Applications', 'tokens', PassportAuthorizedApplications::class),
         ];
-    }
-
-    /**
-     * @param  Request  $request
-     * @return bool
-     */
-    public static function authorizedToViewAny(Request $request)
-    {
-        return Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON);
     }
 
     /**
