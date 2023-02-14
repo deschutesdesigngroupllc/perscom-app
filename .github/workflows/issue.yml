@@ -8,6 +8,7 @@ on:
 
 jobs:
   label-issues:
+    name: Label Issue
     runs-on: ubuntu-latest
     permissions:
       issues: write
