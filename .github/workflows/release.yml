@@ -83,3 +83,4 @@ jobs:
           name: ${{ needs.update-version.outputs.new_tag }}
           generateReleaseNotes: true
           makeLatest: true
+          token: ${{ secrets.RELEASE_TOKEN }}
