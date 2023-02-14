@@ -16,7 +16,6 @@ jobs:
         with:
           fetch-depth: 0
           ref: ${{ github.event.release.target_commitish }}
-          token: ${{ secrets.CHANGELOG_TOKEN }}
 
       - name: Extract Release Date
         id: release_date
