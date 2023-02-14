@@ -53,8 +53,8 @@ class Attachment extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name'),
-            File::make('File', 'path')->storeOriginalName('filename')->prunable(),
+            Text::make('Name')->rules('required'),
+            File::make('File', 'path')->rules('required')->storeOriginalName('filename')->prunable(),
             URL::make('Download', function () {
                 return Storage::temporaryUrl($this->path, now()->addMinute(), [
                     'disk' => 's3',

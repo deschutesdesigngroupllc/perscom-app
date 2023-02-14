@@ -47,7 +47,7 @@ class Image extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')->nullable(),
+            Text::make('Name')->rules('required'),
             Textarea::make('Description')->alwaysShow()->nullable(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
@@ -57,7 +57,11 @@ class Image extends Resource
             })->displayUsing(function () {
                 return $this->image_url;
             })->copyable(),
-            ImageField::make('Image', 'path')->storeOriginalName('filename')->disk('s3_public')->prunable(),
+            ImageField::make('Image', 'path')
+                      ->rules('required')
+                      ->storeOriginalName('filename')
+                      ->disk('s3_public')
+                      ->prunable(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
