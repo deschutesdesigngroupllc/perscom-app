@@ -30,10 +30,25 @@ jobs:
           release-notes: ${{ github.event.release.body }}
           latest-version: ${{ github.event.release.tag_name }}
 
+      - name: Build Commit Message
+        run: |
+          echo "Update CHANGELOG" >> commitmessage.txt
+          echo "[skip ci]" >> commitmessage.txt
+
+      - name: Set Commit Message
+        id: commit_message
+        run: |
+          echo 'commit_message<<EOF' >> $GITHUB_OUTPUT
+          cat commitmessage.txt >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT
+
+      - name: Remove Commit Message File
+        run: rm -rf commitmessage.txt
+
       - name: Commit Updated Changelog
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
           branch: ${{ github.event.release.target_commitish }}
-          commit_message: Update CHANGELOG [skip deploy]
+          commit_message: ${{ steps.commit_message.outputs.commit_message }}
           file_pattern: CHANGELOG.md
           push_options: '--force'
