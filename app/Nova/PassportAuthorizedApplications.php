@@ -8,6 +8,7 @@ use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
@@ -97,7 +98,7 @@ class PassportAuthorizedApplications extends Resource
      */
     public static function authorizedToViewAny(Request $request)
     {
-        return Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON);
+        return Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON) && Gate::check('viewAny', PassportToken::class);
     }
 
     /**
