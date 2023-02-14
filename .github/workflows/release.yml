@@ -81,4 +81,5 @@ jobs:
         with:
           tag: ${{ needs.update-version.outputs.new_tag }}
           name: ${{ needs.update-version.outputs.new_tag }}
-          body: ${{ needs.update-version.outputs.changelog }}
+          generateReleaseNotes: true
+          makeLatest: true
