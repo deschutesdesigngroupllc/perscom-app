@@ -6,6 +6,8 @@ import { PrimaryFeatures } from '../components/PrimaryFeatures'
 import { SecondaryFeatures } from '../components/SecondaryFeatures'
 import { Footer } from '../components/Footer'
 import { Pricing } from '../components/Pricing'
+import { Faqs } from '../components/Faqs'
+import { CallToAction } from '../components/CallToAction'
 
 export default function Home() {
   return (
@@ -15,6 +17,8 @@ export default function Home() {
         <Hero />
         <PrimaryFeatures />
         <SecondaryFeatures />
+        <CallToAction />
+        <Faqs />
         <Pricing />
       </main>
       <Footer />

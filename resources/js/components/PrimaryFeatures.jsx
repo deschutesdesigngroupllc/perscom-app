@@ -52,7 +52,7 @@ export function PrimaryFeatures() {
   }, [])
 
   return (
-    <section id='features' aria-labelledby='features-title' className='relative overflow-hidden bg-blue-600 pt-20 pb-28 sm:py-32'>
+    <section id='features' aria-labelledby='features-title' className='relative overflow-hidden bg-blue-600 py-20 sm:py-32'>
       <div className='absolute top-1/2 left-1/2 -trangray-x-[44%] -trangray-y-[42%]'>
         <img src={backgroundImage} alt='' width={2245} height={1636} />
       </div>
@@ -61,7 +61,7 @@ export function PrimaryFeatures() {
           <h2 id='features-title' className='font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl'>
             Everything you need to manage your personnel.
           </h2>
-          <p className='mt-6 text-lg tracking-tight text-blue-100'>Packed with powerful features and backed by years of experience.</p>
+          <p className='mt-6 text-base text-blue-100'>Packed with powerful features and backed by years of experience.</p>
         </div>
         <Tab.Group
           as='div'
