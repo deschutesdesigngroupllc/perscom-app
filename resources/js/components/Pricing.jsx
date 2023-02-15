@@ -97,7 +97,7 @@ export function Pricing() {
             </span>{' '}
             for everyone.
           </p>
-          <p className='mt-4 text-lg text-gray-400'>
+          <p className='mt-4 text-base text-gray-400'>
             We have pricing options for all organizations. Scale up and down as your needs change.
           </p>
         </div>

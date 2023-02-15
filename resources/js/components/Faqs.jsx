@@ -6,46 +6,35 @@ import backgroundImage from '../../images/background-faqs.jpg'
 const faqs = [
   [
     {
-      question: 'Does TaxPal handle VAT?',
-      answer: 'Well no, but if you move your company offshore you can probably ignore it.'
+      question: 'Can I try PERSCOM.io before I purchase a subscription?',
+      answer:
+        'Absolutely. Visit the registration page and sign up for an account. You will have a 7-day feel trial before you need to purchase a subscription.'
     },
     {
-      question: 'Can I pay for my subscription via purchase order?',
-      answer: 'Absolutely, we are happy to take your money in all forms.'
-    },
-    {
-      question: 'How do I apply for a job at TaxPal?',
-      answer: 'We only hire our customers, so subscribe for a minimum of 6 months and then let’s talk.'
+      question: 'What payment methods do you support?',
+      answer: 'We use Stripe as our payment gateway and support all major payment methods.'
     }
   ],
   [
     {
-      question: 'What was that testimonial about tax fraud all about?',
-      answer: 'TaxPal is just a software application, ultimately your books are your responsibility.'
+      question: 'I have a question. How do I get support?',
+      answer: 'First, visit our documentation page and if you still have a question, visit the support section in our docs.'
     },
     {
-      question: 'TaxPal sounds horrible but why do I still feel compelled to purchase?',
-      answer: 'This is the power of excellent visual design. You just can’t resist it, no matter how poorly it actually functions.'
-    },
-    {
-      question: 'I found other companies called TaxPal, are you sure you can use this name?',
+      question: 'Why should I purchase a PERSCOM.io subscription?',
       answer:
-        'Honestly not sure at all. We haven’t actually incorporated or anything, we just thought it sounded cool and made this website.'
+        "We understand the complexity of managing personnel. We've taken this into account and offer all the services you need in one product."
     }
   ],
   [
     {
-      question: 'How do you generate reports?',
+      question: 'Can I integrate my data with any other services?',
       answer:
-        'You just tell us what data you need a report for, and we get our kids to create beautiful charts for you using only the finest crayons.'
+        'Yes, you can. We provide a powerful API as well as other standardized authentication methods to integrate your data. We also offer widgets to display your data on an external website.'
     },
     {
-      question: 'Can we expect more inventory features?',
-      answer: 'In life it’s really better to never expect anything at all.'
-    },
-    {
-      question: 'I lost my password, how do I get into my account?',
-      answer: 'Send us an email and we will send you a copy of our latest password spreadsheet so you can find your information.'
+      question: 'Can I change the URL of my account Dashboard?',
+      answer: 'Yes. You must subscribe to the Pro plan and you can change it to whatever you would like.'
     }
   ]
 ]
@@ -61,9 +50,17 @@ export function Faqs() {
       </div>
       <Container className='relative'>
         <div className='mx-auto max-w-2xl lg:mx-0'>
-          <p className='font-display text-3xl tracking-tight text-gray-800 sm:text-4xl'>Frequently asked questions</p>
-          <p className='mt-4 text-lg tracking-tight text-gray-700'>
-            If you can’t find what you’re looking for, email our support team and we will get back to you as soon as possible.
+          <p className='font-display text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>Frequently asked questions</p>
+          <p className='mt-4 text-base text-gray-600'>
+            If you can’t find what you’re looking for, visit our{' '}
+            <a href='https://community.deschutesdesigngroup.com' target='_blank' rel='noreferrer'>
+              community forums
+            </a>{' '}
+            or{' '}
+            <a href='https://docs.perscom.io' target='_blank' rel='noreferrer'>
+              documentation for more reference material
+            </a>
+            .
           </p>
         </div>
         <ul className='mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3'>
@@ -72,8 +69,8 @@ export function Faqs() {
               <ul className='space-y-8'>
                 {column.map((faq, faqIndex) => (
                   <li key={faqIndex}>
-                    <h3 className='font-display text-lg leading-7 text-gray-800'>{faq.question}</h3>
-                    <p className='mt-4 text-sm text-gray-700'>{faq.answer}</p>
+                    <h3 className='font-display text-base font-semibold text-gray-700'>{faq.question}</h3>
+                    <p className='mt-4 text-sm text-gray-600'>{faq.answer}</p>
                   </li>
                 ))}
               </ul>

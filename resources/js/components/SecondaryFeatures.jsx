@@ -145,13 +145,13 @@ function FeaturesDesktop() {
 
 export function SecondaryFeatures() {
   return (
-    <section id='secondary-features' aria-labelledby='secondary-features-title' className='pt-20 pb-14 sm:pb-20 sm:pt-32 lg:pb-32'>
+    <section id='secondary-features' aria-labelledby='secondary-features-title' className='py-20 sm:py-32'>
       <Container>
         <div className='mx-auto max-w-2xl md:text-center'>
           <h2 id='secondary-features-title' className='font-display text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>
             Simplify your organization&apos;s tasks.
           </h2>
-          <p className='mt-4 text-lg tracking-tight text-gray-700'>
+          <p className='mx-auto mt-4 max-w-3xl text-base text-gray-600'>
             We&apos;ve focused on making your life easier. Let our software show you how.
           </p>
         </div>
