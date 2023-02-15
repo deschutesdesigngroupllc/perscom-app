@@ -33,7 +33,7 @@ export function VerifyEmail({ status }) {
             Resend verification email
           </Button>
 
-          <Link href={route('logout')} method='post' as='button' className='text-sm text-gray-600 underline hover:text-gray-900'>
+          <Link href={route('logout')} method='post' as='button' className='text-sm text-gray-600 underline hover:text-gray-800'>
             {' '}
             Log out{' '}
           </Link>

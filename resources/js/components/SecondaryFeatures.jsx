@@ -50,7 +50,7 @@ function Feature({ feature, isActive, className, ...props }) {
       <div
         className={clsx(className, {
           'text-blue-600': isActive,
-          'text-slate-600': !isActive
+          'text-gray-600': !isActive
         })}
       >
         <feature.icon />
@@ -58,13 +58,13 @@ function Feature({ feature, isActive, className, ...props }) {
       <h3
         className={clsx('mt-2 text-sm font-medium', {
           'text-blue-600': isActive,
-          'text-slate-600': !isActive
+          'text-gray-600': !isActive
         })}
       >
         {feature.name}
       </h3>
-      <p className='mt-2 font-display text-xl text-slate-900'>{feature.summary}</p>
-      <p className='mt-4 text-sm text-slate-600'>{feature.description}</p>
+      <p className='mt-2 font-display text-xl text-gray-800'>{feature.summary}</p>
+      <p className='mt-4 text-sm text-gray-600'>{feature.description}</p>
     </div>
   )
 }
@@ -82,8 +82,8 @@ function FeaturesMobile() {
         <div key={feature.name}>
           <Feature feature={feature} className='mx-auto max-w-2xl' isActive />
           <div className='relative mt-10 pb-10'>
-            <div className='absolute -inset-x-4 bottom-0 top-8 bg-slate-200 sm:-inset-x-6' />
-            <div className='relative mx-auto aspect-[844/428] w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10'>
+            <div className='absolute -inset-x-4 bottom-0 top-8 bg-gray-200 sm:-inset-x-6' />
+            <div className='relative mx-auto aspect-[844/428] w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-gray-900/5 ring-1 ring-gray-500/10'>
               <img src={feature.image} alt='' sizes='52.75rem' />
             </div>
           </div>
@@ -115,7 +115,7 @@ function FeaturesDesktop() {
               />
             ))}
           </Tab.List>
-          <Tab.Panels className='relative mt-20 overflow-hidden rounded-4xl bg-slate-200 px-14 py-16 xl:px-16'>
+          <Tab.Panels className='relative mt-20 overflow-hidden rounded-4xl bg-gray-200 px-14 py-16 xl:px-16'>
             <div className='-mx-5 flex'>
               {features.map((feature, featureIndex) => (
                 <Tab.Panel
@@ -129,13 +129,13 @@ function FeaturesDesktop() {
                   }}
                   aria-hidden={featureIndex !== selectedIndex}
                 >
-                  <div className='relative aspect-[844/428] w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10'>
+                  <div className='relative aspect-[844/428] w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-gray-900/5 ring-1 ring-gray-500/10'>
                     <img src={feature.image} alt='' sizes='52.75rem' />
                   </div>
                 </Tab.Panel>
               ))}
             </div>
-            <div className='pointer-events-none absolute inset-0 rounded-4xl ring-1 ring-inset ring-slate-900/10' />
+            <div className='pointer-events-none absolute inset-0 rounded-4xl ring-1 ring-inset ring-gray-900/10' />
           </Tab.Panels>
         </>
       )}
@@ -148,10 +148,10 @@ export function SecondaryFeatures() {
     <section id='secondary-features' aria-labelledby='secondary-features-title' className='pt-20 pb-14 sm:pb-20 sm:pt-32 lg:pb-32'>
       <Container>
         <div className='mx-auto max-w-2xl md:text-center'>
-          <h2 id='secondary-features-title' className='font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl'>
+          <h2 id='secondary-features-title' className='font-display text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>
             Simplify your organization&apos;s tasks.
           </h2>
-          <p className='mt-4 text-lg tracking-tight text-slate-700'>
+          <p className='mt-4 text-lg tracking-tight text-gray-700'>
             We&apos;ve focused on making your life easier. Let our software show you how.
           </p>
         </div>

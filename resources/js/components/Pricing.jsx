@@ -17,7 +17,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
       <p
         className={clsx('mt-2 text-base', {
           'text-white': featured,
-          'text-slate-400': !featured
+          'text-gray-400': !featured
         })}
       >
         {description}
@@ -26,7 +26,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
       <ul
         className={clsx('order-last mt-10 space-y-3 text-sm', {
           'text-white': featured,
-          'text-slate-200': !featured
+          'text-gray-200': !featured
         })}
       >
         {features.map((feature) => (
@@ -35,7 +35,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
               aria-hidden='true'
               className={clsx('h-6 w-6 flex-none', {
                 'fill-white stroke-white': featured,
-                'fill-slate-400 stroke-slate-400': !featured
+                'fill-gray-400 stroke-gray-400': !featured
               })}
             >
               <path
@@ -73,7 +73,7 @@ Plan.propTypes = {
 
 export function Pricing() {
   return (
-    <section id='pricing' aria-labelledby='pricing-title' className='bg-slate-900 py-20 sm:py-32'>
+    <section id='pricing' aria-labelledby='pricing-title' className='bg-gray-900 py-20 sm:py-32'>
       <h2 id='pricing-title' className='sr-only'>
         Pricing
       </h2>
@@ -97,7 +97,7 @@ export function Pricing() {
             </span>{' '}
             for everyone.
           </p>
-          <p className='mt-4 text-lg text-slate-400'>
+          <p className='mt-4 text-lg text-gray-400'>
             We have pricing options for all organizations. Scale up and down as your needs change.
           </p>
         </div>

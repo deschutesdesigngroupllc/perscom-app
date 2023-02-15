@@ -31,8 +31,8 @@ export default function Register() {
             <Logo className='sm:h-18 mb-2 h-16 w-auto md:h-20' />
           </a>
         </div>
-        <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-900'>Get started for free.</h1>
-        <p className='mt-2 text-sm text-gray-700'>
+        <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-800'>Get started for free.</h1>
+        <p className='mt-2 text-sm text-gray-600'>
           No upfront costs or credit card requirements. Cancel at anytime with no questions asked.
         </p>
       </div>

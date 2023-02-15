@@ -15,7 +15,7 @@ function MobileNavigation() {
             <span className='sr-only'>Toggle Navigation</span>
             <svg
               aria-hidden='true'
-              className='h-3.5 w-3.5 overflow-visible stroke-slate-700'
+              className='h-3.5 w-3.5 overflow-visible stroke-gray-700'
               fill='none'
               strokeWidth={2}
               strokeLinecap='round'
@@ -44,7 +44,7 @@ function MobileNavigation() {
               leaveFrom='opacity-100'
               leaveTo='opacity-0'
             >
-              <Popover.Overlay className='fixed inset-0 bg-slate-300/50' />
+              <Popover.Overlay className='fixed inset-0 bg-gray-300/50' />
             </Transition.Child>
             <Transition.Child
               as={Fragment}
@@ -57,7 +57,7 @@ function MobileNavigation() {
             >
               <Popover.Panel
                 as='ul'
-                className='absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-slate-900 shadow-xl ring-1 ring-slate-900/5'
+                className='absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-gray-800 shadow-xl ring-1 ring-gray-900/5'
               >
                 <li>
                   <a href={route('web.landing.home')} className='block w-full' onClick={() => close()}>
@@ -117,17 +117,17 @@ export function Header() {
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href={route('web.landing.home')} className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
+              <a href={route('web.landing.home')} className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
                 Home
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#features' className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
+              <a href='#features' className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
                 Features
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#pricing' className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'>
+              <a href='#pricing' className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
                 Pricing
               </a>
             </li>
@@ -135,7 +135,7 @@ export function Header() {
               <a
                 href='https://docs.perscom.io'
                 target='_blank'
-                className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'
                 rel='noreferrer'
               >
                 Documentation
@@ -145,7 +145,7 @@ export function Header() {
               <a
                 href={route('web.find-my-organization.index')}
                 target='_blank'
-                className='rounded-lg py-1 px-2 text-slate-700 hover:bg-slate-100 hover:text-slate-900'
+                className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'
                 rel='noreferrer'
               >
                 Find My Organization
