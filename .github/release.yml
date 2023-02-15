@@ -9,6 +9,7 @@ changelog:
     - title: Changed
       labels:
         - 'Type: Maintenance'
+        - '*'
     - title: Deprecated
       labels:
         - 'Type: Deprecation'

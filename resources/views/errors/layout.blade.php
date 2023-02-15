@@ -21,12 +21,12 @@
         <div class="py-16">
             <div class="text-center">
                 <p class="text-sm font-semibold text-blue-600 uppercase tracking-wide">@yield('code') error</p>
-                <h1 class="mt-2 text-4xl font-extrabold text-gray-900 tracking-tight sm:text-5xl">@yield('header')</h1>
-                <p class="mt-2 text-base text-gray-500">@yield('message')</p>
+                <h1 class="mt-2 text-4xl font-extrabold text-gray-800 tracking-tight sm:text-5xl">@yield('header')</h1>
+                <p class="mt-2 text-base text-gray-600">@yield('message')</p>
                 @if(!isset($showLink) || $showLink)
                     <div class="mt-6">
                         <a href="{{ route('web.landing.home') }}"
-                           class="text-base font-medium text-blue-600 hover:text-blue-500">Go back home<span
+                           class="text-base font-medium text-blue-600 hover:text-blue-600">Go back home<span
                                 aria-hidden="true"> &rarr;</span></a>
                     </div>
                 @endif
@@ -35,18 +35,18 @@
         </div>
     </main>
     <footer class="flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8">
-        <nav class="flex flex-col sm:flex-row justify-center items-center space-x-4">
+        <nav class="flex flex-col sm:flex-row justify-center items-center space-x-4 text-sm">
             <a href="https://community.deschutesdesigngroup.com/"
-               class="text-sm font-medium text-gray-500 hover:text-gray-600" target='_blank'>Community Forums</a>
+               class="rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800" target='_blank'>Community Forums</a>
             <span class="inline-block border-l border-gray-300" aria-hidden="true"></span>
             <a href="https://docs.perscom.io"
-               class="text-sm font-medium text-gray-500 hover:text-gray-600" target='_blank'>Documentation</a>
+               class="rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800" target='_blank'>Documentation</a>
             <span class="inline-block border-l border-gray-300" aria-hidden="true"></span>
             <a href="https://support.deschutesdesigngroup.com/"
-               class="text-sm font-medium text-gray-500 hover:text-gray-600" target='_blank'>Help Desk</a>
+               class="rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800" target='_blank'>Help Desk</a>
             <span class="inline-block border-l border-gray-300" aria-hidden="true"></span>
             <a href="https://support.deschutesdesigngroup.com/hc/en-us/requests/new"
-               class="text-sm font-medium text-gray-500 hover:text-gray-600" target='_blank'>Submit A Ticket</a>
+               class="rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800" target='_blank'>Submit A Ticket</a>
         </nav>
     </footer>
 </div>

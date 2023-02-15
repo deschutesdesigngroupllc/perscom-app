@@ -37,7 +37,7 @@ export function Authorize({ client, name, scopes, state, authToken, csrfToken })
             href={route('passport.authorizations.deny')}
             method='delete'
             as='button'
-            className='text-sm text-gray-600 underline hover:text-gray-900'
+            className='text-sm text-gray-600 underline hover:text-gray-800'
           >
             {' '}
             Deny{' '}

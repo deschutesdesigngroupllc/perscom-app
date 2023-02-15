@@ -12,7 +12,7 @@ import logoGithub from '../../images/logos/github.png'
 export function Hero() {
   return (
     <Container className='lg:pt-20 py-16 text-center'>
-      <h1 className='mx-auto max-w-6xl font-display text-3xl font-bold tracking-tight text-slate-900 sm:text-5xl md:text-6xl lg:text-7xl'>
+      <h1 className='mx-auto max-w-6xl font-display text-3xl font-bold tracking-tight text-gray-800 sm:text-5xl md:text-6xl lg:text-7xl'>
         Providing cutting-edge{' '}
         <span className='relative whitespace-nowrap text-blue-600'>
           <svg
@@ -27,7 +27,7 @@ export function Hero() {
         </span>{' '}
         tools for para-military organizations.
       </h1>
-      <p className='mx-auto mt-6 max-w-3xl text-lg text-base tracking-tight text-slate-700 sm:text-xl'>
+      <p className='mx-auto mt-6 max-w-3xl text-base text-gray-600 sm:text-lg'>
         We&apos;ve built the tools you&apos;ve always been looking for. Specifically catered to para-military organizations, but fully
         customizable to support any organization.
       </p>
@@ -52,7 +52,7 @@ export function Hero() {
         </ButtonLink>
       </div>
       <div className='mt-12 lg:mt-16'>
-        <p className='font-display text-base text-slate-900'>Powered and backed by leading technology.</p>
+        <p className='font-display text-base text-gray-600'>Powered and backed by leading technology.</p>
         <ul className='mt-8 flex items-center justify-center space-x-8 sm:flex-col sm:space-x-0 sm:space-y-10 xl:flex-row xl:space-y-0 xl:space-x-12'>
           <li>
             <ul className='flex flex-col items-center space-y-4 sm:flex-row sm:space-y-0 sm:space-x-12'>

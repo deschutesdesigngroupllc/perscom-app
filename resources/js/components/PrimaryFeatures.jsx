@@ -53,7 +53,7 @@ export function PrimaryFeatures() {
 
   return (
     <section id='features' aria-labelledby='features-title' className='relative overflow-hidden bg-blue-600 pt-20 pb-28 sm:py-32'>
-      <div className='absolute top-1/2 left-1/2 -translate-x-[44%] -translate-y-[42%]'>
+      <div className='absolute top-1/2 left-1/2 -trangray-x-[44%] -trangray-y-[42%]'>
         <img src={backgroundImage} alt='' width={2245} height={1636} />
       </div>
       <Container className='relative'>
@@ -110,7 +110,7 @@ export function PrimaryFeatures() {
                       <div className='absolute -inset-x-4 -top-[6.5rem] -bottom-[4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl' />
                       <p className='relative mx-auto max-w-2xl text-base text-white sm:text-center'>{feature.description}</p>
                     </div>
-                    <div className='relative mt-10 aspect-[1085/590] w-[45rem] overflow-hidden rounded-xl bg-slate-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]'>
+                    <div className='relative mt-10 aspect-[1085/590] w-[45rem] overflow-hidden rounded-xl bg-gray-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]'>
                       <img src={feature.image} alt='' sizes='(min-width: 1024px) 67.8125rem, (min-width: 640px) 100vw, 45rem' />
                     </div>
                   </Tab.Panel>
