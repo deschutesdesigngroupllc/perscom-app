@@ -54,7 +54,9 @@ class TaskAssignment extends Resource
      */
     public function title()
     {
-        return $this->task->title;
+        return $this->id.optional($this->task, static function ($task) {
+            return " - $task->title";
+        });
     }
 
     /**

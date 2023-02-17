@@ -69,7 +69,9 @@ class Submission extends Resource
      */
     public function title()
     {
-        return $this->form->name;
+        return $this->id.optional($this->form, static function ($form) {
+            return " - $form->name";
+        });
     }
 
     /**

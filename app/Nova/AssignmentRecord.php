@@ -64,7 +64,9 @@ class AssignmentRecord extends Resource
      */
     public function title()
     {
-        return $this->user->name;
+        return $this->id.optional($this->user, static function ($user) {
+            return " - $user->name";
+        });
     }
 
     /**
