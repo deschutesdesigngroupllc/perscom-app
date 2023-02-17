@@ -1,6 +1,18 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.17...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.18...HEAD)
+
+## [v1.0.18](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.17...v1.0.18) - 2023-02-17
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.18 -->
+### What's Changed
+
+#### Changed
+
+- Fixes an error when trying to view a record resource when the attached item is missing by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/124
+- Fixes 'Try out demo' link on homepage by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/125
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.17...v1.0.18
 
 ## [v1.0.17](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.16...v1.0.17) - 2023-02-15
 
