@@ -28,7 +28,7 @@ export function Hero() {
       </p>
       <div className='mt-10 flex justify-center space-x-6'>
         <ButtonLink href={route('web.register.index')}>Get 1 week free</ButtonLink>
-        <ButtonLink href={route('web.register.index')} color='blue'>
+        <ButtonLink href='https://demo.perscom.io' color='blue'>
           Try out demo
         </ButtonLink>
       </div>
