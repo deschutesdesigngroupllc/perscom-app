@@ -18,7 +18,7 @@ class Kernel extends ConsoleKernel
     {
         $schedule->command('telescope:prune --hours=96')->daily();
         $schedule->command('perscom:heartbeat')->environments(['staging', 'production'])->everyTenMinutes();
-        $schedule->command('horizon:snapshot')->environments(['staging', 'perscom'])->everyFiveMinutes();
+        $schedule->command('horizon:snapshot')->environments(['staging', 'production'])->everyFiveMinutes();
         $schedule->job(new ResetDemoAccount())->environments(['production'])->daily();
     }
 
