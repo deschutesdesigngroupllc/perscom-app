@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.18...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.19...HEAD)
+
+## [v1.0.19](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.18...v1.0.19) - 2023-02-19
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.19 -->
+### What's Changed
+
+#### Changed
+
+- Fixes error thrown when visiting tenant and no database exists yet. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/129
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.18...v1.0.19
 
 ## [v1.0.18](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.17...v1.0.18) - 2023-02-17
 
