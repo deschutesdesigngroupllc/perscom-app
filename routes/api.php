@@ -23,7 +23,6 @@ use App\Http\Controllers\Api\V1\Widget\QualificationsController;
 use App\Http\Controllers\Api\V1\Widget\RanksController;
 use App\Http\Controllers\Api\V1\Widget\RosterController;
 use App\Http\Middleware\InitializeTenancyByRequestData;
-use App\Http\Middleware\LogApiRequests;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,9 +45,7 @@ Route::group(['prefix' => 'v1'], static function () {
     Route::group([
         'middleware' => [
             'auth:api',
-            'treblle',
             InitializeTenancyByRequestData::class,
-            LogApiRequests::class,
             'subscribed',
         ],
     ], static function () {

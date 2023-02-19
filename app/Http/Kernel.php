@@ -57,6 +57,8 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \App\Http\Middleware\ForceJsonResponse::class,
             \App\Http\Middleware\SentryContext::class,
+            \App\Http\Middleware\LogApiRequests::class,
+            'treblle'
         ],
 
         'universal' => [CheckUniversalRouteForTenantOrAdmin::class],
