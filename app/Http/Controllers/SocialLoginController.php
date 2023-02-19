@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\LoginToken;
-use App\Models\Tenant;
 use App\Models\User;
+use App\Repositories\TenantRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Socialite\Facades\Socialite;
@@ -66,7 +66,7 @@ class SocialLoginController extends Controller
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function callback($driver)
+    public function callback($driver, TenantRepository $tenantRepository)
     {
         $tenantId = session()->get(self::$sessionKey);
 
@@ -76,7 +76,7 @@ class SocialLoginController extends Controller
 
         $socialLiteUser = Socialite::driver($driver)->user();
 
-        $tenant = Tenant::findOrFail($tenantId);
+        $tenant = $tenantRepository->findById($tenantId);
         $token = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
             $user = User::updateOrCreate([
                 'email' => $socialLiteUser->email,
@@ -93,6 +93,8 @@ class SocialLoginController extends Controller
                 'user_id' => $user->id,
             ]);
         });
+
+        session()->remove(self::$sessionKey);
 
         return redirect()->to("{$tenant->url}/auth/login/$token->token");
     }
