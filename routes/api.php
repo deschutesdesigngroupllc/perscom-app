@@ -23,7 +23,6 @@ use App\Http\Controllers\Api\V1\Users\UsersSpecialtyController;
 use App\Http\Controllers\Api\V1\Users\UsersStatusController;
 use App\Http\Controllers\Api\V1\Users\UsersUnitController;
 use App\Http\Middleware\InitializeTenancyByRequestData;
-use App\Http\Middleware\LogApiRequests;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -46,9 +45,7 @@ Route::group(['prefix' => 'v1'], static function () {
     Route::group([
         'middleware' => [
             'auth:api',
-            'treblle',
             InitializeTenancyByRequestData::class,
-            LogApiRequests::class,
             'subscribed',
         ],
     ], static function () {
