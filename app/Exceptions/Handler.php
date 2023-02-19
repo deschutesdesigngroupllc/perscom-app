@@ -7,7 +7,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
-use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedByRequestDataException;
+use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
 use Throwable;
 
@@ -19,8 +19,8 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        TenantCouldNotBeIdentifiedOnDomainException::class,
-        TenantCouldNotBeIdentifiedByRequestDataException::class,
+        TenantCouldNotBeIdentifiedException::class,
+        TenantCouldNotBeIdentified::class,
         OAuthServerException::class,
     ];
 
@@ -40,6 +40,10 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
             return response()->view('errors.tenant-not-found');
+        });
+
+        $this->renderable(function (TenantAccountSetupNotComplete $e, $request) {
+            return response()->view('errors.tenant-database-does-not-exist');
         });
 
         $this->renderable(function (SubscriptionRequired $e, $request) {

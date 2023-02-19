@@ -1,0 +1,6 @@
+@extends('errors.layout')
+@props(['showLink' => false])
+@section('code', __('404'))
+@section('title', __('Not Found'))
+@section('header', __('Account setup not complete.'))
+@section('message', __('Sorry, we are still working on setting up your account. We will email you when we are finished.'))
