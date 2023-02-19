@@ -2,8 +2,8 @@
 
 namespace App\Providers;
 
-use App\Listeners\TenantCouldNotBeIdentified;
-use App\Listeners\UserLoggedIn;
+use App\Listeners\TenancyInitializedListener;
+use App\Listeners\UserLoggedInListener;
 use App\Models\AssignmentRecord;
 use App\Models\AwardRecord;
 use App\Models\CombatRecord;
@@ -34,7 +34,7 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Laravel\Cashier\Subscription;
-use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
+use Stancl\Tenancy\Events\TenancyInitialized;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -44,9 +44,15 @@ class EventServiceProvider extends ServiceProvider
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [
-        Login::class => [UserLoggedIn::class],
-        Registered::class => [SendEmailVerificationNotification::class],
-        TenantCouldNotBeIdentifiedOnDomainException::class => [TenantCouldNotBeIdentified::class],
+        Login::class => [
+            UserLoggedInListener::class,
+        ],
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
+        TenancyInitialized::class => [
+            TenancyInitializedListener::class,
+        ],
     ];
 
     /**

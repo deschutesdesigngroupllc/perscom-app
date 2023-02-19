@@ -9,6 +9,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedByRequestDataException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
+use Stancl\Tenancy\Exceptions\TenantDatabaseDoesNotExistException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -40,6 +41,10 @@ class Handler extends ExceptionHandler
     {
         $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
             return response()->view('errors.tenant-not-found');
+        });
+
+        $this->renderable(function (TenantDatabaseDoesNotExistException $e, $request) {
+            return response()->view('errors.tenant-database-does-not-exist');
         });
 
         $this->renderable(function (SubscriptionRequired $e, $request) {
