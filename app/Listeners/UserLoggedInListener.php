@@ -5,7 +5,7 @@ namespace App\Listeners;
 use App\Models\Tenant;
 use Illuminate\Auth\Events\Login;
 
-class UserLoggedIn
+class UserLoggedInListener
 {
     /**
      * Handle the event.
