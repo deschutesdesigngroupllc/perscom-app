@@ -23,7 +23,7 @@ Route::get('/', [HomeController::class, 'index'])->name('landing.home');
 Route::group(['prefix' => 'register'], function () {
     Route::get('/', [RegisterController::class, 'index'])->name('register.index');
     Route::post('/', [RegisterController::class, 'store'])->name('register.store');
-    Route::get('/complete/{id}', [RegisterController::class, 'complete'])->middleware('signed')->name('register.complete');
+    Route::get('/complete/{tenant}', [RegisterController::class, 'complete'])->middleware('signed')->name('register.complete');
 });
 
 Route::group(['prefix' => 'find-my-organization'], function () {
