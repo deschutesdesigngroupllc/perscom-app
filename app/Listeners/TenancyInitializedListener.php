@@ -2,8 +2,8 @@
 
 namespace App\Listeners;
 
+use App\Exceptions\TenantAccountSetupNotComplete;
 use Stancl\Tenancy\Events\TenancyInitialized;
-use Stancl\Tenancy\Exceptions\TenantDatabaseDoesNotExistException;
 
 class TenancyInitializedListener
 {
@@ -17,7 +17,7 @@ class TenancyInitializedListener
     {
         $database = $event->tenancy->tenant->database()->getName();
         if (! $event->tenancy->tenant->database()->manager()->databaseExists($database)) {
-            throw new TenantDatabaseDoesNotExistException($database);
+            throw new TenantAccountSetupNotComplete(401, 'Sorry, we are still working on setting up your account. We will email you when we are finished.');
         }
     }
 }
