@@ -61,6 +61,9 @@ jobs:
       - name: Build Project
         run: npm run build
 
+      - name: Install Passport Keys
+        run: php artisan passport:keys --force
+
       - name: Create Test Database
         run: |
           touch database/database.sqlite
