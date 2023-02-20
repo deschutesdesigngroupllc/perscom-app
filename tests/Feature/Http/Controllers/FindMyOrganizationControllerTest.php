@@ -41,7 +41,7 @@ class FindMyOrganizationControllerTest extends TestCase
 
         $url = URL::signedRoute('web.find-my-organization.show', ['tenant' => 1]);
 
-        $response = $this->post('/find-my-organization', [
+        $this->post('/find-my-organization', [
             'email' => $email,
         ])->assertRedirect($url);
     }
@@ -74,7 +74,7 @@ class FindMyOrganizationControllerTest extends TestCase
         $validator->allows('validate')->andReturnSelf();
         Validator::shouldReceive('make')->once()->andReturn($validator);
 
-        $response = $this->post('/find-my-organization', [
+        $this->post('/find-my-organization', [
             'email' => $email,
         ])->assertNotFound();
     }
