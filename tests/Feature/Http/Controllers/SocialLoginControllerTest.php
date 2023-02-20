@@ -25,7 +25,7 @@ class SocialLoginControllerTest extends TestCase
         $this->withoutMiddleware();
     }
 
-    public function test_tenant_page_can_be_reached()
+    public function test_social_tenant_page_can_be_reached()
     {
         $driver = $this->faker->word();
         $id = $this->faker->randomDigit();
@@ -35,15 +35,14 @@ class SocialLoginControllerTest extends TestCase
 
         $this->instance(Tenant::class, $tenant);
 
-        $response = $this->get("http://test.localhost/auth/$driver/redirect");
-
-        $response->assertRedirectToRoute('auth.social.redirect', [
-            'driver' => $driver,
-            'tenant' => $id,
-        ]);
+        $this->get("http://test.localhost/auth/$driver/redirect")
+             ->assertRedirectToRoute('auth.social.redirect', [
+                 'driver' => $driver,
+                 'tenant' => $id,
+             ]);
     }
 
-    public function test_redirect_page_can_be_reached()
+    public function test_social_redirect_page_can_be_reached()
     {
         $driver = $this->faker->word();
         $id = $this->faker->randomDigitNotZero();
@@ -54,12 +53,12 @@ class SocialLoginControllerTest extends TestCase
 
         Socialite::shouldReceive('driver')->with($driver)->andReturn($provider);
 
-        $this->get("http://auth.localhost/$driver/$id/redirect")
+        $this->get(config('app.auth_url')."/$driver/$id/redirect")
             ->assertRedirect($redirect)
             ->assertSessionHas('auth.social.login.tenant', $id);
     }
 
-    public function test_callback_page_can_be_reached()
+    public function test_social_callback_page_can_be_reached()
     {
         $driver = $this->faker->word();
         $id = $this->faker->randomDigit();
@@ -90,12 +89,12 @@ class SocialLoginControllerTest extends TestCase
         $this->withSession([
             'auth.social.login.tenant' => $id,
         ])
-             ->get("http://auth.localhost/$driver/callback")
+             ->get(config('app.auth_url')."/$driver/callback")
              ->assertRedirect("$url/auth/login/$token")
              ->assertSessionMissing('auth.social.login.tenant', $id);
     }
 
-    public function test_login_page_can_be_reached()
+    public function test_soclai_login_page_can_be_reached()
     {
         $id = $this->faker->randomDigitNotZero();
         $url = $this->faker->url;

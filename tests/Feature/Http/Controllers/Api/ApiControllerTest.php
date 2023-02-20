@@ -21,7 +21,7 @@ class ApiControllerTest extends ApiTestCase
         $this->withMiddleware(InitializeTenancyByRequestData::class);
 
         $this->getJson('/me')
-             ->assertServerError();
+             ->assertUnauthorized();
     }
 
     public function test_api_cannot_be_reached_without_api_access_feature()
