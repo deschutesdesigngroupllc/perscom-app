@@ -18,7 +18,7 @@ class TenantFactory extends Factory
     {
         return [
             'name' => $this->faker->company,
-            'email' => $this->faker->companyEmail
+            'email' => $this->faker->companyEmail,
         ];
     }
 }

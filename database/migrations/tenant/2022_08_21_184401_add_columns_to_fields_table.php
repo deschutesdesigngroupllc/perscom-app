@@ -38,15 +38,11 @@ return new class extends Migration
     public function down()
     {
         Schema::table('forms', function (Blueprint $table) {
-            $table->dropColumn('success_message');
-            $table->dropColumn('is_public');
+            $table->dropColumn('success_message', 'is_public');
         });
 
         Schema::table('fields', function (Blueprint $table) {
-            $table->dropColumn('readonly');
-            $table->dropColumn('disabled');
-            $table->dropColumn('text');
-            $table->dropColumn('key');
+            $table->dropColumn('readonly', 'disabled', 'text', 'key');
         });
     }
 };

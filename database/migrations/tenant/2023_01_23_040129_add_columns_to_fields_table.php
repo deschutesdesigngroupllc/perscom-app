@@ -19,8 +19,7 @@ return new class extends Migration
                 $table->string('cast')->nullable();
             });
 
-            $table->dropColumn('disabled');
-            $table->dropColumn('text');
+            $table->dropColumn('disabled', 'text');
         });
     }
 
@@ -32,8 +31,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('fields', function (Blueprint $table) {
-            $table->dropColumn('nova_type');
-            $table->dropColumn('cast');
+            $table->dropColumn('nova_type', 'cast');
             $table->boolean('disabled')->default(false);
             $table->text('text')->nullable();
         });
