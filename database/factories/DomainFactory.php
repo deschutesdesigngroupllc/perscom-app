@@ -17,7 +17,7 @@ class DomainFactory extends Factory
     public function definition()
     {
         return [
-            'domain' => $this->faker->domainWord
+            'domain' => $this->faker->domainWord,
         ];
     }
 }

@@ -23,7 +23,13 @@ return new class extends Migration
 
         Schema::table('tenants', function (Blueprint $table) {
             $table->renameColumn('card_brand', 'pm_type');
+        });
+
+        Schema::table('tenants', function (Blueprint $table) {
             $table->renameColumn('card_last_four', 'pm_last_four');
+        });
+
+        Schema::table('tenants', function (Blueprint $table) {
             $table->renameColumn('card_expiration', 'pm_expiration');
         });
 
@@ -49,7 +55,13 @@ return new class extends Migration
 
         Schema::table('tenants', function (Blueprint $table) {
             $table->renameColumn('pm_type', 'card_brand');
+        });
+
+        Schema::table('tenants', function (Blueprint $table) {
             $table->renameColumn('pm_last_four', 'card_last_four');
+        });
+
+        Schema::table('tenants', function (Blueprint $table) {
             $table->renameColumn('pm_expiration', 'card_expiration');
         });
 

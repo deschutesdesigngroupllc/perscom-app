@@ -5,9 +5,12 @@ namespace Tests\Feature\Http\Controllers\Api;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Laravel\Passport\Passport;
+use Tests\Traits\WithTenant;
 
 class ApiControllerTest extends ApiTestCase
 {
+    use WithTenant;
+
     public function test_api_cannot_be_reached_without_bearer_token()
     {
         $this->getJson('/me')
@@ -16,7 +19,9 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_without_perscom_id()
     {
-        Passport::actingAs($this->user);
+        Passport::actingAs($this->user, [
+            'view:user',
+        ]);
 
         $this->withMiddleware(InitializeTenancyByRequestData::class);
 
@@ -24,14 +29,26 @@ class ApiControllerTest extends ApiTestCase
              ->assertUnauthorized();
     }
 
+    public function test_api_cannot_be_reached_with_perscom_id()
+    {
+        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(true);
+
+        Passport::actingAs($this->user, [
+            'view:user',
+        ]);
+
+        $this->withMiddleware(InitializeTenancyByRequestData::class);
+
+        $this->getJson('/me', [
+            'X-Perscom-Id' => $this->tenant->getTenantKey(),
+        ])->assertSuccessful();
+    }
+
     public function test_api_cannot_be_reached_without_api_access_feature()
     {
+        $this->withSubscription();
+
         FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-
-        $this->subscription->allows('active')->andReturn(true);
-
-        $this->tenant->allows('onTrial')->andReturn(false);
-        $this->tenant->allows('onGenericTrial')->andReturn(false);
 
         $this->withMiddleware('subscribed');
 
@@ -39,34 +56,47 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->plan->options([]);
+        $this->getJson('/me')
+             ->assertStatus(402);
+    }
+
+    public function test_api_can_be_reached_with_api_access_feature()
+    {
+        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
+
+        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
+
+        $this->withMiddleware('subscribed');
+
+        Passport::actingAs($this->user, [
+            'view:user',
+        ]);
+
+        $this->getJson('/me')
+             ->assertSuccessful();
+    }
+
+    public function test_api_cannot_be_reached_with_incomplete_subscription()
+    {
+        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete');
+
+        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
+
+        $this->withMiddleware('subscribed');
+
+        Passport::actingAs($this->user, [
+            'view:user',
+        ]);
 
         $this->getJson('/me')
              ->assertStatus(402);
     }
 
-//    public function test_api_can_be_reached_with_api_access_feature()
-//    {
-//        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-//
-//        $this->withMiddleware('subscribed');
-//
-//        Passport::actingAs($this->user, [
-//            'view:user',
-//        ]);
-//
-//        $this->getJson('/me')
-//             ->assertSuccessful();
-//    }
-
-    public function test_api_cannot_be_reached_with_inactive_subscription()
+    public function test_api_cannot_be_reached_with_incomplete_expired_subscription()
     {
+        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete_expired');
+
         FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-
-        $this->subscription->allows('active')->andReturn(false);
-
-        $this->tenant->allows('onTrial')->andReturn(false);
-        $this->tenant->allows('onGenericTrial')->andReturn(false);
 
         $this->withMiddleware('subscribed');
 
@@ -80,12 +110,9 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_can_be_reached_while_on_trial()
     {
+        $this->onTrial();
+
         FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-
-        $this->subscription->allows('active')->andReturn(false);
-
-        $this->tenant->allows('onTrial')->andReturn(true);
-        $this->tenant->allows('onGenericTrial')->andReturn(true);
 
         $this->withMiddleware('subscribed');
 

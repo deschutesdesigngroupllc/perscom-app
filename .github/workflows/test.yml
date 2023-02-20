@@ -61,5 +61,11 @@ jobs:
       - name: Build Project
         run: npm run build
 
+      - name: Create Test Database
+        run: |
+          touch database/database.sqlite
+          sudo chmod -R 775 database
+          sudo chown -R $(whoami) database
+
       - name: Execute Tests
         run: vendor/bin/phpunit --verbose

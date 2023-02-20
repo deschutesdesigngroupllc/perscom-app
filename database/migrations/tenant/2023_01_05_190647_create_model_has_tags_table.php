@@ -27,9 +27,7 @@ return new class extends Migration
 
         Schema::table('tags', function (Blueprint $table) {
             $table->string('name')->change();
-            $table->dropColumn('slug');
-            $table->dropColumn('type');
-            $table->dropColumn('order_column');
+            $table->dropColumn('slug', 'type', 'order_column');
         });
 
         Schema::dropIfExists('taggables');
