@@ -3,7 +3,7 @@
 namespace Tests\Feature\Http\Controllers\Api;
 
 use App\Http\Middleware\InitializeTenancyByRequestData;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
+use App\Http\Middleware\Subscribed;
 use Laravel\Passport\Passport;
 use Tests\Traits\WithTenant;
 
@@ -29,10 +29,8 @@ class ApiControllerTest extends ApiTestCase
              ->assertUnauthorized();
     }
 
-    public function test_api_cannot_be_reached_with_perscom_id()
+    public function test_api_can_be_reached_with_perscom_id()
     {
-        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(true);
-
         Passport::actingAs($this->user, [
             'view:user',
         ]);
@@ -48,9 +46,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $this->withSubscription();
 
-        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-
-        $this->withMiddleware('subscribed');
+        $this->withMiddleware(Subscribed::class);
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -64,9 +60,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
 
-        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-
-        $this->withMiddleware('subscribed');
+        $this->withMiddleware(Subscribed::class);
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -80,9 +74,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete');
 
-        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-
-        $this->withMiddleware('subscribed');
+        $this->withMiddleware(Subscribed::class);
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -96,9 +88,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete_expired');
 
-        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-
-        $this->withMiddleware('subscribed');
+        $this->withMiddleware(Subscribed::class);
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -112,9 +102,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $this->onTrial();
 
-        FeatureFlag::shouldReceive('isOff')->with('billing')->andReturn(false);
-
-        $this->withMiddleware('subscribed');
+        $this->withMiddleware(Subscribed::class);
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -122,5 +110,21 @@ class ApiControllerTest extends ApiTestCase
 
         $this->getJson('/me')
              ->assertSuccessful();
+    }
+
+    public function test_api_can_be_reached_while_in_demo_mode()
+    {
+        config()->set('app.demo_tenant_host', $this->domain->host);
+        config()->set('app.demo_tenant_id', $this->tenant->getTenantKey());
+
+        $this->withMiddleware(Subscribed::class);
+
+        Passport::actingAs($this->user, [
+            'view:user',
+        ]);
+
+        $this->getJson('/me', [
+            'X-Perscom-Id' => $this->tenant->getTenantKey(),
+        ])->assertSuccessful();
     }
 }

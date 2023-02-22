@@ -5,9 +5,11 @@ namespace Tests\Feature\Http\Controllers\Api;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequests;
 use App\Http\Middleware\SentryContext;
+use App\Http\Middleware\Subscribed;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
+use Treblle\Middlewares\TreblleMiddleware;
 
 class ApiTestCase extends TestCase
 {
@@ -22,11 +24,11 @@ class ApiTestCase extends TestCase
 
         $this->withoutMiddleware([
             InitializeTenancyByRequestData::class,
-            'treblle',
+            TreblleMiddleware::class,
             SentryContext::class,
             LogApiRequests::class,
             ThrottleRequests::class,
-            'subscribed',
+            Subscribed::class,
         ]);
     }
 }

@@ -8,17 +8,12 @@ use App\Models\PassportClient;
 use App\Models\PassportToken;
 use App\Models\Permission;
 use App\Models\Tenant;
-use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
 use Laravel\Socialite\Contracts\Factory;
-use Outl1ne\NovaSettings\NovaSettings;
-use Spatie\Permission\PermissionRegistrar;
-use Stancl\Tenancy\Events\TenancyBootstrapped;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -30,14 +25,18 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Request::macro('isCentralRequest', function () {
-            return collect(config('tenancy.central_domains'))->contains(\request()->getHost());
+            return ! app()->runningInConsole() &&
+                   collect(config('tenancy.central_domains'))->contains(\request()->getHost());
         });
 
         Request::macro('isDemoMode', function () {
-            return \request()->getHost() === env('TENANT_DEMO_HOST', null) ||
-                   (\request()->expectsJson() &&
-                    (\request()->header('X-Perscom-Id') === env('TENANT_DEMO_ID') ||
-                     \request()->get('perscom_id') === env('TENANT_DEMO_ID')));
+            return ! app()->runningInConsole() &&
+                   (\request()->getHost() === \config('app.demo_tenant_host') ||
+                    (\request()->expectsJson() &&
+                     ((\request()->headers->has('X-Perscom-Id') &&
+                       \request()->header('X-Perscom-Id') == \config('app.demo_tenant_id')) ||
+                      (\request()->get('perscom_id') != null &&
+                       \request()->get('perscom_id') == \config('app.demo_tenant_id')))));
         });
 
         Cashier::useCustomerModel(Tenant::class);
@@ -71,11 +70,6 @@ class AppServiceProvider extends ServiceProvider
             $config = config('services.discord');
 
             return $socialite->buildProvider(DiscordSocialiteProvider::class, $config);
-        });
-
-        Event::listen(TenancyBootstrapped::class, function (TenancyBootstrapped $event) {
-            PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->id;
-            Config::set('app.timezone', NovaSettings::getSetting('timezone', \config('app.timezone')));
         });
 
         $this->app->bind(CreatesPersonalAccessToken::class, CreatePersonalAccessToken::class);

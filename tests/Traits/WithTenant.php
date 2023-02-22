@@ -3,8 +3,10 @@
 namespace Tests\Traits;
 
 use App\Models\Domain;
+use App\Models\Feature;
 use App\Models\Tenant;
 use App\Models\User;
+use Codinglabs\FeatureFlags\Enums\FeatureState;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -50,11 +52,6 @@ trait WithTenant
     protected $priceId = null;
 
     /**
-     * @var array
-     */
-    protected $planOptions = [];
-
-    /**
      * @var bool
      */
     protected $onTrial = false;
@@ -91,11 +88,24 @@ trait WithTenant
             ])->save();
         }
 
+        Feature::factory()->state([
+            'name' => 'social-login',
+            'state' => FeatureState::on(),
+        ])->create();
+
+        Feature::factory()->state([
+            'name' => 'billing',
+            'state' => FeatureState::on(),
+        ])->create();
+
         tenancy()->initialize($this->tenant);
 
         $this->user = User::factory()->create();
     }
 
+    /**
+     * @return void
+     */
     protected function tearDownWithTenant()
     {
         $this->tenant->delete();
