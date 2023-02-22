@@ -29,7 +29,19 @@ class UsersController extends Controller
      */
     public function includes(): array
     {
-        return ['position', 'rank', 'specialty', 'status', 'unit'];
+        return [
+            'assignment_records',
+            'award_records',
+            'combat_records',
+            'position',
+            'qualification_records',
+            'rank',
+            'rank_records',
+            'service_records',
+            'specialty',
+            'status',
+            'unit',
+        ];
     }
 
     /**

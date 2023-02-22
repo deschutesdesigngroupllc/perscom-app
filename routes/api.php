@@ -1,8 +1,12 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
+use App\Http\Controllers\Api\V1\Awards\AwardsController;
 use App\Http\Controllers\Api\V1\Forms\SubmissionsController;
 use App\Http\Controllers\Api\V1\MeController;
+use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
+use App\Http\Controllers\Api\V1\Ranks\RanksController;
+use App\Http\Controllers\Api\V1\Roster\RosterController;
 use App\Http\Controllers\Api\V1\SpecController;
 use App\Http\Controllers\Api\V1\Units\UnitsController;
 use App\Http\Controllers\Api\V1\Units\UnitsUsersController;
@@ -18,10 +22,6 @@ use App\Http\Controllers\Api\V1\Users\UsersServiceRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersSpecialtyController;
 use App\Http\Controllers\Api\V1\Users\UsersStatusController;
 use App\Http\Controllers\Api\V1\Users\UsersUnitController;
-use App\Http\Controllers\Api\V1\Widget\AwardsController;
-use App\Http\Controllers\Api\V1\Widget\QualificationsController;
-use App\Http\Controllers\Api\V1\Widget\RanksController;
-use App\Http\Controllers\Api\V1\Widget\RosterController;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequests;
 use Illuminate\Support\Facades\Route;
@@ -58,6 +58,18 @@ Route::group(['prefix' => 'v1'], static function () {
         // Announcements
         Orion::resource('announcements', AnnouncementsController::class);
 
+        // Awards
+        Orion::resource('awards', AwardsController::class);
+
+        // Qualifications
+        Orion::resource('qualifications', QualificationsController::class);
+
+        // Ranks
+        Orion::resource('ranks', RanksController::class);
+
+        // Roster
+        Orion::resource('roster', RosterController::class);
+
         // Submissions
         Orion::resource('submissions', SubmissionsController::class);
 
@@ -78,12 +90,6 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::hasOneResource('users', 'specialty', UsersSpecialtyController::class);
         Orion::hasOneResource('users', 'status', UsersStatusController::class);
         Orion::belongsToResource('users', 'unit', UsersUnitController::class);
-
-        // Widget
-        Orion::resource('widget/roster', RosterController::class)->only('index')->middleware('can:widget,App\Models\User')->name('index', 'widget.roster.index');
-        Orion::resource('widget/awards', AwardsController::class)->only('index')->middleware('can:widget,App\Models\User')->name('index', 'widget.awards.index');
-        Orion::resource('widget/ranks', RanksController::class)->only('index')->middleware('can:widget,App\Models\User')->name('index', 'widget.ranks.index');
-        Orion::resource('widget/qualifications', QualificationsController::class)->only('index')->middleware('can:widget,App\Models\User')->name('index', 'widget.qualifications.index');
     });
 
     // Route not found

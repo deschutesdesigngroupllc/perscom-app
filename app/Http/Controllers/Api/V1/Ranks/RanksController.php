@@ -1,23 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Widget;
+namespace App\Http\Controllers\Api\V1\Ranks;
 
-use App\Http\Resources\Api\Widget\AwardResource;
-use App\Models\Award;
+use App\Models\Rank;
+use App\Policies\RankPolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Orion\Http\Controllers\Controller;
 
-class AwardsController extends WidgetController
+class RanksController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = Award::class;
+    protected $model = Rank::class;
 
     /**
      * @var string
      */
-    protected $resource = AwardResource::class;
+    protected $policy = RankPolicy::class;
 
     /**
      * Builds Eloquent query for fetching entities in index method.

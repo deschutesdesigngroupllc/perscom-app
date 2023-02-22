@@ -1,23 +1,24 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Widget;
+namespace App\Http\Controllers\Api\V1\Awards;
 
-use App\Http\Resources\Api\Widget\QualificationResource;
-use App\Models\Qualification;
+use App\Models\Award;
+use App\Policies\AwardPolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Orion\Http\Controllers\Controller;
 
-class QualificationsController extends WidgetController
+class AwardsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = Qualification::class;
+    protected $model = Award::class;
 
     /**
      * @var string
      */
-    protected $resource = QualificationResource::class;
+    protected $policy = AwardPolicy::class;
 
     /**
      * Builds Eloquent query for fetching entities in index method.

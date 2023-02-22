@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Resources\Api\Widget;
+namespace App\Http\Resources\Api;
 
 use Illuminate\Http\Request;
 use Orion\Http\Resources\Resource;
@@ -16,7 +16,7 @@ class RosterResource extends Resource
         return [
             'id' => $this->resource->id,
             'name' => $this->resource->name,
-            'users' => UserResource::collection($this->resource->users),
+            'users' => $this->resource->users,
         ];
     }
 }
