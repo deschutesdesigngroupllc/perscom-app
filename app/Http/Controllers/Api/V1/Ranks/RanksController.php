@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Ranks;
 
+use App\Http\Requests\Api\RankRequest;
 use App\Models\Rank;
 use App\Policies\RankPolicy;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,6 +15,11 @@ class RanksController extends Controller
      * @var string
      */
     protected $model = Rank::class;
+
+    /**
+     * @var string
+     */
+    protected $request = RankRequest::class;
 
     /**
      * @var string

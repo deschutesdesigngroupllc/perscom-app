@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Awards;
 
+use App\Http\Requests\Api\AwardRequest;
 use App\Models\Award;
 use App\Policies\AwardPolicy;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,6 +15,11 @@ class AwardsController extends Controller
      * @var string
      */
     protected $model = Award::class;
+
+    /**
+     * @var string
+     */
+    protected $request = AwardRequest::class;
 
     /**
      * @var string

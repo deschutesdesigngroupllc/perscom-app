@@ -32,7 +32,7 @@ class Unit extends Model implements Sortable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'description', 'order'];
+    protected $fillable = ['name', 'description'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

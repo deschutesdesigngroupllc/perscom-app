@@ -132,13 +132,6 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
-        // Allow access if API key has access:widget scope
-        Gate::before(static function ($user) {
-            if (($apiUser = Auth::guard('api')->user()) && $apiUser->tokenCan('access:widget')) {
-                return true;
-            }
-        });
-
         // Define a new api guard that allows access via the passport and jwt guards
         Auth::viaRequest('api', static function (Request $request) {
             return Auth::guard('passport')->user() ?? Auth::guard('jwt')->user();

@@ -68,7 +68,7 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('ranks', RanksController::class);
 
         // Roster
-        Orion::resource('roster', RosterController::class);
+        Orion::resource('roster', RosterController::class)->only('index');
 
         // Submissions
         Orion::resource('submissions', SubmissionsController::class);

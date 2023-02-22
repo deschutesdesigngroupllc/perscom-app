@@ -31,7 +31,7 @@ class Rank extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description', 'abbreviation', 'paygrade', 'order'];
+    protected $fillable = ['name', 'description', 'abbreviation', 'paygrade'];
 
     /**
      * @var string[]

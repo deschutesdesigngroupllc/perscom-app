@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Forms;
 
-use App\Http\Requests\SubmissionRequest;
+use App\Http\Requests\Api\SubmissionRequest;
 use App\Models\Submission;
 use App\Policies\SubmissionPolicy;
 use Orion\Http\Controllers\Controller;

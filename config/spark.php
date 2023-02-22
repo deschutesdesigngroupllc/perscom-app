@@ -132,7 +132,7 @@ return [
                     ],
                     'options' => [
                         \App\Models\Enums\FeatureIdentifier::FEATURE_SOCIAL_LOGIN,
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'Pro',
@@ -149,7 +149,7 @@ return [
                         \App\Models\Enums\FeatureIdentifier::FEATURE_API_ACCESS,
                         \App\Models\Enums\FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN,
                         \App\Models\Enums\FeatureIdentifier::FEATURE_SUPPORT_TICKET,
-                    ]
+                    ],
                 ],
                 [
                     'name' => 'Enterprise',
@@ -169,7 +169,7 @@ return [
                         \App\Models\Enums\FeatureIdentifier::FEATURE_CUSTOM_DOMAIN,
                         \App\Models\Enums\FeatureIdentifier::FEATURE_EXPORT_DATA,
                         \App\Models\Enums\FeatureIdentifier::FEATURE_SINGLE_SIGN_ON,
-                    ]
+                    ],
                 ],
             ],
         ],

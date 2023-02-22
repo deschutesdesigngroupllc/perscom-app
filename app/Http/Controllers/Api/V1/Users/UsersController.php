@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Users;
 
-use App\Http\Requests\UserRequest;
+use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
 use App\Policies\UserPolicy;
 use Orion\Http\Controllers\Controller;

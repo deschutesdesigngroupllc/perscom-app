@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Qualifications;
 
+use App\Http\Requests\Api\QualificationRequest;
 use App\Models\Qualification;
 use App\Policies\QualificationPolicy;
 use Illuminate\Database\Eloquent\Builder;
@@ -14,6 +15,11 @@ class QualificationsController extends Controller
      * @var string
      */
     protected $model = Qualification::class;
+
+    /**
+     * @var string
+     */
+    protected $request = QualificationRequest::class;
 
     /**
      * @var string

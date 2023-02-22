@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Announcements;
 
-use App\Http\Requests\AnnouncementRequest;
+use App\Http\Requests\Api\AnnouncementRequest;
 use App\Models\Announcement;
 use App\Policies\AnnouncementPolicy;
 use Orion\Http\Controllers\Controller;

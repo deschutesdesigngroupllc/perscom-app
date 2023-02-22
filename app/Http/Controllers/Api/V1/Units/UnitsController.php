@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Units;
 
-use App\Http\Requests\UnitRequest;
+use App\Http\Requests\Api\UnitRequest;
 use App\Models\Unit;
 use App\Policies\UnitPolicy;
 use Orion\Http\Controllers\Controller;
