@@ -12,6 +12,9 @@
          stopOnFailure="true"
 >
     <testsuites>
+        <testsuite name="Unit">
+            <directory suffix="Test.php">./tests/Unit</directory>
+        </testsuite>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
@@ -22,6 +25,7 @@
         <server name="APP_ENV" value="testing"/>
         <server name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
         <server name="AUTH_URL" value="http://auth.localhost"/>
+        <server name="BASE_URL" value=".localhost"/>
         <server name="BCRYPT_ROUNDS" value="4"/>
         <server name="CACHE_DRIVER" value="array"/>
         <server name="DB_CONNECTION" value="testing"/>
@@ -30,6 +34,9 @@
         <server name="JWT_ALGO" value="HS256"/>
         <server name="QUEUE_CONNECTION" value="sync"/>
         <server name="SESSION_DRIVER" value="array"/>
+        <server name="STRIPE_PRODUCT_BASIC_MONTH" value="price_1LGWsjGt8lrL0dgCSh82mHu3"/>
+        <server name="STRIPE_PRODUCT_PRO_MONTH" value="price_1LGWtYGt8lrL0dgCAfBx95kG"/>
+        <server name="STRIPE_PRODUCT_ENTERPRISE_MONTH" value="price_1LGWuVGt8lrL0dgCA8GM8Bpw"/>
         <server name="TELESCOPE_ENABLED" value="false"/>
     </php>
 </phpunit>
