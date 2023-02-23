@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Orion\Http\Requests\Request;
 
-class AnnouncementRequest extends Request
+class QualificationRequest extends Request
 {
     /**
      * @return string[]
@@ -12,7 +12,7 @@ class AnnouncementRequest extends Request
     public function commonRules(): array
     {
         return [
-            'expires_at' => 'nullable|date',
+            'description' => 'nullable|string',
         ];
     }
 
@@ -22,8 +22,7 @@ class AnnouncementRequest extends Request
     public function storeRules(): array
     {
         return [
-            'title' => 'required|string',
-            'content' => 'required|string',
+            'name' => 'required',
         ];
     }
 }

@@ -1,23 +1,38 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Widget;
+namespace App\Http\Controllers\Api\V1\Awards;
 
-use App\Http\Resources\Api\Widget\RankResource;
-use App\Models\Rank;
+use App\Http\Requests\Api\AwardRequest;
+use App\Models\Award;
+use App\Policies\AwardPolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Orion\Http\Controllers\Controller;
 
-class RanksController extends WidgetController
+class AwardsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = Rank::class;
+    protected $model = Award::class;
 
     /**
      * @var string
      */
-    protected $resource = RankResource::class;
+    protected $request = AwardRequest::class;
+
+    /**
+     * @var string
+     */
+    protected $policy = AwardPolicy::class;
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return ['image'];
+    }
 
     /**
      * Builds Eloquent query for fetching entities in index method.

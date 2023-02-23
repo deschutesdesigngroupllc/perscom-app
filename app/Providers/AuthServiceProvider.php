@@ -123,7 +123,7 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         // Scope JWTs to the tenant they belong to
-        Gate::before(function ($user) {
+        Gate::before(static function ($user) {
             if ($jwtUser = Auth::guard('jwt')->user()) {
                 $payload = Auth::guard('jwt')->payload();
                 if ($payload->get('tenant') !== tenant()->getTenantKey()) {
@@ -132,7 +132,8 @@ class AuthServiceProvider extends ServiceProvider
             }
         });
 
-        Auth::viaRequest('api', function (Request $request) {
+        // Define a new api guard that allows access via the passport and jwt guards
+        Auth::viaRequest('api', static function (Request $request) {
             return Auth::guard('passport')->user() ?? Auth::guard('jwt')->user();
         });
     }

@@ -19,7 +19,7 @@ class TaskFactory extends Factory
         return [
             'title' => "Task {$this->faker->unique()->randomNumber()}",
             'description' => $this->faker->paragraph,
-            'instructions' => $this->faker->paragraph
+            'instructions' => $this->faker->paragraph,
         ];
     }
 }

@@ -17,12 +17,14 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Actions\ExportAsCsv;
+use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\MorphedByMany;
 use Laravel\Nova\Fields\MorphToMany;
@@ -31,7 +33,6 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
-use Laravel\Nova\Fields\UiAvatar;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -86,7 +87,6 @@ class User extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            UiAvatar::make(null, 'name')->hideFromDetail(),
             ID::make()->hideFromIndex(),
             Text::make('Name')->sortable()->rules('required', 'max:255')->showOnPreview()->readonly(function () {
                 return Request::isDemoMode();
@@ -121,6 +121,8 @@ class User extends Resource
                 false => 'info',
                 true => 'success',
             ])->exceptOnForms(),
+            Avatar::make('Profile Photo')->disk('s3_public')->prunable()->squared()->hideFromIndex(),
+            Image::make('Cover Photo')->disk('s3_public')->prunable()->squared()->hideFromIndex(),
             Panel::make('Assignment', [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
                          ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
@@ -246,12 +248,12 @@ class User extends Resource
                 HasMany::make(Str::singular(Str::title(setting('localization_awards', 'Award'))).
                               ' Records', 'award_records', AwardRecord::class),
                 HasMany::make('Combat Records', 'combat_records', CombatRecord::class),
+                HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).
+                              ' Records', 'qualification_records', QualificationRecord::class),
                 HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
                               ' Records', 'rank_records', RankRecord::class),
                 HasMany::make('Service Records', 'service_records', ServiceRecord::class),
                 HasMany::make('Submission Records', 'submissions', Submission::class),
-                HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).
-                              ' Records', 'qualification_records', QualificationRecord::class),
             ])->showTitle(true),
             MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'statuses', Status::class)
                        ->allowDuplicateRelations()
@@ -273,16 +275,6 @@ class User extends Resource
             Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])
                 ->showTitle(true),
         ];
-    }
-
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
-    {
-        return Str::plural(Str::title(setting('localization_users', 'Users')));
     }
 
     /**

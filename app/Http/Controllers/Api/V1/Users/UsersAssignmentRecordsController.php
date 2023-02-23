@@ -16,4 +16,16 @@ class UsersAssignmentRecordsController extends RelationController
      * @var string
      */
     protected $relation = 'assignment_records';
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return [
+            'position',
+            'specialty',
+            'unit',
+        ];
+    }
 }

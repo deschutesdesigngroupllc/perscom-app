@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Widget;
+namespace App\Http\Controllers\Api\V1\Qualifications;
 
-use App\Http\Resources\Api\Widget\QualificationResource;
+use App\Http\Requests\Api\QualificationRequest;
 use App\Models\Qualification;
+use App\Policies\QualificationPolicy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Orion\Http\Controllers\Controller;
 
-class QualificationsController extends WidgetController
+class QualificationsController extends Controller
 {
     /**
      * @var string
@@ -17,7 +19,20 @@ class QualificationsController extends WidgetController
     /**
      * @var string
      */
-    protected $resource = QualificationResource::class;
+    protected $request = QualificationRequest::class;
+
+    /**
+     * @var string
+     */
+    protected $policy = QualificationPolicy::class;
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return ['image'];
+    }
 
     /**
      * Builds Eloquent query for fetching entities in index method.

@@ -21,7 +21,7 @@ security:
   -
     ApiKey: []
   -
-    PerscomAccountIdentifier: []
+    PerscomId: []
 paths:
   /v1/me:
     get:
@@ -380,6 +380,1100 @@ paths:
       summary: 'Delete a batch of announcements'
       tags:
         - Announcements
+  /v1/awards:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Award'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AwardResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create award'
+      tags:
+        - Awards
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of awards'
+      tags:
+        - Awards
+  /v1/awards/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - image
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for awards'
+      tags:
+        - Awards
+  '/v1/awards/{award}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AwardResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get award'
+      tags:
+        - Awards
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Award'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AwardResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update award'
+      tags:
+        - Awards
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AwardResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete award'
+      tags:
+        - Awards
+  /v1/awards/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Award'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of awards'
+      tags:
+        - Awards
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Award'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of awards'
+      tags:
+        - Awards
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of awards'
+      tags:
+        - Awards
+  /v1/qualifications:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Qualification'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create qualification'
+      tags:
+        - Qualifications
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of qualifications'
+      tags:
+        - Qualifications
+  /v1/qualifications/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - image
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for qualifications'
+      tags:
+        - Qualifications
+  '/v1/qualifications/{qualification}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get qualification'
+      tags:
+        - Qualifications
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Qualification'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update qualification'
+      tags:
+        - Qualifications
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete qualification'
+      tags:
+        - Qualifications
+  /v1/qualifications/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Qualification'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of qualifications'
+      tags:
+        - Qualifications
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Qualification'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of qualifications'
+      tags:
+        - Qualifications
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of qualifications'
+      tags:
+        - Qualifications
+  /v1/ranks:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rank'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create rank'
+      tags:
+        - Ranks
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of ranks'
+      tags:
+        - Ranks
+  /v1/ranks/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - image
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for ranks'
+      tags:
+        - Ranks
+  '/v1/ranks/{rank}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get rank'
+      tags:
+        - Ranks
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rank'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update rank'
+      tags:
+        - Ranks
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete rank'
+      tags:
+        - Ranks
+  /v1/ranks/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Rank'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of ranks'
+      tags:
+        - Ranks
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Rank'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of ranks'
+      tags:
+        - Ranks
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of ranks'
+      tags:
+        - Ranks
+  /v1/roster:
+    get:
+      parameters: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnitResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of units'
+      tags:
+        - Roster
   /v1/submissions:
     post:
       parameters:
@@ -1646,8 +2740,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -1683,8 +2783,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -1720,8 +2826,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -1795,8 +2907,14 @@ paths:
                       relation:
                         type: string
                         enum:
+                          - assignment_records
+                          - award_records
+                          - combat_records
                           - position
+                          - qualification_records
                           - rank
+                          - rank_records
+                          - service_records
                           - specialty
                           - status
                           - unit
@@ -1841,8 +2959,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -1879,8 +3003,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -1924,8 +3054,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -1957,8 +3093,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -2003,8 +3145,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -2050,8 +3198,14 @@ paths:
           schema:
             type: string
             enum:
+              - assignment_records
+              - award_records
+              - combat_records
               - position
+              - qualification_records
               - rank
+              - rank_records
+              - service_records
               - specialty
               - status
               - unit
@@ -2100,6 +3254,15 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2132,6 +3295,15 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2164,6 +3336,35 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - position
+                          - specialty
+                          - unit
+                      filters:
+                        type: object
+                        properties: null
       responses:
         200:
           description: OK
@@ -2202,6 +3403,15 @@ paths:
           name: assignment_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2235,6 +3445,15 @@ paths:
           name: assignment_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2275,6 +3494,15 @@ paths:
           name: assignment_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2303,6 +3531,15 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2344,6 +3581,15 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2386,6 +3632,15 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2429,6 +3684,15 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2465,6 +3729,15 @@ paths:
           name: assignment_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - position
+              - specialty
+              - unit
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2495,6 +3768,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2527,6 +3807,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2559,6 +3846,31 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - award
+                      filters:
+                        type: object
+                        properties: null
       responses:
         200:
           description: OK
@@ -2597,6 +3909,13 @@ paths:
           name: award_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2630,6 +3949,13 @@ paths:
           name: award_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2670,6 +3996,13 @@ paths:
           name: award_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2698,6 +4031,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2739,6 +4079,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2781,6 +4128,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -2824,6 +4178,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -2860,6 +4221,13 @@ paths:
           name: award_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - award
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3285,6 +4653,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3317,6 +4692,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3349,6 +4731,31 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - qualification
+                      filters:
+                        type: object
+                        properties: null
       responses:
         200:
           description: OK
@@ -3387,6 +4794,13 @@ paths:
           name: qualification_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3420,6 +4834,13 @@ paths:
           name: qualification_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3460,6 +4881,13 @@ paths:
           name: qualification_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3488,6 +4916,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3529,6 +4964,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3571,6 +5013,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3614,6 +5063,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3650,6 +5106,13 @@ paths:
           name: qualification_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - qualification
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3680,6 +5143,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3712,6 +5182,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3744,6 +5221,31 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - rank
+                      filters:
+                        type: object
+                        properties: null
       responses:
         200:
           description: OK
@@ -3782,6 +5284,13 @@ paths:
           name: rank_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3815,6 +5324,13 @@ paths:
           name: rank_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3855,6 +5371,13 @@ paths:
           name: rank_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3883,6 +5406,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3924,6 +5454,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -3966,6 +5503,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -4009,6 +5553,13 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -4045,6 +5596,13 @@ paths:
           name: rank_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - rank
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -5213,41 +6771,15 @@ paths:
       summary: 'Delete a batch of units'
       tags:
         - 'Users Unit'
-  /v1/widget/roster:
-    get:
-      parameters: []
-      responses:
-        200:
-          description: OK
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  data:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/UnitResource'
-                  links:
-                    $ref: '#/components/schemas/ResourceLinks'
-                  meta:
-                    $ref: '#/components/schemas/ResourceMeta'
-        401:
-          description: Unauthenticated
-        403:
-          description: Unauthorized
-      summary: 'Get a list of units'
-      tags:
-        - Roster
 components:
   securitySchemes:
     ApiKey:
       type: http
       scheme: bearer
-    PerscomAccountIdentifier:
+    PerscomId:
       type: apiKey
       in: header
-      name: X-Perscom-Id
+      name: 'X-Perscom-Id'
   schemas:
     User:
       title: User
@@ -5286,6 +6818,12 @@ components:
           type: string
           nullable: true
           format: date-time
+        profile_photo:
+          type: string
+          nullable: true
+        cover_photo:
+          type: string
+          nullable: true
         social_id:
           type: string
           nullable: true
@@ -5355,122 +6893,13 @@ components:
               type: string
               nullable: true
               format: date-time
-    Submission:
-      title: Submission
-      type: object
-      properties:
-        form_id:
-          type: integer
-        user_id:
-          type: integer
-          nullable: true
-        data:
-          type: object
-          additionalProperties: true
-    SubmissionResource:
-      title: SubmissionResource
-      allOf:
-        -
-          $ref: '#/components/schemas/Submission'
-        -
-          type: object
-          properties:
-            id:
-              type: integer
-            created_at:
-              type: string
-              nullable: true
-              format: date-time
-            updated_at:
-              type: string
-              nullable: true
-              format: date-time
-            data:
-              type: object
-              additionalProperties: true
-    Unit:
-      title: Unit
+    Award:
+      title: Award
       type: object
       properties:
         name:
           type: string
         description:
-          type: string
-          nullable: true
-        order:
-          type: integer
-    UnitResource:
-      title: UnitResource
-      allOf:
-        -
-          $ref: '#/components/schemas/Unit'
-        -
-          type: object
-          properties:
-            id:
-              type: integer
-            created_at:
-              type: string
-              nullable: true
-              format: date-time
-            updated_at:
-              type: string
-              nullable: true
-              format: date-time
-    Assignment:
-      title: Assignment
-      type: object
-      properties:
-        user_id:
-          type: integer
-        unit_id:
-          type: integer
-        position_id:
-          type: integer
-        specialty_id:
-          type: integer
-        document_id:
-          type: integer
-          nullable: true
-        author_id:
-          type: integer
-          nullable: true
-        text:
-          type: string
-          nullable: true
-    AssignmentResource:
-      title: AssignmentResource
-      allOf:
-        -
-          $ref: '#/components/schemas/Assignment'
-        -
-          type: object
-          properties:
-            id:
-              type: integer
-            created_at:
-              type: string
-              nullable: true
-              format: date-time
-            updated_at:
-              type: string
-              nullable: true
-              format: date-time
-    Award:
-      title: Award
-      type: object
-      properties:
-        user_id:
-          type: integer
-        award_id:
-          type: integer
-        document_id:
-          type: integer
-          nullable: true
-        author_id:
-          type: integer
-          nullable: true
-        text:
           type: string
           nullable: true
     AwardResource:
@@ -5483,37 +6912,7 @@ components:
           properties:
             id:
               type: integer
-            created_at:
-              type: string
-              nullable: true
-              format: date-time
-            updated_at:
-              type: string
-              nullable: true
-              format: date-time
-    Combat:
-      title: Combat
-      type: object
-      properties:
-        user_id:
-          type: integer
-        document_id:
-          type: integer
-          nullable: true
-        author_id:
-          type: integer
-          nullable: true
-        text:
-          type: string
-    CombatResource:
-      title: CombatResource
-      allOf:
-        -
-          $ref: '#/components/schemas/Combat'
-        -
-          type: object
-          properties:
-            id:
+            order:
               type: integer
             created_at:
               type: string
@@ -5527,17 +6926,9 @@ components:
       title: Qualification
       type: object
       properties:
-        user_id:
-          type: integer
-        qualification_id:
-          type: integer
-        document_id:
-          type: integer
-          nullable: true
-        author_id:
-          type: integer
-          nullable: true
-        text:
+        name:
+          type: string
+        description:
           type: string
           nullable: true
     QualificationResource:
@@ -5549,6 +6940,8 @@ components:
           type: object
           properties:
             id:
+              type: integer
+            order:
               type: integer
             created_at:
               type: string
@@ -5573,11 +6966,6 @@ components:
         paygrade:
           type: string
           nullable: true
-        image:
-          type: string
-          nullable: true
-        order:
-          type: integer
     RankResource:
       title: RankResource
       allOf:
@@ -5588,6 +6976,8 @@ components:
           properties:
             id:
               type: integer
+            order:
+              type: integer
             created_at:
               type: string
               nullable: true
@@ -5596,30 +6986,57 @@ components:
               type: string
               nullable: true
               format: date-time
-    Service:
-      title: Service
+    Unit:
+      title: Unit
       type: object
       properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+    UnitResource:
+      title: UnitResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Unit'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            order:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    Submission:
+      title: Submission
+      type: object
+      properties:
+        form_id:
+          type: integer
         user_id:
           type: integer
-        document_id:
-          type: integer
           nullable: true
-        author_id:
-          type: integer
-          nullable: true
-        text:
-          type: string
-    ServiceResource:
-      title: ServiceResource
+    SubmissionResource:
+      title: SubmissionResource
       allOf:
         -
-          $ref: '#/components/schemas/Service'
+          $ref: '#/components/schemas/Submission'
         -
           type: object
           properties:
             id:
               type: integer
+            data:
+              type: object
+              additionalProperties: true
             created_at:
               type: string
               nullable: true
@@ -5628,125 +7045,6 @@ components:
               type: string
               nullable: true
               format: date-time
-    Position:
-      title: Position
-      type: object
-      properties:
-        name:
-          type: string
-        description:
-          type: string
-          nullable: true
-        order:
-          type: integer
-    PositionResource:
-      title: PositionResource
-      allOf:
-        -
-          $ref: '#/components/schemas/Position'
-        -
-          type: object
-          properties:
-            id:
-              type: integer
-            created_at:
-              type: string
-              nullable: true
-              format: date-time
-            updated_at:
-              type: string
-              nullable: true
-              format: date-time
-    Specialty:
-      title: Specialty
-      type: object
-      properties:
-        name:
-          type: string
-        abbreviation:
-          type: string
-          nullable: true
-        description:
-          type: string
-          nullable: true
-    SpecialtyResource:
-      title: SpecialtyResource
-      allOf:
-        -
-          $ref: '#/components/schemas/Specialty'
-        -
-          type: object
-          properties:
-            id:
-              type: integer
-            created_at:
-              type: string
-              nullable: true
-              format: date-time
-            updated_at:
-              type: string
-              nullable: true
-              format: date-time
-    Status:
-      title: Status
-      type: object
-      properties:
-        name:
-          type: string
-        color:
-          type: string
-    StatusResource:
-      title: StatusResource
-      allOf:
-        -
-          $ref: '#/components/schemas/Status'
-        -
-          type: object
-          properties:
-            id:
-              type: integer
-            created_at:
-              type: string
-              nullable: true
-              format: date-time
-            updated_at:
-              type: string
-              nullable: true
-              format: date-time
-    ResourceLinks:
-      title: ResourceLinks
-      type: object
-      properties:
-        first:
-          type: string
-          format: uri
-        last:
-          type: string
-          format: uri
-        prev:
-          type: string
-          format: uri
-        next:
-          type: string
-          format: uri
-    ResourceMeta:
-      title: ResourceMeta
-      type: object
-      properties:
-        current_page:
-          type: integer
-        from:
-          type: integer
-        last_page:
-          type: integer
-        path:
-          type: string
-        per_page:
-          type: integer
-        to:
-          type: integer
-        total:
-          type: integer
     AssignmentRecord:
       title: AssignmentRecord
       type: object
@@ -5957,6 +7255,125 @@ components:
               type: string
               nullable: true
               format: date-time
+    Position:
+      title: Position
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+    PositionResource:
+      title: PositionResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Position'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            order:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    Specialty:
+      title: Specialty
+      type: object
+      properties:
+        name:
+          type: string
+        abbreviation:
+          type: string
+          nullable: true
+        description:
+          type: string
+          nullable: true
+    SpecialtyResource:
+      title: SpecialtyResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Specialty'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    Status:
+      title: Status
+      type: object
+      properties:
+        name:
+          type: string
+        color:
+          type: string
+    StatusResource:
+      title: StatusResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Status'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    ResourceLinks:
+      title: ResourceLinks
+      type: object
+      properties:
+        first:
+          type: string
+          format: uri
+        last:
+          type: string
+          format: uri
+        prev:
+          type: string
+          format: uri
+        next:
+          type: string
+          format: uri
+    ResourceMeta:
+      title: ResourceMeta
+      type: object
+      properties:
+        current_page:
+          type: integer
+        from:
+          type: integer
+        last_page:
+          type: integer
+        path:
+          type: string
+        per_page:
+          type: integer
+        to:
+          type: integer
+        total:
+          type: integer
 tags:
   -
     name: Me
@@ -5964,6 +7381,18 @@ tags:
   -
     name: Announcements
     description: 'API documentation for Announcements'
+  -
+    name: Awards
+    description: 'API documentation for Awards'
+  -
+    name: Qualifications
+    description: 'API documentation for Qualifications'
+  -
+    name: Ranks
+    description: 'API documentation for Ranks'
+  -
+    name: Roster
+    description: 'API documentation for Roster'
   -
     name: Submissions
     description: 'API documentation for Submissions'
@@ -6009,6 +7438,3 @@ tags:
   -
     name: 'Users Unit'
     description: 'API documentation for Users Unit'
-  -
-    name: Roster
-    description: 'API documentation for Roster'

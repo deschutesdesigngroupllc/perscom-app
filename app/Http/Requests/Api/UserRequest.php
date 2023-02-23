@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Api;
 
 use Orion\Http\Requests\Request;
 
-class UnitRequest extends Request
+class UserRequest extends Request
 {
     /**
      * @return string[]
@@ -12,7 +12,9 @@ class UnitRequest extends Request
     public function commonRules(): array
     {
         return [
-            'description' => 'nullable|string',
+            'email_verified_at' => 'nullable|date',
+            'notes_updated_at' => 'nullable|date',
+            'last_seen_at' => 'nullable|date',
         ];
     }
 
@@ -23,6 +25,7 @@ class UnitRequest extends Request
     {
         return [
             'name' => 'required',
+            'email' => 'required|email|unique:users,email',
         ];
     }
 }

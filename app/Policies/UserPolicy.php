@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
 class UserPolicy extends Policy
@@ -127,15 +126,6 @@ class UserPolicy extends Policy
     public function note(User $user)
     {
         return $this->hasPermissionTo($user, 'note:user') || $user->tokenCan('note:user');
-    }
-
-    /**
-     * @param  User  $user
-     * @return bool
-     */
-    public function widget(User $user)
-    {
-        return $this->hasPermissionTo($user, 'access:widget') || $user->tokenCan('access:widget') || Auth::guard('jwt')->check();
     }
 
     /**

@@ -30,7 +30,7 @@ class Position extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description', 'order'];
+    protected $fillable = ['name', 'description'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

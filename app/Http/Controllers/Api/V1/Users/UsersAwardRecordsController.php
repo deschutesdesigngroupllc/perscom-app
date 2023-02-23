@@ -16,4 +16,12 @@ class UsersAwardRecordsController extends RelationController
      * @var string
      */
     protected $relation = 'award_records';
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return ['award'];
+    }
 }
