@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.19...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.20...HEAD)
+
+## [v1.0.20](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.19...v1.0.20) - 2023-02-23
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.20 -->
+### What's Changed
+
+#### Added
+
+- Adds support for new user profile component in widget. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/131
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.19...v1.0.20
 
 ## [v1.0.19](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.18...v1.0.19) - 2023-02-19
 
