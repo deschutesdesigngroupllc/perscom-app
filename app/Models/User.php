@@ -11,6 +11,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Passport\HasApiTokens;
@@ -21,50 +22,50 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * App\Models\User
  *
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
- * @property-read int|null $actions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
- * @property-read int|null $assignment_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
- * @property-read int|null $award_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportClient> $clients
- * @property-read int|null $clients_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CombatRecord> $combat_records
- * @property-read int|null $combat_records_count
- * @property-read string $online
- * @property-read string $relative_url
- * @property-read mixed|null $time_in_assignment
- * @property-read mixed|null $time_in_grade
- * @property-read string $url
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action>                                             $actions
+ * @property-read int|null                                                                                                      $actions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord>                                   $assignment_records
+ * @property-read int|null                                                                                                      $assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord>                                        $award_records
+ * @property-read int|null                                                                                                      $award_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportClient>                                     $clients
+ * @property-read int|null                                                                                                      $clients_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CombatRecord>                                       $combat_records
+ * @property-read int|null                                                                                                      $combat_records_count
+ * @property-read string                                                                                                        $online
+ * @property-read string                                                                                                        $relative_url
+ * @property-read mixed|null                                                                                                    $time_in_assignment
+ * @property-read mixed|null                                                                                                    $time_in_grade
+ * @property-read string                                                                                                        $url
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
- * @property-read int|null $notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
- * @property-read int|null $permissions_count
- * @property-read \App\Models\Position|null $position
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord> $qualification_records
- * @property-read int|null $qualification_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Qualification> $qualifications
- * @property-read int|null $qualifications_count
- * @property-read \App\Models\Rank|null $rank
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
- * @property-read int|null $rank_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank> $ranks
- * @property-read int|null $ranks_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
- * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord> $service_records
- * @property-read int|null $service_records_count
- * @property-read \App\Models\Specialty|null $specialty
- * @property-read \App\Models\Status|null $status
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
- * @property-read int|null $statuses_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
- * @property-read int|null $submissions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
- * @property-read int|null $tasks_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
- * @property-read int|null $tokens_count
- * @property-read \App\Models\Unit|null $unit
+ * @property-read int|null                                                                                                      $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission>                                         $permissions
+ * @property-read int|null                                                                                                      $permissions_count
+ * @property-read \App\Models\Position|null                                                                                     $position
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord>                                $qualification_records
+ * @property-read int|null                                                                                                      $qualification_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Qualification>                                      $qualifications
+ * @property-read int|null                                                                                                      $qualifications_count
+ * @property-read \App\Models\Rank|null                                                                                         $rank
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord>                                         $rank_records
+ * @property-read int|null                                                                                                      $rank_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank>                                               $ranks
+ * @property-read int|null                                                                                                      $ranks_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role>                                               $roles
+ * @property-read int|null                                                                                                      $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord>                                      $service_records
+ * @property-read int|null                                                                                                      $service_records_count
+ * @property-read \App\Models\Specialty|null                                                                                    $specialty
+ * @property-read \App\Models\Status|null                                                                                       $status
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status>                                             $statuses
+ * @property-read int|null                                                                                                      $statuses_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission>                                         $submissions
+ * @property-read int|null                                                                                                      $submissions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task>                                               $tasks
+ * @property-read int|null                                                                                                      $tasks_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken>                                      $tokens
+ * @property-read int|null                                                                                                      $tokens_count
+ * @property-read \App\Models\Unit|null                                                                                         $unit
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
@@ -102,6 +103,8 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'password',
         'notes',
         'notes_updated_at',
+        'profile_photo',
+        'cover_photo',
         'last_seen_at',
         'social_id',
         'social_driver',
@@ -133,7 +136,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      *
      * @var array
      */
-    protected $appends = ['online', 'url', 'relative_url'];
+    protected $appends = ['online', 'url', 'relative_url', 'profile_photo_url', 'cover_photo_url'];
 
     /**
      * The attributes that should be cast.
@@ -219,6 +222,22 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
             'resource' => \App\Nova\User::uriKey(),
             'resourceId' => $this->id,
         ], false);
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getProfilePhotoUrlAttribute()
+    {
+        return $this->profile_photo ? Storage::url($this->profile_photo) : null;
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getCoverPhotoUrlAttribute()
+    {
+        return $this->cover_photo ? Storage::url($this->cover_photo) : null;
     }
 
     /**
@@ -343,12 +362,13 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      */
     public function tasks()
     {
-        return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')
-            ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
-            ->latest()
-            ->as('assignment')
-            ->using(TaskAssignment::class)
-            ->withTimestamps();
+        return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')->withPivot([
+            'id',
+            'assigned_by_id',
+            'completed_at',
+            'assigned_at',
+            'expires_at',
+        ])->latest()->as('assignment')->using(TaskAssignment::class)->withTimestamps();
     }
 
     /**

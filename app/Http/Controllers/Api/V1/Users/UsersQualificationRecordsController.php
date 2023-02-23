@@ -16,4 +16,12 @@ class UsersQualificationRecordsController extends RelationController
      * @var string
      */
     protected $relation = 'qualification_records';
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return ['qualification'];
+    }
 }

@@ -27,6 +27,14 @@ class AwardsController extends Controller
     protected $policy = AwardPolicy::class;
 
     /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return ['image'];
+    }
+
+    /**
      * Builds Eloquent query for fetching entities in index method.
      *
      * @param  Request  $request
