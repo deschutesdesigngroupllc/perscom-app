@@ -22,7 +22,7 @@ class ResetDemoAccount implements ShouldQueue
      */
     public function handle()
     {
-        if ($tenant = Tenant::find(config('app.demo_tenant_id'))) {
+        if ($tenant = Tenant::find(config('tenancy.demo_id'))) {
             Artisan::call('tenants:migrate-fresh', [
                 '--tenants' => $tenant->getTenantKey(),
             ]);

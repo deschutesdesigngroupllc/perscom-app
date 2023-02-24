@@ -68,6 +68,10 @@ trait WithTenant
      */
     protected function setUpWithTenant()
     {
+        putenv('TENANT_TESTING=true');
+
+        $this->refreshApplication();
+
         $this->tenant = Tenant::factory()->create();
 
         $this->domain = Domain::factory()->state([
@@ -109,6 +113,10 @@ trait WithTenant
     protected function tearDownWithTenant()
     {
         $this->tenant->delete();
+
+        putenv('TENANT_TESTING=false');
+
+        $this->refreshApplication();
     }
 
     /**

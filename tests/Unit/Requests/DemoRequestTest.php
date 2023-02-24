@@ -16,8 +16,8 @@ class DemoRequestTest extends TestCase
 
     public function test_web_request_is_recognized_as_demo()
     {
-        config()->set('app.demo_tenant_host', $this->domain->host);
-        config()->set('app.demo_tenant_id', $this->tenant->getTenantKey());
+        config()->set('tenancy.demo_host', $this->domain->host);
+        config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
         $this->get($this->tenant->url.'/login')
              ->assertSuccessful();
@@ -27,8 +27,8 @@ class DemoRequestTest extends TestCase
 
     public function test_web_request_is_not_recognized_as_demo()
     {
-        config()->set('app.demo_tenant_host', $this->faker->domainWord.config('app.base_url'));
-        config()->set('app.demo_tenant_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
+        config()->set('tenancy.demo_host', $this->faker->domainWord.config('app.base_url'));
+        config()->set('tenancy.demo_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
 
         $this->get($this->tenant->url.'/login')
              ->assertSuccessful();
@@ -38,8 +38,8 @@ class DemoRequestTest extends TestCase
 
     public function test_api_request_with_header_is_recognized_as_demo()
     {
-        config()->set('app.demo_tenant_host', $this->domain->host);
-        config()->set('app.demo_tenant_id', $this->tenant->getTenantKey());
+        config()->set('tenancy.demo_host', $this->domain->host);
+        config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -56,8 +56,8 @@ class DemoRequestTest extends TestCase
 
     public function test_api_request_with_header_is_not_recognized_as_demo()
     {
-        config()->set('app.demo_tenant_host', $this->faker->domainWord.config('app.base_url'));
-        config()->set('app.demo_tenant_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
+        config()->set('tenancy.demo_host', $this->faker->domainWord.config('app.base_url'));
+        config()->set('tenancy.demo_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -74,8 +74,8 @@ class DemoRequestTest extends TestCase
 
     public function test_api_request_with_query_is_recognized_as_demo()
     {
-        config()->set('app.demo_tenant_host', $this->domain->host);
-        config()->set('app.demo_tenant_id', $this->tenant->getTenantKey());
+        config()->set('tenancy.demo_host', $this->domain->host);
+        config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -91,8 +91,8 @@ class DemoRequestTest extends TestCase
 
     public function test_api_request_with_query_is_not_recognized_as_demo()
     {
-        config()->set('app.demo_tenant_host', $this->faker->domainWord.config('app.base_url'));
-        config()->set('app.demo_tenant_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
+        config()->set('tenancy.demo_host', $this->faker->domainWord.config('app.base_url'));
+        config()->set('tenancy.demo_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
 
         Passport::actingAs($this->user, [
             'view:user',
@@ -108,8 +108,8 @@ class DemoRequestTest extends TestCase
 
     public function test_request_properly_configures_fortify()
     {
-        config()->set('app.demo_tenant_host', $this->domain->host);
-        config()->set('app.demo_tenant_id', $this->tenant->getTenantKey());
+        config()->set('tenancy.demo_host', $this->domain->host);
+        config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
         $this->get($this->tenant->url.'/login')
              ->assertSuccessful();

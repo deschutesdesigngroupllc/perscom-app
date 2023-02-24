@@ -3,7 +3,6 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
-use Illuminate\Http\JsonResponse;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
 use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
@@ -38,17 +37,17 @@ class Handler extends ExceptionHandler
     public function register()
     {
         $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
-            return response()->view('errors.tenant-not-found');
+            return response()->view('errors.tenant-not-found', [], 404);
         });
 
         $this->renderable(function (TenantAccountSetupNotComplete $e, $request) {
-            return response()->view('errors.tenant-database-does-not-exist');
+            return response()->view('errors.tenant-database-does-not-exist', [], 401);
         });
 
         $this->renderable(function (SubscriptionRequired $e, $request) {
             return response()->view('errors.subscription-required', [
                 'message' => $e->getMessage(),
-            ]);
+            ], 402);
         });
 
         $this->reportable(function (Throwable $e) {
@@ -67,13 +66,13 @@ class Handler extends ExceptionHandler
     {
         $response = parent::render($request, $e);
 
-        if ($response instanceof JsonResponse && $request->routeIs('api.*')) {
-            $response->setData([
+        if ($request->expectsJson()) {
+            return response()->json([
                 'error' => [
                     'message' => $e->getMessage(),
                     'type' => class_basename($e),
                 ],
-            ]);
+            ], $response->getStatusCode());
         }
 
         return $response;

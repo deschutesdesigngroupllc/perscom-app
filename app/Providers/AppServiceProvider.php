@@ -25,18 +25,20 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Request::macro('isCentralRequest', function () {
-            return ! app()->runningInConsole() &&
-                   collect(config('tenancy.central_domains'))->contains(\request()->getHost());
+            if (config('tenancy.testing')) {
+                return false;
+            }
+
+            return collect(config('tenancy.central_domains'))->contains(\request()->getHost());
         });
 
         Request::macro('isDemoMode', function () {
-            return ! app()->runningInConsole() &&
-                   (\request()->getHost() === \config('app.demo_tenant_host') ||
+            return \request()->getHost() === \config('tenancy.demo_host') ||
                     (\request()->expectsJson() &&
                      ((\request()->headers->has('X-Perscom-Id') &&
-                       \request()->header('X-Perscom-Id') == \config('app.demo_tenant_id')) ||
+                       \request()->header('X-Perscom-Id') == \config('tenancy.demo_id')) ||
                       (\request()->get('perscom_id') != null &&
-                       \request()->get('perscom_id') == \config('app.demo_tenant_id')))));
+                       \request()->get('perscom_id') == \config('tenancy.demo_id'))));
         });
 
         Cashier::useCustomerModel(Tenant::class);

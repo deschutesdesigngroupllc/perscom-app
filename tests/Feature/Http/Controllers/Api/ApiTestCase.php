@@ -2,17 +2,21 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
-use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequests;
 use App\Http\Middleware\SentryContext;
 use App\Http\Middleware\Subscribed;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
+use Tests\Traits\WithTenant;
 use Treblle\Middlewares\TreblleMiddleware;
 
 class ApiTestCase extends TestCase
 {
+    use WithFaker;
+    use WithTenant;
+
     /**
      * @return void
      */
@@ -22,8 +26,9 @@ class ApiTestCase extends TestCase
 
         URL::forceRootUrl(config('app.api_url').'/'.config('app.api_version'));
 
+        $this->withHeader('X-Perscom-Id', $this->tenant->getTenantKey());
+
         $this->withoutMiddleware([
-            InitializeTenancyByRequestData::class,
             TreblleMiddleware::class,
             SentryContext::class,
             LogApiRequests::class,

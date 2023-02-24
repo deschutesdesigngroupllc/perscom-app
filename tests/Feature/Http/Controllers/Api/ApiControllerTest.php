@@ -2,15 +2,11 @@
 
 namespace Tests\Feature\Http\Controllers\Api;
 
-use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\Subscribed;
 use Laravel\Passport\Passport;
-use Tests\Traits\WithTenant;
 
 class ApiControllerTest extends ApiTestCase
 {
-    use WithTenant;
-
     public function test_api_cannot_be_reached_without_bearer_token()
     {
         $this->getJson('/me')
@@ -23,10 +19,20 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->withMiddleware(InitializeTenancyByRequestData::class);
+        $this->getJson('/me', [
+            'X-Perscom-Id' => null,
+        ])->assertUnauthorized();
+    }
 
-        $this->getJson('/me')
-             ->assertUnauthorized();
+    public function test_api_cannot_be_reached_with_incorrect_perscom_id()
+    {
+        Passport::actingAs($this->user, [
+            'view:user',
+        ]);
+
+        $this->getJson('/me', [
+            'X-Perscom-Id' => $this->faker->randomDigitNot($this->tenant->getTenantKey()),
+        ])->assertUnauthorized();
     }
 
     public function test_api_can_be_reached_with_perscom_id()
@@ -35,11 +41,8 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->withMiddleware(InitializeTenancyByRequestData::class);
-
-        $this->getJson('/me', [
-            'X-Perscom-Id' => $this->tenant->getTenantKey(),
-        ])->assertSuccessful();
+        $this->getJson('/me')
+             ->assertSuccessful();
     }
 
     public function test_api_cannot_be_reached_without_api_access_feature()
@@ -114,8 +117,8 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_can_be_reached_while_in_demo_mode()
     {
-        config()->set('app.demo_tenant_host', $this->domain->host);
-        config()->set('app.demo_tenant_id', $this->tenant->getTenantKey());
+        config()->set('tenancy.demo_host', $this->domain->host);
+        config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
         $this->withMiddleware(Subscribed::class);
 
@@ -123,8 +126,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me', [
-            'X-Perscom-Id' => $this->tenant->getTenantKey(),
-        ])->assertSuccessful();
+        $this->getJson('/me')
+             ->assertSuccessful();
     }
 }
