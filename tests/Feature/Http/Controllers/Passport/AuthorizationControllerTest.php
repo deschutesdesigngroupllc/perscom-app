@@ -23,13 +23,13 @@ class AuthorizationControllerTest extends TestCase
             'response_type' => 'code',
             'client_id' => $client->id,
             'state' => 'test',
-            'redirect_url' => $client->redirect
+            'redirect_url' => $client->redirect,
         ]);
 
         $this->actingAs($this->user)
              ->get($url)
              ->assertInertia(function (AssertableInertia $page) {
-                $page->component('passport/Authorize');
-            })->assertSuccessful();
+                 $page->component('passport/Authorize');
+             })->assertSuccessful();
     }
 }
