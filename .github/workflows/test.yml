@@ -72,3 +72,10 @@ jobs:
 
       - name: Execute Tests
         run: vendor/bin/phpunit -d memory_limit=-1 --verbose
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: logs
+          path: storage/logs/
