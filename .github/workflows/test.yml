@@ -71,4 +71,4 @@ jobs:
           sudo chown -R $(whoami) database
 
       - name: Execute Tests
-        run: vendor/bin/phpunit --verbose
+        run: vendor/bin/phpunit -d memory_limit=-1 --verbose
