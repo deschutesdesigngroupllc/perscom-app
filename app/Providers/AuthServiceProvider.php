@@ -120,8 +120,6 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        $this->registerPolicies();
-
         // Scope JWTs to the tenant they belong to and allow access to everything as we created the JWT
         Gate::before(static function () {
             if (Auth::guard('jwt')->check()) {
