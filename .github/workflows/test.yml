@@ -9,6 +9,16 @@ jobs:
     name: Test Application
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     strategy:
       fail-fast: true
       matrix:
@@ -64,14 +74,11 @@ jobs:
       - name: Install Passport Keys
         run: php artisan passport:keys --force
 
-      - name: Create Test Database
-        run: |
-          touch database/database.sqlite
-          sudo chmod -R 775 database
-          sudo chown -R $(whoami) database
-
       - name: Execute Tests
-        run: vendor/bin/phpunit -d memory_limit=-1 --verbose
+        run: vendor/bin/phpunit
+        env:
+          DB_DATABASE: testing
+          DB_USERNAME: root
 
       - name: Upload Logs
         uses: actions/upload-artifact@v3

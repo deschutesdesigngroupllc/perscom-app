@@ -3,8 +3,9 @@
 namespace Tests\Feature\Http\Controllers\Api\V1;
 
 use Laravel\Passport\Passport;
+use Tests\Feature\Http\Controllers\Api\ApiTestCase;
 
-class MeControllerTest extends ApiResourceTestCase
+class MeControllerTest extends ApiTestCase
 {
     public function test_me_endpoint_can_be_reached()
     {
