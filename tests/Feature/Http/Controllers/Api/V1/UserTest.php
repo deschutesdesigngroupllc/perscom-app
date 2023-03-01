@@ -40,7 +40,7 @@ class UserTest extends ApiResourceTestCase
             'show' => 'view:user',
             'store' => 'create:user',
             'update' => 'update:user',
-            'delete' => 'delete:user'
+            'delete' => 'delete:user',
         ];
     }
 
@@ -50,8 +50,8 @@ class UserTest extends ApiResourceTestCase
     public function storeData()
     {
         return [
-            'name' => $this->faker->name,
-            'email' => $this->faker->email
+            'name' => 'Test User',
+            'email' => $this->faker->email,
         ];
     }
 

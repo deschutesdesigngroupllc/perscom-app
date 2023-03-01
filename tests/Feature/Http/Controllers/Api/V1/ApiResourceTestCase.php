@@ -49,11 +49,12 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             $this->scopes()['store'],
         ]);
 
-        $this->postJson("/{$this->endpoint()}", [
-            $this->storeData()
-        ])->assertSuccessful();
+        $data = $this->storeData();
 
-        $this->assertDatabaseHas($this->endpoint(), $this->storeData());
+        $this->postJson("/{$this->endpoint()}", $data)
+             ->assertSuccessful();
+
+        $this->assertDatabaseHas($this->endpoint(), $data);
     }
 
     public function test_can_reach_update_endpoint()
@@ -62,11 +63,12 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             $this->scopes()['update'],
         ]);
 
-        $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", [
-            $this->updateData()
-        ])->assertSuccessful();
+        $data = $this->updateData();
 
-        $this->assertDatabaseHas($this->endpoint(), $this->updateData());
+        $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $data)
+             ->assertSuccessful();
+
+        $this->assertDatabaseHas($this->endpoint(), $data);
     }
 
     public function test_can_reach_delete_endpoint()
@@ -79,7 +81,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
              ->assertSuccessful();
 
         $this->assertDatabaseMissing($this->endpoint(), [
-            'id' => $this->factory->getKey()
+            'id' => $this->factory->getKey(),
         ]);
     }
 
@@ -103,18 +105,16 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     {
         Passport::actingAs($this->user);
 
-        $this->postJson("/{$this->endpoint()}", [
-            $this->storeData()
-        ])->assertForbidden();
+        $this->postJson("/{$this->endpoint()}", $this->storeData())
+             ->assertForbidden();
     }
 
     public function test_cannot_reach_update_endpoint_with_missing_scope()
     {
         Passport::actingAs($this->user);
 
-        $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", [
-            $this->updateData()
-        ])->assertForbidden();
+        $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $this->updateData())
+             ->assertForbidden();
     }
 
     public function test_cannot_reach_delete_endpoint_with_missing_scope()
@@ -128,10 +128,20 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     public function test_cannot_reach_store_endpoint_with_missing_body()
     {
         Passport::actingAs($this->user, [
-            $this->scopes()['store']
+            $this->scopes()['store'],
         ]);
 
         $this->postJson("/{$this->endpoint()}")
              ->assertStatus(422);
+    }
+
+    public function test_show_store_endpoint_returns_not_found()
+    {
+        Passport::actingAs($this->user, [
+            $this->scopes()['show'],
+        ]);
+
+        $this->getJson("/{$this->endpoint()}/{$this->faker->randomDigitNot($this->factory->getKey())}")
+             ->assertNotFound();
     }
 }
