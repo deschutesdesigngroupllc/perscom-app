@@ -1,11 +1,9 @@
 name: Release Application
 
 on:
+  workflow_dispatch:
   repository_dispatch:
     types: release-application
-  push:
-    branches:
-      - staging
 
 jobs:
   update-version:
