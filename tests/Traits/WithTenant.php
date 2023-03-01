@@ -7,15 +7,14 @@ use App\Models\Feature;
 use App\Models\Tenant;
 use App\Models\User;
 use Codinglabs\FeatureFlags\Enums\FeatureState;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\ParallelTesting;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
 
 trait WithTenant
 {
-    use DatabaseMigrations;
-
     /**
      * @var Tenant
      */
@@ -66,17 +65,19 @@ trait WithTenant
      *
      * @throws \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById
      */
-    protected function setUpWithTenant()
+    protected function setUpTenancy()
     {
-        putenv('TENANT_TESTING=true');
-
-        $this->refreshApplication();
-
-        $this->tenant = Tenant::factory()->create();
+        $id = random_int(1, 1000);
+        $token = ParallelTesting::token() ?: Str::random();
+        $this->tenant = Tenant::factory()->state([
+            'id' => $id,
+            'name' => "Tenant {$id} Test {$token}",
+            'tenancy_db_name' => "tenant_{$id}_test_{$token}_testing",
+        ])->create();
 
         $this->domain = Domain::factory()->state([
-            'domain' => 'test',
-            'tenant_id' => $this->tenant->id,
+            'domain' => "tenant{$id}test{$token}",
+            'tenant_id' => $this->tenant->getKey(),
         ])->create();
 
         if ($this->withSubscription) {
@@ -104,19 +105,17 @@ trait WithTenant
 
         tenancy()->initialize($this->tenant);
 
+        URL::forceRootUrl($this->tenant->url);
+
         $this->user = User::factory()->create();
     }
 
     /**
      * @return void
      */
-    protected function tearDownWithTenant()
+    protected function tearDownTenancy()
     {
         $this->tenant->delete();
-
-        putenv('TENANT_TESTING=false');
-
-        $this->refreshApplication();
     }
 
     /**

@@ -8,11 +8,11 @@
          backupStaticProperties="false">
 
   <testsuites>
-    <testsuite name="Unit">
-      <directory suffix="Test.php">./tests/Unit</directory>
+    <testsuite name="Central">
+      <directory suffix="Test.php">./tests/Central</directory>
     </testsuite>
-    <testsuite name="Feature">
-      <directory suffix="Test.php">./tests/Feature</directory>
+    <testsuite name="Tenant">
+      <directory suffix="Test.php">./tests/Tenant</directory>
     </testsuite>
   </testsuites>
 

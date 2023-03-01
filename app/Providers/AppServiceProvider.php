@@ -25,7 +25,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         Request::macro('isCentralRequest', function () {
-            if (config('tenancy.testing')) {
+            if (env('TENANT_TESTING', false)) {
                 return false;
             }
 
@@ -48,13 +48,13 @@ class AppServiceProvider extends ServiceProvider
         Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
-        Passport::authorizationView(function ($client, $user, $scopes, $request, $authToken) {
+        Passport::authorizationView(function ($parameters) {
             return Inertia::render('passport/Authorize', [
-                'client' => $client->id,
-                'name' => $client->name,
-                'scopes' => $scopes,
-                'state' => $request->state,
-                'authToken' => $authToken,
+                'client' => $parameters['client']->id,
+                'name' => $parameters['client']->name,
+                'scopes' => $parameters['scopes'],
+                'state' => $parameters['request']->state,
+                'authToken' => $parameters['authToken'],
                 'csrfToken' => csrf_token(),
             ]);
         });

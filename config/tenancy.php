@@ -8,11 +8,6 @@ return [
     'domain_model' => \App\Models\Domain::class,
 
     /**
-     * Wheter we are running unit tests against a tenant
-     */
-    'testing' => env('TENANT_TESTING', false),
-
-    /**
      * The host and ID of the demo tenant
      */
     'demo_host' => env('TENANT_DEMO_HOST'),

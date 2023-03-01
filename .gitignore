@@ -9,6 +9,7 @@
 .env.backup
 .env.*
 .phpunit.result.cache
+.phpunit.cache
 .phpstorm.meta.php
 docker-compose.override.yml
 Homestead.json

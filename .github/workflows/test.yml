@@ -75,7 +75,7 @@ jobs:
         run: php artisan passport:keys --force
 
       - name: Execute Tests
-        run: vendor/bin/phpunit
+        run: php artisan test --parallel
         env:
           DB_DATABASE: testing
           DB_USERNAME: root
