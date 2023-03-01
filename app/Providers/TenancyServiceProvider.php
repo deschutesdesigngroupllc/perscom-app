@@ -21,6 +21,9 @@ class TenancyServiceProvider extends ServiceProvider
     // By default, no namespace is used to support the callable array syntax.
     public static string $controllerNamespace = '';
 
+    /**
+     * @return array
+     */
     public function events()
     {
         return [
@@ -86,10 +89,16 @@ class TenancyServiceProvider extends ServiceProvider
         ];
     }
 
+    /**
+     * @return void
+     */
     public function register()
     {
     }
 
+    /**
+     * @return void
+     */
     public function boot()
     {
         $this->bootEvents();
@@ -98,6 +107,9 @@ class TenancyServiceProvider extends ServiceProvider
         $this->makeTenancyMiddlewareHighestPriority();
     }
 
+    /**
+     * @return void
+     */
     protected function bootEvents()
     {
         foreach ($this->events() as $event => $listeners) {
@@ -111,6 +123,9 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * @return void
+     */
     protected function mapRoutes()
     {
         if (file_exists(base_path('routes/tenant.php'))) {
@@ -118,6 +133,9 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
+    /**
+     * @return void
+     */
     protected function makeTenancyMiddlewareHighestPriority()
     {
         $tenancyMiddleware = [

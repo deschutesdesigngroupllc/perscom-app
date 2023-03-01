@@ -9,6 +9,16 @@ jobs:
     name: Test Application
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: testing
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
     strategy:
       fail-fast: true
       matrix:
@@ -61,5 +71,18 @@ jobs:
       - name: Build Project
         run: npm run build
 
+      - name: Install Passport Keys
+        run: php artisan passport:keys --force
+
       - name: Execute Tests
-        run: vendor/bin/phpunit --verbose
+        run: php artisan test --parallel
+        env:
+          DB_DATABASE: testing
+          DB_USERNAME: root
+
+      - name: Upload Logs
+        uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: logs
+          path: storage/logs/

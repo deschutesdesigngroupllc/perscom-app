@@ -19,23 +19,25 @@ class LogApiRequests
     {
         $response = $next($request);
 
-        $activity = activity('api')->withProperties([
-            'endpoint' => $request->getPathInfo(),
-            'method' => $request->getMethod(),
-            'status' => $response->getStatusCode(),
-            'ip' => $request->getClientIp(),
-            'request_headers' => (string) $request->headers,
-            'response_headers' => (string) $response->headers,
-            'content' => json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR),
-        ]);
+        if (tenant()) {
+            $activity = activity('api')->withProperties([
+                'endpoint' => $request->getPathInfo(),
+                'method' => $request->getMethod(),
+                'status' => $response->getStatusCode(),
+                'ip' => $request->getClientIp(),
+                'request_headers' => (string) $request->headers,
+                'response_headers' => (string) $response->headers,
+                'content' => json_decode($response->getContent(), true, 512, JSON_THROW_ON_ERROR),
+            ]);
 
-        if (Auth::guard('api')->check()) {
-            $activity->causedBy(Auth::guard('api')->user());
-        } else {
-            $activity->causedByAnonymous();
+            if (Auth::guard('api')->check()) {
+                $activity->causedBy(Auth::guard('api')->user());
+            } else {
+                $activity->causedByAnonymous();
+            }
+
+            $activity->log($request->getPathInfo());
         }
-
-        $activity->log($request->getPathInfo());
 
         return $response;
     }

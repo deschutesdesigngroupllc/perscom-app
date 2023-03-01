@@ -3,18 +3,19 @@
 namespace Tests;
 
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\ParallelTesting;
 
 abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
+    use WithFaker;
 
     /**
-     * @return void
+     * @return bool
      */
-    protected function setUp(): void
+    protected function isTestingInParallel(): bool
     {
-        parent::setUp();
-
-        $this->withoutVite();
+        return (bool) ParallelTesting::token();
     }
 }

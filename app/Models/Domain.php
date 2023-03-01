@@ -15,6 +15,7 @@ use Spatie\Url\Url;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed|null $url
+ * @property-read mixed|null $host
  * @property-read \App\Models\Tenant $tenant
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Domain newModelQuery()
@@ -36,7 +37,7 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
      *
      * @var array
      */
-    protected $appends = ['url'];
+    protected $appends = ['host', 'url'];
 
     /**
      * @return string
@@ -51,9 +52,19 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
      */
     public function getUrlAttribute()
     {
-        return optional($this->domain, function () {
-            return Url::fromString(Str::endsWith($this->domain, config('tenancy.central_domains')) ? $this->domain
-                : $this->domain.config('app.base_url'))->withScheme(config('app.scheme'))->__toString();
+        return optional($this->host, static function ($host) {
+            return Url::fromString($host)->withScheme(config('app.scheme'))->__toString();
+        });
+    }
+
+    /**
+     * @return \Illuminate\Support\Optional|mixed|string
+     */
+    public function getHostAttribute()
+    {
+        return optional($this->domain, static function ($domain) {
+            return Url::fromString(Str::endsWith($domain, config('tenancy.central_domains')) ? $domain
+                : $domain.config('app.base_url'))->__toString();
         });
     }
 }

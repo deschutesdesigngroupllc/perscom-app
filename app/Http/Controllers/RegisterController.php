@@ -27,21 +27,16 @@ class RegisterController extends Controller
         $tenant = $createNewTenant->create($request->all());
 
         return redirect()->signedRoute('web.register.complete', [
-            'id' => $tenant->id,
+            'tenant' => $tenant->id,
         ]);
     }
 
     /**
-     * @param $id
-     * @return \Illuminate\Http\RedirectResponse|\Inertia\Response
+     * @param  Tenant  $tenant
+     * @return \Inertia\Response
      */
-    public function complete($id)
+    public function complete(Tenant $tenant)
     {
-        $tenant = Tenant::find($id);
-        if (! $tenant) {
-            return redirect()->route('web.register.index');
-        }
-
         return Inertia::render('Complete', [
             'url' => $tenant->url,
         ]);

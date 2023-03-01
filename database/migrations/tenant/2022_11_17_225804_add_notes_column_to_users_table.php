@@ -34,8 +34,7 @@ return new class extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('notes');
-            $table->dropColumn('notes_updated_at');
+            $table->dropColumn('notes', 'notes_updated_at');
         });
     }
 };
