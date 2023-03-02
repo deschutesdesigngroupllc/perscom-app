@@ -1,6 +1,23 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.19...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.21...HEAD)
+
+## [v1.0.21](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.19...v1.0.21) - 2023-03-02
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.21 -->
+### What's Changed
+
+#### Added
+
+- Upgrade to Laravel 10 by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/132
+- Add new test suite by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/127
+- Added new command to get/set application version by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/134
+
+#### Changed
+
+- Fixed error when migrating tenants resulting from renamed migration files. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/133
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.20...v1.0.21
 
 ## [v1.0.19](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.18...v1.0.19) - 2023-02-19
 
