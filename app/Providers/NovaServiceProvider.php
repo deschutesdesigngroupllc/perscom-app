@@ -115,6 +115,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        Nova::ignoreMigrations();
+
         if (Request::isCentralRequest()) {
             config()->set('nova.path', '/admin');
             config()->set('nova.guard', 'admin');

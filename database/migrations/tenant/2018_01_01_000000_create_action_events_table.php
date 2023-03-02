@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Facades\Schema;
 use Laravel\Nova\Util;
 
-class CreateTenantActionEventsTable extends Migration
+class CreateActionEventsTable extends Migration
 {
     /**
      * Run the migrations.

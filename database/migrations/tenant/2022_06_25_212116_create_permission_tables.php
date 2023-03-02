@@ -5,7 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Spatie\Permission\PermissionRegistrar;
 
-class CreateTenantPermissionTables extends Migration
+class CreatePermissionTables extends Migration
 {
     /**
      * Run the migrations.
