@@ -45,6 +45,7 @@ use App\Nova\TaskAssignment;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
+use App\Rules\SubdomainRule;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -326,7 +327,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->copyable()
                         ->help('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
                         ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')
-                                                                                                ->ignore(\tenant()->getTenantKey(), 'tenant_id'))
+                                                                                                ->ignore(\tenant()->getTenantKey(), 'tenant_id'), new SubdomainRule())
                         ->canSee(function () {
                             return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN, false, false, false);
                         }),
