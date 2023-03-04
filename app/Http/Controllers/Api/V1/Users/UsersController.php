@@ -57,6 +57,15 @@ class UsersController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'created_at'];
+        return [
+            'id',
+            'name',
+            'position_id',
+            'rank_id',
+            'specialty_id',
+            'status_id',
+            'unit_id',
+            'created_at',
+        ];
     }
 }

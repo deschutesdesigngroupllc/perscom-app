@@ -65,13 +65,12 @@ class Task extends Resource
             DateTime::make('Created At')->sortable()->onlyOnDetail(),
             DateTime::make('Updated At')->sortable()->onlyOnDetail(),
             new Panel('Details', [
-                BelongsTo::make('Form')
-                         ->nullable()
-                         ->help('Set to assign a form that needs to be completed as apart of the task.')
-                         ->hideFromIndex(),
+                BelongsTo::make('Form')->nullable()->help(
+                    'Set to assign a form that needs to be completed as apart of the task.'
+                )->hideFromIndex(),
             ]),
             BelongsToMany::make('Assigned To', 'users', User::class)
-                         ->fields(new TaskAssignmentFields)
+                         ->fields(new TaskAssignmentFields())
                          ->referToPivotAs('assignment'),
             MorphMany::make('Attachments'),
         ];
@@ -118,8 +117,10 @@ class Task extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-        })->nameable()];
+        return [
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+            })->nameable(),
+        ];
     }
 }

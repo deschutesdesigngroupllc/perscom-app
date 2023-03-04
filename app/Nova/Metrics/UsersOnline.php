@@ -31,11 +31,11 @@ class UsersOnline extends Value
             return "user.online.$user->id";
         })->toArray();
 
-        $count = collect(\Illuminate\Support\Facades\Cache::tags('user.online')->many($keys))
-            ->filter(function ($value) {
+        $count = collect(\Illuminate\Support\Facades\Cache::tags('user.online')->many($keys))->filter(
+            function ($value) {
                 return $value === true;
-            })
-            ->count();
+            }
+        )->count();
 
         return new ValueResult($count);
     }

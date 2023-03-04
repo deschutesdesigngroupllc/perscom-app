@@ -37,8 +37,8 @@ class FormPolicy extends Policy
     /**x
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\User $user
-     * @param \App\Models\Form $form
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\Form  $form
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */

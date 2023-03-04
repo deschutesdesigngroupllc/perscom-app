@@ -12,7 +12,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ResetTenantTrialDate extends Action
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue;
+    use Queueable;
 
     /**
      * The displayable name of the action.

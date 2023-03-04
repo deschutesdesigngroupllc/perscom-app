@@ -115,7 +115,12 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      *
      * @var array
      */
-    protected $appends = ['database_status', 'url', 'custom_url', 'fallback_url'];
+    protected $appends = [
+        'database_status',
+        'url',
+        'custom_url',
+        'fallback_url',
+    ];
 
     /**
      * The relations to eager load on every query.
@@ -188,9 +193,8 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     public function getCustomDomainAttribute()
     {
-        return $this->domains->where('is_custom_subdomain', '=', true)
-                             ->sortBy('created_at', SORT_REGULAR, true)
-                             ->first();
+        return $this->domains->where('is_custom_subdomain', '=', true)->sortBy('created_at', SORT_REGULAR, true)->first(
+        );
     }
 
     /**

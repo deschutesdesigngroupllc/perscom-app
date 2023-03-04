@@ -63,8 +63,9 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
     public function getHostAttribute()
     {
         return optional($this->domain, static function ($domain) {
-            return Url::fromString(Str::endsWith($domain, config('tenancy.central_domains')) ? $domain
-                : $domain.config('app.base_url'))->__toString();
+            return Url::fromString(
+                Str::endsWith($domain, config('tenancy.central_domains')) ? $domain : $domain.config('app.base_url')
+            )->__toString();
         });
     }
 }

@@ -8,8 +8,11 @@ use Laravel\Nova\Fields\Select;
 
 class FeatureState extends Select
 {
-    public function __construct($name, $attribute = null, $resolveCallback = null)
-    {
+    public function __construct(
+        $name,
+        $attribute = null,
+        $resolveCallback = null
+    ) {
         parent::__construct($name, $attribute, $resolveCallback);
 
         $this->resolveUsing(function ($value) {
@@ -20,7 +23,12 @@ class FeatureState extends Select
             return $value instanceof Enum ? Str::ucfirst($value->value) : $value;
         });
 
-        $this->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+        $this->fillUsing(function (
+            $request,
+            $model,
+            $attribute,
+            $requestAttribute
+        ) {
             if ($request->exists($requestAttribute)) {
                 $model->{$attribute} = Enum::from($request[$requestAttribute]);
             }

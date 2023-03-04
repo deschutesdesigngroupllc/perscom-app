@@ -150,7 +150,7 @@ class TaskAssignment extends Resource
     public function lenses(NovaRequest $request)
     {
         return [
-            new MyTasks,
+            new MyTasks(),
         ];
     }
 

@@ -125,8 +125,10 @@ class Award extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-        })->nameable()];
+        return [
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+            })->nameable(),
+        ];
     }
 }

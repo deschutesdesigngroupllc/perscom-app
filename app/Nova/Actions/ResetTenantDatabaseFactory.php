@@ -19,7 +19,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueue
 {
-    use Queueable, InteractsWithQueue;
+    use Queueable;
+    use InteractsWithQueue;
 
     /**
      * The displayable name of the action.
@@ -87,28 +88,33 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
     {
         return [
             Boolean::make('Reset Subdomain', 'new_subdomain')->help('Reset the tenant\'s subdomain.'),
-            Text::make('Subdomain', 'subdomain')
-                ->hide()
-                ->help('The tenant\'s new subdomain. Leave blank to auto-generate.')
-                ->dependsOn(['new_subdomain'], static function (Text $field, NovaRequest $request, FormData $formData) {
-                    if ($formData->new_subdomain) {
-                        $field->show();
-                    }
-                }),
-            Boolean::make('New Admin', 'new_admin')
-                   ->default(true)
-                   ->help('This will create a new admin user after the reset finishes.'),
+            Text::make('Subdomain', 'subdomain')->hide()->help(
+                'The tenant\'s new subdomain. Leave blank to auto-generate.'
+            )->dependsOn(['new_subdomain'], static function (
+                Text $field,
+                NovaRequest $request,
+                FormData $formData
+            ) {
+                if ($formData->new_subdomain) {
+                    $field->show();
+                }
+            }),
+            Boolean::make('New Admin', 'new_admin')->default(true)->help(
+                'This will create a new admin user after the reset finishes.'
+            ),
             Boolean::make('Send Email', 'send_email')
                    ->hide()
                    ->help('Send the "Your Organization Is Now Ready" email.')
-                   ->dependsOn(['new_admin'], static function (Boolean $field, NovaRequest $request, FormData $formData) {
-                       if ($formData->new_admin) {
-                           $field->show();
+                   ->dependsOn(
+                       ['new_admin'], static function (Boolean $field, NovaRequest $request, FormData $formData) {
+                           if ($formData->new_admin) {
+                               $field->show();
+                           }
                        }
-                   }),
-            Boolean::make('Remove Subscription', 'remove_subscription')
-                   ->default(true)
-                   ->help('Remove and cancel all subscriptions.'),
+                   ),
+            Boolean::make('Remove Subscription', 'remove_subscription')->default(true)->help(
+                'Remove and cancel all subscriptions.'
+            ),
         ];
     }
 }

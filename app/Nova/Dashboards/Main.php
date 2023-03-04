@@ -37,8 +37,9 @@ class Main extends Dashboard
     public function cards()
     {
         return [
-            (new DashboardTitle())->withTitle(setting('dashboard_title') ?? \tenant('name'))
-                                  ->withSubtitle(setting('dashboard_subtitle')),
+            (new DashboardTitle())->withTitle(setting('dashboard_title') ?? \tenant('name'))->withSubtitle(
+                setting('dashboard_subtitle')
+            ),
             $this->setupAlertCard(),
             new NewUsers(),
             new UsersOnline(),
@@ -54,14 +55,15 @@ class Main extends Dashboard
     {
         $card = new AlertCard();
 
-        Announcement::query()
-                    ->whereDate('expires_at', '>', now())
-                    ->orWhereNull('expires_at')
-                    ->each(function ($announcement) use ($card) {
-                        $card->withAnnouncement($announcement->title, $announcement->content, $announcement->color);
-                    });
+        Announcement::query()->whereDate('expires_at', '>', now())->orWhereNull('expires_at')->each(function (
+            $announcement
+        ) use ($card) {
+            $card->withAnnouncement($announcement->title, $announcement->content, $announcement->color);
+        });
 
-        Message::query()->active()->ordered()->each(function ($message) use ($card) {
+        Message::query()->active()->ordered()->each(function ($message) use (
+            $card
+        ) {
             $card->withSystemMessage($message->title, $message->message, $message->link_text, $message->url);
         });
 
@@ -70,14 +72,25 @@ class Main extends Dashboard
                 $date = \tenant()->trial_ends_at;
                 $ends = Carbon::parse($date)->toFormattedDateString();
                 $left = Carbon::parse($date)->longRelativeToNowDiffForHumans();
-                $card->withSubscriptionMessage("You are currently on trial. Your trial will end $left on $ends.", 'Sign Up For Subscription', route('spark.portal'));
+                $card->withSubscriptionMessage(
+                    "You are currently on trial. Your trial will end $left on $ends.",
+                    'Sign Up For Subscription',
+                    route('spark.portal')
+                );
             } elseif (! \tenant()->subscribed()) {
-                $card->withSubscriptionMessage('You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.', 'Sign Up For Subscription', route('spark.portal'));
+                $card->withSubscriptionMessage(
+                    'You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.',
+                    'Sign Up For Subscription',
+                    route('spark.portal')
+                );
             }
         }
 
         if (Request::isDemoMode()) {
-            $card->withSystemMessage('Demo Mode', 'You are currently in demo mode. Not all features will be available.');
+            $card->withSystemMessage(
+                'Demo Mode',
+                'You are currently in demo mode. Not all features will be available.'
+            );
         }
 
         return $card;

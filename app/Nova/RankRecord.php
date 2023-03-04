@@ -83,9 +83,11 @@ class RankRecord extends Resource
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
                      ->sortable(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', \App\Nova\Rank::class)
-                     ->sortable()
-                     ->showCreateRelationButton(),
+            BelongsTo::make(
+                Str::singular(Str::title(setting('localization_ranks', 'Rank'))),
+                'rank',
+                \App\Nova\Rank::class
+            )->sortable()->showCreateRelationButton(),
             Select::make('Type')->options([
                 \App\Models\RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
                 \App\Models\RankRecord::RECORD_RANK_DEMOTION => 'Demotion',
@@ -100,8 +102,9 @@ class RankRecord extends Resource
                 DateTime::make('Created At')->sortable()->exceptOnForms(),
                 DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document
-                ? $this->document->replaceContent($this->user, $this) : null),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent(
+                $this->document ? $this->document->replaceContent($this->user, $this) : null
+            ),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
@@ -114,7 +117,11 @@ class RankRecord extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [new TotalRankRecords(), new NewRankRecords(), new RankRecordsByType()];
+        return [
+            new TotalRankRecords(),
+            new NewRankRecords(),
+            new RankRecordsByType(),
+        ];
     }
 
     /**
@@ -147,8 +154,10 @@ class RankRecord extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-        })->nameable()];
+        return [
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+            })->nameable(),
+        ];
     }
 }

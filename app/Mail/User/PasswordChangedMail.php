@@ -11,7 +11,8 @@ use Illuminate\Queue\SerializesModels;
 
 class PasswordChangedMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Get the message envelope.
@@ -20,9 +21,7 @@ class PasswordChangedMail extends Mailable implements ShouldQueue
      */
     public function envelope()
     {
-        return new Envelope(
-            subject: 'Password Changed',
-        );
+        return new Envelope(subject: 'Password Changed');
     }
 
     /**
@@ -32,8 +31,6 @@ class PasswordChangedMail extends Mailable implements ShouldQueue
      */
     public function content()
     {
-        return new Content(
-            markdown: 'emails.user.password-changed',
-        );
+        return new Content(markdown: 'emails.user.password-changed');
     }
 }

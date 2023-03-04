@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<ruleset name="Laravel PHPCS Rules">
+    <description>PHPCS Ruleset for PERSCOM.io.</description>
+
+    <file>tests</file>
+    <file>app</file>
+
+    <arg value= "p"/>
+    <arg value= "s"/>
+    <arg name="colors"/>
+
+    <rule ref="PSR12">
+        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceBefore"/>
+        <exclude name="PSR12.Operators.OperatorSpacing.NoSpaceAfter"/>
+    </rule>
+
+    <rule ref= "Generic.Files.LineLength">
+        <properties>
+            <property name="lineLimit" value="80"/>
+            <property name="absoluteLineLimit" value="120"/>
+        </properties>
+    </rule>
+
+    <rule ref="PSR1.Methods.CamelCapsMethodName.NotCamelCaps">
+        <exclude-pattern>tests/</exclude-pattern>
+    </rule>
+
+    <exclude-pattern>*/.phpstorm.meta.php</exclude-pattern>
+    <exclude-pattern>*/_ide_helper.php</exclude-pattern>
+    <exclude-pattern>*/*.blade.php</exclude-pattern>
+    <exclude-pattern>*/autoload.php</exclude-pattern>
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+</ruleset>

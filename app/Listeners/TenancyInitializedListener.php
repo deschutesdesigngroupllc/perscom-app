@@ -20,7 +20,9 @@ class TenancyInitializedListener
     {
         $database = $event->tenancy->tenant->database()->getName();
         if (! $event->tenancy->tenant->database()->manager()->databaseExists($database)) {
-            throw new TenantAccountSetupNotComplete(401, 'Sorry, we are still working on setting up your account. We will email you when we are finished.');
+            throw new TenantAccountSetupNotComplete(
+                401, 'Sorry, we are still working on setting up your account. We will email you when we are finished.'
+            );
         }
 
         PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->id;

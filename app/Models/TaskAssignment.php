@@ -68,7 +68,7 @@ class TaskAssignment extends Pivot
      */
     protected static function booted()
     {
-        static::addGlobalScope(new TaskAssignmentScope);
+        static::addGlobalScope(new TaskAssignmentScope());
     }
 
     /**
@@ -78,7 +78,9 @@ class TaskAssignment extends Pivot
     public function scopeAssigned(Builder $query)
     {
         return $query->whereNull('completed_at')->where(function (Builder $query) {
-            return $query->whereNull('expires_at')->orWhere(function (Builder $query) {
+            return $query->whereNull('expires_at')->orWhere(function (
+                Builder $query
+            ) {
                 $query->whereNotNull('expires_at')->where('expires_at', '>', now());
             });
         })->where(function (Builder $query) {
@@ -94,11 +96,13 @@ class TaskAssignment extends Pivot
      */
     public function scopeExpired(Builder $query)
     {
-        return $query->whereNotNull('expires_at')->whereDate('expires_at', '<', now())->where(function (Builder $query) {
-            $query->where(function (Builder $query) {
-                $query->whereNotNull('completed_at')->whereDate('completed_at', '>', now());
-            })->orWhereNull('completed_at');
-        });
+        return $query->whereNotNull('expires_at')->whereDate('expires_at', '<', now())->where(
+            function (Builder $query) {
+                $query->where(function (Builder $query) {
+                    $query->whereNotNull('completed_at')->whereDate('completed_at', '>', now());
+                })->orWhereNull('completed_at');
+            }
+        );
     }
 
     /**
@@ -183,6 +187,7 @@ class TaskAssignment extends Pivot
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function assigned_by()
     {
         return $this->belongsTo(User::class);

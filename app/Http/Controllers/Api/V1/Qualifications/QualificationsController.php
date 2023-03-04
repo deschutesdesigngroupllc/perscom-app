@@ -41,8 +41,10 @@ class QualificationsController extends Controller
      * @param  array  $requestedRelations
      * @return Builder
      */
-    protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
-    {
+    protected function buildIndexFetchQuery(
+        Request $request,
+        array $requestedRelations
+    ): Builder {
         $query = parent::buildIndexFetchQuery($request, $requestedRelations);
 
         $query->ordered();

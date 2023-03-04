@@ -11,7 +11,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class MarkTaskComplete extends Action
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue;
+    use Queueable;
 
     /**
      * @var string

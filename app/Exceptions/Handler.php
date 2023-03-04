@@ -27,7 +27,11 @@ class Handler extends ExceptionHandler
      *
      * @var array<int, string>
      */
-    protected $dontFlash = ['current_password', 'password', 'password_confirmation'];
+    protected $dontFlash = [
+        'current_password',
+        'password',
+        'password_confirmation',
+    ];
 
     /**
      * Register the exception handling callbacks for the application.
@@ -36,11 +40,17 @@ class Handler extends ExceptionHandler
      */
     public function register()
     {
-        $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
+        $this->renderable(function (
+            TenantCouldNotBeIdentifiedOnDomainException $e,
+            $request
+        ) {
             return response()->view('errors.tenant-not-found', [], 404);
         });
 
-        $this->renderable(function (TenantAccountSetupNotComplete $e, $request) {
+        $this->renderable(function (
+            TenantAccountSetupNotComplete $e,
+            $request
+        ) {
             return response()->view('errors.tenant-database-does-not-exist', [], 401);
         });
 

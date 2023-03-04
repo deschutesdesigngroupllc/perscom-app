@@ -23,16 +23,16 @@ class Feature
         bool $enabledInDemoMode = true,
         bool $enabledInTrial = true,
         bool $enabledWhenBillingIsOff = true,
-        bool $isAccessibleForAdmin = false)
-    {
+        bool $isAccessibleForAdmin = false
+    ) {
         return optional(tenant(), static function (Tenant $tenant) use ($feature, $enabledInTrial) {
             return optional($tenant->sparkPlan(), static function (Plan $plan) use ($feature) {
                 return \in_array($feature, $plan->options, true);
             }) ?: ($enabledInTrial && $tenant->onTrial());
         })
-            ?: (Request::isDemoMode() && $enabledInDemoMode)
-                ?: (FeatureFlag::isOff('billing') && $enabledWhenBillingIsOff)
-                    ?: (Request::isCentralRequest() && $isAccessibleForAdmin)
-                        ?: false;
+            ?: (Request::isDemoMode() && $enabledInDemoMode) ?: (FeatureFlag::isOff('billing') &&
+                                                                 $enabledWhenBillingIsOff)
+                ?: (Request::isCentralRequest() &&
+                    $isAccessibleForAdmin) ?: false;
     }
 }

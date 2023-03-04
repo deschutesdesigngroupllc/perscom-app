@@ -96,8 +96,11 @@ class RolePolicy extends Policy
      * @param  \App\Models\Permission  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function detachPermission(User $user, Role $role, Permission $permission)
-    {
+    public function detachPermission(
+        User $user,
+        Role $role,
+        Permission $permission
+    ) {
         if ($role->is_application_role && $permission->is_application_permission) {
             return false;
         }

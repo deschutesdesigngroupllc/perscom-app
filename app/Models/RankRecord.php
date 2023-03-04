@@ -40,7 +40,13 @@ class RankRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = [
+        'user_id',
+        'rank_id',
+        'document_id',
+        'author_id',
+        'text',
+    ];
 
     /**
      * Record types
@@ -83,7 +89,7 @@ class RankRecord extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new RankRecordScope);
+        static::addGlobalScope(new RankRecordScope());
     }
 
     /**

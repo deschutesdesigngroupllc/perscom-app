@@ -18,8 +18,10 @@ class TenantDeleted extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected string $tenant, protected string $email)
-    {
+    public function __construct(
+        protected string $tenant,
+        protected string $email
+    ) {
         //
     }
 
@@ -52,8 +54,6 @@ class TenantDeleted extends Notification implements ShouldQueue
      */
     public function toNova()
     {
-        return (new NovaNotification())->message('A tenant has been deleted.')
-                                       ->icon('user-remove')
-                                       ->type('danger');
+        return (new NovaNotification())->message('A tenant has been deleted.')->icon('user-remove')->type('danger');
     }
 }

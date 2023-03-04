@@ -77,11 +77,9 @@ class Document extends Resource
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
             //            Tags::make('Tags')->withLinkToTagResource(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-            Trix::make('Content')
-                ->hideFromIndex()
-                ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
-                ->rules(['required'])
-                ->showOnPreview(),
+            Trix::make('Content')->hideFromIndex()->help(
+                'Use the document tags below to dynamically inject content into your document when the document is attached to certain records.'
+            )->rules(['required'])->showOnPreview(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
@@ -132,8 +130,10 @@ class Document extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export Documents')->canSee(function () {
-            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-        })->nameable()];
+        return [
+            ExportAsCsv::make('Export Documents')->canSee(function () {
+                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+            })->nameable(),
+        ];
     }
 }

@@ -14,6 +14,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
+ *
  * @mixin \Eloquent
  */
 class Document extends Model
@@ -80,8 +81,11 @@ class Document extends Model
      * @param  null  $attachedModel
      * @return mixed|void|null
      */
-    protected function resolveTag($tag, ?User $user = null, $attachedModel = null)
-    {
+    protected function resolveTag(
+        $tag,
+        ?User $user = null,
+        $attachedModel = null
+    ) {
         switch ($tag) {
             case '{user_name}':
                 return $user->name ?? null;

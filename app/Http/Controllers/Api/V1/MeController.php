@@ -22,8 +22,10 @@ class MeController extends Controller
      * @param  array  $requestedRelations
      * @return Builder
      */
-    protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
-    {
+    protected function buildIndexFetchQuery(
+        Request $request,
+        array $requestedRelations
+    ): Builder {
         $query = parent::buildIndexFetchQuery($request, $requestedRelations);
 
         $query->where('id', '=', Auth::guard('api')->id())->limit(1);

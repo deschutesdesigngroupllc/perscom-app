@@ -42,7 +42,15 @@ class AssignmentRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'unit_id', 'position_id', 'specialty_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = [
+        'user_id',
+        'unit_id',
+        'position_id',
+        'specialty_id',
+        'document_id',
+        'author_id',
+        'text',
+    ];
 
     /**
      * @var string[]
@@ -80,7 +88,7 @@ class AssignmentRecord extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new AssignmentRecordScope);
+        static::addGlobalScope(new AssignmentRecordScope());
     }
 
     /**

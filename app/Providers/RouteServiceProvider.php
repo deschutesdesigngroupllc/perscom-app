@@ -36,11 +36,9 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
-            Route::domain(config('app.api_url'))
-                 ->as('api.')
-                 ->middleware('api')
-                 ->namespace($this->namespace)
-                 ->group(base_path('routes/api.php'));
+            Route::domain(config('app.api_url'))->as('api.')->middleware('api')->namespace($this->namespace)->group(
+                base_path('routes/api.php')
+            );
 
             Route::domain(config('app.auth_url'))
                  ->as('auth.')
@@ -48,16 +46,13 @@ class RouteServiceProvider extends ServiceProvider
                  ->namespace($this->namespace)
                  ->group(base_path('routes/auth.php'));
 
-            Route::domain(config('app.url'))
-                 ->as('web.')
-                 ->middleware('web')
-                 ->namespace($this->namespace)
-                 ->group(base_path('routes/web.php'));
+            Route::domain(config('app.url'))->as('web.')->middleware('web')->namespace($this->namespace)->group(
+                base_path('routes/web.php')
+            );
 
-            Route::prefix('oauth')
-                 ->as('passport.')
-                 ->namespace('Laravel\Passport\Http\Controllers')
-                 ->group(base_path('routes/passport.php'));
+            Route::prefix('oauth')->as('passport.')->namespace('Laravel\Passport\Http\Controllers')->group(
+                base_path('routes/passport.php')
+            );
         });
     }
 

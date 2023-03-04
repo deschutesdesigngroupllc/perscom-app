@@ -11,7 +11,8 @@ use Illuminate\Queue\SerializesModels;
 
 class NewUserLoginInformationMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @var mixed
@@ -28,8 +29,11 @@ class NewUserLoginInformationMail extends Mailable implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Tenant $tenant, User $user, protected string $password)
-    {
+    public function __construct(
+        Tenant $tenant,
+        User $user,
+        protected string $password
+    ) {
         $this->url = $tenant->url;
         $this->email = $user->email;
     }

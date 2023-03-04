@@ -29,9 +29,9 @@ class TaskAssignmentFields
             })->options($users)->default(Auth::user()->getAuthIdentifier()),
             DateTime::make('Assigned At')->default(now()),
             DateTime::make('Due At')->nullable()->help('Set to assign a due date to the task.'),
-            DateTime::make('Expires At')
-                    ->nullable()
-                    ->help('Set to assign an expiration date if the task is not completed.'),
+            DateTime::make('Expires At')->nullable()->help(
+                'Set to assign an expiration date if the task is not completed.'
+            ),
         ];
     }
 }

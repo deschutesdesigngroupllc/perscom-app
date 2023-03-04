@@ -73,11 +73,14 @@ class Tenant extends Resource
     {
         return [
             ID::make('PERSCOM ID', 'id')->sortable(),
-            Text::make('Name')
-                ->sortable()
-                ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
-                ->copyable(),
-            Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
+            Text::make('Name')->sortable()->rules([
+                'required',
+                Rule::unique('tenants', 'name')->ignore($this->id),
+            ])->copyable(),
+            Email::make('Email')->sortable()->rules([
+                'required',
+                Rule::unique('tenants', 'email')->ignore($this->id),
+            ]),
             Text::make('Website')->hideFromIndex(),
             URL::make('Domain', 'url')->displayUsing(function ($url) {
                 return $url;
@@ -100,7 +103,11 @@ class Tenant extends Resource
             Tabs::make('Relations', [
                 Tab::make('Database', [
                     Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
-                    Status::make('Database Status')->hideFromIndex()->loadingWhen(['creating'])->failedWhen([])->readonly(),
+                    Status::make('Database Status')
+                          ->hideFromIndex()
+                          ->loadingWhen(['creating'])
+                          ->failedWhen([])
+                          ->readonly(),
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Billing Settings', [
@@ -132,7 +139,9 @@ class Tenant extends Resource
                     Text::make('Receipt Emails')->hideFromIndex(),
                 ]),
                 Tab::make('All Subscriptions', [HasMany::make('Subscriptions')]),
-                Tab::make('Receipts', [HasMany::make('Receipts', 'localReceipts', Receipt::class)]),
+                Tab::make('Receipts', [
+                    HasMany::make('Receipts', 'localReceipts', Receipt::class),
+                ]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];

@@ -81,9 +81,11 @@ class AwardRecord extends Resource
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
                      ->sortable(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_awards', 'Award'))), 'award', \App\Nova\Award::class)
-                     ->sortable()
-                     ->showCreateRelationButton(),
+            BelongsTo::make(
+                Str::singular(Str::title(setting('localization_awards', 'Award'))),
+                'award',
+                \App\Nova\Award::class
+            )->sortable()->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
@@ -94,8 +96,9 @@ class AwardRecord extends Resource
                 DateTime::make('Created At')->sortable()->exceptOnForms(),
                 DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document
-                ? $this->document->replaceContent($this->user, $this) : null),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent(
+                $this->document ? $this->document->replaceContent($this->user, $this) : null
+            ),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
@@ -141,8 +144,10 @@ class AwardRecord extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-        })->nameable()];
+        return [
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+            })->nameable(),
+        ];
     }
 }

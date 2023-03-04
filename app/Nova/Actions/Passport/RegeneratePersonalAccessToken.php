@@ -12,7 +12,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class RegeneratePersonalAccessToken extends Action
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue;
+    use Queueable;
 
     /**
      * @var string

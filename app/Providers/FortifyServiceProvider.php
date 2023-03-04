@@ -51,14 +51,18 @@ class FortifyServiceProvider extends ServiceProvider
                 'canCreateAnAccount' => Route::has('register'),
                 'demoMode' => Request::isDemoMode(),
                 'enableSocialLogin' => ! Request::isCentralRequest() &&
-                                       ! Request::isDemoMode() &&
-                                       FeatureFlag::isOn('social-login'),
-                'githubLogin' => \route('tenant.auth.social.redirect', [
-                    'driver' => 'github',
-                ]),
-                'discordLogin' => \route('tenant.auth.social.redirect', [
-                    'driver' => 'discord',
-                ]),
+                                        ! Request::isDemoMode() &&
+                                        FeatureFlag::isOn('social-login'),
+                'githubLogin' => \route(
+                    'tenant.auth.social.redirect', [
+                        'driver' => 'github',
+                    ]
+                ),
+                'discordLogin' => \route(
+                    'tenant.auth.social.redirect', [
+                        'driver' => 'discord',
+                    ]
+                ),
             ]);
         });
         Fortify::requestPasswordResetLinkView(function () {

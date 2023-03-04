@@ -47,7 +47,14 @@ class Message extends Model implements Sortable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['title', 'message', 'active', 'order', 'url', 'link_text'];
+    protected $fillable = [
+        'title',
+        'message',
+        'active',
+        'order',
+        'url',
+        'link_text',
+    ];
 
     /**
      * The attributes that should be cast to native types.

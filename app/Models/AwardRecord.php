@@ -40,7 +40,13 @@ class AwardRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'award_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = [
+        'user_id',
+        'award_id',
+        'document_id',
+        'author_id',
+        'text',
+    ];
 
     /**
      * The table associated with the model.
@@ -56,7 +62,7 @@ class AwardRecord extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new AwardRecordScope);
+        static::addGlobalScope(new AwardRecordScope());
     }
 
     /**

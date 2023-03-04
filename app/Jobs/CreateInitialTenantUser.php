@@ -15,14 +15,19 @@ use Stancl\Tenancy\Contracts\TenantWithDatabase;
 
 class CreateInitialTenantUser implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @param  TenantWithDatabase  $tenant
      * @param  bool  $sendMail
      */
-    public function __construct(protected TenantWithDatabase $tenant, protected bool $sendMail = true)
-    {
+    public function __construct(
+        protected TenantWithDatabase $tenant,
+        protected bool $sendMail = true
+    ) {
         //
     }
 

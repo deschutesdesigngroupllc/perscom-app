@@ -77,7 +77,10 @@ class SocialLoginController extends Controller
         $socialLiteUser = Socialite::driver($driver)->user();
 
         $tenant = $tenantRepository->findById($tenantId);
-        $token = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
+        $token = $tenant->run(function ($tenant) use (
+            $socialLiteUser,
+            $driver
+        ) {
             $user = User::updateOrCreate([
                 'email' => $socialLiteUser->email,
             ], [

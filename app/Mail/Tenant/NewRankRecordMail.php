@@ -11,15 +11,18 @@ use Illuminate\Support\Carbon;
 
 class NewRankRecordMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(protected RankRecord $rankRecord, protected string $url)
-    {
+    public function __construct(
+        protected RankRecord $rankRecord,
+        protected string $url
+    ) {
         //
     }
 

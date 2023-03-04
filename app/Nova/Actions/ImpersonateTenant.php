@@ -14,7 +14,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ImpersonateTenant extends Action
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue;
+    use Queueable;
 
     /**
      * The displayable name of the action.
@@ -62,10 +63,9 @@ class ImpersonateTenant extends Action
         }
 
         return [
-            Select::make('User')
-                  ->options($options ?? [])
-                  ->rules('required')
-                  ->help('Select the user you would like to sign in as.'),
+            Select::make('User')->options($options ?? [])->rules('required')->help(
+                'Select the user you would like to sign in as.'
+            ),
         ];
     }
 }

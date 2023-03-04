@@ -77,13 +77,15 @@ class Mail extends Resource
             Text::make('Subject')->rules('required'),
             Markdown::make('Content')->rules('required'),
             Boolean::make('Send Now', 'send_now'),
-            DateTime::make('Send At', 'send_at')
-                    ->hide()
-                    ->dependsOn(['send_now'], function (DateTime $field, NovaRequest $request, $formData) {
-                        if ($formData->send_now === false) {
-                            $field->rules('required')->show();
-                        }
-                    }),
+            DateTime::make('Send At', 'send_at')->hide()->dependsOn(['send_now'], function (
+                DateTime $field,
+                NovaRequest $request,
+                $formData
+            ) {
+                if ($formData->send_now === false) {
+                    $field->rules('required')->show();
+                }
+            }),
             DateTime::make('Sent At', 'sent_at')->exceptOnForms(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms(),

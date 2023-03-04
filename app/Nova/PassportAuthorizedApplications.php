@@ -81,9 +81,13 @@ class PassportAuthorizedApplications extends Resource
     {
         return [
             BelongsTo::make('Application', 'client', PassportClient::class)->sortable()->readonly(),
-            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
-                return [$scope->id => $scope->id];
-            })->sort())->hideFromIndex()->readonly(),
+            MultiSelect::make('Scopes')->options(
+                Passport::scopes()->mapWithKeys(function (
+                    $scope
+                ) {
+                    return [$scope->id => $scope->id];
+                })->sort()
+            )->hideFromIndex()->readonly(),
             Boolean::make('Revoked')->default(false)->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->sortable()->exceptOnForms(),
@@ -98,7 +102,8 @@ class PassportAuthorizedApplications extends Resource
      */
     public static function authorizedToViewAny(Request $request)
     {
-        return Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON) && Gate::check('viewAny', PassportToken::class);
+        return Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON) &&
+               Gate::check('viewAny', PassportToken::class);
     }
 
     /**

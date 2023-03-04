@@ -125,9 +125,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         if (Request::isDemoMode()) {
             $middleware = collect(config('nova.middleware'));
-            config()->set('nova.middleware', $middleware->reject(function ($middleware) {
-                return $middleware === 'verified';
-            })->toArray());
+            config()->set(
+                'nova.middleware',
+                $middleware->reject(function ($middleware) {
+                    return $middleware === 'verified';
+                })->toArray()
+            );
         }
 
         $this->app->bind(ResourceStoreController::class, \App\Http\Controllers\Nova\ResourceStoreController::class);
@@ -164,16 +167,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])->icon('chat')->collapsable(),
 
                     MenuSection::make('Tools', [
-                        MenuItem::externalLink('Horizon', Url::fromString(config('app.url').
-                                                                          '/'.
-                                                                          config('horizon.path'))
-                                                             ->withScheme(config('app.scheme'))
-                                                             ->__toString())->openInNewTab(),
-                        MenuItem::externalLink('Telescope', Url::fromString(config('app.url').
-                                                                            '/'.
-                                                                            config('telescope.path'))
-                                                               ->withScheme(config('app.scheme'))
-                                                               ->__toString())->openInNewTab(),
+                        MenuItem::externalLink(
+                            'Horizon',
+                            Url::fromString(config('app.url').'/'.config('horizon.path'))->withScheme(
+                                config('app.scheme')
+                            )->__toString()
+                        )->openInNewTab(),
+                        MenuItem::externalLink(
+                            'Telescope',
+                            Url::fromString(config('app.url').'/'.config('telescope.path'))->withScheme(
+                                config('app.scheme')
+                            )->__toString()
+                        )->openInNewTab(),
                     ])->icon('external-link')->collapsable(),
                 ];
             });
@@ -185,10 +190,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Roster')->path('/roster')->icon('user-group'),
 
                     MenuSection::make('Account', [
-                        MenuItem::link('My Personnel File', route('nova.pages.detail', [
-                            'resource' => User::uriKey(),
-                            'resourceId' => Auth::user()->getAuthIdentifier(),
-                        ], false)),
+                        MenuItem::link(
+                            'My Personnel File',
+                            route('nova.pages.detail', [
+                                'resource' => User::uriKey(),
+                                'resourceId' => Auth::user()->getAuthIdentifier(),
+                            ], false)
+                        ),
                         MenuItem::lens(TaskAssignment::class, MyTasks::class)->withBadge(function () {
                             return TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
                         }),
@@ -242,23 +250,27 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::link('General', '/settings/general'),
                             MenuItem::link('Localization', '/settings/localization'),
                         ])->collapsable(),
-                    ])->icon('terminal')->collapsable()->canSee(function (NovaRequest $request) {
+                    ])->icon('terminal')->collapsable()->canSee(function (
+                        NovaRequest $request
+                    ) {
                         return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
                     })->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
                                 ->openInNewTab(),
-                        MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
-                                ->openInNewTab(),
+                        MenuItem::externalLink('Documentation', 'https://docs.perscom.io')->openInNewTab(),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
-                        MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
-                                ->openInNewTab()
-                                ->canSee(function () {
-                                    return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_SUPPORT_TICKET);
-                                }),
-                        MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
-                                ->openInNewTab(),
+                        MenuItem::externalLink(
+                            'Submit A Ticket',
+                            'https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
+                        )->openInNewTab()->canSee(function () {
+                            return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_SUPPORT_TICKET);
+                        }),
+                        MenuItem::externalLink(
+                            'Suggest A Feature',
+                            'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/'
+                        )->openInNewTab(),
                     ])->icon('support')->collapsable()->collapsedByDefault(),
                 ];
             });
@@ -266,16 +278,22 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::userMenu(function (Request $request, Menu $menu) {
             return [
-                MenuItem::externalLink('Account', route('nova.pages.detail', [
-                    'resource' => \App\Nova\Admin::uriKey(),
-                    'resourceId' => Auth::user()->getAuthIdentifier(),
-                ]))->canSee(function (NovaRequest $request) {
+                MenuItem::externalLink(
+                    'Account',
+                    route('nova.pages.detail', [
+                        'resource' => \App\Nova\Admin::uriKey(),
+                        'resourceId' => Auth::user()->getAuthIdentifier(),
+                    ])
+                )->canSee(function (NovaRequest $request) {
                     return $request->isCentralRequest();
                 }),
-                MenuItem::externalLink('My Personnel File', route('nova.pages.detail', [
-                    'resource' => User::uriKey(),
-                    'resourceId' => Auth::user()->getAuthIdentifier(),
-                ]))->canSee(function (NovaRequest $request) {
+                MenuItem::externalLink(
+                    'My Personnel File',
+                    route('nova.pages.detail', [
+                        'resource' => User::uriKey(),
+                        'resourceId' => Auth::user()->getAuthIdentifier(),
+                    ])
+                )->canSee(function (NovaRequest $request) {
                     return ! $request->isCentralRequest();
                 }),
                 MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
@@ -291,11 +309,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
 
         Nova::footer(function ($request) {
-            return Blade::render('
+            return Blade::render(
+                '
 	            <div class="mt-8 leading-normal text-xs text-gray-500 space-y-1"><p class="text-center">{{ config("app.name") }}</a> · {{ config("app.version") }} ({{ Illuminate\Support\Str::ucfirst(config("app.env")) }})</p>
             		<p class="text-center">© {{ Illuminate\Support\Carbon::now()->year }} Deschutes Design Group LLC</p>
         		</div>
-	        ');
+	        '
+            );
         });
 
         NovaSettings::addSettingsFields(function () {
@@ -304,41 +324,60 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     Text::make('PERSCOM ID', function () {
                         return \tenant()->getTenantKey();
                     })->help('Your PERSCOM ID that must be used in all external integrations.')->readonly(),
-                    Text::make('Organization', 'organization')
-                        ->help('The name of your organization.')
-                        ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')
-                                                                     ->ignore(\tenant()->getTenantKey()))
-                        ->resolveUsing(function () {
-                            return \tenant('name');
-                        }),
-                    Email::make('Email', 'email')
-                         ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
-                         ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')
-                                                                               ->ignore(\tenant()->getTenantKey()))
-                         ->resolveUsing(function () {
-                             return \tenant('email');
-                         }),
-                    Timezone::make('Default Timezone', 'timezone')
-                            ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.'),
+                    Text::make('Organization', 'organization')->help('The name of your organization.')->rules(
+                        'required',
+                        'string',
+                        'max:255',
+                        Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())
+                    )->resolveUsing(function () {
+                        return \tenant('name');
+                    }),
+                    Email::make('Email', 'email')->help(
+                        'The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.'
+                    )->rules(
+                        'required',
+                        'string',
+                        'email',
+                        'max:255',
+                        Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())
+                    )->resolveUsing(function () {
+                        return \tenant('email');
+                    }),
+                    Timezone::make('Default Timezone', 'timezone')->help(
+                        'Choose the default timezone for your organization. If not set, the timezone will be set to UTC.'
+                    ),
                 ]),
                 Panel::make('Domain', [
-                    Text::make('Subdomain', 'subdomain')
-                        ->copyable()
-                        ->help('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
-                        ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')
-                                                                                                ->ignore(\tenant()->getTenantKey(), 'tenant_id'))
-                        ->canSee(function () {
-                            return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN, false, false, false);
-                        }),
+                    Text::make('Subdomain', 'subdomain')->copyable()->help(
+                        'The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.'
+                    )->rules(
+                        'required',
+                        'string',
+                        'max:255',
+                        'alpha_dash',
+                        'lowercase',
+                        Rule::unique(\App\Models\Domain::class, 'domain')->ignore(
+                            \tenant()->getTenantKey(),
+                            'tenant_id'
+                        )
+                    )->canSee(function () {
+                        return \App\Facades\Feature::isAccessible(
+                            FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN,
+                            false,
+                            false,
+                            false
+                        );
+                    }),
                 ]),
                 Panel::make('Branding', [
-                    Text::make('Dashboard Title', 'dashboard_title')
-                        ->default(function () {
-                            return \tenant('name');
-                        })
-                        ->help('The main heading on your dashboard homepage. This will default to your organization name if not set.'),
-                    Text::make('Dashboard Subtitle', 'dashboard_subtitle')
-                        ->help('A subtitle or description that can be added under your dashboard heading.'),
+                    Text::make('Dashboard Title', 'dashboard_title')->default(function () {
+                        return \tenant('name');
+                    })->help(
+                        'The main heading on your dashboard homepage. This will default to your organization name if not set.'
+                    ),
+                    Text::make('Dashboard Subtitle', 'dashboard_subtitle')->help(
+                        'A subtitle or description that can be added under your dashboard heading.'
+                    ),
                 ]),
             ];
         });

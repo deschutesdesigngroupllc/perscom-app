@@ -18,10 +18,15 @@ class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\Initiali
      * @param  Tenancy  $tenancy
      * @param  RequestDataTenantResolver  $resolver
      */
-    public function __construct(Tenancy $tenancy, RequestDataTenantResolver $resolver)
-    {
+    public function __construct(
+        Tenancy $tenancy,
+        RequestDataTenantResolver $resolver
+    ) {
         self::$onFail = static function ($e, $request, $next) {
-            throw new TenantCouldNotBeIdentified(401, 'We could not identify the organization attemping the request. Please make sure to include the X-Perscom-Id header with your valid PERSCOM ID.');
+            throw new TenantCouldNotBeIdentified(
+                401,
+                'We could not identify the organization attemping the request. Please make sure to include the X-Perscom-Id header with your valid PERSCOM ID.'
+            );
 
             return $next($request);
         };

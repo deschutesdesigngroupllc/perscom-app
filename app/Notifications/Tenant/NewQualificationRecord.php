@@ -25,8 +25,9 @@ class NewQualificationRecord extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(protected QualificationRecord $qualificationRecord)
-    {
+    public function __construct(
+        protected QualificationRecord $qualificationRecord
+    ) {
         $this->url = route('nova.pages.detail', [
             'resource' => \App\Nova\QualificationRecord::uriKey(),
             'resourceId' => $this->qualificationRecord->id,

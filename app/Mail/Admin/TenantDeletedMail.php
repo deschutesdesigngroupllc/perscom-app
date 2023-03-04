@@ -8,15 +8,18 @@ use Illuminate\Queue\SerializesModels;
 
 class TenantDeletedMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(protected string $tenant, protected string $email)
-    {
+    public function __construct(
+        protected string $tenant,
+        protected string $email
+    ) {
         //
     }
 

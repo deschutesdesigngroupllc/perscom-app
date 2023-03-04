@@ -65,8 +65,11 @@ class PassportClient extends Resource
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        return $query->where('name', '<>', 'Default Personal Access Client')
-                     ->where('name', '<>', 'Default Password Grant Client');
+        return $query->where('name', '<>', 'Default Personal Access Client')->where(
+            'name',
+            '<>',
+            'Default Password Grant Client'
+        );
     }
 
     /**

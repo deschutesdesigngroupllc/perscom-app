@@ -31,6 +31,7 @@ class Specialty extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
+    // phpcs:disable PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     public function assignment_records()
     {
         return $this->hasMany(AssignmentRecord::class);

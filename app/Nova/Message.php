@@ -37,7 +37,8 @@ class Message extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'title',
+        'id',
+        'title',
     ];
 
     /**

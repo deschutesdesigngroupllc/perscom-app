@@ -1,7 +1,5 @@
 <?php
 
-use Perscom\Roster\Http\Controllers\RosterController;
-
 /*
 |--------------------------------------------------------------------------
 | Tool API Routes

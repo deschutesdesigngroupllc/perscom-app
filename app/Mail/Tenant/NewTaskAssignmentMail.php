@@ -11,15 +11,18 @@ use Illuminate\Support\Carbon;
 
 class NewTaskAssignmentMail extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct(protected TaskAssignment $taskAssignment, protected string $url)
-    {
+    public function __construct(
+        protected TaskAssignment $taskAssignment,
+        protected string $url
+    ) {
         //
     }
 

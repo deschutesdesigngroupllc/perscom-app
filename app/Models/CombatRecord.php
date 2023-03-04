@@ -55,6 +55,6 @@ class CombatRecord extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new CombatRecordScope);
+        static::addGlobalScope(new CombatRecordScope());
     }
 }

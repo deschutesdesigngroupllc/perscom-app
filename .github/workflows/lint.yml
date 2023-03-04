@@ -1,0 +1,18 @@
+name: Check Code Style
+
+on:
+  pull_request:
+
+jobs:
+  check-code-style:
+    name: Run Linter
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Run Linter
+        uses: aglipanci/laravel-pint-action@2.0.0
+        with:
+          testMode: true

@@ -33,7 +33,10 @@ class SparkServiceProvider extends ServiceProvider
             return \tenant();
         });
 
-        Spark::billable(Tenant::class)->authorize(function (Tenant $billable, Request $request) {
+        Spark::billable(Tenant::class)->authorize(function (
+            Tenant $billable,
+            Request $request
+        ) {
             return \tenant() &&
                    \tenant()->getTenantKey() === $billable->id &&
                    ! $request->isDemoMode() &&
@@ -42,7 +45,10 @@ class SparkServiceProvider extends ServiceProvider
                    FeatureFlag::isOn('billing');
         });
 
-        Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {
+        Spark::billable(Tenant::class)->checkPlanEligibility(function (
+            Tenant $billable,
+            Plan $plan
+        ) {
         });
     }
 }

@@ -19,7 +19,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class CreateTenantUser extends Action
 {
-    use InteractsWithQueue, Queueable;
+    use InteractsWithQueue;
+    use Queueable;
 
     /**
      * The displayable name of the action.

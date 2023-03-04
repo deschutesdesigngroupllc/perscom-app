@@ -35,7 +35,12 @@ class Subscription extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'stripe_id', 'stripe_price', 'stripe_status'];
+    public static $search = [
+        'id',
+        'stripe_id',
+        'stripe_price',
+        'stripe_status',
+    ];
 
     /**
      * Get the fields displayed by the resource.

@@ -40,7 +40,13 @@ class QualificationRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'qualification_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = [
+        'user_id',
+        'qualification_id',
+        'document_id',
+        'author_id',
+        'text',
+    ];
 
     /**
      * The table associated with the model.
@@ -56,7 +62,7 @@ class QualificationRecord extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new QualificationRecordScope);
+        static::addGlobalScope(new QualificationRecordScope());
     }
 
     /**
