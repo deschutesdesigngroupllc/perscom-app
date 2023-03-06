@@ -60,6 +60,7 @@ return [
     'scheme' => env('APP_SCHEME', 'http'),
     'api_url' => env('API_URL', 'http://api.localhost'),
     'api_version' => env('API_VERSION', 'v1'),
+    'mix_url' => env('ASSET_URL', null),
 
     /*
     |--------------------------------------------------------------------------
