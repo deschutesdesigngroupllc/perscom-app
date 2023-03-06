@@ -14,10 +14,67 @@ jobs:
     secrets: inherit
     if: ${{ !contains(github.event.head_commit.message, '[skip deploy]') }}
 
-  deploy-application:
+  build-application:
     name: Deploy Application
     runs-on: ubuntu-latest
     needs: test-application
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Javascript Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
+
+      - name: Setup AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Deploy to S3 Staging
+        if: github.ref == 'refs/heads/staging'
+        run: |
+          aws s3 sync ./public/ s3://${{ secrets.AWS_BUCKET_NAME_STAGING }} --delete
+
+      - name: Deploy to S3 Production
+        if: github.ref == 'refs/heads/master'
+        run: |
+          aws s3 sync ./public/ s3://${{ secrets.AWS_BUCKET_NAME_PRODUCTION }} --delete
+
+      - name: Invalidate Cloudfront Cache Staging
+        if: github.ref == 'refs/heads/staging'
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_STAGING }}
+          PATHS: "/*"
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Invalidate Cloudfront Cache Production
+        if: github.ref == 'refs/heads/master'
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_PRODUCTION }}
+          PATHS: "/*"
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  deploy-application:
+    name: Deploy Application
+    runs-on: ubuntu-latest
+    needs: build-application
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
