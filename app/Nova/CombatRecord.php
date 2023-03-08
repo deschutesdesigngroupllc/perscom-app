@@ -39,7 +39,7 @@ class CombatRecord extends Resource
      *
      * @var array
      */
-    public static $search = ['id'];
+    public static $search = ['id', 'text'];
 
     /**
      * Get the URI key for the resource.
@@ -67,6 +67,16 @@ class CombatRecord extends Resource
         return $this->id.optional($this->user, static function ($user) {
             return " - $user->name";
         });
+    }
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "Created At: {$this->created_at->toDayDateTimeString()}";
     }
 
     /**

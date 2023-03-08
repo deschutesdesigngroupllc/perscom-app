@@ -70,6 +70,16 @@ class ServiceRecord extends Resource
     }
 
     /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "Created At: {$this->created_at->toDayDateTimeString()}";
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request

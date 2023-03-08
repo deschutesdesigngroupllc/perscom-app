@@ -38,6 +38,16 @@ class Subscription extends Resource
     public static $search = ['id', 'stripe_id', 'stripe_price', 'stripe_status'];
 
     /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "Tenant: {$this->owner->name}";
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -47,8 +57,8 @@ class Subscription extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Tenant', 'owner', Tenant::class),
-            Text::make('Name')->rules(['required'])->placeholder('default'),
+            BelongsTo::make('Tenant', 'owner', Tenant::class)->sortable(),
+            Text::make('Name')->rules(['required'])->placeholder('default')->sortable(),
             Text::make('Stripe ID')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
@@ -60,13 +70,13 @@ class Subscription extends Resource
                 'past_due' => 'warning',
                 'canceled' => 'danger',
                 'unpaid' => 'danger',
-            ]),
+            ])->sortable(),
             Text::make('Stripe Price')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
-            Number::make('Quantity')->rules(['required']),
-            DateTime::make('Trial Ends At'),
-            DateTime::make('Ends At'),
+            Number::make('Quantity')->rules(['required'])->sortable(),
+            DateTime::make('Trial Ends At')->sortable(),
+            DateTime::make('Ends At')->sortable(),
             HasMany::make('Items', 'items', SubscriptionItem::class),
         ];
     }

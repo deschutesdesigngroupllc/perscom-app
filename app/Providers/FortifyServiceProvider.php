@@ -50,6 +50,7 @@ class FortifyServiceProvider extends ServiceProvider
                 'canResetPassword' => Route::has('password.request'),
                 'canCreateAnAccount' => Route::has('register'),
                 'demoMode' => Request::isDemoMode(),
+                'adminMode' => Request::isCentralRequest(),
                 'enableSocialLogin' => ! Request::isCentralRequest() &&
                                        ! Request::isDemoMode() &&
                                        FeatureFlag::isOn('social-login'),

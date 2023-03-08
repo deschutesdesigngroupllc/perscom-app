@@ -10,6 +10,7 @@ use App\Models\Award;
 use App\Models\AwardRecord;
 use App\Models\CombatRecord;
 use App\Models\Document;
+use App\Models\Element;
 use App\Models\Form;
 use App\Models\Image;
 use App\Models\Mail;
@@ -28,6 +29,7 @@ use App\Models\ServiceRecord;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\StatusRecord;
+use App\Models\Tag;
 use App\Models\Task;
 use App\Models\TaskAssignment;
 use App\Models\Unit;
@@ -40,6 +42,7 @@ use App\Policies\AwardPolicy;
 use App\Policies\AwardRecordsPolicy;
 use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
+use App\Policies\ElementPolicy;
 use App\Policies\FormPolicy;
 use App\Policies\ImagePolicy;
 use App\Policies\MailPolicy;
@@ -60,6 +63,7 @@ use App\Policies\StatusPolicy;
 use App\Policies\StatusRecordPolicy;
 use App\Policies\SubscriptionItemPolicy;
 use App\Policies\SubscriptionPolicy;
+use App\Policies\TagPolicy;
 use App\Policies\TaskAssignmentPolicy;
 use App\Policies\TaskPolicy;
 use App\Policies\UnitPolicy;
@@ -87,6 +91,7 @@ class AuthServiceProvider extends ServiceProvider
         AwardRecord::class => AwardRecordsPolicy::class,
         CombatRecord::class => CombatRecordsPolicy::class,
         Document::class => DocumentPolicy::class,
+        Element::class => ElementPolicy::class,
         Form::class => FormPolicy::class,
         Image::class => ImagePolicy::class,
         Mail::class => MailPolicy::class,
@@ -107,6 +112,7 @@ class AuthServiceProvider extends ServiceProvider
         StatusRecord::class => StatusRecordPolicy::class,
         Subscription::class => SubscriptionPolicy::class,
         SubscriptionItem::class => SubscriptionItemPolicy::class,
+        Tag::class => TagPolicy::class,
         TaskAssignment::class => TaskAssignmentPolicy::class,
         Task::class => TaskPolicy::class,
         Unit::class => UnitPolicy::class,
