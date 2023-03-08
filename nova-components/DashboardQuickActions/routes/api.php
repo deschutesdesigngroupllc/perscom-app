@@ -40,7 +40,7 @@ Route::get('/routes', function (Request $request) {
 
     $routes['user']['formsubmission'] = [
         'link' => \route('nova.pages.index', [
-            'resource' => Form::uriKey()
+            'resource' => Form::uriKey(),
         ]),
         'title' => 'Submit A New Form',
         'description' => 'Submit a new form or perform a request using your organization\'s forms.',
@@ -50,7 +50,7 @@ Route::get('/routes', function (Request $request) {
     if (Gate::check('create', \App\Models\User::class)) {
         $routes['admin']['user'] = [
             'link' => \route('nova.pages.create', [
-                'resource' => User::uriKey()
+                'resource' => User::uriKey(),
             ]),
             'title' => 'Create A New Personnel Profile',
             'description' => 'Personnel profiles are the foundation of PERSCOM and provide a powerful and robust interface to store data while being displayed in a elegant and useable fashion.',
@@ -61,7 +61,7 @@ Route::get('/routes', function (Request $request) {
     if (Gate::check('create', \App\Models\AssignmentRecord::class)) {
         $routes['admin']['assignment'] = [
             'link' => \route('nova.pages.create', [
-                'resource' => AssignmentRecord::uriKey()
+                'resource' => AssignmentRecord::uriKey(),
             ]),
             'title' => 'Register A New Assignment',
             'description' => 'Assignment records provide a transparent ledger for all personnel transfers that happen within your organization.',
@@ -72,7 +72,7 @@ Route::get('/routes', function (Request $request) {
     if (Gate::check('create', \App\Models\ServiceRecord::class)) {
         $routes['admin']['service'] = [
             'link' => \route('nova.pages.create', [
-                'resource' => ServiceRecord::uriKey()
+                'resource' => ServiceRecord::uriKey(),
             ]),
             'title' => 'Create A New Service Record',
             'description' => 'Service records provide a written history of every action and event that happens to a user. Records can be manually generated or automated through commmon actions.',
@@ -83,7 +83,7 @@ Route::get('/routes', function (Request $request) {
     if (Gate::check('create', \App\Models\CombatRecord::class)) {
         $routes['admin']['combat'] = [
             'link' => \route('nova.pages.create', [
-                'resource' => CombatRecord::uriKey()
+                'resource' => CombatRecord::uriKey(),
             ]),
             'title' => 'Create A New Combat Record',
             'description' => 'Similiar to Service Records, Combat Records provide a timeline of all combat encounters by the user.',
@@ -94,7 +94,7 @@ Route::get('/routes', function (Request $request) {
     if (Gate::check('create', \App\Models\RankRecord::class)) {
         $routes['admin']['rank'] = [
             'link' => \route('nova.pages.create', [
-                'resource' => RankRecord::uriKey()
+                'resource' => RankRecord::uriKey(),
             ]),
             'title' => 'File A New Promotion',
             'description' => 'Assign a new rank to a user, making sure to keep a thorough and detailed history of all changes in rank for the user.',
@@ -105,7 +105,7 @@ Route::get('/routes', function (Request $request) {
     if (Gate::check('create', \App\Models\AwardRecord::class)) {
         $routes['admin']['award'] = [
             'link' => \route('nova.pages.create', [
-                'resource' => AwardRecord::uriKey()
+                'resource' => AwardRecord::uriKey(),
             ]),
             'title' => 'File A New Award',
             'description' => 'Add an award to a user\'s personnel file. Awards can be viewed from within the user\'s personnel file.',
