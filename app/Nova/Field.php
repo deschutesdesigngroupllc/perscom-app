@@ -40,18 +40,6 @@ class Field extends Resource
     public static $title = 'name';
 
     /**
-     * Indicates if the resource should be globally searchable.
-     *
-     * @var bool
-     */
-    public static $globallySearchable = false;
-
-    /**
-     * @var array
-     */
-    protected $fields = [];
-
-    /**
      * The columns that should be searched.
      *
      * @var array
@@ -67,6 +55,16 @@ class Field extends Resource
      * @var string[]
      */
     public static $orderBy = ['name' => 'asc'];
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return 'Type: '.Str::ucfirst($this->type);
+    }
 
     /**
      * Get the fields displayed by the resource.
