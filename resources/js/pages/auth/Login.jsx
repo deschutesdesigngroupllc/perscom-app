@@ -1,17 +1,17 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import PropTypes from 'prop-types'
-import { Button, ButtonLink } from '../../components/Button'
-import { Checkbox } from '../../components/Checkbox'
-import { Input } from '../../components/Input'
-import { Label } from '../../components/Label'
-import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react'
-import { AuthLayout } from '../../layouts/Auth'
+import {Button, ButtonLink} from '../../components/Button'
+import {Checkbox} from '../../components/Checkbox'
+import {Input} from '../../components/Input'
+import {Label} from '../../components/Label'
+import {ValidationErrors} from '../../components/ValidationErrors'
+import {Head, Link, useForm, usePage} from '@inertiajs/inertia-react'
+import {AuthLayout} from '../../layouts/Auth'
 
-export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, enableSocialLogin, githubLogin, discordLogin }) {
+export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, adminMode, enableSocialLogin, githubLogin, discordLogin }) {
   const { data, setData, post, processing, errors, reset } = useForm({
-    email: '',
-    password: '',
+    email: demoMode ? 'demo@perscom.io' : '',
+    password: demoMode ? 'password' : '',
     remember: ''
   })
 
@@ -49,6 +49,13 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
         <div className='mb-4'>
           <div className='text-sm text-gray-600'>Welcome,</div>
           <div className='text-lg font-bold leading-7 text-gray-600'>{tenant}</div>
+        </div>
+      )}
+
+      {adminMode && (
+        <div className='mb-4'>
+          <div className='text-sm text-gray-600'>Welcome,</div>
+          <div className='text-lg font-bold leading-7 text-gray-600'>Administrator</div>
         </div>
       )}
 
@@ -162,6 +169,7 @@ Login.propTypes = {
   canResetPassword: PropTypes.bool,
   canCreateAnAccount: PropTypes.bool,
   demoMode: PropTypes.bool,
+  adminMode: PropTypes.bool,
   enableSocialLogin: PropTypes.bool,
   githubLogin: PropTypes.string,
   discordLogin: PropTypes.string
