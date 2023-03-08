@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
@@ -52,8 +53,9 @@ class Receipt extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Amount')->readonly(),
-            Text::make('Tax')->readonly(),
+            BelongsTo::make('Tenant', 'owner')->showCreateRelationButton()->sortable(),
+            Text::make('Amount')->readonly()->sortable(),
+            Text::make('Tax')->readonly()->sortable(),
             Text::make('Paid At')->readonly()->sortable(),
             URL::make('Download', function () {
                 return \App\Models\Tenant::find($this->tenant_id)->run(function ($tenant) {

@@ -56,12 +56,22 @@ class Tenant extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name', 'website'];
+    public static $search = ['id', 'name', 'email'];
 
     /**
      * @var string[]
      */
     public static $orderBy = ['name' => 'asc'];
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "URL: {$this->url}";
+    }
 
     /**
      * Get the fields displayed by the resource.

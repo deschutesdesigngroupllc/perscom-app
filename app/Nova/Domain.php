@@ -22,18 +22,31 @@ class Domain extends Resource
     public static $model = \App\Models\Domain::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'domain';
-
-    /**
      * The columns that should be searched.
      *
      * @var array
      */
     public static $search = ['id', 'domain'];
+
+    /**
+     * Get the value that should be displayed to represent the resource.
+     *
+     * @return string
+     */
+    public function title()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "Tenant: {$this->tenant->name}";
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -45,7 +58,7 @@ class Domain extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Tenant')->showCreateRelationButton(),
+            BelongsTo::make('Tenant')->showCreateRelationButton()->sortable(),
             Text::make('Domain')->sortable()->onlyOnForms()->rules([
                 'required',
                 'alpha_dash',
