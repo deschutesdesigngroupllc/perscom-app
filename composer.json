@@ -12,7 +12,7 @@
         "doctrine/dbal": "^3.4",
         "dompdf/dompdf": "^2.0",
         "eminiarts/nova-tabs": "^2.2",
-        "fakerphp/faker": "*",
+        "fakerphp/faker": "1.19.1",
         "laravel/fortify": "^1.16",
         "laravel/framework": "^10.0",
         "laravel/horizon": "^5.12",
@@ -55,6 +55,7 @@
         "phpunit/phpunit": "^10.0",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^2.0",
+        "squizlabs/php_codesniffer": "^3.7",
         "zalas/phpunit-globals": "^3.0.0-alpha.1"
     },
     "repositories": [
