@@ -31,7 +31,7 @@ class Kernel extends ConsoleKernel
         ])->hourly();
         $schedule->command('perscom:prune --force --days=7')->environments([
             'staging',
-            'production'
+            'production',
         ])->daily();
 
         $schedule->job(new ResetDemoAccount())->environments(['production'])->daily();
