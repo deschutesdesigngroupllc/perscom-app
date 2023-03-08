@@ -45,6 +45,7 @@ use App\Nova\TaskAssignment;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
+use App\Rules\SubdomainRule;
 use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -359,7 +360,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         Rule::unique(\App\Models\Domain::class, 'domain')->ignore(
                             \tenant()->getTenantKey(),
                             'tenant_id'
-                        )
+                        ),
+                        new SubdomainRule()
                     )->canSee(function () {
                         return \App\Facades\Feature::isAccessible(
                             FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN,
