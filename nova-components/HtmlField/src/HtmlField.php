@@ -29,10 +29,9 @@ class HtmlField extends Field
     }
 
     /**
-     * @param string $view
-     * @param array  $data
-     * @param array  $mergeData
-     *
+     * @param  string  $view
+     * @param  array  $data
+     * @param  array  $mergeData
      * @return HtmlField
      */
     public function view(string $view, $data = [], $mergeData = [])

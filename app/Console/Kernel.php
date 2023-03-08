@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('perscom:heartbeat')->environments(['staging', 'production'])->everyTenMinutes();
         $schedule->command('horizon:snapshot')->environments(['staging', 'production'])->everyFiveMinutes();
         $schedule->command('cache:prune-stale-tags')->environments(['staging', 'production'])->hourly();
+        $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->daily();
 
         $schedule->job(new ResetDemoAccount())->environments(['production'])->daily();
     }
