@@ -26,5 +26,6 @@ class TenancyInitializedListener
         PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->id;
 
         Config::set('app.timezone', NovaSettings::getSetting('timezone', \config('app.timezone')));
+        Config::set('mail.from.name', $event->tenancy->tenant->name);
     }
 }
