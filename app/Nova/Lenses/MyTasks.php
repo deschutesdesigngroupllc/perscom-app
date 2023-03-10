@@ -49,7 +49,7 @@ class MyTasks extends Lens
             ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make('Task')->sortable(),
             Text::make('Description', function () {
-                return Str::limit($this->task->description);
+                return Str::limit($this->task?->description);
             }),
             Badge::make('Status', function ($model) {
                 return $model->status->value;

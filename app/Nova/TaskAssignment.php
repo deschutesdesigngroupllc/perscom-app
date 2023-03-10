@@ -73,7 +73,7 @@ class TaskAssignment extends Resource
             BelongsTo::make('User')->sortable(),
             BelongsTo::make('Assigned By', 'assigned_by', User::class)->default(Auth::user()->getAuthIdentifier()),
             Text::make('Description', function () {
-                return Str::limit($this->task->description);
+                return Str::limit($this->task?->description);
             }),
             Badge::make('Status', function ($model) {
                 return $model->status->value;
@@ -102,7 +102,7 @@ class TaskAssignment extends Resource
             })->onlyOnDetail(),
             new Panel('Details', [
                 Markdown::make('Instructions', function () {
-                    return $this->task->instructions;
+                    return $this->task?->instructions;
                 })->alwaysShow(),
             ]),
             HasManyThrough::make('Attachments'),
