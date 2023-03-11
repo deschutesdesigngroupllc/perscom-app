@@ -2,10 +2,10 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\DownloadReceipt;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Receipt extends Resource
@@ -41,7 +41,7 @@ class Receipt extends Resource
     /**
      * @var string[]
      */
-    public static $orderBy = ['paid_at' => 'asc'];
+    public static $orderBy = ['paid_at' => 'desc'];
 
     /**
      * Get the fields displayed by the resource.
@@ -56,16 +56,7 @@ class Receipt extends Resource
             BelongsTo::make('Tenant', 'owner')->showCreateRelationButton()->sortable(),
             Text::make('Amount')->readonly()->sortable(),
             Text::make('Tax')->readonly()->sortable(),
-            Text::make('Paid At')->readonly()->sortable(),
-            URL::make('Download', function () {
-                return \App\Models\Tenant::find($this->tenant_id)->run(function ($tenant) {
-                    return route('spark.receipts.download', [
-                        $tenant->sparkConfiguration()['type'],
-                        $tenant->id,
-                        $this->provider_id,
-                    ]);
-                });
-            }),
+            Text::make('Paid At')->readonly()->sortable()
         ];
     }
 
@@ -110,6 +101,6 @@ class Receipt extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [new DownloadReceipt()];
     }
 }
