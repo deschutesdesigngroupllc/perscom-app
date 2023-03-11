@@ -20,6 +20,7 @@ use App\Observers\AssignmentRecordObserver;
 use App\Observers\AwardRecordObserver;
 use App\Observers\CombatRecordObserver;
 use App\Observers\DomainObserver;
+use App\Observers\FeatureObserver;
 use App\Observers\MailObserver;
 use App\Observers\QualificationRecordObserver;
 use App\Observers\RankRecordObserver;

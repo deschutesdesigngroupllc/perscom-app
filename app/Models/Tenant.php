@@ -7,6 +7,7 @@ use Illuminate\Events\NullDispatcher;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Nova;
+use Laravel\Pennant\Concerns\HasFeatures;
 use Spark\Billable;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -91,6 +92,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     use Actionable;
     use Billable;
     use HasFactory;
+    use HasFeatures;
     use HasDomains;
     use HasDatabase;
     use Notifiable;

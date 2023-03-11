@@ -2,16 +2,14 @@
 
 namespace App\Services;
 
-use App\Models\Enums\FeatureIdentifier;
 use App\Models\Tenant;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Support\Facades\Request;
 use Spark\Plan;
 
 class Feature
 {
     /**
-     * @param  FeatureIdentifier  $feature
+     * @param  \Laravel\Pennant\Feature  $feature
      * @param  bool  $enabledInDemoMode
      * @param  bool  $enabledInTrial
      * @param  bool  $enabledWhenBillingIsOff
@@ -19,7 +17,7 @@ class Feature
      * @return bool|\Illuminate\Support\Optional|mixed|\Stancl\Tenancy\Contracts\Tenant
      */
     public function isAccessible(
-        FeatureIdentifier $feature,
+        $feature,
         bool $enabledInDemoMode = true,
         bool $enabledInTrial = true,
         bool $enabledWhenBillingIsOff = true,

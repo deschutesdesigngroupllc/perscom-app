@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Actions\ExportAsCsv;
@@ -19,6 +18,7 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Pennant\Feature;
 use Outl1ne\NovaSortable\Traits\HasSortableManyToManyRows;
 
 class Field extends Resource
@@ -160,7 +160,7 @@ class Field extends Resource
     public function actions(NovaRequest $request)
     {
         return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+            return Feature::active(ExportDataFeature::class);
         })->nameable()];
     }
 }

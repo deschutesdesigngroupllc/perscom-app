@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ApiAccessFeature;
 use App\Models\PassportLog;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
+use Laravel\Pennant\Feature;
 
 class PassportLogPolicy extends Policy
 {
@@ -22,7 +22,7 @@ class PassportLogPolicy extends Policy
             return false;
         }
 
-        if (! Feature::isAccessible(FeatureIdentifier::FEATURE_API_ACCESS)) {
+        if (Feature::inactive(ApiAccessFeature::class)) {
             return false;
         }
     }

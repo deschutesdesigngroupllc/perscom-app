@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use App\Nova\Actions\OpenForm;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
@@ -28,6 +27,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 
 class Form extends Resource
 {
@@ -162,7 +162,7 @@ class Form extends Resource
     {
         return [
             ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+                return Feature::active(ExportDataFeature::class);
             })->nameable(),
             (new OpenForm())->showInline()->canRun(function (NovaRequest $request) {
                 return Gate::check('view', $request->findModel());

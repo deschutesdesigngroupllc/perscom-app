@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
@@ -13,6 +12,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 
 class Announcement extends Resource
 {
@@ -136,7 +136,7 @@ class Announcement extends Resource
     public function actions(NovaRequest $request)
     {
         return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+            return Feature::active(ExportDataFeature::class);
         })->nameable()];
     }
 }

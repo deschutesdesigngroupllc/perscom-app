@@ -75,7 +75,7 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
-        'feature' => \Codinglabs\FeatureFlags\Middleware\VerifyFeatureIsOn::class,
+        'feature' => \Laravel\Pennant\Middleware\EnsureFeaturesAreActive::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'json' => \App\Http\Middleware\ForceJsonResponse::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,

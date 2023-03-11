@@ -2,15 +2,9 @@
 
 namespace App\Nova;
 
-use App\Nova\Fields\FeatureState as FeatureStateField;
-use Codinglabs\FeatureFlags\Enums\FeatureState;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\Badge;
+use App\Models\Enums\FeatureState;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Feature extends Resource
@@ -47,28 +41,19 @@ class Feature extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name')->rules('required')->sortable(),
-            Text::make('Description', function () {
-                return Str::limit($this->description);
-            })->onlyOnIndex(),
-            Textarea::make('Description')->alwaysShow()->nullable(),
-            Badge::make('State', function () {
-                return FeatureState::from($this->state)->value;
-            })->map([
-                'off' => 'danger',
-                'on' => 'success',
-                'dynamic' => 'info',
-            ])->exceptOnForms(),
-            FeatureStateField::make('State')->attach(FeatureState::class)->onlyOnForms(),
+//            Text::make('Description', function () {
+//                return Str::limit($this->description);
+//            })->onlyOnIndex(),
+//            Textarea::make('Description')->alwaysShow()->nullable(),
+//            Badge::make('State', function () {
+//                return $this->state->value;
+//            })->map([
+//                'off' => 'danger',
+//                'on' => 'success',
+//                'dynamic' => 'info',
+//            ])->exceptOnForms(),
+//            Enum::make('State')->attach(FeatureState::class)->onlyOnForms()
         ];
-    }
-
-    /**
-     * @param  NovaRequest  $request
-     * @param  Model  $model
-     */
-    public static function afterUpdate(NovaRequest $request, Model $model)
-    {
-        FeatureFlag::updateFeatureState($model->name, $model->state);
     }
 
     /**

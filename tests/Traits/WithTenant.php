@@ -2,16 +2,17 @@
 
 namespace Tests\Traits;
 
+use App\Features\BillingFeature;
+use App\Features\SocialLoginFeature;
 use App\Models\Domain;
-use App\Models\Feature;
 use App\Models\Tenant;
 use App\Models\User;
-use Codinglabs\FeatureFlags\Enums\FeatureState;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
+use Laravel\Pennant\Feature;
 
 trait WithTenant
 {
@@ -93,15 +94,8 @@ trait WithTenant
             ])->save();
         }
 
-        Feature::factory()->state([
-            'name' => 'social-login',
-            'state' => FeatureState::on(),
-        ])->create();
-
-        Feature::factory()->state([
-            'name' => 'billing',
-            'state' => FeatureState::on(),
-        ])->create();
+        Feature::define(SocialLoginFeature::class, true);
+        Feature::define(BillingFeature::class, true);
 
         tenancy()->initialize($this->tenant);
 

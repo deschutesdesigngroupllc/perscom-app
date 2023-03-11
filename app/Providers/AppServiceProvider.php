@@ -13,6 +13,7 @@ use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
+use Laravel\Pennant\Feature;
 use Laravel\Socialite\Contracts\Factory;
 
 class AppServiceProvider extends ServiceProvider
@@ -75,5 +76,8 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $this->app->bind(CreatesPersonalAccessToken::class, CreatePersonalAccessToken::class);
+
+        Feature::discover();
+        Feature::resolveScopeUsing(static fn ($driver) => \tenant('id'));
     }
 }

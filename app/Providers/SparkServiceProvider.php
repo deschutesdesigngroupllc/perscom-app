@@ -2,11 +2,12 @@
 
 namespace App\Providers;
 
+use App\Features\BillingFeature;
 use App\Models\Tenant;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Laravel\Pennant\Feature;
 use Spark\Plan;
 use Spark\Spark;
 
@@ -39,7 +40,7 @@ class SparkServiceProvider extends ServiceProvider
                    ! $request->isDemoMode() &&
                    ! $request->isCentralRequest() &&
                    Gate::check('billing', $request->user()) &&
-                   FeatureFlag::isOn('billing');
+                   Feature::active(BillingFeature::class);
         });
 
         Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {

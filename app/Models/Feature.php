@@ -2,8 +2,8 @@
 
 namespace App\Models;
 
-use Codinglabs\FeatureFlags\Models\Feature as BaseFeatureModel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
@@ -13,7 +13,6 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property int $id
  * @property string $name
  * @property string|null $description
- * @property \Codinglabs\FeatureFlags\Enums\FeatureState $state
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
@@ -30,16 +29,9 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Feature extends BaseFeatureModel
+class Feature extends Model
 {
     use CentralConnection;
     use HasFactory;
     use Actionable;
-
-    /**
-     * @var string[]
-     */
-    protected $attributes = [
-        'state' => 'off',
-    ];
 }
