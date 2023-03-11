@@ -14,6 +14,7 @@ use Inertia\Inertia;
 use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
 use Laravel\Pennant\Feature;
+use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 use Laravel\Socialite\Contracts\Factory;
 
 class AppServiceProvider extends ServiceProvider
@@ -79,5 +80,11 @@ class AppServiceProvider extends ServiceProvider
 
         Feature::discover();
         Feature::resolveScopeUsing(static fn ($driver) => \tenant('id'));
+
+        EnsureFeaturesAreActive::whenInactive(
+            static function ($request, array $features) {
+                abort(403, 'The feature you are trying to access is not current enabled for your account.');
+            }
+        );
     }
 }

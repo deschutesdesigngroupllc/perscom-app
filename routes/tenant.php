@@ -25,12 +25,10 @@ Route::group(['as' => 'tenant.', 'middleware' => [InitializeTenancyByDomainOrSub
     })->name('impersonate');
 
     // Socialite
-    Route::group(['prefix' => 'auth'], function () {
+    Route::group(['prefix' => 'auth', 'middleware' => 'feature:App\Features\SocialLoginFeature'], function () {
         Route::get('/{driver}/redirect', [SocialLoginController::class, 'tenant'])
-             ->middleware('feature:social-login')
              ->name('auth.social.redirect');
         Route::get('/login/{loginToken}', [SocialLoginController::class, 'login'])
-             ->middleware('feature:social-login')
              ->name('auth.social.login');
     });
 });

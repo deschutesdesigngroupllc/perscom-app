@@ -108,11 +108,6 @@ class Tenant extends Resource
             DateTime::make('Created At')->sortable()->exceptOnForms()->onlyOnDetail(),
             DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
             Tabs::make('Relations', [
-                Tab::make('Database', [
-                    Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
-                    Status::make('Database Status')->hideFromIndex()->loadingWhen(['creating'])->failedWhen([])->readonly(),
-                ]),
-                Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Billing Settings', [
                     Text::make('Billing Address')->hideFromIndex(),
                     Text::make('Billing Address Line 2')->hideFromIndex(),
@@ -141,8 +136,16 @@ class Tenant extends Resource
                     DateTime::make('Plan Ends At')->hideFromIndex(),
                     Text::make('Receipt Emails')->hideFromIndex(),
                 ]),
-                Tab::make('All Subscriptions', [HasMany::make('Subscriptions')]),
+                Tab::make('Database', [
+                    Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
+                    Status::make('Database Status')->hideFromIndex()->loadingWhen(['creating'])->failedWhen([])->readonly(),
+                ]),
+                Tab::make('Domains', [HasMany::make('Domains')]),
+                Tab::make('Features', [
+                    HasMany::make('Features', 'pennants', Feature::class),
+                ]),
                 Tab::make('Receipts', [HasMany::make('Receipts', 'localReceipts', Receipt::class)]),
+                Tab::make('Subscriptions', [HasMany::make('Subscriptions')]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];

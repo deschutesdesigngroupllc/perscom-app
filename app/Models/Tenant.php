@@ -257,4 +257,12 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     {
         return $this->email;
     }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function pennants()
+    {
+        return $this->hasMany(Feature::class, 'scope');
+    }
 }

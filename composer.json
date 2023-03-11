@@ -8,7 +8,6 @@
     "license": "MIT",
     "require": {
         "aws/aws-sdk-php": "^3.230",
-        "codinglabsau/laravel-feature-flags": "^1.4",
         "doctrine/dbal": "^3.4",
         "dompdf/dompdf": "^2.0",
         "eminiarts/nova-tabs": "^2.2",
@@ -34,7 +33,6 @@
         "perscom/roster": "*",
         "php-open-source-saver/jwt-auth": "^2.0",
         "sentry/sentry-laravel": "^3.2",
-        "simplesquid/nova-enum-field": "^3.1",
         "spatie/eloquent-sortable": "^4.0.2",
         "spatie/laravel-activitylog": "^4.7.3",
         "spatie/laravel-permission": "^5.8",

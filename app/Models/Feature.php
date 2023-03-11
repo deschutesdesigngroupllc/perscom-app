@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
+use Symfony\Component\Finder\Finder;
 
 /**
  * App\Models\Feature
@@ -17,7 +19,6 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
- *
  * @method static \Illuminate\Database\Eloquent\Builder|Feature newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Feature newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Feature query()
@@ -34,4 +35,26 @@ class Feature extends Model
     use CentralConnection;
     use HasFactory;
     use Actionable;
+
+    /**
+     * @return mixed
+     */
+    public static function options()
+    {
+        return Collection::make(
+            (new Finder())->files()->name('*.php')->depth(0)->in(base_path('app/Features'))
+        )->mapWithKeys(function ($file) {
+            $class = "App\\Features\\{$file->getBasename('.php')}";
+
+            return [$class => $class];
+        });
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class, 'scope');
+    }
 }

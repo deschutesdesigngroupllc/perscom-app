@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Features\BillingFeature;
 use App\Features\CustomSubDomainFeature;
 use App\Features\SupportTicketFeature;
 use App\Models\Submission as SubmissionModel;
@@ -19,6 +18,7 @@ use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
+use App\Nova\Feature as NovaFeature;
 use App\Nova\Field;
 use App\Nova\Form;
 use App\Nova\Image;
@@ -156,6 +156,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Application', [
                         MenuItem::resource(AdminResource::class),
                         MenuItem::resource(Domain::class),
+                        MenuItem::resource(NovaFeature::class),
                         MenuItem::resource(Receipt::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
@@ -284,8 +285,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
                     return ! $request->isDemoMode() &&
                            ! $request->isCentralRequest() &&
-                           Gate::check('billing', $request->user()) &&
-                           Feature::active(BillingFeature::class);
+                           Gate::check('billing', $request->user());
                 }),
                 MenuItem::make('Logout', 'logout')->method('POST', [
                     '_token' => csrf_token(),

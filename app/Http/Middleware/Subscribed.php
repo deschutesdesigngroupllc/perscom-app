@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use App\Exceptions\SubscriptionRequired;
 use App\Features\ApiAccessFeature;
-use App\Features\BillingFeature;
 use App\Features\OAuth2AccessFeature;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -27,7 +26,6 @@ class Subscribed extends VerifyBillableIsSubscribed
     {
         if ($request->isDemoMode() ||
             $request->isCentralRequest() ||
-            Feature::inactive(BillingFeature::class) ||
             $request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*') ||
             Str::contains($request->path(), 'nova-vendor')) {
             return $next($request);

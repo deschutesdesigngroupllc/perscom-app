@@ -2,7 +2,6 @@
 
 namespace App\Nova\Dashboards;
 
-use App\Features\BillingFeature;
 use App\Models\Announcement;
 use App\Models\Message;
 use App\Nova\Metrics\NewUsers;
@@ -13,7 +12,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Dashboards\Main as Dashboard;
-use Laravel\Pennant\Feature;
 use Perscom\AlertCard\AlertCard;
 use Perscom\DashboardQuickActions\DashboardQuickActions;
 use Perscom\DashboardTitle\DashboardTitle;
@@ -66,7 +64,7 @@ class Main extends Dashboard
             $card->withSystemMessage($message->title, $message->message, $message->link_text, $message->url);
         });
 
-        if (! Request::isDemoMode() && Feature::active(BillingFeature::class) && Gate::check('billing', Auth::user())) {
+        if (! Request::isDemoMode() && Gate::check('billing', Auth::user())) {
             if (\tenant()->onTrial()) {
                 $date = \tenant()->trial_ends_at;
                 $ends = Carbon::parse($date)->toFormattedDateString();

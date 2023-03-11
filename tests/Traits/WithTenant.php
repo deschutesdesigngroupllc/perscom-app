@@ -2,7 +2,6 @@
 
 namespace Tests\Traits;
 
-use App\Features\BillingFeature;
 use App\Features\SocialLoginFeature;
 use App\Models\Domain;
 use App\Models\Tenant;
@@ -95,7 +94,6 @@ trait WithTenant
         }
 
         Feature::define(SocialLoginFeature::class, true);
-        Feature::define(BillingFeature::class, true);
 
         tenancy()->initialize($this->tenant);
 
