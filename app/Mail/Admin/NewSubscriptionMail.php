@@ -12,7 +12,8 @@ use Laravel\Cashier\Subscription;
 
 class NewSubscriptionMail extends Mailable
 {
-    use Queueable, SerializesModels;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * Create a new message instance.
@@ -48,8 +49,8 @@ class NewSubscriptionMail extends Mailable
             with: [
                 'tenant' => $this->subscription->owner->name,
                 'url' => $this->subscription->owner->url,
-                'plan' => $this->subscription->owner->sparkPlan()->name,
-                'interval' => Str::ucfirst($this->subscription->owner->sparkPlan()->interval),
+                'plan' => $this->subscription->owner->sparkPlan()?->name,
+                'interval' => Str::ucfirst($this->subscription->owner->sparkPlan()?->interval),
             ]
         );
     }
