@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -19,6 +20,7 @@ use Symfony\Component\Finder\Finder;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Feature newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Feature newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Feature query()
@@ -35,6 +37,23 @@ class Feature extends Model
     use CentralConnection;
     use HasFactory;
     use Actionable;
+
+    /**
+     * @var string[]
+     */
+    protected $casts = [
+        'scope' => 'string',
+    ];
+
+    /**
+     * @param  Builder  $query
+     * @param  Tenant  $tenant
+     * @return void
+     */
+    public function scopeForTenant(Builder $query, Tenant $tenant)
+    {
+        $query->where('scope', \Laravel\Pennant\Feature::serializeScope($tenant));
+    }
 
     /**
      * @return mixed

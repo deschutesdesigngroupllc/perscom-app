@@ -52,9 +52,7 @@ class FortifyServiceProvider extends ServiceProvider
                 'canCreateAnAccount' => Route::has('register'),
                 'demoMode' => Request::isDemoMode(),
                 'adminMode' => Request::isCentralRequest(),
-                'enableSocialLogin' => ! Request::isCentralRequest() &&
-                                       ! Request::isDemoMode() &&
-                                       Feature::active(SocialLoginFeature::class),
+                'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
                 'githubLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'github',
                 ]),

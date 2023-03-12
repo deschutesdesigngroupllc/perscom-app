@@ -8,7 +8,7 @@ use Outl1ne\NovaSettings\NovaSettings;
 use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Events\TenancyInitialized;
 
-class TenancyInitializedListener
+class ConfigureApplicationForTenant
 {
     /**
      * Handle the event.

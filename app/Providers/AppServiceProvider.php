@@ -79,7 +79,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(CreatesPersonalAccessToken::class, CreatePersonalAccessToken::class);
 
         Feature::discover();
-        Feature::resolveScopeUsing(static fn ($driver) => \tenant('id'));
+        Feature::resolveScopeUsing(static fn ($driver) => \tenant());
 
         EnsureFeaturesAreActive::whenInactive(
             static function ($request, array $features) {
