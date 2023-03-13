@@ -56,7 +56,7 @@ class Receipt extends Resource
             BelongsTo::make('Tenant', 'owner')->showCreateRelationButton()->sortable(),
             Text::make('Amount')->readonly()->sortable(),
             Text::make('Tax')->readonly()->sortable(),
-            Text::make('Paid At')->readonly()->sortable()
+            Text::make('Paid At')->readonly()->sortable(),
         ];
     }
 

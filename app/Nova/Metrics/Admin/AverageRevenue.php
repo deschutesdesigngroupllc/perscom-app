@@ -2,11 +2,12 @@
 
 namespace App\Nova\Metrics\Admin;
 
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Metrics\Trend;
-use Spark\Receipt;
+use Laravel\Nova\Metrics\Value;
+use Laravel\Nova\Nova;
 
-class AverageRevenue extends Trend
+class AverageRevenue extends Value
 {
     /**
      * Calculate the value of the metric.
@@ -16,7 +17,31 @@ class AverageRevenue extends Trend
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->averageByMonths($request, Receipt::class, 'amount', 'paid_at')->format('$0,0.00');
+        $timezone = Nova::resolveUserTimezone($request) ?? $request->timezone ?? config('app.timezone');
+        $range = $request->range ?? 1;
+
+        $currentRange = $this->currentRange($range, $timezone);
+        $previousRange = $this->previousRange($range, $timezone);
+
+        $query = DB::table('receipts')->select(DB::raw('AVG( TRIM( REPLACE(amount, \'$\', \'\')) + 0.0) as total'));
+
+        $previousValue = round(
+            (clone $query)->whereBetween(
+                'paid_at', $this->formatQueryDateBetween($previousRange)
+            )->first()->total ?? 0,
+            $this->roundingPrecision,
+            $this->roundingMode
+        );
+
+        $currentValue = round(
+            (clone $query)->whereBetween(
+                'paid_at', $this->formatQueryDateBetween($currentRange)
+            )->first()->total ?? 0,
+            $this->roundingPrecision,
+            $this->roundingMode
+        );
+
+        return $this->result($currentValue)->previous($previousValue)->dollars()->format('0,0.00');
     }
 
     /**
@@ -40,7 +65,7 @@ class AverageRevenue extends Trend
      */
     public function cacheFor()
     {
-        return now()->addMinutes(5);
+        //return now()->addMinutes(5);
     }
 
     /**
