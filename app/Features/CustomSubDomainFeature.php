@@ -2,22 +2,23 @@
 
 namespace App\Features;
 
-use App\Models\Tenant;
 use Illuminate\Support\Facades\Request;
 use Spark\Plan;
 
-class CustomSubDomainFeature
+class CustomSubDomainFeature extends BaseFeature
 {
     /**
      * Resolve the feature's initial value.
      */
-    public function resolve(Tenant|null $scope): mixed
+    public function resolve(string|null $scope): mixed
     {
+        $tenant = $this->resolveTenant($scope);
+
         return match (true) {
             Request::isCentralRequest() => false,
             Request::isDemoMode() => false,
-            $scope?->onTrial() => false,
-            optional($scope?->sparkPlan(), static function (Plan $plan) {
+            $tenant?->onTrial() => false,
+            optional($tenant?->sparkPlan(), static function (Plan $plan) {
                 return \in_array(__CLASS__, $plan->options, true);
             }) => true,
             default => false,

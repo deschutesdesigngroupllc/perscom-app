@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Nova;
 use Laravel\Pennant\Concerns\HasFeatures;
+use Laravel\Pennant\Contracts\FeatureScopeable;
 use Spark\Billable;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -87,7 +88,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereWebsite($value)
  * @mixin \Eloquent
  */
-class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase
+class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase, FeatureScopeable
 {
     use Actionable;
     use Billable;
@@ -256,6 +257,15 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     public function routeNotificationForMail($notification)
     {
         return $this->email;
+    }
+
+    /**
+     * @param  string  $driver
+     * @return mixed
+     */
+    public function toFeatureIdentifier(string $driver): mixed
+    {
+        return (string) $this->getTenantKey();
     }
 
     /**

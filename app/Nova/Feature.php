@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\ActivateFeature;
+use App\Nova\Actions\DeactivateFeature;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
@@ -32,6 +34,14 @@ class Feature extends Resource
     public static $search = ['id', 'name'];
 
     /**
+     * @return string|null
+     */
+    public static function createButtonLabel()
+    {
+        return 'Add Feature';
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -43,7 +53,7 @@ class Feature extends Resource
             ID::make()->sortable(),
             BelongsTo::make('Tenant')->sortable(),
             Select::make('Feature', 'name')->rules('required')->sortable()->options(\App\Models\Feature::options()),
-            Boolean::make('Enabled', 'value')->trueValue('true')->falseValue('false')->rules('required')->sortable(),
+            Boolean::make('Activated', 'value')->trueValue('true')->falseValue('false')->rules('required')->sortable(),
         ];
     }
 
@@ -88,6 +98,9 @@ class Feature extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            new ActivateFeature(),
+            new DeactivateFeature(),
+        ];
     }
 }

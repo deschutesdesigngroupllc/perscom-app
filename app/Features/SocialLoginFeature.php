@@ -2,22 +2,23 @@
 
 namespace App\Features;
 
-use App\Models\Tenant;
 use Illuminate\Support\Facades\Request;
 use Spark\Plan;
 
-class SocialLoginFeature
+class SocialLoginFeature extends BaseFeature
 {
     /**
      * Resolve the feature's initial value.
      */
-    public function resolve(Tenant|null $scope): mixed
+    public function resolve(string|null $scope): mixed
     {
+        $tenant = $this->resolveTenant($scope);
+
         return match (true) {
             Request::isCentralRequest() => false,
             Request::isDemoMode() => true,
-            $scope?->onTrial() => true,
-            optional($scope?->sparkPlan(), static function (Plan $plan) {
+            $tenant?->onTrial() => true,
+            optional($tenant?->sparkPlan(), static function (Plan $plan) {
                 return \in_array(__CLASS__, $plan->options, true);
             }) => true,
             default => false,
