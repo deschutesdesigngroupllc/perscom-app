@@ -2,10 +2,13 @@
 
 namespace App\Models;
 
-use Codinglabs\FeatureFlags\Models\Feature as BaseFeatureModel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
+use Symfony\Component\Finder\Finder;
 
 /**
  * App\Models\Feature
@@ -13,7 +16,6 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property int $id
  * @property string $name
  * @property string|null $description
- * @property \Codinglabs\FeatureFlags\Enums\FeatureState $state
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
@@ -30,7 +32,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Feature extends BaseFeatureModel
+class Feature extends Model
 {
     use CentralConnection;
     use HasFactory;
@@ -39,7 +41,39 @@ class Feature extends BaseFeatureModel
     /**
      * @var string[]
      */
-    protected $attributes = [
-        'state' => 'off',
+    protected $casts = [
+        'scope' => 'string',
     ];
+
+    /**
+     * @param  Builder  $query
+     * @param  Tenant  $tenant
+     * @return void
+     */
+    public function scopeForTenant(Builder $query, Tenant $tenant)
+    {
+        $query->where('scope', (string) $tenant->getTenantKey());
+    }
+
+    /**
+     * @return mixed
+     */
+    public static function options()
+    {
+        return Collection::make(
+            (new Finder())->files()->name('*.php')->depth(0)->in(base_path('app/Features'))
+        )->mapWithKeys(function ($file) {
+            $class = "App\\Features\\{$file->getBasename('.php')}";
+
+            return [$class => $class];
+        });
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function tenant()
+    {
+        return $this->belongsTo(Tenant::class, 'scope');
+    }
 }

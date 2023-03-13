@@ -3,10 +3,8 @@
 namespace Tests\Traits;
 
 use App\Models\Domain;
-use App\Models\Feature;
 use App\Models\Tenant;
 use App\Models\User;
-use Codinglabs\FeatureFlags\Enums\FeatureState;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\URL;
@@ -93,16 +91,6 @@ trait WithTenant
             ])->save();
         }
 
-        Feature::factory()->state([
-            'name' => 'social-login',
-            'state' => FeatureState::on(),
-        ])->create();
-
-        Feature::factory()->state([
-            'name' => 'billing',
-            'state' => FeatureState::on(),
-        ])->create();
-
         tenancy()->initialize($this->tenant);
 
         URL::forceRootUrl($this->tenant->url);
@@ -128,6 +116,8 @@ trait WithTenant
     {
         $priceId = $priceId ?? env('STRIPE_PRODUCT_BASIC_MONTH');
 
+        $this->withoutSubscription();
+
         $this->subscription = $this->tenant->subscriptions()->create([
             'name' => 'default',
             'stripe_id' => Str::random(10),
@@ -144,6 +134,14 @@ trait WithTenant
             'stripe_price' => $priceId,
             'quantity' => 1,
         ]);
+    }
+
+    /**
+     * @return void
+     */
+    public function withoutSubscription()
+    {
+        $this->tenant->subscriptions()->delete();
     }
 
     /**

@@ -9,12 +9,12 @@
 
 namespace App\Policies;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ApiAccessFeature;
 use App\Models\PassportToken;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
+use Laravel\Pennant\Feature;
 
 class PassportTokenPolicy extends Policy
 {
@@ -29,7 +29,7 @@ class PassportTokenPolicy extends Policy
             return false;
         }
 
-        if (! Feature::isAccessible(FeatureIdentifier::FEATURE_API_ACCESS)) {
+        if (Feature::inactive(ApiAccessFeature::class)) {
             return false;
         }
     }

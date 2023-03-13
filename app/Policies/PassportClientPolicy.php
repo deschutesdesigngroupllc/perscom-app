@@ -2,12 +2,12 @@
 
 namespace App\Policies;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\OAuth2AccessFeature;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 use Laravel\Passport\Client;
+use Laravel\Pennant\Feature;
 
 class PassportClientPolicy extends Policy
 {
@@ -22,7 +22,7 @@ class PassportClientPolicy extends Policy
             return false;
         }
 
-        if (! Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON)) {
+        if (Feature::inactive(OAuth2AccessFeature::class)) {
             return false;
         }
     }

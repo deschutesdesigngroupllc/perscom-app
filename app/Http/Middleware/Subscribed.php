@@ -3,12 +3,12 @@
 namespace App\Http\Middleware;
 
 use App\Exceptions\SubscriptionRequired;
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
+use App\Features\ApiAccessFeature;
+use App\Features\OAuth2AccessFeature;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
 class Subscribed extends VerifyBillableIsSubscribed
@@ -26,7 +26,6 @@ class Subscribed extends VerifyBillableIsSubscribed
     {
         if ($request->isDemoMode() ||
             $request->isCentralRequest() ||
-            FeatureFlag::isOff('billing') ||
             $request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*') ||
             Str::contains($request->path(), 'nova-vendor')) {
             return $next($request);
@@ -35,13 +34,13 @@ class Subscribed extends VerifyBillableIsSubscribed
         $response = parent::handle($request, $next, $billableType, $plan);
         $unsubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
 
-        throw_if(($unsubscribed || ! Feature::isAccessible(FeatureIdentifier::FEATURE_API_ACCESS)) && $request->routeIs('api.*'),
+        throw_if(($unsubscribed || Feature::inactive(ApiAccessFeature::class)) && $request->routeIs('api.*'),
             SubscriptionRequired::class,
             402,
             'A subscription is required to make an API request.'
         );
 
-        throw_if(($unsubscribed || ! Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON)) && $request->routeIs('passport.*'),
+        throw_if(($unsubscribed || Feature::inactive(OAuth2AccessFeature::class)) && $request->routeIs('passport.*'),
             SubscriptionRequired::class,
             402,
             'Your subscription does not include use of OAuth 2.0.'

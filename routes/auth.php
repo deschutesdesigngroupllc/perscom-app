@@ -3,9 +3,9 @@
 use App\Http\Controllers\SocialLoginController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/{driver}/{tenant}/redirect', [SocialLoginController::class, 'redirect'])
-     ->middleware('feature:social-login')
-     ->name('social.redirect');
-Route::get('/{driver}/callback', [SocialLoginController::class, 'callback'])
-     ->middleware('feature:social-login')
-     ->name('social.callback');
+Route::group(['middleware' => 'feature:App\Features\SocialLoginFeature'], function () {
+    Route::get('/{driver}/{tenant}/redirect', [SocialLoginController::class, 'redirect'])
+         ->name('social.redirect');
+    Route::get('/{driver}/callback', [SocialLoginController::class, 'callback'])
+         ->name('social.callback');
+});

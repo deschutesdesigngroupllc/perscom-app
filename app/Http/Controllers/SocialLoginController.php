@@ -28,7 +28,7 @@ class SocialLoginController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('feature:social-login');
+        $this->middleware('feature:App\Features\SocialLoginFeature');
     }
 
     /**

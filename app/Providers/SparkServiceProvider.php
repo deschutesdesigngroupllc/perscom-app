@@ -3,7 +3,6 @@
 namespace App\Providers;
 
 use App\Models\Tenant;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
@@ -38,8 +37,7 @@ class SparkServiceProvider extends ServiceProvider
                    \tenant()->getTenantKey() === $billable->id &&
                    ! $request->isDemoMode() &&
                    ! $request->isCentralRequest() &&
-                   Gate::check('billing', $request->user()) &&
-                   FeatureFlag::isOn('billing');
+                   Gate::check('billing', $request->user());
         });
 
         Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {

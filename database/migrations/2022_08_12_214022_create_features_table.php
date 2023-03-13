@@ -21,6 +21,6 @@ return new class extends Migration
 
     public function down()
     {
-        Schema::drop('features');
+        Schema::dropIfExists('features');
     }
 };

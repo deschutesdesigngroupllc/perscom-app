@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\CustomSubDomainFeature;
+use App\Features\SupportTicketFeature;
 use App\Models\Submission as SubmissionModel;
 use App\Models\TaskAssignment as TaskAssignmentModel;
 use App\Nova\Action;
@@ -17,7 +18,7 @@ use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
-use App\Nova\Feature;
+use App\Nova\Feature as NovaFeature;
 use App\Nova\Field;
 use App\Nova\Form;
 use App\Nova\Image;
@@ -47,7 +48,6 @@ use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
 use App\Rules\SubdomainRule;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
@@ -67,6 +67,7 @@ use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\Roster\Roster;
 use Spatie\Url\Url;
@@ -155,7 +156,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Application', [
                         MenuItem::resource(AdminResource::class),
                         MenuItem::resource(Domain::class),
-                        MenuItem::resource(Feature::class),
+                        MenuItem::resource(NovaFeature::class),
                         MenuItem::resource(Receipt::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
@@ -258,7 +259,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
                                 ->openInNewTab()
                                 ->canSee(function () {
-                                    return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_SUPPORT_TICKET);
+                                    return Feature::active(SupportTicketFeature::class);
                                 }),
                         MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
                                 ->openInNewTab(),
@@ -284,8 +285,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
                     return ! $request->isDemoMode() &&
                            ! $request->isCentralRequest() &&
-                           Gate::check('billing', $request->user()) &&
-                           FeatureFlag::isOn('billing');
+                           Gate::check('billing', $request->user());
                 }),
                 MenuItem::make('Logout', 'logout')->method('POST', [
                     '_token' => csrf_token(),
@@ -331,7 +331,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')
                                                                                                 ->ignore(\tenant()->getTenantKey(), 'tenant_id'), new SubdomainRule())
                         ->canSee(function () {
-                            return \App\Facades\Feature::isAccessible(FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN, false, false, false);
+                            return Feature::active(CustomSubDomainFeature::class);
                         }),
                 ]),
                 Panel::make('Branding', [

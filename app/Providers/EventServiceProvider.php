@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
-use App\Listeners\TenancyInitializedListener;
-use App\Listeners\UserLoggedInListener;
+use App\Listeners\ConfigureApplicationForTenant;
+use App\Listeners\ResetTenantFeatures;
+use App\Listeners\UpdateTenantLastLoginDate;
 use App\Models\AssignmentRecord;
 use App\Models\AwardRecord;
 use App\Models\CombatRecord;
@@ -34,6 +35,9 @@ use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
 use Laravel\Cashier\Subscription;
+use Spark\Events\SubscriptionCancelled;
+use Spark\Events\SubscriptionCreated;
+use Spark\Events\SubscriptionUpdated;
 use Stancl\Tenancy\Events\TenancyInitialized;
 
 class EventServiceProvider extends ServiceProvider
@@ -45,13 +49,22 @@ class EventServiceProvider extends ServiceProvider
      */
     protected $listen = [
         Login::class => [
-            UserLoggedInListener::class,
+            UpdateTenantLastLoginDate::class,
         ],
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
+        SubscriptionCancelled::class => [
+            ResetTenantFeatures::class,
+        ],
+        SubscriptionCreated::class => [
+            ResetTenantFeatures::class,
+        ],
+        SubscriptionUpdated::class => [
+            ResetTenantFeatures::class,
+        ],
         TenancyInitialized::class => [
-            TenancyInitializedListener::class,
+            ConfigureApplicationForTenant::class,
         ],
     ];
 
