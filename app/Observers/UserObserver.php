@@ -16,7 +16,8 @@ class UserObserver
      */
     public function created(User $user)
     {
-        //
+        $user->assignRole(setting('default_roles'));
+        $user->givePermissionTo(setting('default_permissions'));
     }
 
     /**

@@ -367,7 +367,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     return \App\Models\Role::pluck('name', 'id');
                 })->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
             ]),
-        ], [], 'Registration');
+        ], [
+            'registration_enabled' => 'boolean',
+            'default_permissions' => 'array',
+            'default_roles' => 'array',
+        ], 'Registration');
     }
 
     /**
