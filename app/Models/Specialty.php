@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\SpecialtyScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
 /**
  * App\Models\Specialty
@@ -19,9 +22,20 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Specialty query()
  * @mixin \Eloquent
  */
-class Specialty extends Model
+class Specialty extends Model implements Sortable
 {
     use HasFactory;
+    use SortableTrait;
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new SpecialtyScope());
+    }
 
     /**
      * @var string[]
