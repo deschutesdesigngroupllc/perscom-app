@@ -29,7 +29,7 @@ class DomainUpdatedMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.system.domain-updated')->subject('Custom Domain Successfully Updated')->with([
+        return $this->markdown('emails.system.domain-updated')->subject('Domain Successfully Updated')->with([
             'url' => $this->domain->url,
             'fallback_url' => $this->domain->tenant->fallback_url,
         ]);

@@ -53,8 +53,11 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Email;
+use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
@@ -245,6 +248,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuGroup::make('Settings', [
                             MenuItem::link('General', '/settings/general'),
                             MenuItem::link('Localization', '/settings/localization'),
+                            MenuItem::link('Registration', '/settings/registration'),
                         ])->collapsable(),
                     ])->icon('terminal')->collapsable()->canSee(function (NovaRequest $request) {
                         return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
@@ -309,36 +313,25 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     })->help('Your PERSCOM ID that must be used in all external integrations.')->readonly(),
                     Text::make('Organization', 'organization')
                         ->help('The name of your organization.')
-                        ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')
-                                                                     ->ignore(\tenant()->getTenantKey()))
-                        ->resolveUsing(function () {
-                            return \tenant('name');
-                        }),
+                        ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())),
                     Email::make('Email', 'email')
                          ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
-                         ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')
-                                                                               ->ignore(\tenant()->getTenantKey()))
-                         ->resolveUsing(function () {
-                             return \tenant('email');
-                         }),
+                         ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())),
                     Timezone::make('Default Timezone', 'timezone')
-                            ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.'),
+                            ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.')
+                            ->rules('required'),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')
                         ->copyable()
                         ->help('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
-                        ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')
-                                                                                                ->ignore(\tenant()->getTenantKey(), 'tenant_id'), new SubdomainRule())
+                        ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')->ignore(\tenant()->getTenantKey(), 'tenant_id'), new SubdomainRule())
                         ->canSee(function () {
                             return Feature::active(CustomSubDomainFeature::class);
                         }),
                 ]),
                 Panel::make('Branding', [
                     Text::make('Dashboard Title', 'dashboard_title')
-                        ->default(function () {
-                            return \tenant('name');
-                        })
                         ->help('The main heading on your dashboard homepage. This will default to your organization name if not set.'),
                     Text::make('Dashboard Subtitle', 'dashboard_subtitle')
                         ->help('A subtitle or description that can be added under your dashboard heading.'),
@@ -360,6 +353,25 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 Text::make('Users (Plural)', 'localization_users')->placeholder('users'),
             ]),
         ], [], 'Localization');
+
+        NovaSettings::addSettingsFields([
+            new Panel('Registration Settings', [
+                Boolean::make('Enabled', 'registration_enabled')->help('Deselect to disable registration.'),
+                Textarea::make('Disabled Message', 'registration_disabled_message')->help('Enter a message that will be provided when users attempt to register and registration is disabled.'),
+            ]),
+            new Panel('User Settings', [
+                MultiSelect::make('Default Permissions', 'default_permissions')->options(function () {
+                    return \App\Models\Permission::pluck('name', 'id');
+                })->help('The default permissions that will be given to new user accounts. Leave blank to assign no permissions.'),
+                MultiSelect::make('Default Roles', 'default_roles')->options(function () {
+                    return \App\Models\Role::pluck('name', 'id');
+                })->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
+            ]),
+        ], [
+            'registration_enabled' => 'boolean',
+            'default_permissions' => 'array',
+            'default_roles' => 'array',
+        ], 'Registration');
     }
 
     /**

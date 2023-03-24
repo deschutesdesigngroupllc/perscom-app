@@ -15,7 +15,10 @@ use Stancl\Tenancy\Contracts\TenantWithDatabase;
 
 class CreateInitialTenantUser implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+    use Dispatchable;
+    use InteractsWithQueue;
+    use Queueable;
+    use SerializesModels;
 
     /**
      * @param  TenantWithDatabase  $tenant
@@ -33,7 +36,7 @@ class CreateInitialTenantUser implements ShouldQueue
      */
     public function handle()
     {
-        $password = Str::random();
+        $password = Str::password();
         $user = $this->tenant->run(function () use ($password) {
             $createsNewUser = app()->make(CreatesNewUsers::class);
             $user = $createsNewUser->create([
