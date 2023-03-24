@@ -12,9 +12,12 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Pennant\Feature;
+use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
 class Specialty extends Resource
 {
+    use HasSortableRows;
+
     /**
      * The model the resource corresponds to.
      *
@@ -39,7 +42,7 @@ class Specialty extends Resource
     /**
      * @var string[]
      */
-    public static $orderBy = ['name' => 'asc'];
+    public static $orderBy = ['order' => 'asc'];
 
     /**
      * Get the displayable label of the resource.

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\UnitScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
@@ -33,6 +34,16 @@ class Unit extends Model implements Sortable
      * @var array<int, string>
      */
     protected $fillable = ['name', 'description'];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new UnitScope());
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
