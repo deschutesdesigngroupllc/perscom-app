@@ -82,7 +82,8 @@ class Document extends Resource
                 ->hideFromIndex()
                 ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
                 ->rules(['required'])
-                ->showOnPreview(),
+                ->showOnPreview()
+                ->withFiles('s3_public'),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
