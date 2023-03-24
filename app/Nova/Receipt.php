@@ -37,7 +37,7 @@ class Receipt extends Resource
      *
      * @var array
      */
-    public static $search = ['id'];
+    public static $search = ['id', 'amount'];
 
     /**
      * @var string[]
