@@ -121,8 +121,8 @@ class User extends Resource
                 false => 'info',
                 true => 'success',
             ])->exceptOnForms(),
-            Avatar::make('Profile Photo')->disk('s3_public')->prunable()->squared()->hideFromIndex(),
-            Image::make('Cover Photo')->disk('s3_public')->prunable()->squared()->hideFromIndex(),
+            Avatar::make('Profile Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
+            Image::make('Cover Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Panel::make('Assignment', [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
                          ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
