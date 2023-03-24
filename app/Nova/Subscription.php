@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Notifications\Admin\NewSubscription;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -79,6 +80,24 @@ class Subscription extends Resource
             DateTime::make('Ends At')->sortable(),
             HasMany::make('Items', 'items', SubscriptionItem::class),
         ];
+    }
+
+    /**
+     * @param  Request  $request
+     * @return false
+     */
+    public static function authorizedToCreate(Request $request)
+    {
+        return false;
+    }
+
+    /**
+     * @param  Request  $request
+     * @return false
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
     }
 
     /**
