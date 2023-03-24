@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SocialLoginController;
+use App\Http\Controllers\Tenant\AdminController;
 use Illuminate\Support\Facades\Route;
 use Stancl\Tenancy\Features\UserImpersonation;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
@@ -19,6 +20,11 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 // Initialize tenancy
 Route::group(['as' => 'tenant.', 'middleware' => [InitializeTenancyByDomainOrSubdomain::class, 'web']], function () {
+    // Admin
+    Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'signed:relative'], function () {
+        Route::get('receipts/{id}/download', [AdminController::class, 'downloadReceipt'])->name('download.receipt');
+    });
+
     // Impersonation
     Route::get('/impersonate/{token}', function ($token) {
         return UserImpersonation::makeResponse($token);
