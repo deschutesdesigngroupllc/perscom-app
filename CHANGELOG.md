@@ -1,6 +1,31 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.28...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.29...HEAD)
+
+## [v1.0.29](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.28...v1.0.29) - 2023-03-23
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.29 -->
+### What's Changed
+
+#### Added
+
+- Adds new registration settings and allows default roles and permissions to be set on a new user. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/146
+- Roster now sorts based on unit order and sorts users based on rank, position and specialty. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/147
+
+#### Changed
+
+- All profile and cover photo to be deletable. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/149
+
+#### Fixed
+
+- Fixed receipt dashboard metrics and download error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/145
+- Fixes a bug when user is removed from a model that has an attached document. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/148
+
+#### Other
+
+- Non-specific PRs now go to an "other" group in the CHANGELOG by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/150
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.28...v1.0.29
 
 ## [v1.0.28](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.27...v1.0.28) - 2023-03-13
 
