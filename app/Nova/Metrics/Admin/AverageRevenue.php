@@ -20,10 +20,10 @@ class AverageRevenue extends Value
         $timezone = Nova::resolveUserTimezone($request) ?? $request->timezone ?? config('app.timezone');
         $range = $request->range ?? 1;
 
+        $query = DB::table('receipts')->select(DB::raw('AVG( TRIM( REPLACE(amount, \'$\', \'\')) + 0.0) as total'));
+
         $currentRange = $this->currentRange($range, $timezone);
         $previousRange = $this->previousRange($range, $timezone);
-
-        $query = DB::table('receipts')->select(DB::raw('AVG( TRIM( REPLACE(amount, \'$\', \'\')) + 0.0) as total'));
 
         $previousValue = round(
             (clone $query)->whereBetween(
@@ -54,7 +54,10 @@ class AverageRevenue extends Value
         return [
             30 => __('30 Days'),
             60 => __('60 Days'),
-            90 => __('90 Days'),
+            365 => __('365 Days'),
+            'MTD' => __('Month To Date'),
+            'QTD' => __('Quarter To Date'),
+            'YTD' => __('Year To Date')
         ];
     }
 
