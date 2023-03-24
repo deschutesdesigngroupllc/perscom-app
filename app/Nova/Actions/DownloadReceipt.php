@@ -2,10 +2,10 @@
 
 namespace App\Nova\Actions;
 
-use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\URL;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -35,22 +35,15 @@ class DownloadReceipt extends Action
      */
     public function handle(ActionFields $fields, Collection $models)
     {
-        foreach ($models as $model) {
-            if ($model instanceof Receipt) {
-                $tenant = Tenant::findOrFail($model->tenant_id);
+        foreach ($models as $receipt) {
+            if ($receipt instanceof Receipt) {
+                $url = $receipt->owner->run(function ($tenant) use ($receipt) {
+                    return URL::signedRoute('tenant.admin.download.receipt', [
+                        'id' => $receipt->provider_id,
+                    ], null, false);
+                });
 
-                $token = tenancy()->impersonate(
-                    $tenant,
-                    $fields->user,
-                    $tenant->url.route('spark.receipts.download', [
-                        'tenant',
-                        $model->tenant_id,
-                        $model->provider_id,
-                    ], false),
-                    'web'
-                );
-
-                return Action::openInNewTab("{$tenant->url}/impersonate/{$token->token}");
+                return Action::openInNewTab($receipt->owner->url.$url);
             }
         }
     }

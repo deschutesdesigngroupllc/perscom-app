@@ -57,7 +57,7 @@ class AverageRevenue extends Value
             365 => __('365 Days'),
             'MTD' => __('Month To Date'),
             'QTD' => __('Quarter To Date'),
-            'YTD' => __('Year To Date')
+            'YTD' => __('Year To Date'),
         ];
     }
 
