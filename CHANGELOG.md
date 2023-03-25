@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.29...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.30...HEAD)
+
+## [v1.0.30](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.29...v1.0.30) - 2023-03-25
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.30 -->
+### What's Changed
+
+#### Fixed
+
+- Fixes image not showing on roster and sets tenants settings if not set. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/151
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.29...v1.0.30
 
 ## [v1.0.29](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.28...v1.0.29) - 2023-03-23
 
