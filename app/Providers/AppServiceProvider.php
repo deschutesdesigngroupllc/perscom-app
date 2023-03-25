@@ -83,7 +83,7 @@ class AppServiceProvider extends ServiceProvider
 
         EnsureFeaturesAreActive::whenInactive(
             static function ($request, array $features) {
-                abort(403, 'The feature you are trying to access is not current enabled for your account.');
+                abort(403, 'The feature you are trying to access is not currently enabled for your account.');
             }
         );
     }

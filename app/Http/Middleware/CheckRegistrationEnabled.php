@@ -16,7 +16,7 @@ class CheckRegistrationEnabled
     public function handle(Request $request, Closure $next): Response
     {
         if ($request->routeIs('register') && ! setting('registration_enabled', true)) {
-            abort(403, 'Registration is disabled.');
+            abort(403, setting('registration_disabled_message', 'Registration is disabled.'));
         }
 
         return $next($request);
