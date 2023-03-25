@@ -44,12 +44,6 @@ class Handler extends ExceptionHandler
             return response()->view('errors.tenant-database-does-not-exist', [], 401);
         });
 
-        $this->renderable(function (SubscriptionRequired $e, $request) {
-            return response()->view('errors.subscription-required', [
-                'message' => $e->getMessage(),
-            ], 402);
-        });
-
         $this->reportable(function (Throwable $e) {
             Integration::captureUnhandledException($e);
         });

@@ -36,7 +36,7 @@ class RosterController extends Controller
      */
     public function alwaysIncludes(): array
     {
-        return ['users', 'users.rank', 'users.position', 'users.specialty', 'users.status'];
+        return ['users', 'users.rank', 'users.rank.image', 'users.position', 'users.specialty', 'users.status'];
     }
 
     /**
