@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\SubscriptionRequired;
 use App\Features\ApiAccessFeature;
 use App\Features\OAuth2AccessFeature;
 use Illuminate\Support\Facades\Auth;
@@ -34,20 +33,17 @@ class Subscribed extends VerifyBillableIsSubscribed
         $response = parent::handle($request, $next, $billableType, $plan);
         $unsubscribed = $response->isRedirection() || $response->getStatusCode() === 402;
 
-        throw_if(($unsubscribed || Feature::inactive(ApiAccessFeature::class)) && $request->routeIs('api.*'),
-            SubscriptionRequired::class,
+        abort_if(($unsubscribed || Feature::inactive(ApiAccessFeature::class)) && $request->routeIs('api.*'),
             402,
             'A subscription is required to make an API request.'
         );
 
-        throw_if(($unsubscribed || Feature::inactive(OAuth2AccessFeature::class)) && $request->routeIs('passport.*'),
-            SubscriptionRequired::class,
+        abort_if(($unsubscribed || Feature::inactive(OAuth2AccessFeature::class)) && $request->routeIs('passport.*'),
             402,
             'Your subscription does not include use of OAuth 2.0.'
         );
 
-        throw_if($unsubscribed && ! Gate::check('billing', Auth::user()),
-            SubscriptionRequired::class,
+        abort_if($unsubscribed && ! Gate::check('billing', Auth::user()),
             402,
             'The account requires a subscription to continue. Please contact your account administrator.'
         );
