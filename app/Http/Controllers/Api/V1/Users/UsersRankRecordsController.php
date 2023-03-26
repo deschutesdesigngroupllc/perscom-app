@@ -22,6 +22,6 @@ class UsersRankRecordsController extends RelationController
      */
     public function includes(): array
     {
-        return ['rank'];
+        return ['rank', 'rank.image'];
     }
 }
