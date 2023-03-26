@@ -1,6 +1,18 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.30...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...HEAD)
+
+## [v1.0.31](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.30...v1.0.31) - 2023-03-25
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.31 -->
+### What's Changed
+
+#### Added
+
+- Add support for including award, rank and qualification images in the API. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/153
+- Add fall back error views and test suite for errors. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/152
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.30...v1.0.31
 
 ## [v1.0.30](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.29...v1.0.30) - 2023-03-25
 
