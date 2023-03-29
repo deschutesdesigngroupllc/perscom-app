@@ -12,7 +12,6 @@ class SubmissionRequest extends Request
     public function commonRules(): array
     {
         return [
-            'data' => 'json',
         ];
     }
 
@@ -22,9 +21,7 @@ class SubmissionRequest extends Request
     public function storeRules(): array
     {
         return [
-            'form_id' => 'required|exists:forms,id',
-            'user_id' => 'required|exists:users,id',
-            'data' => 'required|json',
+            'user_id' => 'required|exists:users,id'
         ];
     }
 }

@@ -76,7 +76,7 @@ class Submission extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new SubmissionScope);
+        static::addGlobalScope(new SubmissionScope());
     }
 
     /**

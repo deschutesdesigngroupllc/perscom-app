@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -52,6 +54,21 @@ class Form extends Model
     protected $casts = [
         'is_public' => 'boolean',
     ];
+
+    /**
+     * @param  Builder  $query
+     * @param $tag
+     *
+     * @return Builder
+     */
+    public function scopeForTags(Builder $query, $tag)
+    {
+        $tags = Arr::wrap($tag);
+
+        return $query->whereHas('tags', function (Builder $query) use ($tags) {
+            $query->whereIn('name', $tags);
+        });
+    }
 
     /**
      * @return string

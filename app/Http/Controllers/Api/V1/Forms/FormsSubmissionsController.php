@@ -3,16 +3,15 @@
 namespace App\Http\Controllers\Api\V1\Forms;
 
 use App\Http\Requests\Api\SubmissionRequest;
-use App\Models\Submission;
-use App\Policies\SubmissionPolicy;
-use Orion\Http\Controllers\Controller;
+use App\Models\Form;
+use Orion\Http\Controllers\RelationController;
 
-class SubmissionsController extends Controller
+class FormsSubmissionsController extends RelationController
 {
     /**
      * @var string
      */
-    protected $model = Submission::class;
+    protected $model = Form::class;
 
     /**
      * @var string
@@ -22,12 +21,12 @@ class SubmissionsController extends Controller
     /**
      * @var string
      */
-    protected $policy = SubmissionPolicy::class;
+    protected $relation = 'submissions';
 
     /**
      * @return string[]
      */
-    public function includes(): array
+    public function alwaysIncludes(): array
     {
         return ['form', 'user'];
     }
@@ -45,6 +44,6 @@ class SubmissionsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'form_id', 'user_id', 'created_at'];
+        return ['id', 'form_id', 'user_id', 'created_at', 'tags'];
     }
 }

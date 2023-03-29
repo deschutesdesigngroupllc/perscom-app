@@ -2,7 +2,8 @@
 
 use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
 use App\Http\Controllers\Api\V1\Awards\AwardsController;
-use App\Http\Controllers\Api\V1\Forms\SubmissionsController;
+use App\Http\Controllers\Api\V1\Forms\FormsController;
+use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
 use App\Http\Controllers\Api\V1\Ranks\RanksController;
@@ -58,6 +59,10 @@ Route::group(['prefix' => 'v1'], static function () {
         // Awards
         Orion::resource('awards', AwardsController::class);
 
+        // Forms
+        Orion::resource('forms', FormsController::class);
+        Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
+
         // Qualifications
         Orion::resource('qualifications', QualificationsController::class);
 
@@ -66,9 +71,6 @@ Route::group(['prefix' => 'v1'], static function () {
 
         // Roster
         Orion::resource('roster', RosterController::class)->only('index');
-
-        // Submissions
-        Orion::resource('submissions', SubmissionsController::class);
 
         // Units
         Orion::resource('units', UnitsController::class);
