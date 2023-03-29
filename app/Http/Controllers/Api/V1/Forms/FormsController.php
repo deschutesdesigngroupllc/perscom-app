@@ -29,7 +29,7 @@ class FormsController extends Controller
      *
      * @return array
      */
-    public function exposedScopes() : array
+    public function exposedScopes(): array
     {
         return ['forTags'];
     }

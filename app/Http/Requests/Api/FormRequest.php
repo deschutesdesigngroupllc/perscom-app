@@ -28,7 +28,7 @@ class FormRequest extends Request
     {
         return [
             'name' => 'required',
-            'slug' => 'required'
+            'slug' => 'required',
         ];
     }
 }
