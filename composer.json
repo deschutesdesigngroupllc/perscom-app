@@ -32,6 +32,7 @@
         "perscom/html-field": "*",
         "perscom/roster": "*",
         "php-open-source-saver/jwt-auth": "^2.0",
+        "rlanvin/php-rrule": "^2.4",
         "sentry/sentry-laravel": "^3.2",
         "spatie/eloquent-sortable": "^4.0.2",
         "spatie/laravel-activitylog": "^4.7.3",

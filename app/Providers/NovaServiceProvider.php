@@ -13,11 +13,13 @@ use App\Nova\AssignmentRecord;
 use App\Nova\Attachment;
 use App\Nova\Award;
 use App\Nova\AwardRecord;
+use App\Nova\Calendar;
 use App\Nova\CombatRecord;
 use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
+use App\Nova\Event;
 use App\Nova\Feature as NovaFeature;
 use App\Nova\Field;
 use App\Nova\Form;
@@ -204,7 +206,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Organization', [
                         MenuItem::resource(Announcement::class),
                         MenuItem::resource(Award::class),
+                        MenuItem::resource(Calendar::class),
                         MenuItem::resource(Document::class),
+                        MenuItem::resource(Event::class),
                         MenuItem::resource(Position::class),
                         MenuItem::resource(Qualification::class),
                         MenuItem::resource(Rank::class),
