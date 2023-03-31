@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1ef98558e9d1224b9919e72f4458c904",
+    "content-hash": "02319b0b6e81a5d60934e3093c06935b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -11477,6 +11477,60 @@
             "time": "2023-01-24T09:27:11+00:00"
         },
         {
+            "name": "tightenco/collect",
+            "version": "v9.52.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tighten/collect.git",
+                "reference": "d4772fe52bbc823d1d2e3d289d3f1ca8c0f3323b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tighten/collect/zipball/d4772fe52bbc823d1d2e3d289d3f1ca8c0f3323b",
+                "reference": "d4772fe52bbc823d1d2e3d289d3f1ca8c0f3323b",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "symfony/var-dumper": "^3.4 || ^4.0 || ^5.0 || ^6.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.0",
+                "nesbot/carbon": "^2.23.0",
+                "phpunit/phpunit": "^8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/Collect/Support/helpers.php",
+                    "src/Collect/Support/alias.php"
+                ],
+                "psr-4": {
+                    "Tightenco\\Collect\\": "src/Collect"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylorotwell@gmail.com"
+                }
+            ],
+            "description": "Collect - Illuminate Collections as a separate package.",
+            "keywords": [
+                "collection",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/tighten/collect/issues",
+                "source": "https://github.com/tighten/collect/tree/v9.52.0"
+            },
+            "time": "2023-02-17T21:37:36+00:00"
+        },
+        {
             "name": "tightenco/ziggy",
             "version": "v1.5.0",
             "source": {
@@ -11879,6 +11933,64 @@
                 "source": "https://github.com/webmozarts/assert/tree/1.11.0"
             },
             "time": "2022-06-03T18:03:27+00:00"
+        },
+        {
+            "name": "wilianx7/php-recurring",
+            "version": "v2.0.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/wilianx7/php-recurring.git",
+                "reference": "8de8c43310a803191bc9426010c0b78c3adacc72"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/wilianx7/php-recurring/zipball/8de8c43310a803191bc9426010c0b78c3adacc72",
+                "reference": "8de8c43310a803191bc9426010c0b78c3adacc72",
+                "shasum": ""
+            },
+            "require": {
+                "nesbot/carbon": "^2.65",
+                "php": "^8.1",
+                "tightenco/collect": "^9.0"
+            },
+            "require-dev": {
+                "ext-json": "*",
+                "phpunit/phpunit": "^9.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PhpRecurring\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Wilian Borges",
+                    "email": "wilianx7@hotmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "PHP library to make getting dates easier when working with recurring tasks.",
+            "homepage": "https://github.com/wilianx7/php-recurring",
+            "keywords": [
+                "Tasks",
+                "composer",
+                "date",
+                "dates",
+                "library",
+                "package",
+                "recurrence",
+                "recurring"
+            ],
+            "support": {
+                "issues": "https://github.com/wilianx7/php-recurring/issues",
+                "source": "https://github.com/wilianx7/php-recurring/tree/v2.0.5"
+            },
+            "time": "2023-01-25T20:05:42+00:00"
         }
     ],
     "packages-dev": [

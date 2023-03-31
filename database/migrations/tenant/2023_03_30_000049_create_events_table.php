@@ -20,18 +20,17 @@ return new class extends Migration
             $table->text('location')->nullable();
             $table->text('url')->nullable();
             $table->unsignedBigInteger('author_id')->nullable();
+            $table->boolean('all_day')->default(false);
             $table->timestamp('start');
             $table->timestamp('end')->nullable();
-            $table->boolean('all_day')->default(false);
             $table->boolean('repeats')->default(false);
             $table->text('frequency')->nullable();
             $table->integer('interval')->default(1);
+            $table->text('end_type')->nullable();
             $table->integer('count')->nullable();
-            $table->json('by_day')->nullable();
-            $table->json('by_month')->nullable();
-            $table->json('by_month_day')->nullable();
-            $table->integer('by_set_position')->nullable();
-            $table->text('rrule')->nullable();
+            $table->timestamp('until')->nullable();
+            $table->json('repeat_day')->nullable();
+            $table->integer('repeat_month_day')->nullable();
             $table->timestamps();
         });
     }
