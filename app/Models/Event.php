@@ -90,7 +90,7 @@ class Event extends Model
                             'until' => null,
                         ]);
 
-                    case 'never':
+                    case 'on':
                         $updates = array_merge($updates, [
                             'count' => null,
                         ]);
