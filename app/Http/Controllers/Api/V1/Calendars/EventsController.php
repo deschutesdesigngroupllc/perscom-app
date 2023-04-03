@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Api\V1\Calendars;
 
 use App\Http\Requests\Api\EventRequest;
-use App\Http\Resources\Api\EventCollectionResource;
 use App\Models\Event;
 use App\Policies\EventPolicy;
 use Orion\Http\Controllers\Controller;
@@ -24,11 +23,6 @@ class EventsController extends Controller
      * @var string
      */
     protected $policy = EventPolicy::class;
-
-    /**
-     * @var string
-     */
-    protected $collectionResource = EventCollectionResource::class;
 
     /**
      * The list of available query scopes.

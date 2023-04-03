@@ -10,10 +10,7 @@ use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use PhpRecurring\Enums\FrequencyEndTypeEnum;
-use PhpRecurring\Enums\FrequencyTypeEnum;
-use PhpRecurring\RecurringBuilder;
-use PhpRecurring\RecurringConfig;
+use RRule\RRule;
 
 class Event extends Model
 {
@@ -39,8 +36,10 @@ class Event extends Model
         'end_type',
         'count',
         'until',
-        'repeat_day',
-        'repeat_month_day',
+        'by_day',
+        'by_month_day',
+        'by_month',
+        'rrule',
     ];
 
     /**
@@ -54,8 +53,16 @@ class Event extends Model
         'interval' => 'integer',
         'count' => 'integer',
         'until' => 'datetime',
-        'repeat_day' => 'array',
-        'repeat_month_day' => 'integer',
+        'by_day' => 'collection',
+        'by_month_day' => 'collection',
+        'by_month' => 'collection',
+    ];
+
+    /**
+     * @var string[]
+     */
+    protected $appends = [
+        'timezone',
     ];
 
     /**
@@ -65,33 +72,57 @@ class Event extends Model
     {
         parent::boot();
 
-        static::saved(function (Event $event) {
+        static::saved(static function (Event $event) {
             if ($event->repeats) {
-                if ($event->frequency === FrequencyTypeEnum::WEEK->value) {
-                    $event->updateQuietly([
-                        'repeat_month_day' => null,
-                    ]);
+                $updates = [];
+                $updates['rrule'] = optional($event->generateRRule(), static function (RRule $rule) {
+                    return $rule->rfcString();
+                });
+
+                switch ($event->end_type) {
+                    case 'never':
+                        $updates = array_merge($updates, [
+                            'count' => null,
+                            'until' => null,
+                        ]);
+                    case 'after':
+                        $updates = array_merge($updates, [
+                            'until' => null,
+                        ]);
+
+                    case 'never':
+                        $updates = array_merge($updates, [
+                            'count' => null,
+                        ]);
                 }
 
-                if ($event->frequency === FrequencyTypeEnum::MONTH->value) {
-                    $event->updateQuietly([
-                        'repeat_day' => null,
-                    ]);
+                switch ($event->frequency) {
+                    case 'DAILY':
+                        $updates = array_merge($updates, [
+                            'by_day' => null,
+                            'by_month_day' => null,
+                            'by_month' => null,
+                        ]);
+                    case 'WEEKLY':
+                        $updates = array_merge($updates, [
+                            'by_month_day' => null,
+                            'by_month' => null,
+                        ]);
+
+                    case 'MONTHLY':
+                        $updates = array_merge($updates, [
+                            'by_day' => null,
+                            'by_month' => null,
+                        ]);
+
+                    case 'YEARLY':
+                        $updates = array_merge($updates, [
+                            'by_day' => null,
+                            'by_month_day' => null,
+                        ]);
                 }
 
-                if ($event->frequency === FrequencyTypeEnum::YEAR->value) {
-                    $event->updateQuietly([
-                        'repeat_day' => null,
-                        'repeat_month_day' => null,
-                    ]);
-                }
-
-                if ($event->end_type === FrequencyEndTypeEnum::NEVER->value) {
-                    $event->updateQuietly([
-                        'count' => null,
-                        'until' => null,
-                    ]);
-                }
+                $event->updateQuietly($updates);
             }
         });
     }
@@ -125,35 +156,28 @@ class Event extends Model
     /**
      * @return \Illuminate\Support\Optional|mixed
      */
-    public function getRecurrenceAttribute()
+    public function getTimezoneAttribute()
     {
-        return optional($this->repeats, function () {
-            $config = new RecurringConfig();
-            $config->setStartDate($this->start)
-                   ->setFrequencyType(FrequencyTypeEnum::from($this->frequency))
-                   ->setFrequencyInterval($this->interval);
+        return optional($this->calendar, static function (Calendar $calendar) {
+            return $calendar->timezone;
+        });
+    }
 
-            if ($this->frequency === FrequencyTypeEnum::WEEK->value && $this->repeat_day) {
-                $config->setRepeatIn($this->repeat_day);
-            }
+    /**
+     * @return CarbonPeriod
+     */
+    public function getPeriodAttribute()
+    {
+        return CarbonPeriod::create($this->start, $this->end);
+    }
 
-            if ($this->frequency === FrequencyTypeEnum::MONTH->value && $this->repeat_month_day) {
-                $config->setRepeatIn($this->repeat_month_day);
-            }
-
-            if ($this->end_type) {
-                $config->setFrequencyEndType(FrequencyEndTypeEnum::from($this->end_type));
-            }
-
-            if ($this->end_type === FrequencyEndTypeEnum::AFTER->value && $this->count) {
-                $config->setFrequencyEndValue($this->count);
-            }
-
-            if ($this->end_type === FrequencyEndTypeEnum::IN->value && $this->until) {
-                $config->setFrequencyEndValue($this->until);
-            }
-
-            return RecurringBuilder::forConfig($config)->startRecurring();
+    /**
+     * @return \Illuminate\Support\Optional|mixed|RRule
+     */
+    public function getHumanReadablePatternAttribute()
+    {
+        return optional($this->generateRRule(), function (RRule $rule) {
+            return $rule->humanReadable();
         });
     }
 
@@ -171,5 +195,55 @@ class Event extends Model
     public function tags()
     {
         return $this->belongsToMany(Tag::class, 'events_tags');
+    }
+
+    /**
+     * @return RRule|null
+     */
+    protected function generateRRule()
+    {
+        $payload = [
+            'DTSTART' => $this->start->toDateString(),
+            'FREQ' => $this->frequency,
+            'INTERVAL' => $this->interval,
+        ];
+
+        switch ($this->frequency) {
+            case 'WEEKLY':
+                if ($this->by_day->isNotEmpty()) {
+                    $payload['BYDAY'] = $this->by_day->implode(',');
+                }
+                break;
+
+            case 'MONTHLY':
+                if ($this->by_day && $this->by_set_position) {
+                    $payload['BYDAY'] = $this->by_day;
+                    $payload['BYSETPOS'] = $this->by_set_position;
+                } elseif ($this->by_month_day->isNotEmpty()) {
+                    $payload['BYMONTHDAY'] = $this->by_month_day->implode(',');
+                }
+                break;
+
+            case 'YEARLY':
+                if ($this->by_month->isNotEmpty()) {
+                    $payload['BYMONTH'] = $this->by_month->implode(',');
+                }
+
+                if ($this->by_day && $this->by_set_position) {
+                    $payload['BYDAY'] = $this->by_day;
+                    $payload['BYSETPOS'] = $this->by_set_position;
+                }
+                break;
+        }
+
+        if ($this->count && $this->end_type === 'after') {
+            $payload['COUNT'] = $this->count;
+        }
+
+        if ($this->until && $this->end_type === 'on') {
+            $payload['UNTIL'] = $this->until->toDateString();
+        }
+
+        return $this->repeats ? new RRule($payload) : null;
     }
 }

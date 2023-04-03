@@ -26,11 +26,15 @@ return new class extends Migration
             $table->boolean('repeats')->default(false);
             $table->text('frequency')->nullable();
             $table->integer('interval')->default(1);
-            $table->text('end_type')->nullable();
+            $table->string('end_type')->nullable();
             $table->integer('count')->nullable();
             $table->timestamp('until')->nullable();
-            $table->json('repeat_day')->nullable();
-            $table->integer('repeat_month_day')->nullable();
+            $table->json('by_day')->nullable();
+            $table->json('by_month')->nullable();
+            $table->json('by_set_position')->nullable();
+            $table->json('by_month_day')->nullable();
+            $table->json('by_year_day')->nullable();
+            $table->string('rrule')->nullable();
             $table->timestamps();
         });
     }

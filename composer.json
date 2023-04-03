@@ -32,6 +32,7 @@
         "perscom/html-field": "*",
         "perscom/roster": "*",
         "php-open-source-saver/jwt-auth": "^2.0",
+        "rlanvin/php-rrule": "^2.4",
         "sentry/sentry-laravel": "^3.2",
         "spatie/eloquent-sortable": "^4.0.2",
         "spatie/laravel-activitylog": "^4.7.3",
@@ -42,8 +43,7 @@
         "staudenmeir/eloquent-has-many-deep": "^1.18",
         "tailflow/laravel-orion": "^2.19",
         "tightenco/ziggy": "^1.4",
-        "treblle/treblle-laravel": "^2.8.6",
-        "wilianx7/php-recurring": "^2.0"
+        "treblle/treblle-laravel": "^2.8.6"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
