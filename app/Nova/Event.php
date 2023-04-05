@@ -101,12 +101,8 @@ class Event extends Resource
                         ->onlyOnForms()
                         ->dependsOn(['all_day', 'repeats'],
                             function (DateTime $field, NovaRequest $request, FormData $formData) {
-                                if ($formData->all_day) {
+                                if ($formData->all_day || $formData->repeats) {
                                     $field->rules('')->hide();
-                                }
-
-                                if ($formData->repeats) {
-                                    $field->rules('');
                                 }
                             }),
                 Date::make('Ends', 'end')
@@ -236,7 +232,7 @@ class Event extends Resource
                     ->onlyOnForms()
                     ->dependsOn(['end_type'], function (Date $field, NovaRequest $request, FormData $formData) {
                         if ($formData->end_type === 'on') {
-                            $field->rules('required')->show();
+                            $field->rules(['required', 'after_or_equal:start'])->show();
                         }
                     }),
                 Number::make('After', 'count')

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasImages;
+use App\Traits\HasResourceUrlAttribute;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
@@ -18,6 +19,7 @@ class Event extends Model
     use HasAttachments;
     use HasFactory;
     use HasImages;
+    use HasResourceUrlAttribute;
 
     protected $fillable = [
         'name',
@@ -63,6 +65,8 @@ class Event extends Model
      */
     protected $appends = [
         'timezone',
+        'url',
+        'relative_url',
     ];
 
     /**
@@ -85,15 +89,19 @@ class Event extends Model
                             'count' => null,
                             'until' => null,
                         ]);
+                        break;
+
                     case 'after':
                         $updates = array_merge($updates, [
                             'until' => null,
                         ]);
+                        break;
 
                     case 'on':
                         $updates = array_merge($updates, [
                             'count' => null,
                         ]);
+                        break;
                 }
 
                 switch ($event->frequency) {
@@ -103,23 +111,28 @@ class Event extends Model
                             'by_month_day' => null,
                             'by_month' => null,
                         ]);
+                        break;
+
                     case 'WEEKLY':
                         $updates = array_merge($updates, [
                             'by_month_day' => null,
                             'by_month' => null,
                         ]);
+                        break;
 
                     case 'MONTHLY':
                         $updates = array_merge($updates, [
                             'by_day' => null,
                             'by_month' => null,
                         ]);
+                        break;
 
                     case 'YEARLY':
                         $updates = array_merge($updates, [
                             'by_day' => null,
                             'by_month_day' => null,
                         ]);
+                        break;
                 }
 
                 $event->updateQuietly($updates);
@@ -148,8 +161,15 @@ class Event extends Model
             $query->whereDate('start', '<=', $period->getStartDate())->whereDate(
                 'end',
                 '>=',
-                $period->getEndDate()
-            );
+                $period->getEndDate());
+        })->orWhere(function (Builder $query) use ($period) {
+            $query->where('repeats', '=', true)
+                  ->where('end_type', '=', 'never')
+                  ->whereDate('start', '<=', $period->getEndDate());
+        })->orWhere(function (Builder $query) use ($period) {
+            $query->where('repeats', '=', true)
+                  ->where('end_type', '=', 'on')
+                  ->whereDate('until', '>=', $period->getStartDate());
         });
     }
 
@@ -203,14 +223,14 @@ class Event extends Model
     protected function generateRRule()
     {
         $payload = [
-            'DTSTART' => $this->start->toDateString(),
+            'DTSTART' => $this->start->toDateTimeString(),
             'FREQ' => $this->frequency,
             'INTERVAL' => $this->interval,
         ];
 
         switch ($this->frequency) {
             case 'WEEKLY':
-                if ($this->by_day->isNotEmpty()) {
+                if ($this->by_day?->isNotEmpty()) {
                     $payload['BYDAY'] = $this->by_day->implode(',');
                 }
                 break;
@@ -219,13 +239,13 @@ class Event extends Model
                 if ($this->by_day && $this->by_set_position) {
                     $payload['BYDAY'] = $this->by_day;
                     $payload['BYSETPOS'] = $this->by_set_position;
-                } elseif ($this->by_month_day->isNotEmpty()) {
+                } elseif ($this->by_month_day?->isNotEmpty()) {
                     $payload['BYMONTHDAY'] = $this->by_month_day->implode(',');
                 }
                 break;
 
             case 'YEARLY':
-                if ($this->by_month->isNotEmpty()) {
+                if ($this->by_month?->isNotEmpty()) {
                     $payload['BYMONTH'] = $this->by_month->implode(',');
                 }
 

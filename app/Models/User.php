@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasResourceUrlAttribute;
 use App\Traits\HasStatuses;
 use Carbon\CarbonInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -81,6 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     use HasApiTokens;
     use HasFactory;
     use HasPermissions;
+    use HasResourceUrlAttribute;
     use HasRoles;
     use HasStatuses;
     use Impersonatable;
@@ -200,28 +202,6 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     public function getOnlineAttribute()
     {
         return Cache::tags('user.online')->has("user.online.$this->id");
-    }
-
-    /**
-     * @return string
-     */
-    public function getUrlAttribute()
-    {
-        return route('nova.pages.detail', [
-            'resource' => \App\Nova\User::uriKey(),
-            'resourceId' => $this->id,
-        ]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRelativeUrlAttribute()
-    {
-        return route('nova.pages.detail', [
-            'resource' => \App\Nova\User::uriKey(),
-            'resourceId' => $this->id,
-        ], false);
     }
 
     /**
