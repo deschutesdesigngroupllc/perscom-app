@@ -43,7 +43,8 @@
         "staudenmeir/eloquent-has-many-deep": "^1.18",
         "tailflow/laravel-orion": "^2.19",
         "tightenco/ziggy": "^1.4",
-        "treblle/treblle-laravel": "^2.8.6"
+        "treblle/treblle-laravel": "^2.8.6",
+        "perscom/calendar": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
@@ -90,6 +91,10 @@
         {
             "type": "path",
             "url": "./nova-components/Roster"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Calendar"
         }
     ],
     "autoload": {
@@ -130,7 +135,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

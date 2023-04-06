@@ -15,8 +15,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 */
 
 Route::get('/', function (NovaRequest $request) {
-    return inertia('Roster', [
-        'jwt' => \Perscom\Roster\Roster::generateJwt(),
+    return inertia('Calendar', [
+        'jwt' => \Perscom\Calendar\Calendar::generateJwt(),
         'tenant_id' => tenant()->getTenantKey(),
         'widget_url' => env('WIDGET_URL'),
     ]);

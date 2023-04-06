@@ -74,7 +74,8 @@ use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
 use Outl1ne\NovaSettings\NovaSettings;
-use Perscom\Roster\Roster;
+use Perscom\Calendar\Calendar as CalendarWidget;
+use Perscom\Roster\Roster as RosterWidget;
 use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -190,6 +191,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             Nova::mainMenu(function (Request $request) {
                 return [
                     MenuSection::dashboard(Main::class)->icon('chart-bar'),
+
+                    MenuSection::make('Calendar')->path('/calendar')->icon('calendar'),
 
                     MenuSection::make('Roster')->path('/roster')->icon('user-group'),
 
@@ -389,7 +392,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new NovaSettings())->canSee(function () {
                 return ! Request::isCentralRequest() && ! Request::isDemoMode() && Auth::user()->hasRole('Admin');
             }),
-            (new Roster())->canSee(function () {
+            (new CalendarWidget())->canSee(function () {
+                return ! Request::isCentralRequest();
+            }),
+            (new RosterWidget())->canSee(function () {
                 return ! Request::isCentralRequest();
             }),
         ];
