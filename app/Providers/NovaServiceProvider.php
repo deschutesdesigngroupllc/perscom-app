@@ -76,6 +76,7 @@ use Laravel\Pennant\Feature;
 use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\Calendar\Calendar as CalendarWidget;
 use Perscom\Roster\Roster as RosterWidget;
+use Sentry\Laravel\Integration;
 use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -125,6 +126,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function register()
     {
         Nova::ignoreMigrations();
+        Nova::report(static function ($exception) {
+            Integration::captureUnhandledException($exception);
+        });
 
         if (Request::isCentralRequest()) {
             config()->set('nova.path', '/admin');
