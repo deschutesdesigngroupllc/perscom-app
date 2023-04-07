@@ -10,7 +10,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Calendar extends Resource
@@ -52,9 +51,6 @@ class Calendar extends Resource
             Tag::make('Tags')->showCreateRelationButton(),
             Textarea::make('Description')->alwaysShow()->hideFromIndex(),
             Color::make('Color')->sortable(),
-            Timezone::make('Timezone')->default(function () {
-                return setting('timezone', config('app.timezone'));
-            })->sortable()->rules('required'),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),

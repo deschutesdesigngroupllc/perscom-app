@@ -60,6 +60,7 @@ class Event extends Resource
             ID::make()->sortable(),
             Text::make('Name')->sortable()->rules('required'),
             BelongsTo::make('Calendar')->sortable()->rules('required'),
+            BelongsTo::make('Organizer', 'author', User::class)->rules('required')->sortable(),
             Tag::make('Tags')->showCreateRelationButton(),
             Textarea::make('Description')->alwaysShow()->hideFromIndex(),
             Textarea::make('Location')->alwaysShow()->hideFromIndex(),

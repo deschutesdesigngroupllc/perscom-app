@@ -16,7 +16,6 @@ return new class extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('color')->nullable();
-            $table->string('timezone');
             $table->unsignedBigInteger('author_id')->nullable();
             $table->timestamps();
         });
