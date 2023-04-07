@@ -9,6 +9,7 @@
         data-widget="calendar"
         :data-apikey="props.jwt"
         :data-perscomid="props.tenant_id"
+        :data-timezone="props.timezone"
         :src="props.widget_url"
         type="text/javascript"
       >
@@ -18,5 +19,5 @@
 </template>
 
 <script setup>
-const props = defineProps(['jwt', 'tenant_id', 'widget_url'])
+const props = defineProps(['jwt', 'tenant_id', 'timezone', 'widget_url'])
 </script>

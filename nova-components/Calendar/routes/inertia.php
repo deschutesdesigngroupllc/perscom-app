@@ -18,6 +18,7 @@ Route::get('/', function (NovaRequest $request) {
     return inertia('Calendar', [
         'jwt' => \Perscom\Calendar\Calendar::generateJwt(),
         'tenant_id' => tenant()->getTenantKey(),
+        'timezone' => config('app.timezone'),
         'widget_url' => env('WIDGET_URL'),
     ]);
 });
