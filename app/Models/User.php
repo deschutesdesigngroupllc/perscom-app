@@ -255,6 +255,14 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'events_attendees');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function position()

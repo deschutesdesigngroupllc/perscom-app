@@ -19,6 +19,7 @@ use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -266,6 +267,7 @@ class User extends Resource
                                DateTime::make('Created At')->sortable()->onlyOnIndex(),
                            ];
                        }),
+            BelongsToMany::make('Events'),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note', \App\Models\User::class),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')

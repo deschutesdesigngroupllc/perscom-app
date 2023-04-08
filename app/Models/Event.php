@@ -218,6 +218,14 @@ class Event extends Model
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function attendees()
+    {
+        return $this->belongsToMany(User::class, 'events_attendees');
+    }
+
+    /**
      * @return RRule|null
      */
     protected function generateRRule()

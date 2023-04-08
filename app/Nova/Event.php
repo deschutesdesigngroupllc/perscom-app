@@ -5,6 +5,7 @@ namespace App\Nova;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\DateTime;
@@ -250,6 +251,7 @@ class Event extends Resource
             new Panel('Details', [
                 Trix::make('Content')->alwaysShow(),
             ]),
+            BelongsToMany::make('Attendees', 'attendees', User::class),
             MorphMany::make('Images'),
             MorphMany::make('Attachments'),
 
