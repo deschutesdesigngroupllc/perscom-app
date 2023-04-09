@@ -59,24 +59,24 @@ class Event extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')->sortable()->rules('required'),
-            BelongsTo::make('Calendar')->sortable()->rules('required'),
-            BelongsTo::make('Organizer', 'author', User::class)->rules('required')->sortable(),
+            Text::make('Name')->sortable()->rules('required')->showOnPreview(),
+            BelongsTo::make('Calendar')->sortable()->rules('required')->showOnPreview(),
+            BelongsTo::make('Organizer', 'author', User::class)->rules('required')->sortable()->showOnPreview(),
             Tag::make('Tags')->showCreateRelationButton(),
-            Textarea::make('Description')->alwaysShow()->hideFromIndex(),
-            Textarea::make('Location')->alwaysShow()->hideFromIndex(),
-            URL::make('URL')->hideFromIndex(),
+            Textarea::make('Description')->alwaysShow()->hideFromIndex()->showOnPreview(),
+            Textarea::make('Location')->alwaysShow()->hideFromIndex()->showOnPreview(),
+            URL::make('URL')->hideFromIndex()->showOnPreview(),
             new Panel('Event', [
                 Text::make('Starts', function () {
                     return optional($this->start, function ($start) {
                         return $this->all_day ? $start->toFormattedDayDateString() : $start->toDayDateTimeString();
                     });
-                })->exceptOnForms(),
+                })->showOnPreview()->exceptOnForms(),
                 Text::make('Ends', function () {
                     return optional($this->end, function ($end) {
                         return $this->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
                     });
-                })->exceptOnForms(),
+                })->showOnPreview()->exceptOnForms(),
                 Boolean::make('All Day', 'all_day'),
                 DateTime::make('Starts', 'start')
                         ->rules('required')
@@ -121,6 +121,9 @@ class Event extends Resource
                         }
                     }),
                 Boolean::make('Repeats', 'repeats'),
+                Boolean::make('Has Passed', function () {
+                    return $this->is_past;
+                }),
                 Text::make('Pattern', function () {
                     return Str::ucfirst($this->human_readable_pattern);
                 })->onlyOnDetail(),
@@ -251,7 +254,7 @@ class Event extends Resource
             new Panel('Details', [
                 Trix::make('Content')->alwaysShow(),
             ]),
-            BelongsToMany::make('Attendees', 'attendees', User::class),
+            BelongsToMany::make('Registrations', 'registrations', User::class),
             MorphMany::make('Images'),
             MorphMany::make('Attachments'),
 

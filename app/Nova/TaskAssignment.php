@@ -75,8 +75,8 @@ class TaskAssignment extends Resource
             Text::make('Description', function () {
                 return Str::limit($this->task?->description);
             }),
-            Badge::make('Status', function ($model) {
-                return $model->status->value;
+            Badge::make('Status', function () {
+                return $this->status?->value;
             })->map([
                 TaskAssignmentStatus::TASK_ASSIGNED->value => 'info',
                 TaskAssignmentStatus::TASK_COMPLETE->value => 'success',
@@ -94,7 +94,7 @@ class TaskAssignment extends Resource
                 DateTime::make('Expires At')->sortable(),
             ]),
             URL::make('Form', function () {
-                return $this->task->form->url;
+                return $this->task?->form?->url;
             })->displayUsing(function ($url) {
                 return 'Click To Open Form';
             })->canSee(function () {
@@ -150,7 +150,7 @@ class TaskAssignment extends Resource
     public function lenses(NovaRequest $request)
     {
         return [
-            new MyTasks,
+            new MyTasks(),
         ];
     }
 

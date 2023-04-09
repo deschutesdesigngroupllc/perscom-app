@@ -148,7 +148,7 @@ class Submission extends Resource
             'No Current Status' => 'bg-gray-100 text-gray-600',
         ])->label(function ($status) {
             return $status ?? 'No Current Status';
-        });
+        })->showOnPreview();
 
         if ($status) {
             $badge->addTypes([

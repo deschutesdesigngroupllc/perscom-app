@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Event;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class EventPolicy extends Policy
@@ -30,7 +29,7 @@ class EventPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        return Gate::check('create', Event::class);
+        return $this->hasPermissionTo($user, 'view:event') || $user->tokenCan('view:event');
     }
 
     /**x
@@ -43,7 +42,9 @@ class EventPolicy extends Policy
      */
     public function view(User $user, Event $event)
     {
-        return $this->hasPermissionTo($user, 'view:event') || $user->tokenCan('view:event');
+        return $this->hasPermissionTo($user, 'view:event') ||
+               $user->tokenCan('view:event') ||
+               $event->registrations->contains($user);
     }
 
     /**

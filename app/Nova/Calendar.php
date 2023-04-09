@@ -47,9 +47,9 @@ class Calendar extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')->sortable()->rules('required'),
+            Text::make('Name')->sortable()->rules('required')->showOnPreview(),
             Tag::make('Tags')->showCreateRelationButton(),
-            Textarea::make('Description')->alwaysShow()->hideFromIndex(),
+            Textarea::make('Description')->alwaysShow()->hideFromIndex()->showOnPreview(),
             Color::make('Color')->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),

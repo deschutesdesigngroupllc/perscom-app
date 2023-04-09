@@ -2,12 +2,14 @@
 
 namespace App\Policies;
 
-use App\Models\Calendar;
+use App\Models\Event;
+use App\Models\EventRegistration;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class CalendarPolicy extends Policy
+class EventRegistrationPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -29,20 +31,19 @@ class CalendarPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        return $this->hasPermissionTo($user, 'view:calendar') || $user->tokenCan('view:calendar');
+        return true;
     }
 
-    /**x
+    /**
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\User $user
-     * @param \App\Models\Calendar $calendar
-     *
+     * @param  \App\Models\User  $user
+     * @param  \App\Models\EventRegistration  $registration
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Calendar $calendar)
+    public function view(User $user, EventRegistration $registration)
     {
-        return $this->hasPermissionTo($user, 'view:calendar') || $user->tokenCan('view:calendar');
+        return Gate::check('view', $registration->event ?? Event::make()) || $registration->user?->id === $user->id;
     }
 
     /**
@@ -53,41 +54,41 @@ class CalendarPolicy extends Policy
      */
     public function create(User $user)
     {
-        return $this->hasPermissionTo($user, 'create:calendar') || $user->tokenCan('create:calendar');
+        return Gate::check('create', Event::class);
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calendar  $calendar
+     * @param  \App\Models\EventRegistration  $registration
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Calendar $calendar)
+    public function update(User $user, EventRegistration $registration)
     {
-        return $this->hasPermissionTo($user, 'update:calendar') || $user->tokenCan('update:calendar');
+        return Gate::check('update', $registration->event ?? Event::make());
     }
 
     /**
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calendar  $calendar
+     * @param  \App\Models\EventRegistration  $registration
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Calendar $calendar)
+    public function delete(User $user, EventRegistration $registration)
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || $user->tokenCan('delete:calendar');
+        return Gate::check('delete', $registration->event ?? Event::make());
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calendar  $calendar
+     * @param  \App\Models\EventRegistration  $registration
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Calendar $calendar)
+    public function restore(User $user, EventRegistration $registration)
     {
         //
     }
@@ -96,10 +97,10 @@ class CalendarPolicy extends Policy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Calendar  $calendar
+     * @param  \App\Models\EventRegistration  $registration
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Calendar $calendar)
+    public function forceDelete(User $user, EventRegistration $registration)
     {
         //
     }

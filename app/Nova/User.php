@@ -115,13 +115,13 @@ class User extends Resource
                 $this->status?->name => $this->status?->color,
             ])->label(function () {
                 return $this->status->name ?? 'No Current Status';
-            }),
+            })->showOnPreview(),
             Badge::make('Online', function ($user) {
                 return $user->online;
             })->map([
                 false => 'info',
                 true => 'success',
-            ])->exceptOnForms(),
+            ])->showOnPreview()->exceptOnForms(),
             Avatar::make('Profile Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Image::make('Cover Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Panel::make('Assignment', [
@@ -129,16 +129,19 @@ class User extends Resource
                          ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
                          ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
                          ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
@@ -146,6 +149,7 @@ class User extends Resource
                          ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\RankRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [

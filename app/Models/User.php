@@ -259,7 +259,11 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      */
     public function events()
     {
-        return $this->belongsToMany(Event::class, 'events_attendees');
+        return $this->belongsToMany(Event::class, 'events_registrations')
+            ->withPivot(['id'])
+            ->withTimestamps()
+            ->as('registration')
+            ->using(EventRegistration::class);
     }
 
     /**

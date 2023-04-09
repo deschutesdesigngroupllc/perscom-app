@@ -58,13 +58,14 @@ class Event extends Model
         'by_day' => 'collection',
         'by_month_day' => 'collection',
         'by_month' => 'collection',
+        'is_past' => 'boolean',
     ];
 
     /**
      * @var string[]
      */
     protected $appends = [
-        'timezone',
+        'is_past',
         'url',
         'relative_url',
     ];
@@ -174,13 +175,15 @@ class Event extends Model
     }
 
     /**
-     * @return \Illuminate\Support\Optional|mixed
+     * @return bool
      */
-    public function getTimezoneAttribute()
+    public function getIsPastAttribute()
     {
-        return optional($this->calendar, static function (Calendar $calendar) {
-            return $calendar->timezone;
-        });
+        return match (true) {
+            ! $this->repeats && $this->end?->isPast() => true,
+            $this->repeats && $this->until?->isPast() => true,
+            default => false
+        };
     }
 
     /**
@@ -220,9 +223,13 @@ class Event extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function attendees()
+    public function registrations()
     {
-        return $this->belongsToMany(User::class, 'events_attendees');
+        return $this->belongsToMany(User::class, 'events_registrations')
+            ->withPivot(['id'])
+            ->withTimestamps()
+            ->as('registration')
+            ->using(EventRegistration::class);
     }
 
     /**

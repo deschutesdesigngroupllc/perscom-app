@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Features\CustomSubDomainFeature;
 use App\Features\SupportTicketFeature;
+use App\Models\EventRegistration as EventRegistrationModel;
 use App\Models\Submission as SubmissionModel;
 use App\Models\TaskAssignment as TaskAssignmentModel;
 use App\Nova\Action;
@@ -20,10 +21,12 @@ use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
 use App\Nova\Event;
+use App\Nova\EventRegistration;
 use App\Nova\Feature as NovaFeature;
 use App\Nova\Field;
 use App\Nova\Form;
 use App\Nova\Image;
+use App\Nova\Lenses\MyEvents;
 use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
@@ -205,6 +208,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resource' => User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
+                        MenuItem::lens(EventRegistration::class, MyEvents::class)->withBadge(function () {
+                            return EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
+                        }),
                         MenuItem::lens(TaskAssignment::class, MyTasks::class)->withBadge(function () {
                             return TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
                         }),

@@ -2,19 +2,18 @@
 
 namespace App\Nova\Lenses;
 
-use App\Models\Enums\TaskAssignmentStatus;
+use App\Nova\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\DateTime;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Lenses\Lens;
 
-class MyTasks extends Lens
+class MyEvents extends Lens
 {
     /**
      * The columns that should be searched.
@@ -47,26 +46,31 @@ class MyTasks extends Lens
     {
         return [
             ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make('Task')->sortable(),
+            BelongsTo::make('Event')->sortable(),
+            BelongsTo::make('Calendar')->sortable(),
+            BelongsTo::make('Organizer', 'organizer', User::class)->sortable(),
             Text::make('Description', function () {
-                return Str::limit($this->task?->description);
+                return Str::limit($this->event?->description);
             }),
-            Badge::make('Status', function () {
-                return $this->status?->value;
-            })->map([
-                TaskAssignmentStatus::TASK_ASSIGNED->value => 'info',
-                TaskAssignmentStatus::TASK_COMPLETE->value => 'success',
-                TaskAssignmentStatus::TASK_COMPLETE_EXPIRED->value => 'warning',
-                TaskAssignmentStatus::TASK_COMPLETE_PAST_DUE->value => 'warning',
-                TaskAssignmentStatus::TASK_EXPIRED->value => 'danger',
-                TaskAssignmentStatus::TASK_PASTDUE->value => 'danger',
-            ])->withIcons()->label(function ($value) {
-                return Str::replace('_', ' ', $value);
+            Text::make('Starts', function () {
+                return optional($this->event?->start, function ($start) {
+                    return $this->event?->all_day ? $start->toFormattedDayDateString() : $start->toDayDateTimeString();
+                });
+            })->exceptOnForms(),
+            Text::make('Ends', function () {
+                return optional($this->event?->end, function ($end) {
+                    return $this->event?->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
+                });
+            })->exceptOnForms(),
+            Boolean::make('All Day', function () {
+                return $this->event?->all_day;
             }),
-            DateTime::make('Assigned At')->sortable(),
-            DateTime::make('Due At')->sortable(),
-            DateTime::make('Completed At')->sortable(),
-            DateTime::make('Expires At')->sortable(),
+            Boolean::make('Repeats', function () {
+                return $this->event?->repeats;
+            }),
+            Boolean::make('Has Passed', function () {
+                return $this->event?->is_past;
+            }),
         ];
     }
 
@@ -110,6 +114,6 @@ class MyTasks extends Lens
      */
     public function uriKey()
     {
-        return 'my-tasks';
+        return 'my-events';
     }
 }

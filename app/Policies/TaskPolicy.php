@@ -41,7 +41,9 @@ class TaskPolicy extends Policy
      */
     public function view(User $user, Task $task)
     {
-        return $this->hasPermissionTo($user, 'view:task') || $user->tokenCan('view:task');
+        return $this->hasPermissionTo($user, 'view:task') ||
+               $user->tokenCan('view:task') ||
+               $task->users->contains($user);
     }
 
     /**

@@ -31,7 +31,7 @@ return [
         'create:document' => 'Can create a document',
         'update:document' => 'Can update a document',
         'delete:document' => 'Can delete a document',
-        'view:event' => 'Can view anevent',
+        'view:event' => 'Can view an event',
         'create:event' => 'Can create an event',
         'update:event' => 'Can update an event',
         'delete:event' => 'Can delete an event',
