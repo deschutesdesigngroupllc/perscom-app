@@ -28,8 +28,8 @@ class UserInfoController extends Controller
         if ($user?->tokenCan('profile')) {
             $profile = collect($user)->only([
                 'name',
-                'profile_photo',
-                'cover_photo',
+                'profile_photo_url',
+                'cover_photo_url',
             ]);
 
             $response = $response->merge($profile);
