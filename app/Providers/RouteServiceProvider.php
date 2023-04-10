@@ -58,6 +58,12 @@ class RouteServiceProvider extends ServiceProvider
                  ->as('passport.')
                  ->namespace('Laravel\Passport\Http\Controllers')
                  ->group(base_path('routes/passport.php'));
+
+            Route::prefix('oauth')
+                 ->as('oidc.')
+                 ->middleware('web')
+                 ->namespace($this->namespace)
+                 ->group(base_path('routes/oidc.php'));
         });
     }
 
