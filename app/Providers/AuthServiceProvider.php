@@ -8,9 +8,12 @@ use App\Models\AssignmentRecord;
 use App\Models\Attachment;
 use App\Models\Award;
 use App\Models\AwardRecord;
+use App\Models\Calendar;
 use App\Models\CombatRecord;
 use App\Models\Document;
 use App\Models\Element;
+use App\Models\Event;
+use App\Models\EventRegistration;
 use App\Models\Form;
 use App\Models\Image;
 use App\Models\Mail;
@@ -40,9 +43,12 @@ use App\Policies\AssignmentRecordsPolicy;
 use App\Policies\AttachmentPolicy;
 use App\Policies\AwardPolicy;
 use App\Policies\AwardRecordsPolicy;
+use App\Policies\CalendarPolicy;
 use App\Policies\CombatRecordsPolicy;
 use App\Policies\DocumentPolicy;
 use App\Policies\ElementPolicy;
+use App\Policies\EventPolicy;
+use App\Policies\EventRegistrationPolicy;
 use App\Policies\FormPolicy;
 use App\Policies\ImagePolicy;
 use App\Policies\MailPolicy;
@@ -89,9 +95,12 @@ class AuthServiceProvider extends ServiceProvider
         Attachment::class => AttachmentPolicy::class,
         Award::class => AwardPolicy::class,
         AwardRecord::class => AwardRecordsPolicy::class,
+        Calendar::class => CalendarPolicy::class,
         CombatRecord::class => CombatRecordsPolicy::class,
         Document::class => DocumentPolicy::class,
         Element::class => ElementPolicy::class,
+        Event::class => EventPolicy::class,
+        EventRegistration::class => EventRegistrationPolicy::class,
         Form::class => FormPolicy::class,
         Image::class => ImagePolicy::class,
         Mail::class => MailPolicy::class,
