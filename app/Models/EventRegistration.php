@@ -39,7 +39,7 @@ class EventRegistration extends Pivot
     public function scopeFuture(Builder $query)
     {
         return $query->whereRelation('event', function (Builder $query) {
-            return $query->whereDate('start', '>', now());
+            return $query->future();
         });
     }
 

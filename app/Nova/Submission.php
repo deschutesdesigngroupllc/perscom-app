@@ -191,14 +191,10 @@ class Submission extends Resource
 
         return new Panel($form->name ?? 'Form', array_merge($fields, [
             Text::make('User', static function ($submission) {
-                return optional($submission->user, static function ($user) {
-                    return $user->name;
-                }) ?? 'Guest';
+                return $submission?->user?->name ?? 'Guest';
             })->onlyOnIndex(),
             Text::make('Form', static function ($submission) {
-                return optional($submission->form, static function ($form) {
-                    return $form->name;
-                }) ?? 'Form';
+                return $submission?->form?->name ?? 'Form';
             })->onlyOnIndex(),
         ]));
     }

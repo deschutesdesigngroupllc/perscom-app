@@ -73,7 +73,7 @@ class Event extends Resource
                     });
                 })->showOnPreview()->exceptOnForms(),
                 Text::make('Ends', function () {
-                    return optional($this->end, function ($end) {
+                    return optional($this->computed_end, function ($end) {
                         return $this->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
                     });
                 })->showOnPreview()->exceptOnForms(),

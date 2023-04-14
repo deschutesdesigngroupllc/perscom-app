@@ -59,6 +59,7 @@ class Event extends Model
         'by_month_day' => 'collection',
         'by_month' => 'collection',
         'is_past' => 'boolean',
+        'computed_end' => 'datetime',
     ];
 
     /**
@@ -68,6 +69,7 @@ class Event extends Model
         'is_past',
         'url',
         'relative_url',
+        'computed_end',
     ];
 
     /**
@@ -175,15 +177,47 @@ class Event extends Model
     }
 
     /**
-     * @return bool
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeFuture(Builder $query)
+    {
+        return $query->whereDate('start', '>', now())
+                     ->orWhereDate('end', '>', now())
+                     ->orWhere(function (Builder $query) {
+                         $query->where('repeats', '=', true)
+                               ->where('end_type', '=', 'never');
+                     })
+                     ->orWhere(function (Builder $query) {
+                         $query->where('repeats', '=', true)
+                               ->where('end_type', '=', 'on')
+                               ->whereDate('until', '>=', now());
+                     });
+    }
+
+    /**
+     * @return mixed|null
+     */
+    public function getComputedEndAttribute()
+    {
+        return match (true) {
+            ! $this->repeats && $this->end => $this->end,
+            $this->repeats && $this->end_type === 'on' && $this->until => $this->until,
+            $this->repeats && $this->end_type === 'after' && $this->count => optional($this->generateRRule(), function (RRule $rule) {
+                return Carbon::parse($rule->getNthOccurrenceAfter($this->start, $this->count));
+            }),
+            default => null
+        };
+    }
+
+    /**
+     * @return false|\Illuminate\Support\Optional|mixed
      */
     public function getIsPastAttribute()
     {
-        return match (true) {
-            ! $this->repeats && $this->end?->isPast() => true,
-            $this->repeats && $this->until?->isPast() => true,
-            default => false
-        };
+        return optional($this->computed_end, static function (Carbon $end) {
+            return $end->isPast();
+        }) ?: false;
     }
 
     /**

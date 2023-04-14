@@ -58,7 +58,7 @@ class MyEvents extends Lens
                 });
             })->exceptOnForms(),
             Text::make('Ends', function () {
-                return optional($this->event?->end, function ($end) {
+                return optional($this->event?->computed_end, function ($end) {
                     return $this->event?->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
                 });
             })->exceptOnForms(),
