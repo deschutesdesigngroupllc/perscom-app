@@ -71,7 +71,7 @@ class Task extends Resource
                          ->hideFromIndex(),
             ]),
             BelongsToMany::make('Assigned To', 'users', User::class)
-                         ->fields(new TaskAssignmentFields)
+                         ->fields(new TaskAssignmentFields())
                          ->referToPivotAs('assignment'),
             MorphMany::make('Attachments'),
         ];

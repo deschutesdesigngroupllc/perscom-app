@@ -254,10 +254,15 @@ class Event extends Resource
             new Panel('Details', [
                 Trix::make('Content')->alwaysShow(),
             ]),
-            BelongsToMany::make('Registrations', 'registrations', User::class),
+            BelongsToMany::make('Registrations', 'registrations', User::class)
+                ->fields(function () {
+                    return [
+                        DateTime::make('Registered At', 'created_at')->default(now()),
+                    ];
+                })
+                ->referToPivotAs('registration'),
             MorphMany::make('Images'),
             MorphMany::make('Attachments'),
-
         ];
     }
 

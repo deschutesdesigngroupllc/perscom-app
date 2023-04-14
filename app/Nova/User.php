@@ -98,6 +98,7 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->showOnPreview()
+                ->copyable()
                 ->readonly(function () {
                     return Request::isDemoMode();
                 }),
@@ -271,7 +272,7 @@ class User extends Resource
                                DateTime::make('Created At')->sortable()->onlyOnIndex(),
                            ];
                        }),
-            BelongsToMany::make('Events'),
+            BelongsToMany::make('Events')->referToPivotAs('registration'),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note', \App\Models\User::class),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')

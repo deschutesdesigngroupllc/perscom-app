@@ -104,4 +104,40 @@ class TaskPolicy extends Policy
     {
         //
     }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Task  $task
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function attachAnyUser(User $user, Task $task)
+    {
+        return $this->update($user, $task);
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Task  $task
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function attachUser(User $user, Task $task)
+    {
+        return $this->update($user, $task);
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Task  $task
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function detachUser(User $user, Task $task)
+    {
+        return $this->update($user, $task);
+    }
 }

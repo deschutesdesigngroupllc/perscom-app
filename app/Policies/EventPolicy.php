@@ -105,4 +105,40 @@ class EventPolicy extends Policy
     {
         //
     }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Event  $event
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function attachAnyUser(User $user, Event $event)
+    {
+        return $this->update($user, $event);
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Event  $event
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function attachUser(User $user, Event $event)
+    {
+        return $this->update($user, $event);
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Event  $event
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function detachUser(User $user, Event $event)
+    {
+        return $this->update($user, $event);
+    }
 }
