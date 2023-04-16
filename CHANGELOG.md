@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.32...HEAD)
+
+## [v1.0.32](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...v1.0.32) - 2023-04-14
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.32 -->
+### What's Changed
+
+#### Added
+
+- Adds a new calendar and events feature by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/154
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...v1.0.32
 
 ## [v1.0.31](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.30...v1.0.31) - 2023-03-25
 
