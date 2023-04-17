@@ -77,8 +77,8 @@ class Announcement extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Title')->rules('required')->hideFromDetail(),
-            Trix::make('Content')->rules('required')->hideFromDetail(),
+            Text::make('Title')->rules('required')->hideFromDetail()->showOnPreview(),
+            Trix::make('Content')->rules('required')->alwaysShow()->hideFromDetail()->showOnPreview(),
             Select::make('Color')->displayUsingLabels()->options([
                 'info' => 'Information',
                 'success' => 'Success',

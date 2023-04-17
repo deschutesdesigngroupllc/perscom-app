@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Features\CustomSubDomainFeature;
 use App\Features\SupportTicketFeature;
+use App\Models\EventRegistration as EventRegistrationModel;
 use App\Models\Submission as SubmissionModel;
 use App\Models\TaskAssignment as TaskAssignmentModel;
 use App\Nova\Action;
@@ -13,15 +14,19 @@ use App\Nova\AssignmentRecord;
 use App\Nova\Attachment;
 use App\Nova\Award;
 use App\Nova\AwardRecord;
+use App\Nova\Calendar;
 use App\Nova\CombatRecord;
 use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
+use App\Nova\Event;
+use App\Nova\EventRegistration;
 use App\Nova\Feature as NovaFeature;
 use App\Nova\Field;
 use App\Nova\Form;
 use App\Nova\Image;
+use App\Nova\Lenses\MyEvents;
 use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
@@ -72,7 +77,9 @@ use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
 use Outl1ne\NovaSettings\NovaSettings;
-use Perscom\Roster\Roster;
+use Perscom\Calendar\Calendar as CalendarWidget;
+use Perscom\Roster\Roster as RosterWidget;
+use Sentry\Laravel\Integration;
 use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -122,6 +129,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function register()
     {
         Nova::ignoreMigrations();
+        Nova::report(static function ($exception) {
+            Integration::captureUnhandledException($exception);
+        });
 
         if (Request::isCentralRequest()) {
             config()->set('nova.path', '/admin');
@@ -189,6 +199,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 return [
                     MenuSection::dashboard(Main::class)->icon('chart-bar'),
 
+                    MenuSection::make('Calendar')->path('/calendar')->icon('calendar'),
+
                     MenuSection::make('Roster')->path('/roster')->icon('user-group'),
 
                     MenuSection::make('Account', [
@@ -196,6 +208,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resource' => User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
+                        MenuItem::lens(EventRegistration::class, MyEvents::class)->withBadge(function () {
+                            return EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
+                        }),
                         MenuItem::lens(TaskAssignment::class, MyTasks::class)->withBadge(function () {
                             return TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
                         }),
@@ -204,7 +219,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Organization', [
                         MenuItem::resource(Announcement::class),
                         MenuItem::resource(Award::class),
+                        MenuItem::resource(Calendar::class),
                         MenuItem::resource(Document::class),
+                        MenuItem::resource(Event::class),
                         MenuItem::resource(Position::class),
                         MenuItem::resource(Qualification::class),
                         MenuItem::resource(Rank::class),
@@ -385,7 +402,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new NovaSettings())->canSee(function () {
                 return ! Request::isCentralRequest() && ! Request::isDemoMode() && Auth::user()->hasRole('Admin');
             }),
-            (new Roster())->canSee(function () {
+            (new CalendarWidget())->canSee(function () {
+                return ! Request::isCentralRequest();
+            }),
+            (new RosterWidget())->canSee(function () {
                 return ! Request::isCentralRequest();
             }),
         ];

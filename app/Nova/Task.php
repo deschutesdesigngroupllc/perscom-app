@@ -55,8 +55,8 @@ class Task extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Title')->rules('required'),
-            Textarea::make('Description')->alwaysShow(),
+            Text::make('Title')->rules('required')->showOnPreview(),
+            Textarea::make('Description')->alwaysShow()->showOnPreview(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
@@ -71,7 +71,7 @@ class Task extends Resource
                          ->hideFromIndex(),
             ]),
             BelongsToMany::make('Assigned To', 'users', User::class)
-                         ->fields(new TaskAssignmentFields)
+                         ->fields(new TaskAssignmentFields())
                          ->referToPivotAs('assignment'),
             MorphMany::make('Attachments'),
         ];

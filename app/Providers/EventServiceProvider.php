@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Listeners\CheckTenantDatabaseExists;
 use App\Listeners\ConfigureApplicationForTenant;
 use App\Listeners\ResetTenantFeatures;
 use App\Listeners\UpdateTenantLastLoginDate;
@@ -38,6 +39,7 @@ use Laravel\Cashier\Subscription;
 use Spark\Events\SubscriptionCancelled;
 use Spark\Events\SubscriptionCreated;
 use Spark\Events\SubscriptionUpdated;
+use Stancl\Tenancy\Events\TenancyBootstrapped;
 use Stancl\Tenancy\Events\TenancyInitialized;
 
 class EventServiceProvider extends ServiceProvider
@@ -64,6 +66,9 @@ class EventServiceProvider extends ServiceProvider
             ResetTenantFeatures::class,
         ],
         TenancyInitialized::class => [
+            CheckTenantDatabaseExists::class,
+        ],
+        TenancyBootstrapped::class => [
             ConfigureApplicationForTenant::class,
         ],
     ];

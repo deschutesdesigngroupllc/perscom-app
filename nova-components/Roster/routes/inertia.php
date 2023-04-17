@@ -18,6 +18,6 @@ Route::get('/', function (NovaRequest $request) {
     return inertia('Roster', [
         'jwt' => \Perscom\Roster\Roster::generateJwt(),
         'tenant_id' => tenant()->getTenantKey(),
-        'widget_url' => env('WIDGET_ROSTER_URL'),
+        'widget_url' => env('WIDGET_URL'),
     ]);
 });

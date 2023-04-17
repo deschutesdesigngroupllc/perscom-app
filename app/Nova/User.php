@@ -19,6 +19,7 @@ use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -97,6 +98,7 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->showOnPreview()
+                ->copyable()
                 ->readonly(function () {
                     return Request::isDemoMode();
                 }),
@@ -114,13 +116,13 @@ class User extends Resource
                 $this->status?->name => $this->status?->color,
             ])->label(function () {
                 return $this->status->name ?? 'No Current Status';
-            }),
+            })->showOnPreview(),
             Badge::make('Online', function ($user) {
                 return $user->online;
             })->map([
                 false => 'info',
                 true => 'success',
-            ])->exceptOnForms(),
+            ])->showOnPreview()->exceptOnForms(),
             Avatar::make('Profile Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Image::make('Cover Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Panel::make('Assignment', [
@@ -128,16 +130,19 @@ class User extends Resource
                          ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
                          ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
                          ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
@@ -145,6 +150,7 @@ class User extends Resource
                          ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\RankRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
@@ -266,6 +272,7 @@ class User extends Resource
                                DateTime::make('Created At')->sortable()->onlyOnIndex(),
                            ];
                        }),
+            BelongsToMany::make('Events')->referToPivotAs('registration'),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note', \App\Models\User::class),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')
