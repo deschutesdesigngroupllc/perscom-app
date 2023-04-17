@@ -1,9 +1,17 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
-import backgroundImage from '../../images/register1.jpeg'
+import backgroundImage1 from '../../images/register1.jpeg'
+import backgroundImage2 from '../../images/register2.jpeg'
+import backgroundImage3 from '../../images/register3.jpeg'
 
 export function RegisterLayout({ children, position = 'justify-center' }) {
+  const backgroundImages = Array(backgroundImage1, backgroundImage2, backgroundImage3)
+
+  const getRandomImageIndex = () => {
+    return Math.floor(Math.random() * backgroundImages.length)
+  }
+
   return (
     <div className={clsx('relative flex min-h-full md:px-12 lg:px-0', position)}>
       <div className={clsx('relative z-10 flex max-h-full flex-1 flex-col bg-white py-16 px-4 shadow-2xl md:flex-none md:px-28', position)}>
@@ -12,7 +20,7 @@ export function RegisterLayout({ children, position = 'justify-center' }) {
       <div className='absolute inset-0 hidden w-full flex-1 sm:block lg:relative lg:w-0'>
         <span className='absolute inset-0 m-0 box-border block overflow-hidden border-none p-0 opacity-100'>
           <img
-            src={backgroundImage}
+            src={backgroundImages[getRandomImageIndex()]}
             alt=''
             className='w-100 absolute inset-0 m-auto box-border block h-0 max-h-full min-h-full w-0 min-w-full max-w-full border-none object-cover p-0'
           />
