@@ -4,9 +4,10 @@ import clsx from 'clsx'
 import backgroundImage1 from '../../images/register1.jpeg'
 import backgroundImage2 from '../../images/register2.jpeg'
 import backgroundImage3 from '../../images/register3.jpeg'
+import backgroundImage4 from '../../images/register4.jpeg'
 
 export function RegisterLayout({ children, position = 'justify-center' }) {
-  const backgroundImages = Array(backgroundImage1, backgroundImage2, backgroundImage3)
+  const backgroundImages = Array(backgroundImage1, backgroundImage2, backgroundImage3, backgroundImage4)
 
   const getRandomImageIndex = () => {
     return Math.floor(Math.random() * backgroundImages.length)
