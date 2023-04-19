@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { Tab } from '@headlessui/react'
+import React, {useEffect, useState} from 'react'
+import {Tab} from '@headlessui/react'
 import clsx from 'clsx'
 
-import { Container } from './/Container'
+import {Container} from './/Container'
 import backgroundImage from '../../images/background-features.jpg'
 import featureDashboard from '../../images/features/feature1.png'
 import featurePersonnelFiles from '../../images/features/feature2.png'
@@ -11,24 +11,26 @@ import featureLogs from '../../images/features/feature4.png'
 
 const features = [
   {
-    title: 'Dashboard Statistics',
-    description: 'Get an overview of everything happening within your organization and quick access to the most popular features.',
+    title: 'Efficient Personnel Management Made Easy',
+    description: "PERSCOM.io streamlines your organization's personnel management, allowing you to focus on what really matters.",
     image: featureDashboard
   },
   {
-    title: 'Advanced Personnel Files',
-    description: 'As the backbone of PERSCOM, Personnel Files provide a powerful and complete history of everyone in your organization.',
+    title: 'Customizable, Scalable, and Secure',
+    description:
+      "PERSCOM.io's powerful features are fully customizable and scalable to meet the unique needs of your organization, while maintaining the highest levels of security.",
     image: featurePersonnelFiles
   },
   {
-    title: 'Custom Forms',
+    title: 'Centralized Data Management',
     description:
-      'Build custom forms allowing you to collect specific data needed to run your organization. Forms can be public or private.',
+      'With PERSCOM.io, all of your personnel data is stored in a centralized location, making it easy to access, update, and manage.',
     image: featureForms
   },
   {
-    title: 'Transparent Logs',
-    description: 'Every transaction that happens within PERSCOM can be viewed allowing you to audit every update and trace every action.',
+    title: 'Seamless Integration and Communication',
+    description:
+      "PERSCOM.io's API, OAuth 2.0, and Widget integration options make it easy to connect with other tools and systems, while the platform's built-in communication features keep everyone on the same page.",
     image: featureLogs
   }
 ]

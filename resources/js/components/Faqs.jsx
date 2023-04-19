@@ -1,42 +1,47 @@
 import React from 'react'
 
-import { Container } from './/Container'
+import {Container} from './/Container'
 import backgroundImage from '../../images/background-faqs.jpg'
 
 const faqs = [
-  [
-    {
-      question: 'Can I try PERSCOM.io before I purchase a subscription?',
-      answer:
-        'Absolutely. Visit the registration page and sign up for an account. You will have a 7-day feel trial before you need to purchase a subscription.'
-    },
-    {
-      question: 'What payment methods do you support?',
-      answer: 'We use Stripe as our payment gateway and support all major payment methods.'
-    }
-  ],
-  [
-    {
-      question: 'I have a question. How do I get support?',
-      answer: 'First, visit our documentation page and if you still have a question, visit the support section in our docs.'
-    },
-    {
-      question: 'Why should I purchase a PERSCOM.io subscription?',
-      answer:
-        "We understand the complexity of managing personnel. We've taken this into account and offer all the services you need in one product."
-    }
-  ],
-  [
-    {
-      question: 'Can I integrate my data with any other services?',
-      answer:
-        'Yes, you can. We provide a powerful API as well as other standardized authentication methods to integrate your data. We also offer widgets to display your data on an external website.'
-    },
-    {
-      question: 'Can I change the URL of my account Dashboard?',
-      answer: 'Yes. You must subscribe to the Pro plan and you can change it to whatever you would like.'
-    }
-  ]
+  {
+    question: 'What kind of customer support is available with PERSCOM.io?',
+    answer:
+      'We offer a range of customer support options, including email and forum support, as well as a comprehensive knowledge base and user guides. Our support team is available to help with any questions or issues you may encounter, and we are committed to providing prompt and reliable support to our customers.'
+  },
+  {
+    question: 'Why should I purchase a PERSCOM.io subscription?',
+    answer:
+      "We understand the complexity of managing personnel. We've taken this into account and offer all the services you need in one product."
+  },
+  {
+    question: 'Can I integrate PERSCOM.io with other tools and systems we use?',
+    answer:
+      "Yes, PERSCOM.io's API, OAuth 2.0, and Widget integration options make it easy to connect with other tools and systems, allowing you to leverage the platform's powerful personnel management tools while still using the tools you're accustomed to."
+  },
+  {
+    question: 'Can I change the URL of my account Dashboard?',
+    answer: 'Yes. You must subscribe to the Pro plan and you can change it to whatever you would like.'
+  },
+  {
+    question: 'Can I try PERSCOM.io before I purchase a subscription?',
+    answer:
+      'Absolutely. Visit the registration page and sign up for an account. You will have a 7-day feel trial before you need to purchase a subscription.'
+  },
+  {
+    question: 'What payment methods do you support?',
+    answer: 'We use Stripe as our payment gateway and support all major payment methods.'
+  },
+  {
+    question: 'How secure is our data in PERSCOM.io?',
+    answer:
+      "PERSCOM.io is designed with security in mind and employs industry-standard security measures, including data encryption, role-based access control, and multi-factor authentication. Each organization is also its own tenant in a multi-tenant structure, ensuring that no organization's data is accessible by any other."
+  },
+  {
+    question: 'What kind of organizations can benefit from PERSCOM.io?',
+    answer:
+      'PERSCOM.io is designed for paramilitary organizations, such as law enforcement agencies, military units, and emergency services organizations that utilize a chain of command or rigid organizational hierarchy.'
+  }
 ]
 
 export function Faqs() {
@@ -53,30 +58,24 @@ export function Faqs() {
           <p className='font-display text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>Frequently asked questions</p>
           <p className='mt-4 text-base text-gray-600'>
             If you can’t find what you’re looking for, visit our{' '}
-            <a href='https://community.deschutesdesigngroup.com' target='_blank' rel='noreferrer'>
+            <a href='https://community.deschutesdesigngroup.com' target='_blank' rel='noreferrer' className='underline'>
               community forums
             </a>{' '}
             or{' '}
-            <a href='https://docs.perscom.io' target='_blank' rel='noreferrer'>
-              documentation for more reference material
-            </a>
-            .
+            <a href='https://docs.perscom.io' target='_blank' rel='noreferrer' className='underline'>
+              documentation
+            </a>{' '}
+            for more reference material.
           </p>
         </div>
-        <ul className='mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3'>
-          {faqs.map((column, columnIndex) => (
-            <li key={columnIndex}>
-              <ul className='space-y-8'>
-                {column.map((faq, faqIndex) => (
-                  <li key={faqIndex}>
-                    <h3 className='font-display text-base font-semibold text-gray-700'>{faq.question}</h3>
-                    <p className='mt-4 text-sm text-gray-600'>{faq.answer}</p>
-                  </li>
-                ))}
-              </ul>
-            </li>
+        <div className='mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3'>
+          {faqs.map((faq, columnIndex) => (
+            <div className='space-y-8' key={columnIndex}>
+              <h3 className='font-display text-base font-semibold text-gray-700'>{faq.question}</h3>
+              <p className='mt-4 text-sm text-gray-600'>{faq.answer}</p>
+            </div>
           ))}
-        </ul>
+        </div>
       </Container>
     </section>
   )

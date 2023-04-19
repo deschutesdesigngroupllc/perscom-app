@@ -1,40 +1,42 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Tab } from '@headlessui/react'
+import {Tab} from '@headlessui/react'
 import clsx from 'clsx'
-import { CollectionIcon, PencilAltIcon, SearchIcon } from '@heroicons/react/outline'
-import { Container } from './/Container'
+import {CalendarIcon, OfficeBuildingIcon, UsersIcon} from '@heroicons/react/outline'
+import {Container} from './/Container'
 import customFieldsImage from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
 import searchImage from '../../images/features/secondary3.png'
 
 const features = [
   {
-    name: 'Custom Fields',
+    name: 'Effortless Personnel Management',
     summary: 'Advanced customazability without the headache.',
-    description: 'Nearly every module allows for the implementation of Custom Fields which enables you to collect the data you need.',
+    description:
+      "PERSCOM.io's comprehensive personnel management tools allow you to easily track personnel records, assign tasks, manage qualifications, recognize milestones and achievements, and more, all in one centralized location.",
     image: customFieldsImage,
     icon: function Icon() {
-      return <PencilAltIcon className='h-8 w-8' />
+      return <UsersIcon className='h-8 w-8' />
     }
   },
   {
-    name: 'Records Management',
+    name: 'Customizable Hierarchical Design',
     summary: 'Keep track of every action and update that happens to your people.',
     description:
-      'The advanced RMS system provides a historical timeline of every update applied to a personnel file keeping everyone on the same page.',
+      "With PERSCOM.io's customizable hierarchical design, you can create a tailored organizational structure that reflects your unique needs and chain of command.",
     image: recordsImage,
     icon: function Icon() {
-      return <CollectionIcon className='h-8 w-8' />
+      return <OfficeBuildingIcon className='h-8 w-8' />
     }
   },
   {
-    name: 'Advanced Searching',
+    name: 'Powerful Event Management',
     summary: 'Backed by Algolia, the leader in AI-Powered searching.',
-    description: "We've gone the extra mile to make sure access to your data is quick and accurate.",
+    description:
+      "PERSCOM.io's Calendars and Events features provide a comprehensive solution for managing scheduling and events, allowing you to efficiently plan and coordinate meetings, trainings, drills, and more.",
     image: searchImage,
     icon: function Icon() {
-      return <SearchIcon className='h-8 w-8' />
+      return <CalendarIcon className='h-8 w-8' />
     }
   }
 ]
