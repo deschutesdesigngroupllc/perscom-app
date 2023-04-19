@@ -11,7 +11,7 @@ class DiscoveryControllerTest extends TenantTestCase
     {
         $this->withoutMiddleware(Subscribed::class);
 
-        $this->get($this->tenant->url.'/oauth/.well-known/openid-configuration')
+        $this->get($this->tenant->url.'/.well-known/openid-configuration')
             ->assertSuccessful()
             ->assertExactJson([
                 'issuer' => $this->tenant->url,
