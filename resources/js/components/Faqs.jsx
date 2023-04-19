@@ -41,6 +41,11 @@ const faqs = [
     question: 'What kind of organizations can benefit from PERSCOM.io?',
     answer:
       'PERSCOM.io is designed for paramilitary organizations, such as law enforcement agencies, military units, and emergency services organizations that utilize a chain of command or rigid organizational hierarchy.'
+  },
+  {
+    question: 'Where does the name PERSCOM come from?',
+    answer:
+      'In the military, "PERSCOM" stands for "Personnel Command," which is a term used to describe a unit or department responsible for managing military personnel. However, it\'s worth noting that "PERSCOM.io" is not affiliated with any particular military organization or entity, and its name is simply derived from the term "personnel command."'
   }
 ]
 
