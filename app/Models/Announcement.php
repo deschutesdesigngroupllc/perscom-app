@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Announcement newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Announcement newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Announcement query()
+ *
  * @mixin \Eloquent
  */
 class Announcement extends Model

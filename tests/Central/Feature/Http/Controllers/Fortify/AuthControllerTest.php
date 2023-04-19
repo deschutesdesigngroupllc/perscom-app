@@ -13,20 +13,20 @@ class AuthControllerTest extends CentralTestCase
     public function test_login_page_can_be_reached()
     {
         $this->get('/admin/login')
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('auth/Login');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('auth/Login');
+            })->assertSuccessful();
     }
 
     public function test_register_page_cannot_be_reached()
     {
         $this->get('/admin/register')
-             ->assertNotFound();
+            ->assertNotFound();
     }
 
     public function test_forgot_password_page_cannot_be_reached()
     {
         $this->get('/admin/forgot-password')
-             ->assertNotFound();
+            ->assertNotFound();
     }
 }

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord query()
+ *
  * @mixin \Eloquent
  */
 class StatusRecord extends MorphPivot

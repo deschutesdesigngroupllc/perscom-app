@@ -23,6 +23,7 @@ use Laravel\Nova\Actions\Actionable;
  * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form query()
+ *
  * @mixin \Eloquent
  */
 class Form extends Model
@@ -71,11 +72,11 @@ class Form extends Model
     public function fields()
     {
         return $this->morphToMany(Field::class, 'model', 'model_has_fields')
-                    ->using(Element::class)
-                    ->as('fields')
-                    ->withPivot(['order'])
-                    ->orderBy('order')
-                    ->withTimestamps();
+            ->using(Element::class)
+            ->as('fields')
+            ->withPivot(['order'])
+            ->orderBy('order')
+            ->withTimestamps();
     }
 
     /**

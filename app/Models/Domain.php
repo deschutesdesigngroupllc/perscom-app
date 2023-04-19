@@ -26,6 +26,7 @@ use Spatie\Url\Url;
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Domain extends \Stancl\Tenancy\Database\Models\Domain
@@ -39,9 +40,6 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
      */
     protected $appends = ['host', 'url'];
 
-    /**
-     * @return string
-     */
     public static function generateSubdomain(): string
     {
         return Str::lower(Str::random(8));
@@ -53,7 +51,7 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
     public function getUrlAttribute()
     {
         return optional($this->host, static function ($host) {
-            return Url::fromString($host)->withScheme(config('app.scheme'))->__toString();
+            return rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/');
         });
     }
 

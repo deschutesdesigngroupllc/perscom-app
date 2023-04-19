@@ -13,7 +13,6 @@ class CreateNewUser implements CreatesNewUsers
     use PasswordValidationRules;
 
     /**
-     * @param  array  $input
      * @return User|\Illuminate\Database\Eloquent\Model|\Illuminate\Foundation\Auth\User
      *
      * @throws \Illuminate\Validation\ValidationException

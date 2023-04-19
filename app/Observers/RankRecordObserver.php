@@ -11,7 +11,6 @@ class RankRecordObserver
     /**
      * Handle the Rank "created" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function created(RankRecord $rank)
@@ -22,7 +21,6 @@ class RankRecordObserver
     /**
      * Handle the Rank "updated" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function updated(RankRecord $rank)
@@ -33,7 +31,6 @@ class RankRecordObserver
     /**
      * Handle the Rank "deleted" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function deleted(RankRecord $rank)
@@ -44,7 +41,6 @@ class RankRecordObserver
     /**
      * Handle the Rank "restored" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function restored(RankRecord $rank)
@@ -55,7 +51,6 @@ class RankRecordObserver
     /**
      * Handle the Rank "force deleted" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function forceDeleted(RankRecord $rank)

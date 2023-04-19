@@ -17,11 +17,11 @@ class UserInfoControllerTest extends TenantTestCase
         ], 'passport');
 
         $response = $this->get($this->tenant->url.'/oauth/userinfo')
-             ->assertSuccessful()
-             ->assertJson([
-                 'sub' => $this->user->getAuthIdentifier(),
-                 'email' => $this->user->email,
-                 'name' => $this->user->name,
-             ]);
+            ->assertSuccessful()
+            ->assertJson([
+                'sub' => $this->user->getAuthIdentifier(),
+                'email' => $this->user->email,
+                'name' => $this->user->name,
+            ]);
     }
 }

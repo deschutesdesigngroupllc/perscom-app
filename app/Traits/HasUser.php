@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Builder;
 trait HasUser
 {
     /**
-     * @param  Builder  $query
-     * @param  User  $user
      * @return Builder
      */
     public function scopeForUser(Builder $query, User $user)

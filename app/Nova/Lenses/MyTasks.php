@@ -26,7 +26,6 @@ class MyTasks extends Lens
     /**
      * Get the query builder / paginator for the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return mixed
      */
@@ -40,7 +39,6 @@ class MyTasks extends Lens
     /**
      * Get the fields available to the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -73,7 +71,6 @@ class MyTasks extends Lens
     /**
      * Get the cards available on the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -84,7 +81,6 @@ class MyTasks extends Lens
     /**
      * Get the filters available for the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -95,7 +91,6 @@ class MyTasks extends Lens
     /**
      * Get the actions available on the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

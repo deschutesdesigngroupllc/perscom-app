@@ -20,8 +20,6 @@ class FindMyOrganizationController extends Controller
     }
 
     /**
-     * @param  Request  $request
-     * @param  TenantRepository  $tenantRepository
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
@@ -42,7 +40,6 @@ class FindMyOrganizationController extends Controller
     }
 
     /**
-     * @param  Tenant  $tenant
      * @return \Inertia\Response
      */
     public function show(Tenant $tenant)

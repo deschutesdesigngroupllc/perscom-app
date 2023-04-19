@@ -24,9 +24,9 @@ class AuthControllerTest extends TenantTestCase
     public function test_login_page_can_be_reached()
     {
         $this->get('/login')
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('auth/Login');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('auth/Login');
+            })->assertSuccessful();
     }
 
     public function test_can_login()
@@ -37,8 +37,8 @@ class AuthControllerTest extends TenantTestCase
             'email' => $this->user->email,
             'password' => 'password',
         ])
-             ->assertRedirect($this->tenant->url.'/dashboard')
-             ->assertSessionHasNoErrors();
+            ->assertRedirect($this->tenant->url.'/dashboard')
+            ->assertSessionHasNoErrors();
 
         $this->assertAuthenticatedAs($this->user);
 
@@ -53,8 +53,8 @@ class AuthControllerTest extends TenantTestCase
             'email' => $this->user->email,
             'password' => 'wrong',
         ])
-             ->assertRedirect($this->tenant->url)
-             ->assertSessionHasErrors('email');
+            ->assertRedirect($this->tenant->url)
+            ->assertSessionHasErrors('email');
 
         $this->assertGuest();
 
@@ -69,8 +69,8 @@ class AuthControllerTest extends TenantTestCase
             'email' => $this->faker->email,
             'password' => 'password',
         ])
-             ->assertRedirect($this->tenant->url)
-             ->assertSessionHasErrors('email');
+            ->assertRedirect($this->tenant->url)
+            ->assertSessionHasErrors('email');
 
         $this->assertGuest();
 
@@ -84,7 +84,7 @@ class AuthControllerTest extends TenantTestCase
         $this->actingAs($this->user);
 
         $this->post('/logout')
-             ->assertRedirect($this->tenant->url);
+            ->assertRedirect($this->tenant->url);
 
         $this->assertGuest();
 
@@ -94,9 +94,9 @@ class AuthControllerTest extends TenantTestCase
     public function test_register_page_can_be_reached()
     {
         $this->get('/register')
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('auth/Register');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('auth/Register');
+            })->assertSuccessful();
     }
 
     public function test_verify_email_page_can_be_reached()
@@ -108,9 +108,9 @@ class AuthControllerTest extends TenantTestCase
         $this->actingAs($this->user);
 
         $this->get('/email/verify')
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('auth/VerifyEmail');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('auth/VerifyEmail');
+            })->assertSuccessful();
     }
 
     public function test_can_send_email_verification_notification()
@@ -124,9 +124,9 @@ class AuthControllerTest extends TenantTestCase
         $this->actingAs($this->user);
 
         $this->post('/email/verification-notification')
-             ->assertRedirect()
-             ->assertSessionHasNoErrors()
-             ->assertSessionHas('status', Fortify::VERIFICATION_LINK_SENT);
+            ->assertRedirect()
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status', Fortify::VERIFICATION_LINK_SENT);
 
         Notification::assertSentTo([$this->user], VerifyEmail::class);
     }
@@ -149,7 +149,7 @@ class AuthControllerTest extends TenantTestCase
         $this->actingAs($this->user);
 
         $this->get('/email/verify/'.Str::random().'/'.Str::random())
-             ->assertRedirect();
+            ->assertRedirect();
 
         $this->assertTrue($this->user->hasVerifiedEmail());
 
@@ -159,9 +159,9 @@ class AuthControllerTest extends TenantTestCase
     public function test_forgot_password_page_can_be_reached()
     {
         $this->get('/forgot-password')
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('auth/ForgotPassword');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('auth/ForgotPassword');
+            })->assertSuccessful();
     }
 
     public function test_can_send_forgot_password_notification_and_reach_reset_password_page()
@@ -171,13 +171,13 @@ class AuthControllerTest extends TenantTestCase
         $this->post('/forgot-password', [
             'email' => $this->user->email,
         ])
-             ->assertRedirect()
-             ->assertSessionHasNoErrors()
-             ->assertSessionHas('status', Lang::get('passwords.sent'));
+            ->assertRedirect()
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status', Lang::get('passwords.sent'));
 
         Notification::assertSentTo([$this->user], ResetPassword::class, function (ResetPassword $notification) {
             $this->get('/reset-password/'.$notification->token)
-                 ->assertSuccessful();
+                ->assertSuccessful();
 
             return true;
         });
@@ -191,9 +191,9 @@ class AuthControllerTest extends TenantTestCase
         $this->post('/forgot-password', [
             'email' => $this->user->email,
         ])
-             ->assertRedirect()
-             ->assertSessionHasNoErrors()
-             ->assertSessionHas('status', Lang::get('passwords.sent'));
+            ->assertRedirect()
+            ->assertSessionHasNoErrors()
+            ->assertSessionHas('status', Lang::get('passwords.sent'));
 
         Notification::assertSentTo([$this->user], ResetPassword::class, function (ResetPassword $notification) {
             $this->post('/reset-password', [
@@ -202,9 +202,9 @@ class AuthControllerTest extends TenantTestCase
                 'password' => 'password',
                 'password_confirmation' => 'password',
             ])
-                 ->assertRedirect($this->tenant->url.'/login')
-                 ->assertSessionHasNoErrors()
-                 ->assertSessionHas('status', Lang::get('passwords.reset'));
+                ->assertRedirect($this->tenant->url.'/login')
+                ->assertSessionHasNoErrors()
+                ->assertSessionHas('status', Lang::get('passwords.reset'));
 
             Event::assertDispatched(PasswordReset::class);
 

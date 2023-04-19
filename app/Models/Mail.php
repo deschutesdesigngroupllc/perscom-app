@@ -32,6 +32,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereSentAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereSubject($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Mail extends Model

@@ -30,6 +30,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder|TaskAssignment newQuery()
  * @method static Builder|TaskAssignment pastDue()
  * @method static Builder|TaskAssignment query()
+ *
  * @mixin \Eloquent
  */
 class TaskAssignment extends Pivot
@@ -72,7 +73,6 @@ class TaskAssignment extends Pivot
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopeAssigned(Builder $query)
@@ -89,7 +89,6 @@ class TaskAssignment extends Pivot
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopeExpired(Builder $query)
@@ -102,7 +101,6 @@ class TaskAssignment extends Pivot
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopePastDue(Builder $query)

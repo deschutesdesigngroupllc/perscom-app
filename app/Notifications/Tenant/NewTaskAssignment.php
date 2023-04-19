@@ -64,8 +64,8 @@ class NewTaskAssignment extends Notification implements ShouldQueue
     public function toNova()
     {
         return (new NovaNotification())->message('A new task has been assigned to you.')
-                                       ->action('View Tasks', URL::remote($this->url))
-                                       ->icon('document-text')
-                                       ->type('info');
+            ->action('View Tasks', URL::remote($this->url))
+            ->icon('document-text')
+            ->type('info');
     }
 }

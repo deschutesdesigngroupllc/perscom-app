@@ -39,7 +39,6 @@ class ApplicationVersion extends Command
     }
 
     /**
-     * @param $version
      * @return false|int
      */
     public function setApplicationVersion($version)

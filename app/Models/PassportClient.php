@@ -19,6 +19,7 @@ use Laravel\Passport\Client as BaseClientModel;
  * @method static \Illuminate\Database\Eloquent\Builder|PassportClient newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportClient newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportClient query()
+ *
  * @mixin \Eloquent
  */
 class PassportClient extends BaseClientModel

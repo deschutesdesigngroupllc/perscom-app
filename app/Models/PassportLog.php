@@ -21,6 +21,7 @@ use Spatie\Activitylog\Models\Activity;
  * @method static \Illuminate\Database\Eloquent\Builder|PassportLog newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportLog newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportLog query()
+ *
  * @mixin \Eloquent
  */
 class PassportLog extends Activity

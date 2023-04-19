@@ -15,9 +15,9 @@ class FindMyOrganizationControllerTest extends CentralTestCase
     public function test_find_my_organization_index_page_can_be_reached()
     {
         $this->get('/find-my-organization')
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('auth/FindMyOrganization');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('auth/FindMyOrganization');
+            })->assertSuccessful();
     }
 
     public function test_find_my_organization_store_page_can_be_reached()
@@ -88,9 +88,9 @@ class FindMyOrganizationControllerTest extends CentralTestCase
         $url = URL::signedRoute('web.find-my-organization.show', ['tenant' => 1]);
 
         $this->get($url)
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('auth/FindMyOrganization');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('auth/FindMyOrganization');
+            })->assertSuccessful();
     }
 
     public function test_find_my_organization_show_page_cannot_be_reached_with_invalid_url()
@@ -105,8 +105,8 @@ class FindMyOrganizationControllerTest extends CentralTestCase
         $url = URL::signedRoute('web.find-my-organization.show', ['tenant' => 1]);
 
         $this->get($url)
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('auth/FindMyOrganization');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('auth/FindMyOrganization');
+            })->assertSuccessful();
     }
 }

@@ -16,7 +16,6 @@ class TaskAssignmentObserver
     /**
      * Handle the TaskAssignment "created" event.
      *
-     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return void
      */
     public function created(TaskAssignment $taskAssignment)
@@ -27,7 +26,6 @@ class TaskAssignmentObserver
     /**
      * Handle the TaskAssignment "updated" event.
      *
-     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return void
      */
     public function updated(TaskAssignment $taskAssignment)
@@ -38,7 +36,6 @@ class TaskAssignmentObserver
     /**
      * Handle the TaskAssignment "deleted" event.
      *
-     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return void
      */
     public function deleted(TaskAssignment $taskAssignment)
@@ -49,7 +46,6 @@ class TaskAssignmentObserver
     /**
      * Handle the TaskAssignment "restored" event.
      *
-     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return void
      */
     public function restored(TaskAssignment $taskAssignment)
@@ -60,7 +56,6 @@ class TaskAssignmentObserver
     /**
      * Handle the TaskAssignment "force deleted" event.
      *
-     * @param  \App\Models\TaskAssignment  $taskAssignment
      * @return void
      */
     public function forceDeleted(TaskAssignment $taskAssignment)

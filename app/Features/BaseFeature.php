@@ -7,9 +7,6 @@ use Illuminate\Support\Optional;
 
 class BaseFeature
 {
-    /**
-     * @var Tenant|null
-     */
     protected Tenant|null $tenant = null;
 
     /**

@@ -63,8 +63,8 @@ class NewAssignmentRecord extends Notification implements ShouldQueue
     public function toNova()
     {
         return (new NovaNotification())->message('A new assignment record has been added to your personnel file.')
-                                       ->action('View Record', URL::remote($this->url))
-                                       ->icon('document-text')
-                                       ->type('info');
+            ->action('View Record', URL::remote($this->url))
+            ->icon('document-text')
+            ->type('info');
     }
 }

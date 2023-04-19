@@ -20,10 +20,6 @@ class CreateInitialTenantUser implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * @param  TenantWithDatabase  $tenant
-     * @param  bool  $sendMail
-     */
     public function __construct(protected TenantWithDatabase $tenant, protected bool $sendMail = true)
     {
         //

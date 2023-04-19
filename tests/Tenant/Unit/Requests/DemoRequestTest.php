@@ -15,7 +15,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
         $this->get('/login')
-             ->assertSuccessful();
+            ->assertSuccessful();
 
         $this->assertTrue(\Request::isDemoMode());
     }
@@ -26,7 +26,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
 
         $this->get('/login')
-             ->assertSuccessful();
+            ->assertSuccessful();
 
         $this->assertFalse(\Request::isDemoMode());
     }
@@ -79,7 +79,7 @@ class DemoRequestTest extends TenantTestCase
         $this->withMiddleware(InitializeTenancyByRequestData::class);
 
         $this->getJson(config('app.api_url').'/'.config('app.api_version').'/me?perscom_id='.$this->tenant->getTenantKey())
-             ->assertSuccessful();
+            ->assertSuccessful();
 
         $this->assertTrue(\Request::isDemoMode());
     }
@@ -96,7 +96,7 @@ class DemoRequestTest extends TenantTestCase
         $this->withMiddleware(InitializeTenancyByRequestData::class);
 
         $this->getJson(config('app.api_url').'/'.config('app.api_version').'/me?perscom_id='.$this->tenant->getTenantKey())
-             ->assertStatus(402);
+            ->assertStatus(402);
 
         $this->assertFalse(\Request::isDemoMode());
     }
@@ -107,7 +107,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
         $this->get('/login')
-             ->assertSuccessful();
+            ->assertSuccessful();
 
         $this->assertSame('web', config('fortify.guard'));
         $this->assertSame('users', config('fortify.passwords'));

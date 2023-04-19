@@ -12,7 +12,6 @@ class MailObserver
     /**
      * Handle the Mail "created" event.
      *
-     * @param  \App\Models\Mail  $mail
      * @return void
      */
     public function created(Mail $mail)
@@ -27,7 +26,6 @@ class MailObserver
     /**
      * Handle the Mail "updated" event.
      *
-     * @param  \App\Models\Mail  $mail
      * @return void
      */
     public function updated(Mail $mail)
@@ -38,7 +36,6 @@ class MailObserver
     /**
      * Handle the Mail "deleted" event.
      *
-     * @param  \App\Models\Mail  $mail
      * @return void
      */
     public function deleted(Mail $mail)
@@ -49,7 +46,6 @@ class MailObserver
     /**
      * Handle the Mail "restored" event.
      *
-     * @param  \App\Models\Mail  $mail
      * @return void
      */
     public function restored(Mail $mail)
@@ -60,7 +56,6 @@ class MailObserver
     /**
      * Handle the Mail "force deleted" event.
      *
-     * @param  \App\Models\Mail  $mail
      * @return void
      */
     public function forceDeleted(Mail $mail)

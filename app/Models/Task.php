@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Task newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Task query()
+ *
  * @mixin \Eloquent
  */
 class Task extends Model
@@ -54,10 +55,10 @@ class Task extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_tasks')
-                    ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
-                    ->as('assignment')
-                    ->using(TaskAssignment::class)
-                    ->withTimestamps();
+            ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
+            ->as('assignment')
+            ->using(TaskAssignment::class)
+            ->withTimestamps();
     }
 
     /**

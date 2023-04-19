@@ -33,6 +33,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static \Illuminate\Database\Eloquent\Builder|Admin wherePassword($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereRememberToken($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Admin whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Admin extends Authenticatable

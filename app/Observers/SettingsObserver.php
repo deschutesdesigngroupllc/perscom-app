@@ -10,7 +10,6 @@ class SettingsObserver
     /**
      * Handle the Settings "created" event.
      *
-     * @param  \App\Models\Settings  $settings
      * @return void
      */
     public function created(Settings $settings)
@@ -39,7 +38,6 @@ class SettingsObserver
     /**
      * Handle the Settings "updated" event.
      *
-     * @param  \App\Models\Settings  $settings
      * @return void
      */
     public function updated(Settings $settings)
@@ -70,7 +68,6 @@ class SettingsObserver
     /**
      * Handle the Settings "deleted" event.
      *
-     * @param  \App\Models\Settings  $settings
      * @return void
      */
     public function deleted(Settings $settings)
@@ -81,7 +78,6 @@ class SettingsObserver
     /**
      * Handle the Settings "restored" event.
      *
-     * @param  \App\Models\Settings  $settings
      * @return void
      */
     public function restored(Settings $settings)
@@ -92,7 +88,6 @@ class SettingsObserver
     /**
      * Handle the Settings "force deleted" event.
      *
-     * @param  \App\Models\Settings  $settings
      * @return void
      */
     public function forceDeleted(Settings $settings)

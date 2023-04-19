@@ -18,6 +18,7 @@ namespace App\Models;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Activity newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Activity query()
+ *
  * @mixin \Eloquent
  */
 class Activity extends \Spatie\Activitylog\Models\Activity

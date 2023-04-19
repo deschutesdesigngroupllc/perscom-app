@@ -30,6 +30,7 @@ use Symfony\Component\Finder\Finder;
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Feature whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Feature extends Model
@@ -46,8 +47,6 @@ class Feature extends Model
     ];
 
     /**
-     * @param  Builder  $query
-     * @param  Tenant  $tenant
      * @return void
      */
     public function scopeForTenant(Builder $query, Tenant $tenant)

@@ -82,7 +82,6 @@ class User extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -103,12 +102,12 @@ class User extends Resource
                     return Request::isDemoMode();
                 }),
             Password::make('Password')
-                    ->onlyOnForms()
-                    ->creationRules('required', Rules\Password::defaults())
-                    ->updateRules('nullable', Rules\Password::defaults())
-                    ->readonly(function () {
-                        return Request::isDemoMode();
-                    }),
+                ->onlyOnForms()
+                ->creationRules('required', Rules\Password::defaults())
+                ->updateRules('nullable', Rules\Password::defaults())
+                ->readonly(function () {
+                    return Request::isDemoMode();
+                }),
             Badge::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), function () {
                 return $this->status->name ?? 'none';
             })->types([
@@ -127,38 +126,38 @@ class User extends Resource
             Image::make('Cover Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Panel::make('Assignment', [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
-                         ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
-                         ->nullable()
-                         ->onlyOnForms()
-                         ->showOnPreview()
-                         ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
+                    ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
+                    ->nullable()
+                    ->onlyOnForms()
+                    ->showOnPreview()
+                    ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
-                         ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
-                         ->nullable()
-                         ->onlyOnForms()
-                         ->showOnPreview()
-                         ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
+                    ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
+                    ->nullable()
+                    ->onlyOnForms()
+                    ->showOnPreview()
+                    ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
-                         ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
-                         ->nullable()
-                         ->onlyOnForms()
-                         ->showOnPreview()
-                         ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
+                    ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
+                    ->nullable()
+                    ->onlyOnForms()
+                    ->showOnPreview()
+                    ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)
-                         ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
-                         ->nullable()
-                         ->onlyOnForms()
-                         ->showOnPreview()
-                         ->canSeeWhen('create', \App\Models\RankRecord::class),
+                    ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
+                    ->nullable()
+                    ->onlyOnForms()
+                    ->showOnPreview()
+                    ->canSeeWhen('create', \App\Models\RankRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
                 BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
-                         ->help('You can manually set the user\'s status. Creating a status record will also change their status.')
-                         ->nullable()
-                         ->onlyOnForms()
-                         ->canSeeWhen('create', \App\Models\StatusRecord::class),
+                    ->help('You can manually set the user\'s status. Creating a status record will also change their status.')
+                    ->nullable()
+                    ->onlyOnForms()
+                    ->canSeeWhen('create', \App\Models\StatusRecord::class),
             ]),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
@@ -262,22 +261,22 @@ class User extends Resource
                 HasMany::make('Submission Records', 'submissions', Submission::class),
             ])->showTitle(true),
             MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'statuses', Status::class)
-                       ->allowDuplicateRelations()
-                       ->fields(function () {
-                           return [
-                               Textarea::make('Text'),
-                               Text::make('Text', function ($model) {
-                                   return $model->text;
-                               }),
-                               DateTime::make('Created At')->sortable()->onlyOnIndex(),
-                           ];
-                       }),
+                ->allowDuplicateRelations()
+                ->fields(function () {
+                    return [
+                        Textarea::make('Text'),
+                        Text::make('Text', function ($model) {
+                            return $model->text;
+                        }),
+                        DateTime::make('Created At')->sortable()->onlyOnIndex(),
+                    ];
+                }),
             BelongsToMany::make('Events')->referToPivotAs('registration'),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note', \App\Models\User::class),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')
-                        ->canSeeWhen('note', \App\Models\User::class)
-                        ->onlyOnDetail(),
+                    ->canSeeWhen('note', \App\Models\User::class)
+                    ->onlyOnDetail(),
             ]),
             Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])
                 ->showTitle(true),
@@ -287,7 +286,6 @@ class User extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -298,7 +296,6 @@ class User extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -309,7 +306,6 @@ class User extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -320,7 +316,6 @@ class User extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

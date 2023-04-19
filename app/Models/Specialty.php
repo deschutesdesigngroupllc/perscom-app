@@ -20,6 +20,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Specialty newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Specialty newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Specialty query()
+ *
  * @mixin \Eloquent
  */
 class Specialty extends Model implements Sortable

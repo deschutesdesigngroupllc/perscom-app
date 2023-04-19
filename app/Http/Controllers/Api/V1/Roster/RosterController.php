@@ -21,9 +21,6 @@ class RosterController extends Controller
      */
     protected $policy = UnitPolicy::class;
 
-    /**
-     * @return int
-     */
     public function limit(): int
     {
         return 0;
@@ -31,8 +28,6 @@ class RosterController extends Controller
 
     /**
      * The relations that are loaded by default together with a resource.
-     *
-     * @return array
      */
     public function alwaysIncludes(): array
     {
@@ -41,10 +36,6 @@ class RosterController extends Controller
 
     /**
      * Builds Eloquent query for fetching entities in index method.
-     *
-     * @param  Request  $request
-     * @param  array  $requestedRelations
-     * @return Builder
      */
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
     {

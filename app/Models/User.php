@@ -74,6 +74,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
+ *
  * @mixin \Eloquent
  */
 class User extends Authenticatable implements MustVerifyEmail, JWTSubject
@@ -304,9 +305,9 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     public function ranks()
     {
         return $this->belongsToMany(Rank::class, 'records_ranks')
-                    ->withTimestamps()
-                    ->withPivot(['text', 'type'])
-                    ->as('record');
+            ->withTimestamps()
+            ->withPivot(['text', 'type'])
+            ->as('record');
     }
 
     /**

@@ -59,20 +59,18 @@ class PassportClient extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
     public static function indexQuery(NovaRequest $request, $query)
     {
         return $query->where('name', '<>', 'Default Personal Access Client')
-                     ->where('name', '<>', 'Default Password Grant Client');
+            ->where('name', '<>', 'Default Password Grant Client');
     }
 
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -87,18 +85,21 @@ class PassportClient extends Resource
             Text::make('Client Secret', 'secret')->readonly()->copyable()->onlyOnDetail(),
             URL::make('Redirect URL', 'redirect')->rules('required'),
             Boolean::make('Revoked')->default(false)->sortable()->hideWhenCreating()->showOnUpdating()->sortable(),
-            Heading::make('OAuth 2.0 Endpoints')->onlyOnDetail(),
+            Heading::make('OAuth 2.0 and OpenID Connect Endpoints')->onlyOnDetail(),
+            Text::make('Discovery Endpoint', function () {
+                return route('oidc.discovery');
+            })->copyable()->onlyOnDetail(),
             Text::make('Authorization Endpoint', function () {
                 return route('passport.authorizations.authorize');
             })->copyable()->onlyOnDetail(),
             Text::make('Token Endpoint', function () {
                 return route('passport.token');
             })->copyable()->onlyOnDetail(),
-            Text::make('Refresh Token Endpoint', function () {
-                return route('passport.token.refresh');
+            Text::make('Logout Endpoint', function () {
+                return route('oidc.logout');
             })->copyable()->onlyOnDetail(),
-            Text::make('Authenticated User Endpoint', function () {
-                return route('api.me.index');
+            Text::make('User Info Endpoint', function () {
+                return route('oidc.userinfo');
             })->copyable()->onlyOnDetail(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->sortable()->exceptOnForms(),
@@ -108,7 +109,6 @@ class PassportClient extends Resource
     }
 
     /**
-     * @param  Request  $request
      * @return false
      */
     public function authorizedToReplicate(Request $request)
@@ -119,7 +119,6 @@ class PassportClient extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -130,7 +129,6 @@ class PassportClient extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -141,7 +139,6 @@ class PassportClient extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -152,7 +149,6 @@ class PassportClient extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

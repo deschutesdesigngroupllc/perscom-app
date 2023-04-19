@@ -78,7 +78,6 @@ class Mail extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -89,12 +88,12 @@ class Mail extends Resource
             Markdown::make('Content')->rules('required'),
             Boolean::make('Send Now', 'send_now')->sortable(),
             DateTime::make('Send At', 'send_at')
-                    ->hide()
-                    ->dependsOn(['send_now'], function (DateTime $field, NovaRequest $request, $formData) {
-                        if ($formData->send_now === false) {
-                            $field->rules('required')->show();
-                        }
-                    }),
+                ->hide()
+                ->dependsOn(['send_now'], function (DateTime $field, NovaRequest $request, $formData) {
+                    if ($formData->send_now === false) {
+                        $field->rules('required')->show();
+                    }
+                }),
             DateTime::make('Sent At', 'sent_at')->exceptOnForms(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms()->sortable(),
@@ -108,7 +107,6 @@ class Mail extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -119,7 +117,6 @@ class Mail extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -130,7 +127,6 @@ class Mail extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -141,7 +137,6 @@ class Mail extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

@@ -14,9 +14,9 @@ class RegisterControllerTest extends CentralTestCase
     public function test_register_index_page_can_be_reached()
     {
         $this->get('/register')
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('Register');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Register');
+            })->assertSuccessful();
     }
 
     public function test_register_store_page_can_be_reached()
@@ -32,7 +32,7 @@ class RegisterControllerTest extends CentralTestCase
         $url = URL::signedRoute('web.register.complete', ['tenant' => 1]);
 
         $this->post('/register')
-             ->assertRedirect($url);
+            ->assertRedirect($url);
     }
 
     public function test_register_store_page_cannot_be_reached_without_email_parameter()
@@ -43,8 +43,8 @@ class RegisterControllerTest extends CentralTestCase
         $this->instance(CreateNewTenant::class, $createNewTenant);
 
         $this->post('/register')
-             ->assertRedirect()
-             ->assertSessionHasErrors('email');
+            ->assertRedirect()
+            ->assertSessionHasErrors('email');
     }
 
     public function test_register_store_page_cannot_be_reached_without_organization_parameter()
@@ -67,8 +67,8 @@ class RegisterControllerTest extends CentralTestCase
         $this->instance(CreateNewTenant::class, $createNewTenant);
 
         $this->post('/register')
-             ->assertRedirect()
-             ->assertSessionHasErrors('privacy');
+            ->assertRedirect()
+            ->assertSessionHasErrors('privacy');
     }
 
     public function test_register_complete_page_can_be_reached()
@@ -82,8 +82,8 @@ class RegisterControllerTest extends CentralTestCase
         $url = URL::signedRoute('web.register.complete', ['tenant' => 1]);
 
         $this->get($url)
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('Complete');
-             })->assertSuccessful();
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Complete');
+            })->assertSuccessful();
     }
 }

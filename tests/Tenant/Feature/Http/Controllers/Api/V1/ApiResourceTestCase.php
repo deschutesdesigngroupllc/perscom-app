@@ -13,9 +13,6 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
      */
     protected $factory;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -30,7 +27,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->getJson("/{$this->endpoint()}")
-             ->assertSuccessful();
+            ->assertSuccessful();
     }
 
     public function test_can_reach_show_endpoint()
@@ -40,7 +37,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
-             ->assertSuccessful();
+            ->assertSuccessful();
     }
 
     public function test_can_reach_store_endpoint()
@@ -52,7 +49,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $data = $this->storeData();
 
         $this->postJson("/{$this->endpoint()}", $data)
-             ->assertSuccessful();
+            ->assertSuccessful();
 
         $this->assertDatabaseHas($this->endpoint(), $data);
     }
@@ -66,7 +63,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $data = $this->updateData();
 
         $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $data)
-             ->assertSuccessful();
+            ->assertSuccessful();
 
         $this->assertDatabaseHas($this->endpoint(), $data);
     }
@@ -78,7 +75,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
-             ->assertSuccessful();
+            ->assertSuccessful();
 
         $this->assertDatabaseMissing($this->endpoint(), [
             'id' => $this->factory->getKey(),
@@ -90,7 +87,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         Passport::actingAs($this->user);
 
         $this->getJson("/{$this->endpoint()}")
-             ->assertForbidden();
+            ->assertForbidden();
     }
 
     public function test_cannot_reach_show_endpoint_with_missing_scope()
@@ -98,7 +95,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         Passport::actingAs($this->user);
 
         $this->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
-             ->assertForbidden();
+            ->assertForbidden();
     }
 
     public function test_cannot_reach_store_endpoint_with_missing_scope()
@@ -106,7 +103,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         Passport::actingAs($this->user);
 
         $this->postJson("/{$this->endpoint()}", $this->storeData())
-             ->assertForbidden();
+            ->assertForbidden();
     }
 
     public function test_cannot_reach_update_endpoint_with_missing_scope()
@@ -114,7 +111,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         Passport::actingAs($this->user);
 
         $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $this->updateData())
-             ->assertForbidden();
+            ->assertForbidden();
     }
 
     public function test_cannot_reach_delete_endpoint_with_missing_scope()
@@ -122,7 +119,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         Passport::actingAs($this->user);
 
         $this->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
-             ->assertForbidden();
+            ->assertForbidden();
     }
 
     public function test_cannot_reach_store_endpoint_with_missing_body()
@@ -132,7 +129,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->postJson("/{$this->endpoint()}")
-             ->assertStatus(422);
+            ->assertStatus(422);
     }
 
     public function test_show_store_endpoint_returns_not_found()
@@ -142,6 +139,6 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->getJson("/{$this->endpoint()}/{$this->faker->numberBetween(10, 20)}")
-             ->assertNotFound();
+            ->assertNotFound();
     }
 }

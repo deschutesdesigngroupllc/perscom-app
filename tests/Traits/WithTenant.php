@@ -106,12 +106,6 @@ trait WithTenant
         $this->tenant->delete();
     }
 
-    /**
-     * @param  string|int|null  $priceId
-     * @param  string  $subscriptionStatus
-     * @param    $trialExpiresAt
-     * @return void
-     */
     public function withSubscription(string|int $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void
     {
         $priceId = $priceId ?? env('STRIPE_PRODUCT_BASIC_MONTH');
@@ -144,10 +138,6 @@ trait WithTenant
         $this->tenant->subscriptions()->delete();
     }
 
-    /**
-     * @param $trialExpiresAt
-     * @return void
-     */
     public function onTrial($trialExpiresAt = null): void
     {
         $this->tenant->forceFill([

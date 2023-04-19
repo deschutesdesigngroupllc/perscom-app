@@ -21,6 +21,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Award newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Award ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Award query()
+ *
  * @mixin \Eloquent
  */
 class Award extends Model implements Sortable

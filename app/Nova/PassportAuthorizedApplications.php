@@ -60,7 +60,6 @@ class PassportAuthorizedApplications extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -74,7 +73,6 @@ class PassportAuthorizedApplications extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -93,7 +91,6 @@ class PassportAuthorizedApplications extends Resource
     }
 
     /**
-     * @param  Request  $request
      * @return bool
      */
     public static function authorizedToViewAny(Request $request)
@@ -102,7 +99,6 @@ class PassportAuthorizedApplications extends Resource
     }
 
     /**
-     * @param  Request  $request
      * @return false
      */
     public static function authorizedToCreate(Request $request)
@@ -111,7 +107,6 @@ class PassportAuthorizedApplications extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
      * @return string
      */
@@ -120,10 +115,6 @@ class PassportAuthorizedApplications extends Resource
         return '/resources/'.static::uriKey();
     }
 
-    /**
-     * @param  NovaRequest  $request
-     * @param  Model  $model
-     */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
         Auth::user()->createToken($model->name, $model->scopes);
@@ -133,7 +124,6 @@ class PassportAuthorizedApplications extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -144,7 +134,6 @@ class PassportAuthorizedApplications extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -155,7 +144,6 @@ class PassportAuthorizedApplications extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -166,7 +154,6 @@ class PassportAuthorizedApplications extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

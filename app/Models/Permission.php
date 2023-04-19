@@ -35,6 +35,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Permission whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Permission extends \Spatie\Permission\Models\Permission implements Arrayable

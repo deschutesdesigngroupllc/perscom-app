@@ -35,6 +35,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder|Message whereTitle($value)
  * @method static Builder|Message whereUpdatedAt($value)
  * @method static Builder|Message whereUrl($value)
+ *
  * @mixin \Eloquent
  */
 class Message extends Model implements Sortable
@@ -59,7 +60,6 @@ class Message extends Model implements Sortable
     ];
 
     /**
-     * @param $query
      * @return mixed
      */
     public function scopeActive(Builder $query)

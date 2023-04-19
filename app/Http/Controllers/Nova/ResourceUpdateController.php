@@ -11,7 +11,6 @@ class ResourceUpdateController extends \Laravel\Nova\Http\Controllers\ResourceUp
     /**
      * Create a new resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\UpdateResourceRequest  $request
      * @return \Illuminate\Http\JsonResponse
      *
      * @throws \Illuminate\Http\Exceptions\HttpResponseException

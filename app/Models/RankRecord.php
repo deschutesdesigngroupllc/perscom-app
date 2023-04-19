@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord query()
+ *
  * @mixin \Eloquent
  */
 class RankRecord extends Model
