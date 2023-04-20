@@ -11,7 +11,7 @@ import searchImage from '../../images/features/secondary3.png'
 const features = [
   {
     name: 'Effortless Personnel Management',
-    summary: 'Advanced customazability without the headache.',
+    summary: 'Seamless data intake and reporting.',
     description:
       "PERSCOM.io's comprehensive personnel management tools allow you to easily track personnel records, assign tasks, manage qualifications, recognize milestones and achievements, and more, all in one centralized location.",
     image: customFieldsImage,
@@ -21,7 +21,7 @@ const features = [
   },
   {
     name: 'Customizable Hierarchical Design',
-    summary: 'Keep track of every action and update that happens to your people.',
+    summary: 'Customazability without the headache.',
     description:
       "With PERSCOM.io's customizable hierarchical design, you can create a tailored organizational structure that reflects your unique needs and chain of command.",
     image: recordsImage,
@@ -31,7 +31,7 @@ const features = [
   },
   {
     name: 'Powerful Event Management',
-    summary: 'Backed by Algolia, the leader in AI-Powered searching.',
+    summary: 'Keep everyone up-to-date and in the know.',
     description:
       "PERSCOM.io's Calendars and Events features provide a comprehensive solution for managing scheduling and events, allowing you to efficiently plan and coordinate meetings, trainings, drills, and more.",
     image: searchImage,
