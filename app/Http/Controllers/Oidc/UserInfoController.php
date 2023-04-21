@@ -13,7 +13,7 @@ class UserInfoController extends Controller
      */
     public function index(Request $request)
     {
-        $user = optional(Auth::guard('passport')->user());
+        $user = Auth::guard('passport')->user();
 
         $response = collect([
             'sub' => $user?->getAuthIdentifier(),
@@ -25,8 +25,8 @@ class UserInfoController extends Controller
             ]);
         }
 
-        if ($user?->tokenCan('profile')) {
-            $profile = collect($user)->only([
+        if ($user->tokenCan('profile')) {
+            $profile = collect($user)->only([ // @phpstan-ignore-line
                 'name',
                 'profile_photo_url',
                 'cover_photo_url',

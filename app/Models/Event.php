@@ -52,6 +52,9 @@ class Event extends Model
     use HasImages;
     use HasResourceUrlAttribute;
 
+    /**
+     * @var string[]
+     */
     protected $fillable = [
         'name',
         'calendar_id',
