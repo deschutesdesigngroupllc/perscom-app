@@ -148,7 +148,7 @@ return [
                         \App\Features\SocialLoginFeature::class,
                         \App\Features\ApiAccessFeature::class,
                         \App\Features\CustomSubDomainFeature::class,
-                        \App\Features\SupportTicketFeature::class
+                        \App\Features\SupportTicketFeature::class,
                     ],
                 ],
                 [
