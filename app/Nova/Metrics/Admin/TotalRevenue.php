@@ -2,9 +2,10 @@
 
 namespace App\Nova\Metrics\Admin;
 
+use Illuminate\Support\Facades\DB;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\Value;
-use Spark\Receipt;
+use Laravel\Nova\Nova;
 
 class TotalRevenue extends Value
 {
@@ -21,7 +22,41 @@ class TotalRevenue extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Receipt::class, 'amount', 'paid_at')->currency()->format('0,0.00');
+        $timezone = Nova::resolveUserTimezone($request) ?? $request->timezone ?? config('app.timezone');
+        $range = $request->range ?? 1;
+
+        $query = DB::table('receipts')->select(DB::raw('SUM( TRIM( REPLACE(amount, \'$\', \'\')) + 0.0) as total'));
+
+        if ($request->range === 'ALL') {
+            return $this->result(
+                round(
+                    (clone $query)->first()->total ?? 0,
+                    $this->roundingPrecision,
+                    $this->roundingMode
+                )
+            )->dollars()->format('0,0.00');
+        }
+
+        $currentRange = $this->currentRange($range, $timezone);
+        $previousRange = $this->previousRange($range, $timezone);
+
+        $previousValue = round(
+            (clone $query)->whereBetween(
+                'paid_at', $this->formatQueryDateBetween($previousRange)
+            )->first()->total ?? 0,
+            $this->roundingPrecision,
+            $this->roundingMode
+        );
+
+        $currentValue = round(
+            (clone $query)->whereBetween(
+                'paid_at', $this->formatQueryDateBetween($currentRange)
+            )->first()->total ?? 0,
+            $this->roundingPrecision,
+            $this->roundingMode
+        );
+
+        return $this->result($currentValue)->previous($previousValue)->dollars()->format('0,0.00');
     }
 
     /**
@@ -36,9 +71,11 @@ class TotalRevenue extends Value
             60 => __('60 Days'),
             365 => __('365 Days'),
             'TODAY' => __('Today'),
+            'YESTERDAY' => __('Yesterday'),
             'MTD' => __('Month To Date'),
             'QTD' => __('Quarter To Date'),
             'YTD' => __('Year To Date'),
+            'ALL' => __('All Time'),
         ];
     }
 
@@ -49,7 +86,7 @@ class TotalRevenue extends Value
      */
     public function cacheFor()
     {
-        return now()->addMinutes(5);
+        //return now()->addMinutes(5);
     }
 
     /**

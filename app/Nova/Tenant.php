@@ -56,12 +56,22 @@ class Tenant extends Resource
      *
      * @var array
      */
-    public static $search = ['id', 'name', 'website'];
+    public static $search = ['id', 'name', 'email'];
 
     /**
      * @var string[]
      */
     public static $orderBy = ['name' => 'asc'];
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "URL: {$this->url}";
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -73,14 +83,11 @@ class Tenant extends Resource
     {
         return [
             ID::make('PERSCOM ID', 'id')->sortable(),
-            Text::make('Name')->sortable()->rules([
-                'required',
-                Rule::unique('tenants', 'name')->ignore($this->id),
-            ])->copyable(),
-            Email::make('Email')->sortable()->rules([
-                'required',
-                Rule::unique('tenants', 'email')->ignore($this->id),
-            ]),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
+                ->copyable(),
+            Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
             Text::make('Website')->hideFromIndex(),
             URL::make('Domain', 'url')->displayUsing(function ($url) {
                 return $url;
@@ -101,15 +108,6 @@ class Tenant extends Resource
             DateTime::make('Created At')->sortable()->exceptOnForms()->onlyOnDetail(),
             DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
             Tabs::make('Relations', [
-                Tab::make('Database', [
-                    Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
-                    Status::make('Database Status')
-                          ->hideFromIndex()
-                          ->loadingWhen(['creating'])
-                          ->failedWhen([])
-                          ->readonly(),
-                ]),
-                Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Billing Settings', [
                     Text::make('Billing Address')->hideFromIndex(),
                     Text::make('Billing Address Line 2')->hideFromIndex(),
@@ -138,10 +136,16 @@ class Tenant extends Resource
                     DateTime::make('Plan Ends At')->hideFromIndex(),
                     Text::make('Receipt Emails')->hideFromIndex(),
                 ]),
-                Tab::make('All Subscriptions', [HasMany::make('Subscriptions')]),
-                Tab::make('Receipts', [
-                    HasMany::make('Receipts', 'localReceipts', Receipt::class),
+                Tab::make('Database', [
+                    Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
+                    Status::make('Database Status')->hideFromIndex()->loadingWhen(['creating'])->failedWhen([])->readonly(),
                 ]),
+                Tab::make('Domains', [HasMany::make('Domains')]),
+                Tab::make('Features', [
+                    HasMany::make('Features', 'pennants', Feature::class),
+                ]),
+                Tab::make('Receipts', [HasMany::make('Receipts', 'localReceipts', Receipt::class)]),
+                Tab::make('Subscriptions', [HasMany::make('Subscriptions')]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];

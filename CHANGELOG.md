@@ -1,6 +1,107 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.22...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.32...HEAD)
+
+## [v1.0.32](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...v1.0.32) - 2023-04-14
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.32 -->
+### What's Changed
+
+#### Added
+
+- Adds a new calendar and events feature by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/154
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...v1.0.32
+
+## [v1.0.31](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.30...v1.0.31) - 2023-03-25
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.31 -->
+### What's Changed
+
+#### Added
+
+- Add support for including award, rank and qualification images in the API. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/153
+- Add fall back error views and test suite for errors. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/152
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.30...v1.0.31
+
+## [v1.0.30](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.29...v1.0.30) - 2023-03-25
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.30 -->
+### What's Changed
+
+#### Fixed
+
+- Fixes image not showing on roster and sets tenants settings if not set. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/151
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.29...v1.0.30
+
+## [v1.0.29](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.28...v1.0.29) - 2023-03-23
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.29 -->
+### What's Changed
+
+#### Added
+
+- Adds new registration settings and allows default roles and permissions to be set on a new user. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/146
+- Roster now sorts based on unit order and sorts users based on rank, position and specialty. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/147
+
+#### Changed
+
+- All profile and cover photo to be deletable. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/149
+
+#### Fixed
+
+- Fixed receipt dashboard metrics and download error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/145
+- Fixes a bug when user is removed from a model that has an attached document. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/148
+
+#### Other
+
+- Non-specific PRs now go to an "other" group in the CHANGELOG by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/150
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.28...v1.0.29
+
+## [v1.0.28](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.27...v1.0.28) - 2023-03-13
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.28 -->
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.27...v1.0.28
+
+## [v1.0.27](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.26...v1.0.27) - 2023-03-09
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.27 -->
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.26...v1.0.27
+
+## [v1.0.26](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.25...v1.0.26) - 2023-03-08
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.26 -->
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.25...v1.0.26
+
+## [v1.0.25](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.24...v1.0.25) - 2023-03-08
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.25 -->
+### What's Changed
+
+#### Changed
+
+- Fix global search errors by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/141
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.24...v1.0.25
+
+## [v1.0.24](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.23...v1.0.24) - 2023-03-08
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.24 -->
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.23...v1.0.24
+
+## [v1.0.23](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.22...v1.0.23) - 2023-03-08
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.23 -->
+### What's Changed
+
+#### Changed
+
+- Fixes an error running seeders from Faker library missing by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/140
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.22...v1.0.23
 
 ## [v1.0.22](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.21...v1.0.22) - 2023-03-06
 

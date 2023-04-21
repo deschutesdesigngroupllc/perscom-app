@@ -14,6 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Form|null $form
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $task_assignments
+ * @property-read int|null $task_assignments_count
  *
  * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
@@ -25,6 +27,18 @@ class Task extends Model
 {
     use HasAttachments;
     use HasFactory;
+
+    /**
+     * Boot
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::deleted(function (Task $task) {
+            $task->task_assignments()->delete();
+        });
+    }
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -46,5 +60,13 @@ class Task extends Model
             'assigned_at',
             'expires_at',
         ])->as('assignment')->using(TaskAssignment::class)->withTimestamps();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function task_assignments()
+    {
+        return $this->hasMany(TaskAssignment::class);
     }
 }

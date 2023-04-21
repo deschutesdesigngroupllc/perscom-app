@@ -198,7 +198,7 @@ class TaskAssignment extends Pivot
      */
     public function task()
     {
-        return $this->belongsTo(Task::class);
+        return $this->hasOne(Task::class, 'id', 'task_id');
     }
 
     /**

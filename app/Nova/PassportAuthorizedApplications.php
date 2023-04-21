@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\OAuth2AccessFeature;
 use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
@@ -17,6 +16,7 @@ use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Passport;
+use Laravel\Pennant\Feature;
 
 class PassportAuthorizedApplications extends Resource
 {
@@ -81,13 +81,9 @@ class PassportAuthorizedApplications extends Resource
     {
         return [
             BelongsTo::make('Application', 'client', PassportClient::class)->sortable()->readonly(),
-            MultiSelect::make('Scopes')->options(
-                Passport::scopes()->mapWithKeys(function (
-                    $scope
-                ) {
-                    return [$scope->id => $scope->id];
-                })->sort()
-            )->hideFromIndex()->readonly(),
+            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
+                return [$scope->id => $scope->id];
+            })->sort())->hideFromIndex()->readonly(),
             Boolean::make('Revoked')->default(false)->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->sortable()->exceptOnForms(),
@@ -102,8 +98,7 @@ class PassportAuthorizedApplications extends Resource
      */
     public static function authorizedToViewAny(Request $request)
     {
-        return Feature::isAccessible(FeatureIdentifier::FEATURE_SINGLE_SIGN_ON) &&
-               Gate::check('viewAny', PassportToken::class);
+        return Feature::active(OAuth2AccessFeature::class) && Gate::check('viewAny', PassportToken::class);
     }
 
     /**

@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Badge;
@@ -13,6 +12,7 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Pennant\Feature;
 
 class Status extends Resource
 {
@@ -75,16 +75,17 @@ class Status extends Resource
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
             Badge::make('Color', function ($model) {
                 return $model->color;
-            })->types(
-                collect(\App\Models\Status::$colors)->mapWithKeys(function ($value, $key) {
-                    return [$key => $key];
-                })->toArray()
-            )->label(function ($value) {
+            })->types(collect(\App\Models\Status::$colors)->mapWithKeys(function ($value, $key) {
+                return [$key => $key];
+            })->toArray())->label(function ($value) {
                 return \App\Models\Status::$colors[$value];
             }),
-            Select::make('Color')->rules(['required'])->showOnPreview()->displayUsingLabels()->onlyOnForms()->options(
-                \App\Models\Status::$colors
-            ),
+            Select::make('Color')
+                  ->rules(['required'])
+                  ->showOnPreview()
+                  ->displayUsingLabels()
+                  ->onlyOnForms()
+                  ->options(\App\Models\Status::$colors),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
@@ -132,10 +133,8 @@ class Status extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-            })->nameable(),
-        ];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::active(ExportDataFeature::class);
+        })->nameable()];
     }
 }

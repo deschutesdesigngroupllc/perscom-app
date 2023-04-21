@@ -41,7 +41,9 @@ class TaskPolicy extends Policy
      */
     public function view(User $user, Task $task)
     {
-        return $this->hasPermissionTo($user, 'view:task') || $user->tokenCan('view:task');
+        return $this->hasPermissionTo($user, 'view:task') ||
+               $user->tokenCan('view:task') ||
+               $task->users->contains($user);
     }
 
     /**
@@ -101,5 +103,41 @@ class TaskPolicy extends Policy
     public function forceDelete(User $user, Task $task)
     {
         //
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Task  $task
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function attachAnyUser(User $user, Task $task)
+    {
+        return $this->update($user, $task);
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Task  $task
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function attachUser(User $user, Task $task)
+    {
+        return $this->update($user, $task);
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @param  User  $user
+     * @param  Task  $task
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function detachUser(User $user, Task $task)
+    {
+        return $this->update($user, $task);
     }
 }

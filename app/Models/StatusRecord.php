@@ -22,6 +22,11 @@ class StatusRecord extends MorphPivot
     use HasFactory;
 
     /**
+     * @var string
+     */
+    protected $table = 'model_has_statuses';
+
+    /**
      * Boot
      */
     public static function boot()

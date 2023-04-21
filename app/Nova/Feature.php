@@ -2,15 +2,12 @@
 
 namespace App\Nova;
 
-use App\Nova\Fields\FeatureState as FeatureStateField;
-use Codinglabs\FeatureFlags\Enums\FeatureState;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Str;
-use Laravel\Nova\Fields\Badge;
+use App\Nova\Actions\ActivateFeature;
+use App\Nova\Actions\DeactivateFeature;
+use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Feature extends Resource
@@ -37,6 +34,14 @@ class Feature extends Resource
     public static $search = ['id', 'name'];
 
     /**
+     * @return string|null
+     */
+    public static function createButtonLabel()
+    {
+        return 'Add Feature';
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -46,29 +51,10 @@ class Feature extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Name')->rules('required')->sortable(),
-            Text::make('Description', function () {
-                return Str::limit($this->description);
-            })->onlyOnIndex(),
-            Textarea::make('Description')->alwaysShow()->nullable(),
-            Badge::make('State', function () {
-                return FeatureState::from($this->state)->value;
-            })->map([
-                'off' => 'danger',
-                'on' => 'success',
-                'dynamic' => 'info',
-            ])->exceptOnForms(),
-            FeatureStateField::make('State')->attach(FeatureState::class)->onlyOnForms(),
+            BelongsTo::make('Tenant')->sortable(),
+            Select::make('Feature', 'name')->rules('required')->sortable()->options(\App\Models\Feature::options()),
+            Boolean::make('Activated', 'value')->trueValue('true')->falseValue('false')->rules('required')->sortable(),
         ];
-    }
-
-    /**
-     * @param  NovaRequest  $request
-     * @param  Model  $model
-     */
-    public static function afterUpdate(NovaRequest $request, Model $model)
-    {
-        FeatureFlag::updateFeatureState($model->name, $model->state);
     }
 
     /**
@@ -112,6 +98,9 @@ class Feature extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            new ActivateFeature(),
+            new DeactivateFeature(),
+        ];
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\RankScope;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +28,16 @@ class Rank extends Model implements Sortable
     use HasFactory;
     use HasImages;
     use SortableTrait;
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new RankScope());
+    }
 
     /**
      * @var string[]

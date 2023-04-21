@@ -31,6 +31,7 @@
     <server name="LOG_CHANNEL" value="single"/>
     <server name="LOG_LEVEL" value="debug"/>
     <server name="MAIL_MAILER" value="array"/>
+    <server name="PENNANT_STORE" value="array"/>
     <server name="QUEUE_CONNECTION" value="sync"/>
     <server name="SESSION_DRIVER" value="array"/>
     <server name="STRIPE_PRODUCT_BASIC_MONTH" value="price_1LGWsjGt8lrL0dgCSh82mHu3"/>

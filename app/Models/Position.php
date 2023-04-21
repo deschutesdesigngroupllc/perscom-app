@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\PositionScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
@@ -26,6 +27,16 @@ class Position extends Model implements Sortable
 {
     use HasFactory;
     use SortableTrait;
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new PositionScope());
+    }
 
     /**
      * @var string[]

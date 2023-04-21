@@ -47,10 +47,10 @@ class MyTasks extends Lens
             ID::make(__('ID'), 'id')->sortable(),
             BelongsTo::make('Task')->sortable(),
             Text::make('Description', function () {
-                return Str::limit($this->task->description);
+                return Str::limit($this->task?->description);
             }),
-            Badge::make('Status', function ($model) {
-                return $model->status->value;
+            Badge::make('Status', function () {
+                return $this->status?->value;
             })->map([
                 TaskAssignmentStatus::TASK_ASSIGNED->value => 'info',
                 TaskAssignmentStatus::TASK_COMPLETE->value => 'success',

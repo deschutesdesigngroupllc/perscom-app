@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
@@ -12,9 +11,13 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Pennant\Feature;
+use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
 class Specialty extends Resource
 {
+    use HasSortableRows;
+
     /**
      * The model the resource corresponds to.
      *
@@ -39,7 +42,7 @@ class Specialty extends Resource
     /**
      * @var string[]
      */
-    public static $orderBy = ['name' => 'asc'];
+    public static $orderBy = ['order' => 'asc'];
 
     /**
      * Get the displayable label of the resource.
@@ -59,6 +62,16 @@ class Specialty extends Resource
     public static function uriKey()
     {
         return Str::plural(Str::slug(setting('localization_specialties', 'specialties')));
+    }
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "Abbreviation: {$this->abbreviation}";
     }
 
     /**
@@ -121,10 +134,8 @@ class Specialty extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-            })->nameable(),
-        ];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::active(ExportDataFeature::class);
+        })->nameable()];
     }
 }

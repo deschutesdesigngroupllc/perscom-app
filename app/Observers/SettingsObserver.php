@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Settings;
+use Illuminate\Support\Facades\Cache;
 
 class SettingsObserver
 {
@@ -43,6 +44,8 @@ class SettingsObserver
      */
     public function updated(Settings $settings)
     {
+        Cache::forget($settings->key);
+
         if ($settings->key === 'organization') {
             tenant()->update([
                 'name' => $settings->value,
@@ -72,7 +75,7 @@ class SettingsObserver
      */
     public function deleted(Settings $settings)
     {
-        //
+        Cache::forget($settings->key);
     }
 
     /**

@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use App\Nova\Fields\TaskAssignmentFields;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
@@ -18,6 +17,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 
 class Task extends Resource
 {
@@ -55,8 +55,8 @@ class Task extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Title')->rules('required'),
-            Textarea::make('Description')->alwaysShow(),
+            Text::make('Title')->rules('required')->showOnPreview(),
+            Textarea::make('Description')->alwaysShow()->showOnPreview(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
@@ -65,9 +65,10 @@ class Task extends Resource
             DateTime::make('Created At')->sortable()->onlyOnDetail(),
             DateTime::make('Updated At')->sortable()->onlyOnDetail(),
             new Panel('Details', [
-                BelongsTo::make('Form')->nullable()->help(
-                    'Set to assign a form that needs to be completed as apart of the task.'
-                )->hideFromIndex(),
+                BelongsTo::make('Form')
+                         ->nullable()
+                         ->help('Set to assign a form that needs to be completed as apart of the task.')
+                         ->hideFromIndex(),
             ]),
             BelongsToMany::make('Assigned To', 'users', User::class)
                          ->fields(new TaskAssignmentFields())
@@ -117,10 +118,8 @@ class Task extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-            })->nameable(),
-        ];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::active(ExportDataFeature::class);
+        })->nameable()];
     }
 }

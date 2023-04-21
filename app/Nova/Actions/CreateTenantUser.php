@@ -45,7 +45,7 @@ class CreateTenantUser extends Action
     {
         foreach ($models as $model) {
             if ($model instanceof Tenant) {
-                $password = $fields->password ?? Str::random();
+                $password = $fields->password ?? Str::password();
                 $user = $model->run(function () use ($fields, $password) {
                     $user = app()->make(CreatesNewUsers::class)->create([
                         'name' => $fields->name,

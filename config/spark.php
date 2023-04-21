@@ -131,7 +131,7 @@ return [
                         'Community support',
                     ],
                     'options' => [
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_SOCIAL_LOGIN,
+                        \App\Features\SocialLoginFeature::class,
                     ],
                 ],
                 [
@@ -145,10 +145,10 @@ return [
                         'Ticket and email support',
                     ],
                     'options' => [
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_SOCIAL_LOGIN,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_API_ACCESS,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_SUPPORT_TICKET,
+                        \App\Features\SocialLoginFeature::class,
+                        \App\Features\ApiAccessFeature::class,
+                        \App\Features\CustomSubDomainFeature::class,
+                        \App\Features\SupportTicketFeature::class
                     ],
                 ],
                 [
@@ -162,13 +162,13 @@ return [
                         'Priority support',
                     ],
                     'options' => [
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_SOCIAL_LOGIN,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_API_ACCESS,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_CUSTOM_SUBDOMAIN,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_SUPPORT_TICKET,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_CUSTOM_DOMAIN,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_EXPORT_DATA,
-                        \App\Models\Enums\FeatureIdentifier::FEATURE_SINGLE_SIGN_ON,
+                        \App\Features\SocialLoginFeature::class,
+                        \App\Features\ApiAccessFeature::class,
+                        \App\Features\CustomSubDomainFeature::class,
+                        \App\Features\SupportTicketFeature::class,
+                        \App\Features\CustomDomainFeature::class,
+                        \App\Features\ExportDataFeature::class,
+                        \App\Features\OAuth2AccessFeature::class,
                     ],
                 ],
             ],

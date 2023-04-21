@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use App\Nova\Actions\OpenForm;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
@@ -28,6 +27,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 
 class Form extends Resource
 {
@@ -71,49 +71,40 @@ class Form extends Resource
         return [
             ID::make()->hideFromIndex(),
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-            Slug::make('Slug')->from('Name')->rules([
-                'required',
-                Rule::unique('forms', 'slug')->ignore($this->id),
-            ])->help('The slug will be used in the URL to access the form.')->canSee(function (NovaRequest $request) {
-                return Gate::check('update', $request->findModel());
-            }),
+            Slug::make('Slug')
+                ->from('Name')
+                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)])
+                ->help('The slug will be used in the URL to access the form.')
+                ->canSee(function (NovaRequest $request) {
+                    return Gate::check('update', $request->findModel());
+                }),
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
-            Tag::make('Tags')->showCreateRelationButton()->withPreview()->showOnPreview(),
-            URL::make('URL')
-               ->displayUsing(function (
-                   $url
-               ) {
-                   return 'Click To Open Form';
-               })
-               ->canSeeWhen('create', \App\Models\Submission::class)
-               ->exceptOnForms()
-               ->copyable()
-               ->readonly()
-               ->showOnPreview(),
+            Tag::make('Tags')->showCreateRelationButton()->withPreview(),
+            URL::make('URL')->displayUsing(function ($url) {
+                return 'Click To Open Form';
+            })->canSeeWhen('create', \App\Models\Submission::class)->exceptOnForms()->copyable()->readonly(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
             new Panel('Access', [
-                Boolean::make('Public', 'is_public')->help('Check to make this form available to the public.')->canSee(
-                    function (NovaRequest $request) {
-                        return Gate::check('update', $request->findModel());
-                    }
-                ),
+                Boolean::make('Public', 'is_public')
+                       ->help('Check to make this form available to the public.')
+                       ->canSee(function (NovaRequest $request) {
+                           return Gate::check('update', $request->findModel());
+                       }),
             ]),
             new Panel('Submission', [
-                Textarea::make('Success Message')->help(
-                    'The message displayed when the form is successfully submitted.'
-                )->alwaysShow(),
+                Textarea::make('Success Message')
+                        ->help('The message displayed when the form is successfully submitted.')
+                        ->alwaysShow(),
             ]),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
             Tabs::make('Relations', [
                 Tab::make('Fields', [MorphToMany::make('Fields', 'fields', Field::class)]),
-                Tab::make('Submissions', [
-                    HasMany::make('Submissions', 'submissions', Submission::class),
-                ]),
+                Tab::make('Submissions', [HasMany::make('Submissions', 'submissions', Submission::class)]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];
@@ -171,11 +162,9 @@ class Form extends Resource
     {
         return [
             ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
+                return Feature::active(ExportDataFeature::class);
             })->nameable(),
-            (new OpenForm())->showInline()->canRun(function (
-                NovaRequest $request
-            ) {
+            (new OpenForm())->showInline()->canRun(function (NovaRequest $request) {
                 return Gate::check('view', $request->findModel());
             })->canSee(function (NovaRequest $request) {
                 return Gate::check('view', $request->findModel());

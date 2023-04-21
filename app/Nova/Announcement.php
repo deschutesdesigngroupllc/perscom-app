@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
@@ -13,6 +12,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 
 class Announcement extends Resource
 {
@@ -58,6 +58,16 @@ class Announcement extends Resource
     }
 
     /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "Created At: {$this->created_at->toDayDateTimeString()}";
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -67,8 +77,8 @@ class Announcement extends Resource
     {
         return [
             ID::make()->hideFromIndex(),
-            Text::make('Title')->rules('required')->hideFromDetail(),
-            Trix::make('Content')->rules('required')->hideFromDetail(),
+            Text::make('Title')->rules('required')->hideFromDetail()->showOnPreview(),
+            Trix::make('Content')->rules('required')->alwaysShow()->hideFromDetail()->showOnPreview(),
             Select::make('Color')->displayUsingLabels()->options([
                 'info' => 'Information',
                 'success' => 'Success',
@@ -125,10 +135,8 @@ class Announcement extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-            })->nameable(),
-        ];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::active(ExportDataFeature::class);
+        })->nameable()];
     }
 }

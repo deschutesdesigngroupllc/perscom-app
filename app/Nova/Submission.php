@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
@@ -24,6 +23,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 use Perscom\HtmlField\HtmlField;
 
 class Submission extends Resource
@@ -117,17 +117,17 @@ class Submission extends Resource
             $this->getCustomFields($request),
             Tabs::make('Relations', [
                 Tab::make('Status History', [
-                    MorphToMany::make('Status', 'statuses', Status::class)->allowDuplicateRelations()->fields(
-                        function () {
-                            return [
-                                Textarea::make('Text'),
-                                Text::make('Text', function ($model) {
-                                    return $model->text;
-                                }),
-                                DateTime::make('Updated At')->sortable()->onlyOnIndex(),
-                            ];
-                        }
-                    ),
+                    MorphToMany::make('Status', 'statuses', Status::class)
+                               ->allowDuplicateRelations()
+                               ->fields(function () {
+                                   return [
+                                       Textarea::make('Text'),
+                                       Text::make('Text', function ($model) {
+                                           return $model->text;
+                                       }),
+                                       DateTime::make('Updated At')->sortable()->onlyOnIndex(),
+                                   ];
+                               }),
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
@@ -148,7 +148,7 @@ class Submission extends Resource
             'No Current Status' => 'bg-gray-100 text-gray-600',
         ])->label(function ($status) {
             return $status ?? 'No Current Status';
-        });
+        })->showOnPreview();
 
         if ($status) {
             $badge->addTypes([
@@ -169,14 +169,10 @@ class Submission extends Resource
 
         if (Gate::check('update', $request->model())) {
             return new Panel('Details', [
-                BelongsTo::make('Form')->showOnPreview()->default(function (
-                    NovaRequest $request
-                ) {
+                BelongsTo::make('Form')->showOnPreview()->default(function (NovaRequest $request) {
                     return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
                 }),
-                BelongsTo::make('User')->showOnPreview()->default(function (
-                    NovaRequest $request
-                ) {
+                BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
                     return $request->user()->id;
                 })->help('The user will be set to guest if left blank.'),
             ]);
@@ -185,32 +181,22 @@ class Submission extends Resource
         $fields = [];
 
         if ($request->isFormRequest()) {
-            $fields[] = Hidden::make('User', 'user_id')->default(function (
-                NovaRequest $request
-            ) {
+            $fields[] = Hidden::make('User', 'user_id')->default(function (NovaRequest $request) {
                 return $request->user()->id;
             })->showOnDetail();
-            $fields[] = Hidden::make('Form', 'form_id')->default(function (
-                NovaRequest $request
-            ) {
+            $fields[] = Hidden::make('Form', 'form_id')->default(function (NovaRequest $request) {
                 return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
             })->showOnDetail();
         }
 
-        return new Panel(
-            $form->name ?? 'Form', array_merge($fields, [
-                Text::make('User', static function ($submission) {
-                    return optional($submission->user, static function ($user) {
-                        return $user->name;
-                    }) ?? 'Guest';
-                })->onlyOnIndex(),
-                Text::make('Form', static function ($submission) {
-                    return optional($submission->form, static function ($form) {
-                        return $form->name;
-                    }) ?? 'Form';
-                })->onlyOnIndex(),
-            ])
-        );
+        return new Panel($form->name ?? 'Form', array_merge($fields, [
+            Text::make('User', static function ($submission) {
+                return $submission?->user?->name ?? 'Guest';
+            })->onlyOnIndex(),
+            Text::make('Form', static function ($submission) {
+                return $submission?->form?->name ?? 'Form';
+            })->onlyOnIndex(),
+        ]));
     }
 
     /**
@@ -310,10 +296,8 @@ class Submission extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-            })->nameable(),
-        ];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::active(ExportDataFeature::class);
+        })->nameable()];
     }
 }

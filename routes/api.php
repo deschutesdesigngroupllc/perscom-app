@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
 use App\Http\Controllers\Api\V1\Awards\AwardsController;
+use App\Http\Controllers\Api\V1\Calendars\CalendarsController;
+use App\Http\Controllers\Api\V1\Calendars\CalendarsEventsController;
+use App\Http\Controllers\Api\V1\Calendars\EventsController;
 use App\Http\Controllers\Api\V1\Forms\SubmissionsController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
@@ -49,32 +52,18 @@ Route::group(['prefix' => 'v1'], static function () {
             'subscribed',
         ],
     ], static function () {
-        // OIDC
         Orion::resource('me', MeController::class)->only('index');
-
-        // Announcements
         Orion::resource('announcements', AnnouncementsController::class);
-
-        // Awards
         Orion::resource('awards', AwardsController::class);
-
-        // Qualifications
+        Orion::resource('calendars', CalendarsController::class);
+        Orion::hasManyResource('calendars', 'events', CalendarsEventsController::class);
+        Orion::resource('events', EventsController::class);
         Orion::resource('qualifications', QualificationsController::class);
-
-        // Ranks
         Orion::resource('ranks', RanksController::class);
-
-        // Roster
         Orion::resource('roster', RosterController::class)->only('index');
-
-        // Submissions
         Orion::resource('submissions', SubmissionsController::class);
-
-        // Units
         Orion::resource('units', UnitsController::class);
         Orion::hasManyResource('units', 'users', UnitsUsersController::class);
-
-        // Users
         Orion::resource('users', UsersController::class);
         Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);
         Orion::hasManyResource('users', 'award-records', UsersAwardRecordsController::class);
@@ -89,8 +78,7 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::belongsToResource('users', 'unit', UsersUnitController::class);
     });
 
-    // Route not found
-    Route::fallback(function () {
+    Route::fallback(static function () {
         throw new NotFoundHttpException('The requested API endpoint could not be found or you do not have access to it.');
     })->name('error');
 });

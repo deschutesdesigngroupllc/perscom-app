@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use App\Nova\Metrics\NewAssignmentRecords;
 use App\Nova\Metrics\TotalAssignmentRecords;
 use Illuminate\Support\Str;
@@ -16,6 +15,7 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class AssignmentRecord extends Resource
@@ -39,7 +39,7 @@ class AssignmentRecord extends Resource
      *
      * @var array
      */
-    public static $search = ['id'];
+    public static $search = ['id', 'text'];
 
     /**
      * Get the URI key for the resource.
@@ -70,6 +70,16 @@ class AssignmentRecord extends Resource
     }
 
     /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "Created At: {$this->created_at->toDayDateTimeString()}";
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -94,9 +104,7 @@ class AssignmentRecord extends Resource
                 DateTime::make('Created At')->sortable()->exceptOnForms(),
                 DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent(
-                $this->document ? $this->document->replaceContent($this->user, $this) : null
-            ),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document?->toHtml($this->user, $this)),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
@@ -142,10 +150,8 @@ class AssignmentRecord extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-            })->nameable(),
-        ];
+        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
+            return Feature::active(ExportDataFeature::class);
+        })->nameable()];
     }
 }

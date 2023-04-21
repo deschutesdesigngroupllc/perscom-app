@@ -38,7 +38,7 @@ class CreateInitialTenantUser implements ShouldQueue
      */
     public function handle()
     {
-        $password = Str::random();
+        $password = Str::password();
         $user = $this->tenant->run(function () use ($password) {
             $createsNewUser = app()->make(CreatesNewUsers::class);
             $user = $createsNewUser->create([

@@ -36,6 +36,7 @@ class Mail extends Resource
     public static $search = [
         'id',
         'subject',
+        'content',
     ];
 
     /**
@@ -65,6 +66,16 @@ class Mail extends Resource
     }
 
     /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return "Sent At: {$this->sent_at->toDayDateTimeString()}";
+    }
+
+    /**
      * Get the fields displayed by the resource.
      *
      * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
@@ -74,21 +85,19 @@ class Mail extends Resource
     {
         return [
             ID::make()->sortable(),
-            Text::make('Subject')->rules('required'),
+            Text::make('Subject')->rules('required')->sortable(),
             Markdown::make('Content')->rules('required'),
-            Boolean::make('Send Now', 'send_now'),
-            DateTime::make('Send At', 'send_at')->hide()->dependsOn(['send_now'], function (
-                DateTime $field,
-                NovaRequest $request,
-                $formData
-            ) {
-                if ($formData->send_now === false) {
-                    $field->rules('required')->show();
-                }
-            }),
+            Boolean::make('Send Now', 'send_now')->sortable(),
+            DateTime::make('Send At', 'send_at')
+                    ->hide()
+                    ->dependsOn(['send_now'], function (DateTime $field, NovaRequest $request, $formData) {
+                        if ($formData->send_now === false) {
+                            $field->rules('required')->show();
+                        }
+                    }),
             DateTime::make('Sent At', 'sent_at')->exceptOnForms(),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->exceptOnForms(),
+            DateTime::make('Created At')->exceptOnForms()->sortable(),
             DateTime::make('Updated At')->onlyOnDetail(),
             new Panel('Links', [
                 KeyValue::make('Links', 'links')->rules('json')->keyLabel('Text')->valueLabel('URL'),

@@ -2,18 +2,19 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 use Perscom\HtmlField\HtmlField;
 
 class Document extends Resource
@@ -75,11 +76,14 @@ class Document extends Resource
         return [
             ID::make()->hideFromIndex(),
             Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-            //            Tags::make('Tags')->withLinkToTagResource(),
+            Tag::make('Tags')->showCreateRelationButton()->withPreview()->showOnPreview(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-            Trix::make('Content')->hideFromIndex()->help(
-                'Use the document tags below to dynamically inject content into your document when the document is attached to certain records.'
-            )->rules(['required'])->showOnPreview(),
+            Trix::make('Content')
+                ->hideFromIndex()
+                ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
+                ->rules(['required'])
+                ->showOnPreview()
+                ->withFiles('s3_public'),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
@@ -130,10 +134,8 @@ class Document extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export Documents')->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-            })->nameable(),
-        ];
+        return [ExportAsCsv::make('Export Documents')->canSee(function () {
+            return Feature::active(ExportDataFeature::class);
+        })->nameable()];
     }
 }

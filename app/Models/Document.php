@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
@@ -10,14 +11,16 @@ use Illuminate\Support\Str;
 /**
  * App\Models\Document
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read int|null $tags_count
+ *
  * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
- *
  * @mixin \Eloquent
  */
-class Document extends Model
+class Document extends Model implements Htmlable
 {
     use HasFactory;
 
@@ -61,124 +64,67 @@ class Document extends Model
     ];
 
     /**
-     * @param  User  $user
-     * @param  null  $attachedModel
+     * @param $tag
+     * @param  User|null  $user
+     * @param $attachedModel
+     * @return mixed|string|null
+     */
+    protected function resolveTag($tag, ?User $user = null, $attachedModel = null)
+    {
+        return match (true) {
+            $tag === '{user_name}' => $user->name ?? null,
+            $tag === '{user_email}' => $user->email ?? null,
+            $tag === '{user_email_verified_at}' => $user?->email_verified_at ? Carbon::parse($user?->email_verified_at)->toDayDateTimeString() : null,
+            $tag === '{user_status}' => $user->status->name ?? null,
+            $tag === '{user_online}' => $user->online ?? null,
+            $tag === '{user_assignment_position}' => $user->position->name ?? null,
+            $tag === '{user_assignment_specialty}' => $user->specialty->name ?? null,
+            $tag === '{user_assignment_unit}' => $user->unit->name ?? null,
+            $tag === '{user_rank}' => $user->rank->name ?? null,
+            $tag === '{assignment_record_unit}' => $attachedModel->unit->name ?? null,
+            $tag === '{assignment_record_position}' => $attachedModel->position->name ?? null,
+            $tag === '{assignment_record_speciality}' => $attachedModel->specialty->name ?? null,
+            $tag === '{assignment_record_text}' => $attachedModel->text ?? null,
+            $tag === '{assignment_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            $tag === '{award_record_award}' => $attachedModel->award->name ?? null,
+            $tag === '{award_record_text}' => $attachedModel->text ?? null,
+            $tag === '{award_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            $tag === '{combat_record_text}' => $attachedModel->text ?? null,
+            $tag === '{combat_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            $tag === '{qualification_record_qualification}' => $attachedModel->qualification->name ?? null,
+            $tag === '{qualification_record_text}' => $attachedModel->text ?? null,
+            $tag === '{qualification_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            $tag === '{rank_record_rank}' => $attachedModel->award->name ?? null,
+            $tag === '{rank_record_type}' => $attachedModel->type === RankRecord::RECORD_RANK_PROMOTION ? 'Promotion' : 'Demotion',
+            $tag === '{rank_record_text}' => $attachedModel->text ?? null,
+            $tag === '{rank_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            $tag === '{service_record_text}' => $attachedModel->text ?? null,
+            $tag === '{service_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+        };
+    }
+
+    /**
+     * @param  User|null  $user
+     * @param $attachedModel
      * @return mixed|string
      */
-    public function replaceContent(User $user, $attachedModel = null)
+    public function toHtml(?User $user = null, $attachedModel = null)
     {
         $content = $this->content;
         foreach (self::$tags as $tag => $description) {
-            $content = Str::replace($tag, $this->resolveTag($tag, $user, $attachedModel), $content);
+            if ($replacement = $this->resolveTag($tag, $user, $attachedModel)) {
+                $content = Str::replace($tag, $replacement, $content);
+            }
         }
 
         return $content;
     }
 
     /**
-     * @param    $tag
-     * @param  User|null  $user
-     * @param  null  $attachedModel
-     * @return mixed|void|null
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    protected function resolveTag(
-        $tag,
-        ?User $user = null,
-        $attachedModel = null
-    ) {
-        switch ($tag) {
-            case '{user_name}':
-                return $user->name ?? null;
-                break;
-            case '{user_email}':
-                return $user->email ?? null;
-                break;
-            case '{user_email_verified_at}':
-                return $user->email_verified_at;
-                break;
-            case '{user_status}':
-                return $user->status->name ?? null;
-                break;
-            case '{user_online}':
-                return $user->online ?? null;
-                break;
-            case '{user_assignment_position}':
-                return $user->position->name ?? null;
-                break;
-            case '{user_assignment_specialty}':
-                return $user->specialty->name ?? null;
-                break;
-            case '{user_assignment_unit}':
-                return $user->unit->name ?? null;
-                break;
-            case '{user_rank}':
-                return $user->rank->name ?? null;
-                break;
-            case '{assignment_record_unit}':
-                return $attachedModel->unit->name ?? null;
-                break;
-            case '{assignment_record_position}':
-                return $attachedModel->position->name ?? null;
-                break;
-            case '{assignment_record_speciality}':
-                return $attachedModel->specialty->name ?? null;
-                break;
-            case '{assignment_record_text}':
-                return $attachedModel->text ?? null;
-                break;
-            case '{assignment_record_date}':
-                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
-                    : null;
-                break;
-            case '{award_record_award}':
-                return $attachedModel->award->name ?? null;
-                break;
-            case '{award_record_text}':
-                return $attachedModel->text ?? null;
-                break;
-            case '{award_record_date}':
-                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
-                    : null;
-                break;
-            case '{combat_record_text}':
-                return $attachedModel->text ?? null;
-                break;
-            case '{combat_record_date}':
-                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
-                    : null;
-                break;
-            case '{qualification_record_qualification}':
-                return $attachedModel->qualification->name ?? null;
-                break;
-            case '{qualification_record_text}':
-                return $attachedModel->text ?? null;
-                break;
-            case '{qualification_record_date}':
-                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
-                    : null;
-                break;
-            case '{rank_record_rank}':
-                return $attachedModel->rank->name ?? null;
-                break;
-            case '{rank_record_type}':
-                return $attachedModel->type === RankRecord::RECORD_RANK_PROMOTION ? 'Promotion' : 'Demotion';
-                break;
-            case '{rank_record_text}':
-                return $attachedModel->text ?? null;
-                break;
-            case '{rank_record_date}':
-                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
-                    : null;
-                break;
-            case '{service_record_text}':
-                return $attachedModel->text ?? null;
-                break;
-            case '{service_record_date}':
-                return $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString()
-                    : null;
-                break;
-            default:
-                return null;
-        }
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class, 'documents_tags');
     }
 }

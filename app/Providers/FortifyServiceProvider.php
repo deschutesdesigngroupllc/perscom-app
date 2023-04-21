@@ -6,7 +6,7 @@ use App\Actions\Fortify\CreateNewUser;
 use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
+use App\Features\SocialLoginFeature;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
 use Laravel\Fortify\Fortify;
+use Laravel\Pennant\Feature;
 
 class FortifyServiceProvider extends ServiceProvider
 {
@@ -48,21 +49,16 @@ class FortifyServiceProvider extends ServiceProvider
             return Inertia::render('auth/Login', [
                 'status' => session('status'),
                 'canResetPassword' => Route::has('password.request'),
-                'canCreateAnAccount' => Route::has('register'),
+                'canCreateAnAccount' => Route::has('register') && setting('registration_enabled', true),
                 'demoMode' => Request::isDemoMode(),
-                'enableSocialLogin' => ! Request::isCentralRequest() &&
-                                        ! Request::isDemoMode() &&
-                                        FeatureFlag::isOn('social-login'),
-                'githubLogin' => \route(
-                    'tenant.auth.social.redirect', [
-                        'driver' => 'github',
-                    ]
-                ),
-                'discordLogin' => \route(
-                    'tenant.auth.social.redirect', [
-                        'driver' => 'discord',
-                    ]
-                ),
+                'adminMode' => Request::isCentralRequest(),
+                'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
+                'githubLogin' => \route('tenant.auth.social.redirect', [
+                    'driver' => 'github',
+                ]),
+                'discordLogin' => \route('tenant.auth.social.redirect', [
+                    'driver' => 'discord',
+                ]),
             ]);
         });
         Fortify::requestPasswordResetLinkView(function () {

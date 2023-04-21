@@ -73,10 +73,10 @@ class TaskAssignment extends Resource
             BelongsTo::make('User')->sortable(),
             BelongsTo::make('Assigned By', 'assigned_by', User::class)->default(Auth::user()->getAuthIdentifier()),
             Text::make('Description', function () {
-                return Str::limit($this->task->description);
+                return Str::limit($this->task?->description);
             }),
-            Badge::make('Status', function ($model) {
-                return $model->status->value;
+            Badge::make('Status', function () {
+                return $this->status?->value;
             })->map([
                 TaskAssignmentStatus::TASK_ASSIGNED->value => 'info',
                 TaskAssignmentStatus::TASK_COMPLETE->value => 'success',
@@ -94,7 +94,7 @@ class TaskAssignment extends Resource
                 DateTime::make('Expires At')->sortable(),
             ]),
             URL::make('Form', function () {
-                return $this->task->form->url;
+                return $this->task?->form?->url;
             })->displayUsing(function ($url) {
                 return 'Click To Open Form';
             })->canSee(function () {
@@ -102,7 +102,7 @@ class TaskAssignment extends Resource
             })->onlyOnDetail(),
             new Panel('Details', [
                 Markdown::make('Instructions', function () {
-                    return $this->task->instructions;
+                    return $this->task?->instructions;
                 })->alwaysShow(),
             ]),
             HasManyThrough::make('Attachments'),

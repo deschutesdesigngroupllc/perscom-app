@@ -8,7 +8,6 @@ use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\UpdatesPerformed;
 use App\Nova\Metrics\UsersOnline;
 use Carbon\Carbon;
-use Codinglabs\FeatureFlags\Facades\FeatureFlag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -67,7 +66,7 @@ class Main extends Dashboard
             $card->withSystemMessage($message->title, $message->message, $message->link_text, $message->url);
         });
 
-        if (! Request::isDemoMode() && FeatureFlag::isOn('billing') && Gate::check('billing', Auth::user())) {
+        if (! Request::isDemoMode() && Gate::check('billing', Auth::user())) {
             if (\tenant()->onTrial()) {
                 $date = \tenant()->trial_ends_at;
                 $ends = Carbon::parse($date)->toFormattedDateString();

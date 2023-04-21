@@ -2,8 +2,7 @@
 
 namespace App\Nova;
 
-use App\Facades\Feature;
-use App\Models\Enums\FeatureIdentifier;
+use App\Features\ExportDataFeature;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\TotalUsers;
 use App\Nova\Metrics\UsersOnline;
@@ -20,6 +19,7 @@ use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
@@ -35,6 +35,7 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 
 class User extends Resource
 {
@@ -97,6 +98,7 @@ class User extends Resource
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->showOnPreview()
+                ->copyable()
                 ->readonly(function () {
                     return Request::isDemoMode();
                 }),
@@ -114,59 +116,49 @@ class User extends Resource
                 $this->status?->name => $this->status?->color,
             ])->label(function () {
                 return $this->status->name ?? 'No Current Status';
-            }),
+            })->showOnPreview(),
             Badge::make('Online', function ($user) {
                 return $user->online;
             })->map([
                 false => 'info',
                 true => 'success',
-            ])->exceptOnForms(),
-            Avatar::make('Profile Photo')->disk('s3_public')->prunable()->squared()->hideFromIndex(),
-            Image::make('Cover Photo')->disk('s3_public')->prunable()->squared()->hideFromIndex(),
+            ])->showOnPreview()->exceptOnForms(),
+            Avatar::make('Profile Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
+            Image::make('Cover Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Panel::make('Assignment', [
-                BelongsTo::make(
-                    Str::singular(Str::title(setting('localization_positions', 'Position'))),
-                    'position',
-                    Position::class
-                )->help(
-                    'You can manually set the user\'s position. Creating an assignment record will also change their position.'
-                )->nullable()->onlyOnForms()->canSeeWhen('create', \App\Models\AssignmentRecord::class),
-                BelongsTo::make(
-                    Str::singular(Str::title(setting('localization_specialties', 'Specialty'))),
-                    'specialty',
-                    Specialty::class
-                )->help(
-                    'You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.'
-                )->nullable()->onlyOnForms()->canSeeWhen('create', \App\Models\AssignmentRecord::class),
-                BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
-                         ->help(
-                             'You can manually set the user\'.s unit. Creating an assignment record will also change their unit.'
-                         )
+                BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
+                         ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
+                         ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
+                         ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
+                         ->nullable()
+                         ->onlyOnForms()
+                         ->showOnPreview()
+                         ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
+                         ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
+                         ->nullable()
+                         ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
-                BelongsTo::make(
-                    Str::singular(Str::title(setting('localization_ranks', 'Rank'))),
-                    'rank',
-                    Rank::class
-                )
-                         ->help(
-                             'You can manually set the user\'s rank. Creating a rank record will also change their rank.'
-                         )
+                BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)
+                         ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
                          ->nullable()
                          ->onlyOnForms()
+                         ->showOnPreview()
                          ->canSeeWhen('create', \App\Models\RankRecord::class),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
-                BelongsTo::make(
-                    Str::singular(Str::title(setting('localization_statuses', 'Status'))),
-                    'status',
-                    Status::class
-                )->help(
-                    'You can manually set the user\'s status. Creating a status record will also change their status.'
-                )->nullable()->onlyOnForms()->canSeeWhen('create', \App\Models\StatusRecord::class),
+                BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
+                         ->help('You can manually set the user\'s status. Creating a status record will also change their status.')
+                         ->nullable()
+                         ->onlyOnForms()
+                         ->canSeeWhen('create', \App\Models\StatusRecord::class),
             ]),
             Tabs::make('Personnel File', [
                 Tab::make('Demographics', [
@@ -213,9 +205,7 @@ class User extends Resource
                             });
                         })->asSmall(),
                     ])->onlyOnIndex()->showOnPreview(),
-                    DateTime::make('Last Seen At')->displayUsing(function (
-                        $lastSeenAt
-                    ) {
+                    DateTime::make('Last Seen At')->displayUsing(function ($lastSeenAt) {
                         return optional($lastSeenAt, function () use ($lastSeenAt) {
                             return $lastSeenAt->longRelativeToNowDiffForHumans();
                         });
@@ -224,16 +214,12 @@ class User extends Resource
                     DateTime::make('Updated At')->onlyOnDetail(),
                 ]),
                 Tab::make('Assignment', [
-                    Text::make(
-                        Str::singular(Str::title(setting('localization_positions', 'Position'))), function ($model) {
-                            return $model->position->name ?? null;
-                        }
-                    )->onlyOnDetail(),
-                    Text::make(
-                        Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), function ($model) {
-                            return $model->specialty->name ?? null;
-                        }
-                    )->onlyOnDetail(),
+                    Text::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), function ($model) {
+                        return $model->position->name ?? null;
+                    })->onlyOnDetail(),
+                    Text::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), function ($model) {
+                        return $model->specialty->name ?? null;
+                    })->onlyOnDetail(),
                     Text::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), function ($model) {
                         return $model->unit->name ?? null;
                     })->onlyOnDetail(),
@@ -250,19 +236,11 @@ class User extends Resource
                     Text::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), function ($model) {
                         return $model->rank->name ?? null;
                     })->onlyOnDetail(),
-                    DateTime::make(
-                        'Last '.Str::singular(
-                            Str::title(
-                                setting(
-                                    'localization_ranks',
-                                    'Rank'
-                                )
-                            )
-                        ).' Change Date',
-                        function ($model) {
-                            return $model->rank_records->first()->created_at ?? null;
-                        }
-                    )->onlyOnDetail(),
+                    DateTime::make('Last '.
+                                   Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
+                                   ' Change Date', function ($model) {
+                                       return $model->rank_records->first()->created_at ?? null;
+                                   })->onlyOnDetail(),
                     Text::make('Time In Grade', function ($model) {
                         return optional($model->time_in_grade, function ($date) {
                             return CarbonInterval::make($date)->forHumans();
@@ -273,48 +251,36 @@ class User extends Resource
             ])->showTitle(true),
             Tabs::make('Records', [
                 HasMany::make('Assignment Records', 'assignment_records', AssignmentRecord::class),
-                HasMany::make(
-                    Str::singular(Str::title(setting('localization_awards', 'Award'))).' Records',
-                    'award_records',
-                    AwardRecord::class
-                ),
+                HasMany::make(Str::singular(Str::title(setting('localization_awards', 'Award'))).
+                              ' Records', 'award_records', AwardRecord::class),
                 HasMany::make('Combat Records', 'combat_records', CombatRecord::class),
-                HasMany::make(
-                    Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).' Records',
-                    'qualification_records',
-                    QualificationRecord::class
-                ),
-                HasMany::make(
-                    Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records',
-                    'rank_records',
-                    RankRecord::class
-                ),
+                HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).
+                              ' Records', 'qualification_records', QualificationRecord::class),
+                HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
+                              ' Records', 'rank_records', RankRecord::class),
                 HasMany::make('Service Records', 'service_records', ServiceRecord::class),
                 HasMany::make('Submission Records', 'submissions', Submission::class),
             ])->showTitle(true),
-            MorphToMany::make(
-                Str::singular(Str::title(setting('localization_statuses', 'Status'))),
-                'statuses',
-                Status::class
-            )->allowDuplicateRelations()->fields(function () {
-                return [
-                    Textarea::make('Text'),
-                    Text::make('Text', function ($model) {
-                        return $model->text;
-                    }),
-                    DateTime::make('Created At')->sortable()->onlyOnIndex(),
-                ];
-            }),
+            MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'statuses', Status::class)
+                       ->allowDuplicateRelations()
+                       ->fields(function () {
+                           return [
+                               Textarea::make('Text'),
+                               Text::make('Text', function ($model) {
+                                   return $model->text;
+                               }),
+                               DateTime::make('Created At')->sortable()->onlyOnIndex(),
+                           ];
+                       }),
+            BelongsToMany::make('Events')->referToPivotAs('registration'),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note', \App\Models\User::class),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')
                         ->canSeeWhen('note', \App\Models\User::class)
                         ->onlyOnDetail(),
             ]),
-            Tabs::make('Permissions', [
-                MorphedByMany::make('Roles'),
-                MorphedByMany::make('Permissions'),
-            ])->showTitle(true),
+            Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])
+                ->showTitle(true),
         ];
     }
 
@@ -359,10 +325,8 @@ class User extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [
-            ExportAsCsv::make('Export Users')->canSee(function () {
-                return Feature::isAccessible(FeatureIdentifier::FEATURE_EXPORT_DATA);
-            })->nameable(),
-        ];
+        return [ExportAsCsv::make('Export Users')->canSee(function () {
+            return Feature::active(ExportDataFeature::class);
+        })->nameable()];
     }
 }

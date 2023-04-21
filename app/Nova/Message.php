@@ -37,14 +37,23 @@ class Message extends Resource
      * @var array
      */
     public static $search = [
-        'id',
-        'title',
+        'id', 'title', 'message',
     ];
 
     /**
      * @var string[]
      */
     public static $orderBy = ['order' => 'asc'];
+
+    /**
+     * Get the search result subtitle for the resource.
+     *
+     * @return string
+     */
+    public function subtitle()
+    {
+        return $this->active ? 'Active: True' : 'Active: False';
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -64,7 +73,7 @@ class Message extends Resource
                 URL::make('URL')->nullable(),
             ]),
             Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->exceptOnForms(),
+            DateTime::make('Created At')->exceptOnForms()->sortable(),
             DateTime::make('Updated At')->onlyOnDetail(),
         ];
     }

@@ -1450,7 +1450,19 @@ paths:
         - Ranks
   /v1/roster:
     get:
-      parameters: []
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - users
+              - users.rank
+              - users.rank.image
+              - users.position
+              - users.specialty
+              - users.status
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -3773,6 +3785,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       requestBody:
@@ -3812,6 +3825,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       responses:
@@ -3851,6 +3865,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       requestBody:
@@ -3868,6 +3883,7 @@ paths:
                         type: string
                         enum:
                           - award
+                          - award.image
                       filters:
                         type: object
                         properties: null
@@ -3914,6 +3930,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       responses:
@@ -3954,6 +3971,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       requestBody:
@@ -4001,6 +4019,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       responses:
@@ -4036,6 +4055,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       requestBody:
@@ -4084,6 +4104,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       requestBody:
@@ -4133,6 +4154,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       requestBody:
@@ -4183,6 +4205,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       responses:
@@ -4226,6 +4249,7 @@ paths:
             type: string
             enum:
               - award
+              - award.image
           name: include
           in: query
       responses:
@@ -4658,6 +4682,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       requestBody:
@@ -4697,6 +4722,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       responses:
@@ -4736,6 +4762,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       requestBody:
@@ -4753,6 +4780,7 @@ paths:
                         type: string
                         enum:
                           - qualification
+                          - qualification.image
                       filters:
                         type: object
                         properties: null
@@ -4799,6 +4827,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       responses:
@@ -4839,6 +4868,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       requestBody:
@@ -4886,6 +4916,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       responses:
@@ -4921,6 +4952,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       requestBody:
@@ -4969,6 +5001,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       requestBody:
@@ -5018,6 +5051,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       requestBody:
@@ -5068,6 +5102,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       responses:
@@ -5111,6 +5146,7 @@ paths:
             type: string
             enum:
               - qualification
+              - qualification.image
           name: include
           in: query
       responses:
@@ -5148,6 +5184,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       requestBody:
@@ -5187,6 +5224,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       responses:
@@ -5226,6 +5264,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       requestBody:
@@ -5243,6 +5282,7 @@ paths:
                         type: string
                         enum:
                           - rank
+                          - rank.image
                       filters:
                         type: object
                         properties: null
@@ -5289,6 +5329,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       responses:
@@ -5329,6 +5370,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       requestBody:
@@ -5376,6 +5418,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       responses:
@@ -5411,6 +5454,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       requestBody:
@@ -5459,6 +5503,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       requestBody:
@@ -5508,6 +5553,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       requestBody:
@@ -5558,6 +5604,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       responses:
@@ -5601,6 +5648,7 @@ paths:
             type: string
             enum:
               - rank
+              - rank.image
           name: include
           in: query
       responses:
@@ -7314,6 +7362,8 @@ components:
               type: string
               nullable: true
               format: date-time
+            order:
+              type: integer
     Status:
       title: Status
       type: object

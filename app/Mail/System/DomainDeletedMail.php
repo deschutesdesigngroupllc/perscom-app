@@ -29,7 +29,7 @@ class DomainDeletedMail extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.system.domain-deleted')->subject('Custom Domain Removed')->with([
+        return $this->markdown('emails.system.domain-deleted')->subject('Domain Removed')->with([
             'url' => $this->url,
             'removed_url' => $this->domain,
         ]);

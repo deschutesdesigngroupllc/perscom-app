@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\CheckRegistrationEnabled;
 use App\Providers\RouteServiceProvider;
 use Laravel\Fortify\Features;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
@@ -90,7 +91,7 @@ return [
     |
     */
 
-    'middleware' => ['web', 'universal', InitializeTenancyByDomainOrSubdomain::class],
+    'middleware' => ['web', 'universal', InitializeTenancyByDomainOrSubdomain::class, CheckRegistrationEnabled::class],
 
     /*
     |--------------------------------------------------------------------------

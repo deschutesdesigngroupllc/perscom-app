@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasResourceUrlAttribute;
 use App\Traits\HasStatuses;
 use Carbon\CarbonInterface;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -81,6 +82,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     use HasApiTokens;
     use HasFactory;
     use HasPermissions;
+    use HasResourceUrlAttribute;
     use HasRoles;
     use HasStatuses;
     use Impersonatable;
@@ -220,28 +222,6 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     }
 
     /**
-     * @return string
-     */
-    public function getUrlAttribute()
-    {
-        return route('nova.pages.detail', [
-            'resource' => \App\Nova\User::uriKey(),
-            'resourceId' => $this->id,
-        ]);
-    }
-
-    /**
-     * @return string
-     */
-    public function getRelativeUrlAttribute()
-    {
-        return route('nova.pages.detail', [
-            'resource' => \App\Nova\User::uriKey(),
-            'resourceId' => $this->id,
-        ], false);
-    }
-
-    /**
      * @return string|null
      */
     public function getProfilePhotoUrlAttribute()
@@ -292,6 +272,18 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     public function combat_records()
     {
         return $this->hasMany(CombatRecord::class)->latest();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'events_registrations')
+            ->withPivot(['id'])
+            ->withTimestamps()
+            ->as('registration')
+            ->using(EventRegistration::class);
     }
 
     /**

@@ -24,4 +24,12 @@ class Element extends MorphPivot implements Sortable
      * @var string
      */
     protected $table = 'model_has_fields';
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
+     */
+    public function model()
+    {
+        return $this->morphTo('model');
+    }
 }
