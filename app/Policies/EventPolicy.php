@@ -24,7 +24,6 @@ class EventPolicy extends Policy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(User $user)
@@ -50,7 +49,6 @@ class EventPolicy extends Policy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user)
@@ -61,8 +59,6 @@ class EventPolicy extends Policy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Event $event)
@@ -73,8 +69,6 @@ class EventPolicy extends Policy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, Event $event)
@@ -85,8 +79,6 @@ class EventPolicy extends Policy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, Event $event)
@@ -97,8 +89,6 @@ class EventPolicy extends Policy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Event  $event
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, Event $event)
@@ -109,8 +99,6 @@ class EventPolicy extends Policy
     /**
      * Determine where the user can attach to the model.
      *
-     * @param  User  $user
-     * @param  Event  $event
      * @return bool|\Illuminate\Auth\Access\Response
      */
     public function attachAnyUser(User $user, Event $event)
@@ -121,8 +109,6 @@ class EventPolicy extends Policy
     /**
      * Determine where the user can attach to the model.
      *
-     * @param  User  $user
-     * @param  Event  $event
      * @return bool|\Illuminate\Auth\Access\Response
      */
     public function attachUser(User $user, Event $event)
@@ -133,8 +119,6 @@ class EventPolicy extends Policy
     /**
      * Determine where the user can attach to the model.
      *
-     * @param  User  $user
-     * @param  Event  $event
      * @return bool|\Illuminate\Auth\Access\Response
      */
     public function detachUser(User $user, Event $event)

@@ -14,6 +14,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken query()
+ *
  * @mixin \Eloquent
  */
 class PassportToken extends BaseTokenModel

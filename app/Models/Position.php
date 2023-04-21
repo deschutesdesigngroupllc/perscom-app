@@ -21,6 +21,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Position newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Position ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Position query()
+ *
  * @mixin \Eloquent
  */
 class Position extends Model implements Sortable

@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Auth;
 abstract class Policy
 {
     /**
-     * @param  User  $user
-     * @param    $permission
      * @return bool
      */
     public function hasPermissionTo(User $user, $permission)

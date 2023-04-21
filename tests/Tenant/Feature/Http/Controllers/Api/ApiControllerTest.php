@@ -10,7 +10,7 @@ class ApiControllerTest extends ApiTestCase
     public function test_api_cannot_be_reached_without_bearer_token()
     {
         $this->getJson('/me')
-             ->assertUnauthorized();
+            ->assertUnauthorized();
     }
 
     public function test_api_cannot_be_reached_without_perscom_id()
@@ -42,7 +42,7 @@ class ApiControllerTest extends ApiTestCase
         ]);
 
         $this->getJson('/me')
-             ->assertSuccessful();
+            ->assertSuccessful();
     }
 
     public function test_api_cannot_be_reached_without_api_access_feature()
@@ -56,7 +56,7 @@ class ApiControllerTest extends ApiTestCase
         ]);
 
         $this->getJson('/me')
-             ->assertStatus(402);
+            ->assertStatus(402);
     }
 
     public function test_api_can_be_reached_with_api_access_feature()
@@ -70,7 +70,7 @@ class ApiControllerTest extends ApiTestCase
         ]);
 
         $this->getJson('/me')
-             ->assertSuccessful();
+            ->assertSuccessful();
     }
 
     public function test_api_cannot_be_reached_with_incomplete_subscription()
@@ -84,7 +84,7 @@ class ApiControllerTest extends ApiTestCase
         ]);
 
         $this->getJson('/me')
-             ->assertStatus(402);
+            ->assertStatus(402);
     }
 
     public function test_api_cannot_be_reached_with_incomplete_expired_subscription()
@@ -98,7 +98,7 @@ class ApiControllerTest extends ApiTestCase
         ]);
 
         $this->getJson('/me')
-             ->assertStatus(402);
+            ->assertStatus(402);
     }
 
     public function test_api_can_be_reached_while_on_trial()
@@ -112,7 +112,7 @@ class ApiControllerTest extends ApiTestCase
         ]);
 
         $this->getJson('/me')
-             ->assertSuccessful();
+            ->assertSuccessful();
     }
 
     public function test_api_can_be_reached_while_in_demo_mode()
@@ -127,6 +127,6 @@ class ApiControllerTest extends ApiTestCase
         ]);
 
         $this->getJson('/me')
-             ->assertSuccessful();
+            ->assertSuccessful();
     }
 }

@@ -33,10 +33,10 @@ class SocialLoginControllerTest extends CentralTestCase
         $this->instance(Tenant::class, $tenant);
 
         $this->get("http://test.localhost/auth/$driver/redirect")
-             ->assertRedirectToRoute('auth.social.redirect', [
-                 'driver' => $driver,
-                 'tenant' => $id,
-             ]);
+            ->assertRedirectToRoute('auth.social.redirect', [
+                'driver' => $driver,
+                'tenant' => $id,
+            ]);
     }
 
     public function test_social_redirect_page_can_be_reached()
@@ -86,9 +86,9 @@ class SocialLoginControllerTest extends CentralTestCase
         $this->withSession([
             'auth.social.login.tenant' => $id,
         ])
-             ->get(config('app.auth_url')."/$driver/callback")
-             ->assertRedirect("$url/auth/login/$token")
-             ->assertSessionMissing('auth.social.login.tenant', $id);
+            ->get(config('app.auth_url')."/$driver/callback")
+            ->assertRedirect("$url/auth/login/$token")
+            ->assertSessionMissing('auth.social.login.tenant', $id);
     }
 
     public function test_soclai_login_page_can_be_reached()

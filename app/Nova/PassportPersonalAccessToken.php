@@ -86,7 +86,6 @@ class PassportPersonalAccessToken extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -100,7 +99,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -132,7 +130,6 @@ class PassportPersonalAccessToken extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
      * @return string
      */
@@ -141,10 +138,6 @@ class PassportPersonalAccessToken extends Resource
         return '/resources/'.static::uriKey();
     }
 
-    /**
-     * @param  NovaRequest  $request
-     * @param  Model  $model
-     */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
         $createPersonalAccessToken = app(CreatesPersonalAccessToken::class);
@@ -156,7 +149,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -167,7 +159,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -178,7 +169,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -189,7 +179,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

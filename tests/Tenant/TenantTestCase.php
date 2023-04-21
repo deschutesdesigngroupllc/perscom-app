@@ -12,8 +12,6 @@ class TenantTestCase extends TestCase
     use WithTenant;
 
     /**
-     * @return void
-     *
      * @throws \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById
      */
     protected function setUp(): void
@@ -25,9 +23,6 @@ class TenantTestCase extends TestCase
         $this->setUpTenancy();
     }
 
-    /**
-     * @return void
-     */
     protected function tearDown(): void
     {
         $this->beforeApplicationDestroyed(function () {

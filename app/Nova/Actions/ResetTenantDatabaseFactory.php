@@ -41,8 +41,6 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
     /**
      * Perform the action on the given models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection  $models
      * @return mixed
      */
     public function handle(ActionFields $fields, Collection $models)
@@ -80,7 +78,6 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
     /**
      * Get the fields available on the action.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -96,19 +93,19 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
                     }
                 }),
             Boolean::make('New Admin', 'new_admin')
-                   ->default(true)
-                   ->help('This will create a new admin user after the reset finishes.'),
+                ->default(true)
+                ->help('This will create a new admin user after the reset finishes.'),
             Boolean::make('Send Email', 'send_email')
-                   ->hide()
-                   ->help('Send the "Your Organization Is Now Ready" email.')
-                   ->dependsOn(['new_admin'], static function (Boolean $field, NovaRequest $request, FormData $formData) {
-                       if ($formData->new_admin) {
-                           $field->show();
-                       }
-                   }),
+                ->hide()
+                ->help('Send the "Your Organization Is Now Ready" email.')
+                ->dependsOn(['new_admin'], static function (Boolean $field, NovaRequest $request, FormData $formData) {
+                    if ($formData->new_admin) {
+                        $field->show();
+                    }
+                }),
             Boolean::make('Remove Subscription', 'remove_subscription')
-                   ->default(true)
-                   ->help('Remove and cancel all subscriptions.'),
+                ->default(true)
+                ->help('Remove and cancel all subscriptions.'),
         ];
     }
 }

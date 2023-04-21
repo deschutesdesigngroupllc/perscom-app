@@ -14,10 +14,6 @@ class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\Initiali
     /** @var string|null */
     public static $queryParameter = 'perscom_id';
 
-    /**
-     * @param  Tenancy  $tenancy
-     * @param  RequestDataTenantResolver  $resolver
-     */
     public function __construct(Tenancy $tenancy, RequestDataTenantResolver $resolver)
     {
         self::$onFail = static function ($e, $request, $next) {

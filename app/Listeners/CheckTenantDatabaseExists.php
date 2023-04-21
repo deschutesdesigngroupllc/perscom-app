@@ -8,7 +8,6 @@ use Stancl\Tenancy\Events\TenancyInitialized;
 class CheckTenantDatabaseExists
 {
     /**
-     * @param  TenancyInitialized  $event
      * @return void
      */
     public function handle(TenancyInitialized $event)

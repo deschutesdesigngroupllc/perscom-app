@@ -30,6 +30,7 @@ use Laravel\Nova\Fields\Timezone;
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field query()
+ *
  * @mixin \Eloquent
  */
 class Field extends Model
@@ -215,10 +216,6 @@ class Field extends Model
         return $field;
     }
 
-    /**
-     * @param $key
-     * @return string
-     */
     public static function getSchemaSafeKey($key): string
     {
         return preg_replace('/[\W]/', '_', $key);
@@ -230,8 +227,8 @@ class Field extends Model
     public function forms()
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
-                    ->as('forms')
-                    ->withPivot(['order'])
-                    ->withTimestamps();
+            ->as('forms')
+            ->withPivot(['order'])
+            ->withTimestamps();
     }
 }

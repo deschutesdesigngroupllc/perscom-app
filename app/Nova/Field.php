@@ -69,7 +69,6 @@ class Field extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -105,12 +104,12 @@ class Field extends Resource
                 ->hideFromIndex()
                 ->help('Like this text, this is a short description that should help the user fill out the field.'),
             KeyValue::make('Options')
-                    ->hide()
-                    ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
-                        if ($formData->type === \App\Models\Field::FIELD_SELECT) {
-                            $field->show();
-                        }
-                    }),
+                ->hide()
+                ->dependsOn('type', function ($field, NovaRequest $request, FormData $formData) {
+                    if ($formData->type === \App\Models\Field::FIELD_SELECT) {
+                        $field->show();
+                    }
+                }),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
@@ -121,7 +120,6 @@ class Field extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -132,7 +130,6 @@ class Field extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -143,7 +140,6 @@ class Field extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -154,7 +150,6 @@ class Field extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

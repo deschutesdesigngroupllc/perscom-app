@@ -184,13 +184,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::externalLink('Horizon', Url::fromString(config('app.url').
                                                                           '/'.
                                                                           config('horizon.path'))
-                                                             ->withScheme(config('app.scheme'))
-                                                             ->__toString())->openInNewTab(),
+                            ->withScheme(config('app.scheme'))
+                            ->__toString())->openInNewTab(),
                         MenuItem::externalLink('Telescope', Url::fromString(config('app.url').
                                                                             '/'.
                                                                             config('telescope.path'))
-                                                               ->withScheme(config('app.scheme'))
-                                                               ->__toString())->openInNewTab(),
+                            ->withScheme(config('app.scheme'))
+                            ->__toString())->openInNewTab(),
                     ])->icon('external-link')->collapsable(),
                 ];
             });
@@ -273,17 +273,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
-                                ->openInNewTab(),
+                            ->openInNewTab(),
                         MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
-                                ->openInNewTab(),
+                            ->openInNewTab(),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
                         MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
-                                ->openInNewTab()
-                                ->canSee(function () {
-                                    return Feature::active(SupportTicketFeature::class);
-                                }),
+                            ->openInNewTab()
+                            ->canSee(function () {
+                                return Feature::active(SupportTicketFeature::class);
+                            }),
                         MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
-                                ->openInNewTab(),
+                            ->openInNewTab(),
                     ])->icon('support')->collapsable()->collapsedByDefault(),
                 ];
             });
@@ -332,11 +332,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->help('The name of your organization.')
                         ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())),
                     Email::make('Email', 'email')
-                         ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
-                         ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())),
+                        ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
+                        ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())),
                     Timezone::make('Default Timezone', 'timezone')
-                            ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.')
-                            ->rules('required'),
+                        ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.')
+                        ->rules('required'),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')

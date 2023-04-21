@@ -18,6 +18,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
+ *
  * @mixin \Eloquent
  */
 class Document extends Model implements Htmlable
@@ -64,9 +65,6 @@ class Document extends Model implements Htmlable
     ];
 
     /**
-     * @param $tag
-     * @param  User|null  $user
-     * @param $attachedModel
      * @return mixed|string|null
      */
     protected function resolveTag($tag, ?User $user = null, $attachedModel = null)
@@ -104,8 +102,6 @@ class Document extends Model implements Htmlable
     }
 
     /**
-     * @param  User|null  $user
-     * @param $attachedModel
      * @return mixed|string
      */
     public function toHtml(?User $user = null, $attachedModel = null)

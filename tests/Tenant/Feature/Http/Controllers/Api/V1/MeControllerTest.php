@@ -14,7 +14,7 @@ class MeControllerTest extends ApiTestCase
         ]);
 
         $this->getJson('/me')
-             ->assertSuccessful();
+            ->assertSuccessful();
     }
 
     public function test_me_endpoint_cannot_be_reached_without_proper_scope()
@@ -22,6 +22,6 @@ class MeControllerTest extends ApiTestCase
         Passport::actingAs($this->user);
 
         $this->getJson('/me')
-             ->assertForbidden();
+            ->assertForbidden();
     }
 }

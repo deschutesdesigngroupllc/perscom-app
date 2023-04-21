@@ -11,7 +11,6 @@ class ServiceRecordObserver
     /**
      * Handle the Service "created" event.
      *
-     * @param  \App\Models\ServiceRecord  $service
      * @return void
      */
     public function created(ServiceRecord $service)
@@ -22,7 +21,6 @@ class ServiceRecordObserver
     /**
      * Handle the Service "updated" event.
      *
-     * @param  \App\Models\ServiceRecord  $service
      * @return void
      */
     public function updated(ServiceRecord $service)
@@ -33,7 +31,6 @@ class ServiceRecordObserver
     /**
      * Handle the Service "deleted" event.
      *
-     * @param  \App\Models\ServiceRecord  $service
      * @return void
      */
     public function deleted(ServiceRecord $service)
@@ -44,7 +41,6 @@ class ServiceRecordObserver
     /**
      * Handle the Service "restored" event.
      *
-     * @param  \App\Models\ServiceRecord  $service
      * @return void
      */
     public function restored(ServiceRecord $service)
@@ -55,7 +51,6 @@ class ServiceRecordObserver
     /**
      * Handle the Service "force deleted" event.
      *
-     * @param  \App\Models\ServiceRecord  $service
      * @return void
      */
     public function forceDeleted(ServiceRecord $service)

@@ -17,6 +17,7 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|LoginToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoginToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoginToken query()
+ *
  * @mixin \Eloquent
  */
 class LoginToken extends Model

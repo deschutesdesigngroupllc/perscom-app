@@ -144,9 +144,6 @@ class Event extends Model
     }
 
     /**
-     * @param  Builder  $query
-     * @param $start
-     * @param $end
      * @return Builder
      */
     public function scopeForDatePeriod(Builder $query, $start, $end)
@@ -167,32 +164,31 @@ class Event extends Model
                 $period->getEndDate());
         })->orWhere(function (Builder $query) use ($period) {
             $query->where('repeats', '=', true)
-                  ->where('end_type', '=', 'never')
-                  ->whereDate('start', '<=', $period->getEndDate());
+                ->where('end_type', '=', 'never')
+                ->whereDate('start', '<=', $period->getEndDate());
         })->orWhere(function (Builder $query) use ($period) {
             $query->where('repeats', '=', true)
-                  ->where('end_type', '=', 'on')
-                  ->whereDate('until', '>=', $period->getStartDate());
+                ->where('end_type', '=', 'on')
+                ->whereDate('until', '>=', $period->getStartDate());
         });
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopeFuture(Builder $query)
     {
         return $query->whereDate('start', '>', now())
-                     ->orWhereDate('end', '>', now())
-                     ->orWhere(function (Builder $query) {
-                         $query->where('repeats', '=', true)
-                               ->where('end_type', '=', 'never');
-                     })
-                     ->orWhere(function (Builder $query) {
-                         $query->where('repeats', '=', true)
-                               ->where('end_type', '=', 'on')
-                               ->whereDate('until', '>=', now());
-                     });
+            ->orWhereDate('end', '>', now())
+            ->orWhere(function (Builder $query) {
+                $query->where('repeats', '=', true)
+                    ->where('end_type', '=', 'never');
+            })
+            ->orWhere(function (Builder $query) {
+                $query->where('repeats', '=', true)
+                    ->where('end_type', '=', 'on')
+                    ->whereDate('until', '>=', now());
+            });
     }
 
     /**

@@ -24,9 +24,6 @@ class EventsController extends Controller
      */
     protected $policy = EventPolicy::class;
 
-    /**
-     * @return int
-     */
     public function limit(): int
     {
         return 0;
@@ -34,8 +31,6 @@ class EventsController extends Controller
 
     /**
      * The list of available query scopes.
-     *
-     * @return array
      */
     public function exposedScopes(): array
     {

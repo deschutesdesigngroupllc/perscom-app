@@ -11,7 +11,6 @@ class AssignmentRecordObserver
     /**
      * Handle the Assignment "created" event.
      *
-     * @param  \App\Models\AssignmentRecord  $assignment
      * @return void
      */
     public function created(AssignmentRecord $assignment)
@@ -22,7 +21,6 @@ class AssignmentRecordObserver
     /**
      * Handle the Assignment "updated" event.
      *
-     * @param  \App\Models\AssignmentRecord  $assignment
      * @return void
      */
     public function updated(AssignmentRecord $assignment)
@@ -33,7 +31,6 @@ class AssignmentRecordObserver
     /**
      * Handle the Assignment "deleted" event.
      *
-     * @param  \App\Models\AssignmentRecord  $assignment
      * @return void
      */
     public function deleted(AssignmentRecord $assignment)
@@ -44,7 +41,6 @@ class AssignmentRecordObserver
     /**
      * Handle the Assignment "restored" event.
      *
-     * @param  \App\Models\AssignmentRecord  $assignment
      * @return void
      */
     public function restored(AssignmentRecord $assignment)
@@ -55,7 +51,6 @@ class AssignmentRecordObserver
     /**
      * Handle the Assignment "force deleted" event.
      *
-     * @param  \App\Models\AssignmentRecord  $assignment
      * @return void
      */
     public function forceDeleted(AssignmentRecord $assignment)

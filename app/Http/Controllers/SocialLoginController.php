@@ -32,7 +32,6 @@ class SocialLoginController extends Controller
     }
 
     /**
-     * @param $driver
      * @return \Illuminate\Http\RedirectResponse
      */
     public function tenant($driver)
@@ -44,8 +43,6 @@ class SocialLoginController extends Controller
     }
 
     /**
-     * @param $driver
-     * @param $tenant
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function redirect($driver, $tenant)
@@ -60,7 +57,6 @@ class SocialLoginController extends Controller
     }
 
     /**
-     * @param $driver
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Psr\Container\ContainerExceptionInterface

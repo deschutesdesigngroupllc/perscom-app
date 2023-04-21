@@ -12,9 +12,6 @@ use Treblle\Middlewares\TreblleMiddleware;
 
 class ApiTestCase extends TenantTestCase
 {
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();

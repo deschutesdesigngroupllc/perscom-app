@@ -51,7 +51,6 @@ class Subscription extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -83,7 +82,6 @@ class Subscription extends Resource
     }
 
     /**
-     * @param  Request  $request
      * @return false
      */
     public static function authorizedToCreate(Request $request)
@@ -92,7 +90,6 @@ class Subscription extends Resource
     }
 
     /**
-     * @param  Request  $request
      * @return false
      */
     public function authorizedToReplicate(Request $request)
@@ -103,7 +100,6 @@ class Subscription extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -114,7 +110,6 @@ class Subscription extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -125,7 +120,6 @@ class Subscription extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -136,7 +130,6 @@ class Subscription extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
@@ -147,8 +140,6 @@ class Subscription extends Resource
     /**
      * Register a callback to be called after the resource is created.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
-     * @param  \Illuminate\Database\Eloquent\Model  $model
      * @return void
      */
     public static function afterCreate(NovaRequest $request, Model $model)

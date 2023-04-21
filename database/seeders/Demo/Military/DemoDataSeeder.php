@@ -61,16 +61,16 @@ class DemoDataSeeder extends Seeder
                 $user->statuses()->attach(Status::all()->random());
 
                 AssignmentRecord::factory()
-                                ->for($user)
-                                ->for($unit)
-                                ->state(new Sequence(function ($sequence) use ($user) {
-                                    return [
-                                        'position_id' => \App\Models\Position::all()->random(),
-                                        'specialty_id' => \App\Models\Specialty::all()->random(),
-                                        'author_id' => $user,
-                                    ];
-                                }))
-                                ->create();
+                    ->for($user)
+                    ->for($unit)
+                    ->state(new Sequence(function ($sequence) use ($user) {
+                        return [
+                            'position_id' => \App\Models\Position::all()->random(),
+                            'specialty_id' => \App\Models\Specialty::all()->random(),
+                            'author_id' => $user,
+                        ];
+                    }))
+                    ->create();
 
                 RankRecord::factory()->for($user)->state(new Sequence(function ($sequence) use ($user) {
                     return [
@@ -87,15 +87,15 @@ class DemoDataSeeder extends Seeder
                 }))->create();
 
                 QualificationRecord::factory()
-                                   ->count(5)
-                                   ->for($user)
-                                   ->state(new Sequence(function ($sequence) use ($user) {
-                                       return [
-                                           'qualification_id' => \App\Models\Qualification::all()->random(),
-                                           'author_id' => $user,
-                                       ];
-                                   }))
-                                   ->create();
+                    ->count(5)
+                    ->for($user)
+                    ->state(new Sequence(function ($sequence) use ($user) {
+                        return [
+                            'qualification_id' => \App\Models\Qualification::all()->random(),
+                            'author_id' => $user,
+                        ];
+                    }))
+                    ->create();
 
                 ServiceRecord::factory()->count(5)->for($user)->state([
                     'author_id' => $user,

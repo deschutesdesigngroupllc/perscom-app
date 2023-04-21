@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord query()
+ *
  * @mixin \Eloquent
  */
 class ServiceRecord extends Model

@@ -11,7 +11,6 @@ class QualificationRecordObserver
     /**
      * Handle the Qualification "created" event.
      *
-     * @param  \App\Models\QualificationRecord  $qualification
      * @return void
      */
     public function created(QualificationRecord $qualification)
@@ -22,7 +21,6 @@ class QualificationRecordObserver
     /**
      * Handle the Qualification "updated" event.
      *
-     * @param  \App\Models\QualificationRecord  $qualification
      * @return void
      */
     public function updated(QualificationRecord $qualification)
@@ -33,7 +31,6 @@ class QualificationRecordObserver
     /**
      * Handle the Qualification "deleted" event.
      *
-     * @param  \App\Models\QualificationRecord  $qualification
      * @return void
      */
     public function deleted(QualificationRecord $qualification)
@@ -44,7 +41,6 @@ class QualificationRecordObserver
     /**
      * Handle the Qualification "restored" event.
      *
-     * @param  \App\Models\QualificationRecord  $qualification
      * @return void
      */
     public function restored(QualificationRecord $qualification)
@@ -55,7 +51,6 @@ class QualificationRecordObserver
     /**
      * Handle the Qualification "force deleted" event.
      *
-     * @param  \App\Models\QualificationRecord  $qualification
      * @return void
      */
     public function forceDeleted(QualificationRecord $qualification)

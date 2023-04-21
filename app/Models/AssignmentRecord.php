@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord query()
+ *
  * @mixin \Eloquent
  */
 class AssignmentRecord extends Model

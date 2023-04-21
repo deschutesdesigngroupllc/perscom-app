@@ -24,9 +24,9 @@ class AuthorizationControllerTest extends TenantTestCase
         ])->__toString();
 
         $this->actingAs($this->user)
-             ->get($url)
-             ->assertInertia(function (AssertableInertia $page) {
-                 $page->component('passport/Authorize');
-             })->assertSuccessful();
+            ->get($url)
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('passport/Authorize');
+            })->assertSuccessful();
     }
 }

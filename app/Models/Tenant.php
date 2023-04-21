@@ -86,6 +86,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereVatId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereWebsite($value)
+ *
  * @mixin \Eloquent
  */
 class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase, FeatureScopeable
@@ -192,8 +193,8 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     public function getCustomDomainAttribute()
     {
         return $this->domains->where('is_custom_subdomain', '=', true)
-                             ->sortBy('created_at', SORT_REGULAR, true)
-                             ->first();
+            ->sortBy('created_at', SORT_REGULAR, true)
+            ->first();
     }
 
     /**
@@ -202,8 +203,8 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     public function getFallbackDomainAttribute()
     {
         return $this->domains->where('is_custom_subdomain', '=', false)
-                             ->sortBy('created_at', SORT_REGULAR, true)
-                             ->first();
+            ->sortBy('created_at', SORT_REGULAR, true)
+            ->first();
     }
 
     /**
@@ -259,10 +260,6 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
         return $this->email;
     }
 
-    /**
-     * @param  string  $driver
-     * @return mixed
-     */
     public function toFeatureIdentifier(string $driver): mixed
     {
         return (string) $this->getTenantKey();

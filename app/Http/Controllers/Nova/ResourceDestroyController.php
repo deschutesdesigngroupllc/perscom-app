@@ -11,7 +11,6 @@ class ResourceDestroyController extends \Laravel\Nova\Http\Controllers\ResourceD
     /**
      * Destroy the given resource(s).
      *
-     * @param  \Laravel\Nova\Http\Requests\DeleteResourceRequest  $request
      * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response
      */
     public function __invoke(DeleteResourceRequest $request)

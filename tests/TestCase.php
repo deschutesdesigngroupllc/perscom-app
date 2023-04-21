@@ -12,9 +12,6 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use WithFaker;
 
-    /**
-     * @return void
-     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -22,9 +19,6 @@ abstract class TestCase extends BaseTestCase
         Http::preventStrayRequests();
     }
 
-    /**
-     * @return bool
-     */
     protected function isTestingInParallel(): bool
     {
         return (bool) ParallelTesting::token();

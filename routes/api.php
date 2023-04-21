@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\V1\Users\UsersUnitController;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
+use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /*
@@ -49,6 +50,7 @@ Route::group(['prefix' => 'v1'], static function () {
         'middleware' => [
             'auth:api',
             InitializeTenancyByRequestData::class,
+            PreventAccessFromCentralDomains::class,
             'subscribed',
         ],
     ], static function () {

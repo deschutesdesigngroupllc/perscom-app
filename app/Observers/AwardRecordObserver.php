@@ -11,7 +11,6 @@ class AwardRecordObserver
     /**
      * Handle the Award "created" event.
      *
-     * @param  \App\Models\AwardRecord  $award
      * @return void
      */
     public function created(AwardRecord $award)
@@ -22,7 +21,6 @@ class AwardRecordObserver
     /**
      * Handle the Award "updated" event.
      *
-     * @param  \App\Models\AwardRecord  $award
      * @return void
      */
     public function updated(AwardRecord $award)
@@ -33,7 +31,6 @@ class AwardRecordObserver
     /**
      * Handle the Award "deleted" event.
      *
-     * @param  \App\Models\AwardRecord  $award
      * @return void
      */
     public function deleted(AwardRecord $award)
@@ -44,7 +41,6 @@ class AwardRecordObserver
     /**
      * Handle the Award "restored" event.
      *
-     * @param  \App\Models\AwardRecord  $award
      * @return void
      */
     public function restored(AwardRecord $award)
@@ -55,7 +51,6 @@ class AwardRecordObserver
     /**
      * Handle the Award "force deleted" event.
      *
-     * @param  \App\Models\AwardRecord  $award
      * @return void
      */
     public function forceDeleted(AwardRecord $award)

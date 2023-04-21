@@ -52,7 +52,6 @@ class Event extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -79,14 +78,14 @@ class Event extends Resource
                 })->showOnPreview()->exceptOnForms(),
                 Boolean::make('All Day', 'all_day'),
                 DateTime::make('Starts', 'start')
-                        ->rules('required')
-                        ->default(now())
-                        ->onlyOnForms()
-                        ->dependsOn(['all_day'], function (DateTime $field, NovaRequest $request, FormData $formData) {
-                            if ($formData->all_day) {
-                                $field->rules('')->hide();
-                            }
-                        }),
+                    ->rules('required')
+                    ->default(now())
+                    ->onlyOnForms()
+                    ->dependsOn(['all_day'], function (DateTime $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->all_day) {
+                            $field->rules('')->hide();
+                        }
+                    }),
                 Date::make('Starts', 'start')
                     ->hide()
                     ->default(now())
@@ -98,15 +97,15 @@ class Event extends Resource
                             }
                         }),
                 DateTime::make('Ends', 'end')
-                        ->rules(['required', 'after_or_equal:start'])
-                        ->default(now()->addHour())
-                        ->onlyOnForms()
-                        ->dependsOn(['all_day', 'repeats'],
-                            function (DateTime $field, NovaRequest $request, FormData $formData) {
-                                if ($formData->all_day || $formData->repeats) {
-                                    $field->rules('')->hide();
-                                }
-                            }),
+                    ->rules(['required', 'after_or_equal:start'])
+                    ->default(now()->addHour())
+                    ->onlyOnForms()
+                    ->dependsOn(['all_day', 'repeats'],
+                        function (DateTime $field, NovaRequest $request, FormData $formData) {
+                            if ($formData->all_day || $formData->repeats) {
+                                $field->rules('')->hide();
+                            }
+                        }),
                 Date::make('Ends', 'end')
                     ->hide()
                     ->default(now()->addHour())
@@ -128,108 +127,108 @@ class Event extends Resource
                     return Str::ucfirst($this->human_readable_pattern);
                 })->onlyOnDetail(),
                 Number::make('Every', 'interval')
-                      ->hide()
-                      ->help('The interval at which the event will repeat.')
-                      ->default(1)
-                      ->onlyOnForms()
-                      ->dependsOn(['repeats'], function (Number $field, NovaRequest $request, FormData $formData) {
-                          if ($formData->repeats) {
-                              $field->rules('required')->show();
-                          }
-                      }),
+                    ->hide()
+                    ->help('The interval at which the event will repeat.')
+                    ->default(1)
+                    ->onlyOnForms()
+                    ->dependsOn(['repeats'], function (Number $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->repeats) {
+                            $field->rules('required')->show();
+                        }
+                    }),
                 Select::make('Frequency', 'frequency')->options([
                     'DAILY' => 'Day(s)',
                     'WEEKLY' => 'Week(s)',
                     'MONTHLY' => 'Month(s)',
                     'YEARLY' => 'Year(s)',
                 ])->default('WEEKLY')
-                  ->hide()
-                  ->help('The frequency at which the event will repeat.')
-                  ->onlyOnForms()
-                  ->dependsOn(['repeats'], function (Select $field, NovaRequest $request, FormData $formData) {
-                      if ($formData->repeats) {
-                          $field->rules('required')->show();
-                      }
-                  }),
+                    ->hide()
+                    ->help('The frequency at which the event will repeat.')
+                    ->onlyOnForms()
+                    ->dependsOn(['repeats'], function (Select $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->repeats) {
+                            $field->rules('required')->show();
+                        }
+                    }),
                 MultiSelect::make('On', 'by_day')
-                           ->options([
-                               'SU' => 'Sunday',
-                               'MO' => 'Monday',
-                               'TU' => 'Tuesday',
-                               'WE' => 'Wednesday',
-                               'TH' => 'Thursday',
-                               'FR' => 'Friday',
-                               'SA' => 'Saturday',
-                           ])
-                           ->hide()
-                           ->help('The day(s) of the week will the event repeat.')
-                           ->onlyOnForms()
-                           ->dependsOn(['repeats', 'frequency'], function (MultiSelect $field, NovaRequest $request, FormData $formData) {
-                               if ($formData->repeats && $formData->frequency === 'WEEKLY') {
-                                   $field->show();
-                               }
-                           }),
+                    ->options([
+                        'SU' => 'Sunday',
+                        'MO' => 'Monday',
+                        'TU' => 'Tuesday',
+                        'WE' => 'Wednesday',
+                        'TH' => 'Thursday',
+                        'FR' => 'Friday',
+                        'SA' => 'Saturday',
+                    ])
+                    ->hide()
+                    ->help('The day(s) of the week will the event repeat.')
+                    ->onlyOnForms()
+                    ->dependsOn(['repeats', 'frequency'], function (MultiSelect $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->repeats && $formData->frequency === 'WEEKLY') {
+                            $field->show();
+                        }
+                    }),
                 MultiSelect::make('On', 'by_month_day')
-                      ->options([])
-                      ->hide()
-                      ->help('The day of the month will the event repeat.')
-                      ->onlyOnForms()
-                      ->dependsOn(['repeats', 'frequency', 'start'], function (MultiSelect $field, NovaRequest $request, FormData $formData) {
-                          if ($formData->repeats && $formData->frequency === 'MONTHLY') {
-                              $field->show();
-                          }
+                    ->options([])
+                    ->hide()
+                    ->help('The day of the month will the event repeat.')
+                    ->onlyOnForms()
+                    ->dependsOn(['repeats', 'frequency', 'start'], function (MultiSelect $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->repeats && $formData->frequency === 'MONTHLY') {
+                            $field->show();
+                        }
 
-                          if ($start = $formData->start) {
-                              $field->options(function () use ($start) {
-                                  $month = Carbon::parse($start)->startOfMonth();
-                                  $period = collect(
-                                      $month->toPeriod($month->copy()->endOfMonth(), 1, 'day')->settings(
-                                          ['monthOverflow' => false]
-                                      )
-                                  );
+                        if ($start = $formData->start) {
+                            $field->options(function () use ($start) {
+                                $month = Carbon::parse($start)->startOfMonth();
+                                $period = collect(
+                                    $month->toPeriod($month->copy()->endOfMonth(), 1, 'day')->settings(
+                                        ['monthOverflow' => false]
+                                    )
+                                );
 
-                                  return $period->mapWithKeys(function ($value, $key) {
-                                      return [$value->format('j') => $value->format('jS')];
-                                  });
-                              });
-                          }
-                      }),
+                                return $period->mapWithKeys(function ($value, $key) {
+                                    return [$value->format('j') => $value->format('jS')];
+                                });
+                            });
+                        }
+                    }),
                 MultiSelect::make('In', 'by_month')
-                           ->options([
-                               '1' => 'January',
-                               '2' => 'February',
-                               '3' => 'March',
-                               '4' => 'April',
-                               '5' => 'May',
-                               '6' => 'June',
-                               '7' => 'July',
-                               '8' => 'August',
-                               '9' => 'September',
-                               '10' => 'October',
-                               '11' => 'November',
-                               '12' => 'December',
-                           ])
-                           ->hide()
-                           ->help('The month will the event repeat.')
-                           ->onlyOnForms()
-                           ->dependsOn(['repeats', 'frequency'], function (MultiSelect $field, NovaRequest $request, FormData $formData) {
-                               if ($formData->repeats && $formData->frequency === 'YEARLY') {
-                                   $field->show();
-                               }
-                           }),
+                    ->options([
+                        '1' => 'January',
+                        '2' => 'February',
+                        '3' => 'March',
+                        '4' => 'April',
+                        '5' => 'May',
+                        '6' => 'June',
+                        '7' => 'July',
+                        '8' => 'August',
+                        '9' => 'September',
+                        '10' => 'October',
+                        '11' => 'November',
+                        '12' => 'December',
+                    ])
+                    ->hide()
+                    ->help('The month will the event repeat.')
+                    ->onlyOnForms()
+                    ->dependsOn(['repeats', 'frequency'], function (MultiSelect $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->repeats && $formData->frequency === 'YEARLY') {
+                            $field->show();
+                        }
+                    }),
                 Select::make('Ends', 'end_type')->options([
                     'never' => 'Never',
                     'on' => 'On',
                     'after' => 'After',
                 ])->default('never')
-                  ->hide()
-                  ->help('Specify when the event will end.')
-                  ->onlyOnForms()
-                  ->dependsOn(['repeats'], function (Select $field, NovaRequest $request, FormData $formData) {
-                      if ($formData->repeats) {
-                          $field->rules('required')->show();
-                      }
-                  }),
+                    ->hide()
+                    ->help('Specify when the event will end.')
+                    ->onlyOnForms()
+                    ->dependsOn(['repeats'], function (Select $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->repeats) {
+                            $field->rules('required')->show();
+                        }
+                    }),
                 Date::make('On', 'until')
                     ->hide()
                     ->default(now()->addMonth())
@@ -241,15 +240,15 @@ class Event extends Resource
                         }
                     }),
                 Number::make('After', 'count')
-                      ->hide()
-                      ->default(1)
-                      ->help('The event will end after the number of occurences specified above.')
-                      ->onlyOnForms()
-                      ->dependsOn(['end_type'], function (Number $field, NovaRequest $request, FormData $formData) {
-                          if ($formData->end_type === 'after') {
-                              $field->rules('required')->show();
-                          }
-                      }),
+                    ->hide()
+                    ->default(1)
+                    ->help('The event will end after the number of occurences specified above.')
+                    ->onlyOnForms()
+                    ->dependsOn(['end_type'], function (Number $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->end_type === 'after') {
+                            $field->rules('required')->show();
+                        }
+                    }),
             ]),
             new Panel('Details', [
                 Trix::make('Content')->alwaysShow(),
@@ -269,7 +268,6 @@ class Event extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -280,7 +278,6 @@ class Event extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -291,7 +288,6 @@ class Event extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -302,7 +298,6 @@ class Event extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

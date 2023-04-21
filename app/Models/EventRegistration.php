@@ -33,7 +33,6 @@ class EventRegistration extends Pivot
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopeFuture(Builder $query)

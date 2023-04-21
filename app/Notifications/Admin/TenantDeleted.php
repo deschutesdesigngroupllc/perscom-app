@@ -53,7 +53,7 @@ class TenantDeleted extends Notification implements ShouldQueue
     public function toNova()
     {
         return (new NovaNotification())->message('A tenant has been deleted.')
-                                       ->icon('user-remove')
-                                       ->type('danger');
+            ->icon('user-remove')
+            ->type('danger');
     }
 }

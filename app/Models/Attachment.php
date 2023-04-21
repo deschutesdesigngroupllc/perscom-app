@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment query()
+ *
  * @mixin \Eloquent
  */
 class Attachment extends Model
