@@ -12,7 +12,7 @@ class DocumentPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class DocumentPolicy extends Policy
      */
     public function restore(User $user, Document $document)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:document') || $user->tokenCan('delete:document');
     }
 
     /**
@@ -88,6 +88,6 @@ class DocumentPolicy extends Policy
      */
     public function forceDelete(User $user, Document $document)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:document') || $user->tokenCan('delete:document');
     }
 }

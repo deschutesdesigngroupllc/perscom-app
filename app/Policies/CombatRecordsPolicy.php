@@ -12,7 +12,7 @@ class CombatRecordsPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -80,7 +80,7 @@ class CombatRecordsPolicy extends Policy
      */
     public function restore(User $user, CombatRecord $combat)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user->tokenCan('delete:combatrecord');
     }
 
     /**
@@ -90,6 +90,6 @@ class CombatRecordsPolicy extends Policy
      */
     public function forceDelete(User $user, CombatRecord $combat)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user->tokenCan('delete:combatrecord');
     }
 }

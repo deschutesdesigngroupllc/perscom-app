@@ -14,7 +14,7 @@ class FormPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -83,7 +83,7 @@ class FormPolicy extends Policy
      */
     public function restore(User $user, Form $form)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
     }
 
     /**
@@ -93,6 +93,6 @@ class FormPolicy extends Policy
      */
     public function forceDelete(User $user, Form $form)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
     }
 }

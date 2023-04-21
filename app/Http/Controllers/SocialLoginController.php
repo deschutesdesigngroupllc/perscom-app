@@ -17,7 +17,7 @@ class SocialLoginController extends Controller
     protected static $sessionKey = 'auth.social.login.tenant';
 
     /**
-     * @var string
+     * @var int
      */
     protected static $loginTokenTtl = 60;
 
@@ -73,7 +73,7 @@ class SocialLoginController extends Controller
         $socialLiteUser = Socialite::driver($driver)->user();
 
         $tenant = $tenantRepository->findById($tenantId);
-        $token = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
+        $token = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) { // @phpstan-ignore-line
             $user = User::updateOrCreate([
                 'email' => $socialLiteUser->email,
             ], [
@@ -96,8 +96,7 @@ class SocialLoginController extends Controller
     }
 
     /**
-     * @param  LoginToken  $token
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function login(LoginToken $loginToken)
     {

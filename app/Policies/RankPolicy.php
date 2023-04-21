@@ -12,7 +12,7 @@ class RankPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class RankPolicy extends Policy
      */
     public function restore(User $user, Rank $rank)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:rank') || $user->tokenCan('delete:rank');
     }
 
     /**
@@ -88,6 +88,6 @@ class RankPolicy extends Policy
      */
     public function forceDelete(User $user, Rank $rank)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:rank') || $user->tokenCan('delete:rank');
     }
 }

@@ -38,9 +38,7 @@ class Field extends Model
     use HasFactory;
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @var string[]
      */
     protected $casts = [
         'options' => 'array',

@@ -5,6 +5,7 @@ on:
   pull_request:
 
 jobs:
+
   test-application:
     name: Test Application
     runs-on: ubuntu-latest

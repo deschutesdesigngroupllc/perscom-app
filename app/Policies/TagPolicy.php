@@ -12,7 +12,7 @@ class TagPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class TagPolicy extends Policy
      */
     public function restore(User $user, Tag $tag)
     {
-        //
+        return true;
     }
 
     /**
@@ -88,6 +88,6 @@ class TagPolicy extends Policy
      */
     public function forceDelete(User $user, Tag $tag)
     {
-        //
+        return true;
     }
 }

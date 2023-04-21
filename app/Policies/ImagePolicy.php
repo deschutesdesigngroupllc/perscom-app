@@ -13,7 +13,7 @@ class ImagePolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -79,7 +79,7 @@ class ImagePolicy extends Policy
      */
     public function restore(User $user, Image $image)
     {
-        //
+        return Gate::check('delete', $image->model);
     }
 
     /**
@@ -89,6 +89,6 @@ class ImagePolicy extends Policy
      */
     public function forceDelete(User $user, Image $image)
     {
-        //
+        return Gate::check('delete', $image->model);
     }
 }

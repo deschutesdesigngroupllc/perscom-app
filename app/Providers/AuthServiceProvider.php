@@ -138,7 +138,7 @@ class AuthServiceProvider extends ServiceProvider
         // Scope JWTs to the tenant they belong to and allow access to everything as we created the JWT
         Gate::before(static function () {
             if (Auth::guard('jwt')->check()) {
-                $payload = Auth::guard('jwt')->payload();
+                $payload = Auth::guard('jwt')->payload(); // @phpstan-ignore-line
                 if ($payload->get('tenant') !== tenant()->getTenantKey()) {
                     abort(401, 'You are not authorized to access this account.');
                 }

@@ -12,7 +12,7 @@ class TaskPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -80,7 +80,7 @@ class TaskPolicy extends Policy
      */
     public function restore(User $user, Task $task)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
     }
 
     /**
@@ -90,7 +90,7 @@ class TaskPolicy extends Policy
      */
     public function forceDelete(User $user, Task $task)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
     }
 
     /**

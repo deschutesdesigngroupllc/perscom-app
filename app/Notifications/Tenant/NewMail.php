@@ -34,10 +34,7 @@ class NewMail extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return NewMailMailable
      */
     public function toMail($notifiable)
     {

@@ -12,7 +12,7 @@ class QualificationPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class QualificationPolicy extends Policy
      */
     public function restore(User $user, Qualification $qualification)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:qualification') || $user->tokenCan('delete:qualification');
     }
 
     /**
@@ -88,6 +88,6 @@ class QualificationPolicy extends Policy
      */
     public function forceDelete(User $user, Qualification $qualification)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:qualification') || $user->tokenCan('delete:qualification');
     }
 }

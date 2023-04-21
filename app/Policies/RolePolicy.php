@@ -13,7 +13,7 @@ class RolePolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -83,7 +83,6 @@ class RolePolicy extends Policy
     /**
      * Determine whether the user can detach the model.
      *
-     * @param  \App\Models\Permission  $role
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function detachPermission(User $user, Role $role, Permission $permission)
@@ -102,7 +101,11 @@ class RolePolicy extends Policy
      */
     public function restore(User $user, Role $role)
     {
-        //
+        if ($role->is_application_role) {
+            return false;
+        }
+
+        return $this->hasPermissionTo($user, 'delete:role') || $user->tokenCan('delete:role');
     }
 
     /**
@@ -112,6 +115,10 @@ class RolePolicy extends Policy
      */
     public function forceDelete(User $user, Role $role)
     {
-        //
+        if ($role->is_application_role) {
+            return false;
+        }
+
+        return $this->hasPermissionTo($user, 'delete:role') || $user->tokenCan('delete:role');
     }
 }

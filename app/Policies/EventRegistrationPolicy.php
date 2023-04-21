@@ -14,7 +14,7 @@ class EventRegistrationPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -40,7 +40,7 @@ class EventRegistrationPolicy extends Policy
      */
     public function view(User $user, EventRegistration $registration)
     {
-        return Gate::check('view', $registration->event ?? Event::make()) || $registration->user?->id === $user->id;
+        return Gate::check('view', $registration->event ?? new Event()) || $registration->user?->id === $user->id;
     }
 
     /**
@@ -60,7 +60,7 @@ class EventRegistrationPolicy extends Policy
      */
     public function update(User $user, EventRegistration $registration)
     {
-        return Gate::check('update', $registration->event ?? Event::make());
+        return Gate::check('update', $registration->event ?? new Event());
     }
 
     /**
@@ -70,7 +70,7 @@ class EventRegistrationPolicy extends Policy
      */
     public function delete(User $user, EventRegistration $registration)
     {
-        return Gate::check('delete', $registration->event ?? Event::make());
+        return Gate::check('delete', $registration->event ?? new Event());
     }
 
     /**
@@ -80,7 +80,7 @@ class EventRegistrationPolicy extends Policy
      */
     public function restore(User $user, EventRegistration $registration)
     {
-        //
+        return Gate::check('delete', $registration->event ?? new Event());
     }
 
     /**
@@ -90,6 +90,6 @@ class EventRegistrationPolicy extends Policy
      */
     public function forceDelete(User $user, EventRegistration $registration)
     {
-        //
+        return Gate::check('delete', $registration->event ?? new Event());
     }
 }

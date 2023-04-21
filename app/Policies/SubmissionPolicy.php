@@ -13,7 +13,7 @@ class SubmissionPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -81,7 +81,7 @@ class SubmissionPolicy extends Policy
      */
     public function restore(User $user, Submission $submission)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:submission') || $user->tokenCan('delete:submission');
     }
 
     /**
@@ -91,6 +91,6 @@ class SubmissionPolicy extends Policy
      */
     public function forceDelete(User $user, Submission $submission)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:submission') || $user->tokenCan('delete:submission');
     }
 }

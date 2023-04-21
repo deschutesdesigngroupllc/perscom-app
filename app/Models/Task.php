@@ -12,10 +12,10 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read \App\Models\Form|null $form
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TaskAssignment> $task_assignments
+ * @property-read int|null $task_assignments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $task_assignments
- * @property-read int|null $task_assignments_count
  *
  * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()

@@ -18,8 +18,8 @@ class SocialLoginFeature extends BaseFeature
             Request::isCentralRequest() => false,
             Request::isDemoMode() => true,
             \request()->routeIs('auth.*') => true,
-            $tenant?->onTrial() => true,
-            optional($tenant?->sparkPlan(), static function (Plan $plan) {
+            $tenant->onTrial() => true,
+            optional($tenant->sparkPlan(), static function (Plan $plan) {
                 return \in_array(__CLASS__, $plan->options, true);
             }) => true,
             default => false,

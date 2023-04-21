@@ -45,10 +45,7 @@ class NewCombatRecord extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return NewCombatRecordMail
      */
     public function toMail($notifiable)
     {
@@ -58,7 +55,7 @@ class NewCombatRecord extends Notification implements ShouldQueue
     /**
      * Get the nova representation of the notification
      *
-     * @return array
+     * @return NovaNotification
      */
     public function toNova()
     {

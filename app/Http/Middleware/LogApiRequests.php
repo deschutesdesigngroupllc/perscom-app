@@ -37,7 +37,7 @@ class LogApiRequests
             ]);
 
             if (Auth::guard('api')->check()) {
-                $activity->causedBy(Auth::guard('api')->user());
+                $activity->causedBy(Auth::guard('api')->user()->getAuthIdentifier());
             } else {
                 $activity->causedByAnonymous();
             }

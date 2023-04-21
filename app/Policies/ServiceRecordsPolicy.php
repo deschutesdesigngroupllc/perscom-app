@@ -12,7 +12,7 @@ class ServiceRecordsPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -80,7 +80,7 @@ class ServiceRecordsPolicy extends Policy
      */
     public function restore(User $user, ServiceRecord $service)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:servicerecord') || $user->tokenCan('delete:servicerecord');
     }
 
     /**
@@ -90,6 +90,6 @@ class ServiceRecordsPolicy extends Policy
      */
     public function forceDelete(User $user, ServiceRecord $service)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:servicerecord') || $user->tokenCan('delete:servicerecord');
     }
 }

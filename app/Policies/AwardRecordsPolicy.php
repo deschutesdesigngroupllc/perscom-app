@@ -12,7 +12,7 @@ class AwardRecordsPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -80,7 +80,7 @@ class AwardRecordsPolicy extends Policy
      */
     public function restore(User $user, AwardRecord $award)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user->tokenCan('delete:awardrecord');
     }
 
     /**
@@ -90,6 +90,6 @@ class AwardRecordsPolicy extends Policy
      */
     public function forceDelete(User $user, AwardRecord $award)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user->tokenCan('delete:awardrecord');
     }
 }

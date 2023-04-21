@@ -35,7 +35,7 @@ class StatusRecord extends MorphPivot
         parent::boot();
 
         static::created(function (StatusRecord $record) {
-            if ($record->model && $record->model instanceof User) {
+            if ($record->model instanceof User) {
                 $record->model->status_id = $record->status?->id;
                 $record->model->save();
             }

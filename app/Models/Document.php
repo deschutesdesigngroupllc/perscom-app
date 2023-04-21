@@ -72,7 +72,7 @@ class Document extends Model implements Htmlable
         return match (true) {
             $tag === '{user_name}' => $user->name ?? null,
             $tag === '{user_email}' => $user->email ?? null,
-            $tag === '{user_email_verified_at}' => $user?->email_verified_at ? Carbon::parse($user?->email_verified_at)->toDayDateTimeString() : null,
+            $tag === '{user_email_verified_at}' => $user->email_verified_at ? Carbon::parse($user->email_verified_at)->toDayDateTimeString() : null,
             $tag === '{user_status}' => $user->status->name ?? null,
             $tag === '{user_online}' => $user->online ?? null,
             $tag === '{user_assignment_position}' => $user->position->name ?? null,
@@ -98,6 +98,7 @@ class Document extends Model implements Htmlable
             $tag === '{rank_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{service_record_text}' => $attachedModel->text ?? null,
             $tag === '{service_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            default => null
         };
     }
 

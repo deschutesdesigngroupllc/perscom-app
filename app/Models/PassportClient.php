@@ -13,7 +13,6 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property-write mixed $secret
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
  * @property-read int|null $tokens_count
- * @property-read \App\Models\User|null $user
  *
  * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|PassportClient newModelQuery()
@@ -25,7 +24,7 @@ use Laravel\Passport\Client as BaseClientModel;
 class PassportClient extends BaseClientModel
 {
     /**
-     * @var string[]
+     * @var false[]
      */
     protected $attributes = [
         'personal_access_client' => false,

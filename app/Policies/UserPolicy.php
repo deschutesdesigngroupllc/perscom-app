@@ -11,7 +11,7 @@ class UserPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -79,7 +79,7 @@ class UserPolicy extends Policy
      */
     public function restore(User $user, User $model)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:user') || $user->tokenCan('delete:user');
     }
 
     /**
@@ -89,7 +89,7 @@ class UserPolicy extends Policy
      */
     public function forceDelete(User $user, User $model)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:user') || $user->tokenCan('delete:user');
     }
 
     /**
@@ -105,7 +105,6 @@ class UserPolicy extends Policy
     /**
      * Determine whether the user can add a note.
      *
-     * @param  \App\Models\User  $model
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function note(User $user)

@@ -13,6 +13,37 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use RRule\RRule;
 
+/**
+ * App\Models\Event
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
+ * @property-read \App\Models\User|null $author
+ * @property-read \App\Models\Calendar|null $calendar
+ * @property-read mixed|null $computed_end
+ * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule $human_readable_pattern
+ * @property-read false|\Illuminate\Support\Optional|mixed $is_past
+ * @property-read CarbonPeriod $period
+ * @property-read string $relative_url
+ * @property-read string $url
+ * @property-read \App\Models\Image|null $image
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read int|null $images_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $registrations
+ * @property-read int|null $registrations_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read int|null $tags_count
+ *
+ * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
+ * @method static Builder|Event forAuthor($user)
+ * @method static Builder|Event forDatePeriod($start, $end)
+ * @method static Builder|Event future()
+ * @method static Builder|Event newModelQuery()
+ * @method static Builder|Event newQuery()
+ * @method static Builder|Event query()
+ *
+ * @mixin \Eloquent
+ */
 class Event extends Model
 {
     use HasAuthor;

@@ -12,7 +12,7 @@ class PositionPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class PositionPolicy extends Policy
      */
     public function restore(User $user, Position $position)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:position') || $user->tokenCan('delete:position');
     }
 
     /**
@@ -88,6 +88,6 @@ class PositionPolicy extends Policy
      */
     public function forceDelete(User $user, Position $position)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:position') || $user->tokenCan('delete:position');
     }
 }

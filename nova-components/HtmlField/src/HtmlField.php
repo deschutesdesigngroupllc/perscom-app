@@ -14,7 +14,6 @@ class HtmlField extends Field
     public $component = 'HtmlField';
 
     /**
-     * @param $html
      * @return HtmlField
      */
     public function html($html)
@@ -29,7 +28,6 @@ class HtmlField extends Field
     }
 
     /**
-     * @param  string  $view
      * @param  array  $data
      * @param  array  $mergeData
      * @return HtmlField
