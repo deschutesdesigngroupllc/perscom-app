@@ -37,7 +37,7 @@ class LogApiRequests
             ]);
 
             if (Auth::guard('api')->check()) {
-                $activity->causedBy(Auth::guard('api')->user()->getAuthIdentifier());
+                $activity->causedBy(Auth::guard('api')->user()); // @phpstan-ignore-line
             } else {
                 $activity->causedByAnonymous();
             }

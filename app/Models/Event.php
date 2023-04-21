@@ -231,7 +231,7 @@ class Event extends Model
             ! $this->repeats && $this->end => $this->end,
             $this->repeats && $this->end_type === 'on' && $this->until => $this->until,
             $this->repeats && $this->end_type === 'after' && $this->count => optional($this->generateRRule(), function (RRule $rule) {
-                return Carbon::parse($rule->getNthOccurrenceAfter($this->start, $this->count));
+                return Carbon::parse($rule->getNthOccurrenceAfter($this->start, $this->count)); // @phpstan-ignore-line
             }),
             default => null
         };

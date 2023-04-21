@@ -14,6 +14,7 @@ parameters:
         - '#Access to an undefined property Laravel\\Passport\\Client::\$[a-zA-Z0-9\\_]+#'
         - '#Access to an undefined property Laravel\\Socialite\\Contracts\\User::\$[a-zA-Z0-9\\_]+#'
         - '#Access to property \$[a-zA-Z0-9\\_]+ on an unknown class Laravel\\Cashier\\Billable#'
+        - '#Call to method sparkPlan\(\) on an unknown class Laravel\\Cashier\\Billable#'
         - '#Call to an undefined method Illuminate\\Database\\Eloquent\\Model|Stancl\\Tenancy\\Contracts\\Tenant::database\(\)#'
     excludePaths:
         - app/Nova/*.php

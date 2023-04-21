@@ -33,7 +33,7 @@ class Document extends Model implements Htmlable
     /**
      * @var string[]
      */
-    public static $tags = [
+    public static $availableTags = [
         '{user_name}' => 'The user\'s name.',
         '{user_email}' => 'The user\'s email.',
         '{user_email_verified_at}' => 'The user\'s email verification date. Null if email has not been verified',
@@ -108,9 +108,9 @@ class Document extends Model implements Htmlable
     public function toHtml(?User $user = null, $attachedModel = null)
     {
         $content = $this->content;
-        foreach (self::$tags as $tag => $description) {
+        foreach (self::$availableTags as $tag => $description) {
             if ($replacement = $this->resolveTag($tag, $user, $attachedModel)) {
-                $content = Str::replace($tag, $replacement, $content);
+                $content = Str::replace((string) $tag, $replacement, $content);
             }
         }
 

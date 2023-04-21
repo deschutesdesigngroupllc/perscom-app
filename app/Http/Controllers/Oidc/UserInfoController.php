@@ -13,15 +13,15 @@ class UserInfoController extends Controller
      */
     public function index(Request $request)
     {
-        $user = Auth::guard('passport')->user();
+        $user = optional(Auth::guard('passport')->user());
 
         $response = collect([
             'sub' => $user?->getAuthIdentifier(),
         ]);
 
-        if ($user?->tokenCan('email')) {
+        if ($user->tokenCan('email')) {
             $response = $response->merge([
-                'email' => $user?->email,
+                'email' => $user->email,
             ]);
         }
 

@@ -188,7 +188,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     public function getDatabaseStatusAttribute()
     {
-        return $this->tenancy_db_name ? 'created' : 'creating';
+        return $this->getAttribute('tenancy_db_name') ? 'created' : 'creating';
     }
 
     /**

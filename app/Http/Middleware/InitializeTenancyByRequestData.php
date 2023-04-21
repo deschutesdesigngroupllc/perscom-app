@@ -19,7 +19,7 @@ class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\Initiali
         self::$onFail = static function ($e, $request, $next) {
             throw new TenantCouldNotBeIdentified(401, 'We could not identify the organization attemping the request. Please make sure to include the X-Perscom-Id header with your valid PERSCOM ID.');
 
-            return $next($request);
+            return $next($request); // @phpstan-ignore-line
         };
 
         parent::__construct($tenancy, $resolver);

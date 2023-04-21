@@ -16,7 +16,7 @@ class TenantRepository implements RepositoryContract
     }
 
     /**
-     * @return Tenant|\Illuminate\Database\Eloquent\Builder|\Illuminate\Database\Eloquent\Model|mixed
+     * @return Tenant
      */
     public function findByKey($key, $value)
     {
@@ -24,7 +24,7 @@ class TenantRepository implements RepositoryContract
     }
 
     /**
-     * @return Tenant|Tenant[]|\Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
+     * @return Tenant
      */
     public function findById($id)
     {
