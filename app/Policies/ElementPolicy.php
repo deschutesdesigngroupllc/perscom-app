@@ -13,7 +13,7 @@ class ElementPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -79,7 +79,7 @@ class ElementPolicy extends Policy
      */
     public function restore(User $user, Element $element)
     {
-        //
+        return Gate::check('delete', $element->model);
     }
 
     /**
@@ -89,6 +89,6 @@ class ElementPolicy extends Policy
      */
     public function forceDelete(User $user, Element $element)
     {
-        //
+        return Gate::check('delete', $element->model);
     }
 }

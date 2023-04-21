@@ -4,11 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
-use Stancl\Tenancy\Database\Concerns\TenantConnection;
 
+/**
+ * App\Models\Settings
+ *
+ * @property string $key
+ * @property string|null $value
+ *
+ * @method static \Illuminate\Database\Eloquent\Builder|Settings newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Settings newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Settings query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Settings whereKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Settings whereValue($value)
+ *
+ * @mixin \Eloquent
+ */
 class Settings extends \Outl1ne\NovaSettings\Models\Settings
 {
-    use TenantConnection;
     use HasFactory;
 
     /**

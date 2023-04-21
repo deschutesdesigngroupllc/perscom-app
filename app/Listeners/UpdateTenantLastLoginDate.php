@@ -10,7 +10,6 @@ class UpdateTenantLastLoginDate
     /**
      * Handle the event.
      *
-     * @param  object  $event
      * @return void
      */
     public function handle(Login $event)

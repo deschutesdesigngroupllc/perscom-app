@@ -30,7 +30,11 @@ class MessagePolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -40,7 +44,11 @@ class MessagePolicy extends Policy
      */
     public function view(User $user, Message $message)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -50,7 +58,11 @@ class MessagePolicy extends Policy
      */
     public function create(User $user)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -60,7 +72,11 @@ class MessagePolicy extends Policy
      */
     public function update(User $user, Message $message)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -70,7 +86,11 @@ class MessagePolicy extends Policy
      */
     public function delete(User $user, Message $message)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -80,7 +100,11 @@ class MessagePolicy extends Policy
      */
     public function restore(User $user, Message $message)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -90,6 +114,10 @@ class MessagePolicy extends Policy
      */
     public function forceDelete(User $user, Message $message)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 }

@@ -14,7 +14,7 @@ class TaskAssignmentPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -40,7 +40,7 @@ class TaskAssignmentPolicy extends Policy
      */
     public function view(User $user, TaskAssignment $taskAssignment)
     {
-        return Gate::check('view', $taskAssignment->task ?? Task::make()) || $taskAssignment->user?->id === $user->id;
+        return Gate::check('view', $taskAssignment->task ?? new Task()) || $taskAssignment->user?->id === $user->id;
     }
 
     /**
@@ -60,7 +60,7 @@ class TaskAssignmentPolicy extends Policy
      */
     public function update(User $user, TaskAssignment $taskAssignment)
     {
-        return Gate::check('update', $taskAssignment->task ?? Task::make());
+        return Gate::check('update', $taskAssignment->task ?? new Task());
     }
 
     /**
@@ -70,7 +70,7 @@ class TaskAssignmentPolicy extends Policy
      */
     public function delete(User $user, TaskAssignment $taskAssignment)
     {
-        return Gate::check('delete', $taskAssignment->task ?? Task::make());
+        return Gate::check('delete', $taskAssignment->task ?? new Task());
     }
 
     /**
@@ -80,7 +80,7 @@ class TaskAssignmentPolicy extends Policy
      */
     public function restore(User $user, TaskAssignment $taskAssignment)
     {
-        //
+        return Gate::check('delete', $taskAssignment->task ?? new Task());
     }
 
     /**
@@ -90,6 +90,6 @@ class TaskAssignmentPolicy extends Policy
      */
     public function forceDelete(User $user, TaskAssignment $taskAssignment)
     {
-        //
+        return Gate::check('delete', $taskAssignment->task ?? new Task());
     }
 }

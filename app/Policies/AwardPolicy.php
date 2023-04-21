@@ -12,7 +12,7 @@ class AwardPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class AwardPolicy extends Policy
      */
     public function restore(User $user, Award $award)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:award') || $user->tokenCan('delete:award');
     }
 
     /**
@@ -88,6 +88,6 @@ class AwardPolicy extends Policy
      */
     public function forceDelete(User $user, Award $award)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:award') || $user->tokenCan('delete:award');
     }
 }

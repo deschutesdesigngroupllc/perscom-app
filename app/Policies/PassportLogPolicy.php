@@ -14,7 +14,7 @@ class PassportLogPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -84,7 +84,7 @@ class PassportLogPolicy extends Policy
      */
     public function restore(User $user, PassportLog $log)
     {
-        //
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -94,6 +94,6 @@ class PassportLogPolicy extends Policy
      */
     public function forceDelete(User $user, PassportLog $log)
     {
-        //
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 }

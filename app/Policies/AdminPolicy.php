@@ -29,7 +29,11 @@ class AdminPolicy extends Policy
      */
     public function viewAny(Admin $admin)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -39,7 +43,11 @@ class AdminPolicy extends Policy
      */
     public function view(Admin $admin, Admin $model)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -49,7 +57,11 @@ class AdminPolicy extends Policy
      */
     public function create(Admin $admin)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -59,7 +71,11 @@ class AdminPolicy extends Policy
      */
     public function update(Admin $admin, Admin $model)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -69,7 +85,11 @@ class AdminPolicy extends Policy
      */
     public function delete(Admin $admin, Admin $model)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -79,7 +99,11 @@ class AdminPolicy extends Policy
      */
     public function restore(Admin $admin, Admin $model)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -89,6 +113,10 @@ class AdminPolicy extends Policy
      */
     public function forceDelete(Admin $admin, Admin $model)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 }

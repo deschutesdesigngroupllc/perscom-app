@@ -12,7 +12,7 @@ class StatusPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class StatusPolicy extends Policy
      */
     public function restore(User $user, Status $status)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:status') || $user->tokenCan('delete:status');
     }
 
     /**
@@ -88,6 +88,6 @@ class StatusPolicy extends Policy
      */
     public function forceDelete(User $user, Status $status)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:status') || $user->tokenCan('delete:status');
     }
 }

@@ -13,7 +13,7 @@ class PermissionPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -101,7 +101,11 @@ class PermissionPolicy extends Policy
      */
     public function restore(User $user, Permission $permission)
     {
-        //
+        if ($permission->is_application_permission) {
+            return false;
+        }
+
+        return $this->hasPermissionTo($user, 'delete:permission') || $user->tokenCan('delete:permission');
     }
 
     /**
@@ -111,6 +115,10 @@ class PermissionPolicy extends Policy
      */
     public function forceDelete(User $user, Permission $permission)
     {
-        //
+        if ($permission->is_application_permission) {
+            return false;
+        }
+
+        return $this->hasPermissionTo($user, 'delete:permission') || $user->tokenCan('delete:permission');
     }
 }

@@ -19,14 +19,14 @@ class UserInfoController extends Controller
             'sub' => $user?->getAuthIdentifier(),
         ]);
 
-        if ($user?->tokenCan('email')) {
+        if ($user->tokenCan('email')) {
             $response = $response->merge([
-                'email' => $user?->email,
+                'email' => $user->email,
             ]);
         }
 
-        if ($user?->tokenCan('profile')) {
-            $profile = collect($user)->only([
+        if ($user->tokenCan('profile')) {
+            $profile = collect($user)->only([ // @phpstan-ignore-line
                 'name',
                 'profile_photo_url',
                 'cover_photo_url',

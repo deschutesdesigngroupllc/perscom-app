@@ -12,7 +12,7 @@ class SpecialtyPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class SpecialtyPolicy extends Policy
      */
     public function restore(User $user, Specialty $mos)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:specialty') || $user->tokenCan('delete:specialty');
     }
 
     /**
@@ -88,6 +88,6 @@ class SpecialtyPolicy extends Policy
      */
     public function forceDelete(User $user, Specialty $mos)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:specialty') || $user->tokenCan('delete:specialty');
     }
 }

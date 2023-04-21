@@ -11,16 +11,12 @@ use Illuminate\Support\Facades\Gate;
 class TaskAssignmentScope implements Scope
 {
     /**
-     * Apply the scope to a given Eloquent query builder.
-     *
      * @return void
      */
     public function apply(Builder $builder, Model $model)
     {
         if (! Gate::check('update', $model) && Auth::check()) {
-            return $builder->forUser(Auth::user());
+            $builder->forUser(Auth::user());
         }
-
-        return $builder;
     }
 }

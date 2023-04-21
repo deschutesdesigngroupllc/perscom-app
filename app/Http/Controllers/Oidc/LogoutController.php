@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 class LogoutController extends Controller
 {
     /**
-     * @return \Illuminate\Http\JsonResponse
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function index(Request $request)
     {

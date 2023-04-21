@@ -46,10 +46,7 @@ class NewTaskAssignment extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return NewTaskAssignmentMail
      */
     public function toMail($notifiable)
     {
@@ -57,9 +54,7 @@ class NewTaskAssignment extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the nova representation of the notification
-     *
-     * @return array
+     * @return NovaNotification
      */
     public function toNova()
     {

@@ -10,6 +10,20 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 use Znck\Eloquent\Traits\BelongsToThrough;
 
+/**
+ * App\Models\EventRegistration
+ *
+ * @property-read \App\Models\Event|null $event
+ * @property-read \App\Models\User|null $user
+ *
+ * @method static Builder|EventRegistration forUser(\App\Models\User $user)
+ * @method static Builder|EventRegistration future()
+ * @method static Builder|EventRegistration newModelQuery()
+ * @method static Builder|EventRegistration newQuery()
+ * @method static Builder|EventRegistration query()
+ *
+ * @mixin \Eloquent
+ */
 class EventRegistration extends Pivot
 {
     use BelongsToThrough;
@@ -43,7 +57,7 @@ class EventRegistration extends Pivot
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Znck\Eloquent\Relations\BelongsToThrough
      */
     public function calendar()
     {
@@ -59,7 +73,7 @@ class EventRegistration extends Pivot
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Znck\Eloquent\Relations\BelongsToThrough
      */
     public function organizer()
     {

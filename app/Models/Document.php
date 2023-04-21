@@ -33,7 +33,7 @@ class Document extends Model implements Htmlable
     /**
      * @var string[]
      */
-    public static $tags = [
+    public static $availableTags = [
         '{user_name}' => 'The user\'s name.',
         '{user_email}' => 'The user\'s email.',
         '{user_email_verified_at}' => 'The user\'s email verification date. Null if email has not been verified',
@@ -72,7 +72,7 @@ class Document extends Model implements Htmlable
         return match (true) {
             $tag === '{user_name}' => $user->name ?? null,
             $tag === '{user_email}' => $user->email ?? null,
-            $tag === '{user_email_verified_at}' => $user?->email_verified_at ? Carbon::parse($user?->email_verified_at)->toDayDateTimeString() : null,
+            $tag === '{user_email_verified_at}' => $user->email_verified_at ? Carbon::parse($user->email_verified_at)->toDayDateTimeString() : null,
             $tag === '{user_status}' => $user->status->name ?? null,
             $tag === '{user_online}' => $user->online ?? null,
             $tag === '{user_assignment_position}' => $user->position->name ?? null,
@@ -98,6 +98,7 @@ class Document extends Model implements Htmlable
             $tag === '{rank_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{service_record_text}' => $attachedModel->text ?? null,
             $tag === '{service_record_date}' => $attachedModel->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            default => null
         };
     }
 
@@ -107,9 +108,9 @@ class Document extends Model implements Htmlable
     public function toHtml(?User $user = null, $attachedModel = null)
     {
         $content = $this->content;
-        foreach (self::$tags as $tag => $description) {
+        foreach (self::$availableTags as $tag => $description) {
             if ($replacement = $this->resolveTag($tag, $user, $attachedModel)) {
-                $content = Str::replace($tag, $replacement, $content);
+                $content = Str::replace((string) $tag, $replacement, $content);
             }
         }
 

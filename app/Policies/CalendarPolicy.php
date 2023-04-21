@@ -12,7 +12,7 @@ class CalendarPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -81,7 +81,7 @@ class CalendarPolicy extends Policy
      */
     public function restore(User $user, Calendar $calendar)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:calendar') || $user->tokenCan('delete:calendar');
     }
 
     /**
@@ -91,6 +91,6 @@ class CalendarPolicy extends Policy
      */
     public function forceDelete(User $user, Calendar $calendar)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:calendar') || $user->tokenCan('delete:calendar');
     }
 }

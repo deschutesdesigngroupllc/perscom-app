@@ -3,6 +3,7 @@
 namespace App\Jobs;
 
 use App\Mail\Tenant\NewTenantMail;
+use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,7 +12,6 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
-use Stancl\Tenancy\Contracts\TenantWithDatabase;
 
 class CreateInitialTenantUser implements ShouldQueue
 {
@@ -20,7 +20,7 @@ class CreateInitialTenantUser implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(protected TenantWithDatabase $tenant, protected bool $sendMail = true)
+    public function __construct(protected Tenant $tenant, protected bool $sendMail = true)
     {
         //
     }

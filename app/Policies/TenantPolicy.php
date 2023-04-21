@@ -30,7 +30,11 @@ class TenantPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -40,7 +44,11 @@ class TenantPolicy extends Policy
      */
     public function view(User $user, Tenant $tenant)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -50,18 +58,25 @@ class TenantPolicy extends Policy
      */
     public function create(User $user)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\Tenant  $appModelsTenant
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Tenant $tenant)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -71,7 +86,11 @@ class TenantPolicy extends Policy
      */
     public function delete(User $user, Tenant $tenant)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -81,7 +100,11 @@ class TenantPolicy extends Policy
      */
     public function restore(User $user, Tenant $tenant)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -91,6 +114,10 @@ class TenantPolicy extends Policy
      */
     public function forceDelete(User $user, Tenant $tenant)
     {
-        //
+        if (Request::isCentralRequest()) {
+            return true;
+        }
+
+        return false;
     }
 }

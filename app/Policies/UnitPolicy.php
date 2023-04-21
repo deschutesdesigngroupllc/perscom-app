@@ -12,7 +12,7 @@ class UnitPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class UnitPolicy extends Policy
      */
     public function restore(User $user, Unit $unit)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
     }
 
     /**
@@ -88,6 +88,6 @@ class UnitPolicy extends Policy
      */
     public function forceDelete(User $user, Unit $unit)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
     }
 }

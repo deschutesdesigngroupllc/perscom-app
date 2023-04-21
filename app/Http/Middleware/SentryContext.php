@@ -31,7 +31,7 @@ class SentryContext
 
             if (tenant()) {
                 Sentry\configureScope(function (Scope $scope): void {
-                    $scope->setTag('tenant', tenant()->getTenantKey());
+                    $scope->setTag('tenant', (string) tenant()->getTenantKey());
                     $scope->setContext('tenant', [
                         'ID' => tenant()->getTenantKey(),
                         'Name' => tenant('name'),
@@ -42,7 +42,7 @@ class SentryContext
 
             if ($request->routeIs('api.*')) {
                 Sentry\configureScope(function (Scope $scope): void {
-                    $scope->setTag('api', true);
+                    $scope->setTag('api', 'true');
                 });
             }
         }

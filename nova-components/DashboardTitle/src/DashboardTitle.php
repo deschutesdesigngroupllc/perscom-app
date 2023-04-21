@@ -33,7 +33,6 @@ class DashboardTitle extends Card
 
     /**
      * @param  string  $title
-     * @return DashboardTitle
      */
     public function withTitle(mixed $title): DashboardTitle
     {
@@ -50,7 +49,6 @@ class DashboardTitle extends Card
 
     /**
      * @param  string  $subtitle
-     * @return DashboardTitle
      */
     public function withSubtitle(mixed $subtitle): DashboardTitle
     {

@@ -12,7 +12,7 @@ class FieldPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -78,7 +78,7 @@ class FieldPolicy extends Policy
      */
     public function restore(User $user, Field $field)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:field') || $user->tokenCan('delete:field');
     }
 
     /**
@@ -88,6 +88,6 @@ class FieldPolicy extends Policy
      */
     public function forceDelete(User $user, Field $field)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:field') || $user->tokenCan('delete:field');
     }
 }

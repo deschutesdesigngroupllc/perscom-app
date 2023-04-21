@@ -15,7 +15,7 @@
                     </tr>
                     </thead>
                     <tbody class="dv-divide-y dv-divide-gray-200 dv-bg-white">
-                    @foreach(\App\Models\Document::$tags as $tag => $description)
+                    @foreach(\App\Models\Document::$availableTags as $tag => $description)
                         <tr>
                             <td class="dv-whitespace-nowrap dv-py-4 dv-pl-4 dv-pr-3 dv-text-sm dv-text-gray-500 sm:dv-pl-6 dv-lead">{{ $tag }}</td>
                             <td class="dv-whitespace-nowrap dv-px-3 dv-py-4 dv-text-sm dv-text-gray-500">{{ $description }}</td>

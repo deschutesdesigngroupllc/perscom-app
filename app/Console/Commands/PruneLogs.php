@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
+use Illuminate\Support\Arr;
 
 class PruneLogs extends Command
 {
@@ -35,7 +36,10 @@ class PruneLogs extends Command
             return 1;
         }
 
-        tenancy()->runForMultiple($this->option('tenants'), function ($tenant) {
+        $tenants = Arr::wrap($this->option('tenants'));
+
+        // @phpstan-ignore-next-line
+        tenancy()->runForMultiple($tenants, function ($tenant) {
             $this->line("Tenant: {$tenant->getTenantKey()}");
 
             $this->call('activitylog:clean', [
@@ -43,5 +47,7 @@ class PruneLogs extends Command
                 '--force' => true,
             ]);
         });
+
+        return Command::SUCCESS;
     }
 }

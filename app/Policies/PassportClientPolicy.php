@@ -14,7 +14,7 @@ class PassportClientPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -96,7 +96,11 @@ class PassportClientPolicy extends Policy
      */
     public function restore(User $user, Client $client)
     {
-        //
+        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
+            return false;
+        }
+
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 
     /**
@@ -106,6 +110,10 @@ class PassportClientPolicy extends Policy
      */
     public function forceDelete(User $user, Client $client)
     {
-        //
+        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
+            return false;
+        }
+
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
 }

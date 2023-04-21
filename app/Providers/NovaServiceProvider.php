@@ -67,7 +67,6 @@ use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
@@ -209,10 +208,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
                         MenuItem::lens(EventRegistration::class, MyEvents::class)->withBadge(function () {
-                            return EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
+                            return (string) EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
                         }),
                         MenuItem::lens(TaskAssignment::class, MyTasks::class)->withBadge(function () {
-                            return TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
+                            return (string) TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
                         }),
                     ])->icon('user-circle'),
 
@@ -236,7 +235,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Field::class),
                         MenuItem::resource(Form::class),
                         MenuItem::resource(Submission::class)->withBadge(function () {
-                            return SubmissionModel::query()->whereDoesntHave('statuses')->count();
+                            return (string) SubmissionModel::query()->whereDoesntHave('statuses')->count();
                         }),
                     ])->icon('pencil-alt')->collapsable(),
 
@@ -267,7 +266,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::link('Localization', '/settings/localization'),
                             MenuItem::link('Registration', '/settings/registration'),
                         ])->collapsable(),
-                    ])->icon('terminal')->collapsable()->canSee(function (NovaRequest $request) {
+                    ])->icon('terminal')->collapsable()->canSee(function (Request $request) {
                         return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
                     })->collapsable()->collapsedByDefault(),
 
@@ -294,16 +293,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::externalLink('Account', route('nova.pages.detail', [
                     'resource' => \App\Nova\Admin::uriKey(),
                     'resourceId' => Auth::user()->getAuthIdentifier(),
-                ]))->canSee(function (NovaRequest $request) {
+                ]))->canSee(function (Request $request) {
                     return $request->isCentralRequest();
                 }),
                 MenuItem::externalLink('My Personnel File', route('nova.pages.detail', [
                     'resource' => User::uriKey(),
                     'resourceId' => Auth::user()->getAuthIdentifier(),
-                ]))->canSee(function (NovaRequest $request) {
+                ]))->canSee(function (Request $request) {
                     return ! $request->isCentralRequest();
                 }),
-                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
+                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (Request $request) {
                     return ! $request->isDemoMode() &&
                            ! $request->isCentralRequest() &&
                            Gate::check('billing', $request->user());

@@ -12,7 +12,7 @@ class EventPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -83,7 +83,7 @@ class EventPolicy extends Policy
      */
     public function restore(User $user, Event $event)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:event') || $user->tokenCan('delete:event');
     }
 
     /**
@@ -93,7 +93,7 @@ class EventPolicy extends Policy
      */
     public function forceDelete(User $user, Event $event)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:event') || $user->tokenCan('delete:event');
     }
 
     /**

@@ -13,7 +13,7 @@ class StatusRecordPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -82,7 +82,8 @@ class StatusRecordPolicy extends Policy
      */
     public function restore(User $user, StatusRecord $statusRecord)
     {
-        //
+        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user->tokenCan('delete:statusrecord')) &&
+               Gate::check('delete', $statusRecord->model);
     }
 
     /**
@@ -92,6 +93,7 @@ class StatusRecordPolicy extends Policy
      */
     public function forceDelete(User $user, StatusRecord $statusRecord)
     {
-        //
+        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user->tokenCan('delete:statusrecord')) &&
+               Gate::check('delete', $statusRecord->model);
     }
 }
