@@ -1,6 +1,26 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.32...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.33...HEAD)
+
+## [v1.0.33](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.32...v1.0.33) - 2023-04-21
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.33 -->
+### What's Changed
+
+#### Added
+
+- Added OIDC SSO support by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/155
+- Add static analysis to testing by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/158
+
+#### Changed
+
+- Updated home page by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/157
+
+#### Fixed
+
+- Fixes forbidden error for social login. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/156
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.32...v1.0.33
 
 ## [v1.0.32](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...v1.0.32) - 2023-04-14
 
