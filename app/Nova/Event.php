@@ -2,7 +2,11 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\BatchNewEventRegistration;
+use App\Nova\Actions\NewEventRegistration;
+use App\Nova\Actions\RemoveEventRegistration;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -33,13 +37,6 @@ class Event extends Resource
     public static $model = \App\Models\Event::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'name';
-
-    /**
      * The columns that should be searched.
      *
      * @var array
@@ -48,6 +45,16 @@ class Event extends Resource
         'id',
         'name',
     ];
+
+    /**
+     * @return string
+     */
+    public function title()
+    {
+        return $this->name.optional($this->calendar, static function ($calendar) {
+            return " ($calendar->name)";
+        });
+    }
 
     /**
      * Get the fields displayed by the resource.
@@ -60,7 +67,9 @@ class Event extends Resource
             ID::make()->sortable(),
             Text::make('Name')->sortable()->rules('required')->showOnPreview(),
             BelongsTo::make('Calendar')->sortable()->rules('required')->showOnPreview(),
-            BelongsTo::make('Organizer', 'author', User::class)->rules('required')->sortable()->showOnPreview(),
+            BelongsTo::make('Organizer', 'author', User::class)->default(function (NovaRequest $request) {
+                return $request->user()->getAuthIdentifier();
+            })->rules('required')->sortable()->showOnPreview(),
             Tag::make('Tags')->showCreateRelationButton(),
             Textarea::make('Description')->alwaysShow()->hideFromIndex()->showOnPreview(),
             Textarea::make('Location')->alwaysShow()->hideFromIndex()->showOnPreview(),
@@ -253,6 +262,10 @@ class Event extends Resource
             new Panel('Details', [
                 Trix::make('Content')->alwaysShow(),
             ]),
+            new Panel('Registration', [
+                Boolean::make('Registrations Enabled', 'registration_enabled')->default(true),
+                DateTime::make('Registration Deadline', 'registration_deadline')->help('Leave blank to set no deadline.')->nullable(),
+            ]),
             BelongsToMany::make('Registrations', 'registrations', User::class)
                 ->fields(function () {
                     return [
@@ -302,6 +315,16 @@ class Event extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new BatchNewEventRegistration())->canSee(function () {
+                return Gate::check('create', \App\Models\EventRegistration::class);
+            }),
+            (new NewEventRegistration())->showInline()->canRun(function (NovaRequest $request, ?\App\Models\Event $event) {
+                return ! $event?->registrations->contains($request->user());
+            }),
+            (new RemoveEventRegistration())->showInline()->canRun(function (NovaRequest $request, ?\App\Models\Event $event) {
+                return $event?->registrations->contains($request->user());
+            }),
+        ];
     }
 }

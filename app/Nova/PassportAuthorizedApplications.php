@@ -6,7 +6,6 @@ use App\Features\OAuth2AccessFeature;
 use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -115,9 +114,12 @@ class PassportAuthorizedApplications extends Resource
         return '/resources/'.static::uriKey();
     }
 
+    /**
+     * @return void
+     */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
-        Auth::user()->createToken($model->name, $model->scopes);
+        $request->user()->createToken($model->name, $model->scopes);
         $model->delete();
     }
 

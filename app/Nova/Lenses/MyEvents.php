@@ -3,10 +3,9 @@
 namespace App\Nova\Lenses;
 
 use App\Nova\User;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\LensRequest;
@@ -31,7 +30,7 @@ class MyEvents extends Lens
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering($request->withFilters(
-            $query->forUser(Auth::user())
+            $query->forUser($request->user())
         ));
     }
 
@@ -60,15 +59,7 @@ class MyEvents extends Lens
                     return $this->event?->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
                 });
             })->exceptOnForms(),
-            Boolean::make('All Day', function () {
-                return $this->event?->all_day;
-            }),
-            Boolean::make('Repeats', function () {
-                return $this->event?->repeats;
-            }),
-            Boolean::make('Has Passed', function () {
-                return $this->event?->is_past;
-            }),
+            DateTime::make('Registered', 'created_at')->sortable(),
         ];
     }
 

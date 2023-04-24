@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Scopes\EventRegistrationScope;
 use App\Traits\HasUser;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
@@ -35,6 +36,26 @@ class EventRegistration extends Pivot
      * @var string
      */
     protected $table = 'events_registrations';
+
+    /**
+     * Boot
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function (EventRegistration $eventRegistration) {
+            throw_if(! $eventRegistration->event->registration_enabled,
+                \Exception::class,
+                "Registrations for {$eventRegistration->event->name} are disabled.");
+
+            throw_if(
+                $eventRegistration->event->registration_deadline &&
+                Carbon::parse($eventRegistration->event->registration_deadline)->isPast(),
+                \Exception::class,
+                "The registration deadline for {$eventRegistration->event->name} has passed.");
+        });
+    }
 
     /**
      * The "booted" method of the model.

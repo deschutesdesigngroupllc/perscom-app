@@ -2,7 +2,10 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\BatchNewEventRegistration;
+use App\Nova\Actions\RemoveEventRegistration;
 use App\Nova\Lenses\MyEvents;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -50,9 +53,12 @@ class EventRegistration extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Event')->sortable(),
-            BelongsTo::make('Calendar')->sortable(),
-            BelongsTo::make('Organizer', 'organizer', User::class)->sortable(),
-            BelongsTo::make('User')->sortable(),
+            BelongsTo::make('Calendar')->sortable()->exceptOnForms(),
+            BelongsTo::make('User')->default(function (NovaRequest $request) {
+                return $request->user()->getAuthIdentifier();
+            })->readonly(function () {
+                return ! Gate::check('create', $this->model());
+            })->sortable(),
             Text::make('Description', function () {
                 return Str::limit($this->event?->description);
             }),
@@ -135,6 +141,11 @@ class EventRegistration extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new BatchNewEventRegistration())->canSee(function () {
+                return Gate::check('create', \App\Models\EventRegistration::class);
+            }),
+            (new RemoveEventRegistration())->showInline(),
+        ];
     }
 }
