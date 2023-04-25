@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::table('events', function (Blueprint $table) {
             $table->after('rrule', function (Blueprint $table) {
-               $table->boolean('registration_enabled')->default(true);
-               $table->timestamp('registration_deadline')->nullable();
+                $table->boolean('registration_enabled')->default(true);
+                $table->timestamp('registration_deadline')->nullable();
             });
         });
     }
