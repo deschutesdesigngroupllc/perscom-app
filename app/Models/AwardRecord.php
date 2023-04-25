@@ -57,7 +57,7 @@ class AwardRecord extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new AwardRecordScope);
+        static::addGlobalScope(new AwardRecordScope());
     }
 
     /**

@@ -3,8 +3,10 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Actions\BatchCreateAssignmentRecord;
 use App\Nova\Metrics\NewAssignmentRecords;
 use App\Nova\Metrics\TotalAssignmentRecords;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
@@ -88,11 +90,10 @@ class AssignmentRecord extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
-                ->sortable(),
-            BelongsTo::make('Unit')->sortable()->showCreateRelationButton(),
-            BelongsTo::make('Position')->sortable()->showCreateRelationButton(),
-            BelongsTo::make('Specialty')->sortable()->showCreateRelationButton(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)->sortable(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->sortable()->showCreateRelationButton(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->sortable()->showCreateRelationButton(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->sortable()->showCreateRelationButton(),
             Textarea::make('Text')->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
@@ -145,8 +146,13 @@ class AssignmentRecord extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [
+            (new BatchCreateAssignmentRecord())->canSee(function () {
+                return Gate::check('create', \App\Models\AssignmentRecord::class);
+            }),
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })->nameable(),
+        ];
     }
 }
