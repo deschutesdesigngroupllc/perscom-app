@@ -3,8 +3,10 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Actions\BatchCreateServiceRecord;
 use App\Nova\Metrics\NewServiceRecords;
 use App\Nova\Metrics\TotalServiceRecords;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
@@ -142,8 +144,13 @@ class ServiceRecord extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [
+            (new BatchCreateServiceRecord())->canSee(function () {
+                return Gate::check('create', \App\Models\ServiceRecord::class);
+            }),
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })->nameable(),
+        ];
     }
 }
