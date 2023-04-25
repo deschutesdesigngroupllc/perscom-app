@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
@@ -68,6 +69,7 @@ class EventRegistration extends Resource
             URL::make('URL', function () {
                 return $this->event?->url;
             })->hideFromIndex(),
+            DateTime::make('Registered', 'created_at')->exceptOnForms()->sortable(),
             new Panel('Event', [
                 Text::make('Starts', function () {
                     return optional($this->event?->start, function ($start) {
@@ -81,13 +83,13 @@ class EventRegistration extends Resource
                 })->exceptOnForms(),
                 Boolean::make('All Day', function () {
                     return $this->event?->all_day;
-                }),
+                })->onlyOnDetail(),
                 Boolean::make('Repeats', function () {
                     return $this->event?->repeats;
-                }),
+                })->onlyOnDetail(),
                 Boolean::make('Has Passed', function () {
                     return $this->event?->is_past;
-                }),
+                })->onlyOnDetail(),
                 Text::make('Pattern', function () {
                     return Str::ucfirst($this->event?->human_readable_pattern);
                 })->onlyOnDetail(),

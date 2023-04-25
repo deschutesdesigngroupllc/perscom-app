@@ -49,6 +49,7 @@ class MyEvents extends Lens
             Text::make('Description', function () {
                 return Str::limit($this->event?->description);
             }),
+            DateTime::make('Registered', 'created_at')->sortable(),
             Text::make('Starts', function () {
                 return optional($this->event?->start, function ($start) {
                     return $this->event?->all_day ? $start->toFormattedDayDateString() : $start->toDayDateTimeString();
@@ -59,7 +60,6 @@ class MyEvents extends Lens
                     return $this->event?->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
                 });
             })->exceptOnForms(),
-            DateTime::make('Registered', 'created_at')->sortable(),
         ];
     }
 

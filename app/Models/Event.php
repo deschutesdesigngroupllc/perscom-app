@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasImages;
-use App\Traits\HasResourceUrlAttribute;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
@@ -24,8 +23,6 @@ use RRule\RRule;
  * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule $human_readable_pattern
  * @property-read false|\Illuminate\Support\Optional|mixed $is_past
  * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule|null $next_occurrence
- * @property-read string $relative_url
- * @property-read string $url
  * @property-read \App\Models\Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
@@ -50,7 +47,6 @@ class Event extends Model
     use HasAttachments;
     use HasFactory;
     use HasImages;
-    use HasResourceUrlAttribute;
 
     /**
      * @var string[]
@@ -104,8 +100,6 @@ class Event extends Model
      */
     protected $appends = [
         'is_past',
-        'url',
-        'relative_url',
         'computed_end',
         'next_occurrence',
     ];
