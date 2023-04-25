@@ -261,8 +261,7 @@ class Event extends Model
             ! $this->repeats => $this->start,
             $this->repeats => optional($this->generateRRule(), static function (RRule $rule) {
                 return Carbon::parse(collect($rule->getOccurrencesAfter(now(), false, 1))->first());
-            }),
-            default => null
+            })
         };
     }
 
