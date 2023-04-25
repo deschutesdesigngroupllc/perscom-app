@@ -64,7 +64,7 @@ class DemoDataSeeder extends Seeder
 
         Event::all()->random(2)->each(function (Event $event) use ($user) {
             $event->registrations()->attach([
-                'user_id' => $user->id
+                'user_id' => $user->id,
             ]);
         });
 
