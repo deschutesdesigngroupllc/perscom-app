@@ -3,7 +3,6 @@
 namespace App\Nova\Lenses;
 
 use App\Models\Enums\TaskAssignmentStatus;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -32,7 +31,7 @@ class MyTasks extends Lens
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering($request->withFilters(
-            $query->forUser(Auth::user())
+            $query->forUser($request->user())
         ));
     }
 

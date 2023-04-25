@@ -44,7 +44,11 @@ jobs:
         run: composer update --prefer-dist --no-interaction --no-progress
 
       - name: Run Linter
-        run: composer test:lint
+        run: |
+          echo "Running $(./vendor/bin/pint --version)"
+          composer test:lint
 
       - name: Run Static Analysis
-        run: composer test:types
+        run: |
+          echo "Running $(./vendor/bin/phpstan --version)"
+          composer test:types

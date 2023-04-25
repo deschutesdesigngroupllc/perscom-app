@@ -5,7 +5,6 @@ namespace App\Nova;
 use App\Models\Enums\TaskAssignmentStatus;
 use App\Nova\Actions\MarkTaskComplete;
 use App\Nova\Lenses\MyTasks;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\Badge;
@@ -70,7 +69,9 @@ class TaskAssignment extends Resource
             ID::make()->sortable(),
             BelongsTo::make('Task')->sortable(),
             BelongsTo::make('User')->sortable(),
-            BelongsTo::make('Assigned By', 'assigned_by', User::class)->default(Auth::user()->getAuthIdentifier()),
+            BelongsTo::make('Assigned By', 'assigned_by', User::class)->default(function (NovaRequest $request) {
+                return $request->user()->getAuthIdentifier();
+            }),
             Text::make('Description', function () {
                 return Str::limit($this->task?->description);
             }),

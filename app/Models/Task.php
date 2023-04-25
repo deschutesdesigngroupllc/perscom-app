@@ -12,8 +12,6 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read \App\Models\Form|null $form
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\TaskAssignment> $task_assignments
- * @property-read int|null $task_assignments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
@@ -37,7 +35,7 @@ class Task extends Model
         parent::boot();
 
         static::deleted(function (Task $task) {
-            $task->task_assignments()->delete();
+            $task->users()->detach();
         });
     }
 
@@ -59,13 +57,5 @@ class Task extends Model
             ->as('assignment')
             ->using(TaskAssignment::class)
             ->withTimestamps();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function task_assignments()
-    {
-        return $this->hasMany(TaskAssignment::class);
     }
 }

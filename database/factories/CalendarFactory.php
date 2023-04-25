@@ -17,7 +17,9 @@ class CalendarFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => "Calendar {$this->faker->unique()->randomNumber()}",
+            'description' => $this->faker->paragraph,
+            'color' => $this->faker->hexColor,
         ];
     }
 }

@@ -5,7 +5,9 @@ namespace Database\Seeders\Demo\Military;
 use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\AssignmentRecord;
 use App\Models\AwardRecord;
+use App\Models\Calendar;
 use App\Models\CombatRecord;
+use App\Models\Event;
 use App\Models\QualificationRecord;
 use App\Models\RankRecord;
 use App\Models\ServiceRecord;
@@ -52,6 +54,19 @@ class DemoDataSeeder extends Seeder
             'email' => 'demo@perscom.io',
         ]);
         $user->assignRole('Admin');
+
+        Calendar::factory()
+            ->has(Event::factory()
+                ->for($user, 'author')
+                ->count(10)
+            )
+            ->create();
+
+        Event::all()->random(2)->each(function (Event $event) use ($user) {
+            $event->registrations()->attach([
+                'user_id' => $user->id,
+            ]);
+        });
 
         $createApiKey = app(CreatesPersonalAccessToken::class);
         $createApiKey->create($user, 'Demo API Key', ['*']);

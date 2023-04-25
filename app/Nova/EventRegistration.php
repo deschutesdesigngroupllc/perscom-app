@@ -2,10 +2,14 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\BatchNewEventRegistration;
+use App\Nova\Actions\RemoveEventRegistration;
 use App\Nova\Lenses\MyEvents;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Text;
@@ -50,9 +54,12 @@ class EventRegistration extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make('Event')->sortable(),
-            BelongsTo::make('Calendar')->sortable(),
-            BelongsTo::make('Organizer', 'organizer', User::class)->sortable(),
-            BelongsTo::make('User')->sortable(),
+            BelongsTo::make('Calendar')->sortable()->exceptOnForms(),
+            BelongsTo::make('User')->default(function (NovaRequest $request) {
+                return $request->user()->getAuthIdentifier();
+            })->readonly(function () {
+                return ! Gate::check('create', $this->model());
+            })->sortable(),
             Text::make('Description', function () {
                 return Str::limit($this->event?->description);
             }),
@@ -62,6 +69,7 @@ class EventRegistration extends Resource
             URL::make('URL', function () {
                 return $this->event?->url;
             })->hideFromIndex(),
+            DateTime::make('Registered', 'created_at')->exceptOnForms()->sortable(),
             new Panel('Event', [
                 Text::make('Starts', function () {
                     return optional($this->event?->start, function ($start) {
@@ -75,13 +83,13 @@ class EventRegistration extends Resource
                 })->exceptOnForms(),
                 Boolean::make('All Day', function () {
                     return $this->event?->all_day;
-                }),
+                })->onlyOnDetail(),
                 Boolean::make('Repeats', function () {
                     return $this->event?->repeats;
-                }),
+                })->onlyOnDetail(),
                 Boolean::make('Has Passed', function () {
                     return $this->event?->is_past;
-                }),
+                })->onlyOnDetail(),
                 Text::make('Pattern', function () {
                     return Str::ucfirst($this->event?->human_readable_pattern);
                 })->onlyOnDetail(),
@@ -135,6 +143,11 @@ class EventRegistration extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new BatchNewEventRegistration())->canSee(function () {
+                return Gate::check('create', \App\Models\EventRegistration::class);
+            }),
+            (new RemoveEventRegistration())->showInline(),
+        ];
     }
 }

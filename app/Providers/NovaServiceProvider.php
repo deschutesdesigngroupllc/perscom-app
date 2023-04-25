@@ -215,12 +215,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         }),
                     ])->icon('user-circle'),
 
+                    MenuSection::make('Calendar', [
+                        MenuItem::resource(Calendar::class),
+                        MenuItem::resource(Event::class),
+                        MenuItem::resource(EventRegistration::class)->name('Registrations')->canSee(function () {
+                            return Gate::check('create', EventRegistrationModel::class);
+                        }),
+                    ])->icon('calendar')->collapsable(),
+
                     MenuSection::make('Organization', [
                         MenuItem::resource(Announcement::class),
                         MenuItem::resource(Award::class),
-                        MenuItem::resource(Calendar::class),
                         MenuItem::resource(Document::class),
-                        MenuItem::resource(Event::class),
                         MenuItem::resource(Position::class),
                         MenuItem::resource(Qualification::class),
                         MenuItem::resource(Rank::class),

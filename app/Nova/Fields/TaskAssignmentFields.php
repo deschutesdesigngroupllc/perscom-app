@@ -2,9 +2,9 @@
 
 namespace App\Nova\Fields;
 
-use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
+use Laravel\Nova\Http\Requests\NovaRequest;
 
 class TaskAssignmentFields
 {
@@ -26,7 +26,9 @@ class TaskAssignmentFields
                 }
 
                 return null;
-            })->options($users)->default(Auth::user()->getAuthIdentifier()),
+            })->options($users)->default(function (NovaRequest $request) {
+                return $request->user()->getAuthIdentifier();
+            }),
             DateTime::make('Assigned At')->default(now()),
             DateTime::make('Due At')->nullable()->help('Set to assign a due date to the task.'),
             DateTime::make('Expires At')

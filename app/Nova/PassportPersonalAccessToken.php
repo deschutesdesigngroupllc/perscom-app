@@ -5,7 +5,6 @@ namespace App\Nova;
 use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
@@ -138,10 +137,13 @@ class PassportPersonalAccessToken extends Resource
         return '/resources/'.static::uriKey();
     }
 
+    /**
+     * @return void
+     */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
         $createPersonalAccessToken = app(CreatesPersonalAccessToken::class);
-        $createPersonalAccessToken->create(Auth::user(), $model->name, $model->scopes);
+        $createPersonalAccessToken->create($request->user(), $model->name, $model->scopes);
 
         $model->delete();
     }

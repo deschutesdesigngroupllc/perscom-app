@@ -5,7 +5,7 @@ namespace App\Nova\Dashboards;
 use App\Models\Announcement;
 use App\Models\Message;
 use App\Nova\Metrics\NewUsers;
-use App\Nova\Metrics\UpdatesPerformed;
+use App\Nova\Metrics\UpcomingEvents;
 use App\Nova\Metrics\UsersOnline;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -41,7 +41,7 @@ class Main extends Dashboard
             $this->setupAlertCard(),
             new NewUsers(),
             new UsersOnline(),
-            new UpdatesPerformed(),
+            new UpcomingEvents(),
             new DashboardQuickActions(),
         ];
     }

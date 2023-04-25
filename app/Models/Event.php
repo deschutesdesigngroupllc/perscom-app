@@ -5,7 +5,6 @@ namespace App\Models;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasImages;
-use App\Traits\HasResourceUrlAttribute;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
@@ -23,9 +22,7 @@ use RRule\RRule;
  * @property-read mixed|null $computed_end
  * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule $human_readable_pattern
  * @property-read false|\Illuminate\Support\Optional|mixed $is_past
- * @property-read CarbonPeriod $period
- * @property-read string $relative_url
- * @property-read string $url
+ * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule|null $next_occurrence
  * @property-read \App\Models\Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
@@ -50,7 +47,6 @@ class Event extends Model
     use HasAttachments;
     use HasFactory;
     use HasImages;
-    use HasResourceUrlAttribute;
 
     /**
      * @var string[]
@@ -94,6 +90,9 @@ class Event extends Model
         'by_month' => 'collection',
         'is_past' => 'boolean',
         'computed_end' => 'datetime',
+        'next_occurrence' => 'datetime',
+        'registration_enabled' => 'boolean',
+        'registration_deadline' => 'datetime',
     ];
 
     /**
@@ -101,9 +100,8 @@ class Event extends Model
      */
     protected $appends = [
         'is_past',
-        'url',
-        'relative_url',
         'computed_end',
+        'next_occurrence',
     ];
 
     /**
@@ -175,6 +173,10 @@ class Event extends Model
                 $event->updateQuietly($updates);
             }
         });
+
+        static::deleted(static function (Event $event) {
+            $event->registrations()->detach();
+        });
     }
 
     /**
@@ -222,6 +224,10 @@ class Event extends Model
                 $query->where('repeats', '=', true)
                     ->where('end_type', '=', 'on')
                     ->whereDate('until', '>=', now());
+            })
+            ->orWhere(function (Builder $query) {
+                $query->where('repeats', '=', true)
+                    ->where('end_type', '=', 'after');
             });
     }
 
@@ -241,6 +247,19 @@ class Event extends Model
     }
 
     /**
+     * @return \Illuminate\Support\Optional|mixed|RRule|null
+     */
+    public function getNextOccurrenceAttribute()
+    {
+        return match (true) {
+            ! $this->repeats => $this->start,
+            $this->repeats => optional($this->generateRRule(), static function (RRule $rule) {
+                return Carbon::parse(collect($rule->getOccurrencesAfter(now(), false, 1))->first());
+            })
+        };
+    }
+
+    /**
      * @return false|\Illuminate\Support\Optional|mixed
      */
     public function getIsPastAttribute()
@@ -251,19 +270,11 @@ class Event extends Model
     }
 
     /**
-     * @return CarbonPeriod
-     */
-    public function getPeriodAttribute()
-    {
-        return CarbonPeriod::create($this->start, $this->end);
-    }
-
-    /**
      * @return \Illuminate\Support\Optional|mixed|RRule
      */
     public function getHumanReadablePatternAttribute()
     {
-        return optional($this->generateRRule(), function (RRule $rule) {
+        return optional($this->generateRRule(), static function (RRule $rule) {
             return $rule->humanReadable();
         });
     }

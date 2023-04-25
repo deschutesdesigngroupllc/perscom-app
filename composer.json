@@ -129,8 +129,8 @@
             "@php artisan key:generate --ansi"
         ],
         "docs:models": "php artisan ide-helper:models --reset",
-        "lint": "pint",
-        "test:lint": "pint --test",
+        "lint": "./vendor/bin/pint",
+        "test:lint": "./vendor/bin/pint --test",
         "test:types": "./vendor/bin/phpstan analyse --memory-limit 1G"
     },
     "extra": {
