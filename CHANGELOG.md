@@ -1,6 +1,23 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.33...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.34...HEAD)
+
+## [v1.0.34](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.33...v1.0.34) - 2023-04-25
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.34 -->
+### What's Changed
+
+#### Added
+
+- New batch create records action by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/160
+- Added ability to register for events and manage registrations at a user level by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/161
+
+#### Fixed
+
+- Fixed email_verified_at null error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/159
+- Fixes data truncated error when creating a task with a long description by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/162
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.33...v1.0.34
 
 ## [v1.0.33](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.32...v1.0.33) - 2023-04-21
 
