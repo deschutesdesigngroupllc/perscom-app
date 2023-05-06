@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.35...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.36...HEAD)
+
+## [v1.0.36](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.35...v1.0.36) - 2023-05-06
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.36 -->
+### What's Changed
+
+#### Fixed
+
+- Fix GTAG error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/166
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.35...v1.0.36
 
 ## [v1.0.35](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.34...v1.0.35) - 2023-05-06
 
