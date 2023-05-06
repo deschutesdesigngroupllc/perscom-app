@@ -2,15 +2,17 @@
 
 namespace Tests\Tenant\Feature\Http\Controllers\Oidc;
 
-use App\Http\Middleware\Subscribed;
 use Laravel\Passport\Passport;
 use Tests\Tenant\TenantTestCase;
+use Tests\Traits\MakesApiRequests;
 
 class UserInfoControllerTest extends TenantTestCase
 {
+    use MakesApiRequests;
+
     public function test_userinfo_endpoint_can_be_reached()
     {
-        $this->withoutMiddleware(Subscribed::class);
+        $this->withoutApiMiddleware();
 
         Passport::actingAs($this->user, [
             'openid', 'profile', 'email',
