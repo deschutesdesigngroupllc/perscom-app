@@ -1,6 +1,21 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.34...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.35...HEAD)
+
+## [v1.0.35](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.34...v1.0.35) - 2023-05-06
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.35 -->
+### What's Changed
+
+#### Changed
+
+- Improved SEO and Added Google Analytics by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/164
+
+#### Fixed
+
+- Fix HTTP fake testing error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/165
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.34...v1.0.35
 
 ## [v1.0.34](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.33...v1.0.34) - 2023-04-25
 
