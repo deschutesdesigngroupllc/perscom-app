@@ -10,7 +10,7 @@
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', {{ env('GOOGLE_ANALYTICS_TAG') }});
+        gtag('config', '{{ env('GOOGLE_ANALYTICS_TAG') }}');
     </script>
 
     <title>PERSCOM Personnel Management System</title>
