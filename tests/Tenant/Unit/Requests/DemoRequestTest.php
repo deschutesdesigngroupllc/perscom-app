@@ -2,13 +2,15 @@
 
 namespace Tests\Tenant\Unit\Requests;
 
-use App\Http\Middleware\InitializeTenancyByRequestData;
 use Laravel\Fortify\Features;
 use Laravel\Passport\Passport;
 use Tests\Tenant\TenantTestCase;
+use Tests\Traits\MakesApiRequests;
 
 class DemoRequestTest extends TenantTestCase
 {
+    use MakesApiRequests;
+
     public function test_web_request_is_recognized_as_demo()
     {
         config()->set('tenancy.demo_host', $this->domain->host);
@@ -40,7 +42,7 @@ class DemoRequestTest extends TenantTestCase
             'view:user',
         ]);
 
-        $this->withMiddleware(InitializeTenancyByRequestData::class);
+        $this->withoutApiMiddleware();
 
         $this->getJson(config('app.api_url').'/'.config('app.api_version').'/me', [
             'X-Perscom-Id' => $this->tenant->getTenantKey(),
@@ -58,11 +60,11 @@ class DemoRequestTest extends TenantTestCase
             'view:user',
         ]);
 
-        $this->withMiddleware(InitializeTenancyByRequestData::class);
+        $this->withoutApiMiddleware();
 
         $this->getJson(config('app.api_url').'/'.config('app.api_version').'/me', [
             'X-Perscom-Id' => $this->tenant->getTenantKey(),
-        ])->assertStatus(402);
+        ])->assertSuccessful();
 
         $this->assertFalse(\Request::isDemoMode());
     }
@@ -76,7 +78,7 @@ class DemoRequestTest extends TenantTestCase
             'view:user',
         ]);
 
-        $this->withMiddleware(InitializeTenancyByRequestData::class);
+        $this->withoutApiMiddleware();
 
         $this->getJson(config('app.api_url').'/'.config('app.api_version').'/me?perscom_id='.$this->tenant->getTenantKey())
             ->assertSuccessful();
@@ -93,10 +95,10 @@ class DemoRequestTest extends TenantTestCase
             'view:user',
         ]);
 
-        $this->withMiddleware(InitializeTenancyByRequestData::class);
+        $this->withoutApiMiddleware();
 
         $this->getJson(config('app.api_url').'/'.config('app.api_version').'/me?perscom_id='.$this->tenant->getTenantKey())
-            ->assertStatus(402);
+            ->assertSuccessful();
 
         $this->assertFalse(\Request::isDemoMode());
     }

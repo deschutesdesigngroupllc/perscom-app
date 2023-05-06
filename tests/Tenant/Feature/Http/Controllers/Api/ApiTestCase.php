@@ -2,16 +2,14 @@
 
 namespace Tests\Tenant\Feature\Http\Controllers\Api;
 
-use App\Http\Middleware\LogApiRequests;
-use App\Http\Middleware\SentryContext;
-use App\Http\Middleware\Subscribed;
-use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Support\Facades\URL;
 use Tests\Tenant\TenantTestCase;
-use Treblle\Middlewares\TreblleMiddleware;
+use Tests\Traits\MakesApiRequests;
 
 class ApiTestCase extends TenantTestCase
 {
+    use MakesApiRequests;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -20,12 +18,6 @@ class ApiTestCase extends TenantTestCase
 
         $this->withHeader('X-Perscom-Id', $this->tenant->getTenantKey());
 
-        $this->withoutMiddleware([
-            TreblleMiddleware::class,
-            SentryContext::class,
-            LogApiRequests::class,
-            ThrottleRequests::class,
-            Subscribed::class,
-        ]);
+        $this->withoutApiMiddleware();
     }
 }
