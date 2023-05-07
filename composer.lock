@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "44b2858a6f3d80266267a6edaf9e129b",
+    "content-hash": "445ecf6bae24465b51cdd2bd927dbf2b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -3080,19 +3080,20 @@
         },
         {
             "name": "laravel/spark-stripe",
-            "version": "v3.2.7",
+            "version": "v4.1.2",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/spark-stripe.git",
-                "reference": "aa875319df4c1cc242b3c9e97e3e2c1203db6242"
+                "reference": "7754eff39ba077a04a1e8925e3a206150a502561"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://spark.laravel.com/dist/laravel/spark-stripe/laravel-spark-stripe-aa875319df4c1cc242b3c9e97e3e2c1203db6242-zip-4a9a62.zip",
-                "reference": "aa875319df4c1cc242b3c9e97e3e2c1203db6242",
-                "shasum": "4aa42a9f470bb09d6657d4dbed6ccc84f77beb25"
+                "url": "https://spark.laravel.com/dist/laravel/spark-stripe/laravel-spark-stripe-7754eff39ba077a04a1e8925e3a206150a502561-zip-e15832.zip",
+                "reference": "7754eff39ba077a04a1e8925e3a206150a502561",
+                "shasum": "6f5a98b6210cacd244213ca98b7fe0373c4b3c84"
             },
             "require": {
+                "dompdf/dompdf": "^2.0",
                 "ext-json": "*",
                 "illuminate/contracts": "^9.0|^10.0",
                 "inertiajs/inertia-laravel": "^0.5.1|^0.6.4",
@@ -3103,12 +3104,13 @@
             "require-dev": {
                 "mockery/mockery": "^1.0",
                 "orchestra/testbench": "^7.0|^8.0",
+                "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^9.5"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "3.x-dev"
+                    "dev-master": "4.x-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -3144,10 +3146,10 @@
                 "stripe"
             ],
             "support": {
-                "source": "https://github.com/laravel/spark-stripe/tree/v3.2.7",
+                "source": "https://github.com/laravel/spark-stripe/tree/v4.1.2",
                 "issues": "https://github.com/laravel/spark-stripe/issues"
             },
-            "time": "2023-03-03T14:17:05+00:00"
+            "time": "2023-04-27T15:29:44+00:00"
         },
         {
             "name": "laravel/telescope",
@@ -5651,7 +5653,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/event-registration",
+            "version": "dev-feature/update-spark",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5687,7 +5689,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/event-registration",
+            "version": "dev-feature/update-spark",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -5723,7 +5725,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/event-registration",
+            "version": "dev-feature/update-spark",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -5759,7 +5761,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/event-registration",
+            "version": "dev-feature/update-spark",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -5795,7 +5797,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/event-registration",
+            "version": "dev-feature/update-spark",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -5831,7 +5833,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/event-registration",
+            "version": "dev-feature/update-spark",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -5867,7 +5869,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/event-registration",
+            "version": "dev-feature/update-spark",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
