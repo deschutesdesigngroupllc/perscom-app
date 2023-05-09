@@ -52,6 +52,7 @@ use App\Nova\TaskAssignment;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
+use App\Nova\Webhook;
 use App\Rules\SubdomainRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -258,6 +259,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(PassportAuthorizedApplications::class),
                         MenuItem::resource(PassportClient::class)->name('My Apps'),
                         MenuItem::resource(PassportPersonalAccessToken::class),
+                        MenuItem::resource(Webhook::class),
                         MenuItem::resource(PassportLog::class),
                     ])->icon('link')->collapsable(),
 

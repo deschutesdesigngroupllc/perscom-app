@@ -25,6 +25,7 @@ class LogApiRequests
                 'method' => $request->getMethod(),
                 'status' => $response->getStatusCode(),
                 'ip' => $request->getClientIp(),
+                'token' => $request->user()->token()?->id,
                 'request_headers' => (string) $request->headers,
                 'response_headers' => (string) $response->headers,
                 'content' => optional($response->getContent(), static function ($content) {

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\Models\Activity;
 
 /**
- * App\Models\PassportLog
+ * App\Models\WebhookLog
  *
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property-read \Illuminate\Support\Collection $changes
@@ -25,7 +25,7 @@ use Spatie\Activitylog\Models\Activity;
  *
  * @mixin \Eloquent
  */
-class PassportLog extends Activity
+class WebhookLog extends Activity
 {
     use HasFactory;
 
@@ -35,7 +35,7 @@ class PassportLog extends Activity
     protected static function booted(): void
     {
         static::addGlobalScope('api', function (Builder $builder) {
-            $builder->where('log_name', '=', 'api');
+            $builder->where('log_name', '=', 'webhook');
         });
     }
 }
