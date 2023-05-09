@@ -2,8 +2,11 @@
 
 namespace App\Observers;
 
+use App\Models\Enums\WebhookEvent;
 use App\Models\User;
+use App\Models\Webhook;
 use App\Notifications\User\PasswordChanged;
+use App\Services\WebhookService;
 use Illuminate\Support\Facades\Notification;
 
 class UserObserver
@@ -17,6 +20,10 @@ class UserObserver
     {
         $user->assignRole(setting('default_roles'));
         $user->givePermissionTo(setting('default_permissions'));
+
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_CREATED->value])->each(function (Webhook $webhook) use ($user) {
+            WebhookService::dispatch($webhook, WebhookEvent::USER_CREATED->value, $user);
+        });
     }
 
     /**
@@ -27,13 +34,18 @@ class UserObserver
     public function updated(User $user)
     {
         if ($user->isDirty('notes')) {
-            $user->notes_updated_at = now();
-            $user->saveQuietly();
+            $user->updateQuietly([
+                'notes_updated_at' => now(),
+            ]);
         }
 
         if ($user->isDirty('password')) {
             Notification::send($user, new PasswordChanged());
         }
+
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_UPDATED->value])->each(function (Webhook $webhook) use ($user) {
+            WebhookService::dispatch($webhook, WebhookEvent::USER_UPDATED->value, $user);
+        });
     }
 
     /**
@@ -43,7 +55,9 @@ class UserObserver
      */
     public function deleted(User $user)
     {
-        //
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_DELETED->value])->each(function (Webhook $webhook) use ($user) {
+            WebhookService::dispatch($webhook, WebhookEvent::USER_DELETED->value, $user);
+        });
     }
 
     /**

@@ -16,6 +16,7 @@ class WebhookService
             'event' => $event,
             'created' => now(),
             'data' => $model->toArray(),
+            'changes' => $model->getChanges(),
         ];
 
         activity('webhook')

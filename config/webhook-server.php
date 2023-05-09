@@ -62,7 +62,7 @@ return [
     /*
      * This class is used to dispatch webhooks on to the queue.
      */
-    'webhook_job' => \Spatie\WebhookServer\CallWebhookJob::class,
+    'webhook_job' => \App\Jobs\CallWebhook::class,
 
     /*
      * By default we will verify that the ssl certificate of the destination

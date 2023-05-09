@@ -10,9 +10,15 @@ enum WebhookEvent: string
     case AWARD_RECORD_CREATED = 'awardrecord.created';
     case AWARD_RECORD_UPDATED = 'awardrecord.updated';
     case AWARD_RECORD_DELETED = 'awardrecord.deleted';
+    case CALENDAR_CREATED = 'calendar.created';
+    case CALENDAR_UPDATED = 'calendar.updated';
+    case CALENDAR_DELETED = 'calendar.deleted';
     case COMBAT_RECORD_CREATED = 'combatrecord.created';
     case COMBAT_RECORD_UPDATED = 'combatrecord.updated';
     case COMBAT_RECORD_DELETED = 'combatrecord.deleted';
+    case EVENT_CREATED = 'event.created';
+    case EVENT_UPDATED = 'event.updated';
+    case EVENT_DELETED = 'event.deleted';
     case QUALIFICATION_RECORD_CREATED = 'qualificationrecord.created';
     case QUALIFICATION_RECORD_UPDATED = 'qualificationrecord.updated';
     case QUALIFICATION_RECORD_DELETED = 'qualificationrecord.deleted';
@@ -22,4 +28,7 @@ enum WebhookEvent: string
     case SERVICE_RECORD_CREATED = 'servicerecord.created';
     case SERVICE_RECORD_UPDATED = 'servicerecord.updated';
     case SERVICE_RECORD_DELETED = 'servicerecord.deleted';
+    case USER_CREATED = 'user.created';
+    case USER_UPDATED = 'user.updated';
+    case USER_DELETED = 'user.deleted';
 }
