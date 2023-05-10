@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use App\Models\Enums\WebhookMethod;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
 
 class Webhook extends Model
 {
     use Actionable;
+    use HasFactory;
 
     /**
      * @var string[]
