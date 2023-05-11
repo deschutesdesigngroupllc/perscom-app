@@ -169,7 +169,7 @@ return [
                         \App\Features\CustomDomainFeature::class,
                         \App\Features\ExportDataFeature::class,
                         \App\Features\OAuth2AccessFeature::class,
-                        \App\Features\WebhookFeature::class
+                        \App\Features\WebhookFeature::class,
                     ],
                 ],
             ],

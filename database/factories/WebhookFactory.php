@@ -24,7 +24,7 @@ class WebhookFactory extends Factory
             'description' => $this->faker->sentence,
             'method' => $this->faker->randomElement(WebhookMethod::cases()),
             'events' => $this->faker->randomElements(WebhookEvent::cases(), 10),
-            'secret' => Str::random()
+            'secret' => Str::random(),
         ];
     }
 }
