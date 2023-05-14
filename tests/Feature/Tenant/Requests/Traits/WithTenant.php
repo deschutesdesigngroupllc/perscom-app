@@ -139,7 +139,7 @@ trait WithTenant
      */
     protected function tearDownTenancy()
     {
-        $this->tenant->delete();
+        $this->tenant->deleteQuietly();
     }
 
     public function withSubscription(string|int $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void

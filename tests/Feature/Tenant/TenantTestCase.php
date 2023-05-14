@@ -3,13 +3,13 @@
 namespace Tests\Feature\Tenant;
 
 use App\Models\Admin;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Tenant\Requests\Traits\WithTenant;
 use Tests\TestCase;
 
 class TenantTestCase extends TestCase
 {
-    use DatabaseMigrations;
+    use RefreshDatabase;
     use WithTenant;
 
     /**
