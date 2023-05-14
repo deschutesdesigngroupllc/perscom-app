@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant;
 
-use App\Models\Admin;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Tenant\Requests\Traits\WithTenant;
 use Tests\TestCase;
@@ -13,11 +12,6 @@ class TenantTestCase extends TestCase
     use WithTenant;
 
     /**
-     * @var Admin
-     */
-    protected $superAdmin = null;
-
-    /**
      * @throws \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById
      */
     protected function setUp(): void
@@ -25,8 +19,6 @@ class TenantTestCase extends TestCase
         putenv('TENANT_TESTING=true');
 
         parent::setUp();
-
-        $this->superAdmin = Admin::factory()->create();
 
         $this->setUpTenancy();
     }
