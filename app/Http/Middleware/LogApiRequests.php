@@ -20,22 +20,6 @@ class LogApiRequests
         $response = $next($request);
 
         if (tenant()) {
-            $properties = [
-                'endpoint' => $request->getPathInfo(),
-                'method' => $request->getMethod(),
-                'status' => $response->getStatusCode(),
-                'ip' => $request->getClientIp(),
-                'request_headers' => (string) $request->headers,
-                'response_headers' => (string) $response->headers,
-                'content' => optional($response->getContent(), static function ($content) {
-                    if (Str::isJson($content)) {
-                        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
-                    }
-
-                    return $content;
-                }),
-            ];
-
             $client = Auth::guard('passport')->client(); // @phpstan-ignore-line
             $properties['client'] = $client->id ?? null;
 
@@ -52,7 +36,22 @@ class LogApiRequests
                 default => null
             };
 
-            activity($name)->withProperties($properties)->causedBy($causer)->log($request->getPathInfo());
+            activity($name)->withProperties([
+                'client' => $client->id ?? null,
+                'endpoint' => $request->getPathInfo(),
+                'method' => $request->getMethod(),
+                'status' => $response->getStatusCode(),
+                'ip' => $request->getClientIp(),
+                'request_headers' => (string) $request->headers,
+                'response_headers' => (string) $response->headers,
+                'content' => optional($response->getContent(), static function ($content) {
+                    if (Str::isJson($content)) {
+                        return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+                    }
+
+                    return $content;
+                }),
+            ])->causedBy($causer)->log($request->getPathInfo());
         }
 
         return $response;
