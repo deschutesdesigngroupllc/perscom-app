@@ -7,6 +7,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Actions\Actionable;
 
+/**
+ * App\Models\Webhook
+ *
+ * @property WebhookMethod $method
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
+ * @property-read int|null $actions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
+ * @property-read int|null $logs_count
+ *
+ * @method static \Database\Factories\WebhookFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook query()
+ *
+ * @mixin \Eloquent
+ */
 class Webhook extends Model
 {
     use Actionable;

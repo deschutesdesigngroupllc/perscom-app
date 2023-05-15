@@ -19,9 +19,9 @@ use Spatie\Activitylog\Models\Activity;
  * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder|Activity hasBatch()
  * @method static Builder|Activity inLog(...$logNames)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportTokenLog newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportTokenLog newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportTokenLog query()
+ * @method static Builder|PassportTokenLog newModelQuery()
+ * @method static Builder|PassportTokenLog newQuery()
+ * @method static Builder|PassportTokenLog query()
  *
  * @mixin \Eloquent
  */
