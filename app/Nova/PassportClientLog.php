@@ -14,14 +14,14 @@ use Laravel\Nova\Panel;
 use Spatie\Activitylog\Models\Activity;
 use Symfony\Component\HttpFoundation\Response;
 
-class PassportLog extends Resource
+class PassportClientLog extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
      * @var string
      */
-    public static $model = \App\Models\PassportLog::class;
+    public static $model = \App\Models\PassportClientLog::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -55,7 +55,7 @@ class PassportLog extends Resource
      */
     public static function uriKey()
     {
-        return 'api-logs';
+        return 'oauth-logs';
     }
 
     /**

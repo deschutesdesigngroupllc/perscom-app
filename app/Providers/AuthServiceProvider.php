@@ -20,8 +20,9 @@ use App\Models\Image;
 use App\Models\Mail;
 use App\Models\Message;
 use App\Models\PassportClient;
-use App\Models\PassportLog;
+use App\Models\PassportClientLog;
 use App\Models\PassportToken;
+use App\Models\PassportTokenLog;
 use App\Models\Permission;
 use App\Models\Position;
 use App\Models\Qualification;
@@ -56,8 +57,9 @@ use App\Policies\FormPolicy;
 use App\Policies\ImagePolicy;
 use App\Policies\MailPolicy;
 use App\Policies\MessagePolicy;
+use App\Policies\PassportClientLogPolicy;
 use App\Policies\PassportClientPolicy;
-use App\Policies\PassportLogPolicy;
+use App\Policies\PassportTokenLogPolicy;
 use App\Policies\PassportTokenPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\PositionPolicy;
@@ -111,8 +113,9 @@ class AuthServiceProvider extends ServiceProvider
         Mail::class => MailPolicy::class,
         Message::class => MessagePolicy::class,
         PassportClient::class => PassportClientPolicy::class,
-        PassportLog::class => PassportLogPolicy::class,
+        PassportClientLog::class => PassportClientLogPolicy::class,
         PassportToken::class => PassportTokenPolicy::class,
+        PassportTokenLog::class => PassportTokenLogPolicy::class,
         Permission::class => PermissionPolicy::class,
         Position::class => PositionPolicy::class,
         Qualification::class => QualificationPolicy::class,

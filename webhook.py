@@ -1,3 +1,6 @@
+# Development webhook server
+# export FLASK_APP=webhook.py && flask run
+
 from flask import Flask, request, Response, jsonify
 import json
 

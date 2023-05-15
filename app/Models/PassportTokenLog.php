@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Activitylog\Models\Activity;
 
 /**
- * App\Models\PassportLog
+ * App\Models\PassportTokenLog
  *
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property-read \Illuminate\Support\Collection $changes
@@ -19,13 +19,13 @@ use Spatie\Activitylog\Models\Activity;
  * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder|Activity hasBatch()
  * @method static Builder|Activity inLog(...$logNames)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportLog newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportLog newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportLog query()
+ * @method static \Illuminate\Database\Eloquent\Builder|PassportTokenLog newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PassportTokenLog newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|PassportTokenLog query()
  *
  * @mixin \Eloquent
  */
-class PassportLog extends Activity
+class PassportTokenLog extends Activity
 {
     use HasFactory;
 

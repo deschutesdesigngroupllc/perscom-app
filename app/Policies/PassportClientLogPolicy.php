@@ -2,14 +2,14 @@
 
 namespace App\Policies;
 
-use App\Features\ApiAccessFeature;
-use App\Models\PassportLog;
+use App\Features\OAuth2AccessFeature;
+use App\Models\PassportClientLog;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 use Laravel\Pennant\Feature;
 
-class PassportLogPolicy extends Policy
+class PassportClientLogPolicy extends Policy
 {
     use HandlesAuthorization;
 
@@ -22,7 +22,7 @@ class PassportLogPolicy extends Policy
             return false;
         }
 
-        if (Feature::inactive(ApiAccessFeature::class)) {
+        if (Feature::inactive(OAuth2AccessFeature::class)) {
             return false;
         }
     }
@@ -42,7 +42,7 @@ class PassportLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, PassportLog $log)
+    public function view(User $user, PassportClientLog $log)
     {
         return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
@@ -62,7 +62,7 @@ class PassportLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, PassportLog $log)
+    public function update(User $user, PassportClientLog $log)
     {
         return false;
     }
@@ -72,7 +72,7 @@ class PassportLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, PassportLog $log)
+    public function delete(User $user, PassportClientLog $log)
     {
         return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
@@ -82,7 +82,7 @@ class PassportLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, PassportLog $log)
+    public function restore(User $user, PassportClientLog $log)
     {
         return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }
@@ -92,7 +92,7 @@ class PassportLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, PassportLog $log)
+    public function forceDelete(User $user, PassportClientLog $log)
     {
         return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
     }

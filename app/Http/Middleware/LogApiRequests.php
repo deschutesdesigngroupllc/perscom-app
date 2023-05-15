@@ -20,12 +20,11 @@ class LogApiRequests
         $response = $next($request);
 
         if (tenant()) {
-            $activity = activity('api')->withProperties([
+            $properties = [
                 'endpoint' => $request->getPathInfo(),
                 'method' => $request->getMethod(),
                 'status' => $response->getStatusCode(),
                 'ip' => $request->getClientIp(),
-                'token' => $request->user()->token()?->id,
                 'request_headers' => (string) $request->headers,
                 'response_headers' => (string) $response->headers,
                 'content' => optional($response->getContent(), static function ($content) {
@@ -35,15 +34,25 @@ class LogApiRequests
 
                     return $content;
                 }),
-            ]);
+            ];
 
-            if (Auth::guard('api')->check()) {
-                $activity->causedBy(Auth::guard('api')->user()); // @phpstan-ignore-line
-            } else {
-                $activity->causedByAnonymous();
-            }
+            $client = Auth::guard('passport')->client(); // @phpstan-ignore-line
+            $properties['client'] = $client->id ?? null;
 
-            $activity->log($request->getPathInfo());
+            $name = match (true) {
+                Auth::guard('jwt')->check() => 'jwt',
+                $client?->firstParty() => 'api',
+                ! $client?->firstParty() => 'oauth',
+                default => 'api'
+            };
+
+            $causer = match (true) {
+                $client?->firstParty() => Auth::guard('api')->user(),
+                ! $client?->firstParty() => $client,
+                default => null
+            };
+
+            activity($name)->withProperties($properties)->causedBy($causer)->log($request->getPathInfo());
         }
 
         return $response;
