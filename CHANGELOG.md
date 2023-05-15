@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.37...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.38...HEAD)
+
+## [v1.0.38](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.37...v1.0.38) - 2023-05-15
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.38 -->
+### What's Changed
+
+#### Added
+
+- Adds support for webhooks by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/169
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.37...v1.0.38
 
 ## [v1.0.37](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.36...v1.0.37) - 2023-05-07
 
