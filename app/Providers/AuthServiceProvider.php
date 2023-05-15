@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\Action;
+use App\Models\Activity;
 use App\Models\Announcement;
 use App\Models\AssignmentRecord;
 use App\Models\Attachment;
@@ -19,8 +20,9 @@ use App\Models\Image;
 use App\Models\Mail;
 use App\Models\Message;
 use App\Models\PassportClient;
-use App\Models\PassportLog;
+use App\Models\PassportClientLog;
 use App\Models\PassportToken;
+use App\Models\PassportTokenLog;
 use App\Models\Permission;
 use App\Models\Position;
 use App\Models\Qualification;
@@ -37,7 +39,9 @@ use App\Models\Task;
 use App\Models\TaskAssignment;
 use App\Models\Unit;
 use App\Models\User;
+use App\Models\Webhook;
 use App\Policies\ActionPolicy;
+use App\Policies\ActivityPolicy;
 use App\Policies\AnnouncementPolicy;
 use App\Policies\AssignmentRecordsPolicy;
 use App\Policies\AttachmentPolicy;
@@ -53,8 +57,9 @@ use App\Policies\FormPolicy;
 use App\Policies\ImagePolicy;
 use App\Policies\MailPolicy;
 use App\Policies\MessagePolicy;
+use App\Policies\PassportClientLogPolicy;
 use App\Policies\PassportClientPolicy;
-use App\Policies\PassportLogPolicy;
+use App\Policies\PassportTokenLogPolicy;
 use App\Policies\PassportTokenPolicy;
 use App\Policies\PermissionPolicy;
 use App\Policies\PositionPolicy;
@@ -74,6 +79,7 @@ use App\Policies\TaskAssignmentPolicy;
 use App\Policies\TaskPolicy;
 use App\Policies\UnitPolicy;
 use App\Policies\UserPolicy;
+use App\Policies\WebhookPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -90,6 +96,7 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         Action::class => ActionPolicy::class,
+        Activity::class => ActivityPolicy::class,
         Announcement::class => AnnouncementPolicy::class,
         AssignmentRecord::class => AssignmentRecordsPolicy::class,
         Attachment::class => AttachmentPolicy::class,
@@ -106,8 +113,9 @@ class AuthServiceProvider extends ServiceProvider
         Mail::class => MailPolicy::class,
         Message::class => MessagePolicy::class,
         PassportClient::class => PassportClientPolicy::class,
-        PassportLog::class => PassportLogPolicy::class,
+        PassportClientLog::class => PassportClientLogPolicy::class,
         PassportToken::class => PassportTokenPolicy::class,
+        PassportTokenLog::class => PassportTokenLogPolicy::class,
         Permission::class => PermissionPolicy::class,
         Position::class => PositionPolicy::class,
         Qualification::class => QualificationPolicy::class,
@@ -126,6 +134,7 @@ class AuthServiceProvider extends ServiceProvider
         Task::class => TaskPolicy::class,
         Unit::class => UnitPolicy::class,
         User::class => UserPolicy::class,
+        Webhook::class => WebhookPolicy::class,
     ];
 
     /**

@@ -23,7 +23,7 @@ class CaptureUserOnlineStatus
             if ($user) {
                 Cache::tags('user.online')->put("user.online.{$user->getAuthIdentifier()}", true, $expire);
                 $user->timestamps = false;
-                $user->update([
+                $user->updateQuietly([
                     'last_seen_at' => now(),
                 ]);
             }

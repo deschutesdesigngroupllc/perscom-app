@@ -122,5 +122,6 @@ return [
         'create:image' => 'Can create an image',
         'manage:billing' => 'Can manage billing and subscription',
         'manage:api' => 'Can manage API keys and external applications',
+        'manage:webhook' => 'Can manage webhooks',
     ],
 ];

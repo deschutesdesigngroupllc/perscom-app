@@ -20,7 +20,24 @@ class LogApiRequests
         $response = $next($request);
 
         if (tenant()) {
-            $activity = activity('api')->withProperties([
+            $client = Auth::guard('passport')->client(); // @phpstan-ignore-line
+            $properties['client'] = $client->id ?? null;
+
+            $name = match (true) {
+                Auth::guard('jwt')->check() => 'jwt',
+                $client?->firstParty() => 'api',
+                ! $client?->firstParty() => 'oauth',
+                default => 'api'
+            };
+
+            $causer = match (true) {
+                $client?->firstParty() => Auth::guard('api')->user(),
+                ! $client?->firstParty() => $client,
+                default => null
+            };
+
+            activity($name)->withProperties([
+                'client' => $client->id ?? null,
                 'endpoint' => $request->getPathInfo(),
                 'method' => $request->getMethod(),
                 'status' => $response->getStatusCode(),
@@ -34,15 +51,7 @@ class LogApiRequests
 
                     return $content;
                 }),
-            ]);
-
-            if (Auth::guard('api')->check()) {
-                $activity->causedBy(Auth::guard('api')->user()); // @phpstan-ignore-line
-            } else {
-                $activity->causedByAnonymous();
-            }
-
-            $activity->log($request->getPathInfo());
+            ])->causedBy($causer)->log($request->getPathInfo());
         }
 
         return $response;

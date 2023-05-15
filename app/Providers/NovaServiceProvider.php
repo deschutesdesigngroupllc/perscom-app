@@ -32,8 +32,9 @@ use App\Nova\Mail;
 use App\Nova\Message;
 use App\Nova\PassportAuthorizedApplications;
 use App\Nova\PassportClient;
-use App\Nova\PassportLog;
+use App\Nova\PassportClientLog;
 use App\Nova\PassportPersonalAccessToken;
+use App\Nova\PassportPersonalAccessTokenLog;
 use App\Nova\Permission;
 use App\Nova\Position;
 use App\Nova\Qualification;
@@ -52,6 +53,7 @@ use App\Nova\TaskAssignment;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
+use App\Nova\Webhook;
 use App\Rules\SubdomainRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -255,10 +257,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])->icon('document-text')->collapsable(),
 
                     MenuSection::make('External Integration', [
-                        MenuItem::resource(PassportAuthorizedApplications::class),
-                        MenuItem::resource(PassportClient::class)->name('My Apps'),
-                        MenuItem::resource(PassportPersonalAccessToken::class),
-                        MenuItem::resource(PassportLog::class),
+                        MenuGroup::make('API', [
+                            MenuItem::resource(PassportPersonalAccessToken::class)->name('Keys'),
+                            MenuItem::resource(PassportPersonalAccessTokenLog::class),
+                        ])->collapsable(),
+                        MenuGroup::make('OAuth 2.0', [
+                            MenuItem::resource(PassportAuthorizedApplications::class),
+                            MenuItem::resource(PassportClient::class)->name('My Apps'),
+                            MenuItem::resource(PassportClientLog::class),
+                        ])->collapsable(),
+                        MenuItem::resource(Webhook::class),
+                        MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')->openInNewTab(),
                     ])->icon('link')->collapsable(),
 
                     MenuSection::make('System', [
