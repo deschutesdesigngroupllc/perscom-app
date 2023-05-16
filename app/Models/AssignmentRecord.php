@@ -43,12 +43,21 @@ class AssignmentRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'unit_id', 'position_id', 'specialty_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = ['user_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text'];
 
     /**
      * @var string[]
      */
     protected $with = ['position', 'specialty', 'unit'];
+
+    /**
+     * @var string[]
+     */
+    protected $casts = [
+        'secondary_position_ids' => 'json',
+        'secondary_specialty_ids' => 'json',
+        'secondary_unit_ids' => 'json',
+    ];
 
     /**
      * The table associated with the model.
@@ -70,6 +79,9 @@ class AssignmentRecord extends Model
                 $record->user->specialty_id = $record->specialty?->id;
                 $record->user->unit_id = $record->unit?->id;
                 $record->user->save();
+                $record->user->secondary_positions()->sync($record->secondary_position_ids);
+                $record->user->secondary_specialties()->sync($record->secondary_specialty_ids);
+                $record->user->secondary_units()->sync($record->secondary_unit_ids);
             }
         });
     }

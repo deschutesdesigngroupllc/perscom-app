@@ -57,6 +57,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $ranks_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
  * @property-read int|null $roles_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Position> $secondary_positions
+ * @property-read int|null $secondary_positions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Specialty> $secondary_specialties
+ * @property-read int|null $secondary_specialties_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $secondary_units
+ * @property-read int|null $secondary_units_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord> $service_records
  * @property-read int|null $service_records_count
  * @property-read \App\Models\Specialty|null $specialty
@@ -281,6 +287,15 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
+    public function secondary_positions()
+    {
+        return $this->belongsToMany(Position::class, 'users_positions')
+            ->withTimestamps();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
     public function qualifications()
     {
         return $this->belongsToMany(Qualification::class, 'records_qualifications')->withPivot(['text'])->as('record');
@@ -338,6 +353,15 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function secondary_specialties()
+    {
+        return $this->belongsToMany(Specialty::class, 'users_specialties')
+            ->withTimestamps();
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function status()
@@ -373,5 +397,14 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     public function unit()
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function secondary_units()
+    {
+        return $this->belongsToMany(Unit::class, 'users_units')
+            ->withTimestamps();
     }
 }

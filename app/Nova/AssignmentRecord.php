@@ -13,7 +13,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -91,13 +91,25 @@ class AssignmentRecord extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)->sortable(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->sortable()->showCreateRelationButton(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->sortable()->showCreateRelationButton(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->sortable()->showCreateRelationButton(),
-            Textarea::make('Text')->alwaysShow(),
-            Text::make('Text', function ($model) {
-                return $model->text;
-            })->onlyOnIndex(),
+            Panel::make('Position', [
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->sortable()->showCreateRelationButton(),
+                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_position_ids')->options(
+                    \App\Models\Position::all()->mapWithKeys(fn ($position) => [$position->id => $position->name])
+                )->hideFromIndex(),
+            ]),
+            Panel::make('Specialty', [
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->sortable()->showCreateRelationButton(),
+                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialty_ids')->options(
+                    \App\Models\Specialty::all()->mapWithKeys(fn ($speciality) => [$speciality->id => $speciality->name])
+                )->hideFromIndex(),
+            ]),
+            Panel::make('Unit', [
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->sortable()->showCreateRelationButton(),
+                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_unit_ids')->options(
+                    \App\Models\Unit::all()->mapWithKeys(fn ($unit) => [$unit->id => $unit->name])
+                )->hideFromIndex(),
+            ]),
+            Textarea::make('Text')->alwaysShow()->hideFromIndex(),
             BelongsTo::make('Document')->nullable()->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),

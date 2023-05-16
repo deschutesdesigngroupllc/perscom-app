@@ -125,19 +125,19 @@ class User extends Resource
             Avatar::make('Profile Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Image::make('Cover Photo')->disk('s3_public')->deletable()->prunable()->squared()->hideFromIndex(),
             Panel::make('Assignment', [
-                BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
                     ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
                     ->nullable()
                     ->onlyOnForms()
                     ->showOnPreview()
                     ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
-                BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
                     ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
                     ->nullable()
                     ->onlyOnForms()
                     ->showOnPreview()
                     ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
-                BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
                     ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
                     ->nullable()
                     ->onlyOnForms()
@@ -174,7 +174,7 @@ class User extends Resource
                             });
                         })->asSmall(),
                     ])->onlyOnIndex()->showOnPreview(),
-                    Stack::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), [
+                    Stack::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), [
                         Line::make('Specialty', function ($model) {
                             return $model->specialty->name ?? null;
                         })->asSubTitle(),
@@ -184,7 +184,7 @@ class User extends Resource
                             });
                         })->asSmall(),
                     ])->onlyOnIndex()->showOnPreview(),
-                    Stack::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), [
+                    Stack::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), [
                         Line::make('Position', function ($model) {
                             return $model->position->name ?? null;
                         })->asSubTitle(),
@@ -194,7 +194,7 @@ class User extends Resource
                             });
                         })->asSmall(),
                     ])->onlyOnIndex()->showOnPreview(),
-                    Stack::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), [
+                    Stack::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), [
                         Line::make('Unit', function ($model) {
                             return $model->unit->name ?? null;
                         })->asSubTitle(),
@@ -212,25 +212,6 @@ class User extends Resource
                     DateTime::make('Created At')->onlyOnDetail(),
                     DateTime::make('Updated At')->onlyOnDetail(),
                 ]),
-                Tab::make('Assignment', [
-                    Text::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), function ($model) {
-                        return $model->position->name ?? null;
-                    })->onlyOnDetail(),
-                    Text::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), function ($model) {
-                        return $model->specialty->name ?? null;
-                    })->onlyOnDetail(),
-                    Text::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), function ($model) {
-                        return $model->unit->name ?? null;
-                    })->onlyOnDetail(),
-                    DateTime::make('Last Assignment Change Date', function ($model) {
-                        return $model->assignment_records->first()->created_at ?? null;
-                    })->onlyOnDetail(),
-                    Text::make('Time In Assignment', function ($model) {
-                        return optional($model->time_in_assignment, function ($date) {
-                            return CarbonInterval::make($date)->forHumans();
-                        });
-                    })->onlyOnDetail(),
-                ]),
                 Tab::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), [
                     Text::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), function ($model) {
                         return $model->rank->name ?? null;
@@ -247,6 +228,30 @@ class User extends Resource
                     })->onlyOnDetail(),
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),
+            ])->showTitle(true),
+            Tabs::make('Assignments', [
+                Tab::make('Current Assignment', [
+                    Text::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), function ($model) {
+                        return $model->position->name ?? null;
+                    })->onlyOnDetail(),
+                    Text::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), function ($model) {
+                        return $model->specialty->name ?? null;
+                    })->onlyOnDetail(),
+                    Text::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), function ($model) {
+                        return $model->unit->name ?? null;
+                    })->onlyOnDetail(),
+                    DateTime::make('Last Assignment Change Date', function ($model) {
+                        return $model->assignment_records->first()->created_at ?? null;
+                    })->onlyOnDetail(),
+                    Text::make('Time In Assignment', function ($model) {
+                        return optional($model->time_in_assignment, function ($date) {
+                            return CarbonInterval::make($date)->forHumans();
+                        });
+                    })->onlyOnDetail(),
+                ]),
+                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_positions', Position::class),
+                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialties', Specialty::class),
+                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_units', Unit::class),
             ])->showTitle(true),
             Tabs::make('Records', [
                 HasMany::make('Assignment Records', 'assignment_records', AssignmentRecord::class),
