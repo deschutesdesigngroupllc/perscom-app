@@ -80,9 +80,18 @@ class BatchCreateAssignmentRecord extends Action
             MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')->options(
                 User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
             )->rules('required'),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->showCreateRelationButton(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->showCreateRelationButton(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->showCreateRelationButton(),
+            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->sortable()->showCreateRelationButton(),
+            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))))->options(
+                \App\Models\Position::all()->mapWithKeys(fn ($position) => [$position->id => $position->name])
+            )->hideFromIndex(),
+            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->sortable()->showCreateRelationButton(),
+            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Specialties'))))->options(
+                \App\Models\Specialty::all()->mapWithKeys(fn ($speciality) => [$speciality->id => $speciality->name])
+            )->hideFromIndex(),
+            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->sortable()->showCreateRelationButton(),
+            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))))->options(
+                \App\Models\Unit::all()->mapWithKeys(fn ($unit) => [$unit->id => $unit->name])
+            )->hideFromIndex(),
             Textarea::make('Text'),
             BelongsTo::make('Document')->nullable(),
         ];
