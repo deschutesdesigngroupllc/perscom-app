@@ -1,6 +1,21 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.38...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.39...HEAD)
+
+## [v1.0.39](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.38...v1.0.39) - 2023-05-16
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.39 -->
+### What's Changed
+
+#### Added
+
+- Add ability to assign users to secondary units, position or specialties by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/170
+
+#### Fixed
+
+- Fixes Basic plan not able to use embedded dashboard widgets by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/171
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.38...v1.0.39
 
 ## [v1.0.38](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.37...v1.0.38) - 2023-05-15
 
