@@ -27,7 +27,8 @@ class Subscribed extends VerifyBillableIsSubscribed
         if ($request->isDemoMode() ||
             $request->isCentralRequest() ||
             $request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*') ||
-            Str::contains($request->path(), 'nova-vendor')) {
+            Str::contains($request->path(), 'nova-vendor') ||
+            Auth::guard('jwt')->check()) {
             return $next($request);
         }
 
