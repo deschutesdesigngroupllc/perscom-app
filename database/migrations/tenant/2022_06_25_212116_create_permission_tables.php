@@ -63,7 +63,7 @@ class CreatePermissionTables extends Migration
             ], 'model_has_permissions_model_id_model_type_index');
 
             $table->foreign(PermissionRegistrar::$pivotPermission)->references('id')->on($tableNames['permissions'])
-                  ->onDelete('cascade');
+                ->onDelete('cascade');
             if ($teams) {
                 $table->unsignedBigInteger($columnNames['team_foreign_key']);
                 $table->index($columnNames['team_foreign_key'], 'model_has_permissions_team_foreign_key_index');
@@ -91,7 +91,7 @@ class CreatePermissionTables extends Migration
             $table->index([$columnNames['model_morph_key'], 'model_type'], 'model_has_roles_model_id_model_type_index');
 
             $table->foreign(PermissionRegistrar::$pivotRole)->references('id')->on($tableNames['roles'])
-                  ->onDelete('cascade');
+                ->onDelete('cascade');
             if ($teams) {
                 $table->unsignedBigInteger($columnNames['team_foreign_key']);
                 $table->index($columnNames['team_foreign_key'], 'model_has_roles_team_foreign_key_index');
@@ -116,10 +116,10 @@ class CreatePermissionTables extends Migration
             $table->unsignedBigInteger(PermissionRegistrar::$pivotRole);
 
             $table->foreign(PermissionRegistrar::$pivotPermission)->references('id')->on($tableNames['permissions'])
-                  ->onDelete('cascade');
+                ->onDelete('cascade');
 
             $table->foreign(PermissionRegistrar::$pivotRole)->references('id')->on($tableNames['roles'])
-                  ->onDelete('cascade');
+                ->onDelete('cascade');
 
             $table->primary([
                 PermissionRegistrar::$pivotPermission,
@@ -128,7 +128,7 @@ class CreatePermissionTables extends Migration
         });
 
         app('cache')->store(config('permission.cache.store') != 'default' ? config('permission.cache.store') : null)
-                    ->forget(config('permission.cache.key'));
+            ->forget(config('permission.cache.key'));
     }
 
     /**

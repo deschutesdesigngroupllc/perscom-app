@@ -17,8 +17,8 @@ class CustomSubDomainFeature extends BaseFeature
         return match (true) {
             Request::isCentralRequest() => false,
             Request::isDemoMode() => false,
-            $tenant?->onTrial() => false,
-            optional($tenant?->sparkPlan(), static function (Plan $plan) {
+            $tenant->onTrial() => false,
+            optional($tenant->sparkPlan(), static function (Plan $plan) {
                 return \in_array(__CLASS__, $plan->options, true);
             }) => true,
             default => false,

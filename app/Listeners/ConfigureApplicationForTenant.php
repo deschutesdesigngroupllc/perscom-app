@@ -2,30 +2,54 @@
 
 namespace App\Listeners;
 
-use App\Exceptions\TenantAccountSetupNotComplete;
+use App\Models\Tenant;
 use Illuminate\Support\Facades\Config;
-use Outl1ne\NovaSettings\NovaSettings;
 use Spatie\Permission\PermissionRegistrar;
-use Stancl\Tenancy\Events\TenancyInitialized;
 
 class ConfigureApplicationForTenant
 {
+    protected Tenant|null $tenant = null;
+
     /**
-     * Handle the event.
-     *
-     * @param  object  $event
      * @return void
      */
-    public function handle(TenancyInitialized $event)
+    public function handle()
     {
-        $database = $event->tenancy->tenant->database()->getName();
-        if (! $event->tenancy->tenant->database()->manager()->databaseExists($database)) {
-            throw new TenantAccountSetupNotComplete(401, 'Sorry, we are still working on setting up your account. We will email you when we are finished.');
-        }
+        optional(\tenant(), function (Tenant $tenant) {
+            $this->tenant = $tenant;
 
-        PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$event->tenancy->tenant->id;
+            $this->tenant->run(function () {
+                $this->configureTimezone();
+                $this->configureMail();
+                $this->configureCache();
+            });
+        });
+    }
 
-        Config::set('app.timezone', NovaSettings::getSetting('timezone', \config('app.timezone')));
-        Config::set('mail.from.name', $event->tenancy->tenant->name);
+    /**
+     * @return void
+     */
+    protected function configureTimezone()
+    {
+        $timezone = setting('timezone', \config('app.timezone'));
+
+        Config::set('app.timezone', $timezone);
+        date_default_timezone_set($timezone);
+    }
+
+    /**
+     * @return void
+     */
+    protected function configureMail()
+    {
+        Config::set('mail.from.name', $this->tenant?->name);
+    }
+
+    /**
+     * @return void
+     */
+    protected function configureCache()
+    {
+        PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$this->tenant?->id;
     }
 }

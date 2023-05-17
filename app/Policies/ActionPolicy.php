@@ -12,7 +12,7 @@ class ActionPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return true|void
      */
     public function before()
     {
@@ -24,7 +24,6 @@ class ActionPolicy extends Policy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(User $user)
@@ -35,8 +34,6 @@ class ActionPolicy extends Policy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \Laravel\Nova\Actions\ActionEvent  $actionEvent
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, ActionEvent $actionEvent)

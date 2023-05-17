@@ -46,10 +46,7 @@ class NewTaskAssignment extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return NewTaskAssignmentMail
      */
     public function toMail($notifiable)
     {
@@ -57,15 +54,13 @@ class NewTaskAssignment extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the nova representation of the notification
-     *
-     * @return array
+     * @return NovaNotification
      */
     public function toNova()
     {
         return (new NovaNotification())->message('A new task has been assigned to you.')
-                                       ->action('View Tasks', URL::remote($this->url))
-                                       ->icon('document-text')
-                                       ->type('info');
+            ->action('View Tasks', URL::remote($this->url))
+            ->icon('document-text')
+            ->type('info');
     }
 }

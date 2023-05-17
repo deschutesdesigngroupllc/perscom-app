@@ -30,6 +30,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder|TaskAssignment newQuery()
  * @method static Builder|TaskAssignment pastDue()
  * @method static Builder|TaskAssignment query()
+ *
  * @mixin \Eloquent
  */
 class TaskAssignment extends Pivot
@@ -68,11 +69,10 @@ class TaskAssignment extends Pivot
      */
     protected static function booted()
     {
-        static::addGlobalScope(new TaskAssignmentScope);
+        static::addGlobalScope(new TaskAssignmentScope());
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopeAssigned(Builder $query)
@@ -89,7 +89,6 @@ class TaskAssignment extends Pivot
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopeExpired(Builder $query)
@@ -102,7 +101,6 @@ class TaskAssignment extends Pivot
     }
 
     /**
-     * @param  Builder  $query
      * @return Builder
      */
     public function scopePastDue(Builder $query)
@@ -189,11 +187,11 @@ class TaskAssignment extends Pivot
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      */
     public function task()
     {
-        return $this->belongsTo(Task::class);
+        return $this->hasOne(Task::class, 'id', 'task_id');
     }
 
     /**

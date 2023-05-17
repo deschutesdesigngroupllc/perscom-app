@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord query()
+ *
  * @mixin \Eloquent
  */
 class RankRecord extends Model
@@ -40,7 +41,7 @@ class RankRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text', 'type'];
 
     /**
      * Record types

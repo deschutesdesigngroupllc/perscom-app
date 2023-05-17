@@ -148,7 +148,7 @@ return [
                         \App\Features\SocialLoginFeature::class,
                         \App\Features\ApiAccessFeature::class,
                         \App\Features\CustomSubDomainFeature::class,
-                        \App\Features\SupportTicketFeature::class
+                        \App\Features\SupportTicketFeature::class,
                     ],
                 ],
                 [
@@ -169,6 +169,7 @@ return [
                         \App\Features\CustomDomainFeature::class,
                         \App\Features\ExportDataFeature::class,
                         \App\Features\OAuth2AccessFeature::class,
+                        \App\Features\WebhookFeature::class,
                     ],
                 ],
             ],

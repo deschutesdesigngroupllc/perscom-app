@@ -25,6 +25,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission query()
+ *
  * @mixin \Eloquent
  */
 class Submission extends Model
@@ -80,7 +81,7 @@ class Submission extends Model
     }
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function form()
     {

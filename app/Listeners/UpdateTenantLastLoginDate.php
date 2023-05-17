@@ -10,13 +10,12 @@ class UpdateTenantLastLoginDate
     /**
      * Handle the event.
      *
-     * @param  object  $event
      * @return void
      */
     public function handle(Login $event)
     {
-        optional(tenant(), function (Tenant $tenant) {
-            $tenant->update([
+        optional(tenant(), static function (Tenant $tenant) {
+            $tenant->updateQuietly([
                 'last_login_at' => now(),
             ]);
         });

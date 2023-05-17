@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord query()
+ *
  * @mixin \Eloquent
  */
 class QualificationRecord extends Model

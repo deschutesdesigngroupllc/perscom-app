@@ -12,20 +12,24 @@ use Spatie\Url\Url;
  * @property int $id
  * @property string $domain
  * @property int $tenant_id
+ * @property int $is_custom_subdomain
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Support\Optional|mixed|string $host
  * @property-read mixed|null $url
- * @property-read mixed|null $host
  * @property-read \App\Models\Tenant $tenant
  *
+ * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Domain newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain query()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereDomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereIsCustomSubdomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereUpdatedAt($value)
+ *
  * @mixin \Eloquent
  */
 class Domain extends \Stancl\Tenancy\Database\Models\Domain
@@ -39,9 +43,6 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
      */
     protected $appends = ['host', 'url'];
 
-    /**
-     * @return string
-     */
     public static function generateSubdomain(): string
     {
         return Str::lower(Str::random(8));
@@ -53,7 +54,7 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
     public function getUrlAttribute()
     {
         return optional($this->host, static function ($host) {
-            return Url::fromString($host)->withScheme(config('app.scheme'))->__toString();
+            return rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/');
         });
     }
 

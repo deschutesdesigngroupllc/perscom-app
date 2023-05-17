@@ -35,7 +35,6 @@ class AlertCard extends Card
      * @param  null  $title
      * @param  null  $content
      * @param  null  $color
-     * @return AlertCard
      */
     public function withAnnouncement($title = null, $content = null, $color = null): AlertCard
     {
@@ -56,7 +55,6 @@ class AlertCard extends Card
      * @param  null  $message
      * @param  null  $button
      * @param  null  $url
-     * @return AlertCard
      */
     public function withSystemMessage($title = null, $message = null, $button = null, $url = null): AlertCard
     {
@@ -77,9 +75,8 @@ class AlertCard extends Card
      * @param  null  $message
      * @param  null  $button
      * @param  null  $url
-     * @return AlertCard
      */
-    public function withSubscriptionMessage($message = null, $button = null, $url = null): AlertCard
+    public function withSubscriptionMessage(string $message = null, string $button = null, string $url = null): AlertCard
     {
         return $this->withMeta([
             'subscription' => [

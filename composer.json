@@ -19,26 +19,30 @@
         "laravel/passport": "^11.8",
         "laravel/pennant": "^1.2",
         "laravel/socialite": "^5.6",
-        "laravel/spark-stripe": "^3.0",
+        "laravel/spark-stripe": "^4.0",
         "laravel/telescope": "^4.12",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.0",
         "outl1ne/nova-settings": "^5.0",
         "outl1ne/nova-sortable": "^3.4.2",
         "perscom/alert-card": "*",
+        "perscom/calendar": "*",
         "perscom/dashboard-quick-actions": "*",
         "perscom/dashboard-title": "*",
         "perscom/document-viewer-tool": "*",
         "perscom/html-field": "*",
         "perscom/roster": "*",
         "php-open-source-saver/jwt-auth": "^2.0",
+        "rlanvin/php-rrule": "^2.4",
         "sentry/sentry-laravel": "^3.2",
         "spatie/eloquent-sortable": "^4.0.2",
         "spatie/laravel-activitylog": "^4.7.3",
         "spatie/laravel-permission": "^5.8",
+        "spatie/laravel-webhook-server": "^3.4",
         "spatie/url": "^2.2",
         "stancl/tenancy": "^3.7",
         "stancl/virtualcolumn": "^1.3.1",
+        "staudenmeir/belongs-to-through": "^2.5",
         "staudenmeir/eloquent-has-many-deep": "^1.18",
         "tailflow/laravel-orion": "^2.19",
         "tightenco/ziggy": "^1.4",
@@ -52,6 +56,7 @@
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
+        "nunomaduro/larastan": "^2.0",
         "phpunit/phpunit": "^10.0",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^2.0",
@@ -89,6 +94,10 @@
         {
             "type": "path",
             "url": "./nova-components/Roster"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Calendar"
         }
     ],
     "autoload": {
@@ -119,7 +128,11 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
-        ]
+        ],
+        "docs:models": "php artisan ide-helper:models --reset",
+        "lint": "./vendor/bin/pint",
+        "test:lint": "./vendor/bin/pint --test",
+        "test:types": "./vendor/bin/phpstan analyse --memory-limit 1G"
     },
     "extra": {
         "laravel": {
@@ -129,7 +142,10 @@
     "config": {
         "optimize-autoloader": true,
         "preferred-install": "dist",
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "minimum-stability": "dev",
     "prefer-stable": true

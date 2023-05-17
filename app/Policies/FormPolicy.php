@@ -14,7 +14,7 @@ class FormPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -26,7 +26,6 @@ class FormPolicy extends Policy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(User $user)
@@ -50,7 +49,6 @@ class FormPolicy extends Policy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user)
@@ -61,8 +59,6 @@ class FormPolicy extends Policy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, Form $form)
@@ -73,8 +69,6 @@ class FormPolicy extends Policy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, Form $form)
@@ -85,24 +79,20 @@ class FormPolicy extends Policy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, Form $form)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\Form  $form
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, Form $form)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
     }
 }

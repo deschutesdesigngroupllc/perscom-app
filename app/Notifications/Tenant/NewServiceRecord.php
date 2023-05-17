@@ -45,10 +45,7 @@ class NewServiceRecord extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return NewServiceRecordMail
      */
     public function toMail($notifiable)
     {
@@ -56,15 +53,13 @@ class NewServiceRecord extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the nova representation of the notification
-     *
-     * @return array
+     * @return NovaNotification
      */
     public function toNova()
     {
         return (new NovaNotification())->message('A new service record has been added to your personnel file.')
-                                       ->action('View Record', URL::remote($this->url))
-                                       ->icon('document-text')
-                                       ->type('info');
+            ->action('View Record', URL::remote($this->url))
+            ->icon('document-text')
+            ->type('info');
     }
 }

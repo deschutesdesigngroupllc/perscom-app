@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Events\NullDispatcher;
 use Illuminate\Notifications\Notifiable;
@@ -35,7 +36,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property string|null $vat_id
  * @property array $receipt_emails
  * @property string|null $billing_country
- * @property string|null $last_login_at
+ * @property \Illuminate\Support\Carbon|null $last_login_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property array|null $data
@@ -54,10 +55,13 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read int|null $local_receipts_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $pennants
+ * @property-read int|null $pennants_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Cashier\Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  *
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
+ * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> get($columns = ['*'])
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant hasExpiredGenericTrial()
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant newModelQuery()
@@ -86,6 +90,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereVatId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereWebsite($value)
+ *
  * @mixin \Eloquent
  */
 class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase, FeatureScopeable
@@ -101,7 +106,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     /**
      * @var null
      */
-    protected static $eventDispatcher = null;
+    protected static null|Dispatcher $eventDispatcher = null;
 
     /**
      * The attributes that should be cast.
@@ -183,7 +188,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
      */
     public function getDatabaseStatusAttribute()
     {
-        return $this->tenancy_db_name ? 'created' : 'creating';
+        return $this->getAttribute('tenancy_db_name') ? 'created' : 'creating';
     }
 
     /**
@@ -192,8 +197,8 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     public function getCustomDomainAttribute()
     {
         return $this->domains->where('is_custom_subdomain', '=', true)
-                             ->sortBy('created_at', SORT_REGULAR, true)
-                             ->first();
+            ->sortBy('created_at', SORT_REGULAR, true)
+            ->first();
     }
 
     /**
@@ -202,8 +207,8 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     public function getFallbackDomainAttribute()
     {
         return $this->domains->where('is_custom_subdomain', '=', false)
-                             ->sortBy('created_at', SORT_REGULAR, true)
-                             ->first();
+            ->sortBy('created_at', SORT_REGULAR, true)
+            ->first();
     }
 
     /**
@@ -259,10 +264,6 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
         return $this->email;
     }
 
-    /**
-     * @param  string  $driver
-     * @return mixed
-     */
     public function toFeatureIdentifier(string $driver): mixed
     {
         return (string) $this->getTenantKey();

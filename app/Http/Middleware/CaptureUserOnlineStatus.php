@@ -12,7 +12,6 @@ class CaptureUserOnlineStatus
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @param \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
@@ -24,7 +23,7 @@ class CaptureUserOnlineStatus
             if ($user) {
                 Cache::tags('user.online')->put("user.online.{$user->getAuthIdentifier()}", true, $expire);
                 $user->timestamps = false;
-                $user->update([
+                $user->updateQuietly([
                     'last_seen_at' => now(),
                 ]);
             }

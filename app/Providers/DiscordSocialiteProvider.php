@@ -62,7 +62,6 @@ class DiscordSocialiteProvider extends AbstractProvider
     }
 
     /**
-     * @param  array  $user
      * @return User
      */
     protected function mapUserToObject(array $user)

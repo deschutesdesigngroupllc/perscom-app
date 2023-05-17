@@ -4,16 +4,11 @@ info:
   description: 'The PERSCOM API describes how to interact and manipulate your PERSCOM data available at https://perscom.io. The API provides a powerful interface to allow for third-party collaboration and integration with your PERSCOM Dashboard.'
   contact:
     name: 'Deschutes Design Group LLC'
-    url: www.deschutesdesigngroup.com
+    url: https://www.deschutesdesigngroup.com
     email: info@deschutesdesigngroup.com
-  version: 1.0.0
+  version: v1
+  termsOfService: 'https://perscom.io/privacy-policy'
 servers:
-  -
-    url: 'http://api.localhost'
-    description: 'Local Environment'
-  -
-    url: 'https://api.staging.perscom.io'
-    description: 'Staging Environment'
   -
     url: 'https://api.perscom.io'
     description: 'Production Environment'
@@ -6819,21 +6814,22 @@ paths:
       summary: 'Delete a batch of units'
       tags:
         - 'Users Unit'
-  /v1/forms:
+  /v1/calendars:
     post:
       parameters:
         -
           schema:
             type: string
             enum:
-              - fields
+              - events
+              - author
           name: include
           in: query
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Form'
+              $ref: '#/components/schemas/Calendar'
       responses:
         201:
           description: OK
@@ -6843,23 +6839,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/FormResource'
+                    $ref: '#/components/schemas/CalendarResource'
         401:
           description: Unauthenticated
         403:
           description: Unauthorized
         422:
           description: 'Validation error'
-      summary: 'Create form'
+      summary: 'Create calendar'
       tags:
-        - Forms
+        - Calendars
     get:
       parameters:
         -
           schema:
             type: string
             enum:
-              - fields
+              - events
+              - author
           name: include
           in: query
       responses:
@@ -6873,7 +6870,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/FormResource'
+                      $ref: '#/components/schemas/CalendarResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -6882,17 +6879,829 @@ paths:
           description: Unauthenticated
         403:
           description: Unauthorized
-      summary: 'Get a list of forms'
+      summary: 'Get a list of calendars'
       tags:
-        - Forms
-  /v1/forms/search:
+        - Calendars
+  /v1/calendars/search:
     post:
       parameters:
         -
           schema:
             type: string
             enum:
-              - fields
+              - events
+              - author
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - timezone
+                          - author_id
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, timezone, author_id, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name, timezone, author_id'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - events
+                          - author
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, timezone, author_id, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, timezone, author_id, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CalendarResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for calendars'
+      tags:
+        - Calendars
+  '/v1/calendars/{calendar}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - events
+              - author
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CalendarResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get calendar'
+      tags:
+        - Calendars
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - events
+              - author
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Calendar'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CalendarResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update calendar'
+      tags:
+        - Calendars
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - events
+              - author
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CalendarResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete calendar'
+      tags:
+        - Calendars
+  /v1/calendars/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - events
+              - author
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Calendar'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CalendarResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of calendars'
+      tags:
+        - Calendars
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - events
+              - author
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Calendar'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CalendarResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of calendars'
+      tags:
+        - Calendars
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - events
+              - author
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CalendarResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of calendars'
+      tags:
+        - Calendars
+  '/v1/calendars/{calendar}/events':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EventResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create event'
+      tags:
+        - 'Calendars Events'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of events'
+      tags:
+        - 'Calendars Events'
+  '/v1/calendars/{calendar}/events/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for events'
+      tags:
+        - 'Calendars Events'
+  '/v1/calendars/{calendar}/events/{event}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EventResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get event'
+      tags:
+        - 'Calendars Events'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EventResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update event'
+      tags:
+        - 'Calendars Events'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EventResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete event'
+      tags:
+        - 'Calendars Events'
+  '/v1/calendars/{calendar}/events/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Event'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of events'
+      tags:
+        - 'Calendars Events'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Event'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of events'
+      tags:
+        - 'Calendars Events'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of events'
+      tags:
+        - 'Calendars Events'
+  '/v1/calendars/{calendar}/events/associate':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EventResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Associate event with calendar'
+      tags:
+        - 'Calendars Events'
+  '/v1/calendars/{calendar}/events/{event}/dissociate':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: calendar
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EventResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Dissociate event from calendar'
+      tags:
+        - 'Calendars Events'
+  /v1/events:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - calendar
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Event'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/EventResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create event'
+      tags:
+        - Events
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - calendar
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/EventResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of events'
+      tags:
+        - Events
+  /v1/events/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - calendar
           name: include
           in: query
       requestBody:
@@ -6909,7 +7718,7 @@ paths:
                       name:
                         type: string
                         enum:
-                          - forTags
+                          - forDatePeriod
                       parameters:
                         type: array
                         items:
@@ -6931,8 +7740,9 @@ paths:
                         enum:
                           - id
                           - name
-                          - slug
-                          - is_public
+                          - calendar_id
+                          - start
+                          - end
                           - created_at
                       operator:
                         type: string
@@ -6957,16 +7767,30 @@ paths:
                         type: array
                         items:
                           type: object
-                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, slug, is_public, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, calendar_id, start, end, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
                 search:
                   type: object
                   properties:
                     value:
                       type: string
-                      description: 'A search for the given value will be performed on the following fields: name, slug, is_public'
+                      description: 'A search for the given value will be performed on the following fields: name, calendar_id, start, end'
                     case_sensitive:
                       type: boolean
                       description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - calendar
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, calendar_id, start, end, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, calendar_id, start, end, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
       responses:
         200:
           description: OK
@@ -6978,7 +7802,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/FormResource'
+                      $ref: '#/components/schemas/EventResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -6987,23 +7811,23 @@ paths:
           description: Unauthenticated
         403:
           description: Unauthorized
-      summary: 'Search for forms'
+      summary: 'Search for events'
       tags:
-        - Forms
-  '/v1/forms/{form}':
+        - Events
+  '/v1/events/{event}':
     get:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: event
           in: path
           required: true
         -
           schema:
             type: string
             enum:
-              - fields
+              - calendar
           name: include
           in: query
       responses:
@@ -7015,36 +7839,36 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/FormResource'
+                    $ref: '#/components/schemas/EventResource'
         401:
           description: Unauthenticated
         403:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Get form'
+      summary: 'Get event'
       tags:
-        - Forms
+        - Events
     patch:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: event
           in: path
           required: true
         -
           schema:
             type: string
             enum:
-              - fields
+              - calendar
           name: include
           in: query
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Form'
+              $ref: '#/components/schemas/Event'
       responses:
         200:
           description: OK
@@ -7054,7 +7878,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/FormResource'
+                    $ref: '#/components/schemas/EventResource'
         401:
           description: Unauthenticated
         403:
@@ -7063,22 +7887,22 @@ paths:
           description: 'Resource not found'
         422:
           description: 'Validation error'
-      summary: 'Update form'
+      summary: 'Update event'
       tags:
-        - Forms
+        - Events
     delete:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: event
           in: path
           required: true
         -
           schema:
             type: string
             enum:
-              - fields
+              - calendar
           name: include
           in: query
       responses:
@@ -7090,24 +7914,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/FormResource'
+                    $ref: '#/components/schemas/EventResource'
         401:
           description: Unauthenticated
         403:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Delete form'
+      summary: 'Delete event'
       tags:
-        - Forms
-  /v1/forms/batch:
+        - Events
+  /v1/events/batch:
     post:
       parameters:
         -
           schema:
             type: string
             enum:
-              - fields
+              - calendar
           name: include
           in: query
       requestBody:
@@ -7119,7 +7943,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Form'
+                    $ref: '#/components/schemas/Event'
       responses:
         200:
           description: OK
@@ -7131,7 +7955,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/FormResource'
+                      $ref: '#/components/schemas/EventResource'
         422:
           description: 'Validation error'
         401:
@@ -7140,16 +7964,16 @@ paths:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Create a batch of forms'
+      summary: 'Create a batch of events'
       tags:
-        - Forms
+        - Events
     patch:
       parameters:
         -
           schema:
             type: string
             enum:
-              - fields
+              - calendar
           name: include
           in: query
       requestBody:
@@ -7162,7 +7986,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/Form'
+                      $ref: '#/components/schemas/Event'
       responses:
         200:
           description: OK
@@ -7174,7 +7998,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/FormResource'
+                      $ref: '#/components/schemas/EventResource'
         422:
           description: 'Validation error'
         401:
@@ -7183,16 +8007,16 @@ paths:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Update a batch of forms'
+      summary: 'Update a batch of events'
       tags:
-        - Forms
+        - Events
     delete:
       parameters:
         -
           schema:
             type: string
             enum:
-              - fields
+              - calendar
           name: include
           in: query
       requestBody:
@@ -7217,7 +8041,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/FormResource'
+                      $ref: '#/components/schemas/EventResource'
         422:
           description: 'Validation error'
         401:
@@ -7226,31 +8050,363 @@ paths:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Delete a batch of forms'
+      summary: 'Delete a batch of events'
       tags:
-        - Forms
-  '/v1/forms/{form}/submissions':
+        - Events
+  '/v1/users/{user}/position/batch':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Position'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of positions'
+      tags:
+        - 'Users Position'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of positions'
+      tags:
+        - 'Users Position'
+  '/v1/users/{user}/rank/batch':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Rank'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of ranks'
+      tags:
+        - 'Users Rank'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of ranks'
+      tags:
+        - 'Users Rank'
+  '/v1/users/{user}/specialty/batch':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Specialty'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of specialties'
+      tags:
+        - 'Users Specialty'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of specialties'
+      tags:
+        - 'Users Specialty'
+  '/v1/users/{user}/status/batch':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Status'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of statuses'
+      tags:
+        - 'Users Status'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of statuses'
+      tags:
+        - 'Users Status'
+  '/v1/users/{user}/secondary-positions':
     post:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Submission'
+              $ref: '#/components/schemas/Position'
       responses:
         201:
           description: OK
@@ -7260,32 +8416,24 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/SubmissionResource'
+                    $ref: '#/components/schemas/PositionResource'
         401:
           description: Unauthenticated
         403:
           description: Unauthorized
         422:
           description: 'Validation error'
-      summary: 'Create submission'
+      summary: 'Create position'
       tags:
-        - 'Forms Submissions'
+        - 'Users Secondary Positions'
     get:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
       responses:
         200:
           description: OK
@@ -7297,7 +8445,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SubmissionResource'
+                      $ref: '#/components/schemas/PositionResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -7306,83 +8454,18 @@ paths:
           description: Unauthenticated
         403:
           description: Unauthorized
-      summary: 'Get a list of submissions'
+      summary: 'Get a list of positions'
       tags:
-        - 'Forms Submissions'
-  '/v1/forms/{form}/submissions/search':
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-positions/search':
     post:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                filters:
-                  type: array
-                  items:
-                    type: object
-                    properties:
-                      type:
-                        type: string
-                        enum:
-                          - and
-                          - or
-                      field:
-                        type: string
-                        enum:
-                          - id
-                          - form_id
-                          - user_id
-                          - created_at
-                          - tags
-                      operator:
-                        type: string
-                        enum:
-                          - '<'
-                          - '<='
-                          - '>'
-                          - '>='
-                          - '='
-                          - '!='
-                          - like
-                          - 'not like'
-                          - ilike
-                          - 'not ilike'
-                          - in
-                          - 'not in'
-                          - 'all in'
-                          - 'any in'
-                      value:
-                        type: string
-                      nested:
-                        type: array
-                        items:
-                          type: object
-                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, form_id, user_id, created_at, tags] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
-                search:
-                  type: object
-                  properties:
-                    value:
-                      type: string
-                      description: 'A search for the given value will be performed on the following fields: form_id, user_id'
-                    case_sensitive:
-                      type: boolean
-                      description: '(default: true) Set it to false to perform search in case-insensitive way'
       responses:
         200:
           description: OK
@@ -7394,7 +8477,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SubmissionResource'
+                      $ref: '#/components/schemas/PositionResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -7403,32 +8486,24 @@ paths:
           description: Unauthenticated
         403:
           description: Unauthorized
-      summary: 'Search for submissions'
+      summary: 'Search for positions'
       tags:
-        - 'Forms Submissions'
-  '/v1/forms/{form}/submissions/{submission}':
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-positions/{secondary_position}':
     get:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
         -
           schema:
             type: integer
-          name: submission
+          name: secondary_position
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
       responses:
         200:
           description: OK
@@ -7438,43 +8513,35 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/SubmissionResource'
+                    $ref: '#/components/schemas/PositionResource'
         401:
           description: Unauthenticated
         403:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Get submission'
+      summary: 'Get position'
       tags:
-        - 'Forms Submissions'
+        - 'Users Secondary Positions'
     patch:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
         -
           schema:
             type: integer
-          name: submission
+          name: secondary_position
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Submission'
+              $ref: '#/components/schemas/Position'
       responses:
         200:
           description: OK
@@ -7484,7 +8551,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/SubmissionResource'
+                    $ref: '#/components/schemas/PositionResource'
         401:
           description: Unauthenticated
         403:
@@ -7493,31 +8560,23 @@ paths:
           description: 'Resource not found'
         422:
           description: 'Validation error'
-      summary: 'Update submission'
+      summary: 'Update position'
       tags:
-        - 'Forms Submissions'
+        - 'Users Secondary Positions'
     delete:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
         -
           schema:
             type: integer
-          name: submission
+          name: secondary_position
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
       responses:
         200:
           description: OK
@@ -7527,33 +8586,25 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/SubmissionResource'
+                    $ref: '#/components/schemas/PositionResource'
         401:
           description: Unauthenticated
         403:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Delete submission'
+      summary: 'Delete position'
       tags:
-        - 'Forms Submissions'
-  '/v1/forms/{form}/submissions/batch':
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-positions/batch':
     post:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
       requestBody:
         content:
           application/json:
@@ -7563,7 +8614,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/Submission'
+                    $ref: '#/components/schemas/Position'
       responses:
         200:
           description: OK
@@ -7575,7 +8626,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SubmissionResource'
+                      $ref: '#/components/schemas/PositionResource'
         422:
           description: 'Validation error'
         401:
@@ -7584,25 +8635,17 @@ paths:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Create a batch of submissions'
+      summary: 'Create a batch of positions'
       tags:
-        - 'Forms Submissions'
+        - 'Users Secondary Positions'
     patch:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
       requestBody:
         content:
           application/json:
@@ -7613,7 +8656,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/Submission'
+                      $ref: '#/components/schemas/Position'
       responses:
         200:
           description: OK
@@ -7625,7 +8668,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SubmissionResource'
+                      $ref: '#/components/schemas/PositionResource'
         422:
           description: 'Validation error'
         401:
@@ -7634,25 +8677,17 @@ paths:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Update a batch of submissions'
+      summary: 'Update a batch of positions'
       tags:
-        - 'Forms Submissions'
+        - 'Users Secondary Positions'
     delete:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
       requestBody:
         content:
           application/json:
@@ -7675,7 +8710,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/SubmissionResource'
+                      $ref: '#/components/schemas/PositionResource'
         422:
           description: 'Validation error'
         401:
@@ -7684,26 +8719,29 @@ paths:
           description: Unauthorized
         404:
           description: 'Resource not found'
-      summary: 'Delete a batch of submissions'
+      summary: 'Delete a batch of positions'
       tags:
-        - 'Forms Submissions'
-  '/v1/forms/{form}/submissions/associate':
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-positions/attach':
     post:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
           in: path
           required: true
-        -
-          schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
       responses:
         200:
           description: OK
@@ -7712,8 +8750,10 @@ paths:
               schema:
                 type: object
                 properties:
-                  data:
-                    $ref: '#/components/schemas/SubmissionResource'
+                  attached:
+                    type: array
+                    items:
+                      type: integer
         401:
           description: Unauthenticated
         403:
@@ -7722,32 +8762,238 @@ paths:
           description: 'Resource not found'
         422:
           description: 'Validation error'
-      summary: 'Associate submission with form'
+      summary: 'Attach positions'
       tags:
-        - 'Forms Submissions'
-  '/v1/forms/{form}/submissions/{submission}/dissociate':
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-positions/detach':
     delete:
       parameters:
         -
           schema:
             type: integer
-          name: form
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach positions'
+      tags:
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-positions/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync positions'
+      tags:
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-positions/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle positions'
+      tags:
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-positions/{secondary_position}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
           in: path
           required: true
         -
           schema:
             type: integer
-          name: submission
+          name: secondary_position
           in: path
           required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Users Secondary Positions'
+  '/v1/users/{user}/secondary-specialties':
+    post:
+      parameters:
         -
           schema:
-            type: string
-            enum:
-              - form
-              - user
-          name: include
-          in: query
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Specialty'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpecialtyResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create specialty'
+      tags:
+        - 'Users Secondary Specialties'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
       responses:
         200:
           description: OK
@@ -7757,7 +9003,115 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/SubmissionResource'
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of specialties'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-specialties/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for specialties'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-specialties/{secondary_specialty}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: secondary_specialty
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpecialtyResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get specialty'
+      tags:
+        - 'Users Secondary Specialties'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: secondary_specialty
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Specialty'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpecialtyResource'
         401:
           description: Unauthenticated
         403:
@@ -7766,18 +9120,970 @@ paths:
           description: 'Resource not found'
         422:
           description: 'Validation error'
-      summary: 'Dissociate submission from form'
+      summary: 'Update specialty'
       tags:
-        - 'Forms Submissions'
+        - 'Users Secondary Specialties'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: secondary_specialty
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpecialtyResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete specialty'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-specialties/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Specialty'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of specialties'
+      tags:
+        - 'Users Secondary Specialties'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Specialty'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of specialties'
+      tags:
+        - 'Users Secondary Specialties'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of specialties'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-specialties/attach':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Attach specialties'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-specialties/detach':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach specialties'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-specialties/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync specialties'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-specialties/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle specialties'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-specialties/{secondary_specialty}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: secondary_specialty
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Users Secondary Specialties'
+  '/v1/users/{user}/secondary-units':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Unit'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UnitResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create unit'
+      tags:
+        - 'Users Secondary Units'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnitResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of units'
+      tags:
+        - 'Users Secondary Units'
+  '/v1/users/{user}/secondary-units/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnitResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for units'
+      tags:
+        - 'Users Secondary Units'
+  '/v1/users/{user}/secondary-units/{secondary_unit}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: secondary_unit
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UnitResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get unit'
+      tags:
+        - 'Users Secondary Units'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: secondary_unit
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Unit'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UnitResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update unit'
+      tags:
+        - 'Users Secondary Units'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: secondary_unit
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UnitResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete unit'
+      tags:
+        - 'Users Secondary Units'
+  '/v1/users/{user}/secondary-units/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Unit'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnitResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of units'
+      tags:
+        - 'Users Secondary Units'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Unit'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnitResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of units'
+      tags:
+        - 'Users Secondary Units'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UnitResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of units'
+      tags:
+        - 'Users Secondary Units'
+  '/v1/users/{user}/secondary-units/attach':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Attach units'
+      tags:
+        - 'Users Secondary Units'
+  '/v1/users/{user}/secondary-units/detach':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach units'
+      tags:
+        - 'Users Secondary Units'
+  '/v1/users/{user}/secondary-units/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync units'
+      tags:
+        - 'Users Secondary Units'
+  '/v1/users/{user}/secondary-units/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle units'
+      tags:
+        - 'Users Secondary Units'
+  '/v1/users/{user}/secondary-units/{secondary_unit}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: secondary_unit
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Users Secondary Units'
 components:
   securitySchemes:
     ApiKey:
       type: http
       scheme: bearer
+      description: 'A valid API key that can be created in your PERSCOM.io dashboard.'
     PerscomId:
       type: apiKey
       in: header
-      name: 'X-Perscom-Id'
+      name: X-Perscom-Id
+      description: 'Your PERSCOM ID that can be obtained from your PERSCOM.io dashboard.'
   schemas:
     User:
       title: User
@@ -8064,6 +10370,15 @@ components:
         text:
           type: string
           nullable: true
+        secondary_unit_ids:
+          type: object
+          additionalProperties: true
+        secondary_position_ids:
+          type: object
+          additionalProperties: true
+        secondary_specialty_ids:
+          type: object
+          additionalProperties: true
     AssignmentRecordResource:
       title: AssignmentRecordResource
       allOf:
@@ -8201,6 +10516,8 @@ components:
         text:
           type: string
           nullable: true
+        type:
+          type: integer
     RankRecordResource:
       title: RankRecordResource
       allOf:
@@ -8374,15 +10691,15 @@ components:
           type: integer
         total:
           type: integer
-    Form:
-      title: Form
+    Calendar:
+      title: Calendar
       type: object
       properties: []
-    FormResource:
-      title: FormResource
+    CalendarResource:
+      title: CalendarResource
       allOf:
         -
-          $ref: '#/components/schemas/Form'
+          $ref: '#/components/schemas/Calendar'
         -
           type: object
           properties:
@@ -8390,19 +10707,103 @@ components:
               type: integer
             name:
               type: string
-            slug:
-              type: string
-            success_message:
-              type: string
-              nullable: true
-            is_public:
-              type: boolean
             description:
               type: string
               nullable: true
-            instructions:
+            color:
               type: string
               nullable: true
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    Event:
+      title: Event
+      type: object
+      properties:
+        name:
+          type: string
+        calendar_id:
+          type: integer
+        description:
+          type: string
+          nullable: true
+        content:
+          type: string
+          nullable: true
+        location:
+          type: string
+          nullable: true
+        url:
+          type: string
+          nullable: true
+        author_id:
+          type: integer
+          nullable: true
+        all_day:
+          type: boolean
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          nullable: true
+          format: date-time
+        repeats:
+          type: boolean
+        frequency:
+          type: string
+          nullable: true
+        interval:
+          type: integer
+        end_type:
+          type: string
+          nullable: true
+        count:
+          type: integer
+          nullable: true
+        until:
+          type: string
+          nullable: true
+          format: date-time
+        by_day:
+          type: object
+          additionalProperties: true
+        by_month:
+          type: object
+          additionalProperties: true
+        by_month_day:
+          type: object
+          additionalProperties: true
+        rrule:
+          type: string
+          nullable: true
+    EventResource:
+      title: EventResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Event'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            by_set_position:
+              type: object
+              additionalProperties: true
+            by_year_day:
+              type: object
+              additionalProperties: true
+            registration_enabled:
+              type: boolean
+            registration_deadline:
+              type: string
+              nullable: true
+              format: date-time
             created_at:
               type: string
               nullable: true
@@ -8422,11 +10823,14 @@ tags:
     name: Awards
     description: 'API documentation for Awards'
   -
-    name: Forms
-    description: 'API documentation for Forms'
+    name: Calendars
+    description: 'API documentation for Calendars'
   -
-    name: 'Forms Submissions'
-    description: 'API documentation for Forms Submissions'
+    name: 'Calendars Events'
+    description: 'API documentation for Calendars Events'
+  -
+    name: Events
+    description: 'API documentation for Events'
   -
     name: Qualifications
     description: 'API documentation for Qualifications'
@@ -8436,6 +10840,9 @@ tags:
   -
     name: Roster
     description: 'API documentation for Roster'
+  -
+    name: Submissions
+    description: 'API documentation for Submissions'
   -
     name: Units
     description: 'API documentation for Units'
@@ -8473,8 +10880,17 @@ tags:
     name: 'Users Specialty'
     description: 'API documentation for Users Specialty'
   -
+    name: 'Users Unit'
+    description: 'API documentation for Users Unit'
+  -
     name: 'Users Status'
     description: 'API documentation for Users Status'
   -
-    name: 'Users Unit'
-    description: 'API documentation for Users Unit'
+    name: 'Users Secondary Positions'
+    description: 'API documentation for Users Secondary Positions'
+  -
+    name: 'Users Secondary Specialties'
+    description: 'API documentation for Users Secondary Specialties'
+  -
+    name: 'Users Secondary Units'
+    description: 'API documentation for Users Secondary Units'

@@ -27,6 +27,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord query()
+ *
  * @mixin \Eloquent
  */
 class AwardRecord extends Model
@@ -56,7 +57,7 @@ class AwardRecord extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new AwardRecordScope);
+        static::addGlobalScope(new AwardRecordScope());
     }
 
     /**

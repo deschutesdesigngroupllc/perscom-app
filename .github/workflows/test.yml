@@ -1,4 +1,4 @@
-name: Test Application
+name: Test Suite
 
 on:
   workflow_call:
@@ -6,8 +6,8 @@ on:
 
 jobs:
   test-application:
-    name: Test Application
-    runs-on: ubuntu-latest
+    name: Run Unit/Feature Tests
+    runs-on: ubuntu-22.04-16
 
     services:
       mysql:
@@ -22,7 +22,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        php: [ '8.1', '8.2' ]
+        php: [ '8.1' ]
 
     steps:
       - name: Checkout Source Code

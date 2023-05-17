@@ -3,7 +3,6 @@
 namespace App\Nova\Lenses;
 
 use App\Models\Enums\TaskAssignmentStatus;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -26,21 +25,19 @@ class MyTasks extends Lens
     /**
      * Get the query builder / paginator for the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\LensRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return mixed
      */
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering($request->withFilters(
-            $query->forUser(Auth::user())
+            $query->forUser($request->user())
         ));
     }
 
     /**
      * Get the fields available to the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -51,8 +48,8 @@ class MyTasks extends Lens
             Text::make('Description', function () {
                 return Str::limit($this->task?->description);
             }),
-            Badge::make('Status', function ($model) {
-                return $model->status->value;
+            Badge::make('Status', function () {
+                return $this->status?->value;
             })->map([
                 TaskAssignmentStatus::TASK_ASSIGNED->value => 'info',
                 TaskAssignmentStatus::TASK_COMPLETE->value => 'success',
@@ -73,7 +70,6 @@ class MyTasks extends Lens
     /**
      * Get the cards available on the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -84,7 +80,6 @@ class MyTasks extends Lens
     /**
      * Get the filters available for the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -95,7 +90,6 @@ class MyTasks extends Lens
     /**
      * Get the actions available on the lens.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

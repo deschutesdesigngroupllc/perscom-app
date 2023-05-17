@@ -3,15 +3,16 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Actions\BatchCreateAwardRecord;
 use App\Nova\Metrics\NewAwardRecords;
 use App\Nova\Metrics\TotalAwardRecords;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -82,7 +83,6 @@ class AwardRecord extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -90,14 +90,11 @@ class AwardRecord extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
-                     ->sortable(),
+                ->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_awards', 'Award'))), 'award', \App\Nova\Award::class)
-                     ->sortable()
-                     ->showCreateRelationButton(),
-            Textarea::make('Text')->alwaysShow(),
-            Text::make('Text', function ($model) {
-                return $model->text;
-            })->onlyOnIndex(),
+                ->sortable()
+                ->showCreateRelationButton(),
+            Textarea::make('Text')->alwaysShow()->hideFromIndex(),
             BelongsTo::make('Document')->nullable()->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
@@ -112,7 +109,6 @@ class AwardRecord extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -123,7 +119,6 @@ class AwardRecord extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -134,7 +129,6 @@ class AwardRecord extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -145,13 +139,17 @@ class AwardRecord extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [
+            (new BatchCreateAwardRecord())->canSee(function () {
+                return Gate::check('create', \App\Models\AwardRecord::class);
+            }),
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })->nameable(),
+        ];
     }
 }

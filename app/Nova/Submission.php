@@ -85,7 +85,6 @@ class Submission extends Resource
     /**
      * Determine if the current user can create new resources.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return bool
      */
     public static function authorizedToCreate(Request $request)
@@ -98,7 +97,6 @@ class Submission extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -118,16 +116,16 @@ class Submission extends Resource
             Tabs::make('Relations', [
                 Tab::make('Status History', [
                     MorphToMany::make('Status', 'statuses', Status::class)
-                               ->allowDuplicateRelations()
-                               ->fields(function () {
-                                   return [
-                                       Textarea::make('Text'),
-                                       Text::make('Text', function ($model) {
-                                           return $model->text;
-                                       }),
-                                       DateTime::make('Updated At')->sortable()->onlyOnIndex(),
-                                   ];
-                               }),
+                        ->allowDuplicateRelations()
+                        ->fields(function () {
+                            return [
+                                Textarea::make('Text'),
+                                Text::make('Text', function ($model) {
+                                    return $model->text;
+                                }),
+                                DateTime::make('Updated At')->sortable()->onlyOnIndex(),
+                            ];
+                        }),
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
@@ -135,7 +133,6 @@ class Submission extends Resource
     }
 
     /**
-     * @param $submission
      * @return Badge
      */
     protected function generateBadgeField($submission)
@@ -148,7 +145,7 @@ class Submission extends Resource
             'No Current Status' => 'bg-gray-100 text-gray-600',
         ])->label(function ($status) {
             return $status ?? 'No Current Status';
-        });
+        })->showOnPreview();
 
         if ($status) {
             $badge->addTypes([
@@ -160,7 +157,6 @@ class Submission extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @return Panel
      */
     protected function getDetailFields(NovaRequest $request)
@@ -191,20 +187,15 @@ class Submission extends Resource
 
         return new Panel($form->name ?? 'Form', array_merge($fields, [
             Text::make('User', static function ($submission) {
-                return optional($submission->user, static function ($user) {
-                    return $user->name;
-                }) ?? 'Guest';
+                return $submission?->user?->name ?? 'Guest';
             })->onlyOnIndex(),
             Text::make('Form', static function ($submission) {
-                return optional($submission->form, static function ($form) {
-                    return $form->name;
-                }) ?? 'Form';
+                return $submission?->form?->name ?? 'Form';
             })->onlyOnIndex(),
         ]));
     }
 
     /**
-     * @param  NovaRequest  $request
      * @return mixed|null
      */
     protected function getForm(NovaRequest $request)
@@ -226,7 +217,6 @@ class Submission extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @return Panel
      */
     protected function getInstructionFields(NovaRequest $request)
@@ -262,7 +252,6 @@ class Submission extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -273,7 +262,6 @@ class Submission extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -284,7 +272,6 @@ class Submission extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -295,7 +282,6 @@ class Submission extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

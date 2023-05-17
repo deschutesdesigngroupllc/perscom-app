@@ -18,8 +18,6 @@ class RegisterController extends Controller
     }
 
     /**
-     * @param  Request  $request
-     * @param  CreateNewTenant  $createNewTenant
      * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request, CreateNewTenant $createNewTenant)
@@ -32,7 +30,6 @@ class RegisterController extends Controller
     }
 
     /**
-     * @param  Tenant  $tenant
      * @return \Inertia\Response
      */
     public function complete(Tenant $tenant)

@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Features\CustomSubDomainFeature;
 use App\Features\SupportTicketFeature;
+use App\Models\EventRegistration as EventRegistrationModel;
 use App\Models\Submission as SubmissionModel;
 use App\Models\TaskAssignment as TaskAssignmentModel;
 use App\Nova\Action;
@@ -13,22 +14,27 @@ use App\Nova\AssignmentRecord;
 use App\Nova\Attachment;
 use App\Nova\Award;
 use App\Nova\AwardRecord;
+use App\Nova\Calendar;
 use App\Nova\CombatRecord;
 use App\Nova\Dashboards\Admin;
 use App\Nova\Dashboards\Main;
 use App\Nova\Document;
 use App\Nova\Domain;
+use App\Nova\Event;
+use App\Nova\EventRegistration;
 use App\Nova\Feature as NovaFeature;
 use App\Nova\Field;
 use App\Nova\Form;
 use App\Nova\Image;
+use App\Nova\Lenses\MyEvents;
 use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
 use App\Nova\PassportAuthorizedApplications;
 use App\Nova\PassportClient;
-use App\Nova\PassportLog;
+use App\Nova\PassportClientLog;
 use App\Nova\PassportPersonalAccessToken;
+use App\Nova\PassportPersonalAccessTokenLog;
 use App\Nova\Permission;
 use App\Nova\Position;
 use App\Nova\Qualification;
@@ -47,6 +53,7 @@ use App\Nova\TaskAssignment;
 use App\Nova\Tenant;
 use App\Nova\Unit;
 use App\Nova\User;
+use App\Nova\Webhook;
 use App\Rules\SubdomainRule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -62,7 +69,6 @@ use Laravel\Nova\Fields\Timezone;
 use Laravel\Nova\Http\Controllers\ResourceDestroyController;
 use Laravel\Nova\Http\Controllers\ResourceStoreController;
 use Laravel\Nova\Http\Controllers\ResourceUpdateController;
-use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Menu\Menu;
 use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
@@ -72,7 +78,9 @@ use Laravel\Nova\NovaApplicationServiceProvider;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
 use Outl1ne\NovaSettings\NovaSettings;
-use Perscom\Roster\Roster;
+use Perscom\Calendar\Calendar as CalendarWidget;
+use Perscom\Roster\Roster as RosterWidget;
+use Sentry\Laravel\Integration;
 use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
@@ -122,6 +130,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function register()
     {
         Nova::ignoreMigrations();
+        Nova::report(static function ($exception) {
+            Integration::captureUnhandledException($exception);
+        });
 
         if (Request::isCentralRequest()) {
             config()->set('nova.path', '/admin');
@@ -174,13 +185,13 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::externalLink('Horizon', Url::fromString(config('app.url').
                                                                           '/'.
                                                                           config('horizon.path'))
-                                                             ->withScheme(config('app.scheme'))
-                                                             ->__toString())->openInNewTab(),
+                            ->withScheme(config('app.scheme'))
+                            ->__toString())->openInNewTab(),
                         MenuItem::externalLink('Telescope', Url::fromString(config('app.url').
                                                                             '/'.
                                                                             config('telescope.path'))
-                                                               ->withScheme(config('app.scheme'))
-                                                               ->__toString())->openInNewTab(),
+                            ->withScheme(config('app.scheme'))
+                            ->__toString())->openInNewTab(),
                     ])->icon('external-link')->collapsable(),
                 ];
             });
@@ -189,6 +200,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 return [
                     MenuSection::dashboard(Main::class)->icon('chart-bar'),
 
+                    MenuSection::make('Calendar')->path('/calendar')->icon('calendar'),
+
                     MenuSection::make('Roster')->path('/roster')->icon('user-group'),
 
                     MenuSection::make('Account', [
@@ -196,10 +209,21 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resource' => User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
+                        MenuItem::lens(EventRegistration::class, MyEvents::class)->withBadge(function () {
+                            return (string) EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
+                        }),
                         MenuItem::lens(TaskAssignment::class, MyTasks::class)->withBadge(function () {
-                            return TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
+                            return (string) TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
                         }),
                     ])->icon('user-circle'),
+
+                    MenuSection::make('Calendar', [
+                        MenuItem::resource(Calendar::class),
+                        MenuItem::resource(Event::class),
+                        MenuItem::resource(EventRegistration::class)->name('Registrations')->canSee(function () {
+                            return Gate::check('create', EventRegistrationModel::class);
+                        }),
+                    ])->icon('calendar')->collapsable(),
 
                     MenuSection::make('Organization', [
                         MenuItem::resource(Announcement::class),
@@ -219,7 +243,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Field::class),
                         MenuItem::resource(Form::class),
                         MenuItem::resource(Submission::class)->withBadge(function () {
-                            return SubmissionModel::query()->whereDoesntHave('statuses')->count();
+                            return (string) SubmissionModel::query()->whereDoesntHave('statuses')->count();
                         }),
                     ])->icon('pencil-alt')->collapsable(),
 
@@ -233,10 +257,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])->icon('document-text')->collapsable(),
 
                     MenuSection::make('External Integration', [
-                        MenuItem::resource(PassportAuthorizedApplications::class),
-                        MenuItem::resource(PassportClient::class)->name('My Apps'),
-                        MenuItem::resource(PassportPersonalAccessToken::class),
-                        MenuItem::resource(PassportLog::class),
+                        MenuGroup::make('API', [
+                            MenuItem::resource(PassportPersonalAccessToken::class)->name('Keys'),
+                            MenuItem::resource(PassportPersonalAccessTokenLog::class),
+                        ])->collapsable(),
+                        MenuGroup::make('OAuth 2.0', [
+                            MenuItem::resource(PassportAuthorizedApplications::class),
+                            MenuItem::resource(PassportClient::class)->name('My Apps'),
+                            MenuItem::resource(PassportClientLog::class),
+                        ])->collapsable(),
+                        MenuItem::resource(Webhook::class),
+                        MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')->openInNewTab(),
                     ])->icon('link')->collapsable(),
 
                     MenuSection::make('System', [
@@ -250,23 +281,23 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::link('Localization', '/settings/localization'),
                             MenuItem::link('Registration', '/settings/registration'),
                         ])->collapsable(),
-                    ])->icon('terminal')->collapsable()->canSee(function (NovaRequest $request) {
+                    ])->icon('terminal')->collapsable()->canSee(function (Request $request) {
                         return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
                     })->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
-                                ->openInNewTab(),
+                            ->openInNewTab(),
                         MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
-                                ->openInNewTab(),
+                            ->openInNewTab(),
                         MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
                         MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
-                                ->openInNewTab()
-                                ->canSee(function () {
-                                    return Feature::active(SupportTicketFeature::class);
-                                }),
+                            ->openInNewTab()
+                            ->canSee(function () {
+                                return Feature::active(SupportTicketFeature::class);
+                            }),
                         MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
-                                ->openInNewTab(),
+                            ->openInNewTab(),
                     ])->icon('support')->collapsable()->collapsedByDefault(),
                 ];
             });
@@ -277,16 +308,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuItem::externalLink('Account', route('nova.pages.detail', [
                     'resource' => \App\Nova\Admin::uriKey(),
                     'resourceId' => Auth::user()->getAuthIdentifier(),
-                ]))->canSee(function (NovaRequest $request) {
+                ]))->canSee(function (Request $request) {
                     return $request->isCentralRequest();
                 }),
                 MenuItem::externalLink('My Personnel File', route('nova.pages.detail', [
                     'resource' => User::uriKey(),
                     'resourceId' => Auth::user()->getAuthIdentifier(),
-                ]))->canSee(function (NovaRequest $request) {
+                ]))->canSee(function (Request $request) {
                     return ! $request->isCentralRequest();
                 }),
-                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (NovaRequest $request) {
+                MenuItem::externalLink('Billing', route('spark.portal'))->canSee(function (Request $request) {
                     return ! $request->isDemoMode() &&
                            ! $request->isCentralRequest() &&
                            Gate::check('billing', $request->user());
@@ -315,11 +346,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->help('The name of your organization.')
                         ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())),
                     Email::make('Email', 'email')
-                         ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
-                         ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())),
+                        ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
+                        ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())),
                     Timezone::make('Default Timezone', 'timezone')
-                            ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.')
-                            ->rules('required'),
+                        ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.')
+                        ->rules('required'),
                 ]),
                 Panel::make('Domain', [
                     Text::make('Subdomain', 'subdomain')
@@ -385,7 +416,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             (new NovaSettings())->canSee(function () {
                 return ! Request::isCentralRequest() && ! Request::isDemoMode() && Auth::user()->hasRole('Admin');
             }),
-            (new Roster())->canSee(function () {
+            (new CalendarWidget())->canSee(function () {
+                return ! Request::isCentralRequest();
+            }),
+            (new RosterWidget())->canSee(function () {
                 return ! Request::isCentralRequest();
             }),
         ];

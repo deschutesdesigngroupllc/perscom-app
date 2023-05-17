@@ -5,7 +5,6 @@ namespace App\Nova;
 use App\Models\Enums\TaskAssignmentStatus;
 use App\Nova\Actions\MarkTaskComplete;
 use App\Nova\Lenses\MyTasks;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\Badge;
@@ -62,7 +61,6 @@ class TaskAssignment extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -71,12 +69,14 @@ class TaskAssignment extends Resource
             ID::make()->sortable(),
             BelongsTo::make('Task')->sortable(),
             BelongsTo::make('User')->sortable(),
-            BelongsTo::make('Assigned By', 'assigned_by', User::class)->default(Auth::user()->getAuthIdentifier()),
+            BelongsTo::make('Assigned By', 'assigned_by', User::class)->default(function (NovaRequest $request) {
+                return $request->user()->getAuthIdentifier();
+            }),
             Text::make('Description', function () {
                 return Str::limit($this->task?->description);
             }),
-            Badge::make('Status', function ($model) {
-                return $model->status->value;
+            Badge::make('Status', function () {
+                return $this->status?->value;
             })->map([
                 TaskAssignmentStatus::TASK_ASSIGNED->value => 'info',
                 TaskAssignmentStatus::TASK_COMPLETE->value => 'success',
@@ -94,7 +94,7 @@ class TaskAssignment extends Resource
                 DateTime::make('Expires At')->sortable(),
             ]),
             URL::make('Form', function () {
-                return $this->task->form->url;
+                return $this->task?->form?->url;
             })->displayUsing(function ($url) {
                 return 'Click To Open Form';
             })->canSee(function () {
@@ -110,8 +110,6 @@ class TaskAssignment extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
-     * @param  Action  $action
      * @return bool
      */
     public function authorizedToRunAction(NovaRequest $request, Action $action)
@@ -122,7 +120,6 @@ class TaskAssignment extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -133,7 +130,6 @@ class TaskAssignment extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -144,20 +140,18 @@ class TaskAssignment extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
     {
         return [
-            new MyTasks,
+            new MyTasks(),
         ];
     }
 
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

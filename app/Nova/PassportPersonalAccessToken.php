@@ -5,7 +5,6 @@ namespace App\Nova;
 use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\PassportToken;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Boolean;
@@ -86,7 +85,6 @@ class PassportPersonalAccessToken extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @param  \Illuminate\Database\Eloquent\Builder  $query
      * @return \Illuminate\Database\Eloquent\Builder
      */
@@ -100,7 +98,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -108,7 +105,7 @@ class PassportPersonalAccessToken extends Resource
         return [
             Hidden::make('ID', 'id')->default('1'),
             Hidden::make('Client Id', 'client_id')->default('1'),
-            Text::make('Name')->sortable(),
+            Text::make('Name')->rules('required')->sortable(),
             Text::make('API Key', function () {
                 return Crypt::decryptString($this->token);
             })->displayUsing(function ($value) {
@@ -122,7 +119,7 @@ class PassportPersonalAccessToken extends Resource
                 ->help('API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'),
             MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
                 return [$scope->id => $scope->id];
-            })->sort())->hideFromIndex(),
+            })->sort())->rules('required')->hideFromIndex(),
             Boolean::make('Revoked')->default(false)->hideWhenCreating()->showOnUpdating()->sortable(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->sortable()->exceptOnForms(),
@@ -132,7 +129,6 @@ class PassportPersonalAccessToken extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
      * @param  \Laravel\Nova\Resource  $resource
      * @return string
      */
@@ -142,13 +138,12 @@ class PassportPersonalAccessToken extends Resource
     }
 
     /**
-     * @param  NovaRequest  $request
-     * @param  Model  $model
+     * @return void
      */
     public static function afterCreate(NovaRequest $request, Model $model)
     {
         $createPersonalAccessToken = app(CreatesPersonalAccessToken::class);
-        $createPersonalAccessToken->create(Auth::user(), $model->name, $model->scopes);
+        $createPersonalAccessToken->create($request->user(), $model->name, $model->scopes);
 
         $model->delete();
     }
@@ -156,7 +151,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -167,7 +161,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -178,7 +171,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -189,7 +181,6 @@ class PassportPersonalAccessToken extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

@@ -12,7 +12,7 @@ class AwardRecordsPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return false|void
      */
     public function before()
     {
@@ -24,7 +24,6 @@ class AwardRecordsPolicy extends Policy
     /**
      * Determine whether the user can view any models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function viewAny(User $user)
@@ -35,8 +34,6 @@ class AwardRecordsPolicy extends Policy
     /**
      * Determine whether the user can view the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AwardRecord  $award
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function view(User $user, AwardRecord $award)
@@ -49,7 +46,6 @@ class AwardRecordsPolicy extends Policy
     /**
      * Determine whether the user can create models.
      *
-     * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function create(User $user)
@@ -60,8 +56,6 @@ class AwardRecordsPolicy extends Policy
     /**
      * Determine whether the user can update the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AwardRecord  $award
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function update(User $user, AwardRecord $award)
@@ -72,8 +66,6 @@ class AwardRecordsPolicy extends Policy
     /**
      * Determine whether the user can delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AwardRecord  $award
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function delete(User $user, AwardRecord $award)
@@ -84,24 +76,20 @@ class AwardRecordsPolicy extends Policy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AwardRecord  $award
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(User $user, AwardRecord $award)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user->tokenCan('delete:awardrecord');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\User  $user
-     * @param  \App\Models\AwardRecord  $award
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(User $user, AwardRecord $award)
     {
-        //
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user->tokenCan('delete:awardrecord');
     }
 }

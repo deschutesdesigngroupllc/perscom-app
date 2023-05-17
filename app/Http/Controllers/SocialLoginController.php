@@ -17,7 +17,7 @@ class SocialLoginController extends Controller
     protected static $sessionKey = 'auth.social.login.tenant';
 
     /**
-     * @var string
+     * @var int
      */
     protected static $loginTokenTtl = 60;
 
@@ -32,7 +32,6 @@ class SocialLoginController extends Controller
     }
 
     /**
-     * @param $driver
      * @return \Illuminate\Http\RedirectResponse
      */
     public function tenant($driver)
@@ -44,8 +43,6 @@ class SocialLoginController extends Controller
     }
 
     /**
-     * @param $driver
-     * @param $tenant
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
     public function redirect($driver, $tenant)
@@ -60,7 +57,6 @@ class SocialLoginController extends Controller
     }
 
     /**
-     * @param $driver
      * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Psr\Container\ContainerExceptionInterface
@@ -100,8 +96,7 @@ class SocialLoginController extends Controller
     }
 
     /**
-     * @param  LoginToken  $token
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function login(LoginToken $loginToken)
     {

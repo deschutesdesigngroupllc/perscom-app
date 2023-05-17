@@ -39,13 +39,14 @@ class ApplicationVersion extends Command
     }
 
     /**
-     * @param $version
-     * @return false|int
+     * @return int
      */
     public function setApplicationVersion($version)
     {
         if (! preg_match("/^(v+)(\d|[1-9]\d*)\.(\d|[1-9]\d*)\.(\d|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/", $version)) {
-            return $this->error('The supplied version is not a valid SemVer version.');
+            $this->error('The supplied version is not a valid SemVer version.');
+
+            return Command::FAILURE;
         }
 
         $path = App::environmentFilePath();
@@ -54,15 +55,17 @@ class ApplicationVersion extends Command
 
         $this->info("Setting the current application version to: $version");
 
-        return file_put_contents($path, preg_replace(
+        file_put_contents($path, preg_replace(
             "/^APP_VERSION{$escaped}/m",
             "APP_VERSION={$version}",
             file_get_contents($path)
         ));
+
+        return Command::SUCCESS;
     }
 
     /**
-     * @return string
+     * @return mixed
      */
     public function getApplicationVersion()
     {

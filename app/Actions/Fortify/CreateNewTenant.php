@@ -15,7 +15,6 @@ class CreateNewTenant
     /**
      * Validate and create a newly registered tenant.
      *
-     * @param  array  $input
      * @return \App\Models\User
      */
     public function create(array $input)

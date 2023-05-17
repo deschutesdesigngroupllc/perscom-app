@@ -2,13 +2,16 @@
 
 namespace App\Providers;
 
+use App\Listeners\CheckTenantDatabaseExists;
 use App\Listeners\ConfigureApplicationForTenant;
 use App\Listeners\ResetTenantFeatures;
 use App\Listeners\UpdateTenantLastLoginDate;
 use App\Models\AssignmentRecord;
 use App\Models\AwardRecord;
+use App\Models\Calendar;
 use App\Models\CombatRecord;
 use App\Models\Domain;
+use App\Models\Event;
 use App\Models\Mail;
 use App\Models\QualificationRecord;
 use App\Models\RankRecord;
@@ -19,8 +22,10 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Observers\AssignmentRecordObserver;
 use App\Observers\AwardRecordObserver;
+use App\Observers\CalendarObserver;
 use App\Observers\CombatRecordObserver;
 use App\Observers\DomainObserver;
+use App\Observers\EventObserver;
 use App\Observers\MailObserver;
 use App\Observers\QualificationRecordObserver;
 use App\Observers\RankRecordObserver;
@@ -38,6 +43,7 @@ use Laravel\Cashier\Subscription;
 use Spark\Events\SubscriptionCancelled;
 use Spark\Events\SubscriptionCreated;
 use Spark\Events\SubscriptionUpdated;
+use Stancl\Tenancy\Events\TenancyBootstrapped;
 use Stancl\Tenancy\Events\TenancyInitialized;
 
 class EventServiceProvider extends ServiceProvider
@@ -64,16 +70,12 @@ class EventServiceProvider extends ServiceProvider
             ResetTenantFeatures::class,
         ],
         TenancyInitialized::class => [
+            CheckTenantDatabaseExists::class,
+        ],
+        TenancyBootstrapped::class => [
             ConfigureApplicationForTenant::class,
         ],
     ];
-
-    /**
-     * The model observers for your application.
-     *
-     * @var array
-     */
-    protected $observers = [];
 
     /**
      * Register any events for your application.
@@ -84,8 +86,10 @@ class EventServiceProvider extends ServiceProvider
     {
         AssignmentRecord::observe(AssignmentRecordObserver::class);
         AwardRecord::observe(AwardRecordObserver::class);
+        Calendar::observe(CalendarObserver::class);
         CombatRecord::observe(CombatRecordObserver::class);
         Domain::observe(DomainObserver::class);
+        Event::observe(EventObserver::class);
         Mail::observe(MailObserver::class);
         QualificationRecord::observe(QualificationRecordObserver::class);
         RankRecord::observe(RankRecordObserver::class);

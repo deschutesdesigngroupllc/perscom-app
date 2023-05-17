@@ -9,8 +9,6 @@ use Spark\Http\Controllers\DownloadReceiptController;
 class AdminController extends Controller
 {
     /**
-     * @param  Request  $request
-     * @param $id
      * @return mixed
      */
     public function downloadReceipt(Request $request, $id)

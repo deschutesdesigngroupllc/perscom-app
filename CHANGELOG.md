@@ -1,6 +1,128 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.40...HEAD)
+
+## [v1.0.40](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.39...v1.0.40) - 2023-05-17
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.40 -->
+### What's Changed
+
+#### Added
+
+- API support for user secondary assignments by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/172
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.39...v1.0.40
+
+## [v1.0.39](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.38...v1.0.39) - 2023-05-16
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.39 -->
+### What's Changed
+
+#### Added
+
+- Add ability to assign users to secondary units, position or specialties by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/170
+
+#### Fixed
+
+- Fixes Basic plan not able to use embedded dashboard widgets by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/171
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.38...v1.0.39
+
+## [v1.0.38](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.37...v1.0.38) - 2023-05-15
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.38 -->
+### What's Changed
+
+#### Added
+
+- Adds support for webhooks by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/169
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.37...v1.0.38
+
+## [v1.0.37](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.36...v1.0.37) - 2023-05-07
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.37 -->
+### What's Changed
+
+#### Changed
+
+- Upgrade Laravel Spark by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/167
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.36...v1.0.37
+
+## [v1.0.36](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.35...v1.0.36) - 2023-05-06
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.36 -->
+### What's Changed
+
+#### Fixed
+
+- Fix GTAG error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/166
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.35...v1.0.36
+
+## [v1.0.35](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.34...v1.0.35) - 2023-05-06
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.35 -->
+### What's Changed
+
+#### Changed
+
+- Improved SEO and Added Google Analytics by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/164
+
+#### Fixed
+
+- Fix HTTP fake testing error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/165
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.34...v1.0.35
+
+## [v1.0.34](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.33...v1.0.34) - 2023-04-25
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.34 -->
+### What's Changed
+
+#### Added
+
+- New batch create records action by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/160
+- Added ability to register for events and manage registrations at a user level by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/161
+
+#### Fixed
+
+- Fixed email_verified_at null error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/159
+- Fixes data truncated error when creating a task with a long description by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/162
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.33...v1.0.34
+
+## [v1.0.33](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.32...v1.0.33) - 2023-04-21
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.33 -->
+### What's Changed
+
+#### Added
+
+- Added OIDC SSO support by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/155
+- Add static analysis to testing by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/158
+
+#### Changed
+
+- Updated home page by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/157
+
+#### Fixed
+
+- Fixes forbidden error for social login. by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/156
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.32...v1.0.33
+
+## [v1.0.32](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...v1.0.32) - 2023-04-14
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.32 -->
+### What's Changed
+
+#### Added
+
+- Adds a new calendar and events feature by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/154
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.31...v1.0.32
 
 ## [v1.0.31](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.30...v1.0.31) - 2023-03-25
 

@@ -1,40 +1,42 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Tab } from '@headlessui/react'
+import {Tab} from '@headlessui/react'
 import clsx from 'clsx'
-import { CollectionIcon, PencilAltIcon, SearchIcon } from '@heroicons/react/outline'
-import { Container } from './/Container'
+import {CalendarIcon, OfficeBuildingIcon, UsersIcon} from '@heroicons/react/outline'
+import {Container} from './/Container'
 import customFieldsImage from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
 import searchImage from '../../images/features/secondary3.png'
 
 const features = [
   {
-    name: 'Custom Fields',
-    summary: 'Advanced customazability without the headache.',
-    description: 'Nearly every module allows for the implementation of Custom Fields which enables you to collect the data you need.',
+    name: 'Effortless Personnel Management',
+    summary: 'Seamless data intake and reporting.',
+    description:
+      "PERSCOM.io's comprehensive personnel management tools allow you to easily track personnel records, assign tasks, manage qualifications, recognize milestones and achievements, and more, all in one centralized location.",
     image: customFieldsImage,
     icon: function Icon() {
-      return <PencilAltIcon className='h-8 w-8' />
+      return <UsersIcon className='h-8 w-8' role='img' />
     }
   },
   {
-    name: 'Records Management',
-    summary: 'Keep track of every action and update that happens to your people.',
+    name: 'Customizable Hierarchical Design',
+    summary: 'Customazability without the headache.',
     description:
-      'The advanced RMS system provides a historical timeline of every update applied to a personnel file keeping everyone on the same page.',
+      "With PERSCOM.io's customizable hierarchical design, you can create a tailored organizational structure that reflects your unique needs and chain of command.",
     image: recordsImage,
     icon: function Icon() {
-      return <CollectionIcon className='h-8 w-8' />
+      return <OfficeBuildingIcon className='h-8 w-8' role='img' />
     }
   },
   {
-    name: 'Advanced Searching',
-    summary: 'Backed by Algolia, the leader in AI-Powered searching.',
-    description: "We've gone the extra mile to make sure access to your data is quick and accurate.",
+    name: 'Powerful Event Management',
+    summary: 'Keep everyone up-to-date and in the know.',
+    description:
+      "PERSCOM.io's Calendars and Events features provide a comprehensive solution for managing scheduling and events, allowing you to efficiently plan and coordinate meetings, trainings, drills, and more.",
     image: searchImage,
     icon: function Icon() {
-      return <SearchIcon className='h-8 w-8' />
+      return <CalendarIcon className='h-8 w-8' role='img' />
     }
   }
 ]
@@ -60,6 +62,7 @@ function Feature({ feature, isActive, className, ...props }) {
           'text-blue-600': isActive,
           'text-gray-600': !isActive
         })}
+        role='heading'
       >
         {feature.name}
       </h3>
@@ -100,19 +103,20 @@ function FeaturesDesktop() {
         <>
           <Tab.List className='grid grid-cols-3 gap-x-8'>
             {features.map((feature, featureIndex) => (
-              <Feature
-                key={feature.name}
-                feature={{
-                  ...feature,
-                  name: (
-                    <Tab className='[&:not(:focus-visible)]:focus:outline-none'>
-                      <span className='absolute inset-0' /> {feature.name}
-                    </Tab>
-                  )
-                }}
-                isActive={featureIndex === selectedIndex}
-                className='relative'
-              />
+              <Tab className='text-left [&:not(:focus-visible)]:focus:outline-none' key={feature.name}>
+                <Feature
+                  feature={{
+                    ...feature,
+                    name: (
+                      <div>
+                        <span className='absolute inset-0' /> {feature.name}
+                      </div>
+                    )
+                  }}
+                  isActive={featureIndex === selectedIndex}
+                  className='relative'
+                />
+              </Tab>
             ))}
           </Tab.List>
           <Tab.Panels className='relative mt-20 overflow-hidden rounded-4xl bg-gray-200 px-14 py-16 xl:px-16'>

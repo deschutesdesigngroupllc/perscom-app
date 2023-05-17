@@ -2,8 +2,11 @@
 
 namespace App\Observers;
 
+use App\Models\Enums\WebhookEvent;
 use App\Models\RankRecord;
+use App\Models\Webhook;
 use App\Notifications\Tenant\NewRankRecord;
+use App\Services\WebhookService;
 use Illuminate\Support\Facades\Notification;
 
 class RankRecordObserver
@@ -11,40 +14,44 @@ class RankRecordObserver
     /**
      * Handle the Rank "created" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function created(RankRecord $rank)
     {
         Notification::send($rank->user, new NewRankRecord($rank));
+
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($rank) {
+            WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_CREATED->value, $rank);
+        });
     }
 
     /**
      * Handle the Rank "updated" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function updated(RankRecord $rank)
     {
-        //
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($rank) {
+            WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_UPDATED->value, $rank);
+        });
     }
 
     /**
      * Handle the Rank "deleted" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function deleted(RankRecord $rank)
     {
-        //
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($rank) {
+            WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_DELETED->value, $rank);
+        });
     }
 
     /**
      * Handle the Rank "restored" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function restored(RankRecord $rank)
@@ -55,7 +62,6 @@ class RankRecordObserver
     /**
      * Handle the Rank "force deleted" event.
      *
-     * @param  \App\Models\RankRecord  $rank
      * @return void
      */
     public function forceDeleted(RankRecord $rank)

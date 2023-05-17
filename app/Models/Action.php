@@ -48,6 +48,7 @@ use Laravel\Nova\Actions\ActionEvent;
  * @method static \Illuminate\Database\Eloquent\Builder|Action whereTargetType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Action whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Action whereUserId($value)
+ *
  * @mixin \Eloquent
  */
 class Action extends ActionEvent

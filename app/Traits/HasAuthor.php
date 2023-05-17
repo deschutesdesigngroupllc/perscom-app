@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 
 trait HasAuthor
@@ -34,6 +35,6 @@ trait HasAuthor
      */
     public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'author_id');
     }
 }

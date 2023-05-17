@@ -35,10 +35,7 @@ class TenantDeleted extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the mail representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return \Illuminate\Notifications\Messages\MailMessage
+     * @return TenantDeletedMail
      */
     public function toMail($notifiable)
     {
@@ -48,12 +45,12 @@ class TenantDeleted extends Notification implements ShouldQueue
     /**
      * Get the nova representation of the notification
      *
-     * @return array
+     * @return NovaNotification
      */
     public function toNova()
     {
         return (new NovaNotification())->message('A tenant has been deleted.')
-                                       ->icon('user-remove')
-                                       ->type('danger');
+            ->icon('user-remove')
+            ->type('danger');
     }
 }

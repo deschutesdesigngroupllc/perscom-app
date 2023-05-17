@@ -47,7 +47,11 @@ class AppServiceProvider extends ServiceProvider
 
         Passport::ignoreRoutes();
         Passport::ignoreMigrations();
-        Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
+        Passport::tokensCan(Permission::getPermissionsFromConfig()->merge([
+            'openid' => 'Can perform single-sign on',
+            'email' => 'Can access the authenticated user\'s email',
+            'profile' => 'Can access the authenticated user\'s profile',
+        ])->toArray());
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
         Passport::authorizationView(function ($parameters) {

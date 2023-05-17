@@ -9,10 +9,13 @@ use Spatie\EloquentSortable\SortableTrait;
 /**
  * App\Models\Element
  *
+ * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
+ *
  * @method static \Illuminate\Database\Eloquent\Builder|Element newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Element newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Element ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Element query()
+ *
  * @mixin \Eloquent
  */
 class Element extends MorphPivot implements Sortable

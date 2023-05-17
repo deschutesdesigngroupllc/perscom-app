@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { Tab } from '@headlessui/react'
+import React, {useEffect, useState} from 'react'
+import {Tab} from '@headlessui/react'
 import clsx from 'clsx'
 
-import { Container } from './/Container'
+import {Container} from './/Container'
 import backgroundImage from '../../images/background-features.jpg'
 import featureDashboard from '../../images/features/feature1.png'
 import featurePersonnelFiles from '../../images/features/feature2.png'
@@ -11,24 +11,26 @@ import featureLogs from '../../images/features/feature4.png'
 
 const features = [
   {
-    title: 'Dashboard Statistics',
-    description: 'Get an overview of everything happening within your organization and quick access to the most popular features.',
+    title: 'Efficient Personnel Management Made Easy',
+    description: "PERSCOM.io streamlines your organization's personnel management, allowing you to focus on what really matters.",
     image: featureDashboard
   },
   {
-    title: 'Advanced Personnel Files',
-    description: 'As the backbone of PERSCOM, Personnel Files provide a powerful and complete history of everyone in your organization.',
+    title: 'Customizable, Scalable, and Secure',
+    description:
+      "PERSCOM.io's powerful features are fully customizable and scalable to meet the unique needs of your organization, while maintaining the highest levels of security.",
     image: featurePersonnelFiles
   },
   {
-    title: 'Custom Forms',
+    title: 'Centralized Data Management',
     description:
-      'Build custom forms allowing you to collect specific data needed to run your organization. Forms can be public or private.',
+      'With PERSCOM.io, all of your personnel data is stored in a centralized location, making it easy to access, update, and manage.',
     image: featureForms
   },
   {
-    title: 'Transparent Logs',
-    description: 'Every transaction that happens within PERSCOM can be viewed allowing you to audit every update and trace every action.',
+    title: 'Seamless Integration and Communication',
+    description:
+      "PERSCOM.io's API, OAuth 2.0, and Widget integration options make it easy to connect with other tools and systems, while the platform's built-in communication features keep everyone on the same page.",
     image: featureLogs
   }
 ]
@@ -61,7 +63,7 @@ export function PrimaryFeatures() {
           <h2 id='features-title' className='font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl'>
             Everything you need to manage your personnel.
           </h2>
-          <p className='mt-6 text-base text-blue-100'>Packed with powerful features and backed by years of experience.</p>
+          <p className='mt-6 text-base text-blue-50'>Packed with powerful features and backed by years of experience.</p>
         </div>
         <Tab.Group
           as='div'
@@ -70,36 +72,39 @@ export function PrimaryFeatures() {
         >
           {({ selectedIndex }) => (
             <>
-              <div className='-mx-4 flex overflow-x-auto pb-4 sm:mx-0 sm:overflow-visible sm:pb-0 lg:col-span-5'>
+              <div className='-mx-4 flex overflow-x-auto pb-4 sm:mx-0 lg:overflow-visible sm:pb-0 lg:col-span-5'>
                 <Tab.List className='relative z-10 flex space-x-4 whitespace-nowrap px-4 sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:space-y-1 lg:space-x-0 lg:whitespace-normal'>
                   {features.map((feature, featureIndex) => (
-                    <div
+                    <Tab
                       key={feature.title}
-                      className={clsx('group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-6', {
-                        'bg-white lg:bg-white/10 lg:ring-1 lg:ring-inset lg:ring-white/10': selectedIndex === featureIndex,
-                        'hover:bg-white/10 lg:hover:bg-white/5': selectedIndex !== featureIndex
-                      })}
+                      className={clsx(
+                        'text-left group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-4 [&:not(:focus-visible)]:focus:outline-none',
+                        {
+                          'lg:ring-1 lg:ring-inset lg:ring-white/10': selectedIndex === featureIndex,
+                          'hover:bg-white/10 lg:hover:bg-white/5': selectedIndex !== featureIndex
+                        }
+                      )}
                     >
                       <h3>
-                        <Tab
-                          className={clsx('font-display text-lg [&:not(:focus-visible)]:focus:outline-none', {
-                            'text-blue-600 lg:text-white': selectedIndex === featureIndex,
-                            'text-blue-100 hover:text-white lg:text-white': selectedIndex !== featureIndex
+                        <div
+                          className={clsx('font-semibold text-lg', {
+                            'text-white': selectedIndex === featureIndex,
+                            'text-blue-200 hover:text-white lg:text-white': selectedIndex !== featureIndex
                           })}
                         >
-                          <span className='absolute inset-0 rounded-full lg:rounded-r-none lg:rounded-l-xl' />
+                          <span className='absolute inset-0' />
                           {feature.title}
-                        </Tab>
+                        </div>
                       </h3>
                       <p
                         className={clsx('mt-2 hidden text-sm lg:block', {
                           'text-white': selectedIndex === featureIndex,
-                          'text-blue-100 group-hover:text-white': selectedIndex !== featureIndex
+                          'text-blue-50 group-hover:text-white': selectedIndex !== featureIndex
                         })}
                       >
                         {feature.description}
                       </p>
-                    </div>
+                    </Tab>
                   ))}
                 </Tab.List>
               </div>

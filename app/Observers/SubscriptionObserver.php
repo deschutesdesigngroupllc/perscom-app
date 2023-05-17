@@ -12,7 +12,6 @@ class SubscriptionObserver
     /**
      * Handle the Subscription "created" event.
      *
-     * @param  \Laravel\Cashier\Subscription  $subscription
      * @return void
      */
     public function created(Subscription $subscription)
@@ -23,7 +22,6 @@ class SubscriptionObserver
     /**
      * Handle the Subscription "updated" event.
      *
-     * @param  \Laravel\Cashier\Subscription  $subscription
      * @return void
      */
     public function updated(Subscription $subscription)
@@ -34,7 +32,6 @@ class SubscriptionObserver
     /**
      * Handle the Subscription "deleted" event.
      *
-     * @param  \Laravel\Cashier\Subscription  $subscription
      * @return void
      */
     public function deleted(Subscription $subscription)
@@ -45,7 +42,6 @@ class SubscriptionObserver
     /**
      * Handle the Subscription "restored" event.
      *
-     * @param  \Laravel\Cashier\Subscription  $subscription
      * @return void
      */
     public function restored(Subscription $subscription)
@@ -56,7 +52,6 @@ class SubscriptionObserver
     /**
      * Handle the Subscription "force deleted" event.
      *
-     * @param  \Laravel\Cashier\Subscription  $subscription
      * @return void
      */
     public function forceDeleted(Subscription $subscription)

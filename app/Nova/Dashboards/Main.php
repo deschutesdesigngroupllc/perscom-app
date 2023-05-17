@@ -5,7 +5,7 @@ namespace App\Nova\Dashboards;
 use App\Models\Announcement;
 use App\Models\Message;
 use App\Nova\Metrics\NewUsers;
-use App\Nova\Metrics\UpdatesPerformed;
+use App\Nova\Metrics\UpcomingEvents;
 use App\Nova\Metrics\UsersOnline;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -37,11 +37,11 @@ class Main extends Dashboard
     {
         return [
             (new DashboardTitle())->withTitle(setting('dashboard_title') ?? \tenant('name'))
-                                  ->withSubtitle(setting('dashboard_subtitle')),
+                ->withSubtitle(setting('dashboard_subtitle')),
             $this->setupAlertCard(),
             new NewUsers(),
             new UsersOnline(),
-            new UpdatesPerformed(),
+            new UpcomingEvents(),
             new DashboardQuickActions(),
         ];
     }
@@ -54,11 +54,11 @@ class Main extends Dashboard
         $card = new AlertCard();
 
         Announcement::query()
-                    ->whereDate('expires_at', '>', now())
-                    ->orWhereNull('expires_at')
-                    ->each(function ($announcement) use ($card) {
-                        $card->withAnnouncement($announcement->title, $announcement->content, $announcement->color);
-                    });
+            ->whereDate('expires_at', '>', now())
+            ->orWhereNull('expires_at')
+            ->each(function ($announcement) use ($card) {
+                $card->withAnnouncement($announcement->title, $announcement->content, $announcement->color);
+            });
 
         Message::query()->active()->ordered()->each(function ($message) use ($card) {
             $card->withSystemMessage($message->title, $message->message, $message->link_text, $message->url);

@@ -3,15 +3,17 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Actions\BatchCreateAssignmentRecord;
 use App\Nova\Metrics\NewAssignmentRecords;
 use App\Nova\Metrics\TotalAssignmentRecords;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
-use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -82,22 +84,32 @@ class AssignmentRecord extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
-                     ->sortable(),
-            BelongsTo::make('Unit')->sortable()->showCreateRelationButton(),
-            BelongsTo::make('Position')->sortable()->showCreateRelationButton(),
-            BelongsTo::make('Specialty')->sortable()->showCreateRelationButton(),
-            Textarea::make('Text')->alwaysShow(),
-            Text::make('Text', function ($model) {
-                return $model->text;
-            })->onlyOnIndex(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)->sortable(),
+            Panel::make('Position', [
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->sortable()->showCreateRelationButton(),
+                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_position_ids')->options(
+                    \App\Models\Position::all()->mapWithKeys(fn ($position) => [$position->id => $position->name])
+                )->hideFromIndex(),
+            ]),
+            Panel::make('Specialty', [
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->sortable()->showCreateRelationButton(),
+                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialty_ids')->options(
+                    \App\Models\Specialty::all()->mapWithKeys(fn ($speciality) => [$speciality->id => $speciality->name])
+                )->hideFromIndex(),
+            ]),
+            Panel::make('Unit', [
+                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->sortable()->showCreateRelationButton(),
+                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_unit_ids')->options(
+                    \App\Models\Unit::all()->mapWithKeys(fn ($unit) => [$unit->id => $unit->name])
+                )->hideFromIndex(),
+            ]),
+            Textarea::make('Text')->alwaysShow()->hideFromIndex(),
             BelongsTo::make('Document')->nullable()->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
@@ -112,7 +124,6 @@ class AssignmentRecord extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -123,7 +134,6 @@ class AssignmentRecord extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -134,7 +144,6 @@ class AssignmentRecord extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -145,13 +154,17 @@ class AssignmentRecord extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [
+            (new BatchCreateAssignmentRecord())->canSee(function () {
+                return Gate::check('create', \App\Models\AssignmentRecord::class);
+            }),
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })->nameable(),
+        ];
     }
 }

@@ -3,9 +3,11 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Actions\BatchCreateRankRecord;
 use App\Nova\Metrics\NewRankRecords;
 use App\Nova\Metrics\RankRecordsByType;
 use App\Nova\Metrics\TotalRankRecords;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
@@ -13,7 +15,6 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
 use Laravel\Nova\Fields\Select;
-use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -84,7 +85,6 @@ class RankRecord extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -92,18 +92,15 @@ class RankRecord extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
-                     ->sortable(),
+                ->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', \App\Nova\Rank::class)
-                     ->sortable()
-                     ->showCreateRelationButton(),
+                ->sortable()
+                ->showCreateRelationButton(),
             Select::make('Type')->options([
                 \App\Models\RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
                 \App\Models\RankRecord::RECORD_RANK_DEMOTION => 'Demotion',
             ])->rules('required')->displayUsingLabels(),
-            Textarea::make('Text')->alwaysShow(),
-            Text::make('Text', function ($model) {
-                return $model->text;
-            })->onlyOnIndex(),
+            Textarea::make('Text')->alwaysShow()->hideFromIndex(),
             BelongsTo::make('Document')->nullable()->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
@@ -118,7 +115,6 @@ class RankRecord extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -129,7 +125,6 @@ class RankRecord extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -140,7 +135,6 @@ class RankRecord extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -151,13 +145,17 @@ class RankRecord extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [
+            (new BatchCreateRankRecord())->canSee(function () {
+                return Gate::check('create', \App\Models\RankRecord::class);
+            }),
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })->nameable(),
+        ];
     }
 }

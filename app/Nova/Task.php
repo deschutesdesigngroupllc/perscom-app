@@ -48,15 +48,14 @@ class Task extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
     {
         return [
             ID::make()->sortable(),
-            Text::make('Title')->rules('required'),
-            Textarea::make('Description')->alwaysShow(),
+            Text::make('Title')->rules('required')->showOnPreview(),
+            Textarea::make('Description')->alwaysShow()->showOnPreview(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
@@ -66,13 +65,13 @@ class Task extends Resource
             DateTime::make('Updated At')->sortable()->onlyOnDetail(),
             new Panel('Details', [
                 BelongsTo::make('Form')
-                         ->nullable()
-                         ->help('Set to assign a form that needs to be completed as apart of the task.')
-                         ->hideFromIndex(),
+                    ->nullable()
+                    ->help('Set to assign a form that needs to be completed as apart of the task.')
+                    ->hideFromIndex(),
             ]),
             BelongsToMany::make('Assigned To', 'users', User::class)
-                         ->fields(new TaskAssignmentFields)
-                         ->referToPivotAs('assignment'),
+                ->fields(new TaskAssignmentFields())
+                ->referToPivotAs('assignment'),
             MorphMany::make('Attachments'),
         ];
     }
@@ -80,7 +79,6 @@ class Task extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -91,7 +89,6 @@ class Task extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -102,7 +99,6 @@ class Task extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -113,7 +109,6 @@ class Task extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)

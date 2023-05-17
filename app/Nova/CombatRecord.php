@@ -3,8 +3,10 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Actions\BatchCreateCombatRecord;
 use App\Nova\Metrics\NewCombatRecords;
 use App\Nova\Metrics\TotalCombatRecords;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsTo;
@@ -82,7 +84,6 @@ class CombatRecord extends Resource
     /**
      * Get the fields displayed by the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -90,7 +91,7 @@ class CombatRecord extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
-                     ->sortable(),
+                ->sortable(),
             Textarea::make('Text')->rules(['required'])->hideFromIndex()->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
@@ -109,7 +110,6 @@ class CombatRecord extends Resource
     /**
      * Get the cards available for the request.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function cards(NovaRequest $request)
@@ -120,7 +120,6 @@ class CombatRecord extends Resource
     /**
      * Get the filters available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function filters(NovaRequest $request)
@@ -131,7 +130,6 @@ class CombatRecord extends Resource
     /**
      * Get the lenses available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function lenses(NovaRequest $request)
@@ -142,13 +140,17 @@ class CombatRecord extends Resource
     /**
      * Get the actions available for the resource.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
      * @return array
      */
     public function actions(NovaRequest $request)
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [
+            (new BatchCreateCombatRecord())->canSee(function () {
+                return Gate::check('create', \App\Models\CombatRecord::class);
+            }),
+            ExportAsCsv::make('Export '.self::label())->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })->nameable(),
+        ];
     }
 }

@@ -13,7 +13,6 @@ class DomainObserver
     /**
      * Handle the Domain "created" event.
      *
-     * @param  \App\Models\Domain  $domain
      * @return void
      */
     public function created(Domain $domain)
@@ -24,7 +23,6 @@ class DomainObserver
     /**
      * Handle the Domain "updated" event.
      *
-     * @param  \App\Models\Domain  $domain
      * @return void
      */
     public function updated(Domain $domain)
@@ -35,7 +33,6 @@ class DomainObserver
     /**
      * Handle the Domain "deleted" event.
      *
-     * @param  \App\Models\Domain  $domain
      * @return void
      */
     public function deleted(Domain $domain)
@@ -46,7 +43,6 @@ class DomainObserver
     /**
      * Handle the Domain "restored" event.
      *
-     * @param  \App\Models\Domain  $domain
      * @return void
      */
     public function restored(Domain $domain)
@@ -57,7 +53,6 @@ class DomainObserver
     /**
      * Handle the Domain "force deleted" event.
      *
-     * @param  \App\Models\Domain  $domain
      * @return void
      */
     public function forceDeleted(Domain $domain)

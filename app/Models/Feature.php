@@ -15,21 +15,25 @@ use Symfony\Component\Finder\Finder;
  *
  * @property int $id
  * @property string $name
- * @property string|null $description
+ * @property string $scope
+ * @property string $value
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
+ * @property-read \App\Models\Tenant|null $tenant
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Feature newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Feature newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Feature query()
- * @method static \Illuminate\Database\Eloquent\Builder|Feature whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feature whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feature whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feature whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feature whereState($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Feature whereUpdatedAt($value)
+ * @method static Builder|Feature forTenant(\App\Models\Tenant $tenant)
+ * @method static Builder|Feature newModelQuery()
+ * @method static Builder|Feature newQuery()
+ * @method static Builder|Feature query()
+ * @method static Builder|Feature whereCreatedAt($value)
+ * @method static Builder|Feature whereId($value)
+ * @method static Builder|Feature whereName($value)
+ * @method static Builder|Feature whereScope($value)
+ * @method static Builder|Feature whereUpdatedAt($value)
+ * @method static Builder|Feature whereValue($value)
+ *
  * @mixin \Eloquent
  */
 class Feature extends Model
@@ -46,8 +50,6 @@ class Feature extends Model
     ];
 
     /**
-     * @param  Builder  $query
-     * @param  Tenant  $tenant
      * @return void
      */
     public function scopeForTenant(Builder $query, Tenant $tenant)

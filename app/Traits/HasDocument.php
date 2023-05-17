@@ -3,12 +3,13 @@
 namespace App\Traits;
 
 use App\Models\Document;
+use Illuminate\Database\Eloquent\Builder;
 
 trait HasDocument
 {
     /**
      * @param  Builder  $query
-     * @param  Document  $user
+     * @param  Document  $document
      * @return Builder
      */
     public function scopeForDocument($query, $document)

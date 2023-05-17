@@ -9,10 +9,10 @@ use Illuminate\Database\Eloquent\Scope;
 class SpecialtyScope implements Scope
 {
     /**
-     * Apply the scope to a given Eloquent query builder.
+     * @return void
      */
     public function apply(Builder $builder, Model $model)
     {
-        return $builder->ordered();
+        $builder->ordered();
     }
 }

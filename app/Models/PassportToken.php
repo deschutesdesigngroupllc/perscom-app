@@ -9,11 +9,11 @@ use Laravel\Passport\Token as BaseTokenModel;
  * App\Models\PassportToken
  *
  * @property-read \App\Models\PassportClient|null $client
- * @property-read \App\Models\User|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken query()
+ *
  * @mixin \Eloquent
  */
 class PassportToken extends BaseTokenModel

@@ -15,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord query()
+ *
  * @mixin \Eloquent
  */
 class StatusRecord extends MorphPivot
@@ -34,7 +35,7 @@ class StatusRecord extends MorphPivot
         parent::boot();
 
         static::created(function (StatusRecord $record) {
-            if ($record->model && $record->model instanceof User) {
+            if ($record->model instanceof User) {
                 $record->model->status_id = $record->status?->id;
                 $record->model->save();
             }

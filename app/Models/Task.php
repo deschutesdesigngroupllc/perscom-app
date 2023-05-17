@@ -14,13 +14,12 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read \App\Models\Form|null $form
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $task_assignments
- * @property-read int|null $task_assignments_count
  *
  * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Task newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Task query()
+ *
  * @mixin \Eloquent
  */
 class Task extends Model
@@ -36,7 +35,7 @@ class Task extends Model
         parent::boot();
 
         static::deleted(function (Task $task) {
-            $task->task_assignments()->delete();
+            $task->users()->detach();
         });
     }
 
@@ -54,17 +53,9 @@ class Task extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'users_tasks')
-                    ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
-                    ->as('assignment')
-                    ->using(TaskAssignment::class)
-                    ->withTimestamps();
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function task_assignments()
-    {
-        return $this->hasMany(TaskAssignment::class);
+            ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
+            ->as('assignment')
+            ->using(TaskAssignment::class)
+            ->withTimestamps();
     }
 }

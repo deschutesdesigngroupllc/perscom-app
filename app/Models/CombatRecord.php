@@ -26,6 +26,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord query()
+ *
  * @mixin \Eloquent
  */
 class CombatRecord extends Model
