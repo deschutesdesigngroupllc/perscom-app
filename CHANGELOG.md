@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.39...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.40...HEAD)
+
+## [v1.0.40](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.39...v1.0.40) - 2023-05-17
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.40 -->
+### What's Changed
+
+#### Added
+
+- API support for user secondary assignments by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/172
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.39...v1.0.40
 
 ## [v1.0.39](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.38...v1.0.39) - 2023-05-16
 
