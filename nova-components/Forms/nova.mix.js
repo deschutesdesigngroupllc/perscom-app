@@ -13,19 +13,16 @@ class NovaExtension {
 
   webpackConfig(webpackConfig) {
     webpackConfig.externals = {
-      vue: 'Vue',
+      vue: 'Vue'
     }
 
     webpackConfig.resolve.alias = {
       ...(webpackConfig.resolve.alias || {}),
-      'laravel-nova': path.join(
-        __dirname,
-        '../../vendor/laravel/nova/resources/js/mixins/packages.js'
-      ),
+      'laravel-nova': path.join(__dirname, '../../vendor/laravel/nova/resources/js/mixins/packages.js')
     }
 
     webpackConfig.output = {
-      uniqueName: this.name,
+      uniqueName: this.name
     }
   }
 }
