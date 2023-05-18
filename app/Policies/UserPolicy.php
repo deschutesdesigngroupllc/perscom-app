@@ -119,4 +119,20 @@ class UserPolicy extends Policy
     {
         return $this->hasPermissionTo($user, 'manage:billing') || $user->tokenCan('manage:billing');
     }
+
+    /**
+     * @return bool
+     */
+    public function api(User $user)
+    {
+        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+    }
+
+    /**
+     * @return bool
+     */
+    public function webhook(User $user)
+    {
+        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+    }
 }

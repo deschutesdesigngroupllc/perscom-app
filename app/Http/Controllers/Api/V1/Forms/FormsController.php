@@ -26,8 +26,6 @@ class FormsController extends Controller
 
     /**
      * The list of available query scopes.
-     *
-     * @return array
      */
     public function exposedScopes(): array
     {

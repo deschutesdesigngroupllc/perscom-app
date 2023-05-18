@@ -8,7 +8,9 @@
         "format-components": "prettier './nova-components/**/*.{js,vue}' --write --config ./.prettierrc",
         "build-components": "chmod +x ./nova-components/build.sh && ./nova-components/build.sh",
         "build-calendar": "cd nova-components/Calendar && npm run dev",
-        "build-calendar-prod": "cd nova-components/Calendar && npm run prod"
+        "build-calendar-prod": "cd nova-components/Calendar && npm run prod",
+        "build-forms": "cd nova-components/Forms && npm run dev",
+        "build-forms-prod": "cd nova-components/Forms && npm run prod"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",

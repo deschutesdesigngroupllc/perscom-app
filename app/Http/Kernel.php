@@ -58,7 +58,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\ForceJsonResponse::class,
             \App\Http\Middleware\SentryContext::class,
             \App\Http\Middleware\LogApiRequests::class,
-            'treblle',
         ],
 
         'universal' => [CheckUniversalRouteForTenantOrAdmin::class],

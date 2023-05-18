@@ -57,8 +57,6 @@ class Form extends Model
     ];
 
     /**
-     * @param  Builder  $query
-     * @param $tag
      * @return Builder
      */
     public function scopeForTags(Builder $query, $tag)

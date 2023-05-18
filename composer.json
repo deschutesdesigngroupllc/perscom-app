@@ -46,7 +46,7 @@
         "staudenmeir/eloquent-has-many-deep": "^1.18",
         "tailflow/laravel-orion": "^2.19",
         "tightenco/ziggy": "^1.4",
-        "treblle/treblle-laravel": "^2.8.6"
+        "perscom/forms": "*"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
@@ -98,6 +98,10 @@
         {
             "type": "path",
             "url": "./nova-components/Calendar"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Forms"
         }
     ],
     "autoload": {

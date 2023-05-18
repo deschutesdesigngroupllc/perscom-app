@@ -79,6 +79,7 @@ use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
 use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\Calendar\Calendar as CalendarWidget;
+use Perscom\Forms\Forms as FormsWidget;
 use Perscom\Roster\Roster as RosterWidget;
 use Sentry\Laravel\Integration;
 use Spatie\Url\Url;
@@ -202,6 +203,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                     MenuSection::make('Calendar')->path('/calendar')->icon('calendar'),
 
+                    MenuSection::make('Forms')->path('/forms')->icon('folder-open'),
+
                     MenuSection::make('Roster')->path('/roster')->icon('user-group'),
 
                     MenuSection::make('Account', [
@@ -267,7 +270,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::resource(PassportClientLog::class),
                         ])->collapsable(),
                         MenuItem::resource(Webhook::class),
-                        MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')->openInNewTab(),
+                        MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')
+                            ->openInNewTab()
+                            ->canSee(function (Request $request) {
+                                return Gate::check('api', $request->user());
+                            }),
                     ])->icon('link')->collapsable(),
 
                     MenuSection::make('System', [
@@ -417,6 +424,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 return ! Request::isCentralRequest() && ! Request::isDemoMode() && Auth::user()->hasRole('Admin');
             }),
             (new CalendarWidget())->canSee(function () {
+                return ! Request::isCentralRequest();
+            }),
+            (new FormsWidget())->canSee(function () {
                 return ! Request::isCentralRequest();
             }),
             (new RosterWidget())->canSee(function () {

@@ -5,6 +5,7 @@ namespace App\Policies;
 use App\Features\OAuth2AccessFeature;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Laravel\Passport\Client;
 use Laravel\Pennant\Feature;
@@ -34,7 +35,7 @@ class PassportClientPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -48,7 +49,7 @@ class PassportClientPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -58,7 +59,7 @@ class PassportClientPolicy extends Policy
      */
     public function create(User $user)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -72,7 +73,7 @@ class PassportClientPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -86,7 +87,7 @@ class PassportClientPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -100,7 +101,7 @@ class PassportClientPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -114,6 +115,6 @@ class PassportClientPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 }

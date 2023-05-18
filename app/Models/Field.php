@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Fields\Boolean;
@@ -41,7 +42,7 @@ class Field extends Model
      * @var string[]
      */
     protected $casts = [
-        'options' => 'array',
+        'options' => AsArrayObject::class,
         'required' => 'boolean',
         'readonly' => 'boolean',
         'disabled' => 'boolean',
@@ -60,7 +61,7 @@ class Field extends Model
 
     public const FIELD_DATE = 'date';
 
-    public const FIELD_DATETIME = 'datetime';
+    public const FIELD_DATETIME = 'datetime-local';
 
     public const FIELD_EMAIL = 'email';
 

@@ -24,7 +24,6 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
@@ -81,9 +80,6 @@ class Form extends Resource
                 return Str::limit($this->description);
             })->onlyOnIndex(),
             Tag::make('Tags')->showCreateRelationButton()->withPreview(),
-            URL::make('URL')->displayUsing(function ($url) {
-                return 'Click To Open Form';
-            })->canSeeWhen('create', \App\Models\Submission::class)->exceptOnForms()->copyable()->readonly(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
             new Panel('Access', [
