@@ -7,8 +7,6 @@ use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Badge;
@@ -16,7 +14,6 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
-use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphToMany;
 use Laravel\Nova\Fields\Text;
@@ -75,26 +72,6 @@ class Submission extends Resource
     }
 
     /**
-     * @return string
-     */
-    public static function createButtonLabel()
-    {
-        return 'Submit Form';
-    }
-
-    /**
-     * Determine if the current user can create new resources.
-     *
-     * @return bool
-     */
-    public static function authorizedToCreate(Request $request)
-    {
-        $novaRequest = NovaRequest::createFrom($request);
-
-        return $novaRequest->viaResource && $novaRequest->viaResourceId && parent::authorizedToCreate($request);
-    }
-
-    /**
      * Get the fields displayed by the resource.
      *
      * @return array
@@ -103,7 +80,12 @@ class Submission extends Resource
     {
         return [
             ID::make()->sortable(),
-            $this->getDetailFields($request),
+            BelongsTo::make('Form')->showOnPreview()->default(function (NovaRequest $request) {
+                return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
+            }),
+            BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
+                return $request->user()->id;
+            })->help('The user will be set to guest if left blank.'),
             $this->getInstructionFields($request),
             $this->generateBadgeField($this),
             Code::make('Data', static function ($model) {
@@ -154,45 +136,6 @@ class Submission extends Resource
         }
 
         return $badge;
-    }
-
-    /**
-     * @return Panel
-     */
-    protected function getDetailFields(NovaRequest $request)
-    {
-        $form = $this->getForm($request);
-
-        if (Gate::check('update', $request->model())) {
-            return new Panel('Details', [
-                BelongsTo::make('Form')->showOnPreview()->default(function (NovaRequest $request) {
-                    return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
-                }),
-                BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
-                    return $request->user()->id;
-                })->help('The user will be set to guest if left blank.'),
-            ]);
-        }
-
-        $fields = [];
-
-        if ($request->isFormRequest()) {
-            $fields[] = Hidden::make('User', 'user_id')->default(function (NovaRequest $request) {
-                return $request->user()->id;
-            })->showOnDetail();
-            $fields[] = Hidden::make('Form', 'form_id')->default(function (NovaRequest $request) {
-                return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
-            })->showOnDetail();
-        }
-
-        return new Panel($form->name ?? 'Form', array_merge($fields, [
-            Text::make('User', static function ($submission) {
-                return $submission?->user?->name ?? 'Guest';
-            })->onlyOnIndex(),
-            Text::make('Form', static function ($submission) {
-                return $submission?->form?->name ?? 'Form';
-            })->onlyOnIndex(),
-        ]));
     }
 
     /**

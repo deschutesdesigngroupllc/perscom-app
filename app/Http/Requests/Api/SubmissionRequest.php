@@ -21,7 +21,6 @@ class SubmissionRequest extends Request
     public function storeRules(): array
     {
         return [
-            'user_id' => 'required|exists:users,id',
         ];
     }
 }

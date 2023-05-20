@@ -49,13 +49,6 @@ class Submission extends Model
     protected $with = ['form', 'user', 'statuses'];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['user_id', 'form_id'];
-
-    /**
      * @return string[]
      */
     public static function getCustomColumns(): array
@@ -64,7 +57,6 @@ class Submission extends Model
             'id',
             'form_id',
             'user_id',
-            'data',
             'created_at',
             'updated_at',
         ];
