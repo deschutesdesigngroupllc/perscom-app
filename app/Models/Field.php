@@ -24,6 +24,7 @@ use Laravel\Nova\Fields\Timezone;
 /**
  * App\Models\Field
  *
+ * @property AsArrayObject $options
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
  * @property-read int|null $forms_count
  *
@@ -213,11 +214,6 @@ class Field extends Model
         });
 
         return $field;
-    }
-
-    public static function getSchemaSafeKey($key): string
-    {
-        return preg_replace('/[\W]/', '_', $key);
     }
 
     /**

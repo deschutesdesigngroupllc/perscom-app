@@ -7,6 +7,7 @@ use App\Traits\HasStatuses;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\VirtualColumn\VirtualColumn;
 
@@ -60,6 +61,20 @@ class Submission extends Model
             'created_at',
             'updated_at',
         ];
+    }
+
+    /**
+     * Run on boot
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            if (! $model->user && ($user = Auth::user())) {
+                $model->user()->associate($user);
+            }
+        });
     }
 
     /**

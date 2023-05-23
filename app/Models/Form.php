@@ -22,9 +22,10 @@ use Laravel\Nova\Actions\Actionable;
  * @property-read int|null $tags_count
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Form newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Form query()
+ * @method static Builder|Form forTags($tag)
+ * @method static Builder|Form newModelQuery()
+ * @method static Builder|Form newQuery()
+ * @method static Builder|Form query()
  *
  * @mixin \Eloquent
  */

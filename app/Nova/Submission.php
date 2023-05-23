@@ -85,7 +85,7 @@ class Submission extends Resource
             }),
             BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
                 return $request->user()->id;
-            })->help('The user will be set to guest if left blank.'),
+            }),
             $this->getInstructionFields($request),
             $this->generateBadgeField($this),
             Code::make('Data', static function ($model) {
