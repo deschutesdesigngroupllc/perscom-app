@@ -7,6 +7,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Features\SocialLoginFeature;
+use App\Http\Controllers\SocialLoginController;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
@@ -55,9 +56,11 @@ class FortifyServiceProvider extends ServiceProvider
                 'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
                 'githubLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'github',
+                    'function' => SocialLoginController::SOCIAL_LOGIN,
                 ]),
                 'discordLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'discord',
+                    'function' => SocialLoginController::SOCIAL_LOGIN,
                 ]),
             ]);
         });
@@ -79,7 +82,16 @@ class FortifyServiceProvider extends ServiceProvider
         });
         Fortify::registerView(function () {
             return Inertia::render('auth/Register', [
-                'status' => session('status'),
+                'status' => session('status') ?? \request('status'),
+                'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
+                'githubLogin' => \route('tenant.auth.social.redirect', [
+                    'driver' => 'github',
+                    'function' => SocialLoginController::SOCIAL_REGISTER,
+                ]),
+                'discordLogin' => \route('tenant.auth.social.redirect', [
+                    'driver' => 'discord',
+                    'function' => SocialLoginController::SOCIAL_REGISTER,
+                ]),
             ]);
         });
 
