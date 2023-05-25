@@ -14,8 +14,14 @@ use Laravel\Socialite\Facades\Socialite;
 
 class SocialLoginController extends Controller
 {
+    /**
+     * Login function
+     */
     public const SOCIAL_LOGIN = 'login';
 
+    /**
+     * Register function
+     */
     public const SOCIAL_REGISTER = 'register';
 
     /**
