@@ -45,7 +45,7 @@ class FormsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['name', 'slug', 'is_public'];
+        return ['name', 'slug'];
     }
 
     /**
@@ -53,6 +53,6 @@ class FormsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'slug', 'is_public', 'created_at'];
+        return ['id', 'name', 'slug', 'created_at'];
     }
 }

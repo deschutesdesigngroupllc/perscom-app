@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Actions\ExportAsCsv;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
@@ -82,13 +81,6 @@ class Form extends Resource
             Tag::make('Tags')->showCreateRelationButton()->withPreview(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
-            new Panel('Access', [
-                Boolean::make('Public', 'is_public')
-                    ->help('Check to make this form available to the public.')
-                    ->canSee(function (NovaRequest $request) {
-                        return Gate::check('update', $request->findModel());
-                    }),
-            ]),
             new Panel('Submission', [
                 Textarea::make('Success Message')
                     ->help('The message displayed when the form is successfully submitted.')

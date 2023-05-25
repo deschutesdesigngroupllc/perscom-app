@@ -49,15 +49,6 @@ class Form extends Model
     protected $with = ['fields'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'is_public' => 'boolean',
-    ];
-
-    /**
      * @return Builder
      */
     public function scopeForTags(Builder $query, $tag)

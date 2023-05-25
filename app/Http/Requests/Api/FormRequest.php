@@ -17,7 +17,6 @@ class FormRequest extends Request
             'description' => 'nullable|string',
             'instructions' => 'nullable|string',
             'success_message' => 'nullable|string',
-            'is_public' => 'nullable|boolean',
         ];
     }
 
