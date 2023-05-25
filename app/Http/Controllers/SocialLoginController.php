@@ -110,7 +110,7 @@ class SocialLoginController extends Controller
                     break;
             }
 
-            if ($user) {
+            if (isset($user)) {
                 $token = LoginToken::create([
                     'user_id' => $user->id,
                 ]);
