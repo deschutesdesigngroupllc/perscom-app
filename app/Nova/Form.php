@@ -98,14 +98,6 @@ class Form extends Resource
     }
 
     /**
-     * @return bool
-     */
-    public function authorizedToView(Request $request)
-    {
-        return $this->authorizedTo($request, 'update');
-    }
-
-    /**
      * Get the cards available for the request.
      *
      * @return array
