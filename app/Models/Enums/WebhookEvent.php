@@ -28,6 +28,9 @@ enum WebhookEvent: string
     case SERVICE_RECORD_CREATED = 'servicerecord.created';
     case SERVICE_RECORD_UPDATED = 'servicerecord.updated';
     case SERVICE_RECORD_DELETED = 'servicerecord.deleted';
+    case SUBMISSION_CREATED = 'submission.created';
+    case SUBMISSION_UPDATED = 'submission.updated';
+    case SUBMISSION_DELETED = 'submission.deleted';
     case USER_CREATED = 'user.created';
     case USER_UPDATED = 'user.updated';
     case USER_DELETED = 'user.deleted';

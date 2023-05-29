@@ -6,6 +6,7 @@ use App\Features\WebhookFeature;
 use App\Models\User;
 use App\Models\Webhook;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Laravel\Pennant\Feature;
 
@@ -32,7 +33,7 @@ class WebhookPolicy extends Policy
      */
     public function viewAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -40,7 +41,7 @@ class WebhookPolicy extends Policy
      */
     public function view(User $user, Webhook $webhook): bool
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -48,7 +49,7 @@ class WebhookPolicy extends Policy
      */
     public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -56,7 +57,7 @@ class WebhookPolicy extends Policy
      */
     public function update(User $user, Webhook $webhook): bool
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -64,7 +65,7 @@ class WebhookPolicy extends Policy
      */
     public function delete(User $user, Webhook $webhook): bool
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -72,7 +73,7 @@ class WebhookPolicy extends Policy
      */
     public function restore(User $user, Webhook $webhook): bool
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -80,6 +81,6 @@ class WebhookPolicy extends Policy
      */
     public function forceDelete(User $user, Webhook $webhook): bool
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 }

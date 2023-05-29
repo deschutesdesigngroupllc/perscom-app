@@ -13,6 +13,7 @@ use App\Features\ApiAccessFeature;
 use App\Models\PassportToken;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Laravel\Pennant\Feature;
 
@@ -41,7 +42,7 @@ class PassportTokenPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -51,7 +52,7 @@ class PassportTokenPolicy extends Policy
      */
     public function view(User $user, PassportToken $token)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -61,7 +62,7 @@ class PassportTokenPolicy extends Policy
      */
     public function create(User $user)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -71,7 +72,7 @@ class PassportTokenPolicy extends Policy
      */
     public function update(User $user, PassportToken $token)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -81,7 +82,7 @@ class PassportTokenPolicy extends Policy
      */
     public function delete(User $user, PassportToken $token)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -91,7 +92,7 @@ class PassportTokenPolicy extends Policy
      */
     public function restore(User $user, PassportToken $token)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 
     /**
@@ -101,6 +102,6 @@ class PassportTokenPolicy extends Policy
      */
     public function forceDelete(User $user, PassportToken $token)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return Gate::check('api', $user);
     }
 }

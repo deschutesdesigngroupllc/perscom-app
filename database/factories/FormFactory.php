@@ -20,7 +20,6 @@ class FormFactory extends Factory
             'name' => $form,
             'slug' => Str::slug($form),
             'success_message' => $this->faker->sentence,
-            'is_public' => $this->faker->boolean,
             'description' => $this->faker->paragraph,
             'instructions' => $this->faker->paragraph,
         ];

@@ -6,6 +6,7 @@ use App\Features\WebhookFeature;
 use App\Models\User;
 use App\Models\WebhookLog;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Laravel\Pennant\Feature;
 
@@ -34,7 +35,7 @@ class WebhookLogPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -44,7 +45,7 @@ class WebhookLogPolicy extends Policy
      */
     public function view(User $user, WebhookLog $log)
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -74,7 +75,7 @@ class WebhookLogPolicy extends Policy
      */
     public function delete(User $user, WebhookLog $log)
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -84,7 +85,7 @@ class WebhookLogPolicy extends Policy
      */
     public function restore(User $user, WebhookLog $log)
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 
     /**
@@ -94,6 +95,6 @@ class WebhookLogPolicy extends Policy
      */
     public function forceDelete(User $user, WebhookLog $log)
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return Gate::check('webhook', $user);
     }
 }

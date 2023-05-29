@@ -7,6 +7,7 @@ use App\Traits\HasStatuses;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\VirtualColumn\VirtualColumn;
 
@@ -49,13 +50,6 @@ class Submission extends Model
     protected $with = ['form', 'user', 'statuses'];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = ['user_id', 'form_id'];
-
-    /**
      * @return string[]
      */
     public static function getCustomColumns(): array
@@ -64,10 +58,30 @@ class Submission extends Model
             'id',
             'form_id',
             'user_id',
-            'data',
             'created_at',
             'updated_at',
         ];
+    }
+
+    /**
+     * Run on boot
+     */
+    public static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $user = match (true) {
+                isset($model->user) => $model->user,
+                Auth::guard('web')->check() => Auth::guard('web')->user(),
+                Auth::guard('jwt')->check() => Auth::guard('jwt')->user(),
+                default => null
+            };
+
+            if ($user) {
+                $model->user()->associate($user);
+            }
+        });
     }
 
     /**
@@ -77,7 +91,7 @@ class Submission extends Model
      */
     protected static function booted()
     {
-        static::addGlobalScope(new SubmissionScope);
+        static::addGlobalScope(new SubmissionScope());
     }
 
     /**

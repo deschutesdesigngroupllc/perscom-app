@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -20,9 +22,10 @@ use Laravel\Nova\Actions\Actionable;
  * @property-read int|null $tags_count
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Form newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Form query()
+ * @method static Builder|Form forTags($tag)
+ * @method static Builder|Form newModelQuery()
+ * @method static Builder|Form newQuery()
+ * @method static Builder|Form query()
  *
  * @mixin \Eloquent
  */
@@ -46,13 +49,16 @@ class Form extends Model
     protected $with = ['fields'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
+     * @return Builder
      */
-    protected $casts = [
-        'is_public' => 'boolean',
-    ];
+    public function scopeForTags(Builder $query, $tag)
+    {
+        $tags = Arr::wrap($tag);
+
+        return $query->whereHas('tags', function (Builder $query) use ($tags) {
+            $query->whereIn('name', $tags);
+        });
+    }
 
     /**
      * @return string

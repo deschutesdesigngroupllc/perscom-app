@@ -10,7 +10,6 @@ return [
     ],
     'default' => [
         'User' => [
-            'create:submission',
             'view:user',
         ],
     ],

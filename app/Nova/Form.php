@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Actions\ExportAsCsv;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
@@ -24,7 +23,6 @@ use Laravel\Nova\Fields\Slug;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
@@ -81,18 +79,8 @@ class Form extends Resource
                 return Str::limit($this->description);
             })->onlyOnIndex(),
             Tag::make('Tags')->showCreateRelationButton()->withPreview(),
-            URL::make('URL')->displayUsing(function ($url) {
-                return 'Click To Open Form';
-            })->canSeeWhen('create', \App\Models\Submission::class)->exceptOnForms()->copyable()->readonly(),
             Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
             Markdown::make('Instructions'),
-            new Panel('Access', [
-                Boolean::make('Public', 'is_public')
-                    ->help('Check to make this form available to the public.')
-                    ->canSee(function (NovaRequest $request) {
-                        return Gate::check('update', $request->findModel());
-                    }),
-            ]),
             new Panel('Submission', [
                 Textarea::make('Success Message')
                     ->help('The message displayed when the form is successfully submitted.')
@@ -107,14 +95,6 @@ class Form extends Resource
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];
-    }
-
-    /**
-     * @return bool
-     */
-    public function authorizedToView(Request $request)
-    {
-        return $this->authorizedTo($request, 'update');
     }
 
     /**

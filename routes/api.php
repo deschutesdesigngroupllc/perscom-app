@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\V1\Awards\AwardsController;
 use App\Http\Controllers\Api\V1\Calendars\CalendarsController;
 use App\Http\Controllers\Api\V1\Calendars\CalendarsEventsController;
 use App\Http\Controllers\Api\V1\Calendars\EventsController;
+use App\Http\Controllers\Api\V1\Forms\FormsController;
+use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\V1\Forms\SubmissionsController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
@@ -64,6 +66,9 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::hasManyResource('calendars', 'events', CalendarsEventsController::class);
 
         Orion::resource('events', EventsController::class);
+
+        Orion::resource('forms', FormsController::class);
+        Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
 
         Orion::resource('qualifications', QualificationsController::class);
 

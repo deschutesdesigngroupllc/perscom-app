@@ -2,29 +2,31 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Models\Field;
+use App\Models\Form;
 use Orion\Http\Requests\Request;
 
 class SubmissionRequest extends Request
 {
     /**
-     * @return string[]
+     * @return mixed
      */
-    public function commonRules(): array
+    protected function getDynamicRules()
     {
-        return [
-            'data' => 'json',
-        ];
+        $form = Form::findOrFail($this->route('form'));
+
+        return $form->fields->filter->validation_rules->mapWithKeys(function (Field $field) {
+            return [$field->key => $field->validation_rules];
+        })->toArray();
     }
 
-    /**
-     * @return string[]
-     */
+    public function commonRules(): array
+    {
+        return $this->getDynamicRules();
+    }
+
     public function storeRules(): array
     {
-        return [
-            'form_id' => 'required|exists:forms,id',
-            'user_id' => 'required|exists:users,id',
-            'data' => 'required|json',
-        ];
+        return $this->getDynamicRules();
     }
 }

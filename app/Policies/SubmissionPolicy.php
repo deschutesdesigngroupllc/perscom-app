@@ -5,7 +5,6 @@ namespace App\Policies;
 use App\Models\Submission;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class SubmissionPolicy extends Policy
@@ -29,7 +28,7 @@ class SubmissionPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        return Gate::check('create', Submission::class);
+        return $this->hasPermissionTo($user, 'view:submission') || $user->tokenCan('view:submission');
     }
 
     /**
@@ -39,9 +38,7 @@ class SubmissionPolicy extends Policy
      */
     public function view(User $user, Submission $submission)
     {
-        return $this->hasPermissionTo($user, 'view:submission') ||
-               $user->id === $submission->user?->id ||
-               $user->tokenCan('view:submission');
+        return $this->hasPermissionTo($user, 'view:submission') || $user->tokenCan('view:submission');
     }
 
     /**

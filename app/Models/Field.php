@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Fields\Boolean;
@@ -23,8 +24,10 @@ use Laravel\Nova\Fields\Timezone;
 /**
  * App\Models\Field
  *
+ * @property AsArrayObject $options
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
  * @property-read int|null $forms_count
+ * @property-read string|null $validation_rules
  *
  * @method static \Database\Factories\FieldFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
@@ -41,7 +44,7 @@ class Field extends Model
      * @var string[]
      */
     protected $casts = [
-        'options' => 'array',
+        'options' => AsArrayObject::class,
         'required' => 'boolean',
         'readonly' => 'boolean',
         'disabled' => 'boolean',
@@ -60,7 +63,7 @@ class Field extends Model
 
     public const FIELD_DATE = 'date';
 
-    public const FIELD_DATETIME = 'datetime';
+    public const FIELD_DATETIME = 'datetime-local';
 
     public const FIELD_EMAIL = 'email';
 
@@ -166,15 +169,15 @@ class Field extends Model
             $field->help($this->help);
         }
 
-        if ($this->required) {
-            $field->rules('required');
+        if ($this->validation_rules) {
+            $field->rules(explode('|', $this->validation_rules));
         }
 
         if ($this->readonly && method_exists($field, 'readonly')) {
             $field->readonly();
         }
 
-        if ($this->options && method_exists($field, 'options')) {
+        if (isset($this->options) && method_exists($field, 'options')) {
             $field->options($this->options);
         }
 
@@ -214,11 +217,6 @@ class Field extends Model
         return $field;
     }
 
-    public static function getSchemaSafeKey($key): string
-    {
-        return preg_replace('/[\W]/', '_', $key);
-    }
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
@@ -228,5 +226,25 @@ class Field extends Model
             ->as('forms')
             ->withPivot(['order'])
             ->withTimestamps();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getValidationRulesAttribute()
+    {
+        $rules = explode('|', $this->rules);
+
+        if ($this->required && ! \in_array('required', $rules, false)) {
+            $rules[] = 'required';
+        }
+
+        $rules = array_unique(array_filter($rules));
+
+        if (empty($rules)) {
+            return null;
+        }
+
+        return implode('|', $rules);
     }
 }
