@@ -71,7 +71,14 @@ class Submission extends Model
         parent::boot();
 
         static::creating(function ($model) {
-            if (! $model->user && ($user = Auth::user())) {
+            $user = match (true) {
+                isset($model->user) => $model->user,
+                Auth::guard('web')->check() => Auth::guard('web')->user(),
+                Auth::guard('jwt')->check() => Auth::guard('jwt')->user(),
+                default => null
+            };
+
+            if ($user) {
                 $model->user()->associate($user);
             }
         });
