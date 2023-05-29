@@ -9,34 +9,22 @@ use Orion\Http\Requests\Request;
 class SubmissionRequest extends Request
 {
     /**
-     * @return array|array[]
+     * @return mixed
      */
     protected function getDynamicRules()
     {
         $form = Form::findOrFail($this->route('form'));
 
-        return $form->fields->filter->rules->mapWithKeys(function (Field $field) {
-            $rules = explode('|', $field->rules);
-
-            if ($field->required && ! \in_array('required', $rules)) {
-                $rules[] = 'required';
-            }
-
-            return [$field->key => implode('|', array_unique($rules))];
+        return $form->fields->filter->validation_rules->mapWithKeys(function (Field $field) {
+            return [$field->key => $field->validation_rules];
         })->toArray();
     }
 
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return $this->getDynamicRules();
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         return $this->getDynamicRules();

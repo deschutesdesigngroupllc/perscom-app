@@ -168,15 +168,15 @@ class Field extends Model
             $field->help($this->help);
         }
 
-        if ($this->required) {
-            $field->rules('required');
+        if ($this->validation_rules) {
+            $field->rules(explode('|', $this->validation_rules));
         }
 
         if ($this->readonly && method_exists($field, 'readonly')) {
             $field->readonly();
         }
 
-        if ($this->options && method_exists($field, 'options')) {
+        if (isset($this->options) && method_exists($field, 'options')) {
             $field->options($this->options);
         }
 
@@ -225,5 +225,25 @@ class Field extends Model
             ->as('forms')
             ->withPivot(['order'])
             ->withTimestamps();
+    }
+
+    /**
+     * @return string|null
+     */
+    public function getValidationRulesAttribute()
+    {
+        $rules = explode('|', $this->rules);
+
+        if ($this->required && ! \in_array('required', $rules, false)) {
+            $rules[] = 'required';
+        }
+
+        $rules = array_unique(array_filter($rules));
+
+        if (empty($rules)) {
+            return null;
+        }
+
+        return implode('|', $rules);
     }
 }

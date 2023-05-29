@@ -9,7 +9,6 @@ parameters:
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::future\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::ordered\(\)#'
         - '#PHPDoc type array<string> of property [a-zA-Z0-9\\_]+::\$casts#'
-        - '#PHPDoc type array of property [a-zA-Z0-9\\_]+::\$fillable#'
         - '#PHPDoc type array of property [a-zA-Z0-9\\_]+::\$guarded#'
         - '#Access to an undefined property Laravel\\Passport\\Client::\$[a-zA-Z0-9\\_]+#'
         - '#Access to an undefined property Laravel\\Socialite\\Contracts\\User::\$[a-zA-Z0-9\\_]+#'
