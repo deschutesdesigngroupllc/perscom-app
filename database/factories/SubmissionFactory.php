@@ -18,7 +18,7 @@ class SubmissionFactory extends Factory
         return [
             'form_id' => Form::factory(),
             'user_id' => User::factory(),
-            'foo' => 'bar'
+            'foo' => 'bar',
         ];
     }
 }
