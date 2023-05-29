@@ -27,6 +27,7 @@ use Laravel\Nova\Fields\Timezone;
  * @property AsArrayObject $options
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
  * @property-read int|null $forms_count
+ * @property-read string|null $validation_rules
  *
  * @method static \Database\Factories\FieldFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
