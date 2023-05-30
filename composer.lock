@@ -2683,17 +2683,17 @@
         },
         {
             "name": "laravel/nova",
-            "version": "4.24.3",
+            "version": "4.24.4",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/nova.git",
-                "reference": "9bcec63448f951cc30384ca8cda5548e78e936ea"
+                "reference": "124f76041caf86aacf0fe344a9f5782562c1cda7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-9bcec63448f951cc30384ca8cda5548e78e936ea-zip-9bc748.zip",
-                "reference": "9bcec63448f951cc30384ca8cda5548e78e936ea",
-                "shasum": "bb50d12b5d66a6ec6343ddf931289bab4c07931f"
+                "url": "https://nova.laravel.com/dist/laravel/nova/laravel-nova-124f76041caf86aacf0fe344a9f5782562c1cda7-zip-780fa8.zip",
+                "reference": "124f76041caf86aacf0fe344a9f5782562c1cda7",
+                "shasum": "966349c729140dcbaf3035534b974e08795d118f"
             },
             "require": {
                 "brick/money": "^0.5.0|^0.6.0|^0.7.0|^0.8.0",
@@ -2786,9 +2786,9 @@
                 "laravel"
             ],
             "support": {
-                "source": "https://github.com/laravel/nova/tree/v4.24.3"
+                "source": "https://github.com/laravel/nova/tree/v4.24.4"
             },
-            "time": "2023-05-16T14:21:21+00:00"
+            "time": "2023-05-19T13:20:09+00:00"
         },
         {
             "name": "laravel/passport",
@@ -5699,7 +5699,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/add-form-widget-support",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5735,7 +5735,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/add-form-widget-support",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -5771,7 +5771,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/add-form-widget-support",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -5807,7 +5807,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/add-form-widget-support",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -5843,7 +5843,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/add-form-widget-support",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -5879,7 +5879,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/add-form-widget-support",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -5915,7 +5915,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/add-form-widget-support",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -5951,7 +5951,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/add-form-widget-support",
+            "version": "dev-develop",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",

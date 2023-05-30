@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\V1\Calendars\CalendarsEventsController;
 use App\Http\Controllers\Api\V1\Calendars\EventsController;
 use App\Http\Controllers\Api\V1\Forms\FormsController;
 use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
-use App\Http\Controllers\Api\V1\Forms\SubmissionsController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
 use App\Http\Controllers\Api\V1\Ranks\RanksController;
@@ -75,8 +74,6 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('ranks', RanksController::class);
 
         Orion::resource('roster', RosterController::class)->only('index');
-
-        Orion::resource('submissions', SubmissionsController::class);
 
         Orion::resource('units', UnitsController::class);
         Orion::hasManyResource('units', 'users', UnitsUsersController::class);
