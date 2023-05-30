@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use App\Jobs\RemoveInactiveAccounts;
 use App\Jobs\ResetDemoAccount;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
@@ -22,6 +23,7 @@ class Kernel extends ConsoleKernel
         $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->daily();
 
         $schedule->job(new ResetDemoAccount())->environments(['production'])->daily();
+        $schedule->job(new RemoveInactiveAccounts())->environments(['production'])->daily();
     }
 
     /**
