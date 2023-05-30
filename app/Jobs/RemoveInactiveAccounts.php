@@ -25,6 +25,7 @@ class RemoveInactiveAccounts implements ShouldQueue
      */
     public function handle(): void
     {
+        // @phpstan-ignore-next-line
         Tenant::all()->each(function (Tenant $tenant) {
             if ($tenant->last_login_at->isSameDay(now()->subMonths(5))) {
                 $tenant->notify(new DeleteAccountOneMonth());

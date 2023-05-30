@@ -5,7 +5,6 @@ namespace App\Notifications\System;
 use App\Mail\System\DeleteAccount as DeleteAccountMail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 class DeleteAccount extends Notification implements ShouldQueue
@@ -23,7 +22,7 @@ class DeleteAccount extends Notification implements ShouldQueue
     }
 
     /**
-     * @return MailMessage
+     * @return DeleteAccountMail
      */
     public function toMail(object $notifiable)
     {
