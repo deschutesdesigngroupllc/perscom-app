@@ -101,6 +101,9 @@ class User extends Resource
                 ->readonly(function () {
                     return Request::isDemoMode();
                 }),
+            Boolean::make('Approved')->sortable()->canSee(function (Request $request) {
+                return $request->user()->hasRole('Admin') && setting('registration_admin_approval_required', false);
+            }),
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())

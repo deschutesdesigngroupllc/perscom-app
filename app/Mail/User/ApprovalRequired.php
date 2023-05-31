@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Mail\System;
+namespace App\Mail\User;
 
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class DeleteAccountOneWeek extends Mailable implements ShouldQueue
+class ApprovalRequired extends Mailable implements ShouldQueue
 {
     use Queueable;
     use SerializesModels;
@@ -19,6 +19,6 @@ class DeleteAccountOneWeek extends Mailable implements ShouldQueue
      */
     public function build()
     {
-        return $this->markdown('emails.system.delete-account-one-week')->subject('Account Deletion Warning');
+        return $this->markdown('emails.user.approval-required')->subject('Admin Approval Required');
     }
 }

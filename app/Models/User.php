@@ -112,6 +112,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'specialty_id',
         'status_id',
         'unit_id',
+        'approved',
         'password',
         'notes',
         'notes_updated_at',
@@ -160,6 +161,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'last_seen_at' => 'datetime',
         'notes_updated_at' => 'datetime',
         'online' => 'boolean',
+        'approved' => 'boolean',
     ];
 
     /**
