@@ -16,6 +16,9 @@ class AccountApproved extends Notification implements ShouldQueue
      */
     protected mixed $tenant;
 
+    /**
+     * Constructor
+     */
     public function __construct()
     {
         $this->tenant = tenant();

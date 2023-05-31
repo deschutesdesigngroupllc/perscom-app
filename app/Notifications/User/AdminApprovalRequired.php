@@ -14,6 +14,9 @@ class AdminApprovalRequired extends Notification implements ShouldQueue
 
     protected string $url;
 
+    /**
+     * Constructor
+     */
     public function __construct(protected User $user)
     {
         $this->url = route('nova.pages.detail', [
