@@ -1,6 +1,22 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.40...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.41...HEAD)
+
+## [v1.0.41](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.40...v1.0.41) - 2023-05-30
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.41 -->
+### What's Changed
+
+#### Added
+
+- Add support for the new form widget by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/175
+- Inactive accounts now automatically removed by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/176
+
+#### Changed
+
+- Separated social login into distinct login and registration pathways by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/174
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.40...v1.0.41
 
 ## [v1.0.40](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.39...v1.0.40) - 2023-05-17
 
