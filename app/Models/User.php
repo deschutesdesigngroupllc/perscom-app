@@ -145,6 +145,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'social_refresh_token',
         'social_id',
         'social_driver',
+        'data',
     ];
 
     /**
