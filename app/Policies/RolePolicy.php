@@ -17,7 +17,7 @@ class RolePolicy extends Policy
      */
     public function before()
     {
-        if (Request::isCentralRequest()) {
+        if (Request::isCentralRequest() || Request::isDemoMode()) {
             return false;
         }
     }

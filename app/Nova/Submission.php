@@ -3,15 +3,14 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Traits\HasFields;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
-use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
@@ -21,10 +20,10 @@ use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
-use Perscom\HtmlField\HtmlField;
 
 class Submission extends Resource
 {
+    use HasFields;
     use HasTabs;
     use HasActionsInTabs;
 
@@ -86,15 +85,15 @@ class Submission extends Resource
             BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
                 return $request->user()->id;
             }),
-            $this->getInstructionFields($request),
             $this->generateBadgeField($this),
-            Code::make('Data', static function ($model) {
-                return json_encode($model->getAttributes(), JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
-            })->hideFromIndex()->json()->canSeeWhen('update', $request->model()),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms()->sortable(),
             DateTime::make('Updated At')->exceptOnForms()->sortable(),
-            $this->getCustomFields($request),
+            $this->getFields($request, true, function ($form) {
+                return $form?->name;
+            }, function ($model) {
+                return $model?->form;
+            }),
             Tabs::make('Relations', [
                 Tab::make('Status History', [
                     MorphToMany::make('Status', 'statuses', Status::class)
@@ -136,43 +135,6 @@ class Submission extends Resource
         }
 
         return $badge;
-    }
-
-    /**
-     * @return mixed|null
-     */
-    protected function getForm(NovaRequest $request)
-    {
-        $form = null;
-
-        if ($request->resource() === __CLASS__) {
-            if (($resourceId = $request->viaResourceId) && $request->isCreateOrAttachRequest()) {
-                $form = \App\Models\Form::findOrFail($resourceId);
-            }
-
-            if (($submission = $request->findModel()) &&
-                ($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest())) {
-                return $submission->form;
-            }
-        }
-
-        return $form;
-    }
-
-    /**
-     * @return Panel
-     */
-    protected function getInstructionFields(NovaRequest $request)
-    {
-        $form = $this->getForm($request);
-
-        return new Panel('Instructions', [
-            HtmlField::make('Instructions')->view('fields.html.form-instructions', [
-                'instructions' => Str::markdown($form->instructions ?? ''),
-            ])->canSee(function () use ($form) {
-                return isset($form->instructions) && $form->instructions !== '';
-            })->onlyOnForms(),
-        ]);
     }
 
     /**

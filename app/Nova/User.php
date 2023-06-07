@@ -6,6 +6,7 @@ use App\Features\ExportDataFeature;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\TotalUsers;
 use App\Nova\Metrics\UsersOnline;
+use App\Traits\HasFields;
 use Carbon\CarbonInterval;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
@@ -39,6 +40,7 @@ use Laravel\Pennant\Feature;
 
 class User extends Resource
 {
+    use HasFields;
     use HasTabs;
     use HasActionsInTabs;
 
@@ -229,6 +231,7 @@ class User extends Resource
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),
             ])->showTitle(true),
+            $this->getFields($request, true, 'Custom Fields'),
             Tabs::make('Assignments', [
                 Tab::make('Current Assignment', [
                     Text::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), function ($model) {
@@ -283,6 +286,7 @@ class User extends Resource
                     ->canSeeWhen('note', \App\Models\User::class)
                     ->onlyOnDetail(),
             ]),
+            MorphToMany::make('Fields', 'fields', Field::class),
             Tabs::make('Permissions', [MorphedByMany::make('Roles'), MorphedByMany::make('Permissions')])
                 ->showTitle(true),
         ];

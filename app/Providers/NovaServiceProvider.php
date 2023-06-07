@@ -226,7 +226,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(EventRegistration::class)->name('Registrations')->canSee(function () {
                             return Gate::check('create', EventRegistrationModel::class);
                         }),
-                    ])->icon('calendar')->collapsable(),
+                    ])->icon('calendar')->collapsable()->collapsedByDefault(),
+
+                    MenuSection::make('Forms', [
+                        MenuItem::resource(Form::class),
+                        MenuItem::resource(Submission::class)->withBadge(function () {
+                            return (string) SubmissionModel::query()->whereDoesntHave('statuses')->count();
+                        }),
+                    ])->icon('pencil-alt')->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Organization', [
                         MenuItem::resource(Announcement::class),
@@ -239,16 +246,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Status::class),
                         MenuItem::resource(Task::class),
                         MenuItem::resource(Unit::class),
-                        MenuItem::resource(User::class),
-                    ])->icon('office-building')->collapsable(),
+                    ])->icon('office-building')->collapsable()->collapsedByDefault(),
 
-                    MenuSection::make('Forms', [
-                        MenuItem::resource(Field::class),
-                        MenuItem::resource(Form::class),
-                        MenuItem::resource(Submission::class)->withBadge(function () {
-                            return (string) SubmissionModel::query()->whereDoesntHave('statuses')->count();
-                        }),
-                    ])->icon('pencil-alt')->collapsable(),
+                    MenuSection::make('Personnel', [
+                        MenuItem::resource(User::class),
+                    ])->icon('users')->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Records', [
                         MenuItem::resource(AssignmentRecord::class),
@@ -257,40 +259,38 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(QualificationRecord::class),
                         MenuItem::resource(RankRecord::class),
                         MenuItem::resource(ServiceRecord::class),
-                    ])->icon('document-text')->collapsable(),
-
-                    MenuSection::make('External Integration', [
-                        MenuGroup::make('API', [
-                            MenuItem::resource(PassportPersonalAccessToken::class)->name('Keys'),
-                            MenuItem::resource(PassportPersonalAccessTokenLog::class),
-                        ])->collapsable(),
-                        MenuGroup::make('OAuth 2.0', [
-                            MenuItem::resource(PassportAuthorizedApplications::class),
-                            MenuItem::resource(PassportClient::class)->name('My Apps'),
-                            MenuItem::resource(PassportClientLog::class),
-                        ])->collapsable(),
-                        MenuItem::resource(Webhook::class),
-                        MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')
-                            ->openInNewTab()
-                            ->canSee(function (Request $request) {
-                                return Gate::check('api', $request->user());
-                            }),
-                    ])->icon('link')->collapsable(),
+                    ])->icon('document-text')->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('System', [
                         MenuItem::resource(Attachment::class),
+                        MenuItem::resource(Field::class),
                         MenuItem::resource(Image::class),
                         MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
+                        MenuGroup::make('API', [
+                            MenuItem::resource(PassportPersonalAccessToken::class)->name('Keys'),
+                            MenuItem::resource(PassportPersonalAccessTokenLog::class),
+                        ])->collapsable()->collapsedByDefault(),
+                        MenuGroup::make('Integrations', [
+                            MenuItem::resource(Webhook::class),
+                            MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')
+                                ->openInNewTab()
+                                ->canSee(function (Request $request) {
+                                    return Gate::check('api', $request->user());
+                                }),
+                        ])->collapsable()->collapsedByDefault(),
+                        MenuGroup::make('OAuth 2.0', [
+                            MenuItem::resource(PassportAuthorizedApplications::class),
+                            MenuItem::resource(PassportClient::class)->name('My Apps'),
+                            MenuItem::resource(PassportClientLog::class),
+                        ])->collapsable()->collapsedByDefault(),
                         MenuGroup::make('Settings', [
                             MenuItem::link('General', '/settings/general'),
                             MenuItem::link('Localization', '/settings/localization'),
                             MenuItem::link('Registration', '/settings/registration'),
-                        ])->collapsable(),
-                    ])->icon('terminal')->collapsable()->canSee(function (Request $request) {
-                        return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
-                    })->collapsable()->collapsedByDefault(),
+                        ])->collapsable()->collapsedByDefault(),
+                    ])->icon('terminal')->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
