@@ -107,6 +107,9 @@ class User extends Resource
             Boolean::make('Email Verified', function () {
                 return $this->email_verified_at !== null;
             })->onlyOnDetail(),
+            Boolean::make('Approved')->sortable()->canSee(function (Request $request) {
+                return $request->user()->hasRole('Admin') && setting('registration_admin_approval_required', false);
+            }),
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())

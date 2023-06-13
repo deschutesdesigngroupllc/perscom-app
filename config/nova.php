@@ -104,6 +104,7 @@ return [
         InitializeTenancyByDomainOrSubdomain::class,
         'web',
         'verified',
+        'approved',
         'subscribed',
         HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,

@@ -9,6 +9,7 @@ Route::group([
         InitializeTenancyByDomainOrSubdomain::class,
         PreventAccessFromCentralDomains::class,
         'subscribed',
+        'approved',
     ],
 ], function () {
     Route::post('/token', [

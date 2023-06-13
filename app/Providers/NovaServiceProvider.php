@@ -56,6 +56,8 @@ use App\Nova\Unit;
 use App\Nova\User;
 use App\Nova\Webhook;
 use App\Rules\SubdomainRule;
+use Eminiarts\Tabs\Tab;
+use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
@@ -76,7 +78,6 @@ use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
-use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
 use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\Calendar\Calendar as CalendarWidget;
@@ -145,7 +146,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         if (Request::isDemoMode()) {
             $middleware = collect(config('nova.middleware'));
             config()->set('nova.middleware', $middleware->reject(function ($middleware) {
-                return $middleware === 'verified';
+                return $middleware === 'verified' || $middleware === 'approved';
             })->toArray());
         }
 
@@ -285,6 +286,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
+                        MenuItem::link('Settings', '/settings')->canSee(function (Request $request) {
+                            return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
+                        }),
                         MenuGroup::make('API', [
                             MenuItem::resource(PassportPersonalAccessToken::class)->name('Keys'),
                             MenuItem::resource(PassportPersonalAccessTokenLog::class),
@@ -295,7 +299,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')
                                 ->openInNewTab()
                                 ->canSee(function (Request $request) {
-                                    return Gate::check('api', $request->user() && Feature::active(ApiAccessFeature::class));
+                                    return Gate::check('api', $request->user()) && Feature::active(ApiAccessFeature::class);
                                 }),
                         ])->collapsable()
                             ->collapsedByDefault(),
@@ -305,15 +309,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::resource(PassportClientLog::class),
                         ])->collapsable()
                             ->collapsedByDefault(),
-                        MenuGroup::make('Settings', [
-                            MenuItem::link('General', '/settings/general'),
-                            MenuItem::link('Localization', '/settings/localization'),
-                            MenuItem::link('Registration', '/settings/registration'),
-                        ])->collapsable()
-                            ->collapsedByDefault()
-                            ->canSee(function (Request $request) {
-                                return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
-                            }),
                     ])->icon('terminal')->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
@@ -370,73 +365,71 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 	        ');
         });
 
-        NovaSettings::addSettingsFields(function () {
+        NovaSettings::addSettingsFields(static function () {
             return [
-                Panel::make('Account', [
-                    Text::make('PERSCOM ID', function () {
-                        return \tenant()->getTenantKey();
-                    })->help('Your PERSCOM ID that must be used in all external integrations.')->readonly(),
-                    Text::make('Organization', 'organization')
-                        ->help('The name of your organization.')
-                        ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())),
-                    Email::make('Email', 'email')
-                        ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
-                        ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())),
-                    Timezone::make('Default Timezone', 'timezone')
-                        ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.')
-                        ->rules('required'),
-                ]),
-                Panel::make('Domain', [
-                    Text::make('Subdomain', 'subdomain')
-                        ->copyable()
-                        ->help('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
-                        ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')->ignore(\tenant()->getTenantKey(), 'tenant_id'), new SubdomainRule())
-                        ->canSee(function () {
-                            return Feature::active(CustomSubDomainFeature::class);
-                        }),
-                ]),
-                Panel::make('Branding', [
-                    Text::make('Dashboard Title', 'dashboard_title')
-                        ->help('The main heading on your dashboard homepage. This will default to your organization name if not set.'),
-                    Text::make('Dashboard Subtitle', 'dashboard_subtitle')
-                        ->help('A subtitle or description that can be added under your dashboard heading.'),
-                ]),
+                Tabs::make('Settings', [
+                    Tab::make('Account', [
+                        Text::make('PERSCOM ID', function () {
+                            return \tenant()->getTenantKey();
+                        })->help('Your PERSCOM ID that must be used in all external integrations.')->readonly(),
+                        Text::make('Organization', 'organization')
+                            ->help('The name of your organization.')
+                            ->rules('required', 'string', 'max:255', Rule::unique(\App\Models\Tenant::class, 'name')->ignore(\tenant()->getTenantKey())),
+                        Email::make('Email', 'email')
+                            ->help('The main email account associated with the account. This email will receive all pertinent emails regarding PERSCOM.')
+                            ->rules('required', 'string', 'email', 'max:255', Rule::unique(\App\Models\Tenant::class, 'email')->ignore(\tenant()->getTenantKey())),
+                        Timezone::make('Default Timezone', 'timezone')
+                            ->help('Choose the default timezone for your organization. If not set, the timezone will be set to UTC.')
+                            ->rules('required'),
+                    ]),
+                    Tab::make('Domain', [
+                        Text::make('Subdomain', 'subdomain')
+                            ->copyable()
+                            ->help('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
+                            ->rules('required', 'string', 'max:255', 'alpha_dash', 'lowercase', Rule::unique(\App\Models\Domain::class, 'domain')->ignore(\tenant()->getTenantKey(), 'tenant_id'), new SubdomainRule())
+                            ->canSee(function () {
+                                return Feature::active(CustomSubDomainFeature::class);
+                            }),
+                    ]),
+                    Tab::make('Branding', [
+                        Text::make('Dashboard Title', 'dashboard_title')
+                            ->help('The main heading on your dashboard homepage. This will default to your organization name if not set.'),
+                        Text::make('Dashboard Subtitle', 'dashboard_subtitle')
+                            ->help('A subtitle or description that can be added under your dashboard heading.'),
+                    ]),
+                    Tab::make('Localization', [
+                        Text::make('Announcements (Plural)', 'localization_announcements')->placeholder('announcements'),
+                        Text::make('Awards (Plural)', 'localization_awards')->placeholder('awards'),
+                        Text::make('Documents (Plural)', 'localization_documents')->placeholder('documents'),
+                        Text::make('Positions (Plural)', 'localization_positions')->placeholder('positions'),
+                        Text::make('Qualifications (Plural)', 'localization_qualifications')->placeholder('qualifications'),
+                        Text::make('Ranks (Plural)', 'localization_ranks')->placeholder('ranks'),
+                        Text::make('Specialties (Plural)', 'localization_specialties')->placeholder('specialties'),
+                        Text::make('Statuses (Plural)', 'localization_statuses')->placeholder('statuses'),
+                        Text::make('Units (Plural)', 'localization_units')->placeholder('units'),
+                        Text::make('Users (Plural)', 'localization_users')->placeholder('users'),
+                    ]),
+                    Tab::make('Registration', [
+                        Boolean::make('Enabled', 'registration_enabled')->help('Deselect to disable registration.'),
+                        Textarea::make('Disabled Message', 'registration_disabled_message')->help('Enter a message that will be provided when users attempt to register and registration is disabled.'),
+                        Boolean::make('Admin Approval Required', 'registration_admin_approval_required')->help('Users can register for an account but will need admin approval to login.'),
+                    ]),
+                    Tab::make('Users', [
+                        MultiSelect::make('Default Permissions', 'default_permissions')->options(
+                            \App\Models\Permission::all()->mapWithKeys(fn ($permission) => [$permission->name => $permission->name])->sort()
+                        )->help('The default permissions that will be given to new user accounts. Leave blank to assign no permissions.'),
+                        MultiSelect::make('Default Roles', 'default_roles')->options(
+                            \App\Models\Role::all()->mapWithKeys(fn ($role) => [$role->name => $role->name])->sort()
+                        )->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
+                    ]),
+                ])->showTitle(true),
             ];
-        });
-
-        NovaSettings::addSettingsFields([
-            new Panel('Resources', [
-                Text::make('Announcements (Plural)', 'localization_announcements')->placeholder('announcements'),
-                Text::make('Awards (Plural)', 'localization_awards')->placeholder('awards'),
-                Text::make('Documents (Plural)', 'localization_documents')->placeholder('documents'),
-                Text::make('Positions (Plural)', 'localization_positions')->placeholder('positions'),
-                Text::make('Qualifications (Plural)', 'localization_qualifications')->placeholder('qualifications'),
-                Text::make('Ranks (Plural)', 'localization_ranks')->placeholder('ranks'),
-                Text::make('Specialties (Plural)', 'localization_specialties')->placeholder('specialties'),
-                Text::make('Statuses (Plural)', 'localization_statuses')->placeholder('statuses'),
-                Text::make('Units (Plural)', 'localization_units')->placeholder('units'),
-                Text::make('Users (Plural)', 'localization_users')->placeholder('users'),
-            ]),
-        ], [], 'Localization');
-
-        NovaSettings::addSettingsFields([
-            new Panel('Registration Settings', [
-                Boolean::make('Enabled', 'registration_enabled')->help('Deselect to disable registration.'),
-                Textarea::make('Disabled Message', 'registration_disabled_message')->help('Enter a message that will be provided when users attempt to register and registration is disabled.'),
-            ]),
-            new Panel('User Settings', [
-                MultiSelect::make('Default Permissions', 'default_permissions')->options(function () {
-                    return \App\Models\Permission::pluck('name', 'id');
-                })->help('The default permissions that will be given to new user accounts. Leave blank to assign no permissions.'),
-                MultiSelect::make('Default Roles', 'default_roles')->options(function () {
-                    return \App\Models\Role::pluck('name', 'id');
-                })->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
-            ]),
-        ], [
+        }, [
             'registration_enabled' => 'boolean',
+            'registration_admin_approval_required' => 'boolean',
             'default_permissions' => 'array',
             'default_roles' => 'array',
-        ], 'Registration');
+        ]);
     }
 
     /**

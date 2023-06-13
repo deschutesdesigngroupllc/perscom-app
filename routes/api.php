@@ -55,6 +55,7 @@ Route::group(['prefix' => 'v1'], static function () {
             InitializeTenancyByRequestData::class,
             PreventAccessFromCentralDomains::class,
             'subscribed',
+            'approved',
         ],
     ], static function () {
         Orion::resource('me', MeController::class)->only('index');

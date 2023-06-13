@@ -5,6 +5,9 @@ namespace App\Observers;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
 use App\Models\Webhook;
+use App\Notifications\User\AccountApproved;
+use App\Notifications\User\AdminApprovalRequired;
+use App\Notifications\User\ApprovalRequired;
 use App\Notifications\User\PasswordChanged;
 use App\Services\WebhookService;
 use Illuminate\Support\Facades\Notification;
@@ -24,6 +27,15 @@ class UserObserver
         Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_CREATED->value])->each(function (Webhook $webhook) use ($user) {
             WebhookService::dispatch($webhook, WebhookEvent::USER_CREATED->value, $user);
         });
+
+        if (setting('registration_admin_approval_required', false)) {
+            $user->updateQuietly([
+                'approved' => false,
+            ]);
+
+            Notification::send($user, new ApprovalRequired());
+            Notification::send(User::role('Admin')->get(), new AdminApprovalRequired($user));
+        }
     }
 
     /**
@@ -37,6 +49,10 @@ class UserObserver
             $user->updateQuietly([
                 'notes_updated_at' => now(),
             ]);
+        }
+
+        if ($user->approved && $user->isDirty('approved')) {
+            Notification::send($user, new AccountApproved());
         }
 
         if ($user->isDirty('password')) {
