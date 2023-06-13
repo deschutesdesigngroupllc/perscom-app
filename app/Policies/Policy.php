@@ -18,8 +18,6 @@ abstract class Policy
             if (\in_array($permission, Arr::wrap($payload->get('scope')), false)) {
                 return true;
             }
-
-            //dd($permission);
         }
 
         if (Auth::getDefaultDriver() === 'web') {
