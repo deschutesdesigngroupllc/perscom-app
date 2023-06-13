@@ -41,7 +41,7 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install Dependencies
-        run: composer update --prefer-dist --no-interaction --no-progress
+        run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Run Linter
         run: |
