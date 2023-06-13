@@ -5699,7 +5699,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-feature/personnel-custom-fields",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5735,7 +5735,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-feature/personnel-custom-fields",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -5771,7 +5771,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-feature/personnel-custom-fields",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -5807,7 +5807,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-feature/personnel-custom-fields",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -5843,7 +5843,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-feature/personnel-custom-fields",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -5879,7 +5879,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-feature/personnel-custom-fields",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -5915,7 +5915,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-feature/personnel-custom-fields",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -5951,7 +5951,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-feature/personnel-custom-fields",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -12791,16 +12791,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.10.2",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "f78de1a1bbab7aa41a6ea211c5962b0530d1a301"
+                "reference": "c7a01fa9bdd79819e7a2f1ba63ac1b02e6692dbc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/f78de1a1bbab7aa41a6ea211c5962b0530d1a301",
-                "reference": "f78de1a1bbab7aa41a6ea211c5962b0530d1a301",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/c7a01fa9bdd79819e7a2f1ba63ac1b02e6692dbc",
+                "reference": "c7a01fa9bdd79819e7a2f1ba63ac1b02e6692dbc",
                 "shasum": ""
             },
             "require": {
@@ -12811,7 +12811,7 @@
                 "php": "^8.1.0"
             },
             "require-dev": {
-                "friendsofphp/php-cs-fixer": "^3.17.0",
+                "friendsofphp/php-cs-fixer": "^3.16.0",
                 "illuminate/view": "^10.5.1",
                 "laravel-zero/framework": "^10.0.2",
                 "mockery/mockery": "^1.5.1",
@@ -12853,7 +12853,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2023-06-12T10:50:04+00:00"
+            "time": "2023-04-25T14:52:30+00:00"
         },
         {
             "name": "laravel/sail",
@@ -13215,16 +13215,16 @@
         },
         {
             "name": "nunomaduro/larastan",
-            "version": "v2.6.0",
+            "version": "v2.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/larastan.git",
-                "reference": "ccac5b25949576807862cf32ba1fce1769c06c42"
+                "reference": "fd1b5c2560ccf4a2a0075a30524b63ebb142cd6c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/ccac5b25949576807862cf32ba1fce1769c06c42",
-                "reference": "ccac5b25949576807862cf32ba1fce1769c06c42",
+                "url": "https://api.github.com/repos/nunomaduro/larastan/zipball/fd1b5c2560ccf4a2a0075a30524b63ebb142cd6c",
+                "reference": "fd1b5c2560ccf4a2a0075a30524b63ebb142cd6c",
                 "shasum": ""
             },
             "require": {
@@ -13287,7 +13287,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/larastan/issues",
-                "source": "https://github.com/nunomaduro/larastan/tree/v2.6.0"
+                "source": "https://github.com/nunomaduro/larastan/tree/v2.6.2"
             },
             "funding": [
                 {
@@ -13307,7 +13307,7 @@
                     "type": "patreon"
                 }
             ],
-            "time": "2023-04-20T12:40:01+00:00"
+            "time": "2023-06-10T17:23:14+00:00"
         },
         {
             "name": "phar-io/manifest",

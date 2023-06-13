@@ -50,6 +50,15 @@ class Submission extends Model
     protected $with = ['form', 'user', 'statuses'];
 
     /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'data',
+    ];
+
+    /**
      * @return string[]
      */
     public static function getCustomColumns(): array

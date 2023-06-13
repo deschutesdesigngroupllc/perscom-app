@@ -4,7 +4,7 @@ info:
   description: 'The PERSCOM API describes how to interact and manipulate your PERSCOM data available at https://perscom.io. The API provides a powerful interface to allow for third-party collaboration and integration with your PERSCOM Dashboard.'
   contact:
     name: 'Deschutes Design Group LLC'
-    url: https://www.deschutesdesigngroup.com
+    url: 'https://www.deschutesdesigngroup.com'
     email: info@deschutesdesigngroup.com
   version: v1
   termsOfService: 'https://perscom.io/privacy-policy'
@@ -10073,6 +10073,1515 @@ paths:
       summary: 'Update pivot'
       tags:
         - 'Users Secondary Units'
+  /v1/forms:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Form'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FormResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create form'
+      tags:
+        - Forms
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of forms'
+      tags:
+        - Forms
+  /v1/forms/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scopes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        enum:
+                          - forTags
+                      parameters:
+                        type: array
+                        items:
+                          type: string
+                    required:
+                      - name
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - slug
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, slug, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name, slug'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for forms'
+      tags:
+        - Forms
+  '/v1/forms/{form}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FormResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get form'
+      tags:
+        - Forms
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Form'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FormResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update form'
+      tags:
+        - Forms
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FormResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete form'
+      tags:
+        - Forms
+  /v1/forms/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Form'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of forms'
+      tags:
+        - Forms
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Form'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of forms'
+      tags:
+        - Forms
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of forms'
+      tags:
+        - Forms
+  '/v1/forms/{form}/submissions':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Submission'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SubmissionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create submission'
+      tags:
+        - 'Forms Submissions'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubmissionResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of submissions'
+      tags:
+        - 'Forms Submissions'
+  '/v1/forms/{form}/submissions/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - form_id
+                          - user_id
+                          - created_at
+                          - tags
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, form_id, user_id, created_at, tags] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: form_id, user_id'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubmissionResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for submissions'
+      tags:
+        - 'Forms Submissions'
+  '/v1/forms/{form}/submissions/{submission}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: submission
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SubmissionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get submission'
+      tags:
+        - 'Forms Submissions'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: submission
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Submission'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SubmissionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update submission'
+      tags:
+        - 'Forms Submissions'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: submission
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SubmissionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete submission'
+      tags:
+        - 'Forms Submissions'
+  '/v1/forms/{form}/submissions/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Submission'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubmissionResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of submissions'
+      tags:
+        - 'Forms Submissions'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Submission'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubmissionResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of submissions'
+      tags:
+        - 'Forms Submissions'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SubmissionResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of submissions'
+      tags:
+        - 'Forms Submissions'
+  '/v1/forms/{form}/submissions/associate':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SubmissionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Associate submission with form'
+      tags:
+        - 'Forms Submissions'
+  '/v1/forms/{form}/submissions/{submission}/dissociate':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: submission
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SubmissionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Dissociate submission from form'
+      tags:
+        - 'Forms Submissions'
+  '/v1/users/{user}/fields':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Field'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FieldResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create field'
+      tags:
+        - 'Users Fields'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FieldResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of fields'
+      tags:
+        - 'Users Fields'
+  '/v1/users/{user}/fields/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FieldResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for fields'
+      tags:
+        - 'Users Fields'
+  '/v1/users/{user}/fields/{field}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: field
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FieldResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get field'
+      tags:
+        - 'Users Fields'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: field
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Field'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FieldResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update field'
+      tags:
+        - 'Users Fields'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: field
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FieldResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete field'
+      tags:
+        - 'Users Fields'
+  '/v1/users/{user}/fields/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Field'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FieldResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of fields'
+      tags:
+        - 'Users Fields'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Field'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FieldResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of fields'
+      tags:
+        - 'Users Fields'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FieldResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of fields'
+      tags:
+        - 'Users Fields'
+  '/v1/users/{user}/fields/attach':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Attach fields'
+      tags:
+        - 'Users Fields'
+  '/v1/users/{user}/fields/detach':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach fields'
+      tags:
+        - 'Users Fields'
+  '/v1/users/{user}/fields/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync fields'
+      tags:
+        - 'Users Fields'
+  '/v1/users/{user}/fields/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle fields'
+      tags:
+        - 'Users Fields'
+  '/v1/users/{user}/fields/{field}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: user
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: field
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Users Fields'
 components:
   securitySchemes:
     ApiKey:
@@ -10165,6 +11674,11 @@ components:
               type: string
               nullable: true
               format: date-time
+            approved:
+              type: boolean
+            data:
+              type: object
+              additionalProperties: true
     Announcement:
       title: Announcement
       type: object
@@ -10328,6 +11842,9 @@ components:
         user_id:
           type: integer
           nullable: true
+        data:
+          type: object
+          additionalProperties: true
     SubmissionResource:
       title: SubmissionResource
       allOf:
@@ -10812,6 +12329,100 @@ components:
               type: string
               nullable: true
               format: date-time
+    Form:
+      title: Form
+      type: object
+      properties: []
+    FormResource:
+      title: FormResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Form'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            slug:
+              type: string
+            success_message:
+              type: string
+              nullable: true
+            is_public:
+              type: boolean
+            description:
+              type: string
+              nullable: true
+            instructions:
+              type: string
+              nullable: true
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    Field:
+      title: Field
+      type: object
+      properties: []
+    FieldResource:
+      title: FieldResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Field'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            key:
+              type: string
+              nullable: true
+            type:
+              type: string
+            nova_type:
+              type: string
+              nullable: true
+            cast:
+              type: string
+              nullable: true
+            description:
+              type: string
+              nullable: true
+            placeholder:
+              type: string
+              nullable: true
+            default:
+              type: string
+              nullable: true
+            help:
+              type: string
+              nullable: true
+            required:
+              type: boolean
+            rules:
+              type: string
+              nullable: true
+            readonly:
+              type: boolean
+            options:
+              type: object
+              additionalProperties: true
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
 tags:
   -
     name: Me
@@ -10832,6 +12443,12 @@ tags:
     name: Events
     description: 'API documentation for Events'
   -
+    name: Forms
+    description: 'API documentation for Forms'
+  -
+    name: 'Forms Submissions'
+    description: 'API documentation for Forms Submissions'
+  -
     name: Qualifications
     description: 'API documentation for Qualifications'
   -
@@ -10840,9 +12457,6 @@ tags:
   -
     name: Roster
     description: 'API documentation for Roster'
-  -
-    name: Submissions
-    description: 'API documentation for Submissions'
   -
     name: Units
     description: 'API documentation for Units'
@@ -10894,3 +12508,6 @@ tags:
   -
     name: 'Users Secondary Units'
     description: 'API documentation for Users Secondary Units'
+  -
+    name: 'Users Fields'
+    description: 'API documentation for Users Fields'

@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\V1\Users\UsersAssignmentRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersAwardRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersCombatRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersController;
+use App\Http\Controllers\Api\V1\Users\UsersFieldsController;
 use App\Http\Controllers\Api\V1\Users\UsersPositionController;
 use App\Http\Controllers\Api\V1\Users\UsersQualificationRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersRankController;
@@ -94,6 +95,7 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::belongsToManyResource('users', 'secondary-positions', UsersSecondaryPositionsController::class);
         Orion::belongsToManyResource('users', 'secondary-specialties', UsersSecondarySpecialtiesController::class);
         Orion::belongsToManyResource('users', 'secondary-units', UsersSecondaryUnitsController::class);
+        Orion::morphToManyResource('users', 'fields', UsersFieldsController::class);
     });
 
     Route::fallback(static function () {

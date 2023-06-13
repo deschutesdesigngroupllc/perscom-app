@@ -29,7 +29,7 @@ class AttachmentPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        return true;
+        return $user->hasRole('Admin');
     }
 
     /**

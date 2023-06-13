@@ -36,6 +36,20 @@ class Roster extends Tool
      */
     public static function generateJwt()
     {
-        return Auth::guard('jwt')->login(Auth::guard('web')->user());
+        return Auth::guard('jwt')->claims([
+            'scope' => [
+                'view:assignmentrecord',
+                'view:awardrecord',
+                'view:combatrecord',
+                'view:field',
+                'view:position',
+                'view:qualificationrecord',
+                'view:rankrecord',
+                'view:servicerecord',
+                'view:specialty',
+                'view:unit',
+                'view:user',
+            ],
+        ])->login(Auth::guard('web')->user());
     }
 }

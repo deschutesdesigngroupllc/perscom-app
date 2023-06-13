@@ -16,7 +16,7 @@ class SocialLoginFeature extends BaseFeature
 
         return match (true) {
             Request::isCentralRequest() => false,
-            Request::isDemoMode() => true,
+            Request::isDemoMode() => false,
             \request()->routeIs('auth.*') => true,
             $tenant->onTrial() => true,
             optional($tenant->sparkPlan(), static function (Plan $plan) {

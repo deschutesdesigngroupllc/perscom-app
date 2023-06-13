@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.41...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.42...HEAD)
+
+## [v1.0.42](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.41...v1.0.42) - 2023-05-31
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.42 -->
+### What's Changed
+
+#### Fixed
+
+- Fixes copyable method not available on image URL by @JonErickson in https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/pull/178
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.41...v1.0.42
 
 ## [v1.0.41](https://github.com/DeschutesDesignGroupLLC/PERSCOM-3.0/compare/v1.0.40...v1.0.41) - 2023-05-30
 

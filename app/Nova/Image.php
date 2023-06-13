@@ -55,7 +55,7 @@ class Image extends Resource
                 return $this->image_url;
             })->displayUsing(function () {
                 return $this->image_url;
-            })->copyable(),
+            }),
             ImageField::make('Image', 'path')
                 ->rules('required')
                 ->storeOriginalName('filename')
