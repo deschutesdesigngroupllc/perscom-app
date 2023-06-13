@@ -299,7 +299,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')
                                 ->openInNewTab()
                                 ->canSee(function (Request $request) {
-                                    return Gate::check('api', $request->user() && Feature::active(ApiAccessFeature::class));
+                                    return Gate::check('api', $request->user()) && Feature::active(ApiAccessFeature::class);
                                 }),
                         ])->collapsable()
                             ->collapsedByDefault(),
@@ -365,7 +365,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 	        ');
         });
 
-        NovaSettings::addSettingsFields(function () {
+        NovaSettings::addSettingsFields(static function () {
             return [
                 Tabs::make('Settings', [
                     Tab::make('Account', [
@@ -415,12 +415,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         Boolean::make('Admin Approval Required', 'registration_admin_approval_required')->help('Users can register for an account but will need admin approval to login.'),
                     ]),
                     Tab::make('Users', [
-                        MultiSelect::make('Default Permissions', 'default_permissions')->options(function () {
-                            return \App\Models\Permission::pluck('name', 'id');
-                        })->help('The default permissions that will be given to new user accounts. Leave blank to assign no permissions.'),
-                        MultiSelect::make('Default Roles', 'default_roles')->options(function () {
-                            return \App\Models\Role::pluck('name', 'id');
-                        })->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
+                        MultiSelect::make('Default Permissions', 'default_permissions')->options(
+                            \App\Models\Permission::all()->mapWithKeys(fn ($permission) => [$permission->name => $permission->name])->sort()
+                        )->help('The default permissions that will be given to new user accounts. Leave blank to assign no permissions.'),
+                        MultiSelect::make('Default Roles', 'default_roles')->options(
+                            \App\Models\Role::all()->mapWithKeys(fn ($role) => [$role->name => $role->name])->sort()
+                        )->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
                     ]),
                 ])->showTitle(true),
             ];
