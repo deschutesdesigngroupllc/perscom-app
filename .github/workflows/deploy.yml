@@ -10,7 +10,7 @@ on:
 jobs:
   test-application:
     name: Test Application
-    uses: DeschutesDesignGroupLLC/PERSCOM-3.0/.github/workflows/test.yml@master
+    uses: DeschutesDesignGroupLLC/perscom-app/.github/workflows/test.yml@master
     secrets: inherit
     if: ${{ !contains(github.event.head_commit.message, '[skip deploy]') }}
 

@@ -1,4 +1,5 @@
 {
+    "name": "perscom-app",
     "private": true,
     "scripts": {
         "dev": "vite",
