@@ -38,6 +38,11 @@ class Calendar extends Tool
      */
     public static function generateJwt()
     {
-        return Auth::guard('jwt')->login(Auth::guard('web')->user());
+        return Auth::guard('jwt')->claims([
+            'scope' => [
+                'view:calendar',
+                'view:event',
+            ],
+        ])->login(Auth::guard('web')->user());
     }
 }

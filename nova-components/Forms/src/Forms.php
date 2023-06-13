@@ -38,6 +38,13 @@ class Forms extends Tool
      */
     public static function generateJwt()
     {
-        return Auth::guard('jwt')->login(Auth::guard('web')->user());
+        return Auth::guard('jwt')->claims([
+            'scope' => [
+                'create:submission',
+                'update:field',
+                'view:form',
+                'view:submission',
+            ],
+        ])->login(Auth::guard('web')->user());
     }
 }

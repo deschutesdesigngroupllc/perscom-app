@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Features\ApiAccessFeature;
 use App\Features\CustomSubDomainFeature;
 use App\Features\SupportTicketFeature;
 use App\Models\EventRegistration as EventRegistrationModel;
@@ -294,7 +295,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')
                                 ->openInNewTab()
                                 ->canSee(function (Request $request) {
-                                    return Gate::check('api', $request->user());
+                                    return Gate::check('api', $request->user() && Feature::active(ApiAccessFeature::class));
                                 }),
                         ])->collapsable()
                             ->collapsedByDefault(),

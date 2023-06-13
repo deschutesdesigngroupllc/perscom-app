@@ -30,11 +30,15 @@ use Laravel\Nova\Fields\Timezone;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
  * @property-read int|null $forms_count
  * @property-read string|null $validation_rules
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $users
+ * @property-read int|null $users_count
  *
  * @method static \Database\Factories\FieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Field hidden()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field visible()
  *
  * @mixin \Eloquent
  */

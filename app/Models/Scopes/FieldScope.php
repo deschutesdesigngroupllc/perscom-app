@@ -17,12 +17,12 @@ class FieldScope implements Scope
     {
         if (Gate::check('update', $model) && Auth::check()) {
             $builder->where(function ($query) {
-                return $query->visible();
+                return $query->visible(); // @phpstan-ignore-line
             })->orWhere(function ($query) {
-                return $query->hidden();
+                return $query->hidden(); // @phpstan-ignore-line
             });
         } else {
-            $builder->visible();
+            $builder->visible(); // @phpstan-ignore-line
         }
     }
 }

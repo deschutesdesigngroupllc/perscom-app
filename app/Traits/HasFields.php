@@ -25,12 +25,12 @@ trait HasFields
     }
 
     /**
-     * @return array|Panel|mixed[]
+     * @return Hidden|Panel|mixed[]
      */
     protected function getNovaFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', Closure $modelResolver = null)
     {
         if (($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest()) &&
-            $request->resource() === static::class) {
+            $request->resource() == static::class) { // @phpstan-ignore-line
 
             $model = $request->findModel();
 
