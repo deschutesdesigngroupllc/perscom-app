@@ -89,7 +89,7 @@ class Submission extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->exceptOnForms()->sortable(),
             DateTime::make('Updated At')->exceptOnForms()->sortable(),
-            $this->getFields($request, true, function ($form) {
+            $this->getNovaFields($request, true, function ($form) {
                 return $form?->name;
             }, function ($model) {
                 return $model?->form;

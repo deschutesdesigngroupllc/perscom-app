@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\HasFields;
+use App\Traits\HasHiddenFieldAttributes;
 use App\Traits\HasResourceUrlAttribute;
 use App\Traits\HasStatuses;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -94,6 +96,8 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     use Actionable;
     use HasApiTokens;
     use HasFactory;
+    use HasFields;
+    use HasHiddenFieldAttributes;
     use HasPermissions;
     use HasResourceUrlAttribute;
     use HasRoles;
@@ -315,19 +319,6 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
             ->withTimestamps()
             ->as('registration')
             ->using(EventRegistration::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function fields()
-    {
-        return $this->morphToMany(Field::class, 'model', 'model_has_fields')
-            ->using(Element::class)
-            ->as('fields')
-            ->withPivot(['order'])
-            ->orderBy('order')
-            ->withTimestamps();
     }
 
     /**

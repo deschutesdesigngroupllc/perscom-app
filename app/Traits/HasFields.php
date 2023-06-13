@@ -2,6 +2,8 @@
 
 namespace App\Traits;
 
+use App\Models\Element;
+use App\Models\Field;
 use Closure;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -10,49 +12,47 @@ use Laravel\Nova\Panel;
 trait HasFields
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Model|null
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
      */
-    private function resolveModelForFields(NovaRequest $request, $modelResolver = null)
+    public function fields()
     {
-        if (! ($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest()) ||
-            $request->resource() !== \get_called_class()) {
-            return null;
-        }
-
-        $model = $request->findModel();
-
-        if ($modelResolver instanceof Closure) {
-            return $modelResolver($model);
-        }
-
-        return $model;
+        return $this->morphToMany(Field::class, 'model', 'model_has_fields')
+            ->using(Element::class)
+            ->as('fields')
+            ->withPivot(['order'])
+            ->orderBy('order')
+            ->withTimestamps();
     }
 
     /**
      * @return array|Panel|mixed[]
      */
-    protected function getFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', Closure $modelResolver = null)
+    protected function getNovaFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', Closure $modelResolver = null)
     {
-        $model = $this->resolveModelForFields($request, $modelResolver);
+        if (($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest()) &&
+            $request->resource() === static::class) {
 
-        $fields = collect(optional($model?->fields, static function ($fields) {
-            return $fields->map(static function ($field) {
-                return $field->constructNovaField();
-            });
-        }));
+            $model = $request->findModel();
 
-        if ($fields->isEmpty()) {
-            return Hidden::make('No Fields');
-        }
-
-        if ($wrapInPanel && $fields->isNotEmpty()) {
-            if ($panelName instanceof Closure) {
-                $panelName = $panelName($model);
+            if ($modelResolver instanceof Closure) {
+                $model = $modelResolver($model);
             }
 
-            return Panel::make($panelName ?? 'Fields', $fields->toArray());
+            $fields = collect(optional($model?->fields, static function ($fields) {
+                return $fields->map(static function ($field) {
+                    return $field->constructNovaField();
+                });
+            }));
+
+            if ($wrapInPanel && $fields->isNotEmpty()) {
+                return Panel::make(value($panelName, $model), $fields->toArray());
+            }
+
+            if ($fields->isNotEmpty()) {
+                return $fields->toArray();
+            }
         }
 
-        return $fields->toArray();
+        return Hidden::make('No Fields');
     }
 }

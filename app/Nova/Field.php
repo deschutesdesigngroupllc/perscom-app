@@ -137,6 +137,9 @@ class Field extends Resource
                     ->nullable()
                     ->help('A pipe delimited list of validation rules that can be found <a target="_blank" href="https://laravel.com/docs/10.x/validation#available-validation-rules">here</a>.'),
             ]),
+            Panel::make('Visibility', [
+                Boolean::make('Hidden')->help('The field will only be shown if the user has editable permissions.'),
+            ]),
             MorphedByMany::make('Assigned Forms', 'forms', Form::class),
         ];
     }
