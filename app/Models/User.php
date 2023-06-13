@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Traits\HasFields;
+use App\Traits\HasHiddenFieldAttributes;
 use App\Traits\HasResourceUrlAttribute;
 use App\Traits\HasStatuses;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -18,6 +20,7 @@ use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
+use Stancl\VirtualColumn\VirtualColumn;
 
 /**
  * App\Models\User
@@ -34,6 +37,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $combat_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Event> $events
  * @property-read int|null $events_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
+ * @property-read int|null $fields_count
  * @property-read string|null $cover_photo_url
  * @property-read bool $online
  * @property-read string|null $profile_photo_url
@@ -91,12 +96,20 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     use Actionable;
     use HasApiTokens;
     use HasFactory;
+    use HasFields;
+    use HasHiddenFieldAttributes;
     use HasPermissions;
     use HasResourceUrlAttribute;
     use HasRoles;
     use HasStatuses;
     use Impersonatable;
     use Notifiable;
+    use VirtualColumn;
+
+    /**
+     * @var array
+     */
+    public $guarded = [];
 
     /**
      * The attributes that are mass assignable.
@@ -117,11 +130,11 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'notes_updated_at',
         'profile_photo',
         'cover_photo',
-        'last_seen_at',
         'social_id',
         'social_driver',
         'social_token',
         'social_refresh_token',
+        'last_seen_at',
     ];
 
     /**
@@ -136,6 +149,7 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'social_refresh_token',
         'social_id',
         'social_driver',
+        'data',
     ];
 
     /**
@@ -163,6 +177,37 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     ];
 
     /**
+     * @return string[]
+     */
+    public static function getCustomColumns(): array
+    {
+        return [
+            'id',
+            'name',
+            'email',
+            'email_verified_at',
+            'position_id',
+            'rank_id',
+            'specialty_id',
+            'status_id',
+            'unit_id',
+            'password',
+            'remember_token',
+            'notes',
+            'notes_updated_at',
+            'profile_photo',
+            'cover_photo',
+            'social_id',
+            'social_driver',
+            'social_token',
+            'social_refresh_token',
+            'last_seen_at',
+            'created_at',
+            'updated_at',
+        ];
+    }
+
+    /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
      * @return mixed
@@ -181,8 +226,6 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
     {
         return [
             'tenant' => tenant()->getTenantKey(),
-            'permissions' => $this->permissions->map(fn ($permission) => $permission->name)->toArray(),
-            'roles' => $this->roles->map(fn ($role) => $role->name)->toArray(),
         ];
     }
 

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\FieldScope;
+use App\Traits\HasHiddenResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -28,22 +30,28 @@ use Laravel\Nova\Fields\Timezone;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
  * @property-read int|null $forms_count
  * @property-read string|null $validation_rules
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $users
+ * @property-read int|null $users_count
  *
  * @method static \Database\Factories\FieldFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Field hidden()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field visible()
  *
  * @mixin \Eloquent
  */
 class Field extends Model
 {
     use HasFactory;
+    use HasHiddenResults;
 
     /**
      * @var string[]
      */
     protected $casts = [
+        'hidden' => 'boolean',
         'options' => AsArrayObject::class,
         'required' => 'boolean',
         'readonly' => 'boolean',
@@ -155,6 +163,16 @@ class Field extends Model
     }
 
     /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        static::addGlobalScope(new FieldScope());
+    }
+
+    /**
      * @return false|mixed
      */
     public function constructNovaField()
@@ -224,6 +242,17 @@ class Field extends Model
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
             ->as('forms')
+            ->withPivot(['order'])
+            ->withTimestamps();
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     */
+    public function users()
+    {
+        return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
+            ->as('users')
             ->withPivot(['order'])
             ->withTimestamps();
     }

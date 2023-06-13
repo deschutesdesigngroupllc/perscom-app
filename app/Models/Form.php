@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasFields;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -33,6 +34,7 @@ class Form extends Model
 {
     use Actionable;
     use HasFactory;
+    use HasFields;
 
     /**
      * The accessors to append to the model's array form.
@@ -70,19 +72,6 @@ class Form extends Model
             'viaResource' => \App\Nova\Form::uriKey(),
             'viaResourceId' => $this->id,
         ]);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function fields()
-    {
-        return $this->morphToMany(Field::class, 'model', 'model_has_fields')
-            ->using(Element::class)
-            ->as('fields')
-            ->withPivot(['order'])
-            ->orderBy('order')
-            ->withTimestamps();
     }
 
     /**

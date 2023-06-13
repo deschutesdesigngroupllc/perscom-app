@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Features\ApiAccessFeature;
 use App\Features\CustomSubDomainFeature;
 use App\Features\SupportTicketFeature;
 use App\Models\EventRegistration as EventRegistrationModel;
@@ -175,25 +176,26 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Receipt::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
-                    ])->icon('terminal')->collapsable(),
+                    ])->icon('terminal')
+                        ->collapsable(),
 
                     MenuSection::make('Communications', [
                         MenuItem::resource(Mail::class),
                         MenuItem::resource(Message::class),
-                    ])->icon('chat')->collapsable(),
+                    ])->icon('chat')
+                        ->collapsable(),
 
                     MenuSection::make('Tools', [
-                        MenuItem::externalLink('Horizon', Url::fromString(config('app.url').
-                                                                          '/'.
-                                                                          config('horizon.path'))
+                        MenuItem::externalLink('Horizon', Url::fromString(config('app.url').'/'.config('horizon.path'))
                             ->withScheme(config('app.scheme'))
-                            ->__toString())->openInNewTab(),
-                        MenuItem::externalLink('Telescope', Url::fromString(config('app.url').
-                                                                            '/'.
-                                                                            config('telescope.path'))
+                            ->__toString())
+                            ->openInNewTab(),
+                        MenuItem::externalLink('Telescope', Url::fromString(config('app.url').'/'.config('telescope.path'))
                             ->withScheme(config('app.scheme'))
-                            ->__toString())->openInNewTab(),
-                    ])->icon('external-link')->collapsable(),
+                            ->__toString())
+                            ->openInNewTab(),
+                    ])->icon('external-link')
+                        ->collapsable(),
                 ];
             });
         } else {
@@ -212,21 +214,37 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             'resource' => User::uriKey(),
                             'resourceId' => Auth::user()->getAuthIdentifier(),
                         ], false)),
-                        MenuItem::lens(EventRegistration::class, MyEvents::class)->withBadge(function () {
-                            return (string) EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
-                        }),
-                        MenuItem::lens(TaskAssignment::class, MyTasks::class)->withBadge(function () {
-                            return (string) TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
-                        }),
+                        MenuItem::lens(EventRegistration::class, MyEvents::class)
+                            ->withBadge(function () {
+                                return (string) EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
+                            }),
+                        MenuItem::lens(TaskAssignment::class, MyTasks::class)
+                            ->withBadge(function () {
+                                return (string) TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
+                            }),
                     ])->icon('user-circle'),
 
                     MenuSection::make('Calendar', [
                         MenuItem::resource(Calendar::class),
                         MenuItem::resource(Event::class),
-                        MenuItem::resource(EventRegistration::class)->name('Registrations')->canSee(function () {
-                            return Gate::check('create', EventRegistrationModel::class);
-                        }),
-                    ])->icon('calendar')->collapsable(),
+                        MenuItem::resource(EventRegistration::class)
+                            ->name('Registrations')
+                            ->canSee(function () {
+                                return Gate::check('create', EventRegistrationModel::class);
+                            }),
+                    ])->icon('calendar')
+                        ->collapsable()
+                        ->collapsedByDefault(),
+
+                    MenuSection::make('Forms', [
+                        MenuItem::resource(Form::class),
+                        MenuItem::resource(Submission::class)
+                            ->withBadge(function () {
+                                return (string) SubmissionModel::query()->whereDoesntHave('statuses')->count();
+                            }),
+                    ])->icon('pencil-alt')
+                        ->collapsable()
+                        ->collapsedByDefault(),
 
                     MenuSection::make('Organization', [
                         MenuItem::resource(Announcement::class),
@@ -239,16 +257,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Status::class),
                         MenuItem::resource(Task::class),
                         MenuItem::resource(Unit::class),
-                        MenuItem::resource(User::class),
-                    ])->icon('office-building')->collapsable(),
+                    ])->icon('office-building')
+                        ->collapsable()
+                        ->collapsedByDefault(),
 
-                    MenuSection::make('Forms', [
-                        MenuItem::resource(Field::class),
-                        MenuItem::resource(Form::class),
-                        MenuItem::resource(Submission::class)->withBadge(function () {
-                            return (string) SubmissionModel::query()->whereDoesntHave('statuses')->count();
-                        }),
-                    ])->icon('pencil-alt')->collapsable(),
+                    MenuSection::make('Personnel', [
+                        MenuItem::resource(User::class),
+                    ])->icon('users')
+                        ->collapsable()
+                        ->collapsedByDefault(),
 
                     MenuSection::make('Records', [
                         MenuItem::resource(AssignmentRecord::class),
@@ -257,47 +274,55 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(QualificationRecord::class),
                         MenuItem::resource(RankRecord::class),
                         MenuItem::resource(ServiceRecord::class),
-                    ])->icon('document-text')->collapsable(),
-
-                    MenuSection::make('External Integration', [
-                        MenuGroup::make('API', [
-                            MenuItem::resource(PassportPersonalAccessToken::class)->name('Keys'),
-                            MenuItem::resource(PassportPersonalAccessTokenLog::class),
-                        ])->collapsable(),
-                        MenuGroup::make('OAuth 2.0', [
-                            MenuItem::resource(PassportAuthorizedApplications::class),
-                            MenuItem::resource(PassportClient::class)->name('My Apps'),
-                            MenuItem::resource(PassportClientLog::class),
-                        ])->collapsable(),
-                        MenuItem::resource(Webhook::class),
-                        MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')
-                            ->openInNewTab()
-                            ->canSee(function (Request $request) {
-                                return Gate::check('api', $request->user());
-                            }),
-                    ])->icon('link')->collapsable(),
+                    ])->icon('document-text')
+                        ->collapsable()
+                        ->collapsedByDefault(),
 
                     MenuSection::make('System', [
                         MenuItem::resource(Attachment::class),
+                        MenuItem::resource(Field::class),
                         MenuItem::resource(Image::class),
                         MenuItem::resource(Action::class),
                         MenuItem::resource(Permission::class),
                         MenuItem::resource(Role::class),
+                        MenuGroup::make('API', [
+                            MenuItem::resource(PassportPersonalAccessToken::class)->name('Keys'),
+                            MenuItem::resource(PassportPersonalAccessTokenLog::class),
+                        ])->collapsable()
+                            ->collapsedByDefault(),
+                        MenuGroup::make('Integrations', [
+                            MenuItem::resource(Webhook::class),
+                            MenuItem::externalLink('Widgets', 'https://docs.perscom.io/external-integration/widgets')
+                                ->openInNewTab()
+                                ->canSee(function (Request $request) {
+                                    return Gate::check('api', $request->user() && Feature::active(ApiAccessFeature::class));
+                                }),
+                        ])->collapsable()
+                            ->collapsedByDefault(),
+                        MenuGroup::make('OAuth 2.0', [
+                            MenuItem::resource(PassportAuthorizedApplications::class),
+                            MenuItem::resource(PassportClient::class)->name('My Apps'),
+                            MenuItem::resource(PassportClientLog::class),
+                        ])->collapsable()
+                            ->collapsedByDefault(),
                         MenuGroup::make('Settings', [
                             MenuItem::link('General', '/settings/general'),
                             MenuItem::link('Localization', '/settings/localization'),
                             MenuItem::link('Registration', '/settings/registration'),
-                        ])->collapsable(),
-                    ])->icon('terminal')->collapsable()->canSee(function (Request $request) {
-                        return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
-                    })->collapsable()->collapsedByDefault(),
+                        ])->collapsable()
+                            ->collapsedByDefault()
+                            ->canSee(function (Request $request) {
+                                return ! $request->isDemoMode() && Auth::user()->hasRole('Admin');
+                            }),
+                    ])->icon('terminal')->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
                             ->openInNewTab(),
                         MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
                             ->openInNewTab(),
-                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')->openInNewTab(),
+                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')
+                            ->openInNewTab(),
                         MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
                             ->openInNewTab()
                             ->canSee(function () {
@@ -305,7 +330,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             }),
                         MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
                             ->openInNewTab(),
-                    ])->icon('support')->collapsable()->collapsedByDefault(),
+                    ])->icon('support')
+                        ->collapsable()
+                        ->collapsedByDefault(),
                 ];
             });
         }
