@@ -1,6 +1,22 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.42...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.43...HEAD)
+
+## [v1.0.43](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.42...v1.0.43) - 2023-06-13
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.43 -->
+### What's Changed
+
+#### Added
+
+- New personnel file custom fields by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/179
+- Adds new approval required registration setting by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/177
+
+#### Fixed
+
+- Fixes remove inactive jobs job when tenant has no last login date set by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/180
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.42...v1.0.43
 
 ## [v1.0.42](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.41...v1.0.42) - 2023-05-31
 
