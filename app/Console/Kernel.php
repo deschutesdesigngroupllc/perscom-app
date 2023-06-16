@@ -22,8 +22,8 @@ class Kernel extends ConsoleKernel
         $schedule->command('cache:prune-stale-tags')->environments(['staging', 'production'])->hourly();
         $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->daily();
 
-        $schedule->job(new ResetDemoAccount())->environments(['production'])->daily();
-        $schedule->job(new RemoveInactiveAccounts())->environments(['production'])->daily();
+        $schedule->job(new ResetDemoAccount())->environments(['production'])->dailyAt('01:00');
+        $schedule->job(new RemoveInactiveAccounts())->environments(['production'])->dailyAt('02:00');
     }
 
     /**
