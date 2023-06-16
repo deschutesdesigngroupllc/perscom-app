@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('telescope:prune --hours=96')->daily();
+        $schedule->command('telescope:prune --hours=96')->dailyAt('03:00');
         $schedule->command('perscom:heartbeat')->environments(['staging', 'production'])->everyTenMinutes();
         $schedule->command('horizon:snapshot')->environments(['staging', 'production'])->everyFiveMinutes();
         $schedule->command('cache:prune-stale-tags')->environments(['staging', 'production'])->hourly();
