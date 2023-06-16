@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Banner;
 use Inertia\Inertia;
 
 class HomeController extends Controller
@@ -11,6 +12,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return Inertia::render('Home');
+        return Inertia::render('Home', [
+            'banners' => Banner::all(),
+        ]);
     }
 }

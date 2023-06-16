@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '../../components/Button'
-import { AuthLayout } from '../../layouts/Auth'
-import { Input } from '../../components/Input'
-import { Label } from '../../components/Label'
-import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, useForm } from '@inertiajs/inertia-react'
+import {Button} from '../../components/Button'
+import {AuthLayout} from '../../layouts/Auth'
+import {Input} from '../../components/Input'
+import {Label} from '../../components/Label'
+import {ValidationErrors} from '../../components/ValidationErrors'
+import {Head, useForm, usePage} from '@inertiajs/inertia-react'
 
 export function ResetPassword({ token, email }) {
+  const { flash } = usePage().props
+
   const { data, setData, post, processing, errors, reset } = useForm({
     token: token,
     email: email,
@@ -33,7 +35,11 @@ export function ResetPassword({ token, email }) {
   return (
     <AuthLayout>
       <Head title='Reset Password' />
+
+      {flash.status && <div className='mb-4 text-sm font-medium text-green-600'>{flash.status}</div>}
+
       <ValidationErrors errors={errors} />
+
       <form onSubmit={submit}>
         <div>
           <Label forInput='email' value='Email' />

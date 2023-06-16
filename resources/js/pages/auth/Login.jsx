@@ -1,14 +1,15 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import PropTypes from 'prop-types'
-import { Button, ButtonLink } from '../../components/Button'
-import { Checkbox } from '../../components/Checkbox'
-import { Input } from '../../components/Input'
-import { Label } from '../../components/Label'
-import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react'
-import { AuthLayout } from '../../layouts/Auth'
+import {Button, ButtonLink} from '../../components/Button'
+import {Checkbox} from '../../components/Checkbox'
+import {Input} from '../../components/Input'
+import {Label} from '../../components/Label'
+import {ValidationErrors} from '../../components/ValidationErrors'
+import {Head, Link, useForm, usePage} from '@inertiajs/inertia-react'
+import {AuthLayout} from '../../layouts/Auth'
 
-export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, adminMode, enableSocialLogin, githubLogin, discordLogin }) {
+export function Login({ canResetPassword, canCreateAnAccount, demoMode, adminMode, enableSocialLogin, githubLogin, discordLogin }) {
+  const { flash } = usePage().props
   const { data, setData, post, processing, errors, reset } = useForm({
     email: demoMode ? 'demo@perscom.io' : '',
     password: demoMode ? 'password' : '',
@@ -36,7 +37,7 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
     <AuthLayout>
       <Head title='Log in' />
 
-      {status && <div className='mb-4 text-sm font-medium text-green-600'>{status}</div>}
+      {flash.status && <div className='mb-4 text-sm font-medium text-green-600'>{flash.status}</div>}
 
       {demoMode && (
         <div className='mb-4'>
@@ -60,6 +61,7 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
       )}
 
       <ValidationErrors errors={errors} />
+
       <form onSubmit={submit} className='space-y-6'>
         <div>
           <Label forInput='email' value='Email' />
@@ -165,7 +167,6 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
 }
 
 Login.propTypes = {
-  status: PropTypes.string,
   canResetPassword: PropTypes.bool,
   canCreateAnAccount: PropTypes.bool,
   demoMode: PropTypes.bool,

@@ -1,10 +1,11 @@
 import React from 'react'
-import PropTypes from 'prop-types'
-import { Button } from '../../components/Button'
-import { AuthLayout } from '../../layouts/Auth'
-import { Head, Link, useForm } from '@inertiajs/inertia-react'
+import {Button} from '../../components/Button'
+import {AuthLayout} from '../../layouts/Auth'
+import {Head, Link, useForm, usePage} from '@inertiajs/inertia-react'
 
-export function VerifyEmail({ status }) {
+export function VerifyEmail() {
+  const { flash } = usePage().props
+
   const { post, processing } = useForm()
 
   const submit = (e) => {
@@ -21,7 +22,7 @@ export function VerifyEmail({ status }) {
         If you didn&apos;t receive the email, we will gladly send you another.
       </div>
 
-      {status === 'verification-link-sent' && (
+      {flash.status === 'verification-link-sent' && (
         <div className='mb-4 text-sm font-medium text-green-600'>
           A new verification link has been sent to the email address you provided during registration.
         </div>
@@ -41,10 +42,6 @@ export function VerifyEmail({ status }) {
       </form>
     </AuthLayout>
   )
-}
-
-VerifyEmail.propTypes = {
-  status: PropTypes.string
 }
 
 export default VerifyEmail

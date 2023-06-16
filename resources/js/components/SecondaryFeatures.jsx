@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import {Tab} from '@headlessui/react'
 import clsx from 'clsx'
-import {CalendarIcon, OfficeBuildingIcon, UsersIcon} from '@heroicons/react/outline'
+import {BuildingOfficeIcon, CalendarIcon, UsersIcon} from '@heroicons/react/20/solid'
 import {Container} from './/Container'
 import customFieldsImage from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
@@ -26,7 +26,7 @@ const features = [
       "With PERSCOM.io's customizable hierarchical design, you can create a tailored organizational structure that reflects your unique needs and chain of command.",
     image: recordsImage,
     icon: function Icon() {
-      return <OfficeBuildingIcon className='h-8 w-8' role='img' />
+      return <BuildingOfficeIcon className='h-8 w-8' role='img' />
     }
   },
   {
