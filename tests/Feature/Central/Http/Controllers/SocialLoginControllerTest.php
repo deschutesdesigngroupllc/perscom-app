@@ -124,7 +124,7 @@ class SocialLoginControllerTest extends CentralTestCase
         $loginToken->allows('getAttribute')->with('token')->andReturn($token);
 
         $tenant = $this->mock(\App\Models\Tenant::class);
-        $tenant->allows('run')->once()->andReturn($loginToken);
+        $tenant->allows('run')->times(3)->andReturn($loginToken);
         $tenant->allows('getAttribute')->with('url')->andReturn($url);
 
         $this->instance(\App\Models\Tenant::class, $tenant);
