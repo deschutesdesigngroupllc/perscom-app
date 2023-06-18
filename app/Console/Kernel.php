@@ -16,15 +16,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('telescope:prune --hours=96')->daily();
-        $schedule->command('queue:prune-failed --hours=96')->daily();
+        $schedule->command('telescope:prune --hours=96')->dailyAt('03:00');
+        $schedule->command('queue:prune-failed --hours=96')->dailyAt('04:00');
         $schedule->command('perscom:heartbeat')->environments(['staging', 'production'])->everyTenMinutes();
         $schedule->command('horizon:snapshot')->environments(['staging', 'production'])->everyFiveMinutes();
         $schedule->command('cache:prune-stale-tags')->environments(['staging', 'production'])->hourly();
         $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->daily();
 
-        $schedule->job(new ResetDemoAccount())->environments(['production'])->daily();
-        $schedule->job(new RemoveInactiveAccounts())->environments(['production'])->daily();
+        $schedule->job(new ResetDemoAccount())->environments(['production'])->dailyAt('01:00');
+        $schedule->job(new RemoveInactiveAccounts())->environments(['production'])->dailyAt('02:00');
     }
 
     /**
