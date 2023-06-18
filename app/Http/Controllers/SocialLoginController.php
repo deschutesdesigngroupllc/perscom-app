@@ -88,48 +88,48 @@ class SocialLoginController extends Controller
             return User::firstWhere('email', '=', $socialLiteUser->email);
         });
 
+        $redirect = null;
         if ($function === self::SOCIAL_REGISTER) {
             if ($user) {
-                return redirect()
+                $redirect = redirect()
                     ->to("{$tenant->url}/login")
                     ->with('status', "You already have an account registerd with your $driver email. Please login to continue.");
+            } else {
+                $user = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
+                    return User::create([
+                        'name' => $socialLiteUser->name,
+                        'email' => $socialLiteUser->email,
+                        'email_verified_at' => now(),
+                        'social_id' => $socialLiteUser->id,
+                        'social_driver' => $driver,
+                        'social_token' => $socialLiteUser->token,
+                        'social_refresh_token' => $socialLiteUser->refreshToken,
+                    ]);
+                });
             }
-
-            $user = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
-                return User::create([
-                    'name' => $socialLiteUser->name,
-                    'email' => $socialLiteUser->email,
-                    'email_verified_at' => now(),
-                    'social_id' => $socialLiteUser->id,
-                    'social_driver' => $driver,
-                    'social_token' => $socialLiteUser->token,
-                    'social_refresh_token' => $socialLiteUser->refreshToken,
-                ]);
-            });
-
         }
 
         if ($function === self::SOCIAL_LOGIN) {
-            if (! $user) {
-                return redirect()
+            if ($user) {
+                $tenant->run(function ($tenant) use ($socialLiteUser, $driver, $user) {
+                    $user->update([
+                        'social_id' => $socialLiteUser->id,
+                        'social_driver' => $driver,
+                        'social_token' => $socialLiteUser->token,
+                        'social_refresh_token' => $socialLiteUser->refreshToken,
+                    ]);
+                });
+            } else {
+                $redirect = redirect()
                     ->to("{$tenant->url}/login")
                     ->with('status', "We could not find an account associated with your $driver email. Please create a new account to continue.");
             }
-
-            $tenant->run(function ($tenant) use ($socialLiteUser, $driver, $user) {
-                $user->update([
-                    'social_id' => $socialLiteUser->id,
-                    'social_driver' => $driver,
-                    'social_token' => $socialLiteUser->token,
-                    'social_refresh_token' => $socialLiteUser->refreshToken,
-                ]);
-            });
-
         }
 
         session()->forget(self::$sessionKey);
 
-        if ($user) {
+        $token = null;
+        if ($user && ! $redirect) {
             $token = $tenant->run(function ($tenant) use ($user) {
                 return LoginToken::create([
                     'user_id' => $user->id,
@@ -137,9 +137,9 @@ class SocialLoginController extends Controller
             });
         }
 
-        return $user ?
+        return $token ?
             redirect()->to("{$tenant->url}/auth/login/$token->token") :
-            redirect()->to($tenant->url);
+            ($redirect ?? redirect()->to($tenant->url));
     }
 
     /**
