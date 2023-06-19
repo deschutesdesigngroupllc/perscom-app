@@ -53,12 +53,12 @@ return [
     |
     */
 
-    'url' => env('APP_URL', 'http://localhost'),
-    'base_url' => env('BASE_URL', '.localhost'),
-    'auth_url' => env('AUTH_URL', 'http://auth.localhost'),
+    'url' => env('APP_URL', 'http://lvh.me'),
+    'base_url' => env('BASE_URL', '.lvh.me'),
+    'auth_url' => env('AUTH_URL', 'http://auth.lvh.me'),
     'asset_url' => env('ASSET_URL', null),
     'scheme' => env('APP_SCHEME', 'http'),
-    'api_url' => env('API_URL', 'http://api.localhost'),
+    'api_url' => env('API_URL', 'http://api.lvh.me'),
     'api_version' => env('API_VERSION', 'v1'),
     'mix_url' => env('ASSET_URL', null),
 

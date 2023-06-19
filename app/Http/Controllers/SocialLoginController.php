@@ -9,7 +9,6 @@ use App\Repositories\TenantRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialLoginController extends Controller
@@ -85,20 +84,19 @@ class SocialLoginController extends Controller
         $socialLiteUser = Socialite::driver($driver)->user();
 
         $tenant = $tenantRepository->findById($tenantId);
-        $token = $tenant->run(function ($tenant) use ($socialLiteUser, $driver, $function) {
-            switch ($function) {
-                case self::SOCIAL_LOGIN:
-                    $user = User::firstWhere('email', '=', $socialLiteUser->email);
-                    $user?->update([
-                        'social_id' => $socialLiteUser->id,
-                        'social_driver' => $driver,
-                        'social_token' => $socialLiteUser->token,
-                        'social_refresh_token' => $socialLiteUser->refreshToken,
-                    ]);
-                    break;
+        $user = $tenant->run(function ($tenant) use ($socialLiteUser) {
+            return User::firstWhere('email', '=', $socialLiteUser->email);
+        });
 
-                case self::SOCIAL_REGISTER:
-                    $user = User::create([
+        $redirect = null;
+        if ($function === self::SOCIAL_REGISTER) {
+            if ($user) {
+                $redirect = redirect()
+                    ->to("{$tenant->url}/login")
+                    ->with('status', "You already have an account registerd with your $driver email. Please login to continue.");
+            } else {
+                $user = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
+                    return User::create([
                         'name' => $socialLiteUser->name,
                         'email' => $socialLiteUser->email,
                         'email_verified_at' => now(),
@@ -107,30 +105,41 @@ class SocialLoginController extends Controller
                         'social_token' => $socialLiteUser->token,
                         'social_refresh_token' => $socialLiteUser->refreshToken,
                     ]);
-                    break;
+                });
             }
-
-            if (isset($user)) {
-                $token = LoginToken::create([
-                    'user_id' => $user->id,
-                ]);
-            }
-
-            return $token ?? null;
-        });
-
-        session()->remove(self::$sessionKey);
-
-        if (! $token) {
-            $provider = Str::title($driver);
-            $query = Arr::query([
-                'status' => "We could not find an account associated with your $provider profile. Please create a new account to continue.",
-            ]);
-
-            return redirect()->to("{$tenant->url}/register?{$query}");
         }
 
-        return redirect()->to("{$tenant->url}/auth/login/$token->token");
+        if ($function === self::SOCIAL_LOGIN) {
+            if ($user) {
+                $tenant->run(function ($tenant) use ($socialLiteUser, $driver, $user) {
+                    $user->update([
+                        'social_id' => $socialLiteUser->id,
+                        'social_driver' => $driver,
+                        'social_token' => $socialLiteUser->token,
+                        'social_refresh_token' => $socialLiteUser->refreshToken,
+                    ]);
+                });
+            } else {
+                $redirect = redirect()
+                    ->to("{$tenant->url}/login")
+                    ->with('status', "We could not find an account associated with your $driver email. Please create a new account to continue.");
+            }
+        }
+
+        session()->forget(self::$sessionKey);
+
+        $token = null;
+        if ($user && ! $redirect) {
+            $token = $tenant->run(function ($tenant) use ($user) {
+                return LoginToken::create([
+                    'user_id' => $user->id,
+                ]);
+            });
+        }
+
+        return $token ?
+            redirect()->to("{$tenant->url}/auth/login/$token->token") :
+            ($redirect ?? redirect()->to($tenant->url));
     }
 
     /**

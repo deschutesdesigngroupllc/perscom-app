@@ -1,17 +1,19 @@
 import React from 'react'
+import {Banner} from '../components/Banner'
+import {CallToAction} from '../components/CallToAction'
+import {Faqs} from '../components/Faqs'
+import {Footer} from '../components/Footer'
+import {Header} from '../components/Header'
+import {Hero} from '../components/Hero'
+import {Pricing} from '../components/Pricing'
+import {PrimaryFeatures} from '../components/PrimaryFeatures'
+import {SecondaryFeatures} from '../components/SecondaryFeatures'
+import PropTypes from 'prop-types'
 
-import { Header } from '../components/Header'
-import { Hero } from '../components/Hero'
-import { PrimaryFeatures } from '../components/PrimaryFeatures'
-import { SecondaryFeatures } from '../components/SecondaryFeatures'
-import { Footer } from '../components/Footer'
-import { Pricing } from '../components/Pricing'
-import { Faqs } from '../components/Faqs'
-import { CallToAction } from '../components/CallToAction'
-
-export default function Home() {
+export default function Home({ banners = null }) {
   return (
     <>
+      {banners && !!banners.length && banners.map((banner) => <Banner key={banner.id} banner={banner} />)}
       <Header />
       <main>
         <Hero />
@@ -24,4 +26,8 @@ export default function Home() {
       <Footer />
     </>
   )
+}
+
+Home.propTypes = {
+  banners: PropTypes.array
 }

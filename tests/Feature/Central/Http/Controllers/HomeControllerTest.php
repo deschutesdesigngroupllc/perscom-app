@@ -2,12 +2,15 @@
 
 namespace Tests\Feature\Central\Http\Controllers;
 
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Str;
 use Inertia\Testing\AssertableInertia;
 use Tests\Feature\Central\CentralTestCase;
 
 class HomeControllerTest extends CentralTestCase
 {
+    use RefreshDatabase;
+
     public function test_home_page_can_be_reached()
     {
         $this->get('/')

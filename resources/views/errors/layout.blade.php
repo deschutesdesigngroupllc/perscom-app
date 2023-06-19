@@ -47,6 +47,13 @@
             <span class="inline-block border-l border-gray-300" aria-hidden="true"></span>
             <a href="https://support.deschutesdesigngroup.com/hc/en-us/requests/new"
                class="rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800" target='_blank'>Submit A Ticket</a>
+            @if(Auth::user())
+                <span class="inline-block border-l border-gray-300" aria-hidden="true"></span>
+                <form method="post" action="{{ route('logout') }}">
+                    @csrf
+                    <button type="submit" class="rounded-lg px-2 py-1 text-red-700 hover:bg-red-100 hover:text-red-800" target='_blank'>Logout</button>
+                </form>
+            @endif
         </nav>
     </footer>
 </div>

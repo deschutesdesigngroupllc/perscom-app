@@ -124,7 +124,7 @@ class SocialLoginControllerTest extends CentralTestCase
         $loginToken->allows('getAttribute')->with('token')->andReturn($token);
 
         $tenant = $this->mock(\App\Models\Tenant::class);
-        $tenant->allows('run')->once()->andReturn($loginToken);
+        $tenant->allows('run')->times(3)->andReturn($user, $user, $loginToken);
         $tenant->allows('getAttribute')->with('url')->andReturn($url);
 
         $this->instance(\App\Models\Tenant::class, $tenant);
@@ -163,7 +163,7 @@ class SocialLoginControllerTest extends CentralTestCase
         $loginToken->allows('getAttribute')->with('token')->andReturn($token);
 
         $tenant = $this->mock(\App\Models\Tenant::class);
-        $tenant->allows('run')->once()->andReturn($loginToken);
+        $tenant->allows('run')->times(3)->andReturn(null, $user, $loginToken);
         $tenant->allows('getAttribute')->with('url')->andReturn($url);
 
         $this->instance(\App\Models\Tenant::class, $tenant);
@@ -216,7 +216,47 @@ class SocialLoginControllerTest extends CentralTestCase
             ],
         ])
             ->get(config('app.auth_url')."/$driver/callback")
-            ->assertRedirectContains("$url/register")
+            ->assertRedirectContains("$url/login")
+            ->assertSessionHas('status')
+            ->assertSessionMissing('auth.social.login.tenant', $id);
+    }
+
+    public function test_social_register_with_previous_user_is_redirected()
+    {
+        $driver = $this->faker->word();
+        $id = $this->faker->randomDigit();
+        $url = $this->faker->url;
+        $token = Str::random();
+        $email = $this->faker->email;
+
+        $user = $this->mock(User::class);
+        $user->allows('getAttribute')->with('email')->andReturn($email);
+
+        $provider = $this->mock(Provider::class);
+        $provider->allows('user')->once()->andReturn($user);
+
+        Socialite::shouldReceive('driver')->with($driver)->andReturn($provider);
+
+        $tenant = $this->mock(\App\Models\Tenant::class);
+        $tenant->allows('run')->once()->andReturn($user);
+        $tenant->allows('getAttribute')->with('url')->andReturn($url);
+
+        $this->instance(\App\Models\Tenant::class, $tenant);
+
+        $tenantRepository = $this->mock(TenantRepository::class);
+        $tenantRepository->allows('findById')->with($id)->andReturn($tenant);
+
+        $this->instance(TenantRepository::class, $tenantRepository);
+
+        $this->withSession([
+            'auth.social.login.tenant' => [
+                'tenant' => $id,
+                'function' => 'register',
+            ],
+        ])
+            ->get(config('app.auth_url')."/$driver/callback")
+            ->assertRedirectContains("$url/login")
+            ->assertSessionHas('status')
             ->assertSessionMissing('auth.social.login.tenant', $id);
     }
 

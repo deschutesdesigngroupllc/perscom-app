@@ -48,7 +48,6 @@ class FortifyServiceProvider extends ServiceProvider
     {
         Fortify::loginView(function () {
             return Inertia::render('auth/Login', [
-                'status' => session('status'),
                 'canResetPassword' => Route::has('password.request'),
                 'canCreateAnAccount' => Route::has('register') && setting('registration_enabled', true),
                 'demoMode' => Request::isDemoMode(),
@@ -65,9 +64,7 @@ class FortifyServiceProvider extends ServiceProvider
             ]);
         });
         Fortify::requestPasswordResetLinkView(function () {
-            return Inertia::render('auth/ForgotPassword', [
-                'status' => session('status'),
-            ]);
+            return Inertia::render('auth/ForgotPassword');
         });
         Fortify::resetPasswordView(function ($request) {
             return Inertia::render('auth/ResetPassword', [
@@ -76,13 +73,10 @@ class FortifyServiceProvider extends ServiceProvider
             ]);
         });
         Fortify::verifyEmailView(function () {
-            return Inertia::render('auth/VerifyEmail', [
-                'status' => session('status'),
-            ]);
+            return Inertia::render('auth/VerifyEmail');
         });
         Fortify::registerView(function () {
             return Inertia::render('auth/Register', [
-                'status' => session('status') ?? \request('status'),
                 'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
                 'githubLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'github',

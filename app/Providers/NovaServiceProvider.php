@@ -15,6 +15,7 @@ use App\Nova\AssignmentRecord;
 use App\Nova\Attachment;
 use App\Nova\Award;
 use App\Nova\AwardRecord;
+use App\Nova\Banner;
 use App\Nova\Calendar;
 use App\Nova\CombatRecord;
 use App\Nova\Dashboards\Admin;
@@ -196,6 +197,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             ->__toString())
                             ->openInNewTab(),
                     ])->icon('external-link')
+                        ->collapsable(),
+
+                    MenuSection::make('Website', [
+                        MenuItem::resource(Banner::class),
+                    ])->icon('desktop-computer')
                         ->collapsable(),
                 ];
             });
