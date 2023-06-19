@@ -6,7 +6,7 @@ export function Banner({ banner }) {
   return (
     <div
       style={{ backgroundColor: banner.background_color }}
-      className={clsx('flex items-center justify-center gap-x-6 px-6 py-2.5 sm:px-3.5', {
+      className={clsx('flex items-center justify-center gap-x-6 px-4 py-2.5 sm:px-6 lg:px-8', {
         '!bg-blue-600': !banner.background_color
       })}
     >
