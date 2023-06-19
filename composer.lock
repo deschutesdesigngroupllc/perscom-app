@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c167147dab37f537757ecd663d3ab3b9",
+    "content-hash": "cf1e1b3378b2a8db04d747f5d925f79a",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5699,7 +5699,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-bugfix/max-attempts-error",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5735,7 +5735,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-bugfix/max-attempts-error",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -5771,7 +5771,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-bugfix/max-attempts-error",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -5807,7 +5807,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-bugfix/max-attempts-error",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -5843,7 +5843,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-bugfix/max-attempts-error",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -5879,7 +5879,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-bugfix/max-attempts-error",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -5915,7 +5915,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-bugfix/max-attempts-error",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -5951,7 +5951,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/admin-approved-registration",
+            "version": "dev-bugfix/max-attempts-error",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -8534,16 +8534,16 @@
         },
         {
             "name": "stancl/jobpipeline",
-            "version": "v1.6.2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/archtechx/jobpipeline.git",
-                "reference": "bfc53f6dd6c7de79e881b306fa1081e58e5c3c54"
+                "reference": "71fb23746298a8d9c62a27652fe4ea3020b46cca"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/archtechx/jobpipeline/zipball/bfc53f6dd6c7de79e881b306fa1081e58e5c3c54",
-                "reference": "bfc53f6dd6c7de79e881b306fa1081e58e5c3c54",
+                "url": "https://api.github.com/repos/archtechx/jobpipeline/zipball/71fb23746298a8d9c62a27652fe4ea3020b46cca",
+                "reference": "71fb23746298a8d9c62a27652fe4ea3020b46cca",
                 "shasum": ""
             },
             "require": {
@@ -8555,6 +8555,7 @@
                 "orchestra/testbench": "^7.0|^8.0",
                 "spatie/valuestore": "^1.2"
             },
+            "default-branch": true,
             "type": "library",
             "autoload": {
                 "psr-4": {
@@ -8574,9 +8575,9 @@
             "description": "Turn any series of jobs into Laravel listeners.",
             "support": {
                 "issues": "https://github.com/archtechx/jobpipeline/issues",
-                "source": "https://github.com/archtechx/jobpipeline/tree/v1.6.2"
+                "source": "https://github.com/archtechx/jobpipeline/tree/master"
             },
-            "time": "2023-02-16T10:43:17+00:00"
+            "time": "2023-03-16T21:14:57+00:00"
         },
         {
             "name": "stancl/tenancy",
@@ -16074,9 +16075,17 @@
             "time": "2023-04-05T09:03:58+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "stancl/jobpipeline",
+            "version": "9999999-dev",
+            "alias": "v1.6.2",
+            "alias_normalized": "1.6.2.0"
+        }
+    ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "stancl/jobpipeline": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
