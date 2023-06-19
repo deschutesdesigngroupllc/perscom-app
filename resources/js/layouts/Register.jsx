@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useEffect, useState} from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import backgroundImage1 from '../../images/register1.jpeg'
@@ -7,11 +7,17 @@ import backgroundImage3 from '../../images/register3.jpeg'
 import backgroundImage4 from '../../images/register4.jpeg'
 
 export function RegisterLayout({ children, position = 'justify-center' }) {
-  const backgroundImages = Array(backgroundImage1, backgroundImage2, backgroundImage3, backgroundImage4)
+  const [backgroundImage, setBackgroundImage] = useState(null)
 
-  const getRandomImageIndex = () => {
-    return Math.floor(Math.random() * backgroundImages.length)
-  }
+  useEffect(() => {
+    const getBackgroundImage = () => {
+      const backgroundImages = Array(backgroundImage1, backgroundImage2, backgroundImage3, backgroundImage4)
+      const randomInt = Math.floor(Math.random() * backgroundImages.length)
+      return backgroundImages[randomInt]
+    }
+
+    setBackgroundImage(getBackgroundImage())
+  }, [])
 
   return (
     <div className={clsx('relative flex min-h-full md:px-12 lg:px-0', position)}>
@@ -20,11 +26,13 @@ export function RegisterLayout({ children, position = 'justify-center' }) {
       </div>
       <div className='absolute inset-0 hidden w-full flex-1 sm:block lg:relative lg:w-0'>
         <span className='absolute inset-0 m-0 box-border block overflow-hidden border-none p-0 opacity-100'>
-          <img
-            src={backgroundImages[getRandomImageIndex()]}
-            alt=''
-            className='w-100 absolute inset-0 m-auto box-border block h-0 max-h-full min-h-full w-0 min-w-full max-w-full border-none object-cover p-0'
-          />
+          {backgroundImage && (
+            <img
+              src={backgroundImage}
+              alt=''
+              className='w-100 absolute inset-0 m-auto box-border block h-0 max-h-full min-h-full w-0 min-w-full max-w-full border-none object-cover p-0'
+            />
+          )}
         </span>
       </div>
     </div>
