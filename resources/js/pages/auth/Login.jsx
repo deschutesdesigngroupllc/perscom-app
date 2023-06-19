@@ -9,7 +9,7 @@ import {Head, Link, useForm, usePage} from '@inertiajs/inertia-react'
 import {AuthLayout} from '../../layouts/Auth'
 
 export function Login({ canResetPassword, canCreateAnAccount, demoMode, adminMode, enableSocialLogin, githubLogin, discordLogin }) {
-  const { flash } = usePage().props
+  const { flash, tenant } = usePage().props
   const { data, setData, post, processing, errors, reset } = useForm({
     email: demoMode ? 'demo@perscom.io' : '',
     password: demoMode ? 'password' : '',
@@ -30,8 +30,6 @@ export function Login({ canResetPassword, canCreateAnAccount, demoMode, adminMod
     e.preventDefault()
     post(route('login'))
   }
-
-  const { tenant } = usePage().props
 
   return (
     <AuthLayout>
@@ -112,7 +110,7 @@ export function Login({ canResetPassword, canCreateAnAccount, demoMode, adminMod
           </div>
           {canCreateAnAccount && (
             <div>
-              <ButtonLink color='gray' href={route('register')} className='w-full' processing={processing}>
+              <ButtonLink color='gray' href={route('register')} className='w-full'>
                 Create a new account
               </ButtonLink>
             </div>
