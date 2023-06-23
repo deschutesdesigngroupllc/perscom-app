@@ -3,7 +3,13 @@
 namespace App\Nova\Dashboards;
 
 use App\Models\Announcement;
+use App\Models\AssignmentRecord;
+use App\Models\AwardRecord;
+use App\Models\CombatRecord;
 use App\Models\Message;
+use App\Models\RankRecord;
+use App\Models\ServiceRecord;
+use App\Models\User;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\UpcomingEvents;
 use App\Nova\Metrics\UsersOnline;
@@ -15,6 +21,7 @@ use Laravel\Nova\Dashboards\Main as Dashboard;
 use Perscom\AlertCard\AlertCard;
 use Perscom\DashboardQuickActions\DashboardQuickActions;
 use Perscom\DashboardTitle\DashboardTitle;
+use Perscom\Newsfeed\Newsfeed;
 
 class Main extends Dashboard
 {
@@ -36,14 +43,38 @@ class Main extends Dashboard
     public function cards()
     {
         return [
-            (new DashboardTitle())->withTitle(setting('dashboard_title') ?? \tenant('name'))
-                ->withSubtitle(setting('dashboard_subtitle')),
+            $this->setupDashboardTitle(),
             $this->setupAlertCard(),
             new NewUsers(),
             new UsersOnline(),
             new UpcomingEvents(),
-            new DashboardQuickActions(),
+            $this->setupNewsfeed(),
+            $this->setupDashboardQuickActions(),
         ];
+    }
+
+    /**
+     * @return DashboardTitle
+     */
+    protected function setupDashboardTitle()
+    {
+        return (new DashboardTitle())
+            ->withTitle(setting('dashboard_title') ?? \tenant('name'))
+            ->withSubtitle(setting('dashboard_subtitle'));
+    }
+
+    /**
+     * @return Newsfeed
+     */
+    protected function setupNewsfeed()
+    {
+        $width = $this->canSeeAdminQuickActions() ? '2/3' : 'full';
+
+        return (new Newsfeed())->withMeta([
+            'jwt' => Auth::guard('jwt')->login(Auth::guard('web')->user()),
+            'tenant_id' => tenant()->getTenantKey(),
+            'widget_url' => env('WIDGET_URL'),
+        ])->width($width);
     }
 
     /**
@@ -80,5 +111,28 @@ class Main extends Dashboard
         }
 
         return $card;
+    }
+
+    /**
+     * @return DashboardQuickActions
+     */
+    protected function setupDashboardQuickActions()
+    {
+        return (new DashboardQuickActions())->canSee(function () {
+            return $this->canSeeAdminQuickActions();
+        });
+    }
+
+    /**
+     * @return bool
+     */
+    protected function canSeeAdminQuickActions()
+    {
+        return Gate::check('create', User::class) ||
+            Gate::check('create', AssignmentRecord::class) ||
+            Gate::check('create', ServiceRecord::class) ||
+            Gate::check('create', CombatRecord::class) ||
+            Gate::check('create', RankRecord::class) ||
+            Gate::check('create', AwardRecord::class);
     }
 }

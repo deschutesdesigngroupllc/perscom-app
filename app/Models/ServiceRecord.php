@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use App\Models\Scopes\ServiceRecordScope;
+use App\Prompts\ServiceRecordPrompts;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
+use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\ServiceRecord
@@ -34,8 +38,12 @@ class ServiceRecord extends Model
     use HasAttachments;
     use HasAuthor;
     use HasDocument;
+    use HasEventPrompts;
     use HasFactory;
     use HasUser;
+    use LogsActivity;
+
+    protected string $prompts = ServiceRecordPrompts::class;
 
     /**
      * @var string[]
@@ -57,5 +65,10 @@ class ServiceRecord extends Model
     protected static function booted()
     {
         static::addGlobalScope(new ServiceRecordScope);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->useLogName('newsfeed');
     }
 }

@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use App\Models\Scopes\CombatRecordScope;
+use App\Prompts\CombatRecordPrompts;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
+use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\CombatRecord
@@ -34,8 +38,12 @@ class CombatRecord extends Model
     use HasAttachments;
     use HasAuthor;
     use HasDocument;
+    use HasEventPrompts;
     use HasFactory;
     use HasUser;
+    use LogsActivity;
+
+    protected string $prompts = CombatRecordPrompts::class;
 
     /**
      * @var string[]
@@ -57,5 +65,10 @@ class CombatRecord extends Model
     protected static function booted()
     {
         static::addGlobalScope(new CombatRecordScope);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->useLogName('newsfeed');
     }
 }

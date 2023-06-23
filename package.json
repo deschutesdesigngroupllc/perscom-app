@@ -7,7 +7,9 @@
         "lint": "eslint --fix './resources/**/*.{js,jsx}' './*.js'",
         "format": "prettier './resources/js/**/*.{js,jsx}' './*.js' --write --config ./.prettierrc",
         "format-components": "prettier './nova-components/**/*.{js,vue}' --write --config ./.prettierrc",
-        "build-components": "chmod +x ./nova-components/build.sh && ./nova-components/build.sh"
+        "build-components": "chmod +x ./nova-components/build.sh && ./nova-components/build.sh",
+        "build-newsfeed": "cd nova-components/Newsfeed && npm run dev",
+        "build-newsfeed-prod": "cd nova-components/Newsfeed && npm run prod"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",

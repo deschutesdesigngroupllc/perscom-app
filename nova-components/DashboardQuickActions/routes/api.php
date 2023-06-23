@@ -3,12 +3,10 @@
 use App\Nova\AssignmentRecord;
 use App\Nova\AwardRecord;
 use App\Nova\CombatRecord;
-use App\Nova\Form;
 use App\Nova\RankRecord;
 use App\Nova\ServiceRecord;
 use App\Nova\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Http\Middleware\Authenticate;
@@ -27,25 +25,6 @@ use Laravel\Nova\Http\Middleware\Authorize;
 
 Route::get('/routes', function (Request $request) {
     $routes = [];
-
-    $routes['user']['personnefile'] = [
-        'link' => \route('nova.pages.detail', [
-            'resource' => User::uriKey(),
-            'resourceId' => Auth::user()->getAuthIdentifier(),
-        ]),
-        'title' => 'View My Personnel Profile',
-        'description' => 'View my personal information and perform an updates that may be needed.',
-        'icon' => 'M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z',
-    ];
-
-    $routes['user']['formsubmission'] = [
-        'link' => \route('nova.pages.index', [
-            'resource' => Form::uriKey(),
-        ]),
-        'title' => 'Submit A New Form',
-        'description' => 'Submit a new form or perform a request using your organization\'s forms.',
-        'icon' => 'M12 10.5v6m3-3H9m4.06-7.19l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z',
-    ];
 
     if (Gate::check('create', \App\Models\User::class)) {
         $routes['admin']['user'] = [

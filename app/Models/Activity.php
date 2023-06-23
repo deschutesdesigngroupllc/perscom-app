@@ -3,7 +3,7 @@
 namespace App\Models;
 
 /**
- * App\Models\Activity
+ * App\Models\Newsfeed
  *
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property-read \Illuminate\Support\Collection $changes
