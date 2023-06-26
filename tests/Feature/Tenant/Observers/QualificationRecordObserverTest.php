@@ -3,6 +3,7 @@
 namespace Tests\Feature\Tenant\Observers;
 
 use App\Jobs\CallWebhook;
+use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\QualificationRecord;
 use App\Models\Webhook;
@@ -13,6 +14,13 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class QualificationRecordObserverTest extends TenantTestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Queue::fake([GenerateOpenAiNewsfeedContent::class]);
+    }
+
     public function test_create_qualification_record_notification_sent()
     {
         Notification::fake();
