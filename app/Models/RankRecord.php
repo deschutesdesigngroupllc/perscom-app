@@ -71,21 +71,6 @@ class RankRecord extends Model
     protected $table = 'records_ranks';
 
     /**
-     * Boot
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function (RankRecord $record) {
-            if ($record->user) {
-                $record->user->rank_id = $record->rank?->id;
-                $record->user->save();
-            }
-        });
-    }
-
-    /**
      * The "booted" method of the model.
      *
      * @return void

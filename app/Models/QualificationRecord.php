@@ -44,7 +44,10 @@ class QualificationRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    protected string $prompts = QualificationRecordPrompts::class;
+    /**
+     * @var string
+     */
+    protected $prompts = QualificationRecordPrompts::class;
 
     /**
      * @var string[]

@@ -43,7 +43,10 @@ class ServiceRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    protected string $prompts = ServiceRecordPrompts::class;
+    /**
+     * @var string
+     */
+    public $prompts = ServiceRecordPrompts::class;
 
     /**
      * @var string[]

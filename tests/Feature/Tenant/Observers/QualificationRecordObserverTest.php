@@ -26,7 +26,7 @@ class QualificationRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::QUALIFICATION_RECORD_CREATED],
         ])->create();
 
@@ -39,7 +39,7 @@ class QualificationRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::QUALIFICATION_RECORD_UPDATED],
         ])->create();
 
@@ -55,7 +55,7 @@ class QualificationRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::QUALIFICATION_RECORD_DELETED],
         ])->create();
 

@@ -1,16 +1,11 @@
 <template>
-  <div v-if="numberOfAdminRoutes?.value > 0">
+  <div v-if="routes.value && (Object.keys(routes.value)).length > 0">
     <Card class="dashboard-actions-rounded-lg">
       <div class="md:dashboard-actions-grid md:dashboard-actions-grid-cols-1">
         <div
-          v-for="(route, key, index) in routes.value.admin"
+          v-for="(route, key, index) in routes.value"
           :key="index"
-          class="dashboard-actions-flex dashboard-actions-items-center dashboard-actions-border-gray-200 dark:dashboard-actions-border-gray-700"
-          :class="{
-            'odd:md:dashboard-actions-border-r': numberOfAdminRoutes.value > 1,
-            'dashboard-actions-border-b': index < numberOfAdminRoutes.value - 1,
-            'md:dashboard-actions-border-b-0': index === numberOfAdminRoutes.value - 2
-          }"
+          class="dashboard-actions-flex dashboard-actions-border-b dashboard-actions-items-center dashboard-actions-border-gray-200 dark:dashboard-actions-border-gray-700 hover:bg-gray-100"
         >
           <a :href="route.link" class="dashboard-actions-no-underline dashboard-actions-flex dashboard-actions-p-6">
             <div
@@ -32,7 +27,7 @@
 
             <div>
               <Heading :level="3">{{ route.title }}</Heading>
-              <p class="text-90 dashboard-actions-leading-normal dashboard-actions-mt-3">
+              <p class="dashboard-actions-leading-normal dashboard-actions-mt-3">
                 {{ route.description }}
               </p>
             </div>
@@ -47,16 +42,12 @@
 import {onMounted, reactive} from 'vue'
 
 const routes = reactive({})
-const numberOfAdminRoutes = reactive({})
-const numberOfUserRoutes = reactive({})
 
 onMounted(() => {
   Nova.request()
     .get('/nova-vendor/dashboard-quick-actions/routes')
     .then((response) => {
       routes.value = response.data
-      numberOfAdminRoutes.value = Object.keys(routes.value.admin ?? {}).length
-      numberOfUserRoutes.value = Object.keys(routes.value.user ?? {}).length
     })
 })
 </script>

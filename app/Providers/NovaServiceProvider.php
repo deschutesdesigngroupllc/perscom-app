@@ -167,6 +167,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withBreadcrumbs();
+        //Nova::style('style', Vite::asset('resources/css/nova.css'));
 
         if (Request::isCentralRequest()) {
             Nova::mainMenu(function (Request $request) {

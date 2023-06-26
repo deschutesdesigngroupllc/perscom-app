@@ -26,7 +26,7 @@ class AwardRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::AWARD_RECORD_CREATED],
         ])->create();
 
@@ -39,7 +39,7 @@ class AwardRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::AWARD_RECORD_UPDATED],
         ])->create();
 
@@ -55,7 +55,7 @@ class AwardRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::AWARD_RECORD_DELETED],
         ])->create();
 

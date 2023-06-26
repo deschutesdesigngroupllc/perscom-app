@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 /**
  * App\Models\Newsfeed
  *
@@ -23,6 +25,8 @@ namespace App\Models;
  */
 class Activity extends \Spatie\Activitylog\Models\Activity
 {
+    use HasFactory;
+
     /**
      * @var string[]
      */

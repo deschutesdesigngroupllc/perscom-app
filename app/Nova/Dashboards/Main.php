@@ -71,7 +71,16 @@ class Main extends Dashboard
         $width = $this->canSeeAdminQuickActions() ? '2/3' : 'full';
 
         return (new Newsfeed())->withMeta([
-            'jwt' => Auth::guard('jwt')->login(Auth::guard('web')->user()),
+            'jwt' => Auth::guard('jwt')->claims([
+                'scope' => [
+                    'view:user',
+                    'view:awardrecord',
+                    'view:combatrecord',
+                    'view:qualificationrecord',
+                    'view:rankrecord',
+                    'view:servicerecord',
+                ],
+            ])->login(Auth::guard('web')->user()),
             'tenant_id' => tenant()->getTenantKey(),
             'widget_url' => env('WIDGET_URL'),
         ])->width($width);

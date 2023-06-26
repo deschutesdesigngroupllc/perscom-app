@@ -18,6 +18,11 @@ class RankRecordObserver
      */
     public function created(RankRecord $rank)
     {
+        if ($rank->user) {
+            $rank->user->rank_id = $rank->rank?->id;
+            $rank->user->save();
+        }
+
         Notification::send($rank->user, new NewRankRecord($rank));
 
         Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($rank) {

@@ -3,12 +3,16 @@
 namespace App\Models;
 
 use App\Models\Scopes\AssignmentRecordScope;
+use App\Prompts\AssignmentRecordPrompts;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
+use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\AssignmentRecord
@@ -37,8 +41,15 @@ class AssignmentRecord extends Model
     use HasAttachments;
     use HasAuthor;
     use HasDocument;
+    use HasEventPrompts;
     use HasFactory;
     use HasUser;
+    use LogsActivity;
+
+    /**
+     * @var string
+     */
+    protected $prompts = AssignmentRecordPrompts::class;
 
     /**
      * @var string[]
@@ -67,26 +78,6 @@ class AssignmentRecord extends Model
     protected $table = 'records_assignments';
 
     /**
-     * Boot
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function (AssignmentRecord $record) {
-            if ($record->user) {
-                $record->user->position_id = $record->position?->id;
-                $record->user->specialty_id = $record->specialty?->id;
-                $record->user->unit_id = $record->unit?->id;
-                $record->user->save();
-                $record->user->secondary_positions()->sync($record->secondary_position_ids);
-                $record->user->secondary_specialties()->sync($record->secondary_specialty_ids);
-                $record->user->secondary_units()->sync($record->secondary_unit_ids);
-            }
-        });
-    }
-
-    /**
      * The "booted" method of the model.
      *
      * @return void
@@ -94,6 +85,11 @@ class AssignmentRecord extends Model
     protected static function booted()
     {
         static::addGlobalScope(new AssignmentRecordScope);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()->useLogName('newsfeed');
     }
 
     /**

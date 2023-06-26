@@ -276,4 +276,12 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     {
         return $this->hasMany(Feature::class, 'scope');
     }
+
+    /**
+     * @return string
+     */
+    public function route($name, array $parameters = [])
+    {
+        return "$this->url".route($name, $parameters, false);
+    }
 }

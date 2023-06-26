@@ -74,6 +74,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "data-apikey": $setup.props.card.jwt,
     "data-perscomid": $setup.props.card.tenant_id,
     src: $setup.props.card.widget_url,
+    "data-limit": "5",
     type: "text/javascript"
   }, null, 8 /* PROPS */, ["data-apikey", "data-perscomid", "src"]))])]);
 }

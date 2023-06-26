@@ -21,20 +21,13 @@ __webpack_require__.r(__webpack_exports__);
     var __expose = _ref.expose;
     __expose();
     var routes = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({});
-    var numberOfAdminRoutes = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({});
-    var numberOfUserRoutes = (0,vue__WEBPACK_IMPORTED_MODULE_0__.reactive)({});
     (0,vue__WEBPACK_IMPORTED_MODULE_0__.onMounted)(function () {
       Nova.request().get('/nova-vendor/dashboard-quick-actions/routes').then(function (response) {
-        var _routes$value$admin, _routes$value$user;
         routes.value = response.data;
-        numberOfAdminRoutes.value = Object.keys((_routes$value$admin = routes.value.admin) !== null && _routes$value$admin !== void 0 ? _routes$value$admin : {}).length;
-        numberOfUserRoutes.value = Object.keys((_routes$value$user = routes.value.user) !== null && _routes$value$user !== void 0 ? _routes$value$user : {}).length;
       });
     });
     var __returned__ = {
       routes: routes,
-      numberOfAdminRoutes: numberOfAdminRoutes,
-      numberOfUserRoutes: numberOfUserRoutes,
       onMounted: vue__WEBPACK_IMPORTED_MODULE_0__.onMounted,
       reactive: vue__WEBPACK_IMPORTED_MODULE_0__.reactive
     };
@@ -86,21 +79,16 @@ var _hoisted_7 = {
   "class": "text-90 dashboard-actions-leading-normal dashboard-actions-mt-3"
 };
 function render(_ctx, _cache, $props, $setup, $data, $options) {
-  var _$setup$numberOfAdmin;
   var _component_Heading = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Heading");
   var _component_Card = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("Card", true);
-  return ((_$setup$numberOfAdmin = $setup.numberOfAdminRoutes) === null || _$setup$numberOfAdmin === void 0 ? void 0 : _$setup$numberOfAdmin.value) > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Card, {
+  return $setup.routes.value && Object.keys($setup.routes.value).length > 0 ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", _hoisted_1, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_Card, {
     "class": "dashboard-actions-rounded-lg"
   }, {
     "default": (0,vue__WEBPACK_IMPORTED_MODULE_0__.withCtx)(function () {
-      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.routes.value.admin, function (route, key, index) {
+      return [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("div", _hoisted_2, [((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(true), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)(vue__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,vue__WEBPACK_IMPORTED_MODULE_0__.renderList)($setup.routes.value, function (route, key, index) {
         return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", {
           key: index,
-          "class": (0,vue__WEBPACK_IMPORTED_MODULE_0__.normalizeClass)(["dashboard-actions-flex dashboard-actions-items-center dashboard-actions-border-gray-200 dark:dashboard-actions-border-gray-700", {
-            'odd:md:dashboard-actions-border-r': $setup.numberOfAdminRoutes.value > 1,
-            'dashboard-actions-border-b': index < $setup.numberOfAdminRoutes.value - 1,
-            'md:dashboard-actions-border-b-0': index === $setup.numberOfAdminRoutes.value - 2
-          }])
+          "class": "dashboard-actions-flex dashboard-actions-border-b dashboard-actions-items-center dashboard-actions-border-gray-200 dark:dashboard-actions-border-gray-700 hover:bg-gray-100"
         }, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("a", {
           href: route.link,
           "class": "dashboard-actions-no-underline dashboard-actions-flex dashboard-actions-p-6"
@@ -116,7 +104,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
           }),
 
           _: 2 /* DYNAMIC */
-        }, 1024 /* DYNAMIC_SLOTS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(route.description), 1 /* TEXT */)])], 8 /* PROPS */, _hoisted_3)], 2 /* CLASS */);
+        }, 1024 /* DYNAMIC_SLOTS */), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementVNode)("p", _hoisted_7, (0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)(route.description), 1 /* TEXT */)])], 8 /* PROPS */, _hoisted_3)]);
       }), 128 /* KEYED_FRAGMENT */))])];
     }),
 

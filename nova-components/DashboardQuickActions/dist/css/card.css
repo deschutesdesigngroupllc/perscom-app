@@ -4,20 +4,11 @@
 .dashboard-actions-mt-3 {
     margin-top: 0.75rem
 }
-.dashboard-actions-mt-4 {
-    margin-top: 1rem
-}
-.dashboard-actions-mt-6 {
-    margin-top: 1.5rem
-}
 .dashboard-actions-flex {
     display: flex
 }
 .dashboard-actions-w-10 {
     width: 2.5rem
-}
-.dashboard-actions-w-full {
-    width: 100%
 }
 .dashboard-actions-flex-shrink-0 {
     flex-shrink: 0
@@ -28,17 +19,16 @@
 .dashboard-actions-justify-center {
     justify-content: center
 }
+.dashboard-actions-divide-y > :not([hidden]) ~ :not([hidden]) {
+    --tw-divide-y-reverse: 0;
+    border-top-width: calc(1px * calc(1 - var(--tw-divide-y-reverse)));
+    border-bottom-width: calc(1px * var(--tw-divide-y-reverse))
+}
 .dashboard-actions-rounded-lg {
     border-radius: 0.5rem
 }
 .dashboard-actions-border-b {
     border-bottom-width: 1px
-}
-.dashboard-actions-border-b-0 {
-    border-bottom-width: 0px
-}
-.dashboard-actions-border-r {
-    border-right-width: 1px
 }
 .dashboard-actions-border-gray-200 {
     --tw-border-opacity: 1;
@@ -49,9 +39,6 @@
 }
 .dashboard-actions-leading-normal {
     line-height: 1.5
-}
-.dashboard-actions-leading-tight {
-    line-height: 1.25
 }
 .dashboard-actions-no-underline {
     text-decoration-line: none
@@ -164,17 +151,8 @@
     .md\:dashboard-actions-grid {
         display: grid
     }
-    .md\:dashboard-actions-grid-cols-2 {
-        grid-template-columns: repeat(2, minmax(0, 1fr))
-    }
     .md\:dashboard-actions-grid-cols-1 {
         grid-template-columns: repeat(1, minmax(0, 1fr))
-    }
-    .md\:dashboard-actions-border-b-0 {
-        border-bottom-width: 0px
-    }
-    .odd\:md\:dashboard-actions-border-r:nth-child(odd) {
-        border-right-width: 1px
     }
 }
 

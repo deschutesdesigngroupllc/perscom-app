@@ -7,7 +7,6 @@ use App\Nova\Actions\RegenerateNewsfeedHeadline;
 use App\Nova\Actions\RegenerateNewsfeedText;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
@@ -48,10 +47,20 @@ class Newsfeed extends Resource
         return 'newsfeed';
     }
 
-    public function fields(Request $request): array
+    /**
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        return $query->where('log_name', 'newsfeed');
+    }
+
+    /**
+     * @return array
+     */
+    public function fields(Request $request)
     {
         return [
-            ID::make()->sortable(),
             Text::make('Headline')
                 ->resolveUsing(function () {
                     return $this->getExtraProperty('headline');
@@ -67,7 +76,8 @@ class Newsfeed extends Resource
                 ->fillUsing(function (NovaRequest $request, Activity $activity, $attribute, $requestAttribute) {
                     $activity->properties = $activity->properties->put('text', $request->input($requestAttribute));
                 })
-                ->rules('required'),
+                ->rules('required')
+                ->alwaysShow(),
             MorphTo::make('Subject'),
             DateTime::make('Date', 'created_at')->rules('required')->sortable(),
         ];
