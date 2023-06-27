@@ -7,12 +7,6 @@
          stopOnFailure="false"
          backupStaticProperties="false">
 
-    <source>
-        <include>
-            <directory>./app</directory>
-        </include>
-    </source>
-
     <testsuites>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
@@ -22,9 +16,15 @@
         </testsuite>
     </testsuites>
 
-    <report>
-        <clover outputFile="clover.xml" />
-    </report>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">./app</directory>
+        </include>
+        <report>
+            <clover outputFile="clover.xml" />
+            <html outputDirectory="tests/Coverage/html"/>
+        </report>
+    </coverage>
 
     <php>
         <server name="API_URL" value="http://api.lvh.me"/>
