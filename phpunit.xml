@@ -7,6 +7,12 @@
          stopOnFailure="false"
          backupStaticProperties="false">
 
+    <source>
+        <include>
+            <directory>./app</directory>
+        </include>
+    </source>
+
     <testsuites>
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
@@ -15,6 +21,10 @@
             <directory suffix="Test.php">./tests/Unit</directory>
         </testsuite>
     </testsuites>
+
+    <report>
+        <clover outputFile="clover.xml" />
+    </report>
 
     <php>
         <server name="API_URL" value="http://api.lvh.me"/>

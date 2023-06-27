@@ -8,6 +8,8 @@ jobs:
   test-application:
     name: Run Unit/Feature Tests
     runs-on: ubuntu-22.04-16
+    env:
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
 
     services:
       mysql:
@@ -35,7 +37,7 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
           ini-values: error_reporting=E_ALL
           tools: composer
-          coverage: none
+          coverage: xdebug
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -74,8 +76,15 @@ jobs:
       - name: Install Passport Keys
         run: php artisan passport:keys --force
 
+      - name: Code Climate Setup
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter
+          ./cc-test-reporter before-build
+
       - name: Execute Tests
-        run: php artisan test --parallel
+        run: |
+          php artisan test --parallel --coverage-clover clover.xml
+          ./cc-test-reporter after-build -t clover --exit-code $?
         env:
           DB_DATABASE: testing
           DB_USERNAME: root
