@@ -83,7 +83,7 @@ jobs:
 
       - name: Execute Tests
         run: |
-          php artisan test --parallel --coverage-clover clover.xml
+          php artisan test --parallel
           ./cc-test-reporter after-build -t clover --exit-code $?
         env:
           DB_DATABASE: testing
