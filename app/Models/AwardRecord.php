@@ -44,7 +44,15 @@ class AwardRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    protected string $prompts = AwardRecordPrompts::class;
+    /**
+     * @var string
+     */
+    protected static $prompts = AwardRecordPrompts::class;
+
+    /**
+     * @var string[]
+     */
+    protected static $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -70,7 +78,20 @@ class AwardRecord extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->useLogName('newsfeed');
+        return LogOptions::defaults()
+            ->useLogName('newsfeed')
+            ->setDescriptionForEvent(fn ($event) => "An award record has been $event");
+    }
+
+    /**
+     * @return void
+     */
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        if ($eventName === 'created') {
+            $activity->properties = $activity->properties->put('headline', "An award record has been added for {$this->user->name}");
+            $activity->properties = $activity->properties->put('text', $this->text);
+        }
     }
 
     /**

@@ -43,7 +43,15 @@ class CombatRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    protected string $prompts = CombatRecordPrompts::class;
+    /**
+     * @var string
+     */
+    protected static $prompts = CombatRecordPrompts::class;
+
+    /**
+     * @var string[]
+     */
+    protected static $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -69,6 +77,19 @@ class CombatRecord extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->useLogName('newsfeed');
+        return LogOptions::defaults()
+            ->useLogName('newsfeed')
+            ->setDescriptionForEvent(fn ($event) => "A combat record has been $event");
+    }
+
+    /**
+     * @return void
+     */
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        if ($eventName === 'created') {
+            $activity->properties = $activity->properties->put('headline', "A combat record has been added for {$this->user->name}");
+            $activity->properties = $activity->properties->put('text', $this->text);
+        }
     }
 }

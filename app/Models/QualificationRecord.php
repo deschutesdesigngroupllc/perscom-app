@@ -47,7 +47,12 @@ class QualificationRecord extends Model
     /**
      * @var string
      */
-    protected $prompts = QualificationRecordPrompts::class;
+    protected static $prompts = QualificationRecordPrompts::class;
+
+    /**
+     * @var string[]
+     */
+    protected static $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -73,7 +78,20 @@ class QualificationRecord extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->useLogName('newsfeed');
+        return LogOptions::defaults()
+            ->useLogName('newsfeed')
+            ->setDescriptionForEvent(fn ($event) => "A qualification record has been $event");
+    }
+
+    /**
+     * @return void
+     */
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        if ($eventName === 'created') {
+            $activity->properties = $activity->properties->put('headline', "A qualification record has been added for {$this->user->name}");
+            $activity->properties = $activity->properties->put('text', $this->text);
+        }
     }
 
     /**

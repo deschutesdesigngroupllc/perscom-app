@@ -73,7 +73,9 @@ class Main extends Dashboard
         return (new Newsfeed())->withMeta([
             'jwt' => Auth::guard('jwt')->claims([
                 'scope' => [
+                    'manage:newsfeed',
                     'view:user',
+                    'view:assignmentrecord',
                     'view:awardrecord',
                     'view:combatrecord',
                     'view:qualificationrecord',

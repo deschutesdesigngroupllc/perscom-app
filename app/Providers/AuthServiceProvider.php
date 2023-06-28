@@ -20,6 +20,7 @@ use App\Models\Form;
 use App\Models\Image;
 use App\Models\Mail;
 use App\Models\Message;
+use App\Models\Newsfeed;
 use App\Models\PassportClient;
 use App\Models\PassportClientLog;
 use App\Models\PassportToken;
@@ -59,6 +60,7 @@ use App\Policies\FormPolicy;
 use App\Policies\ImagePolicy;
 use App\Policies\MailPolicy;
 use App\Policies\MessagePolicy;
+use App\Policies\NewsfeedPolicy;
 use App\Policies\PassportClientLogPolicy;
 use App\Policies\PassportClientPolicy;
 use App\Policies\PassportTokenLogPolicy;
@@ -115,6 +117,7 @@ class AuthServiceProvider extends ServiceProvider
         Image::class => ImagePolicy::class,
         Mail::class => MailPolicy::class,
         Message::class => MessagePolicy::class,
+        Newsfeed::class => NewsfeedPolicy::class,
         PassportClient::class => PassportClientPolicy::class,
         PassportClientLog::class => PassportClientLogPolicy::class,
         PassportToken::class => PassportTokenPolicy::class,

@@ -2,7 +2,7 @@
 
 namespace App\Nova\Actions;
 
-use App\Jobs\CreateInitialTenantUser;
+use App\Jobs\Tenant\CreateInitialTenantUser;
 use App\Models\Domain;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;

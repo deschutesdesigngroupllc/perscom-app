@@ -49,7 +49,12 @@ class AssignmentRecord extends Model
     /**
      * @var string
      */
-    protected $prompts = AssignmentRecordPrompts::class;
+    protected static $prompts = AssignmentRecordPrompts::class;
+
+    /**
+     * @var string[]
+     */
+    protected static $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -89,7 +94,20 @@ class AssignmentRecord extends Model
 
     public function getActivitylogOptions(): LogOptions
     {
-        return LogOptions::defaults()->useLogName('newsfeed');
+        return LogOptions::defaults()
+            ->useLogName('newsfeed')
+            ->setDescriptionForEvent(fn ($event) => "An assignment record has been $event");
+    }
+
+    /**
+     * @return void
+     */
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        if ($eventName === 'created') {
+            $activity->properties = $activity->properties->put('headline', "An assignment record has been added for {$this->user->name}");
+            $activity->properties = $activity->properties->put('text', $this->text);
+        }
     }
 
     /**

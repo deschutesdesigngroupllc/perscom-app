@@ -1,14 +1,16 @@
 <?php
 
-namespace App\Jobs;
+namespace App\Jobs\Tenant;
 
 use App\Mail\Tenant\NewTenantMail;
 use App\Models\Tenant;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
@@ -49,5 +51,15 @@ class CreateInitialTenantUser implements ShouldQueue
         if ($this->sendMail) {
             Mail::to($user)->send(new NewTenantMail($this->tenant, $user, $password));
         }
+    }
+
+    /**
+     * Handle a job failure.
+     */
+    public function failed(Exception $exception): void
+    {
+        Log::error('Failed to create initial tenant user', [
+            'exception' => $exception,
+        ]);
     }
 }

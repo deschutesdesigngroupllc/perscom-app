@@ -4,6 +4,7 @@ namespace App\Jobs;
 
 use App\Models\Tenant;
 use Database\Seeders\Demo\Military\DemoDataSeeder;
+use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -11,7 +12,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class ResetDemoAccount implements ShouldQueue
 {
@@ -60,7 +60,7 @@ class ResetDemoAccount implements ShouldQueue
     /**
      * Handle a job failure.
      */
-    public function failed(Throwable $exception): void
+    public function failed(Exception $exception): void
     {
         Log::error('Failed to reset demo account', [
             'exception' => $exception,
