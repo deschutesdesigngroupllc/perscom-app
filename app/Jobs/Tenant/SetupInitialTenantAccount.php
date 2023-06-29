@@ -5,7 +5,6 @@ namespace App\Jobs\Tenant;
 use App\Models\Role;
 use App\Models\Settings;
 use App\Models\User;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -76,7 +75,7 @@ class SetupInitialTenantAccount implements ShouldQueue
     /**
      * Handle a job failure.
      */
-    public function failed(Exception $exception): void
+    public function failed($exception): void
     {
         Log::error('Failed to setup initial tenant settings', [
             'exception' => $exception,

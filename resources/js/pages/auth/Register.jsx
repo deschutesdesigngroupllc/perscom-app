@@ -4,12 +4,10 @@ import {Button} from '../../components/Button'
 import {Input} from '../../components/Input'
 import {Label} from '../../components/Label'
 import {ValidationErrors} from '../../components/ValidationErrors'
-import {Head, Link, useForm, usePage} from '@inertiajs/inertia-react'
+import {Head, Link, useForm} from '@inertiajs/inertia-react'
 import PropTypes from 'prop-types'
 
-export function Register({ enableSocialLogin, githubLogin, discordLogin }) {
-  const { flash } = usePage().props
-
+export function Register({ status, enableSocialLogin, githubLogin, discordLogin }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     name: '',
     email: '',
@@ -36,7 +34,7 @@ export function Register({ enableSocialLogin, githubLogin, discordLogin }) {
     <AuthLayout>
       <Head title='Register' />
 
-      {flash.status && <div className='mb-4 text-sm font-medium text-green-600'>{flash.status}</div>}
+      {status && <div className='mb-4 text-sm font-medium text-green-600'>{status}</div>}
 
       <ValidationErrors errors={errors} />
 
@@ -145,6 +143,7 @@ export function Register({ enableSocialLogin, githubLogin, discordLogin }) {
 }
 
 Register.propTypes = {
+  status: PropTypes.string,
   enableSocialLogin: PropTypes.bool,
   githubLogin: PropTypes.string,
   discordLogin: PropTypes.string

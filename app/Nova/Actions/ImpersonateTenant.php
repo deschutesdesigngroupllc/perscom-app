@@ -36,9 +36,11 @@ class ImpersonateTenant extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $tenant) {
-            $token = tenancy()->impersonate($tenant, $fields->user, $tenant->url.'/dashboards/main', 'web');
+            $token = tenancy()->impersonate($tenant, $fields->user, $tenant->url, 'web');
 
-            return Action::openInNewTab("{$tenant->url}/impersonate/{$token->token}");
+            return Action::openInNewTab($tenant->route('tenant.impersonate', [
+                'token' => $token->token,
+            ]));
         }
     }
 

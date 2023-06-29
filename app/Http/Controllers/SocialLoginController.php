@@ -9,6 +9,7 @@ use App\Repositories\TenantRepository;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
 class SocialLoginController extends Controller
@@ -91,9 +92,11 @@ class SocialLoginController extends Controller
         $redirect = null;
         if ($function === self::SOCIAL_REGISTER) {
             if ($user) {
+                $driver = Str::title($driver);
                 $redirect = redirect()
-                    ->to("{$tenant->url}/login")
-                    ->with('status', "You already have an account registerd with your $driver email. Please login to continue.");
+                    ->to($tenant->route('login', [
+                        'status' => "You already have an account registered with your $driver email. Please login to continue.",
+                    ]));
             } else {
                 $user = $tenant->run(function ($tenant) use ($socialLiteUser, $driver) {
                     return User::create([
@@ -120,9 +123,11 @@ class SocialLoginController extends Controller
                     ]);
                 });
             } else {
+                $driver = Str::title($driver);
                 $redirect = redirect()
-                    ->to("{$tenant->url}/login")
-                    ->with('status', "We could not find an account associated with your $driver email. Please create a new account to continue.");
+                    ->to($tenant->route('register', [
+                        'status' => "We could not find an account associated with your $driver email. Please create a new account to continue.",
+                    ]));
             }
         }
 
@@ -138,22 +143,23 @@ class SocialLoginController extends Controller
         }
 
         return $token ?
-            redirect()->to("{$tenant->url}/auth/login/$token->token") :
-            ($redirect ?? redirect()->to($tenant->url));
+            redirect()->to($tenant->route('tenant.auth.social.login', [
+                'token' => $token->token,
+            ])) : ($redirect ?? redirect()->to($tenant->url));
     }
 
     /**
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
-    public function login(LoginToken $loginToken)
+    public function login(LoginToken $token)
     {
-        if ($loginToken->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
+        if ($token->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
             abort(403);
         }
 
-        Auth::loginUsingId($loginToken->user_id);
+        Auth::loginUsingId($token->user_id);
 
-        $loginToken->delete();
+        $token->delete();
 
         return redirect(tenant()->url);
     }

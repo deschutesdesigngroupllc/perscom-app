@@ -127,6 +127,7 @@ trait WithTenant
         }
 
         tenancy()->initialize($this->tenant);
+        tenant()->load('domains');
 
         URL::forceRootUrl($this->tenant->url);
 

@@ -8,8 +8,8 @@ import {ValidationErrors} from '../../components/ValidationErrors'
 import {Head, Link, useForm, usePage} from '@inertiajs/inertia-react'
 import {AuthLayout} from '../../layouts/Auth'
 
-export function Login({ canResetPassword, canCreateAnAccount, demoMode, adminMode, enableSocialLogin, githubLogin, discordLogin }) {
-  const { flash, tenant } = usePage().props
+export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, adminMode, enableSocialLogin, githubLogin, discordLogin }) {
+  const { tenant } = usePage().props
   const { data, setData, post, processing, errors, reset } = useForm({
     email: demoMode ? 'demo@perscom.io' : '',
     password: demoMode ? 'password' : '',
@@ -35,7 +35,7 @@ export function Login({ canResetPassword, canCreateAnAccount, demoMode, adminMod
     <AuthLayout>
       <Head title='Log in' />
 
-      {flash.status && <div className='mb-4 text-sm font-medium text-green-600'>{flash.status}</div>}
+      {status && <div className='mb-4 text-sm font-medium text-green-600'>{status}</div>}
 
       {demoMode && (
         <div className='mb-4'>
@@ -165,6 +165,7 @@ export function Login({ canResetPassword, canCreateAnAccount, demoMode, adminMod
 }
 
 Login.propTypes = {
+  status: PropTypes.string,
   canResetPassword: PropTypes.bool,
   canCreateAnAccount: PropTypes.bool,
   demoMode: PropTypes.bool,

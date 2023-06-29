@@ -4,7 +4,6 @@ namespace App\Jobs\Tenant;
 
 use App\Mail\Tenant\NewTenantMail;
 use App\Models\Tenant;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -56,7 +55,7 @@ class CreateInitialTenantUser implements ShouldQueue
     /**
      * Handle a job failure.
      */
-    public function failed(Exception $exception): void
+    public function failed($exception): void
     {
         Log::error('Failed to create initial tenant user', [
             'exception' => $exception,

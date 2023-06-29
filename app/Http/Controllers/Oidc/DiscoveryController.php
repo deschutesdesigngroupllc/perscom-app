@@ -13,9 +13,9 @@ class DiscoveryController extends Controller
     {
         return response()->json([
             'issuer' => tenant()->url,
-            'authorization_endpoint' => tenant()->url.'/oauth/authorize',
-            'token_endpoint' => tenant()->url.'/oauth/token',
-            'userinfo_endpoint' => tenant()->url.'/oauth/userinfo',
+            'authorization_endpoint' => tenant()->route('passport.authorizations.authorize'),
+            'token_endpoint' => tenant()->route('passport.token'),
+            'userinfo_endpoint' => tenant()->route('oidc.userinfo'),
             'grant_types_supported' => [
                 'authorization_code',
                 'implicit',
@@ -44,7 +44,7 @@ class DiscoveryController extends Controller
                 'sub',
                 'scopes',
             ],
-            'end_session_endpoint' => tenant()->url.'/oauth/logout',
+            'end_session_endpoint' => tenant()->route('oidc.logout'),
         ]);
     }
 }
