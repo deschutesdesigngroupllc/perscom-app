@@ -25,6 +25,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  *
  * @method static Builder|TaskAssignment assigned()
  * @method static Builder|TaskAssignment expired()
+ * @method static \Database\Factories\TaskAssignmentFactory factory($count = null, $state = [])
  * @method static Builder|TaskAssignment forUser(\App\Models\User $user)
  * @method static Builder|TaskAssignment newModelQuery()
  * @method static Builder|TaskAssignment newQuery()

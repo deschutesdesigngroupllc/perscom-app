@@ -5,13 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\Newsfeed
+ * App\Models\Activity
  *
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property-read \Illuminate\Support\Collection $changes
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
  *
  * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static \Database\Factories\ActivityFactory factory($count = null, $state = [])
  * @method static Builder|Activity forBatch(string $batchUuid)
  * @method static Builder|Activity forEvent(string $event)
  * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)

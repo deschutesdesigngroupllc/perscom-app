@@ -17,6 +17,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * App\Models\CombatRecord
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
+ * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read \App\Models\User|null $author
