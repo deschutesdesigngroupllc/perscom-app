@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Newsfeed;
 
 use App\Http\Resources\NewsfeedResource;
-use App\Models\Newsfeed;
+use App\Models\NewsfeedItem;
 use Orion\Http\Controllers\Controller;
 
 class NewsfeedController extends Controller
@@ -11,7 +11,7 @@ class NewsfeedController extends Controller
     /**
      * @var string
      */
-    protected $model = Newsfeed::class;
+    protected $model = NewsfeedItem::class;
 
     /**
      * @var string

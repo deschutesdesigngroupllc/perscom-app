@@ -16,7 +16,7 @@ class RegenerateNewsfeedText extends Action
     /**
      * @var string
      */
-    public $name = 'Regenerate Newsfeed Text';
+    public $name = 'Regenerate Newsfeed Item Text';
 
     /**
      * @var string

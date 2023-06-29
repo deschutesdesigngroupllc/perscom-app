@@ -79,10 +79,10 @@ class Announcement extends Resource
             Text::make('Title')->rules('required')->hideFromDetail()->showOnPreview(),
             Trix::make('Content')->rules('required')->alwaysShow()->hideFromDetail()->showOnPreview(),
             Select::make('Color')->displayUsingLabels()->options([
-                'info' => 'Information',
-                'success' => 'Success',
-                'warning' => 'Warning',
-                'danger' => 'Danger',
+                'info' => 'Information (Blue)',
+                'success' => 'Success (Green)',
+                'warning' => 'Warning (Yellow)',
+                'failure' => 'Failure (Red)',
             ])->rules('required')->default(function () {
                 return 'info';
             })->onlyOnForms(),

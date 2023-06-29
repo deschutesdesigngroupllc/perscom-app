@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Features\OpenAiGeneratedContent;
 use App\Nova\Actions\RegenerateNewsfeedHeadline;
 use App\Nova\Actions\RegenerateNewsfeedText;
 use Illuminate\Http\Request;
@@ -14,13 +15,14 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Laravel\Pennant\Feature;
 
-class Newsfeed extends Resource
+class NewsfeedItem extends Resource
 {
     /**
      * @var string
      */
-    public static $model = \App\Models\Newsfeed::class;
+    public static $model = \App\Models\NewsfeedItem::class;
 
     /**
      * @var string
@@ -39,7 +41,7 @@ class Newsfeed extends Resource
      */
     public static function label()
     {
-        return 'Newsfeed';
+        return 'Items';
     }
 
     /**
@@ -47,7 +49,7 @@ class Newsfeed extends Resource
      */
     public static function uriKey()
     {
-        return 'newsfeed';
+        return 'newsfeed-items';
     }
 
     /**
@@ -115,6 +117,13 @@ class Newsfeed extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [(new RegenerateNewsfeedHeadline()), (new RegenerateNewsfeedText())];
+        return [
+            (new RegenerateNewsfeedHeadline())->canSee(function () {
+                return Feature::driver('database')->active(OpenAiGeneratedContent::class);
+            }),
+            (new RegenerateNewsfeedText())->canSee(function () {
+                return Feature::driver('database')->active(OpenAiGeneratedContent::class);
+            }),
+        ];
     }
 }

@@ -59,6 +59,7 @@ class Announcement extends Model
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', $this->title);
             $activity->properties = $activity->properties->put('text', $this->content);
+            $activity->properties = $activity->properties->put('color', $this->color);
         }
     }
 }

@@ -93,6 +93,7 @@ class QualificationRecord extends Model
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "A qualification record has been added for {$this->user->name}");
             $activity->properties = $activity->properties->put('text', $this->text);
+            $activity->properties = $activity->properties->put('subject', "Qualification: {$this->qualification->name}");
         }
     }
 

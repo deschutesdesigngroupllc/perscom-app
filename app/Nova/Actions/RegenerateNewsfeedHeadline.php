@@ -16,7 +16,7 @@ class RegenerateNewsfeedHeadline extends Action
     /**
      * @var string
      */
-    public $name = 'Regenerate Newsfeed Headline';
+    public $name = 'Regenerate Newsfeed Item Headline';
 
     /**
      * @var string

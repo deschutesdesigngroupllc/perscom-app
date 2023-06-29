@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Logo} from '../components/Logo'
-import {Link} from '@inertiajs/inertia-react'
+import { Logo } from '../components/Logo'
+import { Link } from '@inertiajs/inertia-react'
 
 export function AuthLayout({ children }) {
   return (

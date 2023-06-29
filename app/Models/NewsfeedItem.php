@@ -6,7 +6,7 @@ use App\Models\Scopes\NewsfeedScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\Newsfeed
+ * App\Models\NewsfeedItem
  *
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property-read \Illuminate\Support\Collection $changes
@@ -18,13 +18,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder|Activity hasBatch()
  * @method static Builder|Activity inLog(...$logNames)
- * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed query()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem query()
  *
  * @mixin \Eloquent
  */
-class Newsfeed extends Activity
+class NewsfeedItem extends Activity
 {
     use HasFactory;
 

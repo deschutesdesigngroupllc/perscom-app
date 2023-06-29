@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import {Button, ButtonLink} from '../../components/Button'
-import {Checkbox} from '../../components/Checkbox'
-import {Input} from '../../components/Input'
-import {Label} from '../../components/Label'
-import {ValidationErrors} from '../../components/ValidationErrors'
-import {Head, Link, useForm, usePage} from '@inertiajs/inertia-react'
-import {AuthLayout} from '../../layouts/Auth'
+import { Button, ButtonLink } from '../../components/Button'
+import { Checkbox } from '../../components/Checkbox'
+import { Input } from '../../components/Input'
+import { Label } from '../../components/Label'
+import { ValidationErrors } from '../../components/ValidationErrors'
+import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react'
+import { AuthLayout } from '../../layouts/Auth'
 
 export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, adminMode, enableSocialLogin, githubLogin, discordLogin }) {
   const { tenant } = usePage().props

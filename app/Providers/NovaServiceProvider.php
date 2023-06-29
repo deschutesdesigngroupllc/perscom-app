@@ -32,7 +32,7 @@ use App\Nova\Lenses\MyEvents;
 use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
-use App\Nova\Newsfeed;
+use App\Nova\NewsfeedItem;
 use App\Nova\PassportAuthorizedApplications;
 use App\Nova\PassportClient;
 use App\Nova\PassportClientLog;
@@ -255,11 +255,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->collapsable()
                         ->collapsedByDefault(),
 
+                    MenuSection::make('Newsfeed', [
+                        MenuItem::resource(NewsfeedItem::class),
+                    ])->icon('newspaper')
+                        ->collapsable()
+                        ->collapsedByDefault(),
+
                     MenuSection::make('Organization', [
                         MenuItem::resource(Announcement::class),
                         MenuItem::resource(Award::class),
                         MenuItem::resource(Document::class),
-                        MenuItem::resource(Newsfeed::class),
                         MenuItem::resource(Position::class),
                         MenuItem::resource(Qualification::class),
                         MenuItem::resource(Rank::class),
