@@ -14,7 +14,7 @@ class ActivityObserver
      */
     public function created(Activity $activity): void
     {
-        if ($activity->log_name === 'newsfeed' && Feature::driver('database')->active(OpenAiGeneratedContent::class)) {
+        if ($activity->log_name === 'newsfeed' && Feature::store('database')->active(OpenAiGeneratedContent::class)) {
             GenerateOpenAiNewsfeedContent::dispatch($activity, 'created', 'headline');
         }
     }
