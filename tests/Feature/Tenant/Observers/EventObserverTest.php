@@ -1,0 +1,56 @@
+<?php
+
+namespace Tests\Feature\Tenant\Observers;
+
+use App\Jobs\CallWebhook;
+use App\Models\Enums\WebhookEvent;
+use App\Models\Event;
+use App\Models\Webhook;
+use Illuminate\Support\Facades\Queue;
+use Tests\Feature\Tenant\TenantTestCase;
+
+class EventObserverTest extends TenantTestCase
+{
+    public function test_create_event_webhook_sent()
+    {
+        Queue::fake();
+
+        Webhook::factory()->state([
+            'events' => [WebhookEvent::EVENT_CREATED],
+        ])->create();
+
+        Event::factory()->create();
+
+        Queue::assertPushed(CallWebhook::class);
+    }
+
+    public function test_update_event_webhook_sent()
+    {
+        Queue::fake();
+
+        Webhook::factory()->state([
+            'events' => [WebhookEvent::EVENT_UPDATED],
+        ])->create();
+
+        $event = Event::factory()->create();
+        $event->update([
+            'name' => 'foo bar',
+        ]);
+
+        Queue::assertPushed(CallWebhook::class);
+    }
+
+    public function test_delete_event_webhook_sent()
+    {
+        Queue::fake();
+
+        Webhook::factory()->state([
+            'events' => [WebhookEvent::EVENT_DELETED],
+        ])->create();
+
+        $event = Event::factory()->create();
+        $event->delete();
+
+        Queue::assertPushed(CallWebhook::class);
+    }
+}

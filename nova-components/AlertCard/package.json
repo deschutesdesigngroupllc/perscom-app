@@ -11,6 +11,9 @@
         "nova:install": "npm --prefix='../../vendor/laravel/nova' ci"
     },
     "devDependencies": {
+        "@heroicons/react": "^2.0.14",
+        "flowbite": "^1.6.5",
+        "flowbite-vue": "^0.0.14",
         "laravel-mix": "^6.0.41",
         "postcss": "^8.3.11",
         "vue": "^3.2.45",

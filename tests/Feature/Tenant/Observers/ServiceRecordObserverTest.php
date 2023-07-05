@@ -3,6 +3,7 @@
 namespace Tests\Feature\Tenant\Observers;
 
 use App\Jobs\CallWebhook;
+use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\ServiceRecord;
 use App\Models\Webhook;
@@ -13,6 +14,13 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class ServiceRecordObserverTest extends TenantTestCase
 {
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        Queue::fake([GenerateOpenAiNewsfeedContent::class]);
+    }
+
     public function test_create_service_record_notification_sent()
     {
         Notification::fake();
@@ -26,7 +34,7 @@ class ServiceRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::SERVICE_RECORD_CREATED],
         ])->create();
 
@@ -39,7 +47,7 @@ class ServiceRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::SERVICE_RECORD_UPDATED],
         ])->create();
 
@@ -55,7 +63,7 @@ class ServiceRecordObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::SERVICE_RECORD_DELETED],
         ])->create();
 

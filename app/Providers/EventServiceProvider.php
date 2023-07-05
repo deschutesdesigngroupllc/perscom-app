@@ -6,6 +6,7 @@ use App\Listeners\CheckTenantDatabaseExists;
 use App\Listeners\ConfigureApplicationForTenant;
 use App\Listeners\ResetTenantFeatures;
 use App\Listeners\UpdateTenantLastLoginDate;
+use App\Models\Activity;
 use App\Models\AssignmentRecord;
 use App\Models\AwardRecord;
 use App\Models\Calendar;
@@ -21,6 +22,7 @@ use App\Models\Submission;
 use App\Models\TaskAssignment;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Observers\ActivityObserver;
 use App\Observers\AssignmentRecordObserver;
 use App\Observers\AwardRecordObserver;
 use App\Observers\CalendarObserver;
@@ -86,6 +88,7 @@ class EventServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Activity::observe(ActivityObserver::class);
         AssignmentRecord::observe(AssignmentRecordObserver::class);
         AwardRecord::observe(AwardRecordObserver::class);
         Calendar::observe(CalendarObserver::class);

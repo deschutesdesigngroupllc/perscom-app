@@ -15,7 +15,7 @@ class SubmissionObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::SUBMISSION_CREATED],
         ])->create();
 
@@ -28,7 +28,7 @@ class SubmissionObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::SUBMISSION_UPDATED],
         ])->create();
 
@@ -44,7 +44,7 @@ class SubmissionObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::SUBMISSION_DELETED],
         ])->create();
 

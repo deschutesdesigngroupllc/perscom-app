@@ -86,7 +86,6 @@ jobs:
           php artisan test --parallel
           ./cc-test-reporter after-build -t clover --exit-code $?
         env:
-          DB_DATABASE: testing
           DB_USERNAME: root
 
       - name: Upload Logs

@@ -11,7 +11,7 @@ class DashboardQuickActions extends Card
      *
      * @var string
      */
-    public $width = 'full';
+    public $width = '1/3';
 
     /**
      * Get the component name for the element.

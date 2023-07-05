@@ -12,7 +12,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class RemoveInactiveAccounts implements ShouldQueue
 {
@@ -81,7 +80,7 @@ class RemoveInactiveAccounts implements ShouldQueue
     /**
      * Handle a job failure.
      */
-    public function failed(Throwable $exception): void
+    public function failed($exception): void
     {
         Log::error('Failed to remove inactive accounts', [
             'exception' => $exception,

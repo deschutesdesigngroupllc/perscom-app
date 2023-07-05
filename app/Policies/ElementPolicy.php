@@ -79,7 +79,7 @@ class ElementPolicy extends Policy
      */
     public function restore(User $user, Element $element)
     {
-        return Gate::check('delete', $element->model);
+        return Gate::check('restore', $element->model);
     }
 
     /**
@@ -89,6 +89,6 @@ class ElementPolicy extends Policy
      */
     public function forceDelete(User $user, Element $element)
     {
-        return Gate::check('delete', $element->model);
+        return Gate::check('forceDelete', $element->model);
     }
 }

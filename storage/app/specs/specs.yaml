@@ -11582,6 +11582,922 @@ paths:
       summary: 'Update pivot'
       tags:
         - 'Users Fields'
+  /v1/newsfeed:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsfeedItem'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NewsfeedItemResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create activity log'
+      tags:
+        - Newsfeed
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NewsfeedItemResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of activity log'
+      tags:
+        - Newsfeed
+  /v1/newsfeed/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NewsfeedItemResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for activity log'
+      tags:
+        - Newsfeed
+  '/v1/newsfeed/{newsfeed}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NewsfeedItemResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get activity log'
+      tags:
+        - Newsfeed
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewsfeedItem'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NewsfeedItemResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update activity log'
+      tags:
+        - Newsfeed
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/NewsfeedItemResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete activity log'
+      tags:
+        - Newsfeed
+  /v1/newsfeed/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/NewsfeedItem'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NewsfeedItemResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of activity log'
+      tags:
+        - Newsfeed
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/NewsfeedItem'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NewsfeedItemResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of activity log'
+      tags:
+        - Newsfeed
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - causer
+              - subject
+              - 'subject?.user'
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/NewsfeedItemResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of activity log'
+      tags:
+        - Newsfeed
+  '/v1/newsfeed/{newsfeed}/likes':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create user'
+      tags:
+        - 'Newsfeed Likes'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of users'
+      tags:
+        - 'Newsfeed Likes'
+  '/v1/newsfeed/{newsfeed}/likes/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for users'
+      tags:
+        - 'Newsfeed Likes'
+  '/v1/newsfeed/{newsfeed}/likes/{like}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: like
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get user'
+      tags:
+        - 'Newsfeed Likes'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: like
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update user'
+      tags:
+        - 'Newsfeed Likes'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: like
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/UserResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete user'
+      tags:
+        - 'Newsfeed Likes'
+  '/v1/newsfeed/{newsfeed}/likes/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of users'
+      tags:
+        - 'Newsfeed Likes'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of users'
+      tags:
+        - 'Newsfeed Likes'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/UserResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of users'
+      tags:
+        - 'Newsfeed Likes'
+  '/v1/newsfeed/{newsfeed}/likes/attach':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Attach users'
+      tags:
+        - 'Newsfeed Likes'
+  '/v1/newsfeed/{newsfeed}/likes/detach':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach users'
+      tags:
+        - 'Newsfeed Likes'
+  '/v1/newsfeed/{newsfeed}/likes/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync users'
+      tags:
+        - 'Newsfeed Likes'
+  '/v1/newsfeed/{newsfeed}/likes/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle users'
+      tags:
+        - 'Newsfeed Likes'
+  '/v1/newsfeed/{newsfeed}/likes/{like}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: newsfeed
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: like
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Newsfeed Likes'
 components:
   securitySchemes:
     ApiKey:
@@ -11653,6 +12569,8 @@ components:
           type: string
           nullable: true
           format: date-time
+        approved:
+          type: boolean
     UserResource:
       title: UserResource
       allOf:
@@ -12211,7 +13129,15 @@ components:
     Calendar:
       title: Calendar
       type: object
-      properties: []
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        color:
+          type: string
+          nullable: true
     CalendarResource:
       title: CalendarResource
       allOf:
@@ -12423,6 +13349,46 @@ components:
               type: string
               nullable: true
               format: date-time
+            hidden:
+              type: boolean
+    NewsfeedItem:
+      title: NewsfeedItem
+      type: object
+      properties:
+        log_name:
+          type: string
+          nullable: true
+        description:
+          type: string
+        subject_type:
+          type: string
+          nullable: true
+        event:
+          type: string
+          nullable: true
+        subject_id:
+          type: integer
+          nullable: true
+        causer_type:
+          type: string
+          nullable: true
+        causer_id:
+          type: string
+          nullable: true
+        properties:
+          type: object
+          additionalProperties: true
+        batch_uuid:
+          type: string
+          nullable: true
+    NewsfeedItemResource:
+      title: NewsfeedItemResource
+      allOf:
+        -
+          $ref: '#/components/schemas/NewsfeedItem'
+        -
+          type: object
+          properties: []
 tags:
   -
     name: Me
@@ -12448,6 +13414,12 @@ tags:
   -
     name: 'Forms Submissions'
     description: 'API documentation for Forms Submissions'
+  -
+    name: Newsfeed
+    description: 'API documentation for Newsfeed'
+  -
+    name: 'Newsfeed Likes'
+    description: 'API documentation for Newsfeed Likes'
   -
     name: Qualifications
     description: 'API documentation for Qualifications'

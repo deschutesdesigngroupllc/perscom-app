@@ -65,9 +65,7 @@ class AwardRecord extends Resource
      */
     public function title()
     {
-        return $this->id.optional($this->user, static function ($user) {
-            return " - $user->name";
-        });
+        return "{$this->id} - {$this->user?->name} - {$this->award?->name}";
     }
 
     /**

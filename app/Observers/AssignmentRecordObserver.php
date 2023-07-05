@@ -18,6 +18,16 @@ class AssignmentRecordObserver
      */
     public function created(AssignmentRecord $assignment)
     {
+        if ($assignment->user) {
+            $assignment->user->position_id = $assignment->position?->id;
+            $assignment->user->specialty_id = $assignment->specialty?->id;
+            $assignment->user->unit_id = $assignment->unit?->id;
+            $assignment->user->save();
+            $assignment->user->secondary_positions()->sync($assignment->secondary_position_ids);
+            $assignment->user->secondary_specialties()->sync($assignment->secondary_specialty_ids);
+            $assignment->user->secondary_units()->sync($assignment->secondary_unit_ids);
+        }
+
         Notification::send($assignment->user, new NewAssignmentRecord($assignment));
 
         Webhook::query()->whereJsonContains('events', [WebhookEvent::ASSIGNMENT_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($assignment) {

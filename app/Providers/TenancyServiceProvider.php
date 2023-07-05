@@ -6,8 +6,11 @@ namespace App\Providers;
 
 use App\Http\Middleware\CheckUniversalRouteForTenantOrAdmin;
 use App\Http\Middleware\InitializeTenancyByRequestData;
-use App\Jobs\CreateInitialTenantUser;
-use App\Jobs\SetupInitialTenantSettings;
+use App\Jobs\Tenant\CreateDatabase;
+use App\Jobs\Tenant\CreateInitialTenantUser;
+use App\Jobs\Tenant\MigrateDatabase;
+use App\Jobs\Tenant\SeedDatabase;
+use App\Jobs\Tenant\SetupInitialTenantAccount;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -32,11 +35,11 @@ class TenancyServiceProvider extends ServiceProvider
             Events\CreatingTenant::class => [],
             Events\TenantCreated::class => [
                 JobPipeline::make([
-                    Jobs\CreateDatabase::class,
-                    Jobs\MigrateDatabase::class,
-                    Jobs\SeedDatabase::class,
+                    CreateDatabase::class,
+                    MigrateDatabase::class,
+                    SeedDatabase::class,
                     CreateInitialTenantUser::class,
-                    SetupInitialTenantSettings::class,
+                    SetupInitialTenantAccount::class,
                 ])->send(function (Events\TenantCreated $event) {
                     return $event->tenant;
                 })->shouldBeQueued(true, 'tenant'),

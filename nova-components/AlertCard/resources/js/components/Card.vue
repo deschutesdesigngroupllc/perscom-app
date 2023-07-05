@@ -76,7 +76,7 @@
           'ac-bg-yellow-50': announcement.color === 'warning',
           'ac-bg-blue-100': announcement.color === 'info',
           'ac-bg-green-100': announcement.color === 'success',
-          'ac-bg-red-100': announcement.color === 'danger'
+          'ac-bg-red-100': announcement.color === 'failure'
         }"
       >
         <div class="ac-flex">
@@ -87,7 +87,7 @@
                 'ac-text-yellow-400': announcement.color === 'warning',
                 'ac-text-blue-400': announcement.color === 'info',
                 'ac-text-green-400': announcement.color === 'success',
-                'ac-text-red-400': announcement.color === 'danger'
+                'ac-text-red-400': announcement.color === 'failure'
               }"
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
@@ -101,7 +101,7 @@
                 clip-rule="evenodd"
               />
               <path
-                v-if="announcement.color === 'danger'"
+                v-if="announcement.color === 'failure'"
                 fill-rule="evenodd"
                 d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
                 clip-rule="evenodd"
@@ -127,7 +127,7 @@
                 'ac-text-yellow-800': announcement.color === 'warning',
                 'ac-text-blue-800': announcement.color === 'info',
                 'ac-text-green-800': announcement.color === 'success',
-                'ac-text-red-800': announcement.color === 'danger'
+                'ac-text-red-800': announcement.color === 'failure'
               }"
             >
               {{ announcement.title }}
@@ -138,7 +138,7 @@
                 'ac-text-yellow-700': announcement.color === 'warning',
                 'ac-text-blue-700': announcement.color === 'info',
                 'ac-text-green-700': announcement.color === 'success',
-                'ac-text-red-700': announcement.color === 'danger'
+                'ac-text-red-700': announcement.color === 'failure'
               }"
             >
               <p v-html="announcement.content"></p>

@@ -1,7 +1,7 @@
 import React from 'react'
-import {Button} from '../../components/Button'
-import {AuthLayout} from '../../layouts/Auth'
-import {Head, Link, useForm, usePage} from '@inertiajs/inertia-react'
+import { Button } from '../../components/Button'
+import { AuthLayout } from '../../layouts/Auth'
+import { Head, Link, useForm, usePage } from '@inertiajs/inertia-react'
 
 export function VerifyEmail() {
   const { flash } = usePage().props
