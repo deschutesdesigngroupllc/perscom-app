@@ -12,7 +12,7 @@
         :data-apikey="props.card.jwt"
         :data-perscomid="props.card.tenant_id"
         :src="props.card.widget_url"
-        data-limit="5"
+        data-limit="4"
         type="text/javascript"
       >
       </component>

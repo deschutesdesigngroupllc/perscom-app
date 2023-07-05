@@ -79,7 +79,7 @@ class ImagePolicy extends Policy
      */
     public function restore(User $user, Image $image)
     {
-        return Gate::check('delete', $image->model);
+        return Gate::check('restore', $image->model);
     }
 
     /**
@@ -89,6 +89,6 @@ class ImagePolicy extends Policy
      */
     public function forceDelete(User $user, Image $image)
     {
-        return Gate::check('delete', $image->model);
+        return Gate::check('forceDelete', $image->model);
     }
 }

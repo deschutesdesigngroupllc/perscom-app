@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Laravel\Nova\Nova;
 use Orion\Http\Resources\Resource;
@@ -37,14 +38,15 @@ class NewsfeedResource extends Resource
             'description' => $this->resource->description,
             'event' => $this->resource->event,
             'type' => $model ?? 'message',
-            'headline' => $this->resource->getExtraProperty('headline'),
-            'text' => $this->resource->getExtraProperty('text'),
-            'subject' => $this->resource->getExtraProperty('subject'),
-            'color' => $this->resource->getExtraProperty('color'),
+            'headline' => $this->resource->headline,
+            'text' => $this->resource->text,
+            'item' => $this->resource->item,
+            'color' => $this->resource->color,
+            'likes' => $this->resource->likes,
             'created_at' => $this->resource->created_at,
         ];
 
-        if ($this->resource->subject) {
+        if ($this->resource->subject && Gate::check('view', $this->resource->subject)) {
             $payload['url'] = tenant()->route('nova.pages.detail', [
                 'resource' => Nova::resourceForModel($this->resource->subject)::uriKey(),
                 'resourceId' => $this->resource->subject->id,

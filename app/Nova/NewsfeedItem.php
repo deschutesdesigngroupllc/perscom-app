@@ -27,22 +27,14 @@ class NewsfeedItem extends Resource
     /**
      * @var string
      */
-    public static $title = 'id';
+    public static $title = 'headline';
 
     /**
      * @var string[]
      */
     public static $search = [
-        'description', 'id',
+        'description', 'id', 'properties',
     ];
-
-    /**
-     * @return string
-     */
-    public static function label()
-    {
-        return 'Items';
-    }
 
     /**
      * @return string
@@ -53,11 +45,11 @@ class NewsfeedItem extends Resource
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public static function createButtonLabel()
+    public function subtitle()
     {
-        return 'Create Newsfeed Item';
+        return $this->resource->item;
     }
 
     /**
@@ -70,17 +62,11 @@ class NewsfeedItem extends Resource
             Hidden::make('Description', 'description')->default('created'),
             Hidden::make('Event', 'event')->default('created'),
             Text::make('Headline')
-                ->resolveUsing(function ($value, $resource, $attribute) {
-                    return $resource->id ? $resource->getExtraProperty('headline') : null;
-                })
                 ->fillUsing(function (NovaRequest $request, $activity, $attribute, $requestAttribute) {
                     $activity->properties = Collection::wrap($activity->properties)->put('headline', $request->input($requestAttribute));
                 })
                 ->rules('required'),
             Trix::make('Text')
-                ->resolveUsing(function ($value, $resource, $attribute) {
-                    return $resource->id ? $resource->getExtraProperty('text') : null;
-                })
                 ->fillUsing(function (NovaRequest $request, $activity, $attribute, $requestAttribute) {
                     $activity->properties = Collection::wrap($activity->properties)->put('text', $request->input($requestAttribute));
                 })
@@ -91,7 +77,7 @@ class NewsfeedItem extends Resource
                 ->rules('required')
                 ->sortable(),
             Panel::make('Details', [
-                MorphTo::make('Causer', 'causer')->types([
+                MorphTo::make('Author', 'causer')->types([
                     User::class,
                 ])
                     ->help('Set the author of this newsfeed item.')

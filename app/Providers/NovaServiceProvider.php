@@ -245,6 +245,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->collapsable()
                         ->collapsedByDefault(),
 
+                    MenuSection::make('Communications', [
+                        MenuItem::resource(NewsfeedItem::class),
+                    ])->icon('newspaper')
+                        ->collapsable()
+                        ->collapsedByDefault(),
+
                     MenuSection::make('Forms', [
                         MenuItem::resource(Form::class),
                         MenuItem::resource(Submission::class)
@@ -252,12 +258,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 return (string) SubmissionModel::query()->whereDoesntHave('statuses')->count();
                             }),
                     ])->icon('pencil-alt')
-                        ->collapsable()
-                        ->collapsedByDefault(),
-
-                    MenuSection::make('Newsfeed', [
-                        MenuItem::resource(NewsfeedItem::class),
-                    ])->icon('newspaper')
                         ->collapsable()
                         ->collapsedByDefault(),
 

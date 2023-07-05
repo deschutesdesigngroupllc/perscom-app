@@ -1,5 +1,5 @@
 <template>
-  <div v-if="routes.value && (Object.keys(routes.value)).length > 0">
+  <div v-if="routes.value && Object.keys(routes.value).length > 0">
     <Card class="dashboard-actions-rounded-lg">
       <div class="md:dashboard-actions-grid md:dashboard-actions-grid-cols-1">
         <div
@@ -39,7 +39,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive} from 'vue'
+import { onMounted, reactive } from 'vue'
 
 const routes = reactive({})
 

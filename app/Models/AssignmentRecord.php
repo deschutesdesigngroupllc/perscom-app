@@ -109,7 +109,7 @@ class AssignmentRecord extends Model
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "An assignment record has been added for {$this->user->name}");
             $activity->properties = $activity->properties->put('text', $this->text);
-            $activity->properties = $activity->properties->put('subject', "Position: {$this->position->name}<br> Specialty: {$this->specialty->name}<br> Unit: {$this->unit->name}<br>");
+            $activity->properties = $activity->properties->put('item', "Position: {$this->position->name}<br> Specialty: {$this->specialty->name}<br> Unit: {$this->unit->name}<br>");
         }
     }
 

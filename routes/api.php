@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\V1\Forms\FormsController;
 use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedController;
+use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedLikesController;
 use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
 use App\Http\Controllers\Api\V1\Ranks\RanksController;
 use App\Http\Controllers\Api\V1\Roster\RosterController;
@@ -72,7 +73,8 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('forms', FormsController::class);
         Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
 
-        Orion::resource('newsfeed', NewsfeedController::class)->only('index');
+        Orion::resource('newsfeed', NewsfeedController::class);
+        Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)->only(['index', 'attach', 'detach', 'sync']);
 
         Orion::resource('qualifications', QualificationsController::class);
 

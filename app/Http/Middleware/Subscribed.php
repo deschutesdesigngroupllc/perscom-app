@@ -37,17 +37,17 @@ class Subscribed extends VerifyBillableIsSubscribed
 
         abort_if(($unsubscribed || Feature::inactive(ApiAccessFeature::class)) && $request->routeIs('api.*'),
             402,
-            'A subscription is required to make an API request.'
+            'A valid subscription is required to make an API request.'
         );
 
         abort_if(($unsubscribed || Feature::inactive(OAuth2AccessFeature::class)) && ($request->routeIs('passport.*') || $request->routeIs('oidc.*')),
             402,
-            'A subscription is required to use Single Sign-On (SSO).'
+            'A valid subscription is required to use Single Sign-On (SSO).'
         );
 
         abort_if($unsubscribed && ! Gate::check('billing', Auth::user()),
             402,
-            'The account requires a subscription to continue. Please contact your account administrator.'
+            'The account requires a valid subscription to continue. Please contact your account administrator.'
         );
 
         return $response;
