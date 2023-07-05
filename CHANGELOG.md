@@ -1,6 +1,24 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.43...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.44...HEAD)
+
+## [v1.0.44](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.43...v1.0.44) - 2023-06-19
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.44 -->
+### What's Changed
+
+#### Changed
+
+- Add scheduled command to remove failed queue jobs by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/181
+- Updated mobile login UI and fixed Register background image bug by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/185
+
+#### Fixed
+
+- Fixed activity_log table does not exist by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/182
+- Fixed duplicate email on social login error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/183
+- Fixes MaxAttemptsExceededException error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/184
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.43...v1.0.44
 
 ## [v1.0.43](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.42...v1.0.43) - 2023-06-13
 

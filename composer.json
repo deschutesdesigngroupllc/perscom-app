@@ -137,6 +137,8 @@
         ],
         "docs:models": "php artisan ide-helper:models --reset",
         "lint": "./vendor/bin/pint",
+        "test": "php artisan test- --parallel",
+        "test:coverage": "XDEBUG_MODE=coverage php artisan test --parallel",
         "test:lint": "./vendor/bin/pint --test",
         "test:types": "./vendor/bin/phpstan analyse --memory-limit 1G"
     },

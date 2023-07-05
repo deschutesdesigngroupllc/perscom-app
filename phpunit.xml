@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
+         backupGlobals="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
          colors="true"
          processIsolation="false"
@@ -7,37 +9,50 @@
          stopOnFailure="false"
          backupStaticProperties="false">
 
-    <testsuites>
-        <testsuite name="Feature">
-            <directory suffix="Test.php">./tests/Feature</directory>
-        </testsuite>
-        <testsuite name="Unit">
-            <directory suffix="Test.php">./tests/Unit</directory>
-        </testsuite>
-    </testsuites>
+  <testsuites>
+    <testsuite name="Feature">
+      <directory suffix="Test.php">./tests/Feature</directory>
+    </testsuite>
+    <testsuite name="Unit">
+      <directory suffix="Test.php">./tests/Unit</directory>
+    </testsuite>
+  </testsuites>
 
-    <php>
-        <server name="API_URL" value="http://api.lvh.me"/>
-        <server name="API_VERSION" value="v1"/>
-        <server name="APP_ENV" value="testing"/>
-        <server name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
-        <server name="APP_URL" value="http://lvh.me"/>
-        <server name="AUTH_URL" value="http://auth.lvh.me"/>
-        <server name="BASE_URL" value=".lvh.me"/>
-        <server name="BCRYPT_ROUNDS" value="4"/>
-        <server name="CACHE_DRIVER" value="array"/>
-        <server name="DB_CONNECTION" value="mysql"/>
-        <server name="JWT_ALGO" value="HS256"/>
-        <server name="JWT_SECRET" value="3juKTvPLQ2Vw7djDKazHaGQ0UXht2D3wUC94hroyzy6RLNaRbMWJnKdjo9YfCtHU"/>
-        <server name="LOG_CHANNEL" value="single"/>
-        <server name="LOG_LEVEL" value="debug"/>
-        <server name="MAIL_MAILER" value="array"/>
-        <server name="PENNANT_STORE" value="array"/>
-        <server name="QUEUE_CONNECTION" value="sync"/>
-        <server name="SESSION_DRIVER" value="array"/>
-        <server name="STRIPE_PRODUCT_BASIC_MONTH" value="price_1LGWsjGt8lrL0dgCSh82mHu3"/>
-        <server name="STRIPE_PRODUCT_ENTERPRISE_MONTH" value="price_1LGWuVGt8lrL0dgCA8GM8Bpw"/>
-        <server name="STRIPE_PRODUCT_PRO_MONTH" value="price_1LGWtYGt8lrL0dgCAfBx95kG"/>
-        <server name="TELESCOPE_ENABLED" value="false"/>
-    </php>
+  <coverage includeUncoveredFiles="true">
+    <report>
+      <clover outputFile="clover.xml"/>
+      <html outputDirectory="tests/Coverage/html"/>
+    </report>
+  </coverage>
+
+  <php>
+    <server name="API_URL" value="http://api.lvh.me"/>
+    <server name="API_VERSION" value="v1"/>
+    <server name="APP_ENV" value="testing"/>
+    <server name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
+    <server name="APP_URL" value="http://lvh.me"/>
+    <server name="AUTH_URL" value="http://auth.lvh.me"/>
+    <server name="BASE_URL" value=".lvh.me"/>
+    <server name="BCRYPT_ROUNDS" value="4"/>
+    <server name="CACHE_DRIVER" value="array"/>
+    <server name="DB_CONNECTION" value="mysql"/>
+    <server name="JWT_ALGO" value="HS256"/>
+    <server name="JWT_SECRET" value="3juKTvPLQ2Vw7djDKazHaGQ0UXht2D3wUC94hroyzy6RLNaRbMWJnKdjo9YfCtHU"/>
+    <server name="LOG_CHANNEL" value="single"/>
+    <server name="LOG_LEVEL" value="debug"/>
+    <server name="MAIL_MAILER" value="array"/>
+    <server name="PENNANT_STORE" value="array"/>
+    <server name="QUEUE_CONNECTION" value="sync"/>
+    <server name="SESSION_DRIVER" value="array"/>
+    <server name="STRIPE_PRODUCT_BASIC_MONTH" value="price_1LGWsjGt8lrL0dgCSh82mHu3"/>
+    <server name="STRIPE_PRODUCT_ENTERPRISE_MONTH" value="price_1LGWuVGt8lrL0dgCA8GM8Bpw"/>
+    <server name="STRIPE_PRODUCT_PRO_MONTH" value="price_1LGWtYGt8lrL0dgCAfBx95kG"/>
+    <server name="TELESCOPE_ENABLED" value="false"/>
+  </php>
+
+  <source>
+    <include>
+      <directory suffix=".php">./app</directory>
+    </include>
+  </source>
 </phpunit>
