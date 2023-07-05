@@ -63,7 +63,7 @@ class SetupInitialTenantAccount implements ShouldQueue
         $this->tenant->run(function ($tenant) {
             activity('newsfeed')
                 ->withProperties([
-                    'text' => "Welcome to our platform! We're thrilled to have you on board as a new user. Get ready to experience a powerful and intuitive solution that will streamline your personnel management and revolutionize how you organize and track your team. For more information and tutorials, please visit our documentation available at https://docs.perscom.io.",
+                    'text' => "Welcome to our platform! We're thrilled to have you on board as a user. Get ready to experience a powerful and intuitive solution that will streamline your personnel management and revolutionize how you organize and track your team. For more information and tutorials, please visit our documentation available at <a href='https://docs.perscom.io' target='_blank'>https://docs.perscom.io</a>.",
                     'headline' => "Welcome to PERSCOM Personnel Management System {$tenant->name}",
                 ])
                 ->event('created')
