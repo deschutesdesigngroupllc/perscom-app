@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import { Button } from '../../components/Button'
 import { AuthLayout } from '../../layouts/Auth'
 import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, Link, useForm } from '@inertiajs/inertia-react'
+import { Head, Link, useForm } from '@inertiajs/react'
 
 export function Authorize({ client, name, scopes, state, authToken, csrfToken }) {
   const { post, processing, errors } = useForm({

@@ -6,7 +6,7 @@
 
     <title>@yield('title')</title>
 
-    @vite('resources/js/app.js')
+    @vite('resources/js/app.jsx')
 </head>
 <body class="h-full">
 <div class="min-h-full pt-16 pb-12 flex flex-col bg-white">

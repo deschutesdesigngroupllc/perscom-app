@@ -5,7 +5,7 @@ import { AuthLayout } from '../../layouts/Auth'
 import { Input } from '../../components/Input'
 import { Label } from '../../components/Label'
 import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, useForm, usePage } from '@inertiajs/inertia-react'
+import { Head, useForm, usePage } from '@inertiajs/react'
 
 export function ResetPassword({ token, email }) {
   const { flash } = usePage().props

@@ -75,6 +75,7 @@ class Main extends Dashboard
                 'scope' => [
                     'manage:newsfeed',
                     'view:user',
+                    'view:announcement',
                     'view:assignmentrecord',
                     'view:awardrecord',
                     'view:combatrecord',

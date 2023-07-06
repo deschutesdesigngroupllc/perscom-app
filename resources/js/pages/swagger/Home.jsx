@@ -4,7 +4,7 @@ import SwaggerUI from 'swagger-ui-react'
 import 'swagger-ui-react/swagger-ui.css'
 
 export function App({ url }) {
-  return <SwaggerUI url={url} />
+  return <SwaggerUI url={url} deepLinking={true} />
 }
 
 App.propTypes = {

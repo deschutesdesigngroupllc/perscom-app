@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Head, useForm } from '@inertiajs/inertia-react'
+import { Head, useForm } from '@inertiajs/react'
 import { AuthLayout } from '../../layouts/Auth'
 import { ValidationErrors } from '../../components/ValidationErrors'
 import { Button, ButtonLink } from '../../components/Button'
