@@ -7,7 +7,7 @@
 
     <title>{{ config('app.name') }} - Authorization</title>
 
-    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
+    @vite('resources/js/app.jsx')
 
     <style>
         .passport-authorize .container {

@@ -16,7 +16,7 @@
     <title>PERSCOM Personnel Management System</title>
 
     @viteReactRefresh
-    @vite(['resources/css/app.css', 'resources/js/app.jsx'])
+    @vite('resources/js/app.jsx')
     @routes
     @inertiaHead
     <style>
