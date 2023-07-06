@@ -24,7 +24,7 @@ Route::get('documentation/api', [SwaggerController::class, 'index'])->name('api.
 
 Route::group(['prefix' => 'find-my-organization'], static function () {
     Route::get('/', [FindMyOrganizationController::class, 'index'])->name('find-my-organization.index');
-    Route::post('/', [FindMyOrganizationController::class, 'store'])->name('find-my-organization.store');
+    Route::post('/', [FindMyOrganizationController::class, 'store'])->name('find-my-organization.store')->middleware('throttle:find-my-organization');
     Route::get('/{tenant}', [FindMyOrganizationController::class, 'show'])->middleware('signed')->name('find-my-organization.show');
 });
 
@@ -32,6 +32,6 @@ Route::get('privacy-policy', [PrivacyPolicyController::class, 'index'])->name('p
 
 Route::group(['prefix' => 'register'], static function () {
     Route::get('/', [RegisterController::class, 'index'])->name('register.index');
-    Route::post('/', [RegisterController::class, 'store'])->name('register.store');
+    Route::post('/', [RegisterController::class, 'store'])->name('register.store')->middleware('throttle:register');
     Route::get('/complete/{tenant}', [RegisterController::class, 'complete'])->middleware('signed')->name('register.complete');
 });
