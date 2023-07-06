@@ -1,11 +1,11 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import {Button} from '../../components/Button'
-import {AuthLayout} from '../../layouts/Auth'
-import {Input} from '../../components/Input'
-import {Label} from '../../components/Label'
-import {ValidationErrors} from '../../components/ValidationErrors'
-import {Head, useForm, usePage} from '@inertiajs/inertia-react'
+import { Button } from '../../components/Button'
+import { AuthLayout } from '../../layouts/Auth'
+import { Input } from '../../components/Input'
+import { Label } from '../../components/Label'
+import { ValidationErrors } from '../../components/ValidationErrors'
+import { Head, useForm, usePage } from '@inertiajs/inertia-react'
 
 export function ResetPassword({ token, email }) {
   const { flash } = usePage().props

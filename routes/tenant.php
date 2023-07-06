@@ -34,7 +34,7 @@ Route::group(['as' => 'tenant.', 'middleware' => [InitializeTenancyByDomainOrSub
     Route::group(['prefix' => 'auth', 'middleware' => 'feature:App\Features\SocialLoginFeature'], function () {
         Route::get('/{driver}/{function}/redirect', [SocialLoginController::class, 'tenant'])
             ->name('auth.social.redirect');
-        Route::get('/login/{loginToken}', [SocialLoginController::class, 'login'])
+        Route::get('/login/{token}', [SocialLoginController::class, 'login'])
             ->name('auth.social.login');
     });
 });

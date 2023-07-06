@@ -18,8 +18,10 @@ use App\Models\Event;
 use App\Models\EventRegistration;
 use App\Models\Form;
 use App\Models\Image;
+use App\Models\Like;
 use App\Models\Mail;
 use App\Models\Message;
+use App\Models\NewsfeedItem;
 use App\Models\PassportClient;
 use App\Models\PassportClientLog;
 use App\Models\PassportToken;
@@ -57,8 +59,10 @@ use App\Policies\EventPolicy;
 use App\Policies\EventRegistrationPolicy;
 use App\Policies\FormPolicy;
 use App\Policies\ImagePolicy;
+use App\Policies\LikePolicy;
 use App\Policies\MailPolicy;
 use App\Policies\MessagePolicy;
+use App\Policies\NewsfeedItemPolicy;
 use App\Policies\PassportClientLogPolicy;
 use App\Policies\PassportClientPolicy;
 use App\Policies\PassportTokenLogPolicy;
@@ -113,8 +117,10 @@ class AuthServiceProvider extends ServiceProvider
         EventRegistration::class => EventRegistrationPolicy::class,
         Form::class => FormPolicy::class,
         Image::class => ImagePolicy::class,
+        Like::class => LikePolicy::class,
         Mail::class => MailPolicy::class,
         Message::class => MessagePolicy::class,
+        NewsfeedItem::class => NewsfeedItemPolicy::class,
         PassportClient::class => PassportClientPolicy::class,
         PassportClientLog::class => PassportClientLogPolicy::class,
         PassportToken::class => PassportTokenPolicy::class,

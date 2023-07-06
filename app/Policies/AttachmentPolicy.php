@@ -79,7 +79,7 @@ class AttachmentPolicy extends Policy
      */
     public function restore(User $user, Attachment $attachment)
     {
-        return Gate::check('delete', $attachment->model);
+        return Gate::check('restore', $attachment->model);
     }
 
     /**
@@ -89,6 +89,6 @@ class AttachmentPolicy extends Policy
      */
     public function forceDelete(User $user, Attachment $attachment)
     {
-        return Gate::check('delete', $attachment->model);
+        return Gate::check('forceDelete', $attachment->model);
     }
 }

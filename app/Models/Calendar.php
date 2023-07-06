@@ -25,6 +25,11 @@ class Calendar extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = ['name', 'description', 'color'];
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function events()

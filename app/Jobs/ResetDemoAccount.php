@@ -11,7 +11,6 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
-use Throwable;
 
 class ResetDemoAccount implements ShouldQueue
 {
@@ -60,7 +59,7 @@ class ResetDemoAccount implements ShouldQueue
     /**
      * Handle a job failure.
      */
-    public function failed(Throwable $exception): void
+    public function failed($exception): void
     {
         Log::error('Failed to reset demo account', [
             'exception' => $exception,

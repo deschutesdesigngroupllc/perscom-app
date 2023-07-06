@@ -80,7 +80,7 @@ class TaskAssignmentPolicy extends Policy
      */
     public function restore(User $user, TaskAssignment $taskAssignment)
     {
-        return Gate::check('delete', $taskAssignment->task ?? new Task());
+        return Gate::check('restore', $taskAssignment->task ?? new Task());
     }
 
     /**
@@ -90,6 +90,6 @@ class TaskAssignmentPolicy extends Policy
      */
     public function forceDelete(User $user, TaskAssignment $taskAssignment)
     {
-        return Gate::check('delete', $taskAssignment->task ?? new Task());
+        return Gate::check('forceDelete', $taskAssignment->task ?? new Task());
     }
 }

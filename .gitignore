@@ -22,3 +22,5 @@ auth.json
 .editorconfig
 .styleci.yml
 _ide_helper.php
+clover.xml
+.rnd

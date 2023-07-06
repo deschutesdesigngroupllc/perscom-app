@@ -1,9 +1,9 @@
 import React from 'react'
-import {Button} from '../../components/Button'
-import {Input} from '../../components/Input'
-import {ValidationErrors} from '../../components/ValidationErrors'
-import {Head, useForm, usePage} from '@inertiajs/inertia-react'
-import {AuthLayout} from '../../layouts/Auth'
+import { Button } from '../../components/Button'
+import { Input } from '../../components/Input'
+import { ValidationErrors } from '../../components/ValidationErrors'
+import { Head, useForm, usePage } from '@inertiajs/inertia-react'
+import { AuthLayout } from '../../layouts/Auth'
 
 function ForgotPassword() {
   const { flash } = usePage().props

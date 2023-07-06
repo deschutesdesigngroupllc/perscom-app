@@ -9,11 +9,6 @@ use Illuminate\Support\Facades\Notification;
 class TaskAssignmentObserver
 {
     /**
-     * @var bool
-     */
-    public $afterCommit = true;
-
-    /**
      * Handle the TaskAssignment "created" event.
      *
      * @return void

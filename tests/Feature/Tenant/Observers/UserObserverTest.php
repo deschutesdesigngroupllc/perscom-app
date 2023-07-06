@@ -42,7 +42,7 @@ class UserObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::USER_CREATED],
         ])->create();
 
@@ -55,7 +55,7 @@ class UserObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::USER_UPDATED],
         ])->create();
 
@@ -71,7 +71,7 @@ class UserObserverTest extends TenantTestCase
     {
         Queue::fake();
 
-        $webhook = Webhook::factory()->state([
+        Webhook::factory()->state([
             'events' => [WebhookEvent::USER_DELETED],
         ])->create();
 

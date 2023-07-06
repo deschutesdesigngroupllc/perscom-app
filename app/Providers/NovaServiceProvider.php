@@ -32,6 +32,7 @@ use App\Nova\Lenses\MyEvents;
 use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
+use App\Nova\NewsfeedItem;
 use App\Nova\PassportAuthorizedApplications;
 use App\Nova\PassportClient;
 use App\Nova\PassportClientLog;
@@ -166,6 +167,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withBreadcrumbs();
+        //Nova::style('style', Vite::asset('resources/css/nova.css'));
 
         if (Request::isCentralRequest()) {
             Nova::mainMenu(function (Request $request) {
@@ -240,6 +242,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                                 return Gate::check('create', EventRegistrationModel::class);
                             }),
                     ])->icon('calendar')
+                        ->collapsable()
+                        ->collapsedByDefault(),
+
+                    MenuSection::make('Communications', [
+                        MenuItem::resource(NewsfeedItem::class),
+                    ])->icon('newspaper')
                         ->collapsable()
                         ->collapsedByDefault(),
 

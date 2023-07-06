@@ -4,9 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\Announcement
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
+ * @property-read int|null $activities_count
  *
  * @method static \Database\Factories\AnnouncementFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Announcement newModelQuery()
@@ -18,6 +23,12 @@ use Illuminate\Database\Eloquent\Model;
 class Announcement extends Model
 {
     use HasFactory;
+    use LogsActivity;
+
+    /**
+     * @var string[]
+     */
+    protected static $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -32,4 +43,23 @@ class Announcement extends Model
     protected $casts = [
         'expires_at' => 'datetime',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('newsfeed')
+            ->setDescriptionForEvent(fn ($event) => "An announcement has been $event");
+    }
+
+    /**
+     * @return void
+     */
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        if ($eventName === 'created') {
+            $activity->properties = $activity->properties->put('headline', $this->title);
+            $activity->properties = $activity->properties->put('text', $this->content);
+            $activity->properties = $activity->properties->put('color', $this->color);
+        }
+    }
 }

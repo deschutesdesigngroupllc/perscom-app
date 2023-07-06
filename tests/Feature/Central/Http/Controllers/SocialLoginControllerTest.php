@@ -126,6 +126,7 @@ class SocialLoginControllerTest extends CentralTestCase
         $tenant = $this->mock(\App\Models\Tenant::class);
         $tenant->allows('run')->times(3)->andReturn($user, $user, $loginToken);
         $tenant->allows('getAttribute')->with('url')->andReturn($url);
+        $tenant->allows('route')->andReturn("$url/auth/login/$token");
 
         $this->instance(\App\Models\Tenant::class, $tenant);
 
@@ -165,6 +166,7 @@ class SocialLoginControllerTest extends CentralTestCase
         $tenant = $this->mock(\App\Models\Tenant::class);
         $tenant->allows('run')->times(3)->andReturn(null, $user, $loginToken);
         $tenant->allows('getAttribute')->with('url')->andReturn($url);
+        $tenant->allows('route')->andReturn("$url/auth/login/$token");
 
         $this->instance(\App\Models\Tenant::class, $tenant);
 
@@ -201,6 +203,7 @@ class SocialLoginControllerTest extends CentralTestCase
         $tenant = $this->mock(\App\Models\Tenant::class);
         $tenant->allows('run')->once()->andReturnNull();
         $tenant->allows('getAttribute')->with('url')->andReturn($url);
+        $tenant->allows('route')->andReturn("$url/login");
 
         $this->instance(\App\Models\Tenant::class, $tenant);
 
@@ -217,7 +220,6 @@ class SocialLoginControllerTest extends CentralTestCase
         ])
             ->get(config('app.auth_url')."/$driver/callback")
             ->assertRedirectContains("$url/login")
-            ->assertSessionHas('status')
             ->assertSessionMissing('auth.social.login.tenant', $id);
     }
 
@@ -240,6 +242,7 @@ class SocialLoginControllerTest extends CentralTestCase
         $tenant = $this->mock(\App\Models\Tenant::class);
         $tenant->allows('run')->once()->andReturn($user);
         $tenant->allows('getAttribute')->with('url')->andReturn($url);
+        $tenant->allows('route')->andReturn("$url/login");
 
         $this->instance(\App\Models\Tenant::class, $tenant);
 
@@ -256,7 +259,6 @@ class SocialLoginControllerTest extends CentralTestCase
         ])
             ->get(config('app.auth_url')."/$driver/callback")
             ->assertRedirectContains("$url/login")
-            ->assertSessionHas('status')
             ->assertSessionMissing('auth.social.login.tenant', $id);
     }
 

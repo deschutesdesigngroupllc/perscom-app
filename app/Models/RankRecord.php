@@ -3,16 +3,22 @@
 namespace App\Models;
 
 use App\Models\Scopes\RankRecordScope;
+use App\Prompts\RankRecordPrompts;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
+use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
  * App\Models\RankRecord
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
+ * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read \App\Models\User|null $author
@@ -35,8 +41,20 @@ class RankRecord extends Model
     use HasAttachments;
     use HasAuthor;
     use HasDocument;
+    use HasEventPrompts;
     use HasFactory;
     use HasUser;
+    use LogsActivity;
+
+    /**
+     * @var string
+     */
+    protected static $prompts = RankRecordPrompts::class;
+
+    /**
+     * @var string[]
+     */
+    protected static $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -63,21 +81,6 @@ class RankRecord extends Model
     protected $table = 'records_ranks';
 
     /**
-     * Boot
-     */
-    public static function boot()
-    {
-        parent::boot();
-
-        static::created(function (RankRecord $record) {
-            if ($record->user) {
-                $record->user->rank_id = $record->rank?->id;
-                $record->user->save();
-            }
-        });
-    }
-
-    /**
      * The "booted" method of the model.
      *
      * @return void
@@ -85,6 +88,25 @@ class RankRecord extends Model
     protected static function booted()
     {
         static::addGlobalScope(new RankRecordScope);
+    }
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->useLogName('newsfeed')
+            ->setDescriptionForEvent(fn ($event) => "A rank record has been $event");
+    }
+
+    /**
+     * @return void
+     */
+    public function tapActivity(Activity $activity, string $eventName)
+    {
+        if ($eventName === 'created') {
+            $activity->properties = $activity->properties->put('headline', "A rank record has been added for {$this->user->name}");
+            $activity->properties = $activity->properties->put('text', $this->text);
+            $activity->properties = $activity->properties->put('item', "Rank: {$this->rank->name}");
+        }
     }
 
     /**

@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+
 /**
  * App\Models\Activity
  *
@@ -10,6 +12,7 @@ namespace App\Models;
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
  *
  * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static \Database\Factories\ActivityFactory factory($count = null, $state = [])
  * @method static Builder|Activity forBatch(string $batchUuid)
  * @method static Builder|Activity forEvent(string $event)
  * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
@@ -23,6 +26,8 @@ namespace App\Models;
  */
 class Activity extends \Spatie\Activitylog\Models\Activity
 {
+    use HasFactory;
+
     /**
      * @var string[]
      */

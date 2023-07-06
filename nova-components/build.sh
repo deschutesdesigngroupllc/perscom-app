@@ -7,6 +7,9 @@ for d in ./nova-components/*/ ;
         # Enter each component folder.
         cd "$d"
 
+        # Message
+        echo "Building $d..."
+
         # Compille component assets.
         if [ -f "package.json" ]; then
             npm run prod

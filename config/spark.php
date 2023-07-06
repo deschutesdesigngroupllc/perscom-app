@@ -122,10 +122,11 @@ return [
             'plans' => [
                 [
                     'name' => 'Basic',
-                    'short_description' => 'For small organizations with less than 25 personnel.',
+                    'short_description' => 'For small organizations who need core personnel management services without the need to share and exchange personnel data.',
                     'monthly_id' => env('STRIPE_PRODUCT_BASIC_MONTH'),
                     'yearly_id' => env('STRIPE_PRODUCT_BASIC_YEAR'),
                     'features' => [
+                        'All core features',
                         'Social login support',
                         'Application provided subdomain',
                         'Community support',
@@ -136,11 +137,12 @@ return [
                 ],
                 [
                     'name' => 'Pro',
-                    'short_description' => 'For growing organizations with less than 100 personnel.',
+                    'short_description' => 'For growing organizations who wish to integrate their personnel data into third-party services without enterprise level complexity.',
                     'monthly_id' => env('STRIPE_PRODUCT_PRO_MONTH'),
                     'yearly_id' => env('STRIPE_PRODUCT_PRO_YEAR'),
                     'features' => [
                         'Access to powerful API',
+                        'Widgets and website integration',
                         'Custom subdomain',
                         'Ticket and email support',
                     ],
@@ -153,11 +155,12 @@ return [
                 ],
                 [
                     'name' => 'Enterprise',
-                    'short_description' => 'For large organizations that have more than 100 personnel.',
+                    'short_description' => 'For large organizations that rely on powerful personnel manangement services and require personnel data communication between essential business services.',
                     'monthly_id' => env('STRIPE_PRODUCT_ENTERPRISE_MONTH'),
                     'yearly_id' => env('STRIPE_PRODUCT_ENTERPRISE_YEAR'),
                     'features' => [
                         'Export and backup personnel data',
+                        'Webhooks and real-time app notifications',
                         'Single sign-on integration',
                         'Priority support',
                     ],
