@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.45...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.46...HEAD)
+
+## [v1.0.46](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.45...v1.0.46) - 2023-07-06
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.46 -->
+### What's Changed
+
+#### Changed
+
+- Updated dependencies by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/189
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.45...v1.0.46
 
 ## [v1.0.45](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.44...v1.0.45) - 2023-07-05
 
