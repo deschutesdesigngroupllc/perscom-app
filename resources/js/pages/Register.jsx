@@ -1,5 +1,5 @@
 import React from 'react'
-import { useForm } from '@inertiajs/inertia-react'
+import { useForm } from '@inertiajs/react'
 import { RegisterLayout } from '../layouts/Register'
 import { Button } from '../components/Button'
 import { Input } from '../components/Input'

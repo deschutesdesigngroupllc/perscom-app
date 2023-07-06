@@ -4,7 +4,7 @@ import { Button } from '../../components/Button'
 import { Input } from '../../components/Input'
 import { Label } from '../../components/Label'
 import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, Link, useForm } from '@inertiajs/inertia-react'
+import { Head, Link, useForm } from '@inertiajs/react'
 import PropTypes from 'prop-types'
 
 export function Register({ status, enableSocialLogin, githubLogin, discordLogin }) {

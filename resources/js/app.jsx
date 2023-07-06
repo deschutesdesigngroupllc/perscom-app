@@ -1,18 +1,16 @@
 import React from 'react'
-import { render } from 'react-dom'
-import { createInertiaApp } from '@inertiajs/inertia-react'
-import { InertiaProgress } from '@inertiajs/progress'
+import { createRoot } from 'react-dom/client'
+import { createInertiaApp } from '@inertiajs/react'
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
-
-import '../css/app.css'
 
 import.meta.glob(['../svg/**', '../images/**'])
 
 createInertiaApp({
   resolve: (name) => resolvePageComponent(`./pages/${name}.jsx`, import.meta.glob('./pages/**/*.jsx')),
+  progress: {
+    color: '#2563EB'
+  },
   setup({ el, App, props }) {
-    render(React.createElement(App, props), el)
+    createRoot(el).render(<App {...props} />)
   }
 })
-
-InertiaProgress.init({ color: '#2563EB' })
