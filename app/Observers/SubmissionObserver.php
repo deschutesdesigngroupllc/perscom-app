@@ -17,6 +17,10 @@ class SubmissionObserver
         Webhook::query()->whereJsonContains('events', [WebhookEvent::SUBMISSION_CREATED->value])->each(function (Webhook $webhook) use ($submission) {
             WebhookService::dispatch($webhook, WebhookEvent::SUBMISSION_CREATED->value, $submission);
         });
+
+        if ($status = $submission->form?->submission_status) {
+            $submission->statuses()->attach($status->getKey());
+        }
     }
 
     /**

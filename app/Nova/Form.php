@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Actions\ExportAsCsv;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
@@ -84,6 +85,7 @@ class Form extends Resource
                 Textarea::make('Success Message')
                     ->help('The message displayed when the form is successfully submitted.')
                     ->alwaysShow(),
+                BelongsTo::make('Default Submission Status', 'submission_status', Status::class)->nullable()->hideFromIndex(),
             ]),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
