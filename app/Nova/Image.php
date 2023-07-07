@@ -7,6 +7,7 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image as ImageField;
+use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
@@ -51,6 +52,7 @@ class Image extends Resource
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
+            MorphTo::make('Resource', 'model'),
             URL::make('Image URL', function () {
                 return $this->image_url;
             })->displayUsing(function () {
