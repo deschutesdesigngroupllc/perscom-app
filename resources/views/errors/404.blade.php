@@ -1,5 +1,0 @@
-@extends('errors.layout')
-@section('code', __('404'))
-@section('title', __('Not Found'))
-@section('header', __('Page not found.'))
-@section('message', __('Sorry, we couldn’t find the page you’re looking for.'))

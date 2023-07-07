@@ -3,6 +3,7 @@
 namespace Tests\Feature\Central\Exceptions;
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Testing\AssertableInertia;
 use Tests\Feature\Central\CentralTestCase;
 
 class ErrorViewTest extends CentralTestCase
@@ -14,9 +15,9 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(499)
-            ->assertSeeText('Bad Request.')
-            ->assertSeeText('foo bar');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(499);
     }
 
     public function test_401_exception_is_thrown_and_view_is_returned()
