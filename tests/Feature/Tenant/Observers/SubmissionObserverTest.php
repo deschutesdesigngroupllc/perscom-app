@@ -4,13 +4,28 @@ namespace Tests\Feature\Tenant\Observers;
 
 use App\Jobs\CallWebhook;
 use App\Models\Enums\WebhookEvent;
+use App\Models\Form;
 use App\Models\Submission;
 use App\Models\Webhook;
+use App\Notifications\Tenant\NewSubmission;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class SubmissionObserverTest extends TenantTestCase
 {
+    public function test_notification_is_sent()
+    {
+        Notification::fake();
+
+        $form = Form::factory()->create();
+        $form->notifications()->attach($this->user);
+
+        Submission::factory()->for($form)->create();
+
+        Notification::assertSentTo($this->user, NewSubmission::class);
+    }
+
     public function test_create_submission_webhook_sent()
     {
         Queue::fake();

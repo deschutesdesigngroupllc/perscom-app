@@ -5,11 +5,13 @@ namespace App\Models;
 use App\Models\Scopes\SubmissionScope;
 use App\Traits\HasStatuses;
 use App\Traits\HasUser;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\VirtualColumn\VirtualColumn;
+use Stringable;
 
 /**
  * App\Models\Submission
@@ -29,7 +31,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  *
  * @mixin \Eloquent
  */
-class Submission extends Model
+class Submission extends Model implements Htmlable, Stringable
 {
     use Actionable;
     use HasFactory;
@@ -109,5 +111,18 @@ class Submission extends Model
     public function form()
     {
         return $this->belongsTo(Form::class);
+    }
+
+    public function __toString(): string
+    {
+        return $this->toHtml();
+    }
+
+    /**
+     * @return string
+     */
+    public function toHtml()
+    {
+        return view('models.submission')->with('submission', $this)->render();
     }
 }
