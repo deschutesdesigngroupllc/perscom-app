@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
  * App\Models\Mail
@@ -12,6 +11,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property int $id
  * @property string $subject
  * @property string $content
+ * @property array $recipients
  * @property array|null $links
  * @property int $send_now
  * @property \Illuminate\Support\Carbon|null $send_at
@@ -27,6 +27,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereLinks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereRecipients($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereSendAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereSendNow($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereSentAt($value)
@@ -37,7 +38,6 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  */
 class Mail extends Model
 {
-    use CentralConnection;
     use HasFactory;
 
     /**
@@ -55,6 +55,7 @@ class Mail extends Model
      */
     protected $casts = [
         'links' => 'json',
+        'recipients' => 'array',
         'send_at' => 'datetime',
         'sent_at' => 'datetime',
     ];
