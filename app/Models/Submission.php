@@ -7,6 +7,7 @@ use App\Traits\HasStatuses;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\VirtualColumn\VirtualColumn;
@@ -38,20 +39,16 @@ class Submission extends Model
     use VirtualColumn;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $guarded = [];
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
+     * @var string[]
      */
     protected $with = ['form', 'user', 'statuses'];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
      * @var array<int, string>
      */
     protected $hidden = [
@@ -72,10 +69,7 @@ class Submission extends Model
         ];
     }
 
-    /**
-     * Run on boot
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -93,20 +87,12 @@ class Submission extends Model
         });
     }
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new SubmissionScope());
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function form()
+    public function form(): BelongsTo
     {
         return $this->belongsTo(Form::class);
     }

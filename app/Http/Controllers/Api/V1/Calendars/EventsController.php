@@ -30,7 +30,7 @@ class EventsController extends Controller
     }
 
     /**
-     * The list of available query scopes.
+     * @return string[]
      */
     public function exposedScopes(): array
     {

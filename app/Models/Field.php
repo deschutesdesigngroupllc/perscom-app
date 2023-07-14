@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Color;
@@ -149,10 +150,7 @@ class Field extends Model
         self::FIELD_TIMEZONE => 'string',
     ];
 
-    /**
-     * Boot
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -162,20 +160,12 @@ class Field extends Model
         });
     }
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new FieldScope());
     }
 
-    /**
-     * @return false|mixed
-     */
-    public function constructNovaField()
+    public function constructNovaField(): mixed
     {
         $field = \call_user_func([$this->nova_type, 'make'], $this->name, $this->key);
 
@@ -214,18 +204,12 @@ class Field extends Model
                 })->first();
 
                 if ($field && $cast = $field->cast) {
-                    switch ($cast) {
-                        case 'boolean':
-                            return (bool) $value;
-                        case 'date':
-                            return Carbon::parse($value);
-                        case 'datetime':
-                            return Carbon::parse($value);
-                        case 'integer':
-                            return (int) $value;
-                        default:
-                            return $value;
-                    }
+                    return match ($cast) {
+                        'boolean' => (bool) $value,
+                        'datetime', 'date' => Carbon::parse($value),
+                        'integer' => (int) $value,
+                        default => $value,
+                    };
                 }
             }
 
@@ -235,10 +219,7 @@ class Field extends Model
         return $field;
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function forms()
+    public function forms(): MorphToMany
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
             ->as('forms')
@@ -246,10 +227,7 @@ class Field extends Model
             ->withTimestamps();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function users()
+    public function users(): MorphToMany
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
             ->as('users')
@@ -257,10 +235,7 @@ class Field extends Model
             ->withTimestamps();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getValidationRulesAttribute()
+    public function getValidationRulesAttribute(): string|null
     {
         $rules = explode('|', $this->rules);
 

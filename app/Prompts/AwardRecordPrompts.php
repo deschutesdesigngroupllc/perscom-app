@@ -7,10 +7,7 @@ use Illuminate\Support\Str;
 
 class AwardRecordPrompts
 {
-    /**
-     * @return string
-     */
-    public function created(AwardRecord $record, $type = 'headline')
+    public function created(AwardRecord $record, string $type = 'headline'): string
     {
         $prompt = config("openai.prompts.awardrecord.created.$type");
 

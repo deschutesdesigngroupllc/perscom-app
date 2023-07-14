@@ -9,9 +9,9 @@ use Orion\Http\Requests\Request;
 class SubmissionRequest extends Request
 {
     /**
-     * @return mixed
+     * @return array<string>
      */
-    protected function getDynamicRules()
+    protected function getDynamicRules(): array
     {
         $form = Form::findOrFail($this->route('form'));
 
@@ -20,11 +20,17 @@ class SubmissionRequest extends Request
         })->toArray();
     }
 
+    /**
+     * @return array<string>
+     */
     public function commonRules(): array
     {
         return $this->getDynamicRules();
     }
 
+    /**
+     * @return array<string>
+     */
     public function storeRules(): array
     {
         return $this->getDynamicRules();

@@ -23,20 +23,16 @@ class TaskPolicy extends Policy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $this->hasPermissionTo($user, 'view:task') || $user->tokenCan('view:task');
     }
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Task $task)
+    public function view(User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'view:task') ||
                $user->tokenCan('view:task') ||
@@ -45,80 +41,64 @@ class TaskPolicy extends Policy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $this->hasPermissionTo($user, 'create:task') || $user->tokenCan('create:task');
     }
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Task $task)
+    public function update(User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'update:task') || $user->tokenCan('update:task');
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Task $task)
+    public function delete(User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
     }
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Task $task)
+    public function restore(User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Task $task)
+    public function forceDelete(User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
     }
 
     /**
      * Determine where the user can attach to the model.
-     *
-     * @return bool|\Illuminate\Auth\Access\Response
      */
-    public function attachAnyUser(User $user, Task $task)
+    public function attachAnyUser(User $user, Task $task): bool
     {
         return $this->update($user, $task);
     }
 
     /**
      * Determine where the user can attach to the model.
-     *
-     * @return bool|\Illuminate\Auth\Access\Response
      */
-    public function attachUser(User $user, Task $task)
+    public function attachUser(User $user, Task $task): bool
     {
         return $this->update($user, $task);
     }
 
     /**
      * Determine where the user can attach to the model.
-     *
-     * @return bool|\Illuminate\Auth\Access\Response
      */
-    public function detachUser(User $user, Task $task)
+    public function detachUser(User $user, Task $task): bool
     {
         return $this->update($user, $task);
     }

@@ -15,10 +15,7 @@ class NewAwardRecord extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var array|string|string[]
-     */
-    protected $url;
+    protected string $url;
 
     /**
      * Create a new notification instance.
@@ -34,30 +31,19 @@ class NewAwardRecord extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<mixed>
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail', NovaChannel::class];
     }
 
-    /**
-     * @return NewAwardRecordMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): NewAwardRecordMail
     {
         return (new NewAwardRecordMail($this->awardRecord, $this->url))->to($notifiable->email);
     }
 
-    /**
-     * Get the nova representation of the notification
-     *
-     * @return NovaNotification
-     */
-    public function toNova()
+    public function toNova(): NovaNotification
     {
         return (new NovaNotification())->message('A new award record has been added to your personnel file.')
             ->action('View Record', URL::remote($this->url))

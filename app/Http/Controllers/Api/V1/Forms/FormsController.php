@@ -25,7 +25,7 @@ class FormsController extends Controller
     protected $policy = FormPolicy::class;
 
     /**
-     * The list of available query scopes.
+     * @return string[]
      */
     public function exposedScopes(): array
     {

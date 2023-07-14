@@ -90,23 +90,12 @@ use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
-    /**
-     * Register the Nova routes.
-     *
-     * @return void
-     */
-    protected function routes()
+    protected function routes(): void
     {
         Nova::routes()->register();
     }
 
-    /**
-     * Register the Nova gate.
-     * This gate determines who can access Nova in non-local environments.
-     *
-     * @return void
-     */
-    protected function gate()
+    protected function gate(): void
     {
         Gate::define('viewNova', function ($user) {
             return true;
@@ -114,11 +103,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
-     * Get the dashboards that should be listed in the Nova sidebar.
-     *
-     * @return array
+     * @return Admin[]|Main[]
      */
-    protected function dashboards()
+    protected function dashboards(): array
     {
         if (Request::isCentralRequest()) {
             return [new Admin()];
@@ -127,12 +114,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [new Main()];
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         Nova::ignoreMigrations();
         Nova::report(static function ($exception) {
@@ -146,8 +128,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         }
 
         if (Request::isDemoMode()) {
-            $middleware = collect(config('nova.middleware'));
-            config()->set('nova.middleware', $middleware->reject(function ($middleware) {
+            /** @var array<string> $middleware */
+            $middleware = config('nova.middleware');
+            $collectedMiddleware = collect($middleware);
+
+            config()->set('nova.middleware', $collectedMiddleware->reject(function ($middleware) {
                 return $middleware === 'verified' || $middleware === 'approved';
             })->toArray());
         }
@@ -157,12 +142,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         $this->app->bind(ResourceDestroyController::class, \App\Http\Controllers\Nova\ResourceDestroyController::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 
@@ -447,11 +427,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     }
 
     /**
-     * Get the tools that should be listed in the Nova sidebar.
-     *
-     * @return array
+     * @return array<mixed>
      */
-    public function tools()
+    public function tools(): array
     {
         return [
             (new NovaSettings())->canSee(function () {

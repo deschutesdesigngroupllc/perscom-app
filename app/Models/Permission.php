@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Permission
@@ -43,9 +44,7 @@ class Permission extends \Spatie\Permission\Models\Permission implements Arrayab
     use HasFactory;
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
+     * @var string[]
      */
     protected $casts = [
         'is_custom_permission' => 'boolean',
@@ -53,33 +52,25 @@ class Permission extends \Spatie\Permission\Models\Permission implements Arrayab
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * @var string[]
      */
     protected $appends = ['is_custom_permission', 'is_application_permission'];
 
-    /**
-     * @return bool
-     */
-    public function getIsCustomPermissionAttribute()
+    public function getIsCustomPermissionAttribute(): bool
     {
         return ! self::getPermissionsFromConfig()->has($this->name);
     }
 
-    /**
-     * @return bool
-     */
-    public function getIsApplicationPermissionAttribute()
+    public function getIsApplicationPermissionAttribute(): bool
     {
         return self::getPermissionsFromConfig()->has($this->name);
     }
 
-    /**
-     * @return \Illuminate\Support\Collection
-     */
-    public static function getPermissionsFromConfig()
+    public static function getPermissionsFromConfig(): Collection
     {
-        return collect(config('permissions.permissions'));
+        /** @var array<string, string> $permissions */
+        $permissions = config('permissions.permissions');
+
+        return collect($permissions);
     }
 }

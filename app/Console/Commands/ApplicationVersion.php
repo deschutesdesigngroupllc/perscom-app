@@ -35,18 +35,15 @@ class ApplicationVersion extends Command
             $this->setApplicationVersion($newVersion);
         }
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 
-    /**
-     * @return int
-     */
-    public function setApplicationVersion($version)
+    public function setApplicationVersion(string $version): int
     {
         if (! preg_match("/^(v+)(\d|[1-9]\d*)\.(\d|[1-9]\d*)\.(\d|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/", $version)) {
             $this->error('The supplied version is not a valid SemVer version.');
 
-            return Command::FAILURE;
+            return self::FAILURE;
         }
 
         $path = App::environmentFilePath();
@@ -61,13 +58,10 @@ class ApplicationVersion extends Command
             file_get_contents($path)
         ));
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getApplicationVersion()
+    public function getApplicationVersion(): mixed
     {
         return env('APP_VERSION');
     }

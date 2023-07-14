@@ -26,7 +26,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\User|null $user
  *
  * @method static \Database\Factories\ServiceRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord forAuthor($user)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord forAuthor(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord forDocument($document)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newModelQuery()

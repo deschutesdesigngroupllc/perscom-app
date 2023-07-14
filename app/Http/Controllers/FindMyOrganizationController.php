@@ -4,27 +4,21 @@ namespace App\Http\Controllers;
 
 use App\Models\Tenant;
 use App\Repositories\TenantRepository;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Inertia\Inertia;
+use Inertia\Response;
 
 class FindMyOrganizationController extends Controller
 {
-    /**
-     * @return \Inertia\Response
-     */
-    public function index()
+    public function index(): Response
     {
         return Inertia::render('auth/FindMyOrganization');
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request, TenantRepository $tenantRepository)
+    public function store(Request $request, TenantRepository $tenantRepository): RedirectResponse
     {
         $validator = Validator::make($request->all(), [
             'email' => ['required', 'email', Rule::exists('tenants', 'email')],
@@ -39,10 +33,7 @@ class FindMyOrganizationController extends Controller
         ]);
     }
 
-    /**
-     * @return \Inertia\Response
-     */
-    public function show(Tenant $tenant)
+    public function show(Tenant $tenant): Response
     {
         return Inertia::render('auth/FindMyOrganization', [
             'url' => $tenant->url,

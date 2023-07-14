@@ -23,20 +23,16 @@ class ActionPolicy extends Policy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $this->hasPermissionTo($user, 'view:log') || $user->tokenCan('view:log');
     }
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, ActionEvent $actionEvent)
+    public function view(User $user, ActionEvent $actionEvent): bool
     {
         return $this->hasPermissionTo($user, 'view:log') || $user->tokenCan('view:log');
     }

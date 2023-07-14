@@ -27,7 +27,7 @@ class RosterController extends Controller
     }
 
     /**
-     * The relations that are loaded by default together with a resource.
+     * @return string[]
      */
     public function alwaysIncludes(): array
     {
@@ -35,7 +35,7 @@ class RosterController extends Controller
     }
 
     /**
-     * Builds Eloquent query for fetching entities in index method.
+     * @param  array<string>  $requestedRelations
      */
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
     {

@@ -15,7 +15,7 @@ use Spatie\Url\Url;
  * @property int $is_custom_subdomain
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Support\Optional|mixed|string $host
+ * @property-read mixed|null $host
  * @property-read mixed|null $url
  * @property-read \App\Models\Tenant $tenant
  *
@@ -37,9 +37,7 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
     use HasFactory;
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * @var string[]
      */
     protected $appends = ['host', 'url'];
 
@@ -48,20 +46,14 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
         return Str::lower(Str::random(8));
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getUrlAttribute()
+    public function getUrlAttribute(): mixed
     {
         return optional($this->host, static function ($host) {
             return rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/');
         });
     }
 
-    /**
-     * @return \Illuminate\Support\Optional|mixed|string
-     */
-    public function getHostAttribute()
+    public function getHostAttribute(): mixed
     {
         return optional($this->domain, static function ($domain) {
             return Url::fromString(Str::endsWith($domain, config('tenancy.central_domains')) ? $domain

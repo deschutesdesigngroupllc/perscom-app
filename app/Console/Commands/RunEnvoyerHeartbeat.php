@@ -32,7 +32,7 @@ class RunEnvoyerHeartbeat extends Command
             $response = Http::get($url);
 
             if ($response->ok()) {
-                return Command::SUCCESS;
+                return self::SUCCESS;
             }
 
             $this->error('There was an error when attempting the heartbeat.');
@@ -42,6 +42,6 @@ class RunEnvoyerHeartbeat extends Command
 
         $this->info('No heartbeat URL found.');
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }

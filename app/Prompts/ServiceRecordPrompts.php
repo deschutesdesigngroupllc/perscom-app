@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class ServiceRecordPrompts
 {
-    public function created(ServiceRecord $record, $type = 'headline')
+    public function created(ServiceRecord $record, string $type = 'headline'): string
     {
         $prompt = config("openai.prompts.servicerecord.created.$type");
 

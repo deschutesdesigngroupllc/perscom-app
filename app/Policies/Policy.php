@@ -2,16 +2,14 @@
 
 namespace App\Policies;
 
+use App\Models\Permission;
 use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
 abstract class Policy
 {
-    /**
-     * @return bool
-     */
-    public function hasPermissionTo(User $user, $permission)
+    public function hasPermissionTo(User $user, Permission|int|string $permission): bool
     {
         if (Auth::guard('jwt')->check()) {
             $payload = Auth::guard('jwt')->payload(); // @phpstan-ignore-line

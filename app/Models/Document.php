@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 /**
@@ -33,7 +34,7 @@ class Document extends Model implements Htmlable
     /**
      * @var string[]
      */
-    public static $availableTags = [
+    public static array $availableTags = [
         '{user_name}' => 'The user\'s name.',
         '{user_email}' => 'The user\'s email.',
         '{user_email_verified_at}' => 'The user\'s email verification date. Null if email has not been verified',
@@ -64,10 +65,7 @@ class Document extends Model implements Htmlable
         '{service_record_date}' => 'The date of the service record.',
     ];
 
-    /**
-     * @return mixed|string|null
-     */
-    protected function resolveTag($tag, ?User $user = null, $attachedModel = null)
+    protected function resolveTag(string $tag, ?User $user = null, ?Model $attachedModel = null): mixed
     {
         return match (true) {
             $tag === '{user_name}' => $user->name ?? null,
@@ -82,30 +80,17 @@ class Document extends Model implements Htmlable
             $tag === '{assignment_record_unit}' => $attachedModel->unit->name ?? null,
             $tag === '{assignment_record_position}' => $attachedModel->position->name ?? null,
             $tag === '{assignment_record_speciality}' => $attachedModel->specialty->name ?? null,
-            $tag === '{assignment_record_text}' => $attachedModel->text ?? null,
-            $tag === '{assignment_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            $tag === '{assignment_record_text}', $tag === '{award_record_text}', $tag === '{service_record_text}', $tag === '{rank_record_text}', $tag === '{qualification_record_text}', $tag === '{combat_record_text}' => $attachedModel->text ?? null,
+            $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{rank_record_date}', $tag === '{service_record_date}' => isset($attachedModel->created_at) ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{award_record_award}' => $attachedModel->award->name ?? null,
-            $tag === '{award_record_text}' => $attachedModel->text ?? null,
-            $tag === '{award_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
-            $tag === '{combat_record_text}' => $attachedModel->text ?? null,
-            $tag === '{combat_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{qualification_record_qualification}' => $attachedModel->qualification->name ?? null,
-            $tag === '{qualification_record_text}' => $attachedModel->text ?? null,
-            $tag === '{qualification_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
-            $tag === '{rank_record_rank}' => $attachedModel->award->name ?? null,
-            $tag === '{rank_record_type}' => $attachedModel->type === RankRecord::RECORD_RANK_PROMOTION ? 'Promotion' : 'Demotion',
-            $tag === '{rank_record_text}' => $attachedModel->text ?? null,
-            $tag === '{rank_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
-            $tag === '{service_record_text}' => $attachedModel->text ?? null,
-            $tag === '{service_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            $tag === '{rank_record_rank}' => $attachedModel->rank->name ?? null,
+            $tag === '{rank_record_type}' => isset($attachedModel->type) && $attachedModel->type === RankRecord::RECORD_RANK_PROMOTION ? 'Promotion' : 'Demotion',
             default => null
         };
     }
 
-    /**
-     * @return mixed|string
-     */
-    public function toHtml(?User $user = null, $attachedModel = null)
+    public function toHtml(?User $user = null, ?Model $attachedModel = null): string
     {
         $content = $this->content;
         foreach (self::$availableTags as $tag => $description) {
@@ -117,10 +102,7 @@ class Document extends Model implements Htmlable
         return $content;
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'documents_tags');
     }

@@ -44,6 +44,6 @@ class GenerateApiSpecs extends Command
             $this->info(Artisan::output());
         });
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }

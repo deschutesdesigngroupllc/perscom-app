@@ -10,6 +10,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  *
  * @property-read \App\Models\PassportClient|null $client
  *
+ * @method static \Database\Factories\PassportTokenFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken query()
@@ -28,9 +29,7 @@ class PassportToken extends BaseTokenModel
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @var string[]
      */
     protected $casts = [
         'created_at' => 'datetime',

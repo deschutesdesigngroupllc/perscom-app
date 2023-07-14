@@ -5,13 +5,14 @@ namespace App\Actions\Passport;
 use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\User;
 use Illuminate\Support\Facades\Crypt;
+use Laravel\Passport\PersonalAccessTokenResult;
 
 class CreatePersonalAccessToken implements CreatesPersonalAccessToken
 {
     /**
-     * @return \Laravel\Passport\PersonalAccessTokenResult
+     * @param  array<string>  $scopes
      */
-    public function create(User $user, $name, array $scopes = [])
+    public function create(User $user, string $name, array $scopes = []): PersonalAccessTokenResult
     {
         $token = $user->createToken($name, $scopes);
         $token->token->forceFill([

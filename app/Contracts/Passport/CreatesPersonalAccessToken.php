@@ -3,11 +3,12 @@
 namespace App\Contracts\Passport;
 
 use App\Models\User;
+use Laravel\Passport\PersonalAccessTokenResult;
 
 interface CreatesPersonalAccessToken
 {
     /**
-     * @return mixed
+     * @param  array<string>  $scopes
      */
-    public function create(User $user, $name, array $scopes = []);
+    public function create(User $user, string $name, array $scopes = []): PersonalAccessTokenResult;
 }

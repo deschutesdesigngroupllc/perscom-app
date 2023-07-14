@@ -4,7 +4,9 @@ namespace App\Http\Middleware;
 
 use App\Features\ApiAccessFeature;
 use App\Features\OAuth2AccessFeature;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
@@ -20,9 +22,8 @@ class Subscribed extends VerifyBillableIsSubscribed
      * @param  \Closure  $next
      * @param  string  $billableType
      * @param  string  $plan
-     * @return \Illuminate\Http\Response
      */
-    public function handle($request, $next, $billableType = null, $plan = null)
+    public function handle($request, $next, $billableType = null, $plan = null): Response|JsonResponse
     {
         if ($request->isDemoMode() ||
             $request->isCentralRequest() ||
@@ -53,10 +54,7 @@ class Subscribed extends VerifyBillableIsSubscribed
         return $response;
     }
 
-    /**
-     * @return bool
-     */
-    protected function redirectionIsToBillingPortal($response)
+    protected function redirectionIsToBillingPortal(Response|RedirectResponse $response): bool
     {
         return $response instanceof RedirectResponse &&
                $response->getTargetUrl() === tenant()->url.'/'.config('spark.path').'/'.$this->guessBillableType();

@@ -23,20 +23,14 @@ class DomainCreated extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<string>
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return DomainCreatedMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): DomainCreatedMail
     {
         return (new DomainCreatedMail($this->domain))->to($notifiable->email);
     }

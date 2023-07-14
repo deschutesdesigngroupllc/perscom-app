@@ -23,20 +23,16 @@ class AssignmentRecordsPolicy extends Policy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return true;
     }
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, AssignmentRecord $assignment)
+    public function view(User $user, AssignmentRecord $assignment): bool
     {
         return $this->hasPermissionTo($user, 'view:assignmentrecord') ||
                $assignment->user?->id === $user->id ||
@@ -45,50 +41,40 @@ class AssignmentRecordsPolicy extends Policy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $this->hasPermissionTo($user, 'create:assignmentrecord') || $user->tokenCan('create:assignmentrecord');
     }
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, AssignmentRecord $assignment)
+    public function update(User $user, AssignmentRecord $assignment): bool
     {
         return $this->hasPermissionTo($user, 'update:assignmentrecord') || $user->tokenCan('update:assignmentrecord');
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, AssignmentRecord $assignment)
+    public function delete(User $user, AssignmentRecord $assignment): bool
     {
         return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user->tokenCan('delete:assignmentrecord');
     }
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, AssignmentRecord $assignment)
+    public function restore(User $user, AssignmentRecord $assignment): bool
     {
         return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user->tokenCan('delete:assignmentrecord');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, AssignmentRecord $assignment)
+    public function forceDelete(User $user, AssignmentRecord $assignment): bool
     {
         return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user->tokenCan('delete:assignmentrecord');
     }

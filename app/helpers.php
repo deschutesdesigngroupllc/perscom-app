@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Cache;
 
 if (! function_exists('setting')) {
-    function setting($key, $default = null, int $ttl = 120)
+    function setting(string $key, mixed $default = null, int $ttl = 120): mixed
     {
         return Cache::remember($key, $ttl, static function () use ($key, $default) {
             try {

@@ -19,20 +19,12 @@ class ResetDemoAccount implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct()
     {
         $this->onQueue('system');
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         if ($tenant = Tenant::find(config('tenancy.demo_id'))) {
             Artisan::call('tenants:migrate-fresh', [
@@ -47,8 +39,6 @@ class ResetDemoAccount implements ShouldQueue
     }
 
     /**
-     * Calculate the number of seconds to wait before retrying the job.
-     *
      * @return array<int, int>
      */
     public function backoff(): array
@@ -56,10 +46,7 @@ class ResetDemoAccount implements ShouldQueue
         return [1, 5, 10];
     }
 
-    /**
-     * Handle a job failure.
-     */
-    public function failed($exception): void
+    public function failed(mixed $exception): void
     {
         Log::error('Failed to reset demo account', [
             'exception' => $exception,

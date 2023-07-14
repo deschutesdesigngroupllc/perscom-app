@@ -2,20 +2,15 @@
 
 namespace App\Contracts;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+
 interface RepositoryContract
 {
-    /**
-     * @return mixed
-     */
-    public function getAll();
+    public function getAll(): Collection;
 
-    /**
-     * @return mixed
-     */
-    public function findByKey($key, $value);
+    public function findByKey(string $key, mixed $value): Builder|Model;
 
-    /**
-     * @return mixed
-     */
-    public function findById($id);
+    public function findById(mixed $id): Builder|Collection|Model;
 }

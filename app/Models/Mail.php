@@ -12,6 +12,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property int $id
  * @property string $subject
  * @property string $content
+ * @property mixed $recipients
  * @property array|null $links
  * @property int $send_now
  * @property \Illuminate\Support\Carbon|null $send_at
@@ -27,6 +28,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereLinks($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Mail whereRecipients($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereSendAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereSendNow($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Mail whereSentAt($value)

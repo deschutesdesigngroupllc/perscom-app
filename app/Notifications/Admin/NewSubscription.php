@@ -23,20 +23,14 @@ class NewSubscription extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<string>
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return NewSubscriptionMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): NewSubscriptionMail
     {
         return (new NewSubscriptionMail($this->subscription))->to($notifiable->email);
     }

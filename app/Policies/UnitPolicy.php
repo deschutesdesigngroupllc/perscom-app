@@ -23,70 +23,56 @@ class UnitPolicy extends Policy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $this->hasPermissionTo($user, 'view:unit') || $user->tokenCan('view:unit');
     }
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Unit $unit)
+    public function view(User $user, Unit $unit): bool
     {
         return $this->hasPermissionTo($user, 'view:unit') || $user->tokenCan('view:unit');
     }
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $this->hasPermissionTo($user, 'create:unit') || $user->tokenCan('create:user');
     }
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Unit $unit)
+    public function update(User $user, Unit $unit): bool
     {
         return $this->hasPermissionTo($user, 'update:unit') || $user->tokenCan('update:user');
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Unit $unit)
+    public function delete(User $user, Unit $unit): bool
     {
         return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
     }
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Unit $unit)
+    public function restore(User $user, Unit $unit): bool
     {
         return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Unit $unit)
+    public function forceDelete(User $user, Unit $unit): bool
     {
         return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
     }

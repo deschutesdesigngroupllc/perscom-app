@@ -13,11 +13,9 @@ use Stancl\Tenancy\Events\TenantCreated;
 class CreateNewTenant
 {
     /**
-     * Validate and create a newly registered tenant.
-     *
-     * @return \App\Models\User
+     * @param  array<string|bool>  $input
      */
-    public function create(array $input)
+    public function create(array $input): Tenant
     {
         Validator::make($input, [
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],

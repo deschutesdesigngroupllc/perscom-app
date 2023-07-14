@@ -6,10 +6,7 @@ use Illuminate\Support\Facades\Log;
 
 class SeedDatabase extends \Stancl\Tenancy\Jobs\SeedDatabase
 {
-    /**
-     * Handle a job failure.
-     */
-    public function failed($exception): void
+    public function failed(mixed $exception): void
     {
         Log::error('Failed to seed tenant database', [
             'exception' => $exception,

@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
  * @property string $key
  * @property string|null $value
  *
+ * @method static \Database\Factories\SettingsFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Settings newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Settings newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Settings query()
@@ -24,9 +25,9 @@ class Settings extends \Outl1ne\NovaSettings\Models\Settings
     use HasFactory;
 
     /**
-     * @return null
+     * @param  string  $key
      */
-    public static function getValueForKey($key)
+    public static function getValueForKey($key): string|null
     {
         if (Request::isCentralRequest()) {
             return null;

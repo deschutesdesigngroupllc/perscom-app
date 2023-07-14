@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Inertia\Middleware;
+use Symfony\Component\HttpFoundation\Response;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -21,10 +22,8 @@ class HandleInertiaRequests extends Middleware
 
     /**
      * Handle the incoming request.
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $response = parent::handle($request, $next);
         $location = $response->headers->get('Location');
@@ -53,6 +52,8 @@ class HandleInertiaRequests extends Middleware
      * Defines the props that are shared by default.
      *
      * @see https://inertiajs.com/shared-data
+     *
+     * @return array<string>
      */
     public function share(Request $request): array
     {

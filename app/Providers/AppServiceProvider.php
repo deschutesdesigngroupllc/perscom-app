@@ -19,19 +19,17 @@ use Laravel\Socialite\Contracts\Factory;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         Request::macro('isCentralRequest', function () {
             if (env('TENANT_TESTING', false)) {
                 return false;
             }
 
-            return collect(config('tenancy.central_domains'))->contains(\request()->getHost());
+            /** @var array<string> $domains */
+            $domains = config('tenancy.central_domains');
+
+            return collect($domains)->contains(\request()->getHost());
         });
 
         Request::macro('isDemoMode', function () {
@@ -66,12 +64,7 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $socialite = $this->app->make(Factory::class);
         $socialite->extend('discord', function () use ($socialite) {

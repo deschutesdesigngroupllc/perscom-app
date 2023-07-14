@@ -24,12 +24,12 @@ class ResetDemoAccount extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         ResetDemoAccountJob::dispatch();
 
         $this->info('The job has been dispatched to the queue.');
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 }

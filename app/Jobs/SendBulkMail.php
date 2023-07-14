@@ -10,6 +10,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Notification;
+use Stancl\Tenancy\Database\TenantCollection;
 
 class SendBulkMail implements ShouldQueue
 {
@@ -18,22 +19,12 @@ class SendBulkMail implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Create a new job instance.
-     *
-     * @return void
-     */
-    public function __construct(protected $tenants, protected Mail $mail)
+    public function __construct(protected TenantCollection $tenants, protected Mail $mail)
     {
         //
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         $this->mail->update([
             'sent_at' => now(),

@@ -23,70 +23,56 @@ class DocumentPolicy extends Policy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $this->hasPermissionTo($user, 'view:document') || $user->tokenCan('view:document');
     }
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Document $document)
+    public function view(User $user, Document $document): bool
     {
         return $this->hasPermissionTo($user, 'view:document') || $user->tokenCan('view:document');
     }
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $this->hasPermissionTo($user, 'create:document') || $user->tokenCan('create:document');
     }
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Document $document)
+    public function update(User $user, Document $document): bool
     {
         return $this->hasPermissionTo($user, 'update:document') || $user->tokenCan('update:document');
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Document $document)
+    public function delete(User $user, Document $document): bool
     {
         return $this->hasPermissionTo($user, 'delete:document') || $user->tokenCan('delete:document');
     }
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Document $document)
+    public function restore(User $user, Document $document): bool
     {
         return $this->hasPermissionTo($user, 'delete:document') || $user->tokenCan('delete:document');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Document $document)
+    public function forceDelete(User $user, Document $document): bool
     {
         return $this->hasPermissionTo($user, 'delete:document') || $user->tokenCan('delete:document');
     }

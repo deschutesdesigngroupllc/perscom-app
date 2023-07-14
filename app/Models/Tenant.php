@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Events\NullDispatcher;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 use Laravel\Nova\Actions\Actionable;
 use Laravel\Nova\Nova;
 use Laravel\Pennant\Concerns\HasFeatures;
@@ -44,11 +46,11 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
  * @property-read int|null $domains_count
- * @property-read mixed $custom_domain
+ * @property-read mixed|null $custom_domain
  * @property-read mixed|null $custom_url
  * @property-read string $database_status
  * @property-read mixed|null $domain
- * @property-read mixed $fallback_domain
+ * @property-read mixed|null $fallback_domain
  * @property-read mixed|null $fallback_url
  * @property-read mixed|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spark\Receipt> $localReceipts
@@ -103,15 +105,10 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     use HasDatabase;
     use Notifiable;
 
-    /**
-     * @var null
-     */
     protected static null|Dispatcher $eventDispatcher = null;
 
     /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
+     * @var string[]
      */
     protected $casts = [
         'trial_ends_at' => 'datetime',
@@ -119,23 +116,19 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * @var string[]
      */
     protected $appends = ['database_status', 'url', 'custom_url', 'fallback_url'];
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
+     * @var string[]
      */
     protected $with = ['domains'];
 
     /**
      * Booted method
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::creating(function ($tenant) {
             Nova::whenServing(function () use ($tenant) {
@@ -183,104 +176,69 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
         ];
     }
 
-    /**
-     * @return string
-     */
-    public function getDatabaseStatusAttribute()
+    public function getDatabaseStatusAttribute(): string
     {
         return $this->getAttribute('tenancy_db_name') ? 'created' : 'creating';
     }
 
-    /**
-     * @return mixed
-     */
-    public function getCustomDomainAttribute()
+    public function getCustomDomainAttribute(): mixed
     {
         return $this->domains->where('is_custom_subdomain', '=', true)
             ->sortBy('created_at', SORT_REGULAR, true)
             ->first();
     }
 
-    /**
-     * @return mixed
-     */
-    public function getFallbackDomainAttribute()
+    public function getFallbackDomainAttribute(): mixed
     {
         return $this->domains->where('is_custom_subdomain', '=', false)
             ->sortBy('created_at', SORT_REGULAR, true)
             ->first();
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getDomainAttribute()
+    public function getDomainAttribute(): mixed
     {
         return $this->custom_domain ?? $this->fallback_domain;
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getCustomUrlAttribute()
+    public function getCustomUrlAttribute(): mixed
     {
         return optional($this->custom_domain)->url;
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getFallbackUrlAttribute()
+    public function getFallbackUrlAttribute(): mixed
     {
         return optional($this->fallback_domain)->url;
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getUrlAttribute()
+    public function getUrlAttribute(): mixed
     {
         return optional($this->domain)->url;
     }
 
-    /**
-     * Get the customer name that should be synced to Stripe.
-     *
-     * @return string|null
-     */
-    public function stripeName()
+    public function stripeName(): string|null
     {
         return $this->name;
     }
 
-    /**
-     * Route notifications for the mail channel.
-     *
-     * @param  \Illuminate\Notifications\Notification  $notification
-     * @return array|string
-     */
-    public function routeNotificationForMail($notification)
+    public function routeNotificationForMail(Notification $notification): string|null
     {
         return $this->email;
     }
 
-    public function toFeatureIdentifier(string $driver): mixed
+    public function toFeatureIdentifier(string $driver): string
     {
         return (string) $this->getTenantKey();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function pennants()
+    public function pennants(): HasMany
     {
         return $this->hasMany(Feature::class, 'scope');
     }
 
     /**
-     * @return string
+     * @param  array<string>  $parameters
      */
-    public function route($name, array $parameters = [])
+    public function route(string $name, array $parameters = []): string
     {
         return "$this->url".route($name, $parameters, false);
     }

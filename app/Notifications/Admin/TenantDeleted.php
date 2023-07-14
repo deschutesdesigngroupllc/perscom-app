@@ -24,30 +24,19 @@ class TenantDeleted extends Notification implements ShouldQueue
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
+     * @return array<mixed>
      */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail', NovaChannel::class];
     }
 
-    /**
-     * @return TenantDeletedMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): TenantDeletedMail
     {
         return (new TenantDeletedMail($this->tenant, $this->email))->to($notifiable->email);
     }
 
-    /**
-     * Get the nova representation of the notification
-     *
-     * @return NovaNotification
-     */
-    public function toNova()
+    public function toNova(): NovaNotification
     {
         return (new NovaNotification())->message('A tenant has been deleted.')
             ->icon('user-remove')

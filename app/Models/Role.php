@@ -39,9 +39,7 @@ class Role extends \Spatie\Permission\Models\Role
     use HasFactory;
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array<string, string>
+     * @var string[]
      */
     protected $casts = [
         'is_custom_role' => 'boolean',
@@ -49,25 +47,23 @@ class Role extends \Spatie\Permission\Models\Role
     ];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * @var string[]
      */
     protected $appends = ['is_custom_role', 'is_application_role'];
 
-    /**
-     * @return bool
-     */
-    public function getIsCustomRoleAttribute()
+    public function getIsCustomRoleAttribute(): bool
     {
-        return ! collect(config('permissions.roles'))->has($this->name);
+        /** @var array<string, string> $roles */
+        $roles = config('permissions.roles');
+
+        return ! collect($roles)->has($this->name);
     }
 
-    /**
-     * @return bool
-     */
-    public function getIsApplicationRoleAttribute()
+    public function getIsApplicationRoleAttribute(): bool
     {
-        return collect(config('permissions.roles'))->has($this->name);
+        /** @var array<string, string> $roles */
+        $roles = config('permissions.roles');
+
+        return collect($roles)->has($this->name);
     }
 }

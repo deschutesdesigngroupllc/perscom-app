@@ -23,10 +23,8 @@ class FormPolicy extends Policy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $this->hasPermissionTo($user, 'view:form') || $user->tokenCan('view:form');
     }
@@ -36,60 +34,48 @@ class FormPolicy extends Policy
      *
      * @param \App\Models\User $user
      * @param \App\Models\Form $form
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Form $form)
+    public function view(User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'view:form') || $user->tokenCan('view:form');
     }
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $this->hasPermissionTo($user, 'create:form') || $user->tokenCan('create:form');
     }
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Form $form)
+    public function update(User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'update:form') || $user->tokenCan('update:form');
     }
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Form $form)
+    public function delete(User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
     }
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Form $form)
+    public function restore(User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
     }
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Form $form)
+    public function forceDelete(User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
     }

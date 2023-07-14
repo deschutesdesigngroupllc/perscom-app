@@ -6,6 +6,8 @@ use App\Traits\HasFields;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Arr;
 use Laravel\Nova\Actions\Actionable;
 
@@ -23,7 +25,7 @@ use Laravel\Nova\Actions\Actionable;
  * @property-read int|null $tags_count
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
- * @method static Builder|Form forTags($tag)
+ * @method static Builder|Form forTags(string $tag)
  * @method static Builder|Form newModelQuery()
  * @method static Builder|Form newQuery()
  * @method static Builder|Form query()
@@ -37,23 +39,16 @@ class Form extends Model
     use HasFields;
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * @var string[]
      */
     protected $appends = ['url'];
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
+     * @var string[]
      */
     protected $with = ['fields'];
 
-    /**
-     * @return Builder
-     */
-    public function scopeForTags(Builder $query, $tag)
+    public function scopeForTags(Builder $query, string $tag): Builder
     {
         $tags = Arr::wrap($tag);
 
@@ -62,10 +57,7 @@ class Form extends Model
         });
     }
 
-    /**
-     * @return string
-     */
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
         return route('nova.pages.create', [
             'resource' => \App\Nova\Submission::uriKey(),
@@ -74,18 +66,12 @@ class Form extends Model
         ]);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function submissions()
+    public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'forms_tags');
     }

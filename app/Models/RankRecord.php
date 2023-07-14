@@ -27,7 +27,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\User|null $user
  *
  * @method static \Database\Factories\RankRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forAuthor($user)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forAuthor(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forDocument($document)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newModelQuery()

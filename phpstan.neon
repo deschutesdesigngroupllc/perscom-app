@@ -3,13 +3,13 @@ includes:
 parameters:
     paths:
         - app/
-    level: 5
+    level: 6
+    checkGenericClassInNonGenericObjectType: false
     ignoreErrors:
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::forUser\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::future\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::ordered\(\)#'
         - '#PHPDoc type array<string> of property [a-zA-Z0-9\\_]+::\$casts#'
-        - '#PHPDoc type array of property [a-zA-Z0-9\\_]+::\$guarded#'
         - '#Access to an undefined property Laravel\\Passport\\Client::\$[a-zA-Z0-9\\_]+#'
         - '#Access to an undefined property Laravel\\Socialite\\Contracts\\User::\$[a-zA-Z0-9\\_]+#'
         - '#Access to property \$[a-zA-Z0-9\\_]+ on an unknown class Laravel\\Cashier\\Billable#'

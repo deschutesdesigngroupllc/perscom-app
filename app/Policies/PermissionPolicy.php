@@ -24,40 +24,32 @@ class PermissionPolicy extends Policy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return $this->hasPermissionTo($user, 'view:permission') || $user->tokenCan('view:permission');
     }
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Permission $permission)
+    public function view(User $user, Permission $permission): bool
     {
         return $this->hasPermissionTo($user, 'view:permission') || $user->tokenCan('view:permission');
     }
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         return $this->hasPermissionTo($user, 'create:permission') || $user->tokenCan('create:permission');
     }
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Permission $permission)
+    public function update(User $user, Permission $permission): bool
     {
         if ($permission->is_application_permission) {
             return false;
@@ -68,10 +60,8 @@ class PermissionPolicy extends Policy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Permission $permission)
+    public function delete(User $user, Permission $permission): bool
     {
         if ($permission->is_application_permission) {
             return false;
@@ -82,10 +72,8 @@ class PermissionPolicy extends Policy
 
     /**
      * Determine whether the user can detach the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function detachRole(User $user, Permission $permission, Role $role)
+    public function detachRole(User $user, Permission $permission, Role $role): bool
     {
         if ($permission->is_application_permission && $role->is_application_role) {
             return false;
@@ -96,10 +84,8 @@ class PermissionPolicy extends Policy
 
     /**
      * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Permission $permission)
+    public function restore(User $user, Permission $permission): bool
     {
         if ($permission->is_application_permission) {
             return false;
@@ -110,10 +96,8 @@ class PermissionPolicy extends Policy
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Permission $permission)
+    public function forceDelete(User $user, Permission $permission): bool
     {
         if ($permission->is_application_permission) {
             return false;

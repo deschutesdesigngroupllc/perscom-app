@@ -5,6 +5,8 @@ namespace App\Traits;
 use App\Models\Element;
 use App\Models\Field;
 use Closure;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Collection;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
@@ -12,9 +14,9 @@ use Laravel\Nova\Panel;
 trait HasFields
 {
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
+     * @return MorphToMany<Field>
      */
-    public function fields()
+    public function fields(): MorphToMany
     {
         return $this->morphToMany(Field::class, 'model', 'model_has_fields')
             ->using(Element::class)
@@ -25,9 +27,9 @@ trait HasFields
     }
 
     /**
-     * @return Hidden|Panel|mixed[]
+     * @return Hidden|Panel|array<mixed>
      */
-    protected function getNovaFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', Closure $modelResolver = null)
+    protected function getNovaFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', Closure $modelResolver = null): Hidden|Panel|array
     {
         if (($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest()) &&
             $request->resource() == static::class) { // @phpstan-ignore-line
@@ -38,18 +40,18 @@ trait HasFields
                 $model = $modelResolver($model);
             }
 
-            $fields = collect(optional($model?->fields, static function ($fields) {
-                return $fields->map(static function ($field) {
+            if ($model && isset($model->fields) && $model->fields instanceof Collection) {
+                $fields = $model->fields->map(static function (Field $field) {
                     return $field->constructNovaField();
                 });
-            }));
 
-            if ($wrapInPanel && $fields->isNotEmpty()) {
-                return Panel::make(value($panelName, $model), $fields->toArray());
-            }
+                if ($wrapInPanel && $fields->isNotEmpty()) {
+                    return Panel::make(value($panelName, $model), $fields->toArray());
+                }
 
-            if ($fields->isNotEmpty()) {
-                return $fields->toArray();
+                if ($fields->isNotEmpty()) {
+                    return $fields->toArray();
+                }
             }
         }
 

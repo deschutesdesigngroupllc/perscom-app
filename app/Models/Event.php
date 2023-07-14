@@ -7,9 +7,12 @@ use App\Traits\HasAuthor;
 use App\Traits\HasImages;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use RRule\RRule;
 
 /**
@@ -20,9 +23,9 @@ use RRule\RRule;
  * @property-read \App\Models\User|null $author
  * @property-read \App\Models\Calendar|null $calendar
  * @property-read mixed|null $computed_end
- * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule $human_readable_pattern
- * @property-read false|\Illuminate\Support\Optional|mixed $is_past
- * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule|null $next_occurrence
+ * @property-read mixed|null $human_readable_pattern
+ * @property-read mixed|null $is_past
+ * @property-read mixed|null $next_occurrence
  * @property-read \App\Models\Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
@@ -32,8 +35,8 @@ use RRule\RRule;
  * @property-read int|null $tags_count
  *
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
- * @method static Builder|Event forAuthor($user)
- * @method static Builder|Event forDatePeriod($start, $end)
+ * @method static Builder|Event forAuthor(\App\Models\User $user)
+ * @method static Builder|Event forDatePeriod(\DateTimeInterface|string|null $start, \DateTimeInterface|string|null $end)
  * @method static Builder|Event future()
  * @method static Builder|Event newModelQuery()
  * @method static Builder|Event newQuery()
@@ -179,10 +182,7 @@ class Event extends Model
         });
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopeForDatePeriod(Builder $query, $start, $end)
+    public function scopeForDatePeriod(Builder $query, DateTimeInterface|string|null $start, DateTimeInterface|string|null $end): Builder
     {
         $period = CarbonPeriod::create(
             Carbon::parse($start),
@@ -209,10 +209,7 @@ class Event extends Model
         });
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopeFuture(Builder $query)
+    public function scopeFuture(Builder $query): Builder
     {
         return $query->whereDate('start', '>', now())
             ->orWhereDate('end', '>', now())
@@ -231,10 +228,7 @@ class Event extends Model
             });
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getComputedEndAttribute()
+    public function getComputedEndAttribute(): mixed
     {
         return match (true) {
             ! $this->repeats && $this->end => $this->end,
@@ -246,10 +240,7 @@ class Event extends Model
         };
     }
 
-    /**
-     * @return \Illuminate\Support\Optional|mixed|RRule|null
-     */
-    public function getNextOccurrenceAttribute()
+    public function getNextOccurrenceAttribute(): mixed
     {
         return match (true) {
             ! $this->repeats => $this->start,
@@ -259,46 +250,31 @@ class Event extends Model
         };
     }
 
-    /**
-     * @return false|\Illuminate\Support\Optional|mixed
-     */
-    public function getIsPastAttribute()
+    public function getIsPastAttribute(): mixed
     {
         return optional($this->computed_end, static function (Carbon $end) {
             return $end->isPast();
         }) ?: false;
     }
 
-    /**
-     * @return \Illuminate\Support\Optional|mixed|RRule
-     */
-    public function getHumanReadablePatternAttribute()
+    public function getHumanReadablePatternAttribute(): mixed
     {
         return optional($this->generateRRule(), static function (RRule $rule) {
             return $rule->humanReadable();
         });
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function calendar()
+    public function calendar(): BelongsTo
     {
         return $this->belongsTo(Calendar::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
+    public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class, 'events_tags');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function registrations()
+    public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')
             ->withPivot(['id'])
@@ -308,9 +284,9 @@ class Event extends Model
     }
 
     /**
-     * @return RRule|null
+     * @return RRule<mixed>|null
      */
-    protected function generateRRule()
+    protected function generateRRule(): RRule|null
     {
         $payload = [
             'DTSTART' => $this->start->toDateTimeString(),
