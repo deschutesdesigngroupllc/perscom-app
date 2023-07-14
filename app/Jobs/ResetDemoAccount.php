@@ -39,7 +39,7 @@ class ResetDemoAccount implements ShouldQueue
     }
 
     /**
-     * @return array<int, int>
+     * @return int[]
      */
     public function backoff(): array
     {

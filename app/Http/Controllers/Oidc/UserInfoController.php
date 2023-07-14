@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Oidc;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class UserInfoController extends Controller
 {
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index(Request $request)
+    public function index(Request $request): JsonResponse
     {
         $user = Auth::guard('passport')->user();
 
@@ -26,11 +24,14 @@ class UserInfoController extends Controller
         }
 
         if ($user->tokenCan('profile')) {
-            $profile = collect($user)->only([ // @phpstan-ignore-line
+            /** @var array<string> $keys */
+            $keys = [
                 'name',
                 'profile_photo_url',
                 'cover_photo_url',
-            ]);
+            ];
+
+            $profile = collect($user)->only($keys);
 
             $response = $response->merge($profile);
         }
