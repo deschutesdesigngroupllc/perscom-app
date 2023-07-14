@@ -27,7 +27,7 @@ class Settings extends \Outl1ne\NovaSettings\Models\Settings
     /**
      * @param  string  $key
      */
-    public static function getValueForKey($key): string|null
+    public static function getValueForKey($key): mixed
     {
         if (Request::isCentralRequest()) {
             return null;

@@ -23,7 +23,7 @@ class Subscribed extends VerifyBillableIsSubscribed
      * @param  string  $billableType
      * @param  string  $plan
      */
-    public function handle($request, $next, $billableType = null, $plan = null): Response|JsonResponse
+    public function handle($request, $next, $billableType = null, $plan = null): Response|RedirectResponse|JsonResponse
     {
         if ($request->isDemoMode() ||
             $request->isCentralRequest() ||
