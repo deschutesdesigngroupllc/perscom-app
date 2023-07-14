@@ -3,18 +3,16 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckUniversalRouteForTenantOrAdmin
 {
     /**
      * @throws \Throwable
      */
-    public function handle(Request $request, Closure $next): Response|RedirectResponse|JsonResponse
+    public function handle(Request $request, Closure $next): Response
     {
         throw_if(! tenant() && ! $request->is([
             'admin',

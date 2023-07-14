@@ -3,18 +3,16 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class RedirectIfAuthenticated
 {
     /**
      * @param  array<mixed>|string|null  ...$guards
      */
-    public function handle(Request $request, Closure $next, array|string|null ...$guards): Response|RedirectResponse|JsonResponse
+    public function handle(Request $request, Closure $next, array|string|null ...$guards): Response
     {
         $guards = empty($guards) ? [null] : $guards;
 
