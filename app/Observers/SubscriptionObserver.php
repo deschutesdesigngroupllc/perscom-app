@@ -11,50 +11,40 @@ class SubscriptionObserver
 {
     /**
      * Handle the Subscription "created" event.
-     *
-     * @return void
      */
-    public function created(Subscription $subscription)
+    public function created(Subscription $subscription): void
     {
         Notification::send(Admin::all(), new NewSubscription($subscription));
     }
 
     /**
      * Handle the Subscription "updated" event.
-     *
-     * @return void
      */
-    public function updated(Subscription $subscription)
+    public function updated(Subscription $subscription): void
     {
         //
     }
 
     /**
      * Handle the Subscription "deleted" event.
-     *
-     * @return void
      */
-    public function deleted(Subscription $subscription)
+    public function deleted(Subscription $subscription): void
     {
         //
     }
 
     /**
      * Handle the Subscription "restored" event.
-     *
-     * @return void
      */
-    public function restored(Subscription $subscription)
+    public function restored(Subscription $subscription): void
     {
         //
     }
 
     /**
      * Handle the Subscription "force deleted" event.
-     *
-     * @return void
      */
-    public function forceDeleted(Subscription $subscription)
+    public function forceDeleted(Subscription $subscription): void
     {
         //
     }

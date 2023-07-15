@@ -10,7 +10,7 @@ class ExportDataFeature extends BaseFeature
     /**
      * Resolve the feature's initial value.
      */
-    public function resolve(string|null $scope): mixed
+    public function resolve(string|null $scope): bool
     {
         $tenant = $this->resolveTenant($scope);
 

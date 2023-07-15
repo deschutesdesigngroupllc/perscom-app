@@ -45,10 +45,10 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read string|null $cover_photo_url
  * @property-read bool $online
  * @property-read string|null $profile_photo_url
- * @property-read string $relative_url
+ * @property-read string|null $relative_url
  * @property-read mixed|null $time_in_assignment
  * @property-read mixed|null $time_in_grade
- * @property-read string $url
+ * @property-read string|null $url
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions

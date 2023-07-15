@@ -23,8 +23,8 @@ use RRule\RRule;
  * @property-read \App\Models\User|null $author
  * @property-read \App\Models\Calendar|null $calendar
  * @property-read mixed|null $computed_end
- * @property-read mixed|null $human_readable_pattern
- * @property-read mixed|null $is_past
+ * @property-read string|null $human_readable_pattern
+ * @property-read bool|null $is_past
  * @property-read mixed|null $next_occurrence
  * @property-read \App\Models\Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
@@ -182,14 +182,14 @@ class Event extends Model
         });
     }
 
-    public function scopeForDatePeriod(Builder $query, DateTimeInterface|string|null $start, DateTimeInterface|string|null $end): Builder
+    public function scopeForDatePeriod(Builder $query, DateTimeInterface|string|null $start, DateTimeInterface|string|null $end): void
     {
         $period = CarbonPeriod::create(
             Carbon::parse($start),
             Carbon::parse($end)
         );
 
-        return $query->where(function (Builder $query) use ($period) {
+        $query->where(function (Builder $query) use ($period) {
             $query->whereBetween('start', [$period->getStartDate(), $period->getEndDate()]);
         })->orWhere(function (Builder $query) use ($period) {
             $query->whereBetween('end', [$period->getStartDate(), $period->getEndDate()]);
@@ -209,9 +209,9 @@ class Event extends Model
         });
     }
 
-    public function scopeFuture(Builder $query): Builder
+    public function scopeFuture(Builder $query): void
     {
-        return $query->whereDate('start', '>', now())
+        $query->whereDate('start', '>', now())
             ->orWhereDate('end', '>', now())
             ->orWhere(function (Builder $query) {
                 $query->where('repeats', '=', true)
@@ -250,14 +250,14 @@ class Event extends Model
         };
     }
 
-    public function getIsPastAttribute(): mixed
+    public function getIsPastAttribute(): ?bool
     {
         return optional($this->computed_end, static function (Carbon $end) {
             return $end->isPast();
         }) ?: false;
     }
 
-    public function getHumanReadablePatternAttribute(): mixed
+    public function getHumanReadablePatternAttribute(): ?string
     {
         return optional($this->generateRRule(), static function (RRule $rule) {
             return $rule->humanReadable();

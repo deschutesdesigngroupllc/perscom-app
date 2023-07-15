@@ -4,13 +4,14 @@ namespace App\Rules;
 
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
+use Illuminate\Translation\PotentiallyTranslatedString;
 
 class SubdomainRule implements ValidationRule
 {
     /**
      * @var string[]
      */
-    protected static $reservedSubdomains = [
+    protected static array $reservedSubdomains = [
         'admin',
         'api',
         'app',
@@ -29,10 +30,9 @@ class SubdomainRule implements ValidationRule
     ];
 
     /**
-     * Run the validation rule.
-     *f
+     * Run the validation rules
      *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
+     * @param  \Closure(string): PotentiallyTranslatedString  $fail
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {

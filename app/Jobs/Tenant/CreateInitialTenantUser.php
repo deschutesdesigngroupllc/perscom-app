@@ -26,12 +26,7 @@ class CreateInitialTenantUser implements ShouldQueue
         //
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         $password = Str::password();
         $user = $this->tenant->run(function () use ($password) {

@@ -59,11 +59,8 @@ class Message extends Model implements Sortable
         'active' => 'boolean',
     ];
 
-    /**
-     * @return mixed
-     */
-    public function scopeActive(Builder $query)
+    public function scopeActive(Builder $query): void
     {
-        return $query->where('active', '=', true);
+        $query->where('active', '=', true);
     }
 }

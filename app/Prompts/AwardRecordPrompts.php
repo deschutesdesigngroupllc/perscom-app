@@ -14,8 +14,7 @@ class AwardRecordPrompts
         $prompt = Str::replace('{user}', $record->user->name, $prompt);
         $prompt = Str::replace('{text}', $record->text, $prompt);
         $prompt = Str::replace('{award}', $record->award->name, $prompt);
-        $prompt = Str::replace('{description}', $record->award->description, $prompt);
 
-        return $prompt;
+        return Str::replace('{description}', $record->award->description, $prompt);
     }
 }

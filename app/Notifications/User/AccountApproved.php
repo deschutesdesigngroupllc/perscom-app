@@ -3,6 +3,7 @@
 namespace App\Notifications\User;
 
 use App\Mail\User\AccountApproved as AccountApprovedMail;
+use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
@@ -11,33 +12,22 @@ class AccountApproved extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var mixed|\Stancl\Tenancy\Contracts\Tenant|null
-     */
-    protected mixed $tenant;
+    protected ?Tenant $tenant = null;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->tenant = tenant();
     }
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
+     * @return string[]
      */
     public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return AccountApprovedMail
-     */
-    public function toMail(object $notifiable)
+    public function toMail(object $notifiable): AccountApprovedMail
     {
         return (new AccountApprovedMail($this->tenant))->to($notifiable->email);
     }

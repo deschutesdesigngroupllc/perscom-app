@@ -30,7 +30,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  *
  * @method static \Database\Factories\AssignmentRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord forAuthor(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord forDocument($document)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord forDocument(\App\Models\Document $document)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()

@@ -47,12 +47,12 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
  * @property-read int|null $domains_count
  * @property-read mixed|null $custom_domain
- * @property-read mixed|null $custom_url
+ * @property-read string|null $custom_url
  * @property-read string $database_status
  * @property-read mixed|null $domain
  * @property-read mixed|null $fallback_domain
- * @property-read mixed|null $fallback_url
- * @property-read mixed|null $url
+ * @property-read string|null $fallback_url
+ * @property-read string|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spark\Receipt> $localReceipts
  * @property-read int|null $local_receipts_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
@@ -105,7 +105,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     use HasDatabase;
     use Notifiable;
 
-    protected static null|Dispatcher $eventDispatcher = null;
+    protected static ?Dispatcher $eventDispatcher = null;
 
     /**
      * @var string[]
@@ -200,27 +200,27 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
         return $this->custom_domain ?? $this->fallback_domain;
     }
 
-    public function getCustomUrlAttribute(): mixed
+    public function getCustomUrlAttribute(): ?string
     {
         return optional($this->custom_domain)->url;
     }
 
-    public function getFallbackUrlAttribute(): mixed
+    public function getFallbackUrlAttribute(): ?string
     {
         return optional($this->fallback_domain)->url;
     }
 
-    public function getUrlAttribute(): mixed
+    public function getUrlAttribute(): ?string
     {
         return optional($this->domain)->url;
     }
 
-    public function stripeName(): string|null
+    public function stripeName(): ?string
     {
         return $this->name;
     }
 
-    public function routeNotificationForMail(Notification $notification): string|null
+    public function routeNotificationForMail(Notification $notification): ?string
     {
         return $this->email;
     }

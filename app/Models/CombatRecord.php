@@ -27,7 +27,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  *
  * @method static \Database\Factories\CombatRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord forAuthor(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord forDocument($document)
+ * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord forDocument(\App\Models\Document $document)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newQuery()

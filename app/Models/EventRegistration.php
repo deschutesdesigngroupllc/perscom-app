@@ -67,12 +67,9 @@ class EventRegistration extends Pivot
         static::addGlobalScope(new EventRegistrationScope());
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopeFuture(Builder $query)
+    public function scopeFuture(Builder $query): void
     {
-        return $query->whereRelation('event', function (Builder $query) {
+        $query->whereRelation('event', function (Builder $query) {
             return $query->future();
         });
     }

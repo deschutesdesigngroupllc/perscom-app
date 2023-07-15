@@ -8,8 +8,11 @@ use App\Traits\HasUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\DB;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
@@ -63,50 +66,36 @@ class TaskAssignment extends Pivot
         'complete' => 'boolean',
     ];
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new TaskAssignmentScope());
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopeAssigned(Builder $query)
+    public function scopeAssigned(Builder $query): void
     {
-        return $query->whereNull('completed_at')->where(function (Builder $query) {
-            return $query->whereNull('expires_at')->orWhere(function (Builder $query) {
+        $query->whereNull('completed_at')->where(function (Builder $query) {
+            $query->whereNull('expires_at')->orWhere(function (Builder $query) {
                 $query->whereNotNull('expires_at')->where('expires_at', '>', now());
             });
         })->where(function (Builder $query) {
-            return $query->whereNull('due_at')->orWhere(function (Builder $query) {
+            $query->whereNull('due_at')->orWhere(function (Builder $query) {
                 $query->whereNotNull('due_at')->where('due_at', '>', now());
             });
         });
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopeExpired(Builder $query)
+    public function scopeExpired(Builder $query): void
     {
-        return $query->whereNotNull('expires_at')->whereDate('expires_at', '<', now())->where(function (Builder $query) {
+        $query->whereNotNull('expires_at')->whereDate('expires_at', '<', now())->where(function (Builder $query) {
             $query->where(function (Builder $query) {
                 $query->whereNotNull('completed_at')->whereDate('completed_at', '>', now());
             })->orWhereNull('completed_at');
         });
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopePastDue(Builder $query)
+    public function scopePastDue(Builder $query): void
     {
-        return $query->whereNotNull('due_at')->where(function (Builder $query) {
+        $query->whereNotNull('due_at')->where(function (Builder $query) {
             $query->where(function (Builder $query) {
                 $query->whereNull('completed_at')->whereDate('due_at', '<', now());
             })->orWhere(function (Builder $query) {
@@ -115,10 +104,7 @@ class TaskAssignment extends Pivot
         });
     }
 
-    /**
-     * @return TaskAssignmentStatus
-     */
-    public function getStatusAttribute()
+    public function getStatusAttribute(): TaskAssignmentStatus
     {
         if ($this->expired) {
             if ($this->complete) {
@@ -139,29 +125,19 @@ class TaskAssignment extends Pivot
         return $this->complete ? TaskAssignmentStatus::TASK_COMPLETE : TaskAssignmentStatus::TASK_ASSIGNED;
     }
 
-    /**
-     * @param  null  $completedAt
-     * @return bool
-     */
-    public function complete($completedAt = null)
+    public function complete(): bool
     {
         return $this->update([
             'completed_at' => now(),
         ]);
     }
 
-    /**
-     * @return bool
-     */
-    public function getCompleteAttribute()
+    public function getCompleteAttribute(): bool
     {
         return (bool) $this->completed_at;
     }
 
-    /**
-     * @return bool
-     */
-    public function getExpiredAttribute()
+    public function getExpiredAttribute(): bool
     {
         return $this->expires_at &&
                Carbon::parse($this->expires_at)->isPast() &&
@@ -169,36 +145,24 @@ class TaskAssignment extends Pivot
                 ! $this->complete);
     }
 
-    /**
-     * @return bool
-     */
-    public function getPastDueAttribute()
+    public function getPastDueAttribute(): bool
     {
         return $this->due_at &&
                ((! $this->complete && Carbon::parse($this->due_at)->isPast()) ||
                 ($this->complete && Carbon::parse($this->due_at)->isBefore($this->completed_at)));
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function assigned_by()
+    public function assigned_by(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function task()
+    public function task(): HasOne
     {
         return $this->hasOne(Task::class, 'id', 'task_id');
     }
 
-    /**
-     * @return \Staudenmeir\EloquentHasManyDeep\HasManyDeep
-     */
-    public function attachments()
+    public function attachments(): HasManyDeep
     {
         return $this->hasManyDeep(Attachment::class, [Task::class], [null, ['model_type', 'model_id']]);
     }

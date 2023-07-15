@@ -8,9 +8,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasUser
 {
-    public function scopeForUser(Builder $query, User $user): Builder
+    public function scopeForUser(Builder $query, User $user): void
     {
-        return $query->whereBelongsTo($user);
+        $query->whereBelongsTo($user);
     }
 
     public function user(): BelongsTo

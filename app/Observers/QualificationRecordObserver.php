@@ -13,10 +13,8 @@ class QualificationRecordObserver
 {
     /**
      * Handle the Qualification "created" event.
-     *
-     * @return void
      */
-    public function created(QualificationRecord $qualification)
+    public function created(QualificationRecord $qualification): void
     {
         Notification::send($qualification->user, new NewQualificationRecord($qualification));
 
@@ -27,10 +25,8 @@ class QualificationRecordObserver
 
     /**
      * Handle the Qualification "updated" event.
-     *
-     * @return void
      */
-    public function updated(QualificationRecord $qualification)
+    public function updated(QualificationRecord $qualification): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::QUALIFICATION_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($qualification) {
             WebhookService::dispatch($webhook, WebhookEvent::QUALIFICATION_RECORD_UPDATED->value, $qualification);
@@ -39,10 +35,8 @@ class QualificationRecordObserver
 
     /**
      * Handle the Qualification "deleted" event.
-     *
-     * @return void
      */
-    public function deleted(QualificationRecord $qualification)
+    public function deleted(QualificationRecord $qualification): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::QUALIFICATION_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($qualification) {
             WebhookService::dispatch($webhook, WebhookEvent::QUALIFICATION_RECORD_DELETED->value, $qualification);
@@ -51,20 +45,16 @@ class QualificationRecordObserver
 
     /**
      * Handle the Qualification "restored" event.
-     *
-     * @return void
      */
-    public function restored(QualificationRecord $qualification)
+    public function restored(QualificationRecord $qualification): void
     {
         //
     }
 
     /**
      * Handle the Qualification "force deleted" event.
-     *
-     * @return void
      */
-    public function forceDeleted(QualificationRecord $qualification)
+    public function forceDeleted(QualificationRecord $qualification): void
     {
         //
     }

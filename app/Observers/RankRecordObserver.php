@@ -13,10 +13,8 @@ class RankRecordObserver
 {
     /**
      * Handle the Rank "created" event.
-     *
-     * @return void
      */
-    public function created(RankRecord $rank)
+    public function created(RankRecord $rank): void
     {
         if ($rank->user) {
             $rank->user->rank_id = $rank->rank?->id;
@@ -32,10 +30,8 @@ class RankRecordObserver
 
     /**
      * Handle the Rank "updated" event.
-     *
-     * @return void
      */
-    public function updated(RankRecord $rank)
+    public function updated(RankRecord $rank): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($rank) {
             WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_UPDATED->value, $rank);
@@ -44,10 +40,8 @@ class RankRecordObserver
 
     /**
      * Handle the Rank "deleted" event.
-     *
-     * @return void
      */
-    public function deleted(RankRecord $rank)
+    public function deleted(RankRecord $rank): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($rank) {
             WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_DELETED->value, $rank);
@@ -56,20 +50,16 @@ class RankRecordObserver
 
     /**
      * Handle the Rank "restored" event.
-     *
-     * @return void
      */
-    public function restored(RankRecord $rank)
+    public function restored(RankRecord $rank): void
     {
         //
     }
 
     /**
      * Handle the Rank "force deleted" event.
-     *
-     * @return void
      */
-    public function forceDeleted(RankRecord $rank)
+    public function forceDeleted(RankRecord $rank): void
     {
         //
     }

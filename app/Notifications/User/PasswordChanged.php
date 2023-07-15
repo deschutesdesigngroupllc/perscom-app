@@ -12,7 +12,7 @@ class PasswordChanged extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function via(mixed $notifiable): array
     {

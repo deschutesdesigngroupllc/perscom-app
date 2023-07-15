@@ -10,50 +10,40 @@ class TaskAssignmentObserver
 {
     /**
      * Handle the TaskAssignment "created" event.
-     *
-     * @return void
      */
-    public function created(TaskAssignment $taskAssignment)
+    public function created(TaskAssignment $taskAssignment): void
     {
         Notification::send($taskAssignment->user, new NewTaskAssignment($taskAssignment));
     }
 
     /**
      * Handle the TaskAssignment "updated" event.
-     *
-     * @return void
      */
-    public function updated(TaskAssignment $taskAssignment)
+    public function updated(TaskAssignment $taskAssignment): void
     {
         //
     }
 
     /**
      * Handle the TaskAssignment "deleted" event.
-     *
-     * @return void
      */
-    public function deleted(TaskAssignment $taskAssignment)
+    public function deleted(TaskAssignment $taskAssignment): void
     {
         //
     }
 
     /**
      * Handle the TaskAssignment "restored" event.
-     *
-     * @return void
      */
-    public function restored(TaskAssignment $taskAssignment)
+    public function restored(TaskAssignment $taskAssignment): void
     {
         //
     }
 
     /**
      * Handle the TaskAssignment "force deleted" event.
-     *
-     * @return void
      */
-    public function forceDeleted(TaskAssignment $taskAssignment)
+    public function forceDeleted(TaskAssignment $taskAssignment): void
     {
         //
     }

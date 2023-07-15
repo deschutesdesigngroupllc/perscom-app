@@ -14,8 +14,7 @@ class QualificationRecordPrompts
         $prompt = Str::replace('{user}', $record->user->name, $prompt);
         $prompt = Str::replace('{text}', $record->text, $prompt);
         $prompt = Str::replace('{qualification}', $record->qualification->name, $prompt);
-        $prompt = Str::replace('{description}', $record->qualification->description, $prompt);
 
-        return $prompt;
+        return Str::replace('{description}', $record->qualification->description, $prompt);
     }
 }

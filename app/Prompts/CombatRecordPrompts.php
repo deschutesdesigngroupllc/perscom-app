@@ -12,8 +12,7 @@ class CombatRecordPrompts
         $prompt = config("openai.prompts.combatrecord.created.$type");
 
         $prompt = Str::replace('{user}', $record->user->name, $prompt);
-        $prompt = Str::replace('{text}', $record->text, $prompt);
 
-        return $prompt;
+        return Str::replace('{text}', $record->text, $prompt);
     }
 }

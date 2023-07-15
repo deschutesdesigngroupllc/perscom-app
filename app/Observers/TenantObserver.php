@@ -12,50 +12,40 @@ class TenantObserver
 {
     /**
      * Handle the Tenant "created" event.
-     *
-     * @return void
      */
-    public function created(Tenant $tenant)
+    public function created(Tenant $tenant): void
     {
         Notification::send(Admin::all(), new NewTenant($tenant));
     }
 
     /**
      * Handle the Tenant "updated" event.
-     *
-     * @return void
      */
-    public function updated(Tenant $tenant)
+    public function updated(Tenant $tenant): void
     {
         //
     }
 
     /**
      * Handle the Tenant "deleted" event.
-     *
-     * @return void
      */
-    public function deleted(Tenant $tenant)
+    public function deleted(Tenant $tenant): void
     {
         Notification::send(Admin::all(), new TenantDeleted($tenant->name, $tenant->email));
     }
 
     /**
      * Handle the Tenant "restored" event.
-     *
-     * @return void
      */
-    public function restored(Tenant $tenant)
+    public function restored(Tenant $tenant): void
     {
         //
     }
 
     /**
      * Handle the Tenant "force deleted" event.
-     *
-     * @return void
      */
-    public function forceDeleted(Tenant $tenant)
+    public function forceDeleted(Tenant $tenant): void
     {
         //
     }

@@ -31,7 +31,7 @@ class NewQualificationRecord extends Notification implements ShouldQueue
     }
 
     /**
-     * @return array<mixed>
+     * @return string[]
      */
     public function via(mixed $notifiable): array
     {

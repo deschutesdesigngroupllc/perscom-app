@@ -7,10 +7,7 @@ use Stancl\Tenancy\Events\TenancyInitialized;
 
 class CheckTenantDatabaseExists
 {
-    /**
-     * @return void
-     */
-    public function handle(TenancyInitialized $event)
+    public function handle(TenancyInitialized $event): void
     {
         $database = $event->tenancy->tenant->database()->getName();
         if (! $event->tenancy->tenant->database()->manager()->databaseExists($database)) {

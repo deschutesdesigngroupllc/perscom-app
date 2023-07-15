@@ -49,10 +49,7 @@ class Feature extends Model
         'scope' => 'string',
     ];
 
-    /**
-     * @return void
-     */
-    public function scopeForTenant(Builder $query, Tenant $tenant)
+    public function scopeForTenant(Builder $query, Tenant $tenant): void
     {
         $query->where('scope', (string) $tenant->getTenantKey());
     }

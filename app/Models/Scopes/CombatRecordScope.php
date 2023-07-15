@@ -10,10 +10,7 @@ use Illuminate\Support\Facades\Gate;
 
 class CombatRecordScope implements Scope
 {
-    /**
-     * @return void
-     */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         if (! Gate::check('view', $model) && Auth::check()) {
             $builder->forUser(Auth::user());

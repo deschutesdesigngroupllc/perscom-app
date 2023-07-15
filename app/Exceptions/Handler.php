@@ -7,6 +7,7 @@ use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
 use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -31,10 +32,8 @@ class Handler extends ExceptionHandler
 
     /**
      * Register the exception handling callbacks for the application.
-     *
-     * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->renderable(function (TenantCouldNotBeIdentifiedOnDomainException $e, $request) {
             return response()->view('errors.tenant-not-found', [], 404);
@@ -51,11 +50,10 @@ class Handler extends ExceptionHandler
 
     /**
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
      *
      * @throws Throwable
      */
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $e): Response
     {
         $response = parent::render($request, $e);
 

@@ -48,11 +48,11 @@ class Form extends Model
      */
     protected $with = ['fields'];
 
-    public function scopeForTags(Builder $query, string $tag): Builder
+    public function scopeForTags(Builder $query, string $tag): void
     {
         $tags = Arr::wrap($tag);
 
-        return $query->whereHas('tags', function (Builder $query) use ($tags) {
+        $query->whereHas('tags', function (Builder $query) use ($tags) {
             $query->whereIn('name', $tags);
         });
     }

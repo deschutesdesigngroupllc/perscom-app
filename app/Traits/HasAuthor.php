@@ -18,9 +18,9 @@ trait HasAuthor
         });
     }
 
-    public function scopeForAuthor(Builder $query, User $user): Builder
+    public function scopeForAuthor(Builder $query, User $user): void
     {
-        return $query->whereBelongsTo($user);
+        $query->whereBelongsTo($user);
     }
 
     public function author(): BelongsTo

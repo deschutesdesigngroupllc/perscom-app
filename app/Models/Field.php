@@ -235,7 +235,7 @@ class Field extends Model
             ->withTimestamps();
     }
 
-    public function getValidationRulesAttribute(): string|null
+    public function getValidationRulesAttribute(): ?string
     {
         $rules = explode('|', $this->rules);
 

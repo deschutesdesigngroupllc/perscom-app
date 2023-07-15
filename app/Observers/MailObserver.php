@@ -11,10 +11,8 @@ class MailObserver
 {
     /**
      * Handle the Mail "created" event.
-     *
-     * @return void
      */
-    public function created(Mail $mail)
+    public function created(Mail $mail): void
     {
         if ($mail->send_now) {
             SendBulkMail::dispatch(Tenant::all(), $mail);
@@ -25,40 +23,32 @@ class MailObserver
 
     /**
      * Handle the Mail "updated" event.
-     *
-     * @return void
      */
-    public function updated(Mail $mail)
+    public function updated(Mail $mail): void
     {
         //
     }
 
     /**
      * Handle the Mail "deleted" event.
-     *
-     * @return void
      */
-    public function deleted(Mail $mail)
+    public function deleted(Mail $mail): void
     {
         //
     }
 
     /**
      * Handle the Mail "restored" event.
-     *
-     * @return void
      */
-    public function restored(Mail $mail)
+    public function restored(Mail $mail): void
     {
         //
     }
 
     /**
      * Handle the Mail "force deleted" event.
-     *
-     * @return void
      */
-    public function forceDeleted(Mail $mail)
+    public function forceDeleted(Mail $mail): void
     {
         //
     }

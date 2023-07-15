@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property-read \Illuminate\Support\Collection $changes
- * @property-read mixed $color
- * @property-read mixed $headline
- * @property-read mixed $item
- * @property-read mixed $text
+ * @property-read string|null $color
+ * @property-read string|null $headline
+ * @property-read string|null $item
+ * @property-read string|null $text
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $likes
  * @property-read int|null $likes_count
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
@@ -42,50 +42,33 @@ class NewsfeedItem extends Activity
      */
     protected $appends = ['headline', 'text', 'color', 'item'];
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new NewsfeedScope());
     }
 
-    /**
-     * @return mixed
-     */
-    public function getHeadlineAttribute()
+    public function getHeadlineAttribute(): ?string
     {
         return optional($this->properties, function () {
             return $this->getExtraProperty('headline');
         });
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTextAttribute()
+    public function getTextAttribute(): ?string
     {
         return optional($this->properties, function () {
             return $this->getExtraProperty('text');
         });
     }
 
-    /**
-     * @return mixed
-     */
-    public function getColorAttribute()
+    public function getColorAttribute(): ?string
     {
         return optional($this->properties, function () {
             return $this->getExtraProperty('color');
         });
     }
 
-    /**
-     * @return mixed
-     */
-    public function getItemAttribute()
+    public function getItemAttribute(): ?string
     {
         return optional($this->properties, function () {
             return $this->getExtraProperty('item');

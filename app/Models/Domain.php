@@ -15,8 +15,8 @@ use Spatie\Url\Url;
  * @property int $is_custom_subdomain
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed|null $host
- * @property-read mixed|null $url
+ * @property-read string|null $host
+ * @property-read string|null $url
  * @property-read \App\Models\Tenant $tenant
  *
  * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
@@ -46,14 +46,14 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
         return Str::lower(Str::random(8));
     }
 
-    public function getUrlAttribute(): mixed
+    public function getUrlAttribute(): ?string
     {
         return optional($this->host, static function ($host) {
             return rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/');
         });
     }
 
-    public function getHostAttribute(): mixed
+    public function getHostAttribute(): ?string
     {
         return optional($this->domain, static function ($domain) {
             return Url::fromString(Str::endsWith($domain, config('tenancy.central_domains')) ? $domain

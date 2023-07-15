@@ -23,7 +23,7 @@ class NewSubscription extends Notification implements ShouldQueue
     }
 
     /**
-     * @return array<string>
+     * @return string[]
      */
     public function via(mixed $notifiable): array
     {

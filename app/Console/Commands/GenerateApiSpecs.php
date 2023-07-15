@@ -26,10 +26,8 @@ class GenerateApiSpecs extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle()
+    public function handle(): int
     {
         $tenant = optional($this->option('tenant'), function ($tenantId) {
             return Tenant::find($tenantId);

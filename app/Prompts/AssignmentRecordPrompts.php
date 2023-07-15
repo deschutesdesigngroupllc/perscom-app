@@ -18,8 +18,7 @@ class AssignmentRecordPrompts
         $prompt = Str::replace('{position}', $record->position->name, $prompt);
         $prompt = Str::replace('{position_description}', $record->position->description, $prompt);
         $prompt = Str::replace('{specialty}', $record->specialty->name, $prompt);
-        $prompt = Str::replace('{specialty_description}', $record->specialty->description, $prompt);
 
-        return $prompt;
+        return Str::replace('{specialty_description}', $record->specialty->description, $prompt);
     }
 }

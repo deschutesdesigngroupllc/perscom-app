@@ -12,19 +12,14 @@ class ApprovalRequired extends Notification implements ShouldQueue
     use Queueable;
 
     /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
+     * @return string[]
      */
     public function via(object $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return ApprovalRequiredMail
-     */
-    public function toMail(object $notifiable)
+    public function toMail(object $notifiable): ApprovalRequiredMail
     {
         return (new ApprovalRequiredMail())->to($notifiable->email);
     }

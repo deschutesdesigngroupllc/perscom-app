@@ -22,8 +22,6 @@ trait HasHiddenFieldAttributes
     }
 
     /**
-     * Get the hidden attributes for the model.
-     *
      * @return array<string>
      */
     public function getHidden(): array

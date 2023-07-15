@@ -9,7 +9,7 @@ trait HasEventPrompts
     /**
      * @throws Exception
      */
-    public function generatePromptForEvent(string $event, string $type = 'headline'): string|null
+    public function generatePromptForEvent(string $event, string $type = 'headline'): ?string
     {
         if (! static::$prompts) {
             throw new Exception('The $prompts property has not been set');
