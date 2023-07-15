@@ -7,9 +7,25 @@ on:
 
 jobs:
   update-version:
-    name: Update Version
-    uses: DeschutesDesignGroupLLC/perscom-app/.github/workflows/version.yml@master
-    secrets: inherit
+    name: Update Application Version
+    runs-on: ubuntu-latest
+    outputs:
+      new_tag: ${{ steps.tag_version.outputs.new_tag }}
+      changelog: ${{ steps.tag_version.outputs.changelog }}
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Bump Application Version and Tag
+        id: tag_version
+        uses: mathieudutour/github-tag-action@v6.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          default_bump: patch
+          default_prerelease_bump: prerelease
+          release_branches: master
+          pre_release_branches: staging
+          append_to_pre_release_tag: prerelease
 
   release-application:
     name: Release Application
@@ -39,7 +55,7 @@ jobs:
         if: github.ref == 'refs/heads/staging'
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
-          forge command ${{ secrets.FORGE_STAGING_SERVER_SITE }} --command="php current/artisan perscom:version --set=${{ needs.update-version.outputs.new_tag }}"
+          forge command ${{ secrets.FORGE_STAGING_SERVER_SITE }} --command="php current/artisan perscom:version --set=${{ jobs.update-version.outputs.new_tag }}"
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
 
@@ -47,7 +63,7 @@ jobs:
         if: github.ref == 'refs/heads/master'
         run: |
           forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
-          forge command ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }} --command="php current/artisan perscom:version --set=${{ needs.update-version.outputs.new_tag }}"
+          forge command ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }} --command="php current/artisan perscom:version --set=${{ jobs.update-version.outputs.new_tag }}"
         env:
           FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
 
@@ -60,7 +76,7 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: staging
-          version: ${{ needs.update-version.outputs.new_tag }}
+          version: ${{ jobs.update-version.outputs.new_tag }}
 
       - name: Create Sentry Release Production
         if: github.ref == 'refs/heads/master'
@@ -71,14 +87,14 @@ jobs:
           SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
         with:
           environment: production
-          version: ${{ needs.update-version.outputs.new_tag }}
+          version: ${{ jobs.update-version.outputs.new_tag }}
 
       - name: Create Github Release
         uses: ncipollo/release-action@v1
         if: github.ref == 'refs/heads/master'
         with:
-          tag: ${{ needs.update-version.outputs.new_tag }}
-          name: ${{ needs.update-version.outputs.new_tag }}
+          tag: ${{ jobs.update-version.outputs.new_tag }}
+          name: ${{ jobs.update-version.outputs.new_tag }}
           generateReleaseNotes: true
           makeLatest: true
           token: ${{ secrets.RELEASE_TOKEN }}
