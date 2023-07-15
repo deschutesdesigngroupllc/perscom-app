@@ -6,6 +6,11 @@ checks:
       threshold: 50
   similar-code:
     enabled: false
+    channel: "eslint-8"
+    config:
+      extensions:
+        - .js
+        - .jsx
 
 plugins:
   eslint:
