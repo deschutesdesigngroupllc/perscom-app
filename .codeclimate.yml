@@ -1,0 +1,16 @@
+version: "2"
+
+plugins:
+  eslint:
+    enabled: true
+
+exclude_patterns:
+  - "bootstrap/"
+  - "config/"
+  - "database/migrations/"
+  - "docker/"
+  - "nova-components/"
+  - "operations/"
+  - "php/"
+  - "public/"
+  - "storage/"
