@@ -6,15 +6,16 @@ checks:
       threshold: 50
   similar-code:
     enabled: false
+
+
+plugins:
+  eslint:
+    enabled: true
     channel: "eslint-8"
     config:
       extensions:
         - .js
         - .jsx
-
-plugins:
-  eslint:
-    enabled: true
 
 exclude_patterns:
   - "bootstrap/"
