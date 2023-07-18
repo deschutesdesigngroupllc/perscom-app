@@ -246,6 +246,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ->collapsedByDefault(),
 
                     MenuSection::make('Communications', [
+                        MenuItem::resource(Mail::class),
                         MenuItem::resource(NewsfeedItem::class),
                     ])->icon('newspaper')
                         ->collapsable()

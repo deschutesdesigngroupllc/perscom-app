@@ -2,13 +2,11 @@
 
 namespace Tests\Feature\Tenant;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\Feature\Tenant\Requests\Traits\WithTenant;
 use Tests\TestCase;
 
 class TenantTestCase extends TestCase
 {
-    use RefreshDatabase;
     use WithTenant;
 
     /**

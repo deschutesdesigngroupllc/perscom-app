@@ -12,15 +12,13 @@ class MailPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return true|void
      */
     public function before()
     {
         if (Request::isCentralRequest()) {
             return true;
         }
-
-        return false;
     }
 
     /**
@@ -30,11 +28,7 @@ class MailPolicy extends Policy
      */
     public function viewAny(User $user)
     {
-        if (Request::isCentralRequest()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasPermissionTo($user, 'view:mail') || $user->tokenCan('view:mail');
     }
 
     /**
@@ -44,11 +38,7 @@ class MailPolicy extends Policy
      */
     public function view(User $user, Mail $mail)
     {
-        if (Request::isCentralRequest()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasPermissionTo($user, 'view:mail') || $user->tokenCan('view:mail');
     }
 
     /**
@@ -58,11 +48,7 @@ class MailPolicy extends Policy
      */
     public function create(User $user)
     {
-        if (Request::isCentralRequest()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasPermissionTo($user, 'create:mail') || $user->tokenCan('create:mail');
     }
 
     /**
@@ -72,11 +58,7 @@ class MailPolicy extends Policy
      */
     public function update(User $user, Mail $mail)
     {
-        if (Request::isCentralRequest()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasPermissionTo($user, 'update:mail') || $user->tokenCan('update:mail');
     }
 
     /**
@@ -86,11 +68,7 @@ class MailPolicy extends Policy
      */
     public function delete(User $user, Mail $mail)
     {
-        if (Request::isCentralRequest()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasPermissionTo($user, 'delete:mail') || $user->tokenCan('delete:mail');
     }
 
     /**
@@ -100,11 +78,7 @@ class MailPolicy extends Policy
      */
     public function restore(User $user, Mail $mail)
     {
-        if (Request::isCentralRequest()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasPermissionTo($user, 'delete:mail') || $user->tokenCan('delete:mail');
     }
 
     /**
@@ -114,10 +88,6 @@ class MailPolicy extends Policy
      */
     public function forceDelete(User $user, Mail $mail)
     {
-        if (Request::isCentralRequest()) {
-            return true;
-        }
-
-        return false;
+        return $this->hasPermissionTo($user, 'delete:mail') || $user->tokenCan('delete:mail');
     }
 }
