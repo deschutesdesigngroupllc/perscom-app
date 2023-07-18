@@ -20,6 +20,10 @@ class SubmissionObserver
             WebhookService::dispatch($webhook, WebhookEvent::SUBMISSION_CREATED->value, $submission);
         });
 
+        if ($status = $submission->form?->submission_status) {
+            $submission->statuses()->attach($status->getKey());
+        }
+
         Notification::send($submission->form?->notifications, new NewSubmission($submission));
     }
 

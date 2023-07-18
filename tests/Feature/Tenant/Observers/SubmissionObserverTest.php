@@ -5,6 +5,7 @@ namespace Tests\Feature\Tenant\Observers;
 use App\Jobs\CallWebhook;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Form;
+use App\Models\Status;
 use App\Models\Submission;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewSubmission;
@@ -24,6 +25,15 @@ class SubmissionObserverTest extends TenantTestCase
         Submission::factory()->for($form)->create();
 
         Notification::assertSentTo($this->user, NewSubmission::class);
+    }
+
+    public function test_default_submission_status_is_attached()
+    {
+        $status = Status::factory()->create();
+        $form = Form::factory()->for($status, 'submission_status')->create();
+        $submission = Submission::factory()->for($form)->create();
+
+        $this->assertEquals($status->name, $submission->statuses()->first()->name);
     }
 
     public function test_create_submission_webhook_sent()
