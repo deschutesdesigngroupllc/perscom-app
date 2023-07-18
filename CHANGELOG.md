@@ -1,6 +1,27 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.46...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.47...HEAD)
+
+## [v1.0.47](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.46...v1.0.47) - 2023-07-18
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.47 -->
+### What's Changed
+
+#### Added
+
+- Users can now receive notifications when submissions are created by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/192
+- Added ability for tenants to send mail by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/193
+- Added ability to set a forms default submission status by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/191
+
+#### Changed
+
+- Refactored image and attachment components to display more data by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/190
+
+#### Fixed
+
+- Fix secondary positions not loading on Roster widget by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/194
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.46...v1.0.47
 
 ## [v1.0.46](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.45...v1.0.46) - 2023-07-06
 
