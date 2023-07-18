@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\HasFields;
+use App\Traits\HasNotifications;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -17,6 +18,8 @@ use Laravel\Nova\Actions\Actionable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
  * @property-read int|null $fields_count
  * @property-read string $url
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $notifications
+ * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
@@ -35,6 +38,7 @@ class Form extends Model
     use Actionable;
     use HasFactory;
     use HasFields;
+    use HasNotifications;
 
     /**
      * The accessors to append to the model's array form.

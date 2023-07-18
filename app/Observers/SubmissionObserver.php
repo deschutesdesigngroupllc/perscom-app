@@ -5,7 +5,9 @@ namespace App\Observers;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Submission;
 use App\Models\Webhook;
+use App\Notifications\Tenant\NewSubmission;
 use App\Services\WebhookService;
+use Illuminate\Support\Facades\Notification;
 
 class SubmissionObserver
 {
@@ -21,6 +23,8 @@ class SubmissionObserver
         if ($status = $submission->form?->submission_status) {
             $submission->statuses()->attach($status->getKey());
         }
+
+        Notification::send($submission->form?->notifications, new NewSubmission($submission));
     }
 
     /**

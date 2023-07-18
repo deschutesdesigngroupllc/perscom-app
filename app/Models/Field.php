@@ -213,19 +213,8 @@ class Field extends Model
                     return $field->key === $attribute;
                 })->first();
 
-                if ($field && $cast = $field->cast) {
-                    switch ($cast) {
-                        case 'boolean':
-                            return (bool) $value;
-                        case 'date':
-                            return Carbon::parse($value);
-                        case 'datetime':
-                            return Carbon::parse($value);
-                        case 'integer':
-                            return (int) $value;
-                        default:
-                            return $value;
-                    }
+                if ($field && $field->cast) {
+                    return $this->castValue($value);
                 }
             }
 
@@ -233,6 +222,33 @@ class Field extends Model
         });
 
         return $field;
+    }
+
+    /**
+     * @return bool|Carbon|int
+     */
+    public function castValue($value)
+    {
+        return match ($this->cast) {
+            self::$fieldCasts[self::FIELD_BOOLEAN] => (bool) $value,
+            self::$fieldCasts[self::FIELD_DATE], self::$fieldCasts[self::FIELD_DATETIME] => Carbon::parse($value),
+            self::$fieldCasts[self::FIELD_NUMBER] => (int) $value,
+            default => $value
+        };
+    }
+
+    /**
+     * @return string
+     */
+    public function getHumanReadableFormat($value)
+    {
+        return match ($this->cast) {
+            self::$fieldCasts[self::FIELD_BOOLEAN] => $value ? 'True' : 'False',
+            self::$fieldCasts[self::FIELD_DATE] => Carbon::parse($value)->toFormattedDateString(),
+            self::$fieldCasts[self::FIELD_DATETIME] => Carbon::parse($value)->format('M j, Y H:i:s'),
+            self::$fieldCasts[self::FIELD_SELECT] => $this->options[$value] ?? $value,
+            default => (string) $value
+        };
     }
 
     /**

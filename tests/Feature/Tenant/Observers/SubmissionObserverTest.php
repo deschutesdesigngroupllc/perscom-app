@@ -8,11 +8,25 @@ use App\Models\Form;
 use App\Models\Status;
 use App\Models\Submission;
 use App\Models\Webhook;
+use App\Notifications\Tenant\NewSubmission;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class SubmissionObserverTest extends TenantTestCase
 {
+    public function test_notification_is_sent()
+    {
+        Notification::fake();
+
+        $form = Form::factory()->create();
+        $form->notifications()->attach($this->user);
+
+        Submission::factory()->for($form)->create();
+
+        Notification::assertSentTo($this->user, NewSubmission::class);
+    }
+
     public function test_default_submission_status_is_attached()
     {
         $status = Status::factory()->create();
