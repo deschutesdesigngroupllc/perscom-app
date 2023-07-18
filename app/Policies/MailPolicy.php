@@ -12,7 +12,7 @@ class MailPolicy extends Policy
     use HandlesAuthorization;
 
     /**
-     * @return bool
+     * @return true|void
      */
     public function before()
     {
