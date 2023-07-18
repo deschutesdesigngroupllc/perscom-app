@@ -97,16 +97,19 @@ class Mail extends Resource
 
                 return User::all()->pluck('name', 'id')->sort();
             })->hideFromIndex()->rules('required'),
-            Boolean::make('Send Now', 'send_now')->default(true)->sortable(),
+            Boolean::make('Send Now', 'send_now')
+                ->default(true)
+                ->sortable()
+                ->onlyOnForms(),
             DateTime::make('Send At', 'send_at')
                 ->hide()
                 ->dependsOn(['send_now'], function (DateTime $field, NovaRequest $request, $formData) {
                     if ($formData->send_now === false) {
                         $field->rules('required')->show();
                     }
-                }),
-            DateTime::make('Sent At', 'sent_at')->exceptOnForms(),
+                })->onlyOnForms(),
             Heading::make('Meta')->onlyOnDetail(),
+            DateTime::make('Sent At', 'sent_at')->sortable()->exceptOnForms(),
             DateTime::make('Created At')->exceptOnForms()->sortable(),
             DateTime::make('Updated At')->onlyOnDetail(),
             new Panel('Links', [
