@@ -64,11 +64,6 @@ class Attachment extends Resource
             ID::make()->sortable(),
             Text::make('Name')->rules('required'),
             File::make('File', 'path')->rules('required')->storeOriginalName('filename')->prunable(),
-            URL::make('Download', function () {
-                return Storage::temporaryUrl($this->path, now()->addMinute(), [
-                    'disk' => 's3',
-                ]);
-            })->onlyOnIndex(),
             MorphTo::make('Resource', 'model')->types([
                 AssignmentRecord::class,
                 AwardRecord::class,
@@ -78,6 +73,11 @@ class Attachment extends Resource
                 ServiceRecord::class,
                 Task::class,
             ]),
+            URL::make('Download', function () {
+                return Storage::temporaryUrl($this->path, now()->addMinute(), [
+                    'disk' => 's3',
+                ]);
+            })->onlyOnIndex(),
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
