@@ -91,6 +91,7 @@ class Form extends Resource
             Tabs::make('Relations', [
                 Tab::make('Fields', [MorphToMany::make('Fields', 'fields', Field::class)]),
                 Tab::make('Submissions', [HasMany::make('Submissions', 'submissions', Submission::class)]),
+                Tab::make('Notifications', [MorphToMany::make('Notifications', 'notifications', User::class)]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),
         ];
