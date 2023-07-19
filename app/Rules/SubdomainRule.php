@@ -10,7 +10,7 @@ class SubdomainRule implements ValidationRule
     /**
      * @var string[]
      */
-    protected static $reservedSubdomains = [
+    public static $reservedSubdomains = [
         'admin',
         'api',
         'app',
