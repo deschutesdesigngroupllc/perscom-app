@@ -94,3 +94,9 @@ jobs:
         with:
           name: logs
           path: storage/logs/
+
+      - name: Upload Coverage Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: coverage
+          path: tests/Coverage/html
