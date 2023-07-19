@@ -38,20 +38,4 @@ class EventObserver
             WebhookService::dispatch($webhook, WebhookEvent::EVENT_DELETED->value, $event);
         });
     }
-
-    /**
-     * Handle the Event "restored" event.
-     */
-    public function restored(Event $event): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Event "force deleted" event.
-     */
-    public function forceDeleted(Event $event): void
-    {
-        //
-    }
 }

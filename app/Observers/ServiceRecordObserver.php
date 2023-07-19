@@ -48,24 +48,4 @@ class ServiceRecordObserver
             WebhookService::dispatch($webhook, WebhookEvent::SERVICE_RECORD_DELETED->value, $service);
         });
     }
-
-    /**
-     * Handle the Service "restored" event.
-     *
-     * @return void
-     */
-    public function restored(ServiceRecord $service)
-    {
-        //
-    }
-
-    /**
-     * Handle the Service "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(ServiceRecord $service)
-    {
-        //
-    }
 }

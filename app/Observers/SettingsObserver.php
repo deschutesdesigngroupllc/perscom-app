@@ -74,24 +74,4 @@ class SettingsObserver
     {
         Cache::forget($settings->key);
     }
-
-    /**
-     * Handle the Settings "restored" event.
-     *
-     * @return void
-     */
-    public function restored(Settings $settings)
-    {
-        //
-    }
-
-    /**
-     * Handle the Settings "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(Settings $settings)
-    {
-        //
-    }
 }

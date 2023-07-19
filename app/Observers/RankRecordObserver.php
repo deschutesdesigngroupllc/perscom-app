@@ -53,24 +53,4 @@ class RankRecordObserver
             WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_DELETED->value, $rank);
         });
     }
-
-    /**
-     * Handle the Rank "restored" event.
-     *
-     * @return void
-     */
-    public function restored(RankRecord $rank)
-    {
-        //
-    }
-
-    /**
-     * Handle the Rank "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(RankRecord $rank)
-    {
-        //
-    }
 }

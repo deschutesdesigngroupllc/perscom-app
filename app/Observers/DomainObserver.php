@@ -39,24 +39,4 @@ class DomainObserver
     {
         Notification::send($domain->tenant, new DomainDeleted($domain->url, $domain->tenant->url));
     }
-
-    /**
-     * Handle the Domain "restored" event.
-     *
-     * @return void
-     */
-    public function restored(Domain $domain)
-    {
-        //
-    }
-
-    /**
-     * Handle the Domain "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(Domain $domain)
-    {
-        //
-    }
 }

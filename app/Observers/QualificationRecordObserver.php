@@ -48,24 +48,4 @@ class QualificationRecordObserver
             WebhookService::dispatch($webhook, WebhookEvent::QUALIFICATION_RECORD_DELETED->value, $qualification);
         });
     }
-
-    /**
-     * Handle the Qualification "restored" event.
-     *
-     * @return void
-     */
-    public function restored(QualificationRecord $qualification)
-    {
-        //
-    }
-
-    /**
-     * Handle the Qualification "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(QualificationRecord $qualification)
-    {
-        //
-    }
 }

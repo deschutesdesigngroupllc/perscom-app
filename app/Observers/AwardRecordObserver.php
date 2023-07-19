@@ -48,24 +48,4 @@ class AwardRecordObserver
             WebhookService::dispatch($webhook, WebhookEvent::AWARD_RECORD_DELETED->value, $award);
         });
     }
-
-    /**
-     * Handle the Award "restored" event.
-     *
-     * @return void
-     */
-    public function restored(AwardRecord $award)
-    {
-        //
-    }
-
-    /**
-     * Handle the Award "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(AwardRecord $award)
-    {
-        //
-    }
 }
