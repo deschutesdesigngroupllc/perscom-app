@@ -6,7 +6,11 @@ use App\Jobs\CallWebhook;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
 use App\Models\Webhook;
+use App\Notifications\User\AccountApproved;
+use App\Notifications\User\AdminApprovalRequired;
+use App\Notifications\User\ApprovalRequired;
 use App\Notifications\User\PasswordChanged;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
@@ -35,7 +39,73 @@ class UserObserverTest extends TenantTestCase
             'password' => Str::password(),
         ]);
 
-        Notification::assertSentTo($this->user, PasswordChanged::class);
+        Notification::assertSentTo($this->user, PasswordChanged::class, function ($notification, $channels) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($this->user);
+            $mail->assertTo($this->user->email);
+
+            return true;
+        });
+    }
+
+    public function test_user_approval_required_notification_sent()
+    {
+        Notification::fake();
+
+        Cache::put('registration_admin_approval_required', true, 3600);
+
+        $user = User::factory()->create();
+
+        Notification::assertSentTo($user, ApprovalRequired::class, function ($notification, $channels) use ($user) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($user);
+            $mail->assertTo($user->email);
+
+            return true;
+        });
+    }
+
+    public function test_admin_approval_required_notification_sent()
+    {
+        Notification::fake();
+
+        Cache::put('registration_admin_approval_required', true, 3600);
+
+        $this->user->assignRole('Admin');
+
+        User::factory()->create();
+
+        Notification::assertSentTo($this->user, AdminApprovalRequired::class, function ($notification, $channels) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($this->user);
+            $mail->assertTo($this->user->email);
+
+            return true;
+        });
+    }
+
+    public function test_account_approved_notification_sent()
+    {
+        Notification::fake();
+
+        Cache::put('registration_admin_approval_required', true, 3600);
+
+        $user = User::factory()->create();
+        $user->update([
+            'approved' => true,
+        ]);
+
+        Notification::assertSentTo($user, AccountApproved::class, function ($notification, $channels) use ($user) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($user);
+            $mail->assertTo($user->email);
+
+            return true;
+        });
     }
 
     public function test_create_user_webhook_sent()

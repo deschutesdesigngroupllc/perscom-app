@@ -20,6 +20,13 @@ class DomainUpdatedTest extends TenantTestCase
             'domain' => $this->faker->domainWord,
         ]);
 
-        Notification::assertSentTo($this->tenant, DomainUpdated::class);
+        Notification::assertSentTo($this->tenant, DomainUpdated::class, function ($notification, $channels) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($this->tenant);
+            $mail->assertTo($this->tenant->email);
+
+            return true;
+        });
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Requests\Traits;
 
+use App\Models\Admin;
 use App\Models\Domain;
 use App\Models\Tenant;
 use App\Models\User;
@@ -100,6 +101,8 @@ trait WithTenant
             Queue::fake();
         }
 
+        $this->admin = Admin::factory()->create();
+
         $id = random_int(1, 1000);
         $token = ParallelTesting::token() ?: Str::random();
         $this->tenant = Tenant::factory()->state([
@@ -131,7 +134,6 @@ trait WithTenant
 
         URL::forceRootUrl($this->tenant->url);
 
-        $this->admin = User::first();
         $this->user = User::factory()->create();
     }
 
@@ -140,6 +142,7 @@ trait WithTenant
      */
     protected function tearDownTenancy()
     {
+        $this->admin->delete();
         $this->tenant->delete();
     }
 

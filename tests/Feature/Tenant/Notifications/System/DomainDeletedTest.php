@@ -18,6 +18,13 @@ class DomainDeletedTest extends TenantTestCase
         ]);
         $domain->delete();
 
-        Notification::assertSentTo($this->tenant, DomainDeleted::class);
+        Notification::assertSentTo($this->tenant, DomainDeleted::class, function ($notification, $channels) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($this->tenant);
+            $mail->assertTo($this->tenant->email);
+
+            return true;
+        });
     }
 }
