@@ -15,16 +15,26 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class SubmissionObserverTest extends TenantTestCase
 {
-    public function test_notification_is_sent()
+    public function test_create_submission_notification_is_sent()
     {
         Notification::fake();
 
         $form = Form::factory()->create();
         $form->notifications()->attach($this->user);
 
-        Submission::factory()->for($form)->create();
+        $submission = Submission::factory()->for($form)->create();
 
-        Notification::assertSentTo($this->user, NewSubmission::class);
+        Notification::assertSentTo($this->user, NewSubmission::class, function ($notification, $channels) use ($submission) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($submission->user);
+            $mail->assertTo($submission->user->email);
+
+            $nova = $notification->toNova();
+            $this->assertSame("A new {$submission->form->name} has been submitted.", $nova->message);
+
+            return true;
+        });
     }
 
     public function test_default_submission_status_is_attached()

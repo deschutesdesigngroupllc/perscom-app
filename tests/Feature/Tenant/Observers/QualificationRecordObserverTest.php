@@ -27,7 +27,17 @@ class QualificationRecordObserverTest extends TenantTestCase
 
         $qualification = QualificationRecord::factory()->create();
 
-        Notification::assertSentTo($qualification->user, NewQualificationRecord::class);
+        Notification::assertSentTo($this->user, NewQualificationRecord::class, function ($notification, $channels) use ($qualification) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($qualification->user);
+            $mail->assertTo($qualification->user->email);
+
+            $nova = $notification->toNova();
+            $this->assertSame('A new qualification record has been added to your personnel file.', $nova->message);
+
+            return true;
+        });
     }
 
     public function test_create_qualification_record_webhook_sent()

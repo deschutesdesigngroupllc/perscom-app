@@ -50,6 +50,9 @@ class TenantObserverTest extends TenantTestCase
             $mail = $notification->toMail($this->admin);
             $mail->assertTo($this->admin->email);
 
+            $nova = $notification->toNova();
+            $this->assertSame('A tenant has been deleted.', $nova->message);
+
             return true;
         });
     }

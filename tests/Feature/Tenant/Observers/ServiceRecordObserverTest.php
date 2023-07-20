@@ -27,7 +27,17 @@ class ServiceRecordObserverTest extends TenantTestCase
 
         $service = ServiceRecord::factory()->create();
 
-        Notification::assertSentTo($service->user, NewServiceRecord::class);
+        Notification::assertSentTo($this->user, NewServiceRecord::class, function ($notification, $channels) use ($service) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($service->user);
+            $mail->assertTo($service->user->email);
+
+            $nova = $notification->toNova();
+            $this->assertSame('A new service record has been added to your personnel file.', $nova->message);
+
+            return true;
+        });
     }
 
     public function test_create_service_record_webhook_sent()
