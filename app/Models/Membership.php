@@ -17,4 +17,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 class Membership extends Pivot
 {
     use HasFactory;
+
+    /**
+     * @var string[]
+     */
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 }

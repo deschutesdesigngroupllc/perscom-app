@@ -438,7 +438,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             \App\Models\Role::all()->mapWithKeys(fn ($role) => [$role->name => $role->name])->sort()
                         )->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
                     ]),
-                ])->showTitle(true),
+                ])->showTitle(),
             ];
         }, [
             'registration_enabled' => 'boolean',

@@ -54,6 +54,8 @@ class TaskAssignment extends Pivot
      * @var string[]
      */
     protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'completed_at' => 'datetime',
         'assigned_at' => 'datetime',
         'due_at' => 'datetime',

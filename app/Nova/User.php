@@ -182,10 +182,13 @@ class User extends Resource
                         });
                     })->onlyOnDetail(),
                 ]),
-                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_positions', Position::class),
-                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialties', Specialty::class),
-                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_units', Unit::class),
-            ])->showTitle(true),
+                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_positions', Position::class)
+                    ->showCreateRelationButton(),
+                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialties', Specialty::class)
+                    ->showCreateRelationButton(),
+                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_units', Unit::class)
+                    ->showCreateRelationButton(),
+            ])->showTitle(),
             Panel::make('Assignment', [
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
                     ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
@@ -208,7 +211,8 @@ class User extends Resource
             ]),
             $this->getNovaFields($request, true, 'Custom Fields'),
             BelongsToMany::make('Events')->referToPivotAs('registration'),
-            MorphToMany::make('Fields', 'fields', Field::class),
+            MorphToMany::make('Fields', 'fields', Field::class)
+                ->showCreateRelationButton(),
             new Panel('Notes', [
                 Trix::make('Notes')->alwaysShow()->canSeeWhen('note', \App\Models\User::class),
                 DateTime::make('Notes Last Updated At', 'notes_updated_at')
@@ -256,9 +260,10 @@ class User extends Resource
                               ' Records', 'rank_records', RankRecord::class),
                 HasMany::make('Service Records', 'service_records', ServiceRecord::class),
                 HasMany::make('Submission Records', 'submissions', Submission::class),
-            ])->showTitle(true),
+            ])->showTitle(),
             MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'statuses', Status::class)
                 ->allowDuplicateRelations()
+                ->showCreateRelationButton()
                 ->fields(function () {
                     return [
                         Textarea::make('Text'),
@@ -279,7 +284,7 @@ class User extends Resource
                 new Panel('Logs', [$this->actionfield()]),
                 MorphedByMany::make('Permissions'),
                 MorphedByMany::make('Roles'),
-            ])->showTitle(true),
+            ])->showTitle(),
         ];
     }
 

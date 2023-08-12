@@ -38,6 +38,14 @@ class EventRegistration extends Pivot
     protected $table = 'events_registrations';
 
     /**
+     * @var string[]
+     */
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
+
+    /**
      * Boot
      */
     public static function boot()

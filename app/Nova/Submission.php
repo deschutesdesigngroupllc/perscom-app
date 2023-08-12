@@ -94,10 +94,11 @@ class Submission extends Resource
             }, function ($model) {
                 return $model?->form;
             }),
-            Tabs::make('Relations', [
+            Tabs::make('Settings', [
                 Tab::make('Status History', [
                     MorphToMany::make('Status', 'statuses', Status::class)
                         ->allowDuplicateRelations()
+                        ->showCreateRelationButton()
                         ->fields(function () {
                             return [
                                 Textarea::make('Text'),
@@ -109,7 +110,7 @@ class Submission extends Resource
                         }),
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),
-            ]),
+            ])->showTitle(),
         ];
     }
 
