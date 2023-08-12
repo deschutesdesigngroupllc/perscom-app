@@ -2,6 +2,7 @@
 
 namespace Database\Seeders\Demo\Military;
 
+use App\Models\Group;
 use App\Models\Unit;
 use Illuminate\Database\Seeder;
 
@@ -41,8 +42,12 @@ class UnitSeeder extends Seeder
             ],
         ];
 
+        $group = Group::factory()->state([
+            'name' => 'Operations',
+        ])->create();
+
         foreach ($units as $unit) {
-            Unit::factory()->state($unit)->create();
+            Unit::factory()->hasAttached($group)->state($unit)->create();
         }
     }
 }

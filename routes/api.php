@@ -7,12 +7,13 @@ use App\Http\Controllers\Api\V1\Calendars\CalendarsEventsController;
 use App\Http\Controllers\Api\V1\Calendars\EventsController;
 use App\Http\Controllers\Api\V1\Forms\FormsController;
 use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
+use App\Http\Controllers\Api\V1\Groups\GroupsController;
+use App\Http\Controllers\Api\V1\Groups\GroupsUnitsController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedController;
 use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedLikesController;
 use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
 use App\Http\Controllers\Api\V1\Ranks\RanksController;
-use App\Http\Controllers\Api\V1\Roster\RosterController;
 use App\Http\Controllers\Api\V1\SpecController;
 use App\Http\Controllers\Api\V1\Units\UnitsController;
 use App\Http\Controllers\Api\V1\Units\UnitsUsersController;
@@ -73,14 +74,15 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('forms', FormsController::class);
         Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
 
+        Orion::resource('groups', GroupsController::class);
+        Orion::belongsToManyResource('groups', 'units', GroupsUnitsController::class);
+
         Orion::resource('newsfeed', NewsfeedController::class);
         Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)->only(['index', 'attach', 'detach', 'sync']);
 
         Orion::resource('qualifications', QualificationsController::class);
 
         Orion::resource('ranks', RanksController::class);
-
-        Orion::resource('roster', RosterController::class)->only('index');
 
         Orion::resource('units', UnitsController::class);
         Orion::hasManyResource('units', 'users', UnitsUsersController::class);

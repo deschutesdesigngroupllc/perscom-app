@@ -17,6 +17,7 @@ use App\Models\Element;
 use App\Models\Event;
 use App\Models\EventRegistration;
 use App\Models\Form;
+use App\Models\Group;
 use App\Models\Image;
 use App\Models\Like;
 use App\Models\Mail;
@@ -58,6 +59,7 @@ use App\Policies\ElementPolicy;
 use App\Policies\EventPolicy;
 use App\Policies\EventRegistrationPolicy;
 use App\Policies\FormPolicy;
+use App\Policies\GroupPolicy;
 use App\Policies\ImagePolicy;
 use App\Policies\LikePolicy;
 use App\Policies\MailPolicy;
@@ -116,6 +118,7 @@ class AuthServiceProvider extends ServiceProvider
         Event::class => EventPolicy::class,
         EventRegistration::class => EventRegistrationPolicy::class,
         Form::class => FormPolicy::class,
+        Group::class => GroupPolicy::class,
         Image::class => ImagePolicy::class,
         Like::class => LikePolicy::class,
         Mail::class => MailPolicy::class,

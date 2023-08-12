@@ -27,6 +27,7 @@ use App\Nova\EventRegistration;
 use App\Nova\Feature as NovaFeature;
 use App\Nova\Field;
 use App\Nova\Form;
+use App\Nova\Group;
 use App\Nova\Image;
 use App\Nova\Lenses\MyEvents;
 use App\Nova\Lenses\MyTasks;
@@ -167,7 +168,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withBreadcrumbs();
-        //Nova::style('style', Vite::asset('resources/css/nova.css'));
 
         if (Request::isCentralRequest()) {
             Nova::mainMenu(function (Request $request) {
@@ -266,6 +266,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Announcement::class),
                         MenuItem::resource(Award::class),
                         MenuItem::resource(Document::class),
+                        MenuItem::resource(Group::class),
                         MenuItem::resource(Position::class),
                         MenuItem::resource(Qualification::class),
                         MenuItem::resource(Rank::class),

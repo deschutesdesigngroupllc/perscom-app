@@ -20,6 +20,7 @@ use Laravel\Nova\Actions\Actionable;
  * @property-read string $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \App\Models\Status|null $submission_status
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
