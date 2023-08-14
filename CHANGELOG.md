@@ -1,6 +1,23 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.47...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.48...HEAD)
+
+## [v1.0.48](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.47...v1.0.48) - 2023-08-14
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.48 -->
+### What's Changed
+
+#### Added
+
+- Add groups feature by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/200
+
+#### Changed
+
+- Add rate limiting to register and FMO features by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/197
+- Turn errors into Inertia components by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/198
+- Improve test coverage by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/199
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.47...v1.0.48
 
 ## [v1.0.47](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.46...v1.0.47) - 2023-07-18
 
