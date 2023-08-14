@@ -58,10 +58,6 @@ class ErrorViewTest extends CentralTestCase
 
     public function test_404_exception_is_thrown_and_view_is_returned()
     {
-        Route::get('/test-route', static function () {
-            abort(404);
-        });
-
         $this->get('/test-route')
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('Error')->has('message');
@@ -118,13 +114,13 @@ class ErrorViewTest extends CentralTestCase
 
     public function test_503_exception_is_thrown_and_view_is_returned()
     {
-        Route::get('/test-route', static function () {
-            abort(503);
-        });
+        $this->app->maintenanceMode()->activate([]);
 
         $this->get('/test-route')
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('Error')->has('message');
             })->assertStatus(503);
+
+        $this->app->maintenanceMode()->deactivate();
     }
 }
