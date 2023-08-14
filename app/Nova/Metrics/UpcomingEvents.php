@@ -23,7 +23,7 @@ class UpcomingEvents extends Table
      */
     public function calculate(NovaRequest $request)
     {
-        return EventRegistration::user($request->user())->get()->map(function (EventRegistration $registration) {
+        return EventRegistration::query()->user($request->user())->get()->map(function (EventRegistration $registration) {
             return MetricTableRow::make()
                 ->icon('calendar')
                 ->title($registration->event?->name)
