@@ -25,7 +25,7 @@ class CombatRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $combat = CombatRecord::factory()->create();
+        $combat = CombatRecord::factory()->for($this->user)->create();
 
         Notification::assertSentTo($this->user, NewCombatRecord::class, function ($notification, $channels) use ($combat) {
             $this->assertContains('mail', $channels);

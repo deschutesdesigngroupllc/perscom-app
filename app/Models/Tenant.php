@@ -106,7 +106,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWit
     /**
      * @var null
      */
-    protected static null|Dispatcher $eventDispatcher = null;
+    protected static ?Dispatcher $eventDispatcher = null;
 
     /**
      * The attributes that should be cast.

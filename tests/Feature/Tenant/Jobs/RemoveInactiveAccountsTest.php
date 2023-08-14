@@ -2,13 +2,11 @@
 
 namespace Tests\Feature\Tenant\Jobs;
 
-use App\Jobs\RemoveInactiveAccounts;
 use App\Jobs\RemoveInactiveAccounts as RemoveInactiveAccountsJob;
 use App\Models\Tenant;
 use App\Notifications\System\DeleteAccountOneMonth;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\Central\CentralTestCase;
-use Tests\Feature\Tenant\TenantTestCase;
 
 class RemoveInactiveAccountsTest extends CentralTestCase
 {
@@ -17,7 +15,7 @@ class RemoveInactiveAccountsTest extends CentralTestCase
         Notification::fake();
 
         $tenant = Tenant::factory()->state([
-            'last_login_at' => now()->subMonths(5)
+            'last_login_at' => now()->subMonths(5),
         ])->create();
 
         RemoveInactiveAccountsJob::dispatchSync();

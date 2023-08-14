@@ -8,7 +8,7 @@ use Spatie\Permission\PermissionRegistrar;
 
 class ConfigureApplicationForTenant
 {
-    protected Tenant|null $tenant = null;
+    protected ?Tenant $tenant = null;
 
     /**
      * @return void

@@ -25,7 +25,7 @@ class AwardRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $award = AwardRecord::factory()->create();
+        $award = AwardRecord::factory()->for($this->user)->create();
 
         Notification::assertSentTo($this->user, NewAwardRecord::class, function ($notification, $channels) use ($award) {
             $this->assertContains('mail', $channels);

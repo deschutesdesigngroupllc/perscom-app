@@ -25,7 +25,7 @@ class QualificationRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $qualification = QualificationRecord::factory()->create();
+        $qualification = QualificationRecord::factory()->for($this->user)->create();
 
         Notification::assertSentTo($this->user, NewQualificationRecord::class, function ($notification, $channels) use ($qualification) {
             $this->assertContains('mail', $channels);
