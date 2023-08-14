@@ -1,5 +1,0 @@
-@extends('errors.layout', ['showLink' => false])
-@section('code', '503')
-@section('title', __('Service Unavailable'))
-@section('header', __('Down for maintenance.'))
-@section('message', __('The service is currently unavailable. Please check back at another time.'))

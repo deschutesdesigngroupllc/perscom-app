@@ -1,5 +1,0 @@
-@extends('errors.layout')
-@section('code', '419')
-@section('title', __('Page Expired'))
-@section('header', __('Page expired.'))
-@section('message', __('The page you are trying to access is no longer available.'))

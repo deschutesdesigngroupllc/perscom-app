@@ -8,12 +8,14 @@ use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Features\SocialLoginFeature;
 use App\Http\Controllers\SocialLoginController;
+use App\Http\Responses\LoginResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
+use Laravel\Fortify\Contracts\LoginResponse as LoginResponseContract;
 use Laravel\Fortify\Fortify;
 use Laravel\Pennant\Feature;
 
@@ -26,6 +28,8 @@ class FortifyServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
+
         if (Request::isCentralRequest()) {
             config()->set('fortify.prefix', '/admin');
             config()->set('fortify.features', []);
