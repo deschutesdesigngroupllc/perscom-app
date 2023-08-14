@@ -55,7 +55,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
         "barryvdh/laravel-ide-helper": "^2.13",
-        "brianium/paratest": "^7.0",
+        "brianium/paratest": "7.2",
         "laravel/pint": "^1.2",
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
