@@ -16,7 +16,7 @@ class AwardRecordScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         if (! Gate::check('view', $model) && Auth::check()) {
-            $builder->forUser(Auth::user());
+            $builder->user(Auth::user());
         }
     }
 }

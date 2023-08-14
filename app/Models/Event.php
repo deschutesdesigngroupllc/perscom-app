@@ -31,9 +31,9 @@ use RRule\RRule;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  *
+ * @method static Builder|Event author($user)
+ * @method static Builder|Event datePeriod($start, $end)
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
- * @method static Builder|Event forAuthor($user)
- * @method static Builder|Event forDatePeriod($start, $end)
  * @method static Builder|Event future()
  * @method static Builder|Event newModelQuery()
  * @method static Builder|Event newQuery()
@@ -182,7 +182,7 @@ class Event extends Model
     /**
      * @return Builder
      */
-    public function scopeForDatePeriod(Builder $query, $start, $end)
+    public function scopeDatePeriod(Builder $query, $start, $end)
     {
         $period = CarbonPeriod::create(
             Carbon::parse($start),

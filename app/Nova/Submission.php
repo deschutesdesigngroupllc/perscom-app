@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Filters\Status as StatusFilter;
 use App\Traits\HasFields;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
@@ -172,7 +173,7 @@ class Submission extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [new StatusFilter()];
     }
 
     /**

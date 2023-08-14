@@ -16,7 +16,7 @@ class TaskAssignmentScope implements Scope
     public function apply(Builder $builder, Model $model)
     {
         if (! Gate::check('update', $model) && Auth::check()) {
-            $builder->forUser(Auth::user());
+            $builder->user(Auth::user());
         }
     }
 }

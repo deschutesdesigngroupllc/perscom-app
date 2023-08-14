@@ -23,10 +23,10 @@ use Symfony\Component\Finder\Finder;
  * @property-read int|null $actions_count
  * @property-read \App\Models\Tenant|null $tenant
  *
- * @method static Builder|Feature forTenant(\App\Models\Tenant $tenant)
  * @method static Builder|Feature newModelQuery()
  * @method static Builder|Feature newQuery()
  * @method static Builder|Feature query()
+ * @method static Builder|Feature tenant(\App\Models\Tenant $tenant)
  * @method static Builder|Feature whereCreatedAt($value)
  * @method static Builder|Feature whereId($value)
  * @method static Builder|Feature whereName($value)
@@ -52,7 +52,7 @@ class Feature extends Model
     /**
      * @return void
      */
-    public function scopeForTenant(Builder $query, Tenant $tenant)
+    public function scopeTenant(Builder $query, Tenant $tenant)
     {
         $query->where('scope', (string) $tenant->getTenantKey());
     }

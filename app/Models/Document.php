@@ -67,7 +67,7 @@ class Document extends Model implements Htmlable
     /**
      * @return mixed|string|null
      */
-    protected function resolveTag($tag, ?User $user = null, $attachedModel = null)
+    protected function resolveTag($tag, User $user = null, $attachedModel = null)
     {
         return match (true) {
             $tag === '{user_name}' => $user->name ?? null,
@@ -105,7 +105,7 @@ class Document extends Model implements Htmlable
     /**
      * @return mixed|string
      */
-    public function toHtml(?User $user = null, $attachedModel = null)
+    public function toHtml(User $user = null, $attachedModel = null)
     {
         $content = $this->content;
         foreach (self::$availableTags as $tag => $description) {

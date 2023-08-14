@@ -225,11 +225,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ], false)),
                         MenuItem::lens(EventRegistration::class, MyEvents::class)
                             ->withBadge(function () {
-                                return (string) EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
+                                return (string) EventRegistrationModel::query()->user(Auth::user())->future()->count();
                             }),
                         MenuItem::lens(TaskAssignment::class, MyTasks::class)
                             ->withBadge(function () {
-                                return (string) TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
+                                return (string) TaskAssignmentModel::query()->user(Auth::user())->assigned()->count();
                             }),
                     ])->icon('user-circle'),
 

@@ -30,7 +30,7 @@ class MyEvents extends Lens
     public static function query(LensRequest $request, $query)
     {
         return $request->withOrdering($request->withFilters(
-            $query->forUser($request->user())
+            $query->user($request->user())
         ));
     }
 

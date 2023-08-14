@@ -26,13 +26,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Rank|null $rank
  * @property-read \App\Models\User|null $user
  *
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord author($user)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord document($document)
  * @method static \Database\Factories\RankRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forAuthor($user)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forDocument($document)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */

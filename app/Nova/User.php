@@ -3,6 +3,8 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Filters\Role;
+use App\Nova\Filters\Status as StatusFilter;
 use App\Nova\Metrics\NewUsers;
 use App\Nova\Metrics\TotalUsers;
 use App\Nova\Metrics\UsersOnline;
@@ -305,7 +307,7 @@ class User extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [new Role(), new StatusFilter()];
     }
 
     /**

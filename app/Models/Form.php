@@ -27,10 +27,10 @@ use Laravel\Nova\Actions\Actionable;
  * @property-read int|null $tags_count
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
- * @method static Builder|Form forTags($tag)
  * @method static Builder|Form newModelQuery()
  * @method static Builder|Form newQuery()
  * @method static Builder|Form query()
+ * @method static Builder|Form tags($tag)
  *
  * @mixin \Eloquent
  */
@@ -58,7 +58,7 @@ class Form extends Model
     /**
      * @return Builder
      */
-    public function scopeForTags(Builder $query, $tag)
+    public function scopeTags(Builder $query, $tag)
     {
         $tags = Arr::wrap($tag);
 

@@ -25,7 +25,7 @@ trait HasAuthor
      * @param  User  $user
      * @return Builder
      */
-    public function scopeForAuthor($query, $user)
+    public function scopeAuthor($query, $user)
     {
         return $query->whereBelongsTo($user);
     }

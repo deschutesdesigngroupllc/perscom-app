@@ -18,6 +18,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Group newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Group newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Group ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Group query()
  *
  * @mixin \Eloquent

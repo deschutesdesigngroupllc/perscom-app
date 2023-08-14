@@ -29,7 +29,7 @@ class FormsController extends Controller
      */
     public function exposedScopes(): array
     {
-        return ['forTags'];
+        return ['tags'];
     }
 
     /**
