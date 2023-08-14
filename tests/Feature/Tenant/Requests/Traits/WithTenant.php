@@ -142,8 +142,8 @@ trait WithTenant
      */
     protected function tearDownTenancy()
     {
-        $this->admin->delete();
-        $this->tenant->delete();
+        $this->admin->deleteQuietly();
+        $this->tenant->deleteQuietly();
     }
 
     public function withSubscription(string|int $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void
