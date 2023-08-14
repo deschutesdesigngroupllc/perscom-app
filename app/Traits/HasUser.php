@@ -10,7 +10,7 @@ trait HasUser
     /**
      * @return Builder
      */
-    public function scopeForUser(Builder $query, User $user)
+    public function scopeUser(Builder $query, User $user)
     {
         return $query->whereBelongsTo($user);
     }

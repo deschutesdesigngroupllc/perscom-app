@@ -17,11 +17,11 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @property-read \App\Models\Event|null $event
  * @property-read \App\Models\User|null $user
  *
- * @method static Builder|EventRegistration forUser(\App\Models\User $user)
  * @method static Builder|EventRegistration future()
  * @method static Builder|EventRegistration newModelQuery()
  * @method static Builder|EventRegistration newQuery()
  * @method static Builder|EventRegistration query()
+ * @method static Builder|EventRegistration user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */
@@ -36,6 +36,14 @@ class EventRegistration extends Pivot
      * @var string
      */
     protected $table = 'events_registrations';
+
+    /**
+     * @var string[]
+     */
+    protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
+    ];
 
     /**
      * Boot

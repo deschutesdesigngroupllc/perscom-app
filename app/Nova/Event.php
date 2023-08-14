@@ -66,7 +66,9 @@ class Event extends Resource
         return [
             ID::make()->sortable(),
             Text::make('Name')->sortable()->rules('required')->showOnPreview(),
-            BelongsTo::make('Calendar')->sortable()->rules('required')->showOnPreview(),
+            BelongsTo::make('Calendar')->sortable()->rules('required')
+                ->showOnPreview()
+                ->showCreateRelationButton(),
             BelongsTo::make('Organizer', 'author', User::class)->default(function (NovaRequest $request) {
                 return $request->user()->getAuthIdentifier();
             })->rules('required')->sortable()->showOnPreview(),

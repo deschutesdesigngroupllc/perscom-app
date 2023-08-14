@@ -5,7 +5,7 @@ parameters:
         - app/
     level: 5
     ignoreErrors:
-        - '#Call to an undefined method [a-zA-Z0-9\\_]+::forUser\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::user\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::future\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::ordered\(\)#'
         - '#PHPDoc type array<string> of property [a-zA-Z0-9\\_]+::\$casts#'

@@ -34,7 +34,7 @@ class EventsController extends Controller
      */
     public function exposedScopes(): array
     {
-        return ['forDatePeriod'];
+        return ['datePeriod'];
     }
 
     /**

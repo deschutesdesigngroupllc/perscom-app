@@ -13,10 +13,7 @@ return new class extends OneTimeOperation
     {
         tenancy()->runForMultiple(Tenant::all(), function ($tenant) {
             $role = Role::where('name', 'User')->first();
-
-            if ($role) {
-                $role->revokePermissionTo('create:submission');
-            }
+            $role?->revokePermissionTo('create:submission');
         });
     }
 };

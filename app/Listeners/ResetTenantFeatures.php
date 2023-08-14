@@ -13,7 +13,7 @@ class ResetTenantFeatures
     public function handle(mixed $event): void
     {
         if (property_exists($event, 'billable') && $event->billable instanceof Tenant) {
-            Feature::forTenant($event->billable)->delete();
+            Feature::tenant($event->billable)->delete();
         }
     }
 }

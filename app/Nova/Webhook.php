@@ -94,7 +94,7 @@ class Webhook extends Resource
                 Tab::make('Actions', [
                     $this->actionfield(),
                 ]),
-            ]),
+            ])->showTitle(),
         ];
     }
 

@@ -13,10 +13,10 @@ use Illuminate\Support\Str;
  * @property-read \App\Models\User|null $user
  *
  * @method static \Database\Factories\LoginTokenFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|LoginToken forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|LoginToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoginToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|LoginToken query()
+ * @method static \Illuminate\Database\Eloquent\Builder|LoginToken user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */

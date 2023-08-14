@@ -12,7 +12,7 @@ trait HasDocument
      * @param  Document  $document
      * @return Builder
      */
-    public function scopeForDocument($query, $document)
+    public function scopeDocument($query, $document)
     {
         return $query->whereBelongsTo($document);
     }

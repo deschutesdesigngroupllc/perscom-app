@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Features\ExportDataFeature;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
+use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
@@ -12,10 +13,12 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Pennant\Feature;
+use Outl1ne\NovaSortable\Traits\HasSortableManyToManyRows;
 use Outl1ne\NovaSortable\Traits\HasSortableRows;
 
 class Unit extends Resource
 {
+    use HasSortableManyToManyRows;
     use HasSortableRows;
 
     /**
@@ -78,6 +81,7 @@ class Unit extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
+            BelongsToMany::make('Groups')->showCreateRelationButton(),
         ];
     }
 

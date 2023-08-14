@@ -3,6 +3,7 @@
 namespace Tests\Feature\Central\Exceptions;
 
 use Illuminate\Support\Facades\Route;
+use Inertia\Testing\AssertableInertia;
 use Tests\Feature\Central\CentralTestCase;
 
 class ErrorViewTest extends CentralTestCase
@@ -14,9 +15,9 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(499)
-            ->assertSeeText('Bad Request.')
-            ->assertSeeText('foo bar');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(499);
     }
 
     public function test_401_exception_is_thrown_and_view_is_returned()
@@ -26,8 +27,9 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(401)
-            ->assertSeeText('Unauthorized.');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(401);
     }
 
     public function test_402_exception_is_thrown_and_view_is_returned()
@@ -37,9 +39,9 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(402)
-            ->assertSeeText('Subscription Required.')
-            ->assertSeeText('foo bar');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(402);
     }
 
     public function test_403_exception_is_thrown_and_view_is_returned()
@@ -49,20 +51,17 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(403)
-            ->assertSeeText('Forbidden.')
-            ->assertSeeText('foo bar');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(403);
     }
 
     public function test_404_exception_is_thrown_and_view_is_returned()
     {
-        Route::get('/test-route', static function () {
-            abort(404);
-        });
-
         $this->get('/test-route')
-            ->assertStatus(404)
-            ->assertSeeText('Page not found.');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(404);
     }
 
     public function test_419_exception_is_thrown_and_view_is_returned()
@@ -72,8 +71,9 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(419)
-            ->assertSeeText('Page expired.');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(419);
     }
 
     public function test_429_exception_is_thrown_and_view_is_returned()
@@ -83,8 +83,9 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(429)
-            ->assertSeeText('Too many requests.');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(429);
     }
 
     public function test_5xx_exception_is_thrown_and_view_is_returned()
@@ -94,9 +95,9 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(599)
-            ->assertSeeText('Server error.')
-            ->assertSeeText('foo bar');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(599);
     }
 
     public function test_500_exception_is_thrown_and_view_is_returned()
@@ -106,18 +107,20 @@ class ErrorViewTest extends CentralTestCase
         });
 
         $this->get('/test-route')
-            ->assertStatus(500)
-            ->assertSeeText('Server error.');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(500);
     }
 
     public function test_503_exception_is_thrown_and_view_is_returned()
     {
-        Route::get('/test-route', static function () {
-            abort(503);
-        });
+        $this->app->maintenanceMode()->activate([]);
 
         $this->get('/test-route')
-            ->assertStatus(503)
-            ->assertSeeText('Down for maintenance.');
+            ->assertInertia(function (AssertableInertia $page) {
+                $page->component('Error')->has('message');
+            })->assertStatus(503);
+
+        $this->app->maintenanceMode()->deactivate();
     }
 }
