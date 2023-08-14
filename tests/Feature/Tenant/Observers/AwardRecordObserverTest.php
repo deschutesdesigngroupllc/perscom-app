@@ -25,9 +25,19 @@ class AwardRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $award = AwardRecord::factory()->create();
+        $award = AwardRecord::factory()->for($this->user)->create();
 
-        Notification::assertSentTo($award->user, NewAwardRecord::class);
+        Notification::assertSentTo($this->user, NewAwardRecord::class, function ($notification, $channels) use ($award) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($award->user);
+            $mail->assertTo($award->user->email);
+
+            $nova = $notification->toNova();
+            $this->assertSame('A new award record has been added to your personnel file.', $nova->message);
+
+            return true;
+        });
     }
 
     public function test_create_award_record_webhook_sent()

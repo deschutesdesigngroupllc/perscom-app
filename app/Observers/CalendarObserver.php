@@ -38,20 +38,4 @@ class CalendarObserver
             WebhookService::dispatch($webhook, WebhookEvent::CALENDAR_DELETED->value, $calendar);
         });
     }
-
-    /**
-     * Handle the Calendar "restored" event.
-     */
-    public function restored(Calendar $calendar): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Calendar "force deleted" event.
-     */
-    public function forceDeleted(Calendar $calendar): void
-    {
-        //
-    }
 }

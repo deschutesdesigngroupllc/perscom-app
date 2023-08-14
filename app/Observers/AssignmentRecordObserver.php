@@ -58,24 +58,4 @@ class AssignmentRecordObserver
             WebhookService::dispatch($webhook, WebhookEvent::ASSIGNMENT_RECORD_DELETED->value, $assignment);
         });
     }
-
-    /**
-     * Handle the Assignment "restored" event.
-     *
-     * @return void
-     */
-    public function restored(AssignmentRecord $assignment)
-    {
-        //
-    }
-
-    /**
-     * Handle the Assignment "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(AssignmentRecord $assignment)
-    {
-        //
-    }
 }

@@ -75,24 +75,4 @@ class UserObserver
             WebhookService::dispatch($webhook, WebhookEvent::USER_DELETED->value, $user);
         });
     }
-
-    /**
-     * Handle the User "restored" event.
-     *
-     * @return void
-     */
-    public function restored(User $user)
-    {
-        //
-    }
-
-    /**
-     * Handle the User "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(User $user)
-    {
-        //
-    }
 }

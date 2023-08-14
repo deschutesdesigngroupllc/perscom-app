@@ -61,7 +61,7 @@
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "nunomaduro/larastan": "^2.0",
-        "phpunit/phpunit": "^10.0",
+        "phpunit/phpunit": "10.2.*",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^2.0",
         "zalas/phpunit-globals": "^3.0.0-alpha.1"
@@ -143,8 +143,7 @@
         ],
         "docs:models": "php artisan ide-helper:models --reset",
         "lint": "./vendor/bin/pint",
-        "test": "php artisan test- --parallel",
-        "test:coverage": "XDEBUG_MODE=coverage php artisan test --parallel",
+        "test": "XDEBUG_MODE=coverage php artisan test --parallel",
         "test:lint": "./vendor/bin/pint --test",
         "test:types": "./vendor/bin/phpstan analyse --memory-limit 1G"
     },

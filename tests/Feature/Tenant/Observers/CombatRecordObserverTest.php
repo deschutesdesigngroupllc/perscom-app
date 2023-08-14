@@ -25,9 +25,19 @@ class CombatRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $combat = CombatRecord::factory()->create();
+        $combat = CombatRecord::factory()->for($this->user)->create();
 
-        Notification::assertSentTo($combat->user, NewCombatRecord::class);
+        Notification::assertSentTo($this->user, NewCombatRecord::class, function ($notification, $channels) use ($combat) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($combat->user);
+            $mail->assertTo($combat->user->email);
+
+            $nova = $notification->toNova();
+            $this->assertSame('A new combat record has been added to your personnel file.', $nova->message);
+
+            return true;
+        });
     }
 
     public function test_create_combat_record_webhook_sent()

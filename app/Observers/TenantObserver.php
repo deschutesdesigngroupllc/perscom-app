@@ -21,16 +21,6 @@ class TenantObserver
     }
 
     /**
-     * Handle the Tenant "updated" event.
-     *
-     * @return void
-     */
-    public function updated(Tenant $tenant)
-    {
-        //
-    }
-
-    /**
      * Handle the Tenant "deleted" event.
      *
      * @return void
@@ -38,25 +28,5 @@ class TenantObserver
     public function deleted(Tenant $tenant)
     {
         Notification::send(Admin::all(), new TenantDeleted($tenant->name, $tenant->email));
-    }
-
-    /**
-     * Handle the Tenant "restored" event.
-     *
-     * @return void
-     */
-    public function restored(Tenant $tenant)
-    {
-        //
-    }
-
-    /**
-     * Handle the Tenant "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(Tenant $tenant)
-    {
-        //
     }
 }

@@ -25,9 +25,19 @@ class AssignmentRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $assignment = AssignmentRecord::factory()->create();
+        $assignment = AssignmentRecord::factory()->for($this->user)->create();
 
-        Notification::assertSentTo($assignment->user, NewAssignmentRecord::class);
+        Notification::assertSentTo($this->user, NewAssignmentRecord::class, function ($notification, $channels) use ($assignment) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($assignment->user);
+            $mail->assertTo($assignment->user->email);
+
+            $nova = $notification->toNova();
+            $this->assertSame('A new assignment record has been added to your personnel file.', $nova->message);
+
+            return true;
+        });
     }
 
     public function test_create_assignment_record_webhook_sent()

@@ -25,9 +25,19 @@ class RankRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $rank = RankRecord::factory()->create();
+        $rank = RankRecord::factory()->for($this->user)->create();
 
-        Notification::assertSentTo($rank->user, NewRankRecord::class);
+        Notification::assertSentTo($this->user, NewRankRecord::class, function ($notification, $channels) use ($rank) {
+            $this->assertContains('mail', $channels);
+
+            $mail = $notification->toMail($rank->user);
+            $mail->assertTo($rank->user->email);
+
+            $nova = $notification->toNova();
+            $this->assertSame('A new rank record has been added to your personnel file.', $nova->message);
+
+            return true;
+        });
     }
 
     public function test_create_rank_record_webhook_sent()

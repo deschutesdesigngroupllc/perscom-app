@@ -46,20 +46,4 @@ class SubmissionObserver
             WebhookService::dispatch($webhook, WebhookEvent::SUBMISSION_DELETED->value, $submission);
         });
     }
-
-    /**
-     * Handle the Submission "restored" event.
-     */
-    public function restored(Submission $submission): void
-    {
-        //
-    }
-
-    /**
-     * Handle the Submission "force deleted" event.
-     */
-    public function forceDeleted(Submission $submission): void
-    {
-        //
-    }
 }

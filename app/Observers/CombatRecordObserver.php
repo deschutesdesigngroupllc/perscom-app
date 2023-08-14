@@ -48,24 +48,4 @@ class CombatRecordObserver
             WebhookService::dispatch($webhook, WebhookEvent::COMBAT_RECORD_DELETED->value, $combat);
         });
     }
-
-    /**
-     * Handle the Combat "restored" event.
-     *
-     * @return void
-     */
-    public function restored(CombatRecord $combat)
-    {
-        //
-    }
-
-    /**
-     * Handle the Combat "force deleted" event.
-     *
-     * @return void
-     */
-    public function forceDeleted(CombatRecord $combat)
-    {
-        //
-    }
 }
