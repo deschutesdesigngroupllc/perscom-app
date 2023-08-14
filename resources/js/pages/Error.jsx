@@ -1,13 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Logo } from '../components/Logo'
-import { useForm } from '@inertiajs/react'
+import {Logo} from '../components/Logo'
+import {useForm} from '@inertiajs/react'
 
 export default function Error({ status, title = null, message = null, back = null, showLink = true, showLogout = false }) {
   const { post } = useForm({})
-
-  console.log(title)
-
   function logout(e) {
     e.preventDefault()
     post('/logout')

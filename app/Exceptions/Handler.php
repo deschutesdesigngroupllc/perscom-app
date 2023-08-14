@@ -19,8 +19,6 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        TenantCouldNotBeIdentifiedException::class,
-        TenantCouldNotBeIdentified::class,
         OAuthServerException::class,
     ];
 
@@ -62,7 +60,7 @@ class Handler extends ExceptionHandler
             ], $response->getStatusCode());
         }
 
-        if (! config('app.debug') && ($response->isClientError() || $response->isServerError()) && $response->status() !== 409) {
+        if (! config('app.debug') && ($response->isClientError() || $response->isServerError()) && $response->getStatusCode() !== 409) {
             return match (get_class($e)) {
                 TenantCouldNotBeIdentifiedOnDomainException::class => Inertia::render('Error', [
                     'status' => 404,
@@ -81,13 +79,13 @@ class Handler extends ExceptionHandler
                     ->toResponse($request)
                     ->setStatusCode(401),
                 default => Inertia::render('Error', [
-                    'status' => $response->status(),
-                    'message' => $response->exception?->getMessage() ?? null,
+                    'status' => $response->getStatusCode(),
+                    'message' => property_exists($response, 'exception') ? $response->exception->getMessage() : null,
                     'back' => Redirect::intended()->getTargetUrl(),
                     'showLogout' => Auth::check(),
                 ])
                     ->toResponse($request)
-                    ->setStatusCode($response->status()),
+                    ->setStatusCode($response->getStatusCode()),
             };
         }
 
