@@ -24,10 +24,11 @@ use Stringable;
  * @property-read \App\Models\User|null $user
  *
  * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Submission forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission status($statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */

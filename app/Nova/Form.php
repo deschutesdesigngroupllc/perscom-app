@@ -90,12 +90,14 @@ class Form extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            Tabs::make('Relations', [
-                Tab::make('Fields', [MorphToMany::make('Fields', 'fields', Field::class)]),
+            Tabs::make('Settings', [
+                Tab::make('Fields', [
+                    MorphToMany::make('Fields', 'fields', Field::class)->showCreateRelationButton(),
+                ]),
                 Tab::make('Submissions', [HasMany::make('Submissions', 'submissions', Submission::class)]),
                 Tab::make('Notifications', [MorphToMany::make('Notifications', 'notifications', User::class)]),
                 Tab::make('Logs', [$this->actionfield()]),
-            ]),
+            ])->showTitle(),
         ];
     }
 

@@ -16,4 +16,12 @@ class UnitsUsersController extends RelationController
      * @var string
      */
     protected $relation = 'users';
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return ['position', 'rank', 'specialty', 'status', 'unit'];
+    }
 }

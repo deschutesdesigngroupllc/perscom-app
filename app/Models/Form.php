@@ -20,16 +20,17 @@ use Laravel\Nova\Actions\Actionable;
  * @property-read string $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $notifications
  * @property-read int|null $notifications_count
+ * @property-read \App\Models\Status|null $submission_status
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
- * @method static Builder|Form forTags($tag)
  * @method static Builder|Form newModelQuery()
  * @method static Builder|Form newQuery()
  * @method static Builder|Form query()
+ * @method static Builder|Form tags($tag)
  *
  * @mixin \Eloquent
  */
@@ -57,7 +58,7 @@ class Form extends Model
     /**
      * @return Builder
      */
-    public function scopeForTags(Builder $query, $tag)
+    public function scopeTags(Builder $query, $tag)
     {
         $tags = Arr::wrap($tag);
 

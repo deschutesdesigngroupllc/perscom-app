@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Nova\Filters\Status as StatusFilter;
 use App\Traits\HasFields;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
@@ -94,10 +95,11 @@ class Submission extends Resource
             }, function ($model) {
                 return $model?->form;
             }),
-            Tabs::make('Relations', [
+            Tabs::make('Settings', [
                 Tab::make('Status History', [
                     MorphToMany::make('Status', 'statuses', Status::class)
                         ->allowDuplicateRelations()
+                        ->showCreateRelationButton()
                         ->fields(function () {
                             return [
                                 Textarea::make('Text'),
@@ -109,7 +111,7 @@ class Submission extends Resource
                         }),
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),
-            ]),
+            ])->showTitle(),
         ];
     }
 
@@ -171,7 +173,7 @@ class Submission extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [new StatusFilter()];
     }
 
     /**

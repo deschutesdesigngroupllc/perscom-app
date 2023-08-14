@@ -88,6 +88,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|User status($statuses)
  *
  * @mixin \Eloquent
  */
@@ -144,6 +145,8 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
      * @var array<int, string>
      */
     protected $hidden = [
+        'notes',
+        'notes_updated_at',
         'password',
         'remember_token',
         'social_token',

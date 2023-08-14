@@ -26,11 +26,11 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder|TaskAssignment assigned()
  * @method static Builder|TaskAssignment expired()
  * @method static \Database\Factories\TaskAssignmentFactory factory($count = null, $state = [])
- * @method static Builder|TaskAssignment forUser(\App\Models\User $user)
  * @method static Builder|TaskAssignment newModelQuery()
  * @method static Builder|TaskAssignment newQuery()
  * @method static Builder|TaskAssignment pastDue()
  * @method static Builder|TaskAssignment query()
+ * @method static Builder|TaskAssignment user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */
@@ -54,6 +54,8 @@ class TaskAssignment extends Pivot
      * @var string[]
      */
     protected $casts = [
+        'created_at' => 'datetime',
+        'updated_at' => 'datetime',
         'completed_at' => 'datetime',
         'assigned_at' => 'datetime',
         'due_at' => 'datetime',

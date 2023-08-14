@@ -42,6 +42,7 @@ class Roster extends Tool
                 'view:awardrecord',
                 'view:combatrecord',
                 'view:field',
+                'view:group',
                 'view:position',
                 'view:qualificationrecord',
                 'view:rankrecord',

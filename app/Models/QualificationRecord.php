@@ -26,13 +26,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Qualification|null $qualification
  * @property-read \App\Models\User|null $user
  *
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord author($user)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord document($document)
  * @method static \Database\Factories\QualificationRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord forAuthor($user)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord forDocument($document)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */

@@ -26,13 +26,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Document|null $document
  * @property-read \App\Models\User|null $user
  *
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord author($user)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord document($document)
  * @method static \Database\Factories\AwardRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord forAuthor($user)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord forDocument($document)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */

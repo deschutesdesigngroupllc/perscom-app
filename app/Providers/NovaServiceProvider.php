@@ -27,6 +27,7 @@ use App\Nova\EventRegistration;
 use App\Nova\Feature as NovaFeature;
 use App\Nova\Field;
 use App\Nova\Form;
+use App\Nova\Group;
 use App\Nova\Image;
 use App\Nova\Lenses\MyEvents;
 use App\Nova\Lenses\MyTasks;
@@ -167,7 +168,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withBreadcrumbs();
-        //Nova::style('style', Vite::asset('resources/css/nova.css'));
 
         if (Request::isCentralRequest()) {
             Nova::mainMenu(function (Request $request) {
@@ -225,11 +225,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ], false)),
                         MenuItem::lens(EventRegistration::class, MyEvents::class)
                             ->withBadge(function () {
-                                return (string) EventRegistrationModel::query()->forUser(Auth::user())->future()->count();
+                                return (string) EventRegistrationModel::query()->user(Auth::user())->future()->count();
                             }),
                         MenuItem::lens(TaskAssignment::class, MyTasks::class)
                             ->withBadge(function () {
-                                return (string) TaskAssignmentModel::query()->forUser(Auth::user())->assigned()->count();
+                                return (string) TaskAssignmentModel::query()->user(Auth::user())->assigned()->count();
                             }),
                     ])->icon('user-circle'),
 
@@ -266,6 +266,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(Announcement::class),
                         MenuItem::resource(Award::class),
                         MenuItem::resource(Document::class),
+                        MenuItem::resource(Group::class),
                         MenuItem::resource(Position::class),
                         MenuItem::resource(Qualification::class),
                         MenuItem::resource(Rank::class),
@@ -437,7 +438,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             \App\Models\Role::all()->mapWithKeys(fn ($role) => [$role->name => $role->name])->sort()
                         )->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
                     ]),
-                ])->showTitle(true),
+                ])->showTitle(),
             ];
         }, [
             'registration_enabled' => 'boolean',

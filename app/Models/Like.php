@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
  * @property-read \App\Models\User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Like forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|Like newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Like newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Like query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Like user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */

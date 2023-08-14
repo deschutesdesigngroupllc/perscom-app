@@ -25,13 +25,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Document|null $document
  * @property-read \App\Models\User|null $user
  *
+ * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord author($user)
+ * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord document($document)
  * @method static \Database\Factories\CombatRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord forAuthor($user)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord forDocument($document)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord forUser(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord user(\App\Models\User $user)
  *
  * @mixin \Eloquent
  */

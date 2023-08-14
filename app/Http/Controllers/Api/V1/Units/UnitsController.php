@@ -29,7 +29,7 @@ class UnitsController extends Controller
      */
     public function includes(): array
     {
-        return ['position', 'rank', 'specialty', 'status', 'unit'];
+        return ['users'];
     }
 
     /**
