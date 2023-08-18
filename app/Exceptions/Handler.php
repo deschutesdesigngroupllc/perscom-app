@@ -85,7 +85,7 @@ class Handler extends ExceptionHandler
                     ->setStatusCode(401),
                 default => Inertia::render('Error', [
                     'status' => $response->getStatusCode(),
-                    'message' => property_exists($response, 'exception') ? $response->exception->getMessage() : null,
+                    'message' => property_exists($response, 'exception') ? $response->exception?->getMessage() : null,
                     'back' => Redirect::intended()->getTargetUrl(),
                     'showLogout' => Auth::check(),
                 ])
