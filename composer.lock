@@ -5931,7 +5931,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5967,7 +5967,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6003,7 +6003,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6039,7 +6039,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6075,7 +6075,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6111,7 +6111,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6147,7 +6147,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6183,7 +6183,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6219,7 +6219,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/improve-tests",
+            "version": "dev-hotfix/latest-release-fixes",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -13167,16 +13167,16 @@
         },
         {
             "name": "laravel/pint",
-            "version": "v1.10.6",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/pint.git",
-                "reference": "d1915b6ecc6406c00472c6b9ae75b46aa153bbb2"
+                "reference": "88e835bf922b94017778bde89ef8f215e1ea40db"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/pint/zipball/d1915b6ecc6406c00472c6b9ae75b46aa153bbb2",
-                "reference": "d1915b6ecc6406c00472c6b9ae75b46aa153bbb2",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/88e835bf922b94017778bde89ef8f215e1ea40db",
+                "reference": "88e835bf922b94017778bde89ef8f215e1ea40db",
                 "shasum": ""
             },
             "require": {
@@ -13229,7 +13229,7 @@
                 "issues": "https://github.com/laravel/pint/issues",
                 "source": "https://github.com/laravel/pint"
             },
-            "time": "2023-08-08T15:17:16+00:00"
+            "time": "2023-08-15T15:30:00+00:00"
         },
         {
             "name": "laravel/sail",
