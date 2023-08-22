@@ -4,10 +4,10 @@ namespace App\Models;
 
 use App\Traits\HasFields;
 use App\Traits\HasNotifications;
+use App\Traits\HasTags;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Arr;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -40,6 +40,7 @@ class Form extends Model
     use HasFactory;
     use HasFields;
     use HasNotifications;
+    use HasTags;
 
     /**
      * The accessors to append to the model's array form.
@@ -54,18 +55,6 @@ class Form extends Model
      * @var array
      */
     protected $with = ['fields'];
-
-    /**
-     * @return Builder
-     */
-    public function scopeTags(Builder $query, $tag)
-    {
-        $tags = Arr::wrap($tag);
-
-        return $query->whereHas('tags', function (Builder $query) use ($tags) {
-            $query->whereIn('name', $tags);
-        });
-    }
 
     /**
      * @return string
@@ -93,13 +82,5 @@ class Form extends Model
     public function submission_status()
     {
         return $this->belongsTo(Status::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'forms_tags');
     }
 }

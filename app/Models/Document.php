@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasTags;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -24,6 +25,7 @@ use Illuminate\Support\Str;
 class Document extends Model implements Htmlable
 {
     use HasFactory;
+    use HasTags;
 
     /**
      * @var string[]
@@ -115,13 +117,5 @@ class Document extends Model implements Htmlable
         }
 
         return $content;
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'documents_tags');
     }
 }

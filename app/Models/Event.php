@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasImages;
+use App\Traits\HasTags;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use Illuminate\Database\Eloquent\Builder;
@@ -47,6 +48,7 @@ class Event extends Model
     use HasAttachments;
     use HasFactory;
     use HasImages;
+    use HasTags;
 
     /**
      * @var string[]
@@ -103,6 +105,11 @@ class Event extends Model
         'computed_end',
         'next_occurrence',
     ];
+
+    /**
+     * @var string[]
+     */
+    protected $with = ['calendar'];
 
     /**
      * Boot
@@ -285,14 +292,6 @@ class Event extends Model
     public function calendar()
     {
         return $this->belongsTo(Calendar::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'events_tags');
     }
 
     /**
