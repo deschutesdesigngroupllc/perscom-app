@@ -39,6 +39,7 @@ use RRule\RRule;
  * @method static Builder|Event newModelQuery()
  * @method static Builder|Event newQuery()
  * @method static Builder|Event query()
+ * @method static Builder|Event tags($tag)
  *
  * @mixin \Eloquent
  */

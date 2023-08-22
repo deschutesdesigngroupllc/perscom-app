@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Calendar tags($tag)
  *
  * @mixin \Eloquent
  */
