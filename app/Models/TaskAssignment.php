@@ -53,6 +53,11 @@ class TaskAssignment extends Pivot
     /**
      * @var string[]
      */
+    protected $with = ['task', 'user'];
+
+    /**
+     * @var string[]
+     */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
