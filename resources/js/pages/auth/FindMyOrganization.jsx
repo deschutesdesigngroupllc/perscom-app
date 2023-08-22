@@ -44,7 +44,7 @@ function FindMyOrganization({ url, tenant }) {
       ) : (
         <>
           <div className='mb-4 text-sm leading-normal text-gray-600'>
-            Don&apos;t remember your oganization info? No problem. Just let us know the account email address on file and we will look up
+            Don&apos;t remember your organization info? No problem. Just let us know the account email address on file and we will look up
             the organization&apos;s info.
           </div>
 
