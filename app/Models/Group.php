@@ -48,7 +48,7 @@ class Group extends Model implements Sortable
         return $this->belongsToMany(Unit::class, 'units_groups')
             ->withTimestamps()
             ->withPivot(['order'])
-            ->orderBy('order')
+            ->ordered()
             ->as(Membership::class);
     }
 }

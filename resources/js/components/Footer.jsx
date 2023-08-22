@@ -1,7 +1,7 @@
 import React from 'react'
 
-import {Container} from './/Container'
-import {Logo} from './/Logo'
+import {Container} from './Container'
+import {Logo} from './Logo'
 
 export function Footer() {
   return (

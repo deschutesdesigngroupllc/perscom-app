@@ -62,7 +62,7 @@ class Unit extends Model implements Sortable
         return $this->belongsToMany(Group::class, 'units_groups')
             ->withTimestamps()
             ->withPivot(['order'])
-            ->orderBy('order')
+            ->ordered()
             ->as(Membership::class);
     }
 
