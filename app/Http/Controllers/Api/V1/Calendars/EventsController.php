@@ -24,17 +24,12 @@ class EventsController extends Controller
      */
     protected $policy = EventPolicy::class;
 
-    public function limit(): int
-    {
-        return 0;
-    }
-
     /**
      * The list of available query scopes.
      */
     public function exposedScopes(): array
     {
-        return ['datePeriod'];
+        return ['datePeriod', 'tags'];
     }
 
     /**
@@ -42,7 +37,7 @@ class EventsController extends Controller
      */
     public function includes(): array
     {
-        return ['calendar'];
+        return ['author', 'calendar', 'tags'];
     }
 
     /**

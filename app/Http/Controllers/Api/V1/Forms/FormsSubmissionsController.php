@@ -26,9 +26,9 @@ class FormsSubmissionsController extends RelationController
     /**
      * @return string[]
      */
-    public function alwaysIncludes(): array
+    public function includes(): array
     {
-        return ['form', 'user'];
+        return ['form', 'user', 'statuses'];
     }
 
     /**
@@ -44,6 +44,6 @@ class FormsSubmissionsController extends RelationController
      */
     public function filterableBy(): array
     {
-        return ['id', 'form_id', 'user_id', 'created_at', 'tags'];
+        return ['id', 'form_id', 'user_id', 'created_at'];
     }
 }

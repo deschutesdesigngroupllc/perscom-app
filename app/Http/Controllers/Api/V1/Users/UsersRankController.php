@@ -16,4 +16,12 @@ class UsersRankController extends RelationController
      * @var string
      */
     protected $relation = 'rank';
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return ['image'];
+    }
 }
