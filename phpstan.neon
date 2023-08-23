@@ -8,6 +8,7 @@ parameters:
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::user\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::future\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::ordered\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::orderForRoster\(\)#'
         - '#PHPDoc type array<string> of property [a-zA-Z0-9\\_]+::\$casts#'
         - '#PHPDoc type array of property [a-zA-Z0-9\\_]+::\$guarded#'
         - '#Access to an undefined property Laravel\\Passport\\Client::\$[a-zA-Z0-9\\_]+#'
