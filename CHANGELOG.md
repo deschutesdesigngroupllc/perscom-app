@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.48...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.49...HEAD)
+
+## [v1.0.49](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.48...v1.0.49) - 2023-08-22
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.49 -->
+### What's Changed
+
+#### Fixed
+
+- Fixes stripe webhook error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/203
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.48...v1.0.49
 
 ## [v1.0.48](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.47...v1.0.48) - 2023-08-14
 
