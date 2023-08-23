@@ -7,6 +7,7 @@ use App\Traits\HasHiddenFieldAttributes;
 use App\Traits\HasResourceUrlAttribute;
 use App\Traits\HasStatuses;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -180,6 +181,28 @@ class User extends Authenticatable implements MustVerifyEmail, JWTSubject
         'online' => 'boolean',
         'approved' => 'boolean',
     ];
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        //static::addGlobalScope(new UserScope());
+    }
+
+    public function scopeOrderForRoster(Builder $query): void
+    {
+        $query
+            ->leftJoin('ranks', 'ranks.id', '=', 'users.rank_id')
+            ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
+            ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id')
+            ->orderBy('ranks.order')
+            ->orderBy('positions.order')
+            ->orderBy('specialties.order')
+            ->orderBy('users.name');
+    }
 
     /**
      * @return string[]
