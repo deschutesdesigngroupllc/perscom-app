@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Container } from './/Container'
-import { Logo } from './/Logo'
+import {Container} from './Container'
+import {Logo} from './Logo'
 
 export function Footer() {
   return (
@@ -49,6 +49,17 @@ export function Footer() {
                 >
                   {' '}
                   Find My Organization{' '}
+                </a>
+              </li>
+              <li>
+                <a
+                  href='https://status.perscom.io'
+                  target='_blank'
+                  className='rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800'
+                  rel='noreferrer'
+                >
+                  {' '}
+                  Status{' '}
                 </a>
               </li>
               <li>

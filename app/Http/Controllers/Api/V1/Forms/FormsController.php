@@ -35,9 +35,9 @@ class FormsController extends Controller
     /**
      * @return string[]
      */
-    public function alwaysIncludes(): array
+    public function includes(): array
     {
-        return ['fields'];
+        return ['fields', 'submissions', 'submissions.*', 'tags'];
     }
 
     /**

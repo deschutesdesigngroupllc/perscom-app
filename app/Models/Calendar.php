@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasTags;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -17,12 +18,14 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Calendar tags($tag)
  *
  * @mixin \Eloquent
  */
 class Calendar extends Model
 {
     use HasFactory;
+    use HasTags;
 
     /**
      * @var string[]
@@ -35,13 +38,5 @@ class Calendar extends Model
     public function events()
     {
         return $this->hasMany(Event::class);
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class, 'calendars_tags');
     }
 }

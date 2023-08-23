@@ -25,11 +25,19 @@ class CalendarsController extends Controller
     protected $policy = CalendarPolicy::class;
 
     /**
+     * The list of available query scopes.
+     */
+    public function exposedScopes(): array
+    {
+        return ['tags'];
+    }
+
+    /**
      * @return string[]
      */
     public function includes(): array
     {
-        return ['events', 'author'];
+        return ['events', 'events.author', 'tags'];
     }
 
     /**

@@ -62,6 +62,11 @@ class AwardRecord extends Model
     protected $fillable = ['user_id', 'award_id', 'document_id', 'author_id', 'text'];
 
     /**
+     * @var string[]
+     */
+    protected $with = ['award'];
+
+    /**
      * The table associated with the model.
      *
      * @var string

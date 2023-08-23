@@ -22,6 +22,6 @@ class GroupsUnitsController extends RelationController
      */
     public function includes(): array
     {
-        return ['users', 'users.position', 'users.rank', 'users.specialty', 'users.status', 'users.unit'];
+        return ['users', 'users.*'];
     }
 }

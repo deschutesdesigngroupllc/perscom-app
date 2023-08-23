@@ -8,6 +8,8 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
+use Spatie\Permission\Exceptions\PermissionDoesNotExist;
+use Spatie\Permission\Exceptions\RoleDoesNotExist;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
 use Throwable;
 
@@ -19,6 +21,9 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
+        PermissionDoesNotExist::class,
+        RoleDoesNotExist::class,
+        TenantCouldNotBeIdentifiedOnDomainException::class,
         OAuthServerException::class,
     ];
 
@@ -80,7 +85,7 @@ class Handler extends ExceptionHandler
                     ->setStatusCode(401),
                 default => Inertia::render('Error', [
                     'status' => $response->getStatusCode(),
-                    'message' => property_exists($response, 'exception') ? $response->exception->getMessage() : null,
+                    'message' => property_exists($response, 'exception') ? $response->exception?->getMessage() : null,
                     'back' => Redirect::intended()->getTargetUrl(),
                     'showLogout' => Auth::check(),
                 ])

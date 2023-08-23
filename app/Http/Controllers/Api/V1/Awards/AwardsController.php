@@ -31,4 +31,20 @@ class AwardsController extends Controller
     {
         return ['image'];
     }
+
+    /**
+     * @return string[]
+     */
+    public function searchableBy(): array
+    {
+        return ['name'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function filterableBy(): array
+    {
+        return ['id', 'name', 'created_at'];
+    }
 }

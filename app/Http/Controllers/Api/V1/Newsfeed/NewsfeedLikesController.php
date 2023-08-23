@@ -16,4 +16,24 @@ class NewsfeedLikesController extends RelationController
      * @var string
      */
     protected $relation = 'likes';
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return [
+            'assignment_records',
+            'award_records',
+            'combat_records',
+            'position',
+            'qualification_records',
+            'rank',
+            'rank_records',
+            'service_records',
+            'specialty',
+            'status',
+            'unit',
+        ];
+    }
 }

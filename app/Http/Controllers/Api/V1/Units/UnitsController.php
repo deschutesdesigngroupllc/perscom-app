@@ -29,7 +29,7 @@ class UnitsController extends Controller
      */
     public function includes(): array
     {
-        return ['users'];
+        return ['assignment_records', 'assignment_records.*', 'groups', 'users'];
     }
 
     /**
@@ -45,6 +45,6 @@ class UnitsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name'];
+        return ['id', 'name', 'created_at'];
     }
 }
