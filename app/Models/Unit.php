@@ -6,6 +6,7 @@ use App\Models\Scopes\UnitScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -41,18 +42,13 @@ class Unit extends Model implements Sortable
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new UnitScope());
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function assignment_records()
+    public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class);
     }
@@ -66,10 +62,7 @@ class Unit extends Model implements Sortable
             ->as(Membership::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\V1\Groups;
 use App\Http\Requests\Api\GroupRequest;
 use App\Models\Group;
 use App\Policies\GroupPolicy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Http\Request;
 use Orion\Http\Controllers\Controller;
 
 class GroupsController extends Controller
@@ -23,6 +25,26 @@ class GroupsController extends Controller
      * @var string
      */
     protected $policy = GroupPolicy::class;
+
+    /**
+     * Builds Eloquent query for fetching entities in index method.
+     */
+    protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
+    {
+        $query = parent::buildIndexFetchQuery($request, $requestedRelations);
+
+        $query->orderForRoster();
+
+        return $query;
+    }
+
+    /**
+     * The list of available query scopes.
+     */
+    public function exposedScopes(): array
+    {
+        return ['orderForRoster'];
+    }
 
     /**
      * @return string[]
