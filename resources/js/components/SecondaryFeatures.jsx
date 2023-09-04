@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Tab } from '@headlessui/react'
+import {Tab} from '@headlessui/react'
 import clsx from 'clsx'
-import { BuildingOfficeIcon, CalendarIcon, UsersIcon } from '@heroicons/react/20/solid'
-import { Container } from './/Container'
+import {BuildingOfficeIcon, CalendarIcon, UsersIcon} from '@heroicons/react/20/solid'
+import {Container} from './/Container'
 import customFieldsImage from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
 import searchImage from '../../images/features/secondary3.png'
@@ -58,7 +58,7 @@ function Feature({ feature, isActive, className, ...props }) {
         <feature.icon />
       </div>
       <h3
-        className={clsx('mt-2 text-sm font-medium', {
+        className={clsx('prose mt-2 text-sm font-medium', {
           'text-blue-600': isActive,
           'text-gray-600': !isActive
         })}
@@ -66,8 +66,8 @@ function Feature({ feature, isActive, className, ...props }) {
       >
         {feature.name}
       </h3>
-      <p className='mt-2 font-display text-xl text-gray-800'>{feature.summary}</p>
-      <p className='mt-4 text-sm text-gray-600'>{feature.description}</p>
+      <h4 className='prose mt-2 text-xl'>{feature.summary}</h4>
+      <p className='prose mt-4 text-sm'>{feature.description}</p>
     </div>
   )
 }
@@ -150,12 +150,10 @@ function FeaturesDesktop() {
 export function SecondaryFeatures() {
   return (
     <section id='secondary-features' aria-labelledby='secondary-features-title' className='py-20 sm:py-32'>
-      <Container>
+      <Container className='relative'>
         <div className='mx-auto max-w-2xl md:text-center'>
-          <h2 id='secondary-features-title' className='font-display text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>
-            Simplify your organization&apos;s tasks.
-          </h2>
-          <p className='mx-auto mt-4 max-w-3xl text-base text-gray-600'>
+          <h2 className='text-3xl font-bold tracking-tight prose sm:text-4xl'>Simplify your organization&apos;s tasks.</h2>
+          <p className='mx-auto mt-4 max-w-3xl text-base prose'>
             We&apos;ve focused on making your life easier. Let our software show you how.
           </p>
         </div>

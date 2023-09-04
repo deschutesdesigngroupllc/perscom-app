@@ -56,14 +56,14 @@ export function PrimaryFeatures() {
   return (
     <section id='features' aria-labelledby='features-title' className='relative overflow-hidden bg-blue-600 py-20 sm:py-32'>
       <div className='absolute top-1/2 left-1/2 -trangray-x-[44%] -trangray-y-[42%]'>
-        <img src={backgroundImage} alt='' width={2245} height={1636} />
+        <img src={backgroundImage} alt='' width={2245} height={1636} aria-hidden='true' />
       </div>
       <Container className='relative'>
         <div className='max-w-2xl md:mx-auto md:text-center xl:max-w-none'>
-          <h2 id='features-title' className='font-display text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl'>
+          <h2 className='prose text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl'>
             Everything you need to manage your personnel.
           </h2>
-          <p className='mt-6 text-base text-blue-50'>Packed with powerful features and backed by years of experience.</p>
+          <p className='mt-6 text-base mx-auto prose text-blue-50'>Packed with powerful features and backed by years of experience.</p>
         </div>
         <Tab.Group
           as='div'
@@ -88,8 +88,8 @@ export function PrimaryFeatures() {
                       <h3>
                         <div
                           className={clsx('font-semibold text-lg', {
-                            'text-white': selectedIndex === featureIndex,
-                            'text-blue-200 hover:text-white lg:text-white': selectedIndex !== featureIndex
+                            'prose text-white': selectedIndex === featureIndex,
+                            'prose text-blue-200 hover:text-white lg:text-white': selectedIndex !== featureIndex
                           })}
                         >
                           <span className='absolute inset-0' />
@@ -98,8 +98,8 @@ export function PrimaryFeatures() {
                       </h3>
                       <p
                         className={clsx('mt-2 hidden text-sm lg:block', {
-                          'text-white': selectedIndex === featureIndex,
-                          'text-blue-50 group-hover:text-white': selectedIndex !== featureIndex
+                          'prose text-white': selectedIndex === featureIndex,
+                          'prose text-blue-50 group-hover:text-white': selectedIndex !== featureIndex
                         })}
                       >
                         {feature.description}
@@ -113,7 +113,7 @@ export function PrimaryFeatures() {
                   <Tab.Panel key={feature.title} unmount={false}>
                     <div className='relative sm:px-6 lg:hidden'>
                       <div className='absolute -inset-x-4 -top-[6.5rem] -bottom-[4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl' />
-                      <p className='relative mx-auto max-w-2xl text-base text-white sm:text-center'>{feature.description}</p>
+                      <p className='prose relative mx-auto max-w-2xl text-base text-white sm:text-center'>{feature.description}</p>
                     </div>
                     <div className='relative mt-10 aspect-[1085/590] w-[45rem] overflow-hidden rounded-xl bg-gray-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]'>
                       <img src={feature.image} alt='' sizes='(min-width: 1024px) 67.8125rem, (min-width: 640px) 100vw, 45rem' />

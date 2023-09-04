@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Head, useForm } from '@inertiajs/react'
-import { AuthLayout } from '../../layouts/Auth'
-import { ValidationErrors } from '../../components/ValidationErrors'
-import { Button, ButtonLink } from '../../components/Button'
-import { Input } from '../../components/Input'
+import {Head, useForm} from '@inertiajs/react'
+import {AuthLayout} from '../../layouts/Auth'
+import {ValidationErrors} from '../../components/ValidationErrors'
+import {Button, ButtonLink} from '../../components/Button'
+import {Input} from '../../components/Input'
 
 function FindMyOrganization({ url, tenant }) {
   const { data, setData, post, processing, errors } = useForm({
@@ -26,14 +26,14 @@ function FindMyOrganization({ url, tenant }) {
 
       {url ? (
         <>
-          <div className='mb-4 text-sm leading-normal text-gray-600'>We were able to find your organization&apos;s info:</div>
-          <div className='text-sm'>
-            <span className='font-bold'>Organization: </span>
-            <span className='text-gray-600'>{tenant}</span>
+          <div className='mb-4 text-sm leading-normal'>We were able to find your organization&apos;s info:</div>
+          <div>
+            <span className='prose text-sm font-bold'>Organization: </span>
+            <span className='prose text-sm'>{tenant}</span>
           </div>
-          <div className='mb-2 text-sm'>
-            <span className='font-bold'>Dashboard URL: </span>
-            <a className='text-gray-600 underline' href={url}>
+          <div className='mb-2'>
+            <span className='prose text-sm font-bold'>Dashboard URL: </span>
+            <a className='prose underline text-sm' href={url}>
               {url}
             </a>
           </div>
@@ -43,7 +43,7 @@ function FindMyOrganization({ url, tenant }) {
         </>
       ) : (
         <>
-          <div className='mb-4 text-sm leading-normal text-gray-600'>
+          <div className='mb-4 text-sm leading-normal prose'>
             Don&apos;t remember your organization info? No problem. Just let us know the account email address on file and we will look up
             the organization&apos;s info.
           </div>

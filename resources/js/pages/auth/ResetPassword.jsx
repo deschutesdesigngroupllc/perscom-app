@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react'
+import React, {useEffect} from 'react'
 import PropTypes from 'prop-types'
-import { Button } from '../../components/Button'
-import { AuthLayout } from '../../layouts/Auth'
-import { Input } from '../../components/Input'
-import { Label } from '../../components/Label'
-import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, useForm, usePage } from '@inertiajs/react'
+import {Button} from '../../components/Button'
+import {AuthLayout} from '../../layouts/Auth'
+import {Input} from '../../components/Input'
+import {Label} from '../../components/Label'
+import {ValidationErrors} from '../../components/ValidationErrors'
+import {Head, useForm, usePage} from '@inertiajs/react'
 
 export function ResetPassword({ token, email }) {
   const { flash } = usePage().props
@@ -36,7 +36,7 @@ export function ResetPassword({ token, email }) {
     <AuthLayout>
       <Head title='Reset Password' />
 
-      {flash.status && <div className='mb-4 text-sm font-medium text-green-600'>{flash.status}</div>}
+      {flash.status && <div className='mb-4 text-sm font-medium text-green-600 prose'>{flash.status}</div>}
 
       <ValidationErrors errors={errors} />
 

@@ -1,4 +1,5 @@
 const defaultTheme = require('tailwindcss/defaultTheme')
+const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -23,9 +24,11 @@ module.exports = {
       borderRadius: {
         '4xl': '2rem'
       },
+      colors: {
+        gray: colors.slate
+      },
       fontFamily: {
-        sans: [...defaultTheme.fontFamily.sans],
-        display: [...defaultTheme.fontFamily.sans]
+        sans: ['Nunito Sans', ...defaultTheme.fontFamily.sans]
       },
       maxWidth: {
         '2xl': '40rem'
@@ -37,5 +40,5 @@ module.exports = {
       }
     }
   },
-  plugins: [require('@tailwindcss/forms')]
+  plugins: [require('@tailwindcss/forms'), require('@tailwindcss/typography')]
 }

@@ -1,10 +1,10 @@
 import React from 'react'
-import { useForm } from '@inertiajs/react'
-import { RegisterLayout } from '../layouts/Register'
-import { Button } from '../components/Button'
-import { Input } from '../components/Input'
-import { Logo } from '../components/Logo'
-import { ValidationErrors } from '../components/ValidationErrors'
+import {useForm} from '@inertiajs/react'
+import {RegisterLayout} from '../layouts/Register'
+import {Button} from '../components/Button'
+import {Input} from '../components/Input'
+import {Logo} from '../components/Logo'
+import {ValidationErrors} from '../components/ValidationErrors'
 import Checkbox from '../components/Checkbox'
 
 export default function Register() {
@@ -31,10 +31,8 @@ export default function Register() {
             <Logo className='sm:h-18 mb-2 h-16 w-auto md:h-20' />
           </a>
         </div>
-        <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-800'>Get started for free.</h1>
-        <p className='mt-2 text-sm text-gray-600'>
-          No upfront costs or credit card requirements. Cancel at anytime with no questions asked.
-        </p>
+        <h1 className='mt-10 text-xl font-bold tracking-tight prose'>Get started for free.</h1>
+        <p className='mt-2 text-sm prose'>No upfront costs or credit card requirements. Cancel at anytime with no questions asked.</p>
       </div>
       <div className='mt-5'>
         <ValidationErrors errors={errors} />
@@ -66,7 +64,7 @@ export default function Register() {
             <div className='flex items-center'>
               <label className='flex items-center'>
                 <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} />
-                <span className='ml-2 text-sm text-gray-600'>
+                <span className='ml-2 text-sm prose'>
                   I have read and agree to the{' '}
                   <a className='underline' target='_blank' rel='noreferrer' href={route('web.privacy-policy.index')}>
                     Privacy Policy

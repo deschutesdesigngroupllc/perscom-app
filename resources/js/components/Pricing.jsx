@@ -1,8 +1,8 @@
 import React from 'react'
 import clsx from 'clsx'
 
-import { ButtonLink } from './/Button'
-import { Container } from './/Container'
+import {ButtonLink} from './/Button'
+import {Container} from './/Container'
 import PropTypes from 'prop-types'
 
 function Plan({ name, price, description, href, features, featured = false }) {
@@ -13,18 +13,18 @@ function Plan({ name, price, description, href, features, featured = false }) {
         'lg:py-8': !featured
       })}
     >
-      <h3 className='mt-5 font-display text-lg text-white'>{name}</h3>
+      <h3 className='mt-5 text-lg text-white prose'>{name}</h3>
       <p
-        className={clsx('mt-2 text-base', {
+        className={clsx('prose mt-2 text-base', {
           'text-white': featured,
           'text-gray-400': !featured
         })}
       >
         {description}
       </p>
-      <p className='order-first font-display text-5xl font-light tracking-tight text-white'>{price}</p>
+      <p className='order-first text-5xl font-light tracking-tight text-white'>{price}</p>
       <ul
-        className={clsx('order-last mt-10 space-y-3 text-sm', {
+        className={clsx('order-last mt-10 space-y-3', {
           'text-white': featured,
           'text-gray-200': !featured
         })}
@@ -44,7 +44,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
               />
               <circle cx={12} cy={12} r={8.25} fill='none' strokeWidth={1.5} strokeLinecap='round' strokeLinejoin='round' />
             </svg>
-            <span className='ml-4'>{feature}</span>
+            <span className='prose text-sm ml-4 text-white'>{feature}</span>
           </li>
         ))}
       </ul>
@@ -74,12 +74,9 @@ Plan.propTypes = {
 export function Pricing() {
   return (
     <section id='pricing' aria-labelledby='pricing-title' className='bg-gray-900 py-20 sm:py-32'>
-      <h2 id='pricing-title' className='sr-only'>
-        Pricing
-      </h2>
-      <Container>
+      <Container className='relative'>
         <div className='md:text-center'>
-          <p className='font-display text-3xl font-bold tracking-tight text-white sm:text-4xl'>
+          <h2 className='prose text-3xl font-bold tracking-tight text-white sm:text-4xl'>
             <span className='relative whitespace-nowrap'>
               <svg
                 aria-hidden='true'
@@ -96,8 +93,8 @@ export function Pricing() {
               <span className='relative'>Simple pricing,</span>
             </span>{' '}
             for everyone.
-          </p>
-          <p className='mt-4 text-base text-gray-400'>
+          </h2>
+          <p className='mt-4 text-base prose mx-auto text-gray-400'>
             We have pricing options for all organizations. Scale up and down as your needs change.
           </p>
         </div>

@@ -57,25 +57,31 @@ function MobileNavigation() {
             >
               <Popover.Panel
                 as='ul'
-                className='absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight text-gray-800 shadow-xl ring-1 ring-gray-900/5'
+                className='absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight shadow-xl ring-1 ring-gray-900/5'
               >
                 <li>
-                  <a href={route('web.landing.home')} className='block w-full' onClick={() => close()}>
+                  <a href={route('web.landing.home')} className='prose block w-full hover:text-gray-500' onClick={() => close()}>
                     Home
                   </a>
                 </li>
                 <li>
-                  <a href='https://docs.perscom.io' target='_blank' className='block w-full' onClick={() => close()} rel='noreferrer'>
+                  <a
+                    href='https://docs.perscom.io'
+                    target='_blank'
+                    className='prose block w-full hover:text-gray-500'
+                    onClick={() => close()}
+                    rel='noreferrer'
+                  >
                     Documentation
                   </a>
                 </li>
                 <li>
-                  <a href='#features' className='block w-full' onClick={() => close()}>
+                  <a href='#features' className='prose block w-full hover:text-gray-500' onClick={() => close()}>
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href='#pricing' className='block w-full' onClick={() => close()}>
+                  <a href='#pricing' className='prose block w-full hover:text-gray-500' onClick={() => close()}>
                     Pricing
                   </a>
                 </li>
@@ -83,7 +89,7 @@ function MobileNavigation() {
                   <a
                     href={route('web.find-my-organization.index')}
                     target='_blank'
-                    className='block w-full'
+                    className='prose block w-full hover:text-gray-500'
                     onClick={() => close()}
                     rel='noreferrer'
                   >
@@ -103,7 +109,7 @@ export function Header() {
   return (
     <header className='py-4'>
       <Container>
-        <nav className='relative z-50 text-sm'>
+        <nav className='relative z-50'>
           <ul className='flex items-center'>
             <li>
               <a href={route('web.landing.home')}>
@@ -112,7 +118,7 @@ export function Header() {
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href={route('web.landing.home')} className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
+              <a href={route('web.landing.home')} className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'>
                 Home
               </a>
             </li>
@@ -120,19 +126,19 @@ export function Header() {
               <a
                 href='https://docs.perscom.io'
                 target='_blank'
-                className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'
+                className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'
                 rel='noreferrer'
               >
                 Documentation
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#features' className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
+              <a href='#features' className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'>
                 Features
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#pricing' className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
+              <a href='#pricing' className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'>
                 Pricing
               </a>
             </li>
@@ -140,7 +146,7 @@ export function Header() {
               <a
                 href={route('web.find-my-organization.index')}
                 target='_blank'
-                className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'
+                className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'
                 rel='noreferrer'
               >
                 Find My Organization
