@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Container } from './/Container'
+import {Container} from './/Container'
 import backgroundImage from '../../images/background-faqs.jpg'
 
 const faqs = [
@@ -17,7 +17,7 @@ const faqs = [
   {
     question: 'Can I integrate PERSCOM.io with other tools and systems we use?',
     answer:
-      "Yes, PERSCOM.io's API, OAuth 2.0, and Widget integration options make it easy to connect with other tools and systems, allowing you to leverage the platform's powerful personnel management tools while still using the tools you're accustomed to."
+      "Yes, PERSCOM.io's API, Command Line Interface (CLI), OAuth 2.0, OpenID Connect (OIDC), Webhooks, and Widget integration options make it easy to connect with other tools and systems, allowing you to leverage the platform's powerful personnel management tools while still using the tools you're accustomed to."
   },
   {
     question: 'Can I change the URL of my account Dashboard?',

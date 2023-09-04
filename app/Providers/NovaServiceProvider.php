@@ -330,16 +330,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
                             ->openInNewTab(),
+                        MenuItem::externalLink('Feature Requests', 'https://feedback.perscom.io/b/features-requests')
+                            ->openInNewTab(),
+                        MenuItem::externalLink('Feedback', 'https://feedback.perscom.io/b/feedback')
+                            ->openInNewTab(),
                         MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
                             ->openInNewTab(),
-                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')
-                            ->openInNewTab(),
-                        MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
+                        MenuItem::externalLink('Submit A Ticket', 'https://www.deschutesdesigngroup.com/support/new')
                             ->openInNewTab()
                             ->canSee(function () {
                                 return Feature::active(SupportTicketFeature::class);
                             }),
-                        MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
+                        MenuItem::externalLink('System Status', 'https://status.perscom.io')
                             ->openInNewTab(),
                     ])->icon('support')
                         ->collapsable()
@@ -367,6 +369,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                            ! $request->isCentralRequest() &&
                            Gate::check('billing', $request->user());
                 }),
+                MenuItem::externalLink('Feature Requests', 'https://feedback.perscom.io/b/features-requests')->canSee(function (Request $request) {
+                    return ! $request->isCentralRequest();
+                })->openInNewTab(),
+                MenuItem::externalLink('Feedback', 'https://feedback.perscom.io/b/feedback')->canSee(function (Request $request) {
+                    return ! $request->isCentralRequest();
+                })->openInNewTab(),
                 MenuItem::make('Logout', 'logout')->method('POST', [
                     '_token' => csrf_token(),
                 ]),

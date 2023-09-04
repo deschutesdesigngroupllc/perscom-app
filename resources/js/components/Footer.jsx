@@ -18,6 +18,17 @@ export function Footer() {
                 </a>
               </li>
               <li>
+                <a
+                  href='https://docs.perscom.io'
+                  target='_blank'
+                  className='rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800'
+                  rel='noreferrer'
+                >
+                  {' '}
+                  Documentation{' '}
+                </a>
+              </li>
+              <li>
                 <a href='#features' className='rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
                   {' '}
                   Features{' '}
@@ -31,13 +42,13 @@ export function Footer() {
               </li>
               <li>
                 <a
-                  href='https://docs.perscom.io'
+                  href='https://feedback.perscom.io/roadmap'
                   target='_blank'
                   className='rounded-lg px-2 py-1 text-gray-700 hover:bg-gray-100 hover:text-gray-800'
                   rel='noreferrer'
                 >
                   {' '}
-                  Documentation{' '}
+                  Roadmap{' '}
                 </a>
               </li>
               <li>

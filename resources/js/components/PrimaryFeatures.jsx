@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import { Tab } from '@headlessui/react'
+import React, {useEffect, useState} from 'react'
+import {Tab} from '@headlessui/react'
 import clsx from 'clsx'
 
-import { Container } from './/Container'
+import {Container} from './/Container'
 import backgroundImage from '../../images/background-features.jpg'
 import featureDashboard from '../../images/features/feature1.png'
 import featurePersonnelFiles from '../../images/features/feature2.png'
@@ -30,7 +30,7 @@ const features = [
   {
     title: 'Seamless Integration and Communication',
     description:
-      "PERSCOM.io's API, OAuth 2.0, OpenID Connect (OIDC), Webhooks and Widget integration options make it easy to connect with other tools and systems, while the platform's built-in communication features keep everyone on the same page.",
+      "PERSCOM.io's API, Command Line Interface (CLI), OAuth 2.0, OpenID Connect (OIDC), Webhooks, and Widget integration options make it easy to connect with other tools and systems, while the platform's built-in communication features keep everyone on the same page.",
     image: featureLogs
   }
 ]

@@ -1,10 +1,10 @@
-import React, { Fragment } from 'react'
-import { Popover, Transition } from '@headlessui/react'
+import React, {Fragment} from 'react'
+import {Popover, Transition} from '@headlessui/react'
 import clsx from 'clsx'
 
-import { ButtonLink } from './/Button'
-import { Container } from './/Container'
-import { Logo } from './/Logo'
+import {ButtonLink} from './/Button'
+import {Container} from './/Container'
+import {Logo} from './/Logo'
 
 function MobileNavigation() {
   return (
@@ -65,6 +65,11 @@ function MobileNavigation() {
                   </a>
                 </li>
                 <li>
+                  <a href='https://docs.perscom.io' target='_blank' className='block w-full' onClick={() => close()} rel='noreferrer'>
+                    Documentation
+                  </a>
+                </li>
+                <li>
                   <a href='#features' className='block w-full' onClick={() => close()}>
                     Features
                   </a>
@@ -72,11 +77,6 @@ function MobileNavigation() {
                 <li>
                   <a href='#pricing' className='block w-full' onClick={() => close()}>
                     Pricing
-                  </a>
-                </li>
-                <li>
-                  <a href='https://docs.perscom.io' target='_blank' className='block w-full' onClick={() => close()} rel='noreferrer'>
-                    Documentation
                   </a>
                 </li>
                 <li>
@@ -117,16 +117,6 @@ export function Header() {
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#features' className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
-                Features
-              </a>
-            </li>
-            <li className='ml-6 hidden lg:block'>
-              <a href='#pricing' className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
-                Pricing
-              </a>
-            </li>
-            <li className='ml-6 hidden lg:block'>
               <a
                 href='https://docs.perscom.io'
                 target='_blank'
@@ -134,6 +124,16 @@ export function Header() {
                 rel='noreferrer'
               >
                 Documentation
+              </a>
+            </li>
+            <li className='ml-6 hidden lg:block'>
+              <a href='#features' className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
+                Features
+              </a>
+            </li>
+            <li className='ml-6 hidden lg:block'>
+              <a href='#pricing' className='rounded-lg py-1 px-2 text-gray-700 hover:bg-gray-100 hover:text-gray-800'>
+                Pricing
               </a>
             </li>
             <li className='ml-6 hidden lg:block ml-auto'>
