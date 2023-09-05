@@ -1,9 +1,9 @@
 import React from 'react'
-import {Button} from '../../components/Button'
-import {Input} from '../../components/Input'
-import {ValidationErrors} from '../../components/ValidationErrors'
-import {Head, useForm, usePage} from '@inertiajs/react'
-import {AuthLayout} from '../../layouts/Auth'
+import { Button } from '../../components/Button'
+import { Input } from '../../components/Input'
+import { ValidationErrors } from '../../components/ValidationErrors'
+import { Head, useForm, usePage } from '@inertiajs/react'
+import { AuthLayout } from '../../layouts/Auth'
 
 function ForgotPassword() {
   const { flash } = usePage().props
@@ -25,12 +25,12 @@ function ForgotPassword() {
     <AuthLayout>
       <Head title='Forgot Password' />
 
-      <div className='mb-4 text-sm leading-normal prose'>
+      <div className='prose mb-4 text-sm leading-normal'>
         Forgot your password? No problem. Just let us know your email address and we will email you a password reset link that will allow
         you to choose a new one.
       </div>
 
-      {flash.status && <div className='mb-4 text-sm font-medium text-green-600 prose'>{flash.status}</div>}
+      {flash.status && <div className='prose mb-4 text-sm font-medium text-green-600'>{flash.status}</div>}
 
       <ValidationErrors errors={errors} />
 

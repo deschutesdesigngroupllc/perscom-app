@@ -1,8 +1,8 @@
 import React from 'react'
 import clsx from 'clsx'
 
-import {ButtonLink} from './/Button'
-import {Container} from './/Container'
+import { ButtonLink } from './/Button'
+import { Container } from './/Container'
 import PropTypes from 'prop-types'
 
 function Plan({ name, price, description, href, features, featured = false }) {
@@ -13,7 +13,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
         'lg:py-8': !featured
       })}
     >
-      <h3 className='mt-5 text-lg text-white prose'>{name}</h3>
+      <h3 className='prose mt-5 text-lg text-white'>{name}</h3>
       <p
         className={clsx('prose mt-2 text-base', {
           'text-white': featured,
@@ -44,7 +44,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
               />
               <circle cx={12} cy={12} r={8.25} fill='none' strokeWidth={1.5} strokeLinecap='round' strokeLinejoin='round' />
             </svg>
-            <span className='prose text-sm ml-4 text-white'>{feature}</span>
+            <span className='prose ml-4 text-sm text-white'>{feature}</span>
           </li>
         ))}
       </ul>
@@ -81,7 +81,7 @@ export function Pricing() {
               <svg
                 aria-hidden='true'
                 viewBox='0 0 281 40'
-                className='absolute top-1/2 left-0 h-[1em] w-full fill-blue-400'
+                className='absolute left-0 top-1/2 h-[1em] w-full fill-blue-400'
                 preserveAspectRatio='none'
               >
                 <path
@@ -94,7 +94,7 @@ export function Pricing() {
             </span>{' '}
             for everyone.
           </h2>
-          <p className='mt-4 text-base prose mx-auto text-gray-400'>
+          <p className='prose mx-auto mt-4 text-base text-gray-400'>
             We have pricing options for all organizations. Scale up and down as your needs change.
           </p>
         </div>

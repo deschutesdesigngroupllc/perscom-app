@@ -21,7 +21,7 @@ export function RegisterLayout({ children, position = 'justify-center' }) {
 
   return (
     <div className={clsx('relative flex min-h-full md:px-12 lg:px-0', position)}>
-      <div className={clsx('relative z-10 flex max-h-full flex-1 flex-col bg-white py-16 px-4 shadow-2xl md:flex-none md:px-28', position)}>
+      <div className={clsx('relative z-10 flex max-h-full flex-1 flex-col bg-white px-4 py-16 shadow-2xl md:flex-none md:px-28', position)}>
         <div className='mx-auto w-full max-w-md sm:px-4 md:w-96 md:max-w-sm md:px-0'>{children}</div>
       </div>
       <div className='absolute inset-0 hidden w-full flex-1 sm:block lg:relative lg:w-0'>

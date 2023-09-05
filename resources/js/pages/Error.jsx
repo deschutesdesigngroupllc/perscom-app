@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Logo} from '../components/Logo'
-import {useForm} from '@inertiajs/react'
+import { Logo } from '../components/Logo'
+import { useForm } from '@inertiajs/react'
 
 export default function Error({ status, title = null, message = null, back = null, showLink = true, showLogout = false }) {
   const { post } = useForm({})
@@ -40,9 +40,9 @@ export default function Error({ status, title = null, message = null, back = nul
     'We received an unknown error in the last request.'
 
   return (
-    <div className='min-h-full pt-16 pb-12 flex flex-col bg-gray-100'>
-      <main className='flex-grow flex flex-col justify-center max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='flex-shrink-0 flex justify-center'>
+    <div className='flex min-h-full flex-col bg-gray-100 pb-12 pt-16'>
+      <main className='mx-auto flex w-full max-w-7xl flex-grow flex-col justify-center px-4 sm:px-6 lg:px-8'>
+        <div className='flex flex-shrink-0 justify-center'>
           <a href='/' className='inline-flex'>
             <span className='sr-only'>PERSCOM</span>
             <Logo className='h-12 w-auto' />
@@ -50,9 +50,9 @@ export default function Error({ status, title = null, message = null, back = nul
         </div>
         <div className='py-16'>
           <div className='text-center'>
-            <p className='text-sm font-semibold text-blue-600 uppercase tracking-wide'>{status} error</p>
-            <h1 className='mt-2 text-4xl font-extrabold prose text-black tracking-tight sm:text-5xl'>{header}</h1>
-            <p className='mt-2 text-base mx-auto prose'>{description}</p>
+            <p className='text-sm font-semibold uppercase tracking-wide text-blue-600'>{status} error</p>
+            <h1 className='prose mt-2 text-4xl font-extrabold tracking-tight text-black sm:text-5xl'>{header}</h1>
+            <p className='prose mx-auto mt-2 text-base'>{description}</p>
             {showLink && (
               <div className='mt-6'>
                 <a href={back ?? route('web.landing.home')} className='text-base font-medium text-blue-600 hover:text-blue-600'>
@@ -63,11 +63,11 @@ export default function Error({ status, title = null, message = null, back = nul
           </div>
         </div>
       </main>
-      <footer className='flex-shrink-0 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8'>
-        <nav className='flex flex-col sm:flex-row justify-center items-center space-x-4'>
+      <footer className='mx-auto w-full max-w-7xl flex-shrink-0 px-4 sm:px-6 lg:px-8'>
+        <nav className='flex flex-col items-center justify-center space-x-4 sm:flex-row'>
           <a
             href='https://community.deschutesdesigngroup.com/'
-            className='rounded-lg px-2 py-1 prose text-sm hover:bg-gray-200'
+            className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
           >
@@ -76,7 +76,7 @@ export default function Error({ status, title = null, message = null, back = nul
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
           <a
             href='https://docs.perscom.io'
-            className='rounded-lg px-2 py-1 prose text-sm hover:bg-gray-200'
+            className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
           >
@@ -85,7 +85,7 @@ export default function Error({ status, title = null, message = null, back = nul
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
           <a
             href='https://support.deschutesdesigngroup.com/'
-            className='rounded-lg px-2 py-1 prose text-sm hover:bg-gray-200'
+            className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
           >
@@ -94,7 +94,7 @@ export default function Error({ status, title = null, message = null, back = nul
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
           <a
             href='https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
-            className='rounded-lg px-2 py-1 prose text-sm hover:bg-gray-200'
+            className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
           >
@@ -106,7 +106,7 @@ export default function Error({ status, title = null, message = null, back = nul
               <form onSubmit={logout}>
                 <button
                   type='submit'
-                  className='rounded-lg prose text-sm px-2 py-1 text-red-700 hover:bg-red-100 hover:text-red-800'
+                  className='prose rounded-lg px-2 py-1 text-sm text-red-700 hover:bg-red-100 hover:text-red-800'
                   target='_blank'
                 >
                   Logout

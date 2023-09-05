@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 export function Label({ forInput, value, className, children }) {
   return (
-    <label htmlFor={forInput} className={`block text-sm font-medium prose ` + className}>
+    <label htmlFor={forInput} className={`prose block text-sm font-medium ` + className}>
       {value ? value : children}
     </label>
   )

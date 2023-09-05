@@ -1,14 +1,14 @@
 import React from 'react'
-import {Header} from '../components/Header'
-import {Footer} from '../components/Footer'
+import { Header } from '../components/Header'
+import { Footer } from '../components/Footer'
 import Container from '../components/Container'
 
 function PrivacyPolicy() {
   return (
     <>
       <Header />
-      <Container className='lg:pt-20 py-16 flex flex-col space-y-4'>
-        <h1 className='font-bold tracking-tight text-2xl sm:text-3xl mb-3'>Privacy Policy</h1>
+      <Container className='flex flex-col space-y-4 py-16 lg:pt-20'>
+        <h1 className='mb-3 text-2xl font-bold tracking-tight sm:text-3xl'>Privacy Policy</h1>
         <p>
           Your privacy is important to us. It is Deschutes Design Group LLC&#39;s policy to respect your privacy and comply with any
           applicable law and regulation regarding any personal information we may collect about you, including across our website,{' '}
@@ -27,7 +27,7 @@ function PrivacyPolicy() {
         </p>
         <p>This policy is effective as of 5 February 2023. </p>
         <p>Last updated: 5 February 2023 </p>
-        <h3 className='font-bold text-2xl'>Information We Collect</h3>
+        <h3 className='text-2xl font-bold'>Information We Collect</h3>
         <p>
           Information we collect falls into one of two categories: &ldquo;voluntarily provided&rdquo; information and &ldquo;automatically
           collected&rdquo; information.{' '}
@@ -40,16 +40,16 @@ function PrivacyPolicy() {
           &ldquo;Automatically collected&rdquo; information refers to any information automatically sent by your devices in the course of
           accessing our products and services.{' '}
         </p>
-        <h4 className='font-bold text-xl'>Personal Information</h4>
+        <h4 className='text-xl font-bold'>Personal Information</h4>
         <p>
           We may ask for personal information — for example, when you subscribe to our newsletter or when you contact us — which may include
           one or more of the following:{' '}
         </p>
-        <ul className='list-disc list-inside'>
+        <ul className='list-inside list-disc'>
           <li>Name</li>
           <li>Email</li>
         </ul>
-        <h4 className='font-bold text-xl'>User-Generated Content</h4>
+        <h4 className='text-xl font-bold'>User-Generated Content</h4>
         <p>
           We consider &ldquo;user-generated content&rdquo; to be materials (text, image and/or video content) voluntarily supplied to us by
           our users for the purpose of publication, processing, or usage on our platform. All user-generated content is associated with the
@@ -59,20 +59,20 @@ function PrivacyPolicy() {
           Please be aware that any content you submit for the purpose of publication will be public after posting (and subsequent review or
           vetting process). Once published, it may be accessible to third parties not covered under this privacy policy.{' '}
         </p>
-        <h4 className='font-bold text-xl'>Transaction Data</h4>
+        <h4 className='text-xl font-bold'>Transaction Data</h4>
         <p>
           Transaction data refers to data that accumulates over the normal course of operation on our platform. This may include transaction
           records, stored files, user profiles, analytics data and other metrics, as well as other types of information, created or
           generated, as users interact with our services.{' '}
         </p>
-        <h4 className='font-bold text-xl'>Legitimate Reasons for Processing Your Personal Information</h4>
+        <h4 className='text-xl font-bold'>Legitimate Reasons for Processing Your Personal Information</h4>
         <p>
           We only collect and use your personal information when we have a legitimate reason for doing so. In which instance, we only
           collect personal information that is reasonably necessary to provide our services to you.{' '}
         </p>
-        <h4 className='font-bold text-xl'>Collection and Use of Information</h4>
+        <h4 className='text-xl font-bold'>Collection and Use of Information</h4>
         <p>We may collect personal information from you when you do any of the following on our website: </p>
-        <ul className='list-disc list-inside'>
+        <ul className='list-inside list-disc'>
           <li>Register for an account</li>
           <li>Purchase a subscription</li>
           <li>Sign up to receive updates from us via email or social media channels</li>
@@ -84,7 +84,7 @@ function PrivacyPolicy() {
           We may collect, hold, use, and disclose information for the following purposes, and personal information will not be further
           processed in a manner that is incompatible with these purposes:{' '}
         </p>
-        <ul className='list-disc list-inside'>
+        <ul className='list-inside list-disc'>
           <li>to provide you with our platform&apos;s core features and services</li>
           <li>to enable you to access and use our website, associated applications, and associated social media platforms</li>
           <li>for internal record keeping and administrative purposes</li>
@@ -94,7 +94,7 @@ function PrivacyPolicy() {
           receive from other trusted sources. For example, If you provide us with your location, we may combine this with general
           information about currency and language to provide you with an enhanced experience of our site and service.{' '}
         </p>
-        <h4 className='font-bold text-xl'>Security of Your Personal Information</h4>
+        <h4 className='text-xl font-bold'>Security of Your Personal Information</h4>
         <p>
           When we collect and process personal information, and while we retain this information, we will protect it within commercially
           acceptable means to prevent loss and theft, as well as unauthorized access, disclosure, copying, use, or modification.{' '}
@@ -108,7 +108,7 @@ function PrivacyPolicy() {
           within the bounds of our services. For example, ensuring any passwords associated with accessing your personal information and
           accounts are secure and confidential.{' '}
         </p>
-        <h4 className='font-bold text-xl'>How Long We Keep Your Personal Information</h4>
+        <h4 className='text-xl font-bold'>How Long We Keep Your Personal Information</h4>
         <p>
           We keep your personal information only for as long as we need to. This time period may depend on what we are using your
           information for, in accordance with this privacy policy. For example, if you have provided us with personal information as part of
@@ -120,14 +120,14 @@ function PrivacyPolicy() {
           However, if necessary, we may retain your personal information for our compliance with a legal, accounting, or reporting
           obligation or for archiving purposes in the public interest, scientific, or historical research purposes or statistical purposes.{' '}
         </p>
-        <h3 className='font-bold text-2xl'>Children’s Privacy</h3>
+        <h3 className='text-2xl font-bold'>Children’s Privacy</h3>
         <p>
           We do not aim any of our products or services directly at children under the age of 13, and we do not knowingly collect personal
           information about children under 13.{' '}
         </p>
-        <h3 className='font-bold text-2xl'>Disclosure of Personal Information to Third Parties</h3>
+        <h3 className='text-2xl font-bold'>Disclosure of Personal Information to Third Parties</h3>
         <p>We may disclose personal information to: </p>
-        <ul className='list-disc list-inside'>
+        <ul className='list-inside list-disc'>
           <li>a parent, subsidiary, or affiliate of our company</li>
           <li>
             third-party service providers for the purpose of enabling them to provide their services, including (without limitation) IT
@@ -152,10 +152,10 @@ function PrivacyPolicy() {
           <li>an entity that buys, or to which we transfer all or substantially all of our assets and business</li>
         </ul>
         <p>Third parties we currently use include: </p>
-        <ul className='list-disc list-inside'>
+        <ul className='list-inside list-disc'>
           <li>Stripe</li>
         </ul>
-        <h3 className='font-bold text-2xl'>Your Rights and Controlling Your Personal Information</h3>
+        <h3 className='text-2xl font-bold'>Your Rights and Controlling Your Personal Information</h3>
         <p>
           <strong>Your choice:</strong> By providing personal information to us, you understand we will collect, hold, use, and disclose
           your personal information in accordance with this privacy policy. You do not have to provide personal information to us, however,
@@ -200,14 +200,14 @@ function PrivacyPolicy() {
           communications), please contact us using the details provided in this privacy policy, or opt-out using the opt-out facilities
           provided in the communication. We may need to request specific information from you to help us confirm your identity.{' '}
         </p>
-        <h3 className='font-bold text-2xl'>Use of Cookies</h3>
+        <h3 className='text-2xl font-bold'>Use of Cookies</h3>
         <p>
           We use &ldquo;cookies&rdquo; to collect information about you and your activity across our site. A cookie is a small piece of data
           that our website stores on your computer, and accesses each time you visit, so we can understand how you use our site. This helps
           us serve you content based on preferences you have specified.{' '}
         </p>
         <p>Please refer to our Cookie Policy for more information. </p>
-        <h3 className='font-bold text-2xl'>Business Transfers</h3>
+        <h3 className='text-2xl font-bold'>Business Transfers</h3>
         <p>
           If we or our assets are acquired, or in the unlikely event that we go out of business or enter bankruptcy, we would include data,
           including your personal information, among the assets transferred to any parties who acquire us. You acknowledge that such
@@ -215,12 +215,12 @@ function PrivacyPolicy() {
           personal information according to this policy, which they will be required to assume as it is the basis for any ownership or use
           rights we have over such information.{' '}
         </p>
-        <h3 className='font-bold text-2xl'>Limits of Our Policy</h3>
+        <h3 className='text-2xl font-bold'>Limits of Our Policy</h3>
         <p>
           Our website may link to external sites that are not operated by us. Please be aware that we have no control over the content and
           policies of those sites, and cannot accept responsibility or liability for their respective privacy practices.{' '}
         </p>
-        <h3 className='font-bold text-2xl'>Changes to This Policy</h3>
+        <h3 className='text-2xl font-bold'>Changes to This Policy</h3>
         <p>
           At our discretion, we may change our privacy policy to reflect updates to our business processes, current acceptable practices, or
           legislative or regulatory changes. If we decide to change this privacy policy, we will post the changes here at the same link by
@@ -234,7 +234,7 @@ function PrivacyPolicy() {
           If required by law, we will get your permission or give you the opportunity to opt in to or opt out of, as applicable, any new
           uses of your personal information.{' '}
         </p>
-        <h3 className='font-bold text-2xl'>Contact Us</h3>
+        <h3 className='text-2xl font-bold'>Contact Us</h3>
         <p>For any questions or concerns regarding your privacy, you may contact us using the following details: </p>
         <p>
           Deschutes Design Group LLC

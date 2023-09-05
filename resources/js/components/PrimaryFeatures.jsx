@@ -1,8 +1,8 @@
-import React, {useEffect, useState} from 'react'
-import {Tab} from '@headlessui/react'
+import React, { useEffect, useState } from 'react'
+import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
 
-import {Container} from './/Container'
+import { Container } from './/Container'
 import backgroundImage from '../../images/background-features.jpg'
 import featureDashboard from '../../images/features/feature1.png'
 import featurePersonnelFiles from '../../images/features/feature2.png'
@@ -55,7 +55,7 @@ export function PrimaryFeatures() {
 
   return (
     <section id='features' aria-labelledby='features-title' className='relative overflow-hidden bg-blue-600 py-20 sm:py-32'>
-      <div className='absolute top-1/2 left-1/2 -trangray-x-[44%] -trangray-y-[42%]'>
+      <div className='-trangray-x-[44%] -trangray-y-[42%] absolute left-1/2 top-1/2'>
         <img src={backgroundImage} alt='' width={2245} height={1636} aria-hidden='true' />
       </div>
       <Container className='relative'>
@@ -63,7 +63,7 @@ export function PrimaryFeatures() {
           <h2 className='prose text-3xl font-bold tracking-tight text-white sm:text-4xl md:text-5xl'>
             Everything you need to manage your personnel.
           </h2>
-          <p className='mt-6 text-base mx-auto prose text-blue-50'>Packed with powerful features and backed by years of experience.</p>
+          <p className='prose mx-auto mt-6 text-base text-blue-50'>Packed with powerful features and backed by years of experience.</p>
         </div>
         <Tab.Group
           as='div'
@@ -72,13 +72,13 @@ export function PrimaryFeatures() {
         >
           {({ selectedIndex }) => (
             <>
-              <div className='-mx-4 flex overflow-x-auto pb-4 sm:mx-0 lg:overflow-visible sm:pb-0 lg:col-span-5'>
-                <Tab.List className='relative z-10 flex space-x-4 whitespace-nowrap px-4 sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:space-y-1 lg:space-x-0 lg:whitespace-normal'>
+              <div className='-mx-4 flex overflow-x-auto pb-4 sm:mx-0 sm:pb-0 lg:col-span-5 lg:overflow-visible'>
+                <Tab.List className='relative z-10 flex space-x-4 whitespace-nowrap px-4 sm:mx-auto sm:px-0 lg:mx-0 lg:block lg:space-x-0 lg:space-y-1 lg:whitespace-normal'>
                   {features.map((feature, featureIndex) => (
                     <Tab
                       key={feature.title}
                       className={clsx(
-                        'text-left group relative rounded-full py-1 px-4 lg:rounded-r-none lg:rounded-l-xl lg:p-4 [&:not(:focus-visible)]:focus:outline-none',
+                        'group relative rounded-full px-4 py-1 text-left lg:rounded-l-xl lg:rounded-r-none lg:p-4 [&:not(:focus-visible)]:focus:outline-none',
                         {
                           'lg:ring-1 lg:ring-inset lg:ring-white/10': selectedIndex === featureIndex,
                           'hover:bg-white/10 lg:hover:bg-white/5': selectedIndex !== featureIndex
@@ -87,7 +87,7 @@ export function PrimaryFeatures() {
                     >
                       <h3>
                         <div
-                          className={clsx('font-semibold text-lg', {
+                          className={clsx('text-lg font-semibold', {
                             'prose text-white': selectedIndex === featureIndex,
                             'prose text-blue-200 hover:text-white lg:text-white': selectedIndex !== featureIndex
                           })}
@@ -112,7 +112,7 @@ export function PrimaryFeatures() {
                 {features.map((feature) => (
                   <Tab.Panel key={feature.title} unmount={false}>
                     <div className='relative sm:px-6 lg:hidden'>
-                      <div className='absolute -inset-x-4 -top-[6.5rem] -bottom-[4.25rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl' />
+                      <div className='absolute -inset-x-4 -bottom-[4.25rem] -top-[6.5rem] bg-white/10 ring-1 ring-inset ring-white/10 sm:inset-x-0 sm:rounded-t-xl' />
                       <p className='prose relative mx-auto max-w-2xl text-base text-white sm:text-center'>{feature.description}</p>
                     </div>
                     <div className='relative mt-10 aspect-[1085/590] w-[45rem] overflow-hidden rounded-xl bg-gray-50 shadow-xl shadow-blue-900/20 sm:w-auto lg:mt-0 lg:w-[67.8125rem]'>

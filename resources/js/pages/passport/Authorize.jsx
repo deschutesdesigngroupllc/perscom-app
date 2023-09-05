@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Button} from '../../components/Button'
-import {AuthLayout} from '../../layouts/Auth'
-import {ValidationErrors} from '../../components/ValidationErrors'
-import {Head, Link, useForm} from '@inertiajs/react'
+import { Button } from '../../components/Button'
+import { AuthLayout } from '../../layouts/Auth'
+import { ValidationErrors } from '../../components/ValidationErrors'
+import { Head, Link, useForm } from '@inertiajs/react'
 
 export function Authorize({ client, name, scopes, state, authToken, csrfToken }) {
   const { post, processing, errors } = useForm({
@@ -33,7 +33,7 @@ export function Authorize({ client, name, scopes, state, authToken, csrfToken })
         </div>
         {scopeList.length > 0 && <ul className='my-4 list-inside list-disc'>{scopeList}</ul>}
         <div className='mt-4 flex items-center justify-end'>
-          <Link href={route('passport.authorizations.deny')} method='delete' as='button' className='text-sm prose underline'>
+          <Link href={route('passport.authorizations.deny')} method='delete' as='button' className='prose text-sm underline'>
             {' '}
             Deny{' '}
           </Link>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import {Container} from './/Container'
+import { Container } from './/Container'
 import backgroundImage from '../../images/background-faqs.jpg'
 
 const faqs = [
@@ -52,13 +52,13 @@ const faqs = [
 export function Faqs() {
   return (
     <section id='faq' aria-labelledby='faq-title' className='relative overflow-hidden bg-gray-50 py-20 sm:py-32'>
-      <div className='absolute top-0 left-1/2 -trangray-x-[30%] -trangray-y-[25%]'>
+      <div className='-trangray-x-[30%] -trangray-y-[25%] absolute left-1/2 top-0'>
         <img src={backgroundImage} alt='' width={1558} height={946} aria-hidden='true' />
       </div>
       <Container className='relative'>
         <div className='mx-auto max-w-2xl lg:mx-0'>
-          <h2 className='text-3xl font-bold tracking-tight prose sm:text-4xl'>Frequently asked questions</h2>
-          <p className='mt-4 text-base prose'>
+          <h2 className='prose text-3xl font-bold tracking-tight sm:text-4xl'>Frequently asked questions</h2>
+          <p className='prose mt-4 text-base'>
             If you can’t find what you’re looking for, visit our{' '}
             <a href='https://community.deschutesdesigngroup.com' target='_blank' rel='noreferrer' className='underline'>
               community forums
@@ -73,8 +73,8 @@ export function Faqs() {
         <div className='mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-8 lg:max-w-none lg:grid-cols-3'>
           {faqs.map((faq, columnIndex) => (
             <div className='space-y-8' key={columnIndex}>
-              <h3 className='text-base font-semibold prose'>{faq.question}</h3>
-              <p className='mt-4 text-sm prose'>{faq.answer}</p>
+              <h3 className='prose text-base font-semibold'>{faq.question}</h3>
+              <p className='prose mt-4 text-sm'>{faq.answer}</p>
             </div>
           ))}
         </div>

@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Head, useForm} from '@inertiajs/react'
-import {AuthLayout} from '../../layouts/Auth'
-import {ValidationErrors} from '../../components/ValidationErrors'
-import {Button, ButtonLink} from '../../components/Button'
-import {Input} from '../../components/Input'
+import { Head, useForm } from '@inertiajs/react'
+import { AuthLayout } from '../../layouts/Auth'
+import { ValidationErrors } from '../../components/ValidationErrors'
+import { Button, ButtonLink } from '../../components/Button'
+import { Input } from '../../components/Input'
 
 function FindMyOrganization({ url, tenant }) {
   const { data, setData, post, processing, errors } = useForm({
@@ -33,7 +33,7 @@ function FindMyOrganization({ url, tenant }) {
           </div>
           <div className='mb-2'>
             <span className='prose text-sm font-bold'>Dashboard URL: </span>
-            <a className='prose underline text-sm' href={url}>
+            <a className='prose text-sm underline' href={url}>
               {url}
             </a>
           </div>
@@ -43,7 +43,7 @@ function FindMyOrganization({ url, tenant }) {
         </>
       ) : (
         <>
-          <div className='mb-4 text-sm leading-normal prose'>
+          <div className='prose mb-4 text-sm leading-normal'>
             Don&apos;t remember your organization info? No problem. Just let us know the account email address on file and we will look up
             the organization&apos;s info.
           </div>

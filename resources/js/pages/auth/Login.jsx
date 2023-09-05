@@ -1,12 +1,12 @@
-import React, {useEffect} from 'react'
+import React, { useEffect } from 'react'
 import PropTypes from 'prop-types'
-import {Button, ButtonLink} from '../../components/Button'
-import {Checkbox} from '../../components/Checkbox'
-import {Input} from '../../components/Input'
-import {Label} from '../../components/Label'
-import {ValidationErrors} from '../../components/ValidationErrors'
-import {Head, Link, useForm, usePage} from '@inertiajs/react'
-import {AuthLayout} from '../../layouts/Auth'
+import { Button, ButtonLink } from '../../components/Button'
+import { Checkbox } from '../../components/Checkbox'
+import { Input } from '../../components/Input'
+import { Label } from '../../components/Label'
+import { ValidationErrors } from '../../components/ValidationErrors'
+import { Head, Link, useForm, usePage } from '@inertiajs/react'
+import { AuthLayout } from '../../layouts/Auth'
 
 export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, adminMode, enableSocialLogin, githubLogin, discordLogin }) {
   const { tenant } = usePage().props
@@ -38,21 +38,21 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
       {status && <div className='mb-4 text-sm font-medium text-green-600'>{status}</div>}
 
       {demoMode && (
-        <div className='mb-4 prose'>
-          <h1 className='text-lg font-bold leading-7 mb-0'>Welcome to the PERSCOM Demo</h1>
+        <div className='prose mb-4'>
+          <h1 className='mb-0 text-lg font-bold leading-7'>Welcome to the PERSCOM Demo</h1>
           <div className='text-sm'>Use the login information below to get started.</div>
         </div>
       )}
 
       {tenant && !demoMode && (
-        <div className='mb-4 prose'>
+        <div className='prose mb-4'>
           <div className='text-sm'>Welcome,</div>
           <h1 className='text-lg font-bold leading-7'>{tenant}</h1>
         </div>
       )}
 
       {adminMode && (
-        <div className='mb-4 prose'>
+        <div className='prose mb-4'>
           <div className='text-sm'>Welcome,</div>
           <h1 className='text-lg font-bold leading-7'>Administrator</h1>
         </div>
@@ -89,13 +89,13 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
           <div className='flex items-center'>
             <label className='flex items-center'>
               <Checkbox name='remember' value={data.remember} onChange={onHandleChange} />
-              <span className='ml-2 text-sm prose'>Remember me</span>
+              <span className='prose ml-2 text-sm'>Remember me</span>
             </label>
           </div>
 
           <div className='text-sm'>
             {canResetPassword && (
-              <Link href={route('password.request')} className='text-sm prose underline'>
+              <Link href={route('password.request')} className='prose text-sm underline'>
                 {' '}
                 Forgot your password?{' '}
               </Link>
@@ -125,7 +125,7 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
               <div className='w-full border-t border-gray-300' />
             </div>
             <div className='relative flex justify-center'>
-              <span className='bg-white px-2 prose text-sm'>Or continue with</span>
+              <span className='prose bg-white px-2 text-sm'>Or continue with</span>
             </div>
           </div>
 
@@ -133,7 +133,7 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
             <div>
               <a
                 href={discordLogin}
-                className='inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium prose shadow-sm hover:bg-gray-50'
+                className='prose inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50'
               >
                 <span className='sr-only'>Sign in with Discord</span>
                 <svg className='h-5 w-5' viewBox='0 0 71 55' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
@@ -145,7 +145,7 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
             <div>
               <a
                 href={githubLogin}
-                className='inline-flex w-full justify-center rounded-md border border-gray-300 bg-white py-2 px-4 text-sm font-medium prose shadow-sm hover:bg-gray-50'
+                className='prose inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50'
               >
                 <span className='sr-only'>Sign in with GitHub</span>
                 <svg className='h-5 w-5' aria-hidden='true' fill='currentColor' viewBox='0 0 20 20'>

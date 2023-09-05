@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import {Tab} from '@headlessui/react'
+import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
-import {BuildingOfficeIcon, CalendarIcon, UsersIcon} from '@heroicons/react/20/solid'
-import {Container} from './/Container'
+import { BuildingOfficeIcon, CalendarIcon, UsersIcon } from '@heroicons/react/20/solid'
+import { Container } from './/Container'
 import customFieldsImage from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
 import searchImage from '../../images/features/secondary3.png'
@@ -152,8 +152,8 @@ export function SecondaryFeatures() {
     <section id='secondary-features' aria-labelledby='secondary-features-title' className='py-20 sm:py-32'>
       <Container className='relative'>
         <div className='mx-auto max-w-2xl md:text-center'>
-          <h2 className='text-3xl font-bold tracking-tight prose sm:text-4xl'>Simplify your organization&apos;s tasks.</h2>
-          <p className='mx-auto mt-4 max-w-3xl text-base prose'>
+          <h2 className='prose text-3xl font-bold tracking-tight sm:text-4xl'>Simplify your organization&apos;s tasks.</h2>
+          <p className='prose mx-auto mt-4 max-w-3xl text-base'>
             We&apos;ve focused on making your life easier. Let our software show you how.
           </p>
         </div>

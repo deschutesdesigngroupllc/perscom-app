@@ -1,10 +1,10 @@
-import React, {Fragment} from 'react'
-import {Popover, Transition} from '@headlessui/react'
+import React, { Fragment } from 'react'
+import { Popover, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 
-import {ButtonLink} from './/Button'
-import {Container} from './/Container'
-import {Logo} from './/Logo'
+import { ButtonLink } from './/Button'
+import { Container } from './/Container'
+import { Logo } from './/Logo'
 
 function MobileNavigation() {
   return (
@@ -118,7 +118,7 @@ export function Header() {
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href={route('web.landing.home')} className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'>
+              <a href={route('web.landing.home')} className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                 Home
               </a>
             </li>
@@ -126,33 +126,33 @@ export function Header() {
               <a
                 href='https://docs.perscom.io'
                 target='_blank'
-                className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'
+                className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
                 rel='noreferrer'
               >
                 Documentation
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#features' className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'>
+              <a href='#features' className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                 Features
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#pricing' className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'>
+              <a href='#pricing' className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                 Pricing
               </a>
             </li>
-            <li className='ml-6 hidden lg:block ml-auto'>
+            <li className='ml-6 ml-auto hidden lg:block'>
               <a
                 href={route('web.find-my-organization.index')}
                 target='_blank'
-                className='rounded-lg py-1 px-2 text-sm prose hover:bg-gray-200'
+                className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
                 rel='noreferrer'
               >
                 Find My Organization
               </a>
             </li>
-            <li className='lg:ml-6 ml-auto'>
+            <li className='ml-auto lg:ml-6'>
               <ButtonLink href={route('web.register.index')} color='blue'>
                 <span>
                   Get started
@@ -160,7 +160,7 @@ export function Header() {
                 </span>
               </ButtonLink>
             </li>
-            <li className='ml-5 -mr-1 lg:hidden'>
+            <li className='-mr-1 ml-5 lg:hidden'>
               <MobileNavigation />
             </li>
           </ul>
