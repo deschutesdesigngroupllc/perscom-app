@@ -23,9 +23,6 @@ class Settings extends \Outl1ne\NovaSettings\Models\Settings
 {
     use HasFactory;
 
-    /**
-     * @return null
-     */
     public static function getValueForKey($key)
     {
         if (Request::isCentralRequest()) {

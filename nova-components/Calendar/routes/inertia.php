@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Perscom\Calendar\Calendar;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 Route::get('/', function (NovaRequest $request) {
     return inertia('Calendar', [
-        'jwt' => \Perscom\Calendar\Calendar::generateJwt(),
+        'jwt' => Calendar::generateJwt(),
         'tenant_id' => tenant()->getTenantKey(),
         'timezone' => config('app.timezone'),
         'widget_url' => env('WIDGET_URL'),

@@ -59,6 +59,7 @@ use App\Nova\Unit;
 use App\Nova\User;
 use App\Nova\Webhook;
 use App\Rules\SubdomainRule;
+use App\Services\FeatureOsService;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
@@ -333,9 +334,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
                             ->openInNewTab(),
-                        MenuItem::externalLink('Feature Requests', 'https://feedback.perscom.io/b/features-requests')
+                        MenuItem::externalLink('Feature Requests', FeatureOsService::ssoRedirect('https://feedback.perscom.io/b/features-requests'))
                             ->openInNewTab(),
-                        MenuItem::externalLink('Feedback', 'https://feedback.perscom.io/b/feedback')
+                        MenuItem::externalLink('Feedback', FeatureOsService::ssoRedirect('https://feedback.perscom.io/b/feedback'))
                             ->openInNewTab(),
                         MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
                             ->openInNewTab(),
@@ -372,12 +373,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                            ! $request->isCentralRequest() &&
                            Gate::check('billing', $request->user());
                 }),
-                MenuItem::externalLink('Feature Requests', 'https://feedback.perscom.io/b/features-requests')->canSee(function (Request $request) {
-                    return ! $request->isCentralRequest();
-                })->openInNewTab(),
-                MenuItem::externalLink('Feedback', 'https://feedback.perscom.io/b/feedback')->canSee(function (Request $request) {
-                    return ! $request->isCentralRequest();
-                })->openInNewTab(),
                 MenuItem::make('Logout', 'logout')->method('POST', [
                     '_token' => csrf_token(),
                 ]),

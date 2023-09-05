@@ -50,7 +50,8 @@
         "tailflow/laravel-orion": "^2.19",
         "tightenco/ziggy": "^1.4",
         "timokoerber/laravel-one-time-operations": "^1.3",
-        "perscom/newsfeed": "@dev"
+        "perscom/newsfeed": "@dev",
+        "perscom/featureos": "@dev"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
@@ -110,6 +111,10 @@
         {
             "type": "path",
             "url": "./nova-components/Newsfeed"
+        },
+        {
+            "type": "path",
+            "url": "./nova-components/Featureos"
         }
     ],
     "autoload": {

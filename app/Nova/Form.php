@@ -29,8 +29,8 @@ use Laravel\Pennant\Feature;
 
 class Form extends Resource
 {
-    use HasTabs;
     use HasActionsInTabs;
+    use HasTabs;
 
     /**
      * The model the resource corresponds to.

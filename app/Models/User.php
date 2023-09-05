@@ -92,7 +92,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements MustVerifyEmail, JWTSubject
+class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use Actionable;
     use HasApiTokens;

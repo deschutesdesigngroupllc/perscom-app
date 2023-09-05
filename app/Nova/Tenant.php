@@ -34,8 +34,8 @@ use Stancl\Tenancy\Events\TenantCreated;
 
 class Tenant extends Resource
 {
-    use HasTabs;
     use HasActionsInTabs;
+    use HasTabs;
 
     /**
      * The model the resource corresponds to.

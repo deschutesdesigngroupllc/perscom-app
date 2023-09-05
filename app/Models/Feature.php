@@ -38,9 +38,9 @@ use Symfony\Component\Finder\Finder;
  */
 class Feature extends Model
 {
+    use Actionable;
     use CentralConnection;
     use HasFactory;
-    use Actionable;
 
     /**
      * @var string[]

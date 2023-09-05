@@ -45,8 +45,8 @@ use RRule\RRule;
  */
 class Event extends Model
 {
-    use HasAuthor;
     use HasAttachments;
+    use HasAuthor;
     use HasFactory;
     use HasImages;
     use HasTags;

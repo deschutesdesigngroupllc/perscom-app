@@ -21,8 +21,8 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Webhook extends Resource
 {
-    use HasTabs;
     use HasActionsInTabs;
+    use HasTabs;
 
     /**
      * The model the resource corresponds to.

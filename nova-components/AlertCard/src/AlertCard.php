@@ -31,11 +31,6 @@ class AlertCard extends Card
         return 'alert-card';
     }
 
-    /**
-     * @param  null  $title
-     * @param  null  $content
-     * @param  null  $color
-     */
     public function withAnnouncement($title = null, $content = null, $color = null): AlertCard
     {
         $meta = $this->meta();
@@ -50,12 +45,6 @@ class AlertCard extends Card
         return $this->withMeta($newMeta);
     }
 
-    /**
-     * @param  null  $title
-     * @param  null  $message
-     * @param  null  $button
-     * @param  null  $url
-     */
     public function withSystemMessage($title = null, $message = null, $button = null, $url = null): AlertCard
     {
         $meta = $this->meta();

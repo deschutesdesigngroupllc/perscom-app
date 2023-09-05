@@ -29,8 +29,8 @@ class EventRegistration extends Pivot
 {
     use BelongsToThrough;
     use HasFactory;
-    use HasUser;
     use HasRelationships;
+    use HasUser;
 
     /**
      * @var string
