@@ -17,7 +17,7 @@ export function VerifyEmail() {
     <AuthLayout>
       <Head title='Email Verification' />
 
-      <div className='prose mb-4 text-sm'>
+      <div className='mb-4 text-sm'>
         Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you?
         If you didn&apos;t receive the email, we will gladly send you another.
       </div>
@@ -34,7 +34,7 @@ export function VerifyEmail() {
             Resend verification email
           </Button>
 
-          <Link href={route('logout')} method='post' as='button' className='prose text-sm underline'>
+          <Link href={route('logout')} method='post' as='button' className='text-sm underline'>
             {' '}
             Log out{' '}
           </Link>

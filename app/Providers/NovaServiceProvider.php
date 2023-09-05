@@ -65,6 +65,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Email;
@@ -135,6 +136,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        Nova::style('nova-custom', Vite::asset('resources/css/nova.css'));
+        Nova::script('nova-custom', Vite::asset('resources/js/nova.jsx'));
         Nova::ignoreMigrations();
         Nova::report(static function ($exception) {
             Integration::captureUnhandledException($exception);

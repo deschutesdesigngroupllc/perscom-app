@@ -28,12 +28,12 @@ function FindMyOrganization({ url, tenant }) {
         <>
           <div className='mb-4 text-sm leading-normal'>We were able to find your organization&apos;s info:</div>
           <div>
-            <span className='prose text-sm font-bold'>Organization: </span>
-            <span className='prose text-sm'>{tenant}</span>
+            <span className='text-sm font-bold'>Organization: </span>
+            <span className='text-sm'>{tenant}</span>
           </div>
           <div className='mb-2'>
-            <span className='prose text-sm font-bold'>Dashboard URL: </span>
-            <a className='prose text-sm underline' href={url}>
+            <span className='text-sm font-bold'>Dashboard URL: </span>
+            <a className='text-sm underline' href={url}>
               {url}
             </a>
           </div>
@@ -43,7 +43,7 @@ function FindMyOrganization({ url, tenant }) {
         </>
       ) : (
         <>
-          <div className='prose mb-4 text-sm leading-normal'>
+          <div className='mb-4 text-sm leading-normal'>
             Don&apos;t remember your organization info? No problem. Just let us know the account email address on file and we will look up
             the organization&apos;s info.
           </div>

@@ -2,9 +2,9 @@ import React, { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 
-import { ButtonLink } from './/Button'
-import { Container } from './/Container'
-import { Logo } from './/Logo'
+import { ButtonLink } from './Button'
+import { Container } from './Container'
+import { Logo } from './Logo'
 
 function MobileNavigation() {
   return (
@@ -60,7 +60,7 @@ function MobileNavigation() {
                 className='absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight shadow-xl ring-1 ring-gray-900/5'
               >
                 <li>
-                  <a href={route('web.landing.home')} className='prose block w-full hover:text-gray-500' onClick={() => close()}>
+                  <a href={route('web.landing.home')} className='block w-full hover:text-gray-500' onClick={() => close()}>
                     Home
                   </a>
                 </li>
@@ -68,7 +68,7 @@ function MobileNavigation() {
                   <a
                     href='https://docs.perscom.io'
                     target='_blank'
-                    className='prose block w-full hover:text-gray-500'
+                    className='block w-full hover:text-gray-500'
                     onClick={() => close()}
                     rel='noreferrer'
                   >
@@ -76,12 +76,12 @@ function MobileNavigation() {
                   </a>
                 </li>
                 <li>
-                  <a href='#features' className='prose block w-full hover:text-gray-500' onClick={() => close()}>
+                  <a href='#features' className='block w-full hover:text-gray-600' onClick={() => close()}>
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href='#pricing' className='prose block w-full hover:text-gray-500' onClick={() => close()}>
+                  <a href='#pricing' className='block w-full hover:text-gray-600' onClick={() => close()}>
                     Pricing
                   </a>
                 </li>
@@ -89,7 +89,7 @@ function MobileNavigation() {
                   <a
                     href={route('web.find-my-organization.index')}
                     target='_blank'
-                    className='prose block w-full hover:text-gray-500'
+                    className='block w-full hover:text-gray-500'
                     onClick={() => close()}
                     rel='noreferrer'
                   >
@@ -118,7 +118,7 @@ export function Header() {
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href={route('web.landing.home')} className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
+              <a href={route('web.landing.home')} className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                 Home
               </a>
             </li>
@@ -126,19 +126,19 @@ export function Header() {
               <a
                 href='https://docs.perscom.io'
                 target='_blank'
-                className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
+                className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
                 rel='noreferrer'
               >
                 Documentation
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#features' className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
+              <a href='#features' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                 Features
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#pricing' className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
+              <a href='#pricing' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                 Pricing
               </a>
             </li>
@@ -146,7 +146,7 @@ export function Header() {
               <a
                 href={route('web.find-my-organization.index')}
                 target='_blank'
-                className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
+                className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
                 rel='noreferrer'
               >
                 Find My Organization

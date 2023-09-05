@@ -29,7 +29,7 @@
         }
     </style>
 </head>
-<body class="flex h-full flex-col font-sans">
+<body class="flex h-full flex-col font-sans text-gray-700">
 @inertia
 </body>
 </html>

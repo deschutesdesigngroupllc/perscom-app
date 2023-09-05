@@ -51,8 +51,8 @@ export default function Error({ status, title = null, message = null, back = nul
         <div className='py-16'>
           <div className='text-center'>
             <p className='text-sm font-semibold uppercase tracking-wide text-blue-600'>{status} error</p>
-            <h1 className='prose mt-2 text-4xl font-extrabold tracking-tight text-black sm:text-5xl'>{header}</h1>
-            <p className='prose mx-auto mt-2 text-base'>{description}</p>
+            <h1 className='text-gray-800 mt-2 text-4xl font-extrabold tracking-tight text-black sm:text-5xl'>{header}</h1>
+            <p className='mx-auto mt-2 text-base'>{description}</p>
             {showLink && (
               <div className='mt-6'>
                 <a href={back ?? route('web.landing.home')} className='text-base font-medium text-blue-600 hover:text-blue-600'>
@@ -67,7 +67,7 @@ export default function Error({ status, title = null, message = null, back = nul
         <nav className='flex flex-col items-center justify-center space-x-4 sm:flex-row'>
           <a
             href='https://community.deschutesdesigngroup.com/'
-            className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
+            className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
           >
@@ -76,7 +76,7 @@ export default function Error({ status, title = null, message = null, back = nul
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
           <a
             href='https://docs.perscom.io'
-            className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
+            className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
           >
@@ -85,7 +85,7 @@ export default function Error({ status, title = null, message = null, back = nul
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
           <a
             href='https://support.deschutesdesigngroup.com/'
-            className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
+            className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
           >
@@ -94,7 +94,7 @@ export default function Error({ status, title = null, message = null, back = nul
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
           <a
             href='https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
-            className='prose rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
+            className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
           >
@@ -106,7 +106,7 @@ export default function Error({ status, title = null, message = null, back = nul
               <form onSubmit={logout}>
                 <button
                   type='submit'
-                  className='prose rounded-lg px-2 py-1 text-sm text-red-700 hover:bg-red-100 hover:text-red-800'
+                  className='rounded-lg px-2 py-1 text-sm text-red-700 hover:bg-red-100 hover:text-red-800'
                   target='_blank'
                 >
                   Logout

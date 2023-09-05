@@ -1,2 +1,22 @@
+:root {
+}
 
-@tailwind utilities;
+header {
+    @apply backdrop-blur border-b
+}
+
+.sidebar-menu {
+    @apply space-y-4
+}
+
+.sidebar-section-label {
+    @apply text-sm font-bold
+}
+
+.sidebar-item {
+    @apply mt-0
+}
+
+div[dusk="dashboard-main"] {
+    @apply mt-4 !important
+}

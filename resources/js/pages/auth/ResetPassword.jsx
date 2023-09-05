@@ -36,7 +36,7 @@ export function ResetPassword({ token, email }) {
     <AuthLayout>
       <Head title='Reset Password' />
 
-      {flash.status && <div className='prose mb-4 text-sm font-medium text-green-600'>{flash.status}</div>}
+      {flash.status && <div className='mb-4 text-sm font-medium text-green-600'>{flash.status}</div>}
 
       <ValidationErrors errors={errors} />
 

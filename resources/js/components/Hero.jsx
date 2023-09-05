@@ -7,7 +7,7 @@ export function Hero() {
   return (
     <section id='hero'>
       <Container className='mb-8 py-16 text-center lg:py-20'>
-        <h1 className='prose mx-auto max-w-6xl text-3xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl'>
+        <h1 className='mx-auto max-w-6xl text-3xl font-extrabold tracking-tight sm:text-5xl md:text-6xl lg:text-7xl'>
           <span className='relative whitespace-nowrap text-blue-600'>
             <svg
               aria-hidden='true'
@@ -20,9 +20,9 @@ export function Hero() {
             <span className='relative'>Personnel management</span>
           </span>
           <br />
-          <span className='text-black'>made easy for high-performing, results-driven organizations.</span>
+          <span className='text-gray-800'>made easy for high-performing, results-driven organizations.</span>
         </h1>
-        <p className='prose mx-auto mt-6 max-w-3xl text-base sm:text-lg'>
+        <p className='text-gray-700 mx-auto mt-6 max-w-3xl text-base sm:text-lg'>
           Mission-critical tools built specifically to meet the unique needs of police, fire, EMS, military, and public safety agencies.
           Optimize your agency&apos;s communications, streamline data management, and improve overall efficiency with PERSCOM.io.
         </p>

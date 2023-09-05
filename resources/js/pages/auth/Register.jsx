@@ -87,7 +87,7 @@ export function Register({ status, enableSocialLogin, githubLogin, discordLogin 
           />
         </div>
         <div className='flex justify-end'>
-          <Link href={route('login')} className='prose text-sm underline'>
+          <Link href={route('login')} className='text-sm underline'>
             Already registered?
           </Link>
         </div>
@@ -103,7 +103,7 @@ export function Register({ status, enableSocialLogin, githubLogin, discordLogin 
               <div className='w-full border-t border-gray-300' />
             </div>
             <div className='relative flex justify-center'>
-              <span className='prose bg-white px-2 text-sm'>Or continue with</span>
+              <span className='bg-white px-2 text-sm'>Or continue with</span>
             </div>
           </div>
 
@@ -111,7 +111,7 @@ export function Register({ status, enableSocialLogin, githubLogin, discordLogin 
             <div>
               <a
                 href={discordLogin}
-                className='prose inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50'
+                className='inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50'
               >
                 <span className='sr-only'>Sign in with Discord</span>
                 <svg className='h-5 w-5' viewBox='0 0 71 55' fill='currentColor' xmlns='http://www.w3.org/2000/svg'>
@@ -123,7 +123,7 @@ export function Register({ status, enableSocialLogin, githubLogin, discordLogin 
             <div>
               <a
                 href={githubLogin}
-                className='prose inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50'
+                className='inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium shadow-sm hover:bg-gray-50'
               >
                 <span className='sr-only'>Sign in with GitHub</span>
                 <svg className='h-5 w-5' aria-hidden='true' fill='currentColor' viewBox='0 0 20 20'>
