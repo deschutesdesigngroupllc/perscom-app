@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.50...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.51...HEAD)
+
+## [v1.0.51](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.50...v1.0.51) - 2023-09-06
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.51 -->
+### What's Changed
+
+#### Added
+
+- Adds way for customers to report feedback by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/204
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.50...v1.0.51
 
 ## [v1.0.50](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.49...v1.0.50) - 2023-08-23
 
