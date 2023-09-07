@@ -2,31 +2,31 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { Tab } from '@headlessui/react'
 import clsx from 'clsx'
-import { BuildingOfficeIcon, CalendarIcon, UsersIcon } from '@heroicons/react/20/solid'
-import { Container } from './/Container'
+import { FolderMinusIcon, CalendarDaysIcon, NewspaperIcon } from '@heroicons/react/20/solid'
+import { Container } from './Container'
 import customFieldsImage from '../../images/features/secondary1.png'
 import recordsImage from '../../images/features/secondary2.png'
 import searchImage from '../../images/features/secondary3.png'
 
 const features = [
   {
-    name: 'Effortless Personnel Management',
-    summary: 'Seamless data intake and reporting.',
+    name: 'Friendly Organizational Newsfeed',
+    summary: 'Bring everyone in the organization together.',
     description:
-      "PERSCOM.io's comprehensive personnel management tools allow you to easily track personnel records, assign tasks, manage qualifications, recognize milestones and achievements, and more, all in one centralized location.",
+      'The PERSCOM.io newsfeed serves as a central hub for essential organization-wide updates and information. Stay informed at a glance with real-time access to critical announcements, news, and key insights vital for efficient personnel management and decision-making.',
     image: customFieldsImage,
     icon: function Icon() {
-      return <UsersIcon className='h-8 w-8' role='img' />
+      return <NewspaperIcon className='h-8 w-8' role='img' />
     }
   },
   {
-    name: 'Customizable Hierarchical Design',
-    summary: 'Customazability without the headache.',
+    name: 'Customizable Form Design',
+    summary: 'Build the forms to collect the data you need.',
     description:
-      "With PERSCOM.io's customizable hierarchical design, you can create a tailored organizational structure that reflects your unique needs and chain of command.",
+      "We understand that every organization has unique needs, which is why we empower you to create custom forms and gather the data necessary for your organization's success. Your ability to build and customize forms ensures that your organization's specific requirements are met.",
     image: recordsImage,
     icon: function Icon() {
-      return <BuildingOfficeIcon className='h-8 w-8' role='img' />
+      return <FolderMinusIcon className='h-8 w-8' role='img' />
     }
   },
   {
@@ -36,7 +36,7 @@ const features = [
       "PERSCOM.io's Calendars and Events features provide a comprehensive solution for managing scheduling and events, allowing you to efficiently plan and coordinate meetings, trainings, drills, and more.",
     image: searchImage,
     icon: function Icon() {
-      return <CalendarIcon className='h-8 w-8' role='img' />
+      return <CalendarDaysIcon className='h-8 w-8' role='img' />
     }
   }
 ]
@@ -66,8 +66,8 @@ function Feature({ feature, isActive, className, ...props }) {
       >
         {feature.name}
       </h3>
-      <p className='mt-2 font-display text-xl text-gray-800'>{feature.summary}</p>
-      <p className='mt-4 text-sm text-gray-600'>{feature.description}</p>
+      <h4 className='mt-2 text-xl font-medium'>{feature.summary}</h4>
+      <p className='mt-4 text-sm'>{feature.description}</p>
     </div>
   )
 }
@@ -80,7 +80,7 @@ Feature.propTypes = {
 
 function FeaturesMobile() {
   return (
-    <div className='-mx-4 mt-20 space-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden'>
+    <div className='-mx-4 mt-16 space-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden'>
       {features.map((feature) => (
         <div key={feature.name}>
           <Feature feature={feature} className='mx-auto max-w-2xl' isActive />
@@ -150,14 +150,10 @@ function FeaturesDesktop() {
 export function SecondaryFeatures() {
   return (
     <section id='secondary-features' aria-labelledby='secondary-features-title' className='py-20 sm:py-32'>
-      <Container>
+      <Container className='relative'>
         <div className='mx-auto max-w-2xl md:text-center'>
-          <h2 id='secondary-features-title' className='font-display text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>
-            Simplify your organization&apos;s tasks.
-          </h2>
-          <p className='mx-auto mt-4 max-w-3xl text-base text-gray-600'>
-            We&apos;ve focused on making your life easier. Let our software show you how.
-          </p>
+          <h2 className='text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>Simplify your organization&apos;s tasks.</h2>
+          <p className='mx-auto mt-4 max-w-3xl text-base'>We&apos;ve focused on making your life easier. Let our software show you how.</p>
         </div>
         <FeaturesMobile /> <FeaturesDesktop />
       </Container>

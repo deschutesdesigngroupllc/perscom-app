@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Perscom\Forms\Forms;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 Route::get('/', function (NovaRequest $request) {
     return inertia('Forms', [
-        'jwt' => \Perscom\Forms\Forms::generateJwt(),
+        'jwt' => Forms::generateJwt(),
         'tenant_id' => tenant()->getTenantKey(),
         'timezone' => config('app.timezone'),
         'widget_url' => env('WIDGET_URL'),

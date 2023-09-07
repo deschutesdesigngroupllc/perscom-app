@@ -33,9 +33,6 @@ class Calendar extends Tool
             ->icon('server');
     }
 
-    /**
-     * @return null
-     */
     public static function generateJwt()
     {
         return Auth::guard('jwt')->claims([

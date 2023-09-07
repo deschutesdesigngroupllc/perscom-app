@@ -19,7 +19,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueue
 {
-    use Queueable, InteractsWithQueue;
+    use InteractsWithQueue, Queueable;
 
     /**
      * The displayable name of the action.

@@ -32,9 +32,7 @@ export default function Register() {
           </a>
         </div>
         <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-800'>Get started for free.</h1>
-        <p className='mt-2 text-sm text-gray-600'>
-          No upfront costs or credit card requirements. Cancel at anytime with no questions asked.
-        </p>
+        <p className='mt-2 text-sm'>No upfront costs or credit card requirements. Cancel at anytime with no questions asked.</p>
       </div>
       <div className='mt-5'>
         <ValidationErrors errors={errors} />
@@ -66,7 +64,7 @@ export default function Register() {
             <div className='flex items-center'>
               <label className='flex items-center'>
                 <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} />
-                <span className='ml-2 text-sm text-gray-600'>
+                <span className='ml-2 text-sm'>
                   I have read and agree to the{' '}
                   <a className='underline' target='_blank' rel='noreferrer' href={route('web.privacy-policy.index')}>
                     Privacy Policy

@@ -93,14 +93,14 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  *
  * @mixin \Eloquent
  */
-class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements TenantWithDatabase, FeatureScopeable
+class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureScopeable, TenantWithDatabase
 {
     use Actionable;
     use Billable;
+    use HasDatabase;
+    use HasDomains;
     use HasFactory;
     use HasFeatures;
-    use HasDomains;
-    use HasDatabase;
     use Notifiable;
 
     /**

@@ -147,7 +147,6 @@ class TaskAssignment extends Pivot
     }
 
     /**
-     * @param  null  $completedAt
      * @return bool
      */
     public function complete($completedAt = null)

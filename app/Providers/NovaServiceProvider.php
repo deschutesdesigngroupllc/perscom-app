@@ -59,12 +59,14 @@ use App\Nova\Unit;
 use App\Nova\User;
 use App\Nova\Webhook;
 use App\Rules\SubdomainRule;
+use App\Services\FeatureOsService;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Email;
@@ -135,6 +137,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        Nova::style('nova-custom', Vite::asset('resources/css/nova.css'));
         Nova::ignoreMigrations();
         Nova::report(static function ($exception) {
             Integration::captureUnhandledException($exception);
@@ -330,16 +333,18 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuSection::make('Support', [
                         MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
                             ->openInNewTab(),
+                        MenuItem::externalLink('Feature Requests', FeatureOsService::ssoRedirect('https://feedback.perscom.io/b/features-requests'))
+                            ->openInNewTab(),
+                        MenuItem::externalLink('Feedback', FeatureOsService::ssoRedirect('https://feedback.perscom.io/b/feedback'))
+                            ->openInNewTab(),
                         MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
                             ->openInNewTab(),
-                        MenuItem::externalLink('Help Desk', 'https://support.deschutesdesigngroup.com')
-                            ->openInNewTab(),
-                        MenuItem::externalLink('Submit A Ticket', 'https://support.deschutesdesigngroup.com/hc/en-us/requests/new')
+                        MenuItem::externalLink('Submit A Ticket', 'https://www.deschutesdesigngroup.com/support/new')
                             ->openInNewTab()
                             ->canSee(function () {
                                 return Feature::active(SupportTicketFeature::class);
                             }),
-                        MenuItem::externalLink('Suggest A Feature', 'https://community.deschutesdesigngroup.com/forum/3-feedback-and-ideas/')
+                        MenuItem::externalLink('System Status', 'https://status.perscom.io')
                             ->openInNewTab(),
                     ])->icon('support')
                         ->collapsable()

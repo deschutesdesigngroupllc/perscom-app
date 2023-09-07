@@ -31,9 +31,6 @@ class Roster extends Tool
         return MenuSection::make('Roster')->path('/roster')->icon('user-group');
     }
 
-    /**
-     * @return null
-     */
     public static function generateJwt()
     {
         return Auth::guard('jwt')->claims([

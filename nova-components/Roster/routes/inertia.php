@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Perscom\Roster\Roster;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +17,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 Route::get('/', function (NovaRequest $request) {
     return inertia('Roster', [
-        'jwt' => \Perscom\Roster\Roster::generateJwt(),
+        'jwt' => Roster::generateJwt(),
         'tenant_id' => tenant()->getTenantKey(),
         'widget_url' => env('WIDGET_URL'),
     ]);

@@ -41,6 +41,18 @@ jobs:
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Javascript Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: npm run build
+
       - name: Configure Composer Authentication
         run: |
           composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
@@ -60,18 +72,6 @@ jobs:
 
       - name: Install Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
-
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install Javascript Dependencies
-        run: npm ci
-
-      - name: Build Project
-        run: npm run build
 
       - name: Install Passport Keys
         run: php artisan passport:keys --force

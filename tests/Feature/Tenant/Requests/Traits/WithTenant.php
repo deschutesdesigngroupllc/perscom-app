@@ -52,9 +52,6 @@ trait WithTenant
      */
     protected $subscriptionStatus = 'active';
 
-    /**
-     * @var null
-     */
     protected $priceId = null;
 
     /**
@@ -62,9 +59,6 @@ trait WithTenant
      */
     protected $onTrial = false;
 
-    /**
-     * @var null
-     */
     protected $trialExpiresAt = null;
 
     /**

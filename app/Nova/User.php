@@ -43,9 +43,9 @@ use Laravel\Pennant\Feature;
 
 class User extends Resource
 {
+    use HasActionsInTabs;
     use HasFields;
     use HasTabs;
-    use HasActionsInTabs;
 
     /**
      * The model the resource corresponds to.

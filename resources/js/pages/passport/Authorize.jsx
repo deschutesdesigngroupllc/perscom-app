@@ -33,12 +33,7 @@ export function Authorize({ client, name, scopes, state, authToken, csrfToken })
         </div>
         {scopeList.length > 0 && <ul className='my-4 list-inside list-disc'>{scopeList}</ul>}
         <div className='mt-4 flex items-center justify-end'>
-          <Link
-            href={route('passport.authorizations.deny')}
-            method='delete'
-            as='button'
-            className='text-sm text-gray-600 underline hover:text-gray-800'
-          >
+          <Link href={route('passport.authorizations.deny')} method='delete' as='button' className='text-sm underline'>
             {' '}
             Deny{' '}
           </Link>
