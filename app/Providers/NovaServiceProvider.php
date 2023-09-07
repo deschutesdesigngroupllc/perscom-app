@@ -138,7 +138,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     public function register()
     {
         Nova::style('nova-custom', Vite::asset('resources/css/nova.css'));
-        Nova::script('nova-custom', Vite::asset('resources/js/nova.jsx'));
         Nova::ignoreMigrations();
         Nova::report(static function ($exception) {
             Integration::captureUnhandledException($exception);
