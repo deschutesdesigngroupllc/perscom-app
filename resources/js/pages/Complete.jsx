@@ -13,7 +13,7 @@ export function Complete({ url }) {
             <Logo className='sm:h-18 mb-2 h-16 w-auto md:h-20' />
           </a>
         </div>
-        <h1 className='text-gray-800 mt-10 text-xl font-bold tracking-tight'>Registration complete.</h1>
+        <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-800'>Registration complete.</h1>
         <p className='mt-2 text-sm'>Plese check your email with instructions on how to access your account.</p>
         <ButtonLink color='blue' className='mt-4 w-full' href={url}>
           Go to Dashboard <span aria-hidden='true'>&nbsp;&rarr;</span>

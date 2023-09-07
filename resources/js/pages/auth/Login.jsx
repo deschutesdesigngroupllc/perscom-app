@@ -39,7 +39,7 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
 
       {demoMode && (
         <div className='mb-4'>
-          <h1 className='text-gray-800 mb-0 text-lg font-bold'>Welcome to the PERSCOM Demo</h1>
+          <h1 className='mb-0 text-lg font-bold text-gray-800'>Welcome to the PERSCOM Demo</h1>
           <div className='text-sm'>Use the login information below to get started.</div>
         </div>
       )}
@@ -47,14 +47,14 @@ export function Login({ status, canResetPassword, canCreateAnAccount, demoMode, 
       {tenant && !demoMode && (
         <div className='mb-4'>
           <div className='text-sm'>Welcome,</div>
-          <h1 className='text-gray-800 text-lg font-bold'>{tenant}</h1>
+          <h1 className='text-lg font-bold text-gray-800'>{tenant}</h1>
         </div>
       )}
 
       {adminMode && (
         <div className='mb-4'>
           <div className='text-sm'>Welcome,</div>
-          <h1 className='text-gray-800 text-lg font-bold'>Administrator</h1>
+          <h1 className='text-lg font-bold text-gray-800'>Administrator</h1>
         </div>
       )}
 

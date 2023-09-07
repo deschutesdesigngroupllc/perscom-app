@@ -29,24 +29,24 @@ export function Footer() {
                 </a>
               </li>
               <li>
-                <a href='#features' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
+                <a href={route('web.landing.home') + '#features'} className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                   {' '}
                   Features{' '}
                 </a>
               </li>
               <li>
                 <a
-                    href={route('web.find-my-organization.index')}
-                    target='_blank'
-                    className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
-                    rel='noreferrer'
+                  href={route('web.find-my-organization.index')}
+                  target='_blank'
+                  className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
+                  rel='noreferrer'
                 >
                   {' '}
                   Find My Organization{' '}
                 </a>
               </li>
               <li>
-                <a href='#pricing' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
+                <a href={route('web.landing.home') + '#pricing'} className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                   {' '}
                   Pricing{' '}
                 </a>

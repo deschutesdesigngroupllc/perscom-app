@@ -51,7 +51,7 @@ export default function Error({ status, title = null, message = null, back = nul
         <div className='py-16'>
           <div className='text-center'>
             <p className='text-sm font-semibold uppercase tracking-wide text-blue-600'>{status} error</p>
-            <h1 className='text-gray-800 mt-2 text-4xl font-extrabold tracking-tight text-black sm:text-5xl'>{header}</h1>
+            <h1 className='mt-2 text-4xl font-extrabold tracking-tight text-black text-gray-800 sm:text-5xl'>{header}</h1>
             <p className='mx-auto mt-2 text-base'>{description}</p>
             {showLink && (
               <div className='mt-6'>
@@ -74,12 +74,7 @@ export default function Error({ status, title = null, message = null, back = nul
             Community Forums
           </a>
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
-          <a
-            href='https://docs.perscom.io'
-            className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
-            target='_blank'
-            rel='noreferrer'
-          >
+          <a href='https://docs.perscom.io' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200' target='_blank' rel='noreferrer'>
             Documentation
           </a>
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>

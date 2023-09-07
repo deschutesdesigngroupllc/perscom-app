@@ -76,12 +76,12 @@ function MobileNavigation() {
                   </a>
                 </li>
                 <li>
-                  <a href='#features' className='block w-full hover:text-gray-600' onClick={() => close()}>
+                  <a href={route('web.landing.home') + '#features'} className='block w-full hover:text-gray-600' onClick={() => close()}>
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href='#pricing' className='block w-full hover:text-gray-600' onClick={() => close()}>
+                  <a href={route('web.landing.home') + '#pricing'} className='block w-full hover:text-gray-600' onClick={() => close()}>
                     Pricing
                   </a>
                 </li>
@@ -123,22 +123,17 @@ export function Header() {
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a
-                href='https://docs.perscom.io'
-                target='_blank'
-                className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
-                rel='noreferrer'
-              >
+              <a href='https://docs.perscom.io' target='_blank' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200' rel='noreferrer'>
                 Documentation
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#features' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
+              <a href={route('web.landing.home') + '#features'} className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                 Features
               </a>
             </li>
             <li className='ml-6 hidden lg:block'>
-              <a href='#pricing' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
+              <a href={route('web.landing.home') + '#pricing'} className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'>
                 Pricing
               </a>
             </li>
