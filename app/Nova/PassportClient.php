@@ -11,9 +11,11 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
+use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Passport\Passport;
 
 class PassportClient extends Resource
 {
@@ -76,16 +78,39 @@ class PassportClient extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Text::make('Name')->rules('required')->sortable(),
-            ID::make('Client ID', 'id')->hide()->sortable(),
+            Text::make('Name')
+                ->rules('required')
+                ->sortable(),
+            ID::make('Client ID', 'id')
+                ->hide()
+                ->sortable(),
             Text::make('Client ID', function () {
                 return $this->id;
-            })->copyable()->exceptOnForms(),
-            Hidden::make('Secret')->default(Str::random(40)),
-            Text::make('Client Secret', 'secret')->readonly()->copyable()->onlyOnDetail(),
-            URL::make('Redirect URL', 'redirect')->rules('required'),
-            Boolean::make('Revoked')->default(false)->sortable()->hideWhenCreating()->showOnUpdating()->sortable(),
-            Heading::make('OAuth 2.0 and OpenID Connect Endpoints')->onlyOnDetail(),
+            })->copyable()
+                ->exceptOnForms(),
+            Hidden::make('Secret')
+                ->default(Str::random(40)),
+            Text::make('Client Secret', 'secret')
+                ->readonly()
+                ->copyable()
+                ->onlyOnDetail(),
+            URL::make('Redirect URL', 'redirect')
+                ->rules('required'),
+            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
+                return [$scope->id => $scope->id];
+            })
+                ->sort())
+                ->help('The scopes the client may request. Leave blank to allow access to all scopes.')
+                ->hideFromIndex(),
+            Boolean::make('Revoked')
+                ->default(false)
+                ->help('Check to prevent API access from this client.')
+                ->sortable()
+                ->hideWhenCreating()
+                ->showOnUpdating()
+                ->sortable(),
+            Heading::make('OAuth 2.0 and OpenID Connect Endpoints')
+                ->onlyOnDetail(),
             Text::make('Discovery Endpoint', function () {
                 return route('oidc.discovery');
             })->copyable()->onlyOnDetail(),
@@ -101,9 +126,13 @@ class PassportClient extends Resource
             Text::make('User Info Endpoint', function () {
                 return route('oidc.userinfo');
             })->copyable()->onlyOnDetail(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->sortable()->exceptOnForms(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
             HasMany::make('Authorized Applications', 'tokens', PassportAuthorizedApplications::class),
         ];
     }
