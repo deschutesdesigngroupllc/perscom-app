@@ -20,6 +20,7 @@ class CheckUniversalRouteForTenantOrAdmin
             'admin',
             'admin/*',
             'nova-api/*',
+            'nova-vendor/*',
         ]), TenantCouldNotBeIdentifiedOnDomainException::class, $request->getHost());
 
         return $next($request);

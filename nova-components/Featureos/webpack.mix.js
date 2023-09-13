@@ -9,6 +9,6 @@ mix
   .vue({ version: 3 })
   .css('resources/css/asset.css', 'css')
   .alias({
-    '@': path.join(__dirname, 'resources/js/'),
+    '@': path.join(__dirname, 'resources/js/')
   })
   .nova('perscom/featureos')

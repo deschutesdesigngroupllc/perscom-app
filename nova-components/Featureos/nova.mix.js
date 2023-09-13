@@ -12,11 +12,11 @@ class NovaExtension {
 
   webpackConfig(webpackConfig) {
     webpackConfig.externals = {
-      vue: 'Vue',
+      vue: 'Vue'
     }
 
     webpackConfig.output = {
-      uniqueName: this.name,
+      uniqueName: this.name
     }
   }
 }

@@ -18,14 +18,16 @@ class AssetServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->app->booted(function () {
-            Route::middleware(['nova', Authorize::class])
+            Route::middleware(['nova', Authorize::class, 'universal'])
                 ->prefix('nova-vendor/featureos')
                 ->group(__DIR__.'/../routes/api.php');
         });
 
         Nova::serving(function (ServingNova $event) {
-            Nova::script('featureos', __DIR__.'/../dist/js/asset.js');
-            Nova::style('featureos', __DIR__.'/../dist/css/asset.css');
+            if (! $event->request->isCentralRequest()) {
+                Nova::script('featureos', __DIR__.'/../dist/js/asset.js');
+                Nova::style('featureos', __DIR__.'/../dist/css/asset.css');
+            }
         });
     }
 
