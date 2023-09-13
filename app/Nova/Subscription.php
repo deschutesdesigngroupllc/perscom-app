@@ -3,9 +3,11 @@
 namespace App\Nova;
 
 use App\Notifications\Admin\NewSubscription;
+use App\Nova\Actions\OpenStripeSubscription;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
@@ -57,8 +59,13 @@ class Subscription extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Tenant', 'owner', Tenant::class)->sortable(),
-            Text::make('Name')->rules(['required'])->placeholder('default')->sortable(),
+            BelongsTo::make('Tenant', 'owner', Tenant::class)
+                ->sortable(),
+            Text::make('Name')
+                ->rules(['required'])
+                ->placeholder('default')
+                ->hideFromIndex()
+                ->sortable(),
             Text::make('Stripe ID')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
@@ -70,13 +77,21 @@ class Subscription extends Resource
                 'past_due' => 'warning',
                 'canceled' => 'danger',
                 'unpaid' => 'danger',
-            ])->sortable(),
+            ])->label(function ($value) {
+                return Str::replace('_', ' ', $value);
+            })->sortable(),
             Text::make('Stripe Price')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
-            Number::make('Quantity')->rules(['required'])->sortable(),
-            DateTime::make('Trial Ends At')->sortable(),
-            DateTime::make('Ends At')->sortable(),
+            Text::make('Plan', function () {
+                return $this->owner->sparkPlan()->name ?? null;
+            }),
+            Number::make('Quantity')
+                ->rules(['required'])->sortable(),
+            DateTime::make('Trial Ends At')
+                ->sortable(),
+            DateTime::make('Ends At')
+                ->sortable(),
             HasMany::make('Items', 'items', SubscriptionItem::class),
         ];
     }
@@ -134,7 +149,7 @@ class Subscription extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [new OpenStripeSubscription()];
     }
 
     /**
