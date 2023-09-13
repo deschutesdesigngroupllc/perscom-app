@@ -45,6 +45,7 @@ class AppServiceProvider extends ServiceProvider
 
         Cashier::useCustomerModel(Tenant::class);
 
+        Passport::enableImplicitGrant();
         Passport::ignoreRoutes();
         Passport::ignoreMigrations();
         Passport::tokensCan(Permission::getPermissionsFromConfig()->merge([

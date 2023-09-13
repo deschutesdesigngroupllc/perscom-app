@@ -103,9 +103,13 @@ class PassportPersonalAccessToken extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            Hidden::make('ID', 'id')->default('1'),
-            Hidden::make('Client Id', 'client_id')->default('1'),
-            Text::make('Name')->rules('required')->sortable(),
+            Hidden::make('ID', 'id')
+                ->default('1'),
+            Hidden::make('Client Id', 'client_id')
+                ->default('1'),
+            Text::make('Name')
+                ->rules('required')
+                ->sortable(),
             Text::make('API Key', function () {
                 return Crypt::decryptString($this->token);
             })->displayUsing(function ($value) {
@@ -119,12 +123,27 @@ class PassportPersonalAccessToken extends Resource
                 ->help('API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'),
             MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
                 return [$scope->id => $scope->id];
-            })->sort())->rules('required')->hideFromIndex(),
-            Boolean::make('Revoked')->default(false)->hideWhenCreating()->showOnUpdating()->sortable(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->sortable()->exceptOnForms(),
-            DateTime::make('Updated At')->onlyOnDetail(),
-            DateTime::make('Expires At')->sortable()->exceptOnForms(),
+            })
+                ->sort())
+                ->help('The scopes the API key has access to.')
+                ->rules('required')
+                ->hideFromIndex(),
+            Boolean::make('Revoked')
+                ->default(false)
+                ->help('Check to prevent API access from this API key.')
+                ->hideWhenCreating()
+                ->showOnUpdating()
+                ->sortable(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
+            DateTime::make('Expires At')
+                ->sortable()
+                ->exceptOnForms(),
         ];
     }
 
