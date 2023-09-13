@@ -58,6 +58,8 @@ class AppServiceProvider extends ServiceProvider
         Passport::authorizationView(function ($parameters) {
             return Inertia::render('passport/Authorize', [
                 'client' => $parameters['client']->id,
+                'description' => $parameters['client']->description,
+                'image' => $parameters['client']->image?->image_url,
                 'name' => $parameters['client']->name,
                 'scopes' => $parameters['scopes'],
                 'state' => $parameters['request']->state,

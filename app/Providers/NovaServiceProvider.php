@@ -34,7 +34,6 @@ use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
 use App\Nova\NewsfeedItem;
-use App\Nova\PassportAuthorizedApplications;
 use App\Nova\PassportClient;
 use App\Nova\PassportClientLog;
 use App\Nova\PassportPersonalAccessToken;
@@ -323,8 +322,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ])->collapsable()
                             ->collapsedByDefault(),
                         MenuGroup::make('OAuth 2.0', [
-                            MenuItem::resource(PassportAuthorizedApplications::class),
-                            MenuItem::resource(PassportClient::class)->name('My Apps'),
+                            MenuItem::resource(PassportClient::class)->name('Applications'),
                             MenuItem::resource(PassportClientLog::class),
                         ])->collapsable()
                             ->collapsedByDefault(),

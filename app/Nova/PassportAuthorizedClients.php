@@ -17,7 +17,7 @@ use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Passport;
 use Laravel\Pennant\Feature;
 
-class PassportAuthorizedApplications extends Resource
+class PassportAuthorizedClients extends Resource
 {
     /**
      * The model the resource corresponds to.
@@ -25,13 +25,6 @@ class PassportAuthorizedApplications extends Resource
      * @var string
      */
     public static $model = PassportToken::class;
-
-    /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
-     * @var string
-     */
-    public static $title = 'name';
 
     /**
      * The columns that should be searched.
@@ -47,7 +40,7 @@ class PassportAuthorizedApplications extends Resource
      */
     public static function uriKey()
     {
-        return 'authorized-applications';
+        return 'authorized-clients';
     }
 
     /**
@@ -55,7 +48,15 @@ class PassportAuthorizedApplications extends Resource
      */
     public static function label()
     {
-        return 'Authorized Applications';
+        return 'Authorized Clients';
+    }
+
+    /**
+     * @return string
+     */
+    public function title()
+    {
+        return $this->client?->name ?? 'Client';
     }
 
     /**
