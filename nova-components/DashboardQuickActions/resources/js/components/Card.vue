@@ -5,6 +5,7 @@
         <div
           v-for="(route, key, index) in routes.value"
           :key="index"
+          :class="{'dashboard-actions-border-none': index === Object.keys(routes.value).length - 1}"
           class="dashboard-actions-flex dashboard-actions-border-b dashboard-actions-items-center dashboard-actions-border-gray-200 dark:dashboard-actions-border-gray-700 hover:bg-gray-100"
         >
           <a :href="route.link" class="dashboard-actions-no-underline dashboard-actions-flex dashboard-actions-p-6">
