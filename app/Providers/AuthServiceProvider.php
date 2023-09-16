@@ -160,7 +160,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::before(static function ($user, $ability, $arguments) {
             if (Auth::guard('jwt')->check()) {
                 $payload = Auth::guard('jwt')->payload(); // @phpstan-ignore-line
-                if ($payload->get('tenant') !== tenant()->getTenantKey()) {
+                if ($payload->get('tenant_sub') !== tenant()->getTenantKey()) {
                     abort(401, 'You are not authorized to access this account.');
                 }
             }
