@@ -105,6 +105,8 @@ class PassportClient extends Resource
             })
                 ->sort())
                 ->help('The scopes the client may request. Leave blank to allow access to all scopes.')
+                ->nullValues(['', '0', 'null', '[]'])
+                ->nullable()
                 ->hideFromIndex(),
             Boolean::make('Revoked')
                 ->default(false)

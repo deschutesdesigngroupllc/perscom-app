@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa185a5213352b293825ca21c27d17ee",
+    "content-hash": "b9acfb8fddb266f01ac1092143689177",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -5950,7 +5950,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5986,7 +5986,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6022,7 +6022,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6058,7 +6058,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6094,7 +6094,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6130,7 +6130,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6166,7 +6166,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6202,7 +6202,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6238,7 +6238,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6274,7 +6274,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/improve-oauth-client-support",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -8050,6 +8050,92 @@
                 "source": "https://github.com/rlanvin/php-rrule/tree/v2.4.1"
             },
             "time": "2023-06-07T13:15:59+00:00"
+        },
+        {
+            "name": "ronvanderheijden/openid-connect",
+            "version": "dev-feature/use-previously-declared-passport-scopes",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/JonErickson/openid-connect",
+                "reference": "3eb94ed6e5fe2cc9f8c819df48dcf8015cd3e8aa"
+            },
+            "require": {
+                "lcobucci/jwt": "^4.0",
+                "league/oauth2-server": "^8.2.0",
+                "php": "^7.4|^8.0"
+            },
+            "require-dev": {
+                "guzzlehttp/psr7": "^1.7",
+                "http-interop/http-factory-guzzle": "^1.0",
+                "league/oauth2-client": "^2.6",
+                "overtrue/phplint": "^2.3",
+                "phpunit/phpunit": "^9.4.2",
+                "slevomat/coding-standard": "^6.4.1",
+                "slim/slim": "4.*",
+                "symplify/easy-coding-standard": "^9.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "OpenIDConnect\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "OpenIDConnect\\Example\\": "example/",
+                    "OpenIDConnect\\Tests\\": "tests/"
+                }
+            },
+            "scripts": {
+                "test": [
+                    "vendor/bin/phpunit"
+                ],
+                "dev": [
+                    "vendor/bin/phpunit --group dev"
+                ],
+                "ecs-check": [
+                    "vendor/bin/ecs check"
+                ],
+                "ecs-fix": [
+                    "vendor/bin/ecs check --fix"
+                ],
+                "lint": [
+                    "vendor/bin/phplint --exclude=vendor ."
+                ],
+                "fix": [
+                    "composer update",
+                    "composer ecs-fix",
+                    "composer check"
+                ],
+                "check": [
+                    "composer lint",
+                    "composer ecs-check",
+                    "composer test",
+                    "composer check-platform-reqs",
+                    "composer outdated --direct --no-ansi",
+                    "composer outdated --minor-only --strict --direct"
+                ]
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ron van der Heijden",
+                    "email": "r.heijden@live.nl"
+                }
+            ],
+            "description": "OpenID Connect support to the PHP League's OAuth2 Server. Compatible with Laravel Passport.",
+            "homepage": "https://github.com/ronvanderheijden/openid-connect",
+            "keywords": [
+                "laravel",
+                "oauth2",
+                "oidc",
+                "openid",
+                "openid-connect",
+                "passport"
+            ],
+            "time": "2023-09-14T22:55:53+00:00"
         },
         {
             "name": "sabberworm/php-css-parser",
@@ -16596,9 +16682,10 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "stancl/jobpipeline": 20,
-        "perscom/newsfeed": 20,
         "perscom/featureos": 20,
+        "perscom/newsfeed": 20,
+        "ronvanderheijden/openid-connect": 20,
+        "stancl/jobpipeline": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
