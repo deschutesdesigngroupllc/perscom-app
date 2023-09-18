@@ -66,10 +66,16 @@ class Subscription extends Resource
                 ->placeholder('default')
                 ->hideFromIndex()
                 ->sortable(),
-            Text::make('Stripe ID')->readonly(function ($request) {
+            Text::make('ID', 'stripe_id')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
-            Badge::make('Stripe Status')->map([
+            Text::make('Price', 'stripe_price')->readonly(function ($request) {
+                return $request->isUpdateOrUpdateAttachedRequest();
+            })->rules(['required']),
+            Text::make('Plan', function () {
+                return $this->owner->sparkPlan()->name ?? null;
+            }),
+            Badge::make('Status', 'stripe_status')->map([
                 'active' => 'success',
                 'incomplete' => 'warning',
                 'incomplete_expired' => 'danger',
@@ -80,12 +86,6 @@ class Subscription extends Resource
             ])->label(function ($value) {
                 return Str::replace('_', ' ', $value);
             })->sortable(),
-            Text::make('Stripe Price')->readonly(function ($request) {
-                return $request->isUpdateOrUpdateAttachedRequest();
-            })->rules(['required']),
-            Text::make('Plan', function () {
-                return $this->owner->sparkPlan()->name ?? null;
-            }),
             Number::make('Quantity')
                 ->rules(['required'])->sortable(),
             DateTime::make('Trial Ends At')
