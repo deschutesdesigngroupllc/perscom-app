@@ -3131,17 +3131,17 @@
         },
         {
             "name": "laravel/spark-stripe",
-            "version": "v4.1.5",
+            "version": "v4.2.0",
             "source": {
                 "type": "git",
                 "url": "git@github.com:laravel/spark-stripe.git",
-                "reference": "d80890177ba7295b4b6fd90f60fcce474284b471"
+                "reference": "1b1aa72ca4b0ff29d444e30714ef96cb60810300"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://spark.laravel.com/dist/laravel/spark-stripe/laravel-spark-stripe-d80890177ba7295b4b6fd90f60fcce474284b471-zip-6d971f.zip",
-                "reference": "d80890177ba7295b4b6fd90f60fcce474284b471",
-                "shasum": "460055ec73b7cc26881eea91b55e9819c79b9030"
+                "url": "https://spark.laravel.com/dist/laravel/spark-stripe/laravel-spark-stripe-1b1aa72ca4b0ff29d444e30714ef96cb60810300-zip-e282f4.zip",
+                "reference": "1b1aa72ca4b0ff29d444e30714ef96cb60810300",
+                "shasum": "163fc869192bd4b4efbbd4e8cb578deae611c36d"
             },
             "require": {
                 "dompdf/dompdf": "^2.0",
@@ -3197,10 +3197,10 @@
                 "stripe"
             ],
             "support": {
-                "source": "https://github.com/laravel/spark-stripe/tree/v4.1.5",
+                "source": "https://github.com/laravel/spark-stripe/tree/v4.2.0",
                 "issues": "https://github.com/laravel/spark-stripe/issues"
             },
-            "time": "2023-07-26T17:41:47+00:00"
+            "time": "2023-09-04T21:29:35+00:00"
         },
         {
             "name": "laravel/telescope",
@@ -5950,7 +5950,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -5986,7 +5986,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6022,7 +6022,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6058,7 +6058,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6094,7 +6094,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6130,7 +6130,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6166,7 +6166,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6202,7 +6202,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6238,7 +6238,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6274,7 +6274,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/add-feedback-integrations",
+            "version": "dev-feature/update-spark-assets",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
