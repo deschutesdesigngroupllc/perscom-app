@@ -9,7 +9,10 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class CreateInitialTenantUserTest extends TenantTestCase
 {
-    protected $fakeMail = true;
+    public function beforeSetUpTenancy()
+    {
+        Mail::fake();
+    }
 
     public function test_initial_user_is_created()
     {
