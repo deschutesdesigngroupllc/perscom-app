@@ -11,6 +11,6 @@ class ConfigureApplicationForCentralContextTest extends TenantTestCase
         tenancy()->end();
 
         $this->assertEquals(config('mail.from.name'), env('MAIL_FROM_NAME'));
-        $this->assertEquals(config('app.timezone'), env('UTC'));
+        $this->assertEquals(config('app.timezone'), 'UTC');
     }
 }
