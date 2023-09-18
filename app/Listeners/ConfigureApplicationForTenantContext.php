@@ -6,7 +6,7 @@ use App\Models\Tenant;
 use Illuminate\Support\Facades\Config;
 use Spatie\Permission\PermissionRegistrar;
 
-class ConfigureApplicationForTenant
+class ConfigureApplicationForTenantContext
 {
     protected ?Tenant $tenant = null;
 

@@ -7,10 +7,7 @@ use App\Models\Domain;
 use App\Models\Tenant;
 use App\Models\User;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\Mail;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\ParallelTesting;
-use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
@@ -62,37 +59,14 @@ trait WithTenant
     protected $trialExpiresAt = null;
 
     /**
-     * @var bool
-     */
-    protected $fakeMail = false;
-
-    /**
-     * @var bool
-     */
-    protected $fakeNotification = false;
-
-    /**
-     * @var bool
-     */
-    protected $fakeQueue = false;
-
-    /**
      * @return void
      *
      * @throws \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById
      */
     protected function setUpTenancy()
     {
-        if ($this->fakeMail) {
-            Mail::fake();
-        }
-
-        if ($this->fakeNotification) {
-            Notification::fake();
-        }
-
-        if ($this->fakeQueue) {
-            Queue::fake();
+        if (method_exists($this, 'beforeSetUpTenancy')) {
+            $this->beforeSetUpTenancy();
         }
 
         $this->admin = Admin::factory()->create();
@@ -123,6 +97,10 @@ trait WithTenant
             ])->save();
         }
 
+        if (method_exists($this, 'beforeTenancyInitialized')) {
+            $this->beforeTenancyInitialized();
+        }
+
         tenancy()->initialize($this->tenant);
         tenant()->load('domains');
 
@@ -136,6 +114,10 @@ trait WithTenant
      */
     protected function tearDownTenancy()
     {
+        if (method_exists($this, 'beforeTearDownTenant')) {
+            $this->beforeTearDownTenant();
+        }
+
         $this->admin->deleteQuietly();
         $this->tenant->deleteQuietly();
     }
