@@ -229,7 +229,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             'picture' => $this->profile_photo_url,
             'tenant_name' => tenant('name'),
             'tenant_sub' => tenant()->getTenantKey(),
-            'updated_at' => $this->getAttribute($this->getUpdatedAtColumn()),
+            'locale' => config('app.locale'),
+            'zoneinfo' => setting('timezone', config('app.timezone')),
+            'updated_at' => Carbon::parse($this->getAttribute($this->getUpdatedAtColumn()))->getTimestamp(),
         ];
     }
 
