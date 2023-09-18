@@ -3107,12 +3107,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -3150,12 +3164,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -3193,12 +3221,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -3277,12 +3319,26 @@ paths:
                         type: string
                         enum:
                           - assignment_records
+                          - assignment_records.position
+                          - assignment_records.specialty
+                          - assignment_records.unit
                           - award_records
+                          - award_records.award
+                          - award_records.award.image
                           - combat_records
+                          - fields
                           - position
                           - qualification_records
+                          - qualification_records.qualification
+                          - qualification_records.qualification.image
                           - rank
+                          - rank.image
                           - rank_records
+                          - rank_records.rank
+                          - rank_records.rank.image
+                          - secondary_positions
+                          - secondary_specialties
+                          - secondary_units
                           - service_records
                           - specialty
                           - status
@@ -3329,12 +3385,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -3373,12 +3443,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -3424,12 +3508,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -3463,12 +3561,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -3515,12 +3627,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -3568,12 +3694,26 @@ paths:
             type: string
             enum:
               - assignment_records
+              - assignment_records.position
+              - assignment_records.specialty
+              - assignment_records.unit
               - award_records
+              - award_records.award
+              - award_records.award.image
               - combat_records
+              - fields
               - position
               - qualification_records
+              - qualification_records.qualification
+              - qualification_records.qualification.image
               - rank
+              - rank.image
               - rank_records
+              - rank_records.rank
+              - rank_records.rank.image
+              - secondary_positions
+              - secondary_specialties
+              - secondary_units
               - service_records
               - specialty
               - status
@@ -13422,6 +13562,21 @@ paths:
                         properties:
                           type: array
                           items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+                scopes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        enum:
+                          - orderForRoster
+                      parameters:
+                        type: array
+                        items:
+                          type: string
+                    required:
+                      - name
       responses:
         200:
           description: OK
