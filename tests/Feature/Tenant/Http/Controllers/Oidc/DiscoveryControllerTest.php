@@ -26,8 +26,18 @@ class DiscoveryControllerTest extends TenantTestCase
                 'subject_types_supported' => [
                     'public',
                 ],
+                'response_types_supported' => [
+                    'code',
+                    'token',
+                ],
+                'response_modes_supported' => [
+                    'query',
+                ],
                 'id_token_signing_alg_values_supported' => [
                     'HS256',
+                ],
+                'token_endpoint_auth_signing_alg_values_supported' => [
+                    'RS256',
                 ],
                 'scopes_supported' => [
                     'openid',
