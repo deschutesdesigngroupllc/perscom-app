@@ -50,14 +50,13 @@ class AccessTokenControllerTest extends TenantTestCase
 
         $redirectUrl = Url::fromString($authorizationResponse->headers->get('location'));
 
-        $tokenResponse = $this->actingAs($this->user)
-            ->post($this->tenant->url.'/oauth/token', [
-                'grant_type' => 'authorization_code',
-                'code' => $redirectUrl->getQueryParameter('code'),
-                'redirect_url' => $client->redirect,
-                'client_id' => $client->id,
-                'client_secret' => $client->secret,
-            ]);
+        $tokenResponse = $this->post($this->tenant->url.'/oauth/token', [
+            'grant_type' => 'authorization_code',
+            'code' => $redirectUrl->getQueryParameter('code'),
+            'redirect_url' => $client->redirect,
+            'client_id' => $client->id,
+            'client_secret' => $client->secret,
+        ]);
 
         $tokenResponse->assertSuccessful();
 
@@ -237,6 +236,38 @@ class AccessTokenControllerTest extends TenantTestCase
         $this->assertNull($token->user_id);
         $this->assertNull($token->name);
         $this->assertLessThanOrEqual(5, CarbonImmutable::now()->addSeconds($expiresInSeconds)->diffInSeconds($token->expires_at));
+    }
+
+    public function test_access_token_with_implicit_grant_can_be_issued()
+    {
+        $client = TestClientFactory::new()->create(['user_id' => $this->user->getKey()]);
+        $clientRepository = $this->partialMock(ClientRepository::class, function (MockInterface $mock) use ($client) {
+            $mock->shouldReceive('find')->andReturn($client);
+        });
+        $this->instance(ClientRepository::class, $clientRepository);
+
+        $authorizationUrl = Url::fromString($this->tenant->url.'/oauth/authorize')->withQueryParameters([
+            'response_type' => 'token',
+            'client_id' => $client->id,
+            'redirect_url' => $client->redirect,
+            'scope' => 'view:user',
+        ])->__toString();
+
+        $authorizationResponse = $this->actingAs($this->user)
+            ->get($authorizationUrl)
+            ->assertFound()
+            ->assertHeader('location');
+
+        $redirectUrl = Url::fromString($authorizationResponse->headers->get('location'))->getFragment();
+
+        parse_str($redirectUrl, $parts);
+
+        $this->assertArrayHasKey('token_type', $parts);
+        $this->assertArrayHasKey('expires_in', $parts);
+        $this->assertArrayHasKey('access_token', $parts);
+        $this->assertSame('Bearer', $parts['token_type']);
+        $expiresInSeconds = 31622400;
+        $this->assertEqualsWithDelta($expiresInSeconds, $parts['expires_in'], 5);
     }
 }
 

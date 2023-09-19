@@ -32,6 +32,7 @@ class PassportClient extends BaseClientModel
     protected $attributes = [
         'personal_access_client' => false,
         'password_client' => false,
+        'redirect' => 'http://your.redirect.path',
         'revoked' => false,
     ];
 }

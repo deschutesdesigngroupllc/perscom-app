@@ -231,7 +231,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             'tenant_sub' => tenant()->getTenantKey(),
             'locale' => config('app.locale'),
             'zoneinfo' => setting('timezone', config('app.timezone')),
-            'updated_at' => $this->updated_at->getTimestamp(),
+            'updated_at' => Carbon::parse($this->updated_at)->getTimestamp(),
         ];
     }
 

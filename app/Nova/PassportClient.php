@@ -6,12 +6,15 @@ use App\Nova\Actions\Passport\RegenerateClientSecret;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Boolean;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphOne;
 use Laravel\Nova\Fields\MultiSelect;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
@@ -83,6 +86,43 @@ class PassportClient extends Resource
             Text::make('Name')
                 ->rules('required')
                 ->sortable(),
+            Select::make('Type')->options([
+                'authorization_code' => 'Regular Web Application',
+                'implicit' => 'Single Page Web Applications or Native Applications',
+                'client_credentials' => 'Machine-to-Machine',
+                'password' => 'Resource Owner',
+            ])
+                ->onlyOnForms()
+                ->default('authorization_code')
+                ->required()
+                ->help('Check out the <a href="https://docs.perscom.io/external-integration/oauth/oidc" target="_blank">documentation</a> on how to choose the correct application type.'),
+            Badge::make('Type', function () {
+                return $this->type;
+            })->map([
+                'authorization_code' => 'info',
+                'implicit' => 'warning',
+                'password' => 'danger',
+                'client_credentials' => 'success'
+            ])->label(function ($value) {
+                return match (true) {
+                    $value === 'authorization_code' => 'Regular Web Application',
+                    $value === 'implicit' => 'Single Page Web/Native Application',
+                    $value === 'client_credentials' => 'Machine-to-Machine',
+                    $value === 'password' => 'Resource Owner'
+                };
+            })->exceptOnForms(),
+            Badge::make('Flow', function () {
+                return $this->type;
+            })->map([
+                'authorization_code' => 'neutral',
+                'implicit' => 'neutral',
+                'password' => 'neutral',
+                'client_credentials' => 'neutral'
+            ])->label(function ($value) {
+                return Str::title(Str::replace('_', ' ', $value));
+            })->addTypes([
+                'neutral' => 'bg-gray-50 text-gray-600'
+            ])->exceptOnForms(),
             ID::make('Client ID', 'id')
                 ->hide()
                 ->sortable(),
@@ -95,7 +135,10 @@ class PassportClient extends Resource
             Text::make('Client Secret', 'secret')
                 ->readonly()
                 ->copyable()
-                ->onlyOnDetail(),
+                ->onlyOnDetail()
+                ->canSee(function () {
+                    return $this->type !== 'implicit';
+                }),
             Textarea::make('Description')
                 ->alwaysShow()
                 ->help('The description will also show on the authorization screen when a client attempts to authenticate.')
@@ -120,18 +163,34 @@ class PassportClient extends Resource
                 URL::make('Redirect URL', 'redirect')
                     ->help('The URL PERSCOM will redirect the user back to after completing authentication.')
                     ->onlyOnForms()
+                    ->dependsOn(['type'], function (URL $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->type !== 'authorization_code' || $formData !== 'implicit') {
+                            $field->rules([])->hide();
+                        }
+                    })
                     ->rules('required'),
                 Text::make('Redirect URL', function () {
                     return $this->redirect;
                 })
+                    ->canSee(function () {
+                        return $this->type === 'authorization_code' || $this->type === 'implicit';
+                    })
                     ->copyable()
                     ->onlyOnDetail(),
                 URL::make('Logout URL', 'logout')
+                    ->dependsOn(['type'], function (URL $field, NovaRequest $request, FormData $formData) {
+                        if ($formData->type !== 'authorization_code' || $formData !== 'implicit') {
+                            $field->rules([])->hide();
+                        }
+                    })
                     ->onlyOnForms()
                     ->help('The URL PERSCOM can redirect a user to after completing the logout in PERSCOM. See documentation on how to implement a post logout redirect.'),
                 Text::make('Logout URL', function () {
                     return $this->logout;
                 })
+                    ->canSee(function () {
+                        return $this->type === 'authorization_code' || $this->type === 'implicit';
+                    })
                     ->copyable()
                     ->onlyOnDetail(),
             ]),
@@ -154,6 +213,28 @@ class PassportClient extends Resource
             ]),
             HasMany::make('Authorized Clients', 'tokens', PassportAuthorizedClients::class),
         ];
+    }
+
+    /**
+     * @param NovaRequest $request
+     * @param Model $model
+     * @return void
+     */
+    public static function afterCreate(NovaRequest $request, Model $model)
+    {
+        if ($model instanceof \App\Models\PassportClient) {
+            if ($model->type === 'client_credentials') {
+                $model->personal_access_client = false;
+                $model->password_client = false;
+                $model->save();
+            }
+
+            elseif ($model->type === 'password') {
+                $model->personal_access_client = false;
+                $model->password_client = true;
+                $model->save();
+            }
+        }
     }
 
     /**
