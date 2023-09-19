@@ -149,7 +149,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
             config()->set('nova.passwords', 'admins');
         }
 
-        if (Request::isDemoMode()) {
+        if (Request::isDemoMode() || Request::isCentralRequest()) {
             $middleware = collect(config('nova.middleware'));
             config()->set('nova.middleware', $middleware->reject(function ($middleware) {
                 return $middleware === 'verified' || $middleware === 'approved';

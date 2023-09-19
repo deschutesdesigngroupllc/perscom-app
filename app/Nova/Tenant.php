@@ -16,7 +16,9 @@ use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Country;
 use Laravel\Nova\Fields\DateTime;
@@ -86,7 +88,10 @@ class Tenant extends Resource
                 ->sortable()
                 ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
                 ->copyable(),
-            Email::make('Email')->sortable()->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
+            Email::make('Email')
+                ->sortable()
+                ->hideFromIndex()
+                ->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
             Text::make('Website')->hideFromIndex(),
             URL::make('Domain', 'url')->displayUsing(function ($url) {
                 return $url;
@@ -127,6 +132,20 @@ class Tenant extends Resource
                     Text::make('Plan', function () {
                         return $this->sparkPlan()->name ?? null;
                     }),
+                    Badge::make('Status', function () {
+                        return $this->subscription()->stripe_status ?? null;
+                    })->map([
+                        'active' => 'success',
+                        'incomplete' => 'warning',
+                        'incomplete_expired' => 'danger',
+                        'trialing' => 'info',
+                        'past_due' => 'warning',
+                        'canceled' => 'danger',
+                        'unpaid' => 'danger',
+                        '' => 'info',
+                    ])->label(function ($value) {
+                        return $value ? Str::replace('_', ' ', $value) : 'No Subscription';
+                    })->sortable(),
                     Text::make('Stripe ID')->hideFromIndex()->copyable(),
                     Text::make('Card Brand', 'pm_type')->hideFromIndex(),
                     Text::make('Card Last Four', 'pm_last_four')->hideFromIndex(),

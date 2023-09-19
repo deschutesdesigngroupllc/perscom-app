@@ -3,9 +3,11 @@
 namespace App\Nova;
 
 use App\Notifications\Admin\NewSubscription;
+use App\Nova\Actions\OpenStripeSubscription;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
@@ -57,12 +59,23 @@ class Subscription extends Resource
     {
         return [
             ID::make()->sortable(),
-            BelongsTo::make('Tenant', 'owner', Tenant::class)->sortable(),
-            Text::make('Name')->rules(['required'])->placeholder('default')->sortable(),
-            Text::make('Stripe ID')->readonly(function ($request) {
+            BelongsTo::make('Tenant', 'owner', Tenant::class)
+                ->sortable(),
+            Text::make('Name')
+                ->rules(['required'])
+                ->placeholder('default')
+                ->hideFromIndex()
+                ->sortable(),
+            Text::make('ID', 'stripe_id')->readonly(function ($request) {
                 return $request->isUpdateOrUpdateAttachedRequest();
             })->rules(['required']),
-            Badge::make('Stripe Status')->map([
+            Text::make('Price', 'stripe_price')->readonly(function ($request) {
+                return $request->isUpdateOrUpdateAttachedRequest();
+            })->rules(['required']),
+            Text::make('Plan', function () {
+                return $this->owner->sparkPlan()->name ?? null;
+            }),
+            Badge::make('Status', 'stripe_status')->map([
                 'active' => 'success',
                 'incomplete' => 'warning',
                 'incomplete_expired' => 'danger',
@@ -70,13 +83,15 @@ class Subscription extends Resource
                 'past_due' => 'warning',
                 'canceled' => 'danger',
                 'unpaid' => 'danger',
-            ])->sortable(),
-            Text::make('Stripe Price')->readonly(function ($request) {
-                return $request->isUpdateOrUpdateAttachedRequest();
-            })->rules(['required']),
-            Number::make('Quantity')->rules(['required'])->sortable(),
-            DateTime::make('Trial Ends At')->sortable(),
-            DateTime::make('Ends At')->sortable(),
+            ])->label(function ($value) {
+                return Str::replace('_', ' ', $value);
+            })->sortable(),
+            Number::make('Quantity')
+                ->rules(['required'])->sortable(),
+            DateTime::make('Trial Ends At')
+                ->sortable(),
+            DateTime::make('Ends At')
+                ->sortable(),
             HasMany::make('Items', 'items', SubscriptionItem::class),
         ];
     }
@@ -134,7 +149,7 @@ class Subscription extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [new OpenStripeSubscription()];
     }
 
     /**
