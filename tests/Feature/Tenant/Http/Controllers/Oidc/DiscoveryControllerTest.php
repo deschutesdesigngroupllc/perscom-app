@@ -22,6 +22,8 @@ class DiscoveryControllerTest extends TenantTestCase
                     'authorization_code',
                     'implicit',
                     'refresh_token',
+                    'client_credentials',
+                    'password',
                 ],
                 'subject_types_supported' => [
                     'public',

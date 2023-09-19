@@ -3,31 +3,18 @@
 namespace App\Http\Controllers\Oidc;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Symfony\Component\HttpFoundation\Response;
 
 class LogoutController extends Controller
 {
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\JsonResponse|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function index(Request $request)
+    public function index(Request $request): Response
     {
-        optional(Auth::guard('passport')->user() ?? Auth::guard('web')->user(), static function (User $user) {
-            Auth::guard('web')->logout();
+        Auth::logout();
 
-            $user->token()?->revoke();
-        });
+        $redirect = $request->input('post_logout_redirect_uri');
 
-        $redirect = $request->get('post_logout_redirect_uri') ?? tenant()->url;
-
-        if ($request->expectsJson()) {
-            return response()->json([
-                'redirect' => $redirect,
-            ]);
-        }
-
-        return redirect($redirect);
+        return redirect($redirect ?? tenant()->url);
     }
 }

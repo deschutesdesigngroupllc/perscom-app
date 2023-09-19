@@ -20,6 +20,8 @@ class DiscoveryController extends Controller
                 'authorization_code',
                 'implicit',
                 'refresh_token',
+                'client_credentials',
+                'password',
             ],
             'subject_types_supported' => [
                 'public',
