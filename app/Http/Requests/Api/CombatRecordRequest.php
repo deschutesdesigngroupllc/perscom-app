@@ -24,9 +24,15 @@ class CombatRecordRequest extends Request
      */
     public function storeRules(): array
     {
-        return [
-            'user_id' => 'required|integer|exists:users,id',
+        $rules = [];
+        if (! $this->route('user')) {
+            $rules = [
+                'user_id' => 'required|integer|exists:users,id',
+            ];
+        }
+
+        return array_merge($rules, [
             'text' => 'required|string',
-        ];
+        ]);
     }
 }

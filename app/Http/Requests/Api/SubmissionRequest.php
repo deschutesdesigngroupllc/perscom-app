@@ -30,20 +30,20 @@ class SubmissionRequest extends Request
 
     public function commonRules(): array
     {
-        $rules = [
+        return array_merge([
             'form_id' => 'integer|exists:forms,id',
-            'user_id' => 'integer|exists:users,id',
-        ];
-
-        return array_merge($rules, $this->getDynamicRules());
+            'user_id' => 'integer|nullable|exists:users,id',
+        ], $this->getDynamicRules());
     }
 
     public function storeRules(): array
     {
-        $rules = [
-            'form_id' => 'integer|required|exists:forms,id',
-            'user_id' => 'integer|required|exists:users,id',
-        ];
+        $rules = [];
+        if (! $this->route('form')) {
+            $rules = [
+                'form_id' => 'required|integer|exists:forms,id',
+            ];
+        }
 
         return array_merge($rules, $this->getDynamicRules());
     }

@@ -29,12 +29,18 @@ class EventRequest extends Request
      */
     public function storeRules(): array
     {
-        return [
+        $rules = [];
+        if (! $this->route('calendar')) {
+            $rules = [
+                'calendar_id' => 'required|integer|exists:calendars,id',
+            ];
+        }
+
+        return array_merge($rules, [
             'name' => 'required|string',
             'start' => 'required|date',
             'end' => 'required|date|after:start',
             'all_day' => 'required|boolean',
-            'calendar_id' => 'required|integer|exists:calendars,id',
-        ];
+        ]);
     }
 }

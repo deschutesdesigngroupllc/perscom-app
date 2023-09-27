@@ -25,10 +25,16 @@ class RankRecordRequest extends Request
      */
     public function storeRules(): array
     {
-        return [
-            'user_id' => 'required|integer|exists:users,id',
+        $rules = [];
+        if (! $this->route('user')) {
+            $rules = [
+                'user_id' => 'required|integer|exists:users,id',
+            ];
+        }
+
+        return array_merge($rules, [
             'rank_id' => 'required|integer|exists:ranks,id',
             'text' => 'required|string',
-        ];
+        ]);
     }
 }
