@@ -42,7 +42,7 @@ class Specialty extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'abbreviation', 'description'];
+    protected $fillable = ['name', 'abbreviation', 'description', 'order'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Calendars;
+namespace App\Http\Controllers\Api\V1\Events;
 
 use App\Http\Requests\Api\EventRequest;
 use App\Models\Event;

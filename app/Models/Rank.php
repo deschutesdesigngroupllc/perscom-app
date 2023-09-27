@@ -31,6 +31,16 @@ class Rank extends Model implements Sortable
     use SortableTrait;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = ['name', 'description', 'abbreviation', 'paygrade', 'order'];
+
+    /**
+     * @var string[]
+     */
+    protected $with = ['image'];
+
+    /**
      * The "booted" method of the model.
      *
      * @return void
@@ -39,14 +49,4 @@ class Rank extends Model implements Sortable
     {
         static::addGlobalScope(new RankScope());
     }
-
-    /**
-     * @var string[]
-     */
-    protected $fillable = ['name', 'description', 'abbreviation', 'paygrade'];
-
-    /**
-     * @var string[]
-     */
-    protected $with = ['image'];
 }

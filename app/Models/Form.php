@@ -57,6 +57,11 @@ class Form extends Model
     protected $with = ['fields'];
 
     /**
+     * @var string[]
+     */
+    protected $fillable = ['name', 'slug', 'success_message', 'is_public', 'description', 'instructions'];
+
+    /**
      * @return string
      */
     public function getUrlAttribute()

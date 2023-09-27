@@ -28,6 +28,11 @@ class Task extends Model
     use HasFactory;
 
     /**
+     * @var string[]
+     */
+    protected $fillable = ['title', 'description', 'instructions', 'form_id'];
+
+    /**
      * Boot
      */
     public static function boot()

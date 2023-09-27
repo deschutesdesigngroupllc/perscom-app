@@ -12,7 +12,9 @@ class UnitRequest extends Request
     public function commonRules(): array
     {
         return [
+            'name' => 'string',
             'description' => 'nullable|string',
+            'order' => 'integer',
         ];
     }
 
@@ -22,7 +24,7 @@ class UnitRequest extends Request
     public function storeRules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|string',
         ];
     }
 }

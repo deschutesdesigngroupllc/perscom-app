@@ -24,7 +24,7 @@ class UserRequest extends Request
     public function storeRules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
         ];
     }

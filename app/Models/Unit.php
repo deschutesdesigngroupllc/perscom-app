@@ -38,7 +38,7 @@ class Unit extends Model implements Sortable
      *
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'order'];
 
     /**
      * The "booted" method of the model.

@@ -12,11 +12,12 @@ class FormRequest extends Request
     public function commonRules(): array
     {
         return [
-            'name' => 'sometimes|string',
-            'slug' => 'sometimes|slug',
+            'name' => 'string',
+            'slug' => 'slug',
+            'success_message' => 'nullable|string',
+            'is_public' => 'boolean',
             'description' => 'nullable|string',
             'instructions' => 'nullable|string',
-            'success_message' => 'nullable|string',
         ];
     }
 
@@ -26,8 +27,9 @@ class FormRequest extends Request
     public function storeRules(): array
     {
         return [
-            'name' => 'required',
-            'slug' => 'required',
+            'name' => 'required|string',
+            'slug' => 'required|string',
+            'is_public' => 'required|boolean',
         ];
     }
 }

@@ -12,10 +12,11 @@ class RankRequest extends Request
     public function commonRules(): array
     {
         return [
-            'name' => 'sometimes|string',
-            'abbreviation' => 'nullable|string',
+            'name' => 'string',
             'description' => 'nullable|string',
+            'abbreviation' => 'nullable|string',
             'paygrade' => 'nullable|string',
+            'order' => 'integer',
         ];
     }
 
@@ -25,7 +26,7 @@ class RankRequest extends Request
     public function storeRules(): array
     {
         return [
-            'name' => 'required',
+            'name' => 'required|string',
         ];
     }
 }

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Forms;
+namespace App\Http\Controllers\Api\V1\Submissions;
 
 use App\Http\Requests\Api\SubmissionRequest;
-use App\Models\Form;
+use App\Models\Submission;
 use App\Policies\SubmissionPolicy;
-use Orion\Http\Controllers\RelationController;
+use Orion\Http\Controllers\Controller;
 
-class FormsSubmissionsController extends RelationController
+class SubmissionsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = Form::class;
+    protected $model = Submission::class;
 
     /**
      * @var string
@@ -23,11 +23,6 @@ class FormsSubmissionsController extends RelationController
      * @var string
      */
     protected $policy = SubmissionPolicy::class;
-
-    /**
-     * @var string
-     */
-    protected $relation = 'submissions';
 
     /**
      * @return string[]
