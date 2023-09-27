@@ -12,11 +12,15 @@ class EventRequest extends Request
     public function commonRules(): array
     {
         return [
-            'name' => 'sometimes|string',
+            'name' => 'string',
+            'calendar_id' => 'integer|exists:calendars,id',
             'description' => 'nullable|string',
             'content' => 'nullable|string',
-            'location' => 'sometimes|string',
-            'url' => 'sometimes|string',
+            'location' => 'nullable|string',
+            'url' => 'nullable|string',
+            'all_day' => 'boolean',
+            'start' => 'date',
+            'end' => 'date|after:start',
         ];
     }
 
@@ -25,12 +29,18 @@ class EventRequest extends Request
      */
     public function storeRules(): array
     {
-        return [
-            'name' => 'required',
+        $rules = [];
+        if (! $this->route('calendar')) {
+            $rules = [
+                'calendar_id' => 'required|integer|exists:calendars,id',
+            ];
+        }
+
+        return array_merge($rules, [
+            'name' => 'required|string',
             'start' => 'required|date',
-            'end' => 'required|date',
+            'end' => 'required|date|after:start',
             'all_day' => 'required|boolean',
-            'calendar_id' => 'required|exists:calendars,id',
-        ];
+        ]);
     }
 }

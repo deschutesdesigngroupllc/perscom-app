@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Orion\Http\Requests\Request;
 
-class GroupRequest extends Request
+class SpecialtyRequest extends Request
 {
     /**
      * @return string[]

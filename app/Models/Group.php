@@ -34,7 +34,7 @@ class Group extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'order'];
 
     /**
      * The "booted" method of the model.

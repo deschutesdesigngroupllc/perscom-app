@@ -1643,6 +1643,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       requestBody:
@@ -1677,6 +1678,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       responses:
@@ -1711,6 +1713,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       requestBody:
@@ -1779,6 +1782,7 @@ paths:
                         enum:
                           - form
                           - user
+                          - statuses
                       filters:
                         type: object
                         properties:
@@ -1822,6 +1826,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       responses:
@@ -1857,6 +1862,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       requestBody:
@@ -1899,6 +1905,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       responses:
@@ -1929,6 +1936,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       requestBody:
@@ -1972,6 +1980,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       requestBody:
@@ -2016,6 +2025,7 @@ paths:
             enum:
               - form
               - user
+              - statuses
           name: include
           in: query
       requestBody:
@@ -14542,6 +14552,1278 @@ paths:
       summary: 'Update pivot'
       tags:
         - 'Groups Units'
+  /v1/positions:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Position'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PositionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create position'
+      tags:
+        - Positions
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of positions'
+      tags:
+        - Positions
+  /v1/positions/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - assignment_records
+                          - 'assignment_records.*'
+                          - users
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for positions'
+      tags:
+        - Positions
+  '/v1/positions/{position}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: position
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PositionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get position'
+      tags:
+        - Positions
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: position
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Position'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PositionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update position'
+      tags:
+        - Positions
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: position
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/PositionResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete position'
+      tags:
+        - Positions
+  /v1/positions/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Position'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of positions'
+      tags:
+        - Positions
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Position'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of positions'
+      tags:
+        - Positions
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PositionResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of positions'
+      tags:
+        - Positions
+  /v1/specialties:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Specialty'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpecialtyResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create specialty'
+      tags:
+        - Specialties
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of specialties'
+      tags:
+        - Specialties
+  /v1/specialties/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - assignment_records
+                          - 'assignment_records.*'
+                          - users
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for specialties'
+      tags:
+        - Specialties
+  '/v1/specialties/{specialty}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: specialty
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpecialtyResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get specialty'
+      tags:
+        - Specialties
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: specialty
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Specialty'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpecialtyResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update specialty'
+      tags:
+        - Specialties
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: specialty
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/SpecialtyResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete specialty'
+      tags:
+        - Specialties
+  /v1/specialties/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Specialty'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of specialties'
+      tags:
+        - Specialties
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Specialty'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of specialties'
+      tags:
+        - Specialties
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - assignment_records
+              - 'assignment_records.*'
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/SpecialtyResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of specialties'
+      tags:
+        - Specialties
+  /v1/tasks:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TaskResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create task'
+      tags:
+        - Tasks
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of tasks'
+      tags:
+        - Tasks
+  /v1/tasks/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - title
+                          - form_id
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, title, form_id, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: title, form_id'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - form
+                          - users
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, title, form_id, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, title, form_id, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for tasks'
+      tags:
+        - Tasks
+  '/v1/tasks/{task}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: task
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TaskResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get task'
+      tags:
+        - Tasks
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: task
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Task'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TaskResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update task'
+      tags:
+        - Tasks
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: task
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/TaskResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete task'
+      tags:
+        - Tasks
+  /v1/tasks/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Task'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of tasks'
+      tags:
+        - Tasks
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Task'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of tasks'
+      tags:
+        - Tasks
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - form
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/TaskResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of tasks'
+      tags:
+        - Tasks
 components:
   securitySchemes:
     ApiKey:
@@ -14682,6 +15964,8 @@ components:
         description:
           type: string
           nullable: true
+        order:
+          type: integer
     AwardResource:
       title: AwardResource
       allOf:
@@ -14711,6 +15995,8 @@ components:
         description:
           type: string
           nullable: true
+        order:
+          type: integer
     QualificationResource:
       title: QualificationResource
       allOf:
@@ -14746,6 +16032,8 @@ components:
         paygrade:
           type: string
           nullable: true
+        order:
+          type: integer
     RankResource:
       title: RankResource
       allOf:
@@ -14775,6 +16063,8 @@ components:
         description:
           type: string
           nullable: true
+        order:
+          type: integer
     UnitResource:
       title: UnitResource
       allOf:
@@ -15058,6 +16348,8 @@ components:
         description:
           type: string
           nullable: true
+        order:
+          type: integer
     PositionResource:
       title: PositionResource
       allOf:
@@ -15090,6 +16382,8 @@ components:
         description:
           type: string
           nullable: true
+        order:
+          type: integer
     SpecialtyResource:
       title: SpecialtyResource
       allOf:
@@ -15302,7 +16596,22 @@ components:
     Form:
       title: Form
       type: object
-      properties: []
+      properties:
+        name:
+          type: string
+        slug:
+          type: string
+        success_message:
+          type: string
+          nullable: true
+        is_public:
+          type: boolean
+        description:
+          type: string
+          nullable: true
+        instructions:
+          type: string
+          nullable: true
     FormResource:
       title: FormResource
       allOf:
@@ -15445,6 +16754,8 @@ components:
         description:
           type: string
           nullable: true
+        order:
+          type: integer
     GroupResource:
       title: GroupResource
       allOf:
@@ -15456,6 +16767,39 @@ components:
             id:
               type: integer
             order:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    Task:
+      title: Task
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+          nullable: true
+        instructions:
+          type: string
+          nullable: true
+        form_id:
+          type: integer
+          nullable: true
+    TaskResource:
+      title: TaskResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Task'
+        -
+          type: object
+          properties:
+            id:
               type: integer
             created_at:
               type: string
@@ -15503,11 +16847,23 @@ tags:
     name: 'Newsfeed Likes'
     description: 'API documentation for Newsfeed Likes'
   -
+    name: Positions
+    description: 'API documentation for Positions'
+  -
     name: Qualifications
     description: 'API documentation for Qualifications'
   -
     name: Ranks
     description: 'API documentation for Ranks'
+  -
+    name: Specialties
+    description: 'API documentation for Specialties'
+  -
+    name: Submissions
+    description: 'API documentation for Submissions'
+  -
+    name: Tasks
+    description: 'API documentation for Tasks'
   -
     name: Units
     description: 'API documentation for Units'

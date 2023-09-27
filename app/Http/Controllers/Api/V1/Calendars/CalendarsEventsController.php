@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1\Calendars;
 
+use App\Http\Requests\Api\EventRequest;
 use App\Models\Calendar;
+use App\Policies\EventPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class CalendarsEventsController extends RelationController
@@ -11,6 +13,16 @@ class CalendarsEventsController extends RelationController
      * @var string
      */
     protected $model = Calendar::class;
+
+    /**
+     * @var string
+     */
+    protected $request = EventRequest::class;
+
+    /**
+     * @var string
+     */
+    protected $policy = EventPolicy::class;
 
     /**
      * @var string

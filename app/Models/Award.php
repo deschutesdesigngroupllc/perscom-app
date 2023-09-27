@@ -43,7 +43,7 @@ class Award extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description'];
+    protected $fillable = ['name', 'description', 'order'];
 
     /**
      * @var string[]

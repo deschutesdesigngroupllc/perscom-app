@@ -12,11 +12,9 @@ class CalendarRequest extends Request
     public function commonRules(): array
     {
         return [
-            'name' => 'sometimes|string',
+            'name' => 'string',
             'description' => 'nullable|string',
             'color' => 'nullable|string',
-            'timezone' => 'sometimes|string',
-            'author_id' => 'sometimes|string',
         ];
     }
 
@@ -26,8 +24,7 @@ class CalendarRequest extends Request
     public function storeRules(): array
     {
         return [
-            'name' => 'required',
-            'timezone' => 'required',
+            'name' => 'required|string',
         ];
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests\Api;
 
 use Orion\Http\Requests\Request;
 
-class GroupRequest extends Request
+class TaskRequest extends Request
 {
     /**
      * @return string[]
@@ -12,9 +12,10 @@ class GroupRequest extends Request
     public function commonRules(): array
     {
         return [
-            'name' => 'string',
+            'title' => 'string',
             'description' => 'nullable|string',
-            'order' => 'integer',
+            'instructions' => 'nullable|string',
+            'form_id' => 'integer|exists:forms,id',
         ];
     }
 
@@ -24,7 +25,7 @@ class GroupRequest extends Request
     public function storeRules(): array
     {
         return [
-            'name' => 'required|string',
+            'title' => 'required|string',
         ];
     }
 }
