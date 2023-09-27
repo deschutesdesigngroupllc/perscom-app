@@ -11,7 +11,10 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class TenantObserverTest extends TenantTestCase
 {
-    protected $fakeNotification = true;
+    public function beforeSetUpTenancy()
+    {
+        Notification::fake();
+    }
 
     public function test_new_tenant_notification_sent()
     {
