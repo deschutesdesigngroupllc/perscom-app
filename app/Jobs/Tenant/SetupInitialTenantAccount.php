@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 use Outl1ne\NovaSettings\NovaSettings;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 
@@ -51,6 +52,7 @@ class SetupInitialTenantAccount implements ShouldQueue
                 NovaSettings::setSettingValue('dashboard_title', $tenant->name);
                 NovaSettings::setSettingValue('registration_enabled', true);
                 NovaSettings::setSettingValue('default_roles', Role::query()->where('name', 'User')->pluck('id')->toArray());
+                NovaSettings::setSettingValue('single_sign_on_key', Str::random(40));
             });
         });
     }

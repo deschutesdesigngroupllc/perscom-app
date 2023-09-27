@@ -13,7 +13,6 @@ class Authenticate extends Middleware
      * Handle an incoming request.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
      * @param  string[]  ...$guards
      * @return mixed
      *
@@ -25,8 +24,10 @@ class Authenticate extends Middleware
         if (in_array('api', $guards)) {
             try {
                 $clientCredentialMiddleware = app()->make(CheckClientCredentials::class);
+
                 return $clientCredentialMiddleware->handle($request, $next);
-            } catch (AuthenticationException $exception) {}
+            } catch (AuthenticationException $exception) {
+            }
         }
 
         $this->authenticate($request, $guards);

@@ -102,7 +102,7 @@ class PassportClient extends Resource
                 'authorization_code' => 'info',
                 'implicit' => 'warning',
                 'password' => 'danger',
-                'client_credentials' => 'success'
+                'client_credentials' => 'success',
             ])->label(function ($value) {
                 return match (true) {
                     $value === 'authorization_code' => 'Regular Web Application',
@@ -117,11 +117,11 @@ class PassportClient extends Resource
                 'authorization_code' => 'neutral',
                 'implicit' => 'neutral',
                 'password' => 'neutral',
-                'client_credentials' => 'neutral'
+                'client_credentials' => 'neutral',
             ])->label(function ($value) {
                 return Str::title(Str::replace('_', ' ', $value));
             })->addTypes([
-                'neutral' => 'bg-gray-50 text-gray-600'
+                'neutral' => 'bg-gray-50 text-gray-600',
             ])->exceptOnForms(),
             ID::make('Client ID', 'id')
                 ->hide()
@@ -216,8 +216,6 @@ class PassportClient extends Resource
     }
 
     /**
-     * @param NovaRequest $request
-     * @param Model $model
      * @return void
      */
     public static function afterCreate(NovaRequest $request, Model $model)
@@ -227,9 +225,7 @@ class PassportClient extends Resource
                 $model->personal_access_client = false;
                 $model->password_client = false;
                 $model->save();
-            }
-
-            elseif ($model->type === 'password') {
+            } elseif ($model->type === 'password') {
                 $model->personal_access_client = false;
                 $model->password_client = true;
                 $model->save();

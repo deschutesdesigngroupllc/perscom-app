@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Features\ApiAccessFeature;
 use App\Features\CustomSubDomainFeature;
+use App\Features\SingleSignOnFeature;
 use App\Features\SupportTicketFeature;
 use App\Models\EventRegistration as EventRegistrationModel;
 use App\Models\Submission as SubmissionModel;
@@ -432,6 +433,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         Boolean::make('Enabled', 'registration_enabled')->help('Deselect to disable registration.'),
                         Textarea::make('Disabled Message', 'registration_disabled_message')->help('Enter a message that will be provided when users attempt to register and registration is disabled.'),
                         Boolean::make('Admin Approval Required', 'registration_admin_approval_required')->help('Users can register for an account but will need admin approval to login.'),
+                    ]),
+                    Tab::make('Single Sign-On', [
+                        Text::make('Single Sign-On Key', 'single_sign_on_key')
+                            ->help('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM.io resources on the fly through the PERSCOM.io API.')
+                            ->readonly()
+                            ->copyable()
+                            ->canSee(function () {
+                                return Feature::active(SingleSignOnFeature::class);
+                            }),
                     ]),
                     Tab::make('Users', [
                         MultiSelect::make('Default Permissions', 'default_permissions')->options(

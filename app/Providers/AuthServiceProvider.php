@@ -89,9 +89,7 @@ use App\Policies\UnitPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\WebhookPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Gate;
 use Laravel\Cashier\Subscription;
 use Laravel\Cashier\SubscriptionItem;
 
@@ -156,18 +154,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Scope JWTs to the tenant they belong to
-        Gate::before(static function ($user, $ability, $arguments) {
-            if (Auth::guard('jwt')->check()) {
-                $payload = Auth::guard('jwt')->payload(); // @phpstan-ignore-line
-                if ($payload->get('tenant_sub') !== tenant()->getTenantKey()) {
-                    abort(401, 'You are not authorized to access this account.');
-                }
-            }
-        });
-
         // Define a new api guard that allows access via the passport and jwt guards
-        Auth::viaRequest('api', static function (Request $request) {
+        Auth::viaRequest('api', static function () {
             return Auth::guard('passport')->user() ?? Auth::guard('jwt')->user();
         });
     }
