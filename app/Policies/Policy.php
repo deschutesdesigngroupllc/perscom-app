@@ -27,9 +27,9 @@ abstract class Policy
         }
 
         if (Auth::getDefaultDriver() === 'web' && $user) {
-            return $user?->hasPermissionTo($permission, 'web');
+            return $user->hasPermissionTo($permission, 'web');
         }
 
-        return $this->deny("This action is unauthorized. You must have the $permission scope assigned.");
+        return false;
     }
 }
