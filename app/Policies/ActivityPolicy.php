@@ -4,14 +4,11 @@ namespace App\Policies;
 
 use App\Models\Activity;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class ActivityPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -27,7 +24,7 @@ class ActivityPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return true;
     }
@@ -37,7 +34,7 @@ class ActivityPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Activity $activity)
+    public function view(User $user = null, Activity $activity)
     {
         return Gate::check('view', $activity->subject);
     }
@@ -47,7 +44,7 @@ class ActivityPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         return false;
     }
@@ -57,7 +54,7 @@ class ActivityPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Activity $activity)
+    public function update(User $user = null, Activity $activity)
     {
         return Gate::check('update', $activity->subject);
     }
@@ -67,7 +64,7 @@ class ActivityPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Activity $activity)
+    public function delete(User $user = null, Activity $activity)
     {
         return Gate::check('delete', $activity->subject);
     }
@@ -77,7 +74,7 @@ class ActivityPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Activity $activity)
+    public function restore(User $user = null, Activity $activity)
     {
         return Gate::check('restore', $activity->subject);
     }
@@ -87,7 +84,7 @@ class ActivityPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Activity $activity)
+    public function forceDelete(User $user = null, Activity $activity)
     {
         return Gate::check('forceDelete', $activity->subject);
     }

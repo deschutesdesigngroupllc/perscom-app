@@ -27,7 +27,6 @@ class DocumentViewerTool extends ResourceTool
     }
 
     /**
-     * @param  string  $title
      * @return DocumentViewerTool
      */
     public function withTitle(string $title = null)
@@ -38,7 +37,6 @@ class DocumentViewerTool extends ResourceTool
     }
 
     /**
-     * @param  string  $content
      * @return DocumentViewerTool
      */
     public function withContent(string $content = null)

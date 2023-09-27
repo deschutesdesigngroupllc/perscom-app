@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Banner;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class BannerPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return bool
      */
@@ -28,7 +25,7 @@ class BannerPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -42,7 +39,7 @@ class BannerPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Banner $banner)
+    public function view(User $user = null, Banner $banner)
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -56,7 +53,7 @@ class BannerPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -70,7 +67,7 @@ class BannerPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Banner $banner)
+    public function update(User $user = null, Banner $banner)
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -84,7 +81,7 @@ class BannerPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Banner $banner)
+    public function delete(User $user = null, Banner $banner)
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -98,7 +95,7 @@ class BannerPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Banner $banner)
+    public function restore(User $user = null, Banner $banner)
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -112,7 +109,7 @@ class BannerPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Banner $banner)
+    public function forceDelete(User $user = null, Banner $banner)
     {
         if (Request::isCentralRequest()) {
             return true;

@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Status;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class StatusPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class StatusPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:status') || $user->tokenCan('view:status');
+        return $this->hasPermissionTo($user, 'view:status') || $user?->tokenCan('view:status');
     }
 
     /**
@@ -36,9 +33,9 @@ class StatusPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Status $status)
+    public function view(User $user = null, Status $status)
     {
-        return $this->hasPermissionTo($user, 'view:status') || $user->tokenCan('view:status');
+        return $this->hasPermissionTo($user, 'view:status') || $user?->tokenCan('view:status');
     }
 
     /**
@@ -46,9 +43,9 @@ class StatusPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:status') || $user->tokenCan('create:status');
+        return $this->hasPermissionTo($user, 'create:status') || $user?->tokenCan('create:status');
     }
 
     /**
@@ -56,9 +53,9 @@ class StatusPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Status $status)
+    public function update(User $user = null, Status $status)
     {
-        return $this->hasPermissionTo($user, 'update:status') || $user->tokenCan('update:status');
+        return $this->hasPermissionTo($user, 'update:status') || $user?->tokenCan('update:status');
     }
 
     /**
@@ -66,9 +63,9 @@ class StatusPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Status $status)
+    public function delete(User $user = null, Status $status)
     {
-        return $this->hasPermissionTo($user, 'delete:status') || $user->tokenCan('delete:status');
+        return $this->hasPermissionTo($user, 'delete:status') || $user?->tokenCan('delete:status');
     }
 
     /**
@@ -76,9 +73,9 @@ class StatusPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Status $status)
+    public function restore(User $user = null, Status $status)
     {
-        return $this->hasPermissionTo($user, 'delete:status') || $user->tokenCan('delete:status');
+        return $this->hasPermissionTo($user, 'delete:status') || $user?->tokenCan('delete:status');
     }
 
     /**
@@ -86,8 +83,8 @@ class StatusPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Status $status)
+    public function forceDelete(User $user = null, Status $status)
     {
-        return $this->hasPermissionTo($user, 'delete:status') || $user->tokenCan('delete:status');
+        return $this->hasPermissionTo($user, 'delete:status') || $user?->tokenCan('delete:status');
     }
 }

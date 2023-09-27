@@ -5,14 +5,11 @@ namespace App\Policies;
 use App\Models\Task;
 use App\Models\TaskAssignment;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class TaskAssignmentPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -28,7 +25,7 @@ class TaskAssignmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return true;
     }
@@ -38,9 +35,9 @@ class TaskAssignmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, TaskAssignment $taskAssignment)
+    public function view(User $user = null, TaskAssignment $taskAssignment)
     {
-        return Gate::check('view', $taskAssignment->task ?? new Task()) || $taskAssignment->user?->id === $user->id;
+        return Gate::check('view', $taskAssignment->task ?? new Task()) || $taskAssignment->user?->id === $user?->id;
     }
 
     /**
@@ -48,7 +45,7 @@ class TaskAssignmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         return Gate::check('create', Task::class);
     }
@@ -58,7 +55,7 @@ class TaskAssignmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, TaskAssignment $taskAssignment)
+    public function update(User $user = null, TaskAssignment $taskAssignment)
     {
         return Gate::check('update', $taskAssignment->task ?? new Task());
     }
@@ -68,7 +65,7 @@ class TaskAssignmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, TaskAssignment $taskAssignment)
+    public function delete(User $user = null, TaskAssignment $taskAssignment)
     {
         return Gate::check('delete', $taskAssignment->task ?? new Task());
     }
@@ -78,7 +75,7 @@ class TaskAssignmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, TaskAssignment $taskAssignment)
+    public function restore(User $user = null, TaskAssignment $taskAssignment)
     {
         return Gate::check('restore', $taskAssignment->task ?? new Task());
     }
@@ -88,7 +85,7 @@ class TaskAssignmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, TaskAssignment $taskAssignment)
+    public function forceDelete(User $user = null, TaskAssignment $taskAssignment)
     {
         return Gate::check('forceDelete', $taskAssignment->task ?? new Task());
     }

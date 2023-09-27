@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Qualification;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class QualificationPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class QualificationPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:qualification') || $user->tokenCan('view:qualification');
+        return $this->hasPermissionTo($user, 'view:qualification') || $user?->tokenCan('view:qualification');
     }
 
     /**
@@ -36,9 +33,9 @@ class QualificationPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Qualification $qualification)
+    public function view(User $user = null, Qualification $qualification)
     {
-        return $this->hasPermissionTo($user, 'view:qualification') || $user->tokenCan('view:qualification');
+        return $this->hasPermissionTo($user, 'view:qualification') || $user?->tokenCan('view:qualification');
     }
 
     /**
@@ -46,9 +43,9 @@ class QualificationPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:qualification') || $user->tokenCan('create:qualification');
+        return $this->hasPermissionTo($user, 'create:qualification') || $user?->tokenCan('create:qualification');
     }
 
     /**
@@ -56,9 +53,9 @@ class QualificationPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Qualification $qualification)
+    public function update(User $user = null, Qualification $qualification)
     {
-        return $this->hasPermissionTo($user, 'update:qualification') || $user->tokenCan('update:qualification');
+        return $this->hasPermissionTo($user, 'update:qualification') || $user?->tokenCan('update:qualification');
     }
 
     /**
@@ -66,9 +63,9 @@ class QualificationPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Qualification $qualification)
+    public function delete(User $user = null, Qualification $qualification)
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || $user->tokenCan('delete:qualification');
+        return $this->hasPermissionTo($user, 'delete:qualification') || $user?->tokenCan('delete:qualification');
     }
 
     /**
@@ -76,9 +73,9 @@ class QualificationPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Qualification $qualification)
+    public function restore(User $user = null, Qualification $qualification)
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || $user->tokenCan('delete:qualification');
+        return $this->hasPermissionTo($user, 'delete:qualification') || $user?->tokenCan('delete:qualification');
     }
 
     /**
@@ -86,8 +83,8 @@ class QualificationPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Qualification $qualification)
+    public function forceDelete(User $user = null, Qualification $qualification)
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || $user->tokenCan('delete:qualification');
+        return $this->hasPermissionTo($user, 'delete:qualification') || $user?->tokenCan('delete:qualification');
     }
 }

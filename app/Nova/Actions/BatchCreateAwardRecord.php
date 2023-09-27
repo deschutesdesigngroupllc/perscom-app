@@ -76,7 +76,7 @@ class BatchCreateAwardRecord extends Action
             MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')->options(
                 User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
             )->rules('required'),
-            BelongsTo::make('Award', 'award', Award::class)->showCreateRelationButton(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_awards', 'Award'))), 'award', Award::class)->showCreateRelationButton(),
             Textarea::make('Text'),
             BelongsTo::make('Document')->nullable(),
         ];

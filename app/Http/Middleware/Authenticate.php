@@ -5,41 +5,30 @@ namespace App\Http\Middleware;
 use Closure;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
-use Laravel\Passport\Http\Middleware\CheckClientCredentials;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class Authenticate extends Middleware
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  string[]  ...$guards
      * @return mixed
      *
-     * @throws \Illuminate\Auth\AuthenticationException
+     * @throws BindingResolutionException
      */
     public function handle($request, Closure $next, ...$guards)
     {
-        // TODO: Finish this implementation
-        if (in_array('api', $guards)) {
-            try {
-                $clientCredentialMiddleware = app()->make(CheckClientCredentials::class);
+        try {
+            $this->authenticate($request, $guards);
+        } catch (AuthenticationException) {
+            $clientCredentialMiddleware = app()->make(CheckClientCredentials::class);
 
-                return $clientCredentialMiddleware->handle($request, $next);
-            } catch (AuthenticationException $exception) {
-            }
+            return $clientCredentialMiddleware->handle($request, $next);
         }
-
-        $this->authenticate($request, $guards);
 
         return $next($request);
     }
 
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
+     * @return string|void|null
      */
     protected function redirectTo($request)
     {

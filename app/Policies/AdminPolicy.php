@@ -3,13 +3,10 @@
 namespace App\Policies;
 
 use App\Models\Admin;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class AdminPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return bool
      */

@@ -5,15 +5,12 @@ namespace App\Policies;
 use App\Features\WebhookFeature;
 use App\Models\User;
 use App\Models\WebhookLog;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Laravel\Pennant\Feature;
 
 class WebhookLogPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -33,7 +30,7 @@ class WebhookLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return Gate::check('webhook', $user);
     }
@@ -43,7 +40,7 @@ class WebhookLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, WebhookLog $log)
+    public function view(User $user = null, WebhookLog $log)
     {
         return Gate::check('webhook', $user);
     }
@@ -53,7 +50,7 @@ class WebhookLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         return false;
     }
@@ -63,7 +60,7 @@ class WebhookLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, WebhookLog $log)
+    public function update(User $user = null, WebhookLog $log)
     {
         return false;
     }
@@ -73,7 +70,7 @@ class WebhookLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, WebhookLog $log)
+    public function delete(User $user = null, WebhookLog $log)
     {
         return Gate::check('webhook', $user);
     }
@@ -83,7 +80,7 @@ class WebhookLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, WebhookLog $log)
+    public function restore(User $user = null, WebhookLog $log)
     {
         return Gate::check('webhook', $user);
     }
@@ -93,7 +90,7 @@ class WebhookLogPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, WebhookLog $log)
+    public function forceDelete(User $user = null, WebhookLog $log)
     {
         return Gate::check('webhook', $user);
     }

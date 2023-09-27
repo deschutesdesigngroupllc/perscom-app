@@ -5,13 +5,10 @@ namespace App\Policies;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class PermissionPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -27,9 +24,9 @@ class PermissionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:permission') || $user->tokenCan('view:permission');
+        return $this->hasPermissionTo($user, 'view:permission') || $user?->tokenCan('view:permission');
     }
 
     /**
@@ -37,9 +34,9 @@ class PermissionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Permission $permission)
+    public function view(User $user = null, Permission $permission)
     {
-        return $this->hasPermissionTo($user, 'view:permission') || $user->tokenCan('view:permission');
+        return $this->hasPermissionTo($user, 'view:permission') || $user?->tokenCan('view:permission');
     }
 
     /**
@@ -47,9 +44,9 @@ class PermissionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:permission') || $user->tokenCan('create:permission');
+        return $this->hasPermissionTo($user, 'create:permission') || $user?->tokenCan('create:permission');
     }
 
     /**
@@ -57,13 +54,13 @@ class PermissionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Permission $permission)
+    public function update(User $user = null, Permission $permission)
     {
         if ($permission->is_application_permission) {
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'update:permission') || $user->tokenCan('update:permission');
+        return $this->hasPermissionTo($user, 'update:permission') || $user?->tokenCan('update:permission');
     }
 
     /**
@@ -71,13 +68,13 @@ class PermissionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Permission $permission)
+    public function delete(User $user = null, Permission $permission)
     {
         if ($permission->is_application_permission) {
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:permission') || $user->tokenCan('delete:permission');
+        return $this->hasPermissionTo($user, 'delete:permission') || $user?->tokenCan('delete:permission');
     }
 
     /**
@@ -85,7 +82,7 @@ class PermissionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function detachRole(User $user, Permission $permission, Role $role)
+    public function detachRole(User $user = null, Permission $permission, Role $role)
     {
         if ($permission->is_application_permission && $role->is_application_role) {
             return false;
@@ -99,13 +96,13 @@ class PermissionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Permission $permission)
+    public function restore(User $user = null, Permission $permission)
     {
         if ($permission->is_application_permission) {
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:permission') || $user->tokenCan('delete:permission');
+        return $this->hasPermissionTo($user, 'delete:permission') || $user?->tokenCan('delete:permission');
     }
 
     /**
@@ -113,12 +110,12 @@ class PermissionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Permission $permission)
+    public function forceDelete(User $user = null, Permission $permission)
     {
         if ($permission->is_application_permission) {
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:permission') || $user->tokenCan('delete:permission');
+        return $this->hasPermissionTo($user, 'delete:permission') || $user?->tokenCan('delete:permission');
     }
 }

@@ -4,14 +4,11 @@ namespace App\Policies;
 
 use App\Models\StatusRecord;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class StatusRecordPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -27,9 +24,9 @@ class StatusRecordPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:statusrecord') || $user->tokenCan('view:statusrecord');
+        return $this->hasPermissionTo($user, 'view:statusrecord') || $user?->tokenCan('view:statusrecord');
     }
 
     /**
@@ -37,9 +34,9 @@ class StatusRecordPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, StatusRecord $statusRecord)
+    public function view(User $user = null, StatusRecord $statusRecord)
     {
-        return ($this->hasPermissionTo($user, 'view:statusrecord') || $user->tokenCan('view:statusrecord')) &&
+        return ($this->hasPermissionTo($user, 'view:statusrecord') || $user?->tokenCan('view:statusrecord')) &&
                Gate::check('view', $statusRecord->model);
     }
 
@@ -48,9 +45,9 @@ class StatusRecordPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:statusrecord') || $user->tokenCan('create:statusrecord');
+        return $this->hasPermissionTo($user, 'create:statusrecord') || $user?->tokenCan('create:statusrecord');
     }
 
     /**
@@ -58,9 +55,9 @@ class StatusRecordPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, StatusRecord $statusRecord)
+    public function update(User $user = null, StatusRecord $statusRecord)
     {
-        return ($this->hasPermissionTo($user, 'update:statusrecord') || $user->tokenCan('update:statusrecord')) &&
+        return ($this->hasPermissionTo($user, 'update:statusrecord') || $user?->tokenCan('update:statusrecord')) &&
                Gate::check('update', $statusRecord->model);
     }
 
@@ -69,9 +66,9 @@ class StatusRecordPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, StatusRecord $statusRecord)
+    public function delete(User $user = null, StatusRecord $statusRecord)
     {
-        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user->tokenCan('delete:statusrecord')) &&
+        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user?->tokenCan('delete:statusrecord')) &&
                Gate::check('delete', $statusRecord->model);
     }
 
@@ -80,9 +77,9 @@ class StatusRecordPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, StatusRecord $statusRecord)
+    public function restore(User $user = null, StatusRecord $statusRecord)
     {
-        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user->tokenCan('delete:statusrecord')) &&
+        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user?->tokenCan('delete:statusrecord')) &&
                Gate::check('restore', $statusRecord->model);
     }
 
@@ -91,9 +88,9 @@ class StatusRecordPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, StatusRecord $statusRecord)
+    public function forceDelete(User $user = null, StatusRecord $statusRecord)
     {
-        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user->tokenCan('delete:statusrecord')) &&
+        return ($this->hasPermissionTo($user, 'delete:statusrecord') || $user?->tokenCan('delete:statusrecord')) &&
                Gate::check('forceDelete', $statusRecord->model);
     }
 }

@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class TaskPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class TaskPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:task') || $user->tokenCan('view:task');
+        return $this->hasPermissionTo($user, 'view:task') || $user?->tokenCan('view:task');
     }
 
     /**
@@ -36,10 +33,10 @@ class TaskPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Task $task)
+    public function view(User $user = null, Task $task)
     {
         return $this->hasPermissionTo($user, 'view:task') ||
-               $user->tokenCan('view:task') ||
+               $user?->tokenCan('view:task') ||
                $task->users->contains($user);
     }
 
@@ -48,9 +45,9 @@ class TaskPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:task') || $user->tokenCan('create:task');
+        return $this->hasPermissionTo($user, 'create:task') || $user?->tokenCan('create:task');
     }
 
     /**
@@ -58,9 +55,9 @@ class TaskPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Task $task)
+    public function update(User $user = null, Task $task)
     {
-        return $this->hasPermissionTo($user, 'update:task') || $user->tokenCan('update:task');
+        return $this->hasPermissionTo($user, 'update:task') || $user?->tokenCan('update:task');
     }
 
     /**
@@ -68,9 +65,9 @@ class TaskPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Task $task)
+    public function delete(User $user = null, Task $task)
     {
-        return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
+        return $this->hasPermissionTo($user, 'delete:task') || $user?->tokenCan('delete:task');
     }
 
     /**
@@ -78,9 +75,9 @@ class TaskPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Task $task)
+    public function restore(User $user = null, Task $task)
     {
-        return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
+        return $this->hasPermissionTo($user, 'delete:task') || $user?->tokenCan('delete:task');
     }
 
     /**
@@ -88,9 +85,9 @@ class TaskPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Task $task)
+    public function forceDelete(User $user = null, Task $task)
     {
-        return $this->hasPermissionTo($user, 'delete:task') || $user->tokenCan('delete:task');
+        return $this->hasPermissionTo($user, 'delete:task') || $user?->tokenCan('delete:task');
     }
 
     /**
@@ -98,17 +95,7 @@ class TaskPolicy extends Policy
      *
      * @return bool|\Illuminate\Auth\Access\Response
      */
-    public function attachAnyUser(User $user, Task $task)
-    {
-        return $this->update($user, $task);
-    }
-
-    /**
-     * Determine where the user can attach to the model.
-     *
-     * @return bool|\Illuminate\Auth\Access\Response
-     */
-    public function attachUser(User $user, Task $task)
+    public function attachAnyUser(User $user = null, Task $task)
     {
         return $this->update($user, $task);
     }
@@ -118,7 +105,17 @@ class TaskPolicy extends Policy
      *
      * @return bool|\Illuminate\Auth\Access\Response
      */
-    public function detachUser(User $user, Task $task)
+    public function attachUser(User $user = null, Task $task)
+    {
+        return $this->update($user, $task);
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function detachUser(User $user = null, Task $task)
     {
         return $this->update($user, $task);
     }

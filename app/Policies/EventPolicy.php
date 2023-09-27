@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Event;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class EventPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,23 +23,23 @@ class EventPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:event') || $user->tokenCan('view:event');
+        return $this->hasPermissionTo($user, 'view:event') || $user?->tokenCan('view:event');
     }
 
     /**x
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\User $user
+     * @param \App\Models\?User $user = null
      * @param \App\Models\Event $event
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Event $event)
+    public function view(User $user = null, Event $event)
     {
         return $this->hasPermissionTo($user, 'view:event') ||
-               $user->tokenCan('view:event') ||
+               $user?->tokenCan('view:event') ||
                $event->registrations->contains($user);
     }
 
@@ -51,9 +48,9 @@ class EventPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:event') || $user->tokenCan('create:event');
+        return $this->hasPermissionTo($user, 'create:event') || $user?->tokenCan('create:event');
     }
 
     /**
@@ -61,9 +58,9 @@ class EventPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Event $event)
+    public function update(User $user = null, Event $event)
     {
-        return $this->hasPermissionTo($user, 'update:event') || $user->tokenCan('update:event');
+        return $this->hasPermissionTo($user, 'update:event') || $user?->tokenCan('update:event');
     }
 
     /**
@@ -71,9 +68,9 @@ class EventPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Event $event)
+    public function delete(User $user = null, Event $event)
     {
-        return $this->hasPermissionTo($user, 'delete:event') || $user->tokenCan('delete:event');
+        return $this->hasPermissionTo($user, 'delete:event') || $user?->tokenCan('delete:event');
     }
 
     /**
@@ -81,9 +78,9 @@ class EventPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Event $event)
+    public function restore(User $user = null, Event $event)
     {
-        return $this->hasPermissionTo($user, 'delete:event') || $user->tokenCan('delete:event');
+        return $this->hasPermissionTo($user, 'delete:event') || $user?->tokenCan('delete:event');
     }
 
     /**
@@ -91,9 +88,9 @@ class EventPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Event $event)
+    public function forceDelete(User $user = null, Event $event)
     {
-        return $this->hasPermissionTo($user, 'delete:event') || $user->tokenCan('delete:event');
+        return $this->hasPermissionTo($user, 'delete:event') || $user?->tokenCan('delete:event');
     }
 
     /**
@@ -101,17 +98,7 @@ class EventPolicy extends Policy
      *
      * @return bool|\Illuminate\Auth\Access\Response
      */
-    public function attachAnyUser(User $user, Event $event)
-    {
-        return $this->update($user, $event);
-    }
-
-    /**
-     * Determine where the user can attach to the model.
-     *
-     * @return bool|\Illuminate\Auth\Access\Response
-     */
-    public function attachUser(User $user, Event $event)
+    public function attachAnyUser(User $user = null, Event $event)
     {
         return $this->update($user, $event);
     }
@@ -121,7 +108,17 @@ class EventPolicy extends Policy
      *
      * @return bool|\Illuminate\Auth\Access\Response
      */
-    public function detachUser(User $user, Event $event)
+    public function attachUser(User $user = null, Event $event)
+    {
+        return $this->update($user, $event);
+    }
+
+    /**
+     * Determine where the user can attach to the model.
+     *
+     * @return bool|\Illuminate\Auth\Access\Response
+     */
+    public function detachUser(User $user = null, Event $event)
     {
         return $this->update($user, $event);
     }

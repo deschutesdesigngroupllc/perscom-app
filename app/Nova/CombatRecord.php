@@ -44,21 +44,23 @@ class CombatRecord extends Resource
     public static $search = ['id', 'text'];
 
     /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return Str::singular(Str::title(setting('localization_combat', 'Combat'))).' Records';
+    }
+
+    /**
      * Get the URI key for the resource.
      *
      * @return string
      */
     public static function uriKey()
     {
-        return 'combat-records';
-    }
-
-    /**
-     * @return string
-     */
-    public static function label()
-    {
-        return 'Combat Records';
+        return Str::slug(Str::singular(setting('localization_combat', 'combat')).' records');
     }
 
     /**

@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\QualificationRecord;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class QualificationRecordsPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,7 +23,7 @@ class QualificationRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return true;
     }
@@ -36,11 +33,11 @@ class QualificationRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, QualificationRecord $qualification)
+    public function view(User $user = null, QualificationRecord $qualification)
     {
         return $this->hasPermissionTo($user, 'view:qualificationrecord') ||
-               $qualification->user?->id === $user->id ||
-               $user->tokenCan('view:qualificationrecord');
+               $qualification->user?->id === $user?->id ||
+               $user?->tokenCan('view:qualificationrecord');
     }
 
     /**
@@ -48,10 +45,10 @@ class QualificationRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         return $this->hasPermissionTo($user, 'create:qualificationrecord') ||
-               $user->tokenCan('create:qualificationrecord');
+               $user?->tokenCan('create:qualificationrecord');
     }
 
     /**
@@ -59,10 +56,10 @@ class QualificationRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, QualificationRecord $qualification)
+    public function update(User $user = null, QualificationRecord $qualification)
     {
         return $this->hasPermissionTo($user, 'update:qualificationrecord') ||
-               $user->tokenCan('update:qualificationrecord');
+               $user?->tokenCan('update:qualificationrecord');
     }
 
     /**
@@ -70,10 +67,10 @@ class QualificationRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, QualificationRecord $qualification)
+    public function delete(User $user = null, QualificationRecord $qualification)
     {
         return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
-               $user->tokenCan('delete:qualificationrecord');
+               $user?->tokenCan('delete:qualificationrecord');
     }
 
     /**
@@ -81,10 +78,10 @@ class QualificationRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, QualificationRecord $qualification)
+    public function restore(User $user = null, QualificationRecord $qualification)
     {
         return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
-               $user->tokenCan('delete:qualificationrecord');
+               $user?->tokenCan('delete:qualificationrecord');
     }
 
     /**
@@ -92,9 +89,9 @@ class QualificationRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, QualificationRecord $qualification)
+    public function forceDelete(User $user = null, QualificationRecord $qualification)
     {
         return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
-               $user->tokenCan('delete:qualificationrecord');
+               $user?->tokenCan('delete:qualificationrecord');
     }
 }

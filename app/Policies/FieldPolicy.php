@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Field;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class FieldPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class FieldPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:field') || $user->tokenCan('view:field');
+        return $this->hasPermissionTo($user, 'view:field') || $user?->tokenCan('view:field');
     }
 
     /**
@@ -36,9 +33,9 @@ class FieldPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Field $field)
+    public function view(User $user = null, Field $field)
     {
-        return $this->hasPermissionTo($user, 'view:field') || $user->tokenCan('view:field');
+        return $this->hasPermissionTo($user, 'view:field') || $user?->tokenCan('view:field');
     }
 
     /**
@@ -46,9 +43,9 @@ class FieldPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:field') || $user->tokenCan('create:field');
+        return $this->hasPermissionTo($user, 'create:field') || $user?->tokenCan('create:field');
     }
 
     /**
@@ -56,9 +53,9 @@ class FieldPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Field $field)
+    public function update(User $user = null, Field $field)
     {
-        return $this->hasPermissionTo($user, 'update:field') || $user->tokenCan('update:field');
+        return $this->hasPermissionTo($user, 'update:field') || $user?->tokenCan('update:field');
     }
 
     /**
@@ -66,9 +63,9 @@ class FieldPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Field $field)
+    public function delete(User $user = null, Field $field)
     {
-        return $this->hasPermissionTo($user, 'delete:field') || $user->tokenCan('delete:field');
+        return $this->hasPermissionTo($user, 'delete:field') || $user?->tokenCan('delete:field');
     }
 
     /**
@@ -76,9 +73,9 @@ class FieldPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Field $field)
+    public function restore(User $user = null, Field $field)
     {
-        return $this->hasPermissionTo($user, 'delete:field') || $user->tokenCan('delete:field');
+        return $this->hasPermissionTo($user, 'delete:field') || $user?->tokenCan('delete:field');
     }
 
     /**
@@ -86,8 +83,8 @@ class FieldPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Field $field)
+    public function forceDelete(User $user = null, Field $field)
     {
-        return $this->hasPermissionTo($user, 'delete:field') || $user->tokenCan('delete:field');
+        return $this->hasPermissionTo($user, 'delete:field') || $user?->tokenCan('delete:field');
     }
 }

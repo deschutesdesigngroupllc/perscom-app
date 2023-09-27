@@ -76,7 +76,8 @@ class BatchCreateQualificationRecord extends Action
             MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')->options(
                 User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
             )->rules('required'),
-            BelongsTo::make('Qualification', 'qualification', Qualification::class)->showCreateRelationButton(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))), 'qualification', Qualification::class)
+                ->showCreateRelationButton(),
             Textarea::make('Text'),
             BelongsTo::make('Document')->nullable(),
         ];

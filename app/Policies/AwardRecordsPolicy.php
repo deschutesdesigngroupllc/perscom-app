@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\AwardRecord;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class AwardRecordsPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,7 +23,7 @@ class AwardRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return true;
     }
@@ -36,11 +33,11 @@ class AwardRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, AwardRecord $award)
+    public function view(User $user = null, AwardRecord $award)
     {
         return $this->hasPermissionTo($user, 'view:awardrecord') ||
-               $award->user?->id === $user->id ||
-               $user->tokenCan('view:awardrecord');
+               $award->user?->id === $user?->id ||
+               $user?->tokenCan('view:awardrecord');
     }
 
     /**
@@ -48,9 +45,9 @@ class AwardRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:awardrecord') || $user->tokenCan('create:awardrecord');
+        return $this->hasPermissionTo($user, 'create:awardrecord') || $user?->tokenCan('create:awardrecord');
     }
 
     /**
@@ -58,9 +55,9 @@ class AwardRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, AwardRecord $award)
+    public function update(User $user = null, AwardRecord $award)
     {
-        return $this->hasPermissionTo($user, 'update:awardrecord') || $user->tokenCan('update:awardrecord');
+        return $this->hasPermissionTo($user, 'update:awardrecord') || $user?->tokenCan('update:awardrecord');
     }
 
     /**
@@ -68,9 +65,9 @@ class AwardRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, AwardRecord $award)
+    public function delete(User $user = null, AwardRecord $award)
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user->tokenCan('delete:awardrecord');
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user?->tokenCan('delete:awardrecord');
     }
 
     /**
@@ -78,9 +75,9 @@ class AwardRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, AwardRecord $award)
+    public function restore(User $user = null, AwardRecord $award)
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user->tokenCan('delete:awardrecord');
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user?->tokenCan('delete:awardrecord');
     }
 
     /**
@@ -88,8 +85,8 @@ class AwardRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, AwardRecord $award)
+    public function forceDelete(User $user = null, AwardRecord $award)
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user->tokenCan('delete:awardrecord');
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user?->tokenCan('delete:awardrecord');
     }
 }

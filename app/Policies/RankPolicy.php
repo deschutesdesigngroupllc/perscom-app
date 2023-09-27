@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Rank;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class RankPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class RankPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:rank') || $user->tokenCan('view:rank');
+        return $this->hasPermissionTo($user, 'view:rank') || $user?->tokenCan('view:rank');
     }
 
     /**
@@ -36,9 +33,9 @@ class RankPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Rank $rank)
+    public function view(User $user = null, Rank $rank)
     {
-        return $this->hasPermissionTo($user, 'view:rank') || $user->tokenCan('view:rank');
+        return $this->hasPermissionTo($user, 'view:rank') || $user?->tokenCan('view:rank');
     }
 
     /**
@@ -46,9 +43,9 @@ class RankPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:rank') || $user->tokenCan('create:rank');
+        return $this->hasPermissionTo($user, 'create:rank') || $user?->tokenCan('create:rank');
     }
 
     /**
@@ -56,9 +53,9 @@ class RankPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Rank $rank)
+    public function update(User $user = null, Rank $rank)
     {
-        return $this->hasPermissionTo($user, 'update:rank') || $user->tokenCan('update:rank');
+        return $this->hasPermissionTo($user, 'update:rank') || $user?->tokenCan('update:rank');
     }
 
     /**
@@ -66,9 +63,9 @@ class RankPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Rank $rank)
+    public function delete(User $user = null, Rank $rank)
     {
-        return $this->hasPermissionTo($user, 'delete:rank') || $user->tokenCan('delete:rank');
+        return $this->hasPermissionTo($user, 'delete:rank') || $user?->tokenCan('delete:rank');
     }
 
     /**
@@ -76,9 +73,9 @@ class RankPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Rank $rank)
+    public function restore(User $user = null, Rank $rank)
     {
-        return $this->hasPermissionTo($user, 'delete:rank') || $user->tokenCan('delete:rank');
+        return $this->hasPermissionTo($user, 'delete:rank') || $user?->tokenCan('delete:rank');
     }
 
     /**
@@ -86,8 +83,8 @@ class RankPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Rank $rank)
+    public function forceDelete(User $user = null, Rank $rank)
     {
-        return $this->hasPermissionTo($user, 'delete:rank') || $user->tokenCan('delete:rank');
+        return $this->hasPermissionTo($user, 'delete:rank') || $user?->tokenCan('delete:rank');
     }
 }

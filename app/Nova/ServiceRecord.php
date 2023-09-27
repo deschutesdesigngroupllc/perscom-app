@@ -44,21 +44,23 @@ class ServiceRecord extends Resource
     public static $search = ['id', 'text'];
 
     /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return Str::singular(Str::title(setting('localization_service', 'Service'))).' Records';
+    }
+
+    /**
      * Get the URI key for the resource.
      *
      * @return string
      */
     public static function uriKey()
     {
-        return 'service-records';
-    }
-
-    /**
-     * @return string
-     */
-    public static function label()
-    {
-        return 'Service Records';
+        return Str::slug(Str::singular(setting('localization_service', 'service')).' records');
     }
 
     /**

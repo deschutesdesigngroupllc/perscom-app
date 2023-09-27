@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Calendar;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class CalendarPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,22 +23,22 @@ class CalendarPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:calendar') || $user->tokenCan('view:calendar');
+        return $this->hasPermissionTo($user, 'view:calendar') || $user?->tokenCan('view:calendar');
     }
 
     /**x
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\User $user
+     * @param \App\Models\?User $user = null
      * @param \App\Models\Calendar $calendar
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Calendar $calendar)
+    public function view(User $user = null, Calendar $calendar)
     {
-        return $this->hasPermissionTo($user, 'view:calendar') || $user->tokenCan('view:calendar');
+        return $this->hasPermissionTo($user, 'view:calendar') || $user?->tokenCan('view:calendar');
     }
 
     /**
@@ -49,9 +46,9 @@ class CalendarPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:calendar') || $user->tokenCan('create:calendar');
+        return $this->hasPermissionTo($user, 'create:calendar') || $user?->tokenCan('create:calendar');
     }
 
     /**
@@ -59,9 +56,9 @@ class CalendarPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Calendar $calendar)
+    public function update(User $user = null, Calendar $calendar)
     {
-        return $this->hasPermissionTo($user, 'update:calendar') || $user->tokenCan('update:calendar');
+        return $this->hasPermissionTo($user, 'update:calendar') || $user?->tokenCan('update:calendar');
     }
 
     /**
@@ -69,9 +66,9 @@ class CalendarPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Calendar $calendar)
+    public function delete(User $user = null, Calendar $calendar)
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || $user->tokenCan('delete:calendar');
+        return $this->hasPermissionTo($user, 'delete:calendar') || $user?->tokenCan('delete:calendar');
     }
 
     /**
@@ -79,9 +76,9 @@ class CalendarPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Calendar $calendar)
+    public function restore(User $user = null, Calendar $calendar)
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || $user->tokenCan('delete:calendar');
+        return $this->hasPermissionTo($user, 'delete:calendar') || $user?->tokenCan('delete:calendar');
     }
 
     /**
@@ -89,8 +86,8 @@ class CalendarPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Calendar $calendar)
+    public function forceDelete(User $user = null, Calendar $calendar)
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || $user->tokenCan('delete:calendar');
+        return $this->hasPermissionTo($user, 'delete:calendar') || $user?->tokenCan('delete:calendar');
     }
 }

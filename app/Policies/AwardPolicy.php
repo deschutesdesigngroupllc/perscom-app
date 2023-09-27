@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Award;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class AwardPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class AwardPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:award') || $user->tokenCan('view:award');
+        return $this->hasPermissionTo($user, 'view:award') || $user?->tokenCan('view:award');
     }
 
     /**
@@ -36,9 +33,9 @@ class AwardPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Award $award)
+    public function view(User $user = null, Award $award)
     {
-        return $this->hasPermissionTo($user, 'view:award') || $user->tokenCan('view:award');
+        return $this->hasPermissionTo($user, 'view:award') || $user?->tokenCan('view:award');
     }
 
     /**
@@ -46,9 +43,9 @@ class AwardPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:award') || $user->tokenCan('create:award');
+        return $this->hasPermissionTo($user, 'create:award') || $user?->tokenCan('create:award');
     }
 
     /**
@@ -56,9 +53,9 @@ class AwardPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Award $award)
+    public function update(User $user = null, Award $award)
     {
-        return $this->hasPermissionTo($user, 'update:award') || $user->tokenCan('update:award');
+        return $this->hasPermissionTo($user, 'update:award') || $user?->tokenCan('update:award');
     }
 
     /**
@@ -66,9 +63,9 @@ class AwardPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Award $award)
+    public function delete(User $user = null, Award $award)
     {
-        return $this->hasPermissionTo($user, 'delete:award') || $user->tokenCan('delete:award');
+        return $this->hasPermissionTo($user, 'delete:award') || $user?->tokenCan('delete:award');
     }
 
     /**
@@ -76,9 +73,9 @@ class AwardPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Award $award)
+    public function restore(User $user = null, Award $award)
     {
-        return $this->hasPermissionTo($user, 'delete:award') || $user->tokenCan('delete:award');
+        return $this->hasPermissionTo($user, 'delete:award') || $user?->tokenCan('delete:award');
     }
 
     /**
@@ -86,8 +83,8 @@ class AwardPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Award $award)
+    public function forceDelete(User $user = null, Award $award)
     {
-        return $this->hasPermissionTo($user, 'delete:award') || $user->tokenCan('delete:award');
+        return $this->hasPermissionTo($user, 'delete:award') || $user?->tokenCan('delete:award');
     }
 }
