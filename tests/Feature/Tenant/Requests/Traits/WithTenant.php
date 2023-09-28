@@ -9,7 +9,7 @@ use App\Models\User;
 use Carbon\CarbonInterface;
 use Exception;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\ParallelTesting;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
@@ -49,12 +49,23 @@ trait WithTenant
 
         $this->admin = Admin::factory()->create();
 
-        $id = random_int(1, 1000);
-        $token = ParallelTesting::token() ?: Str::random();
+        $id = random_int(1, 1000000);
+        $token = $this->getTestToken();
+
+        $tenantName = "Tenant {$id} Test {$token}";
+        $tenantDatabaseName = "tenant_{$id}_test_{$token}_testing";
+
+        Log::debug('Creating tenant', [
+            'id' => $id,
+            'token' => $token,
+            'tenantName' => $tenantName,
+            'tenantDatabaseName' => $tenantDatabaseName,
+        ]);
+
         $this->tenant = Tenant::factory()->state([
             'id' => $id,
-            'name' => "Tenant {$id} Test {$token}",
-            'tenancy_db_name' => "tenant_{$id}_test_{$token}_testing",
+            'name' => $tenantName,
+            'tenancy_db_name' => $tenantDatabaseName,
         ])->create();
 
         $this->domain = Domain::factory()->state([
