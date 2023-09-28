@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Specialty;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class SpecialtyPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class SpecialtyPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:specialty') || $user->tokenCan('view:specialty');
+        return $this->hasPermissionTo($user, 'view:specialty') || $user?->tokenCan('view:specialty');
     }
 
     /**
@@ -36,9 +33,9 @@ class SpecialtyPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Specialty $mos)
+    public function view(User $user = null, Specialty $mos)
     {
-        return $this->hasPermissionTo($user, 'view:specialty') || $user->tokenCan('view:specialty');
+        return $this->hasPermissionTo($user, 'view:specialty') || $user?->tokenCan('view:specialty');
     }
 
     /**
@@ -46,9 +43,9 @@ class SpecialtyPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:specialty') || $user->tokenCan('create:specialty');
+        return $this->hasPermissionTo($user, 'create:specialty') || $user?->tokenCan('create:specialty');
     }
 
     /**
@@ -56,9 +53,9 @@ class SpecialtyPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Specialty $mos)
+    public function update(User $user = null, Specialty $mos)
     {
-        return $this->hasPermissionTo($user, 'update:specialty') || $user->tokenCan('update:specialty');
+        return $this->hasPermissionTo($user, 'update:specialty') || $user?->tokenCan('update:specialty');
     }
 
     /**
@@ -66,9 +63,9 @@ class SpecialtyPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Specialty $mos)
+    public function delete(User $user = null, Specialty $mos)
     {
-        return $this->hasPermissionTo($user, 'delete:specialty') || $user->tokenCan('delete:specialty');
+        return $this->hasPermissionTo($user, 'delete:specialty') || $user?->tokenCan('delete:specialty');
     }
 
     /**
@@ -76,9 +73,9 @@ class SpecialtyPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Specialty $mos)
+    public function restore(User $user = null, Specialty $mos)
     {
-        return $this->hasPermissionTo($user, 'delete:specialty') || $user->tokenCan('delete:specialty');
+        return $this->hasPermissionTo($user, 'delete:specialty') || $user?->tokenCan('delete:specialty');
     }
 
     /**
@@ -86,8 +83,8 @@ class SpecialtyPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Specialty $mos)
+    public function forceDelete(User $user = null, Specialty $mos)
     {
-        return $this->hasPermissionTo($user, 'delete:specialty') || $user->tokenCan('delete:specialty');
+        return $this->hasPermissionTo($user, 'delete:specialty') || $user?->tokenCan('delete:specialty');
     }
 }

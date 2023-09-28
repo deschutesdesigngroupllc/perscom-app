@@ -12,15 +12,12 @@ namespace App\Policies;
 use App\Features\ApiAccessFeature;
 use App\Models\PassportToken;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Laravel\Pennant\Feature;
 
 class PassportTokenPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -40,7 +37,7 @@ class PassportTokenPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return Gate::check('api', $user);
     }
@@ -50,7 +47,7 @@ class PassportTokenPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, PassportToken $token)
+    public function view(User $user = null, PassportToken $token)
     {
         return Gate::check('api', $user);
     }
@@ -60,7 +57,7 @@ class PassportTokenPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         return Gate::check('api', $user);
     }
@@ -70,7 +67,7 @@ class PassportTokenPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, PassportToken $token)
+    public function update(User $user = null, PassportToken $token)
     {
         return Gate::check('api', $user);
     }
@@ -80,7 +77,7 @@ class PassportTokenPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, PassportToken $token)
+    public function delete(User $user = null, PassportToken $token)
     {
         return Gate::check('api', $user);
     }
@@ -90,7 +87,7 @@ class PassportTokenPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, PassportToken $token)
+    public function restore(User $user = null, PassportToken $token)
     {
         return Gate::check('api', $user);
     }
@@ -100,7 +97,7 @@ class PassportTokenPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, PassportToken $token)
+    public function forceDelete(User $user = null, PassportToken $token)
     {
         return Gate::check('api', $user);
     }

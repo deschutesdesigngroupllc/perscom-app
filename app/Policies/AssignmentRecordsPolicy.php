@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\AssignmentRecord;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class AssignmentRecordsPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,7 +23,7 @@ class AssignmentRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return true;
     }
@@ -36,11 +33,11 @@ class AssignmentRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, AssignmentRecord $assignment)
+    public function view(User $user = null, AssignmentRecord $assignment)
     {
         return $this->hasPermissionTo($user, 'view:assignmentrecord') ||
-               $assignment->user?->id === $user->id ||
-               $user->tokenCan('view:assignmentrecord');
+               $assignment->user?->id === $user?->id ||
+               $user?->tokenCan('view:assignmentrecord');
     }
 
     /**
@@ -48,9 +45,9 @@ class AssignmentRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:assignmentrecord') || $user->tokenCan('create:assignmentrecord');
+        return $this->hasPermissionTo($user, 'create:assignmentrecord') || $user?->tokenCan('create:assignmentrecord');
     }
 
     /**
@@ -58,9 +55,9 @@ class AssignmentRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, AssignmentRecord $assignment)
+    public function update(User $user = null, AssignmentRecord $assignment)
     {
-        return $this->hasPermissionTo($user, 'update:assignmentrecord') || $user->tokenCan('update:assignmentrecord');
+        return $this->hasPermissionTo($user, 'update:assignmentrecord') || $user?->tokenCan('update:assignmentrecord');
     }
 
     /**
@@ -68,9 +65,9 @@ class AssignmentRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, AssignmentRecord $assignment)
+    public function delete(User $user = null, AssignmentRecord $assignment)
     {
-        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user->tokenCan('delete:assignmentrecord');
+        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user?->tokenCan('delete:assignmentrecord');
     }
 
     /**
@@ -78,9 +75,9 @@ class AssignmentRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, AssignmentRecord $assignment)
+    public function restore(User $user = null, AssignmentRecord $assignment)
     {
-        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user->tokenCan('delete:assignmentrecord');
+        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user?->tokenCan('delete:assignmentrecord');
     }
 
     /**
@@ -88,8 +85,8 @@ class AssignmentRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, AssignmentRecord $assignment)
+    public function forceDelete(User $user = null, AssignmentRecord $assignment)
     {
-        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user->tokenCan('delete:assignmentrecord');
+        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || $user?->tokenCan('delete:assignmentrecord');
     }
 }

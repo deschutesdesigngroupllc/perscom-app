@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Mail;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class MailPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return true|void
      */
@@ -26,9 +23,9 @@ class MailPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:mail') || $user->tokenCan('view:mail');
+        return $this->hasPermissionTo($user, 'view:mail') || $user?->tokenCan('view:mail');
     }
 
     /**
@@ -36,9 +33,9 @@ class MailPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Mail $mail)
+    public function view(User $user = null, Mail $mail)
     {
-        return $this->hasPermissionTo($user, 'view:mail') || $user->tokenCan('view:mail');
+        return $this->hasPermissionTo($user, 'view:mail') || $user?->tokenCan('view:mail');
     }
 
     /**
@@ -46,9 +43,9 @@ class MailPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:mail') || $user->tokenCan('create:mail');
+        return $this->hasPermissionTo($user, 'create:mail') || $user?->tokenCan('create:mail');
     }
 
     /**
@@ -56,9 +53,9 @@ class MailPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Mail $mail)
+    public function update(User $user = null, Mail $mail)
     {
-        return $this->hasPermissionTo($user, 'update:mail') || $user->tokenCan('update:mail');
+        return $this->hasPermissionTo($user, 'update:mail') || $user?->tokenCan('update:mail');
     }
 
     /**
@@ -66,9 +63,9 @@ class MailPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Mail $mail)
+    public function delete(User $user = null, Mail $mail)
     {
-        return $this->hasPermissionTo($user, 'delete:mail') || $user->tokenCan('delete:mail');
+        return $this->hasPermissionTo($user, 'delete:mail') || $user?->tokenCan('delete:mail');
     }
 
     /**
@@ -76,9 +73,9 @@ class MailPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Mail $mail)
+    public function restore(User $user = null, Mail $mail)
     {
-        return $this->hasPermissionTo($user, 'delete:mail') || $user->tokenCan('delete:mail');
+        return $this->hasPermissionTo($user, 'delete:mail') || $user?->tokenCan('delete:mail');
     }
 
     /**
@@ -86,8 +83,8 @@ class MailPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Mail $mail)
+    public function forceDelete(User $user = null, Mail $mail)
     {
-        return $this->hasPermissionTo($user, 'delete:mail') || $user->tokenCan('delete:mail');
+        return $this->hasPermissionTo($user, 'delete:mail') || $user?->tokenCan('delete:mail');
     }
 }

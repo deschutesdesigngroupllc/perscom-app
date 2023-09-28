@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Tag;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class TagPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,7 +23,7 @@ class TagPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return true;
     }
@@ -36,7 +33,7 @@ class TagPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Tag $tag)
+    public function view(User $user = null, Tag $tag)
     {
         return true;
     }
@@ -46,7 +43,7 @@ class TagPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         return true;
     }
@@ -56,7 +53,7 @@ class TagPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Tag $tag)
+    public function update(User $user = null, Tag $tag)
     {
         return true;
     }
@@ -66,7 +63,7 @@ class TagPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Tag $tag)
+    public function delete(User $user = null, Tag $tag)
     {
         return true;
     }
@@ -76,7 +73,7 @@ class TagPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Tag $tag)
+    public function restore(User $user = null, Tag $tag)
     {
         return true;
     }
@@ -86,7 +83,7 @@ class TagPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Tag $tag)
+    public function forceDelete(User $user = null, Tag $tag)
     {
         return true;
     }

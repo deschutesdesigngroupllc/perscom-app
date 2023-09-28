@@ -12,6 +12,8 @@ class UserRequest extends Request
     public function commonRules(): array
     {
         return [
+            'name' => 'string',
+            'email' => 'email|unique:users,email',
             'email_verified_at' => 'nullable|date',
             'notes_updated_at' => 'nullable|date',
             'last_seen_at' => 'nullable|date',

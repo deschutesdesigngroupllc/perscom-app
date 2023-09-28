@@ -16,6 +16,8 @@ use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Actions\ExportAsCsv;
@@ -73,6 +75,16 @@ class User extends Resource
      * @var string[]
      */
     public static $orderBy = ['name' => 'asc'];
+
+    /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return Str::plural(Str::title(setting('localization_users', 'Users')));
+    }
 
     /**
      * Get the URI key for the resource.
@@ -143,13 +155,13 @@ class User extends Resource
             Heading::make('Meta')->onlyOnDetail(),
             DateTime::make('Created At')->onlyOnDetail(),
             DateTime::make('Updated At')->onlyOnDetail(),
-            Tabs::make('Assignment', [
-                Tab::make('Current Assignment', [
+            Tabs::make(Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
+                Tab::make('Current '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
                     Stack::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), [
                         Line::make('Position', function ($model) {
                             return $model->position->name ?? null;
                         })->asSubTitle(),
-                        Line::make('Last Assignment Date', function ($model) {
+                        Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
                             return optional($model->assignment_records->first()?->created_at, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
@@ -159,7 +171,7 @@ class User extends Resource
                         Line::make('Specialty', function ($model) {
                             return $model->specialty->name ?? null;
                         })->asSubTitle(),
-                        Line::make('Last Assignment Date', function ($model) {
+                        Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
                             return optional($model->assignment_records->first()?->created_at, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
@@ -169,16 +181,16 @@ class User extends Resource
                         Line::make('Unit', function ($model) {
                             return $model->unit->name ?? null;
                         })->asSubTitle(),
-                        Line::make('Last Assignment Date', function ($model) {
+                        Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
                             return optional($model->assignment_records->first()?->created_at, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                             });
                         })->asSmall(),
                     ])->showOnPreview(),
-                    DateTime::make('Last Assignment Change Date', function ($model) {
+                    DateTime::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Change Date', function ($model) {
                         return $model->assignment_records->first()->created_at ?? null;
                     })->onlyOnDetail(),
-                    Text::make('Time In Assignment', function ($model) {
+                    Text::make('Time In '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), function ($model) {
                         return optional($model->time_in_assignment, function ($date) {
                             return CarbonInterval::make($date)->forHumans();
                         });
@@ -191,7 +203,7 @@ class User extends Resource
                 BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_units', Unit::class)
                     ->showCreateRelationButton(),
             ])->showTitle(),
-            Panel::make('Assignment', [
+            Panel::make(Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
                     ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
                     ->nullable()
@@ -226,17 +238,15 @@ class User extends Resource
                     Line::make('Rank', function ($model) {
                         return $model->rank->name ?? null;
                     })->asSubTitle(),
-                    Line::make('Last Rank Change Date', function ($model) {
+                    Line::make('Last '.Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Change Date', function ($model) {
                         return optional($model->rank_records->first()?->created_at, function ($date) {
                             return 'Updated: '.Carbon::parse($date)->longRelativeToNowDiffForHumans();
                         });
                     })->asSmall(),
                 ])->showOnPreview(),
-                DateTime::make('Last '.
-                               Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
-                               ' Change Date', function ($model) {
-                                   return $model->rank_records->first()->created_at ?? null;
-                               })->onlyOnDetail(),
+                DateTime::make('Last '.Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Change Date', function ($model) {
+                    return $model->rank_records->first()->created_at ?? null;
+                })->onlyOnDetail(),
                 Text::make('Time In Grade', function ($model) {
                     return optional($model->time_in_grade, function ($date) {
                         return CarbonInterval::make($date)->forHumans();
@@ -252,15 +262,30 @@ class User extends Resource
                     ->canSeeWhen('create', \App\Models\RankRecord::class),
             ]),
             Tabs::make('Records', [
-                HasMany::make('Assignment Records', 'assignment_records', AssignmentRecord::class),
-                HasMany::make(Str::singular(Str::title(setting('localization_awards', 'Award'))).
-                              ' Records', 'award_records', AwardRecord::class),
-                HasMany::make('Combat Records', 'combat_records', CombatRecord::class),
-                HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).
-                              ' Records', 'qualification_records', QualificationRecord::class),
-                HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).
-                              ' Records', 'rank_records', RankRecord::class),
-                HasMany::make('Service Records', 'service_records', ServiceRecord::class),
+                HasMany::make(Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Records', 'assignment_records', AssignmentRecord::class)
+                    ->canSee(function () {
+                        return Gate::check('create', \App\Models\AssignmentRecord::class) || $this->resource->id === Auth::user()->getAuthIdentifier();
+                    }),
+                HasMany::make(Str::singular(Str::title(setting('localization_awards', 'Award'))).' Records', 'award_records', AwardRecord::class)
+                    ->canSee(function () {
+                        return Gate::check('create', \App\Models\AwardRecord::class) || $this->resource->id === Auth::user()->getAuthIdentifier();
+                    }),
+                HasMany::make(Str::singular(Str::title(setting('localization_combat', 'Combat'))).' Records', 'combat_records', CombatRecord::class)
+                    ->canSee(function () {
+                        return Gate::check('create', \App\Models\CombatRecord::class) || $this->resource->id === Auth::user()->getAuthIdentifier();
+                    }),
+                HasMany::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))).' Records', 'qualification_records', QualificationRecord::class)
+                    ->canSee(function () {
+                        return Gate::check('create', \App\Models\QualificationRecord::class) || $this->resource->id === Auth::user()->getAuthIdentifier();
+                    }),
+                HasMany::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records', 'rank_records', RankRecord::class)
+                    ->canSee(function () {
+                        return Gate::check('create', \App\Models\RankRecord::class) || $this->resource->id === Auth::user()->getAuthIdentifier();
+                    }),
+                HasMany::make(Str::singular(Str::title(setting('localization_service', 'Service'))).' Records', 'service_records', ServiceRecord::class)
+                    ->canSee(function () {
+                        return Gate::check('create', \App\Models\ServiceRecord::class) || $this->resource->id === Auth::user()->getAuthIdentifier();
+                    }),
                 HasMany::make('Submission Records', 'submissions', Submission::class),
             ])->showTitle(),
             MorphToMany::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'statuses', Status::class)

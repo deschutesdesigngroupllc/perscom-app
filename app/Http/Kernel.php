@@ -75,6 +75,7 @@ class Kernel extends HttpKernel
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
         'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'client' => \App\Http\Middleware\CheckClientCredentials::class,
         'feature' => \Laravel\Pennant\Middleware\EnsureFeaturesAreActive::class,
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'json' => \App\Http\Middleware\ForceJsonResponse::class,

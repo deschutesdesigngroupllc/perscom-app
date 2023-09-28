@@ -172,6 +172,7 @@ return [
                         \App\Features\CustomDomainFeature::class,
                         \App\Features\ExportDataFeature::class,
                         \App\Features\OAuth2AccessFeature::class,
+                        \App\Features\SingleSignOnFeature::class,
                         \App\Features\WebhookFeature::class,
                     ],
                 ],

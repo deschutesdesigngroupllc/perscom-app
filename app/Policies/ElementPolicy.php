@@ -4,14 +4,11 @@ namespace App\Policies;
 
 use App\Models\Element;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class ElementPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -27,7 +24,7 @@ class ElementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return true;
     }
@@ -37,7 +34,7 @@ class ElementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Element $element)
+    public function view(User $user = null, Element $element)
     {
         return Gate::check('view', $element->model);
     }
@@ -47,7 +44,7 @@ class ElementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         return true;
     }
@@ -57,7 +54,7 @@ class ElementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Element $element)
+    public function update(User $user = null, Element $element)
     {
         return Gate::check('update', $element->model);
     }
@@ -67,7 +64,7 @@ class ElementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Element $element)
+    public function delete(User $user = null, Element $element)
     {
         return Gate::check('delete', $element->model);
     }
@@ -77,7 +74,7 @@ class ElementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Element $element)
+    public function restore(User $user = null, Element $element)
     {
         return Gate::check('restore', $element->model);
     }
@@ -87,7 +84,7 @@ class ElementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Element $element)
+    public function forceDelete(User $user = null, Element $element)
     {
         return Gate::check('forceDelete', $element->model);
     }

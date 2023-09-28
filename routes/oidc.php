@@ -12,19 +12,12 @@ Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, Prev
     Route::group(['middleware' => 'web'], static function () {
         Route::get('/.well-known/openid-configuration', [DiscoveryController::class, 'index'])->name('discovery');
 
-        Route::group(['prefix' => 'oauth', 'middleware' => 'subscribed'], static function () {
-            Route::group(['middleware' => 'auth'], static function () {
-                Route::get('/logout', [LogoutController::class, 'index'])->name('logout');
-            });
+        Route::group(['prefix' => 'oauth', 'middleware' => ['auth', 'subscribed']], static function () {
+            Route::get('/logout', [LogoutController::class, 'index'])->name('logout');
         });
     });
 
-    Route::group(['prefix' => 'oauth', 'middleware' => ['api', 'subscribed']], static function () {
-        Route::group(['middleware' => 'auth:api'], static function () {
-            Route::group(['middleware' => 'scope:openid'], static function () {
-                Route::post('/logout', [LogoutController::class, 'index'])->name('logout');
-                Route::get('/userinfo', [UserInfoController::class, 'index'])->name('userinfo');
-            });
-        });
+    Route::group(['prefix' => 'oauth', 'middleware' => ['api', 'auth:api', 'subscribed', 'scope:openid']], static function () {
+        Route::get('/userinfo', [UserInfoController::class, 'index'])->name('userinfo');
     });
 });

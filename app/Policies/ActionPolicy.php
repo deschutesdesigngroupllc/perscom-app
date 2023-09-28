@@ -3,14 +3,11 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 use Laravel\Nova\Actions\ActionEvent;
 
 class ActionPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return true|void
      */
@@ -26,9 +23,9 @@ class ActionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:log') || $user->tokenCan('view:log');
+        return $this->hasPermissionTo($user, 'view:log') || $user?->tokenCan('view:log');
     }
 
     /**
@@ -36,8 +33,8 @@ class ActionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, ActionEvent $actionEvent)
+    public function view(User $user = null, ActionEvent $actionEvent)
     {
-        return $this->hasPermissionTo($user, 'view:log') || $user->tokenCan('view:log');
+        return $this->hasPermissionTo($user, 'view:log') || $user?->tokenCan('view:log');
     }
 }

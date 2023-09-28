@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Unit;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class UnitPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class UnitPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:unit') || $user->tokenCan('view:unit');
+        return $this->hasPermissionTo($user, 'view:unit') || $user?->tokenCan('view:unit');
     }
 
     /**
@@ -36,9 +33,9 @@ class UnitPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Unit $unit)
+    public function view(User $user = null, Unit $unit)
     {
-        return $this->hasPermissionTo($user, 'view:unit') || $user->tokenCan('view:unit');
+        return $this->hasPermissionTo($user, 'view:unit') || $user?->tokenCan('view:unit');
     }
 
     /**
@@ -46,9 +43,9 @@ class UnitPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:unit') || $user->tokenCan('create:user');
+        return $this->hasPermissionTo($user, 'create:unit') || $user?->tokenCan('create:user');
     }
 
     /**
@@ -56,9 +53,9 @@ class UnitPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Unit $unit)
+    public function update(User $user = null, Unit $unit)
     {
-        return $this->hasPermissionTo($user, 'update:unit') || $user->tokenCan('update:user');
+        return $this->hasPermissionTo($user, 'update:unit') || $user?->tokenCan('update:user');
     }
 
     /**
@@ -66,9 +63,9 @@ class UnitPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Unit $unit)
+    public function delete(User $user = null, Unit $unit)
     {
-        return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:unit') || $user?->tokenCan('delete:user');
     }
 
     /**
@@ -76,9 +73,9 @@ class UnitPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Unit $unit)
+    public function restore(User $user = null, Unit $unit)
     {
-        return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:unit') || $user?->tokenCan('delete:user');
     }
 
     /**
@@ -86,8 +83,8 @@ class UnitPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Unit $unit)
+    public function forceDelete(User $user = null, Unit $unit)
     {
-        return $this->hasPermissionTo($user, 'delete:unit') || $user->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:unit') || $user?->tokenCan('delete:user');
     }
 }

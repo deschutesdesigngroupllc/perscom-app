@@ -3,13 +3,10 @@
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class UserPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -25,9 +22,9 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:user') || $user->tokenCan('view:user');
+        return $this->hasPermissionTo($user, 'view:user') || $user?->tokenCan('view:user');
     }
 
     /**
@@ -35,9 +32,9 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, User $model)
+    public function view(User $user = null, User $model)
     {
-        return $this->hasPermissionTo($user, 'view:user') || $user->id === $model->id || $user->tokenCan('view:user');
+        return $this->hasPermissionTo($user, 'view:user') || $user?->id === $model->id || $user?->tokenCan('view:user');
     }
 
     /**
@@ -45,9 +42,9 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:user') || $user->tokenCan('create:user');
+        return $this->hasPermissionTo($user, 'create:user') || $user?->tokenCan('create:user');
     }
 
     /**
@@ -55,11 +52,11 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, User $model)
+    public function update(User $user = null, User $model)
     {
         return $this->hasPermissionTo($user, 'update:user') ||
-               $user->id === $model->id ||
-               $user->tokenCan('update:user');
+               $user?->id === $model->id ||
+               $user?->tokenCan('update:user');
     }
 
     /**
@@ -67,9 +64,9 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user = null, User $model)
     {
-        return $this->hasPermissionTo($user, 'delete:user') || $user->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:user') || $user?->tokenCan('delete:user');
     }
 
     /**
@@ -77,9 +74,9 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, User $model)
+    public function restore(User $user = null, User $model)
     {
-        return $this->hasPermissionTo($user, 'delete:user') || $user->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:user') || $user?->tokenCan('delete:user');
     }
 
     /**
@@ -87,9 +84,9 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, User $model)
+    public function forceDelete(User $user = null, User $model)
     {
-        return $this->hasPermissionTo($user, 'delete:user') || $user->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:user') || $user?->tokenCan('delete:user');
     }
 
     /**
@@ -97,9 +94,9 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function impersonate(User $user, User $model)
+    public function impersonate(User $user = null, User $model)
     {
-        return $this->hasPermissionTo($user, 'impersonate:user') || $user->tokenCan('impersonate:user');
+        return $this->hasPermissionTo($user, 'impersonate:user') || $user?->tokenCan('impersonate:user');
     }
 
     /**
@@ -107,32 +104,32 @@ class UserPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function note(User $user)
+    public function note(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'note:user') || $user->tokenCan('note:user');
+        return $this->hasPermissionTo($user, 'note:user') || $user?->tokenCan('note:user');
     }
 
     /**
      * @return bool
      */
-    public function billing(User $user)
+    public function billing(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'manage:billing') || $user->tokenCan('manage:billing');
+        return $this->hasPermissionTo($user, 'manage:billing') || $user?->tokenCan('manage:billing');
     }
 
     /**
      * @return bool
      */
-    public function api(User $user)
+    public function api(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'manage:api') || $user->tokenCan('manage:api');
+        return $this->hasPermissionTo($user, 'manage:api') || $user?->tokenCan('manage:api');
     }
 
     /**
      * @return bool
      */
-    public function webhook(User $user)
+    public function webhook(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'manage:webhook') || $user->tokenCan('manage:webhook');
+        return $this->hasPermissionTo($user, 'manage:webhook') || $user?->tokenCan('manage:webhook');
     }
 }

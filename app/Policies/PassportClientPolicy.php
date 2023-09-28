@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Features\OAuth2AccessFeature;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 use Laravel\Passport\Client;
@@ -12,8 +11,6 @@ use Laravel\Pennant\Feature;
 
 class PassportClientPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -33,7 +30,7 @@ class PassportClientPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return Gate::check('api', $user);
     }
@@ -43,7 +40,7 @@ class PassportClientPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Client $client)
+    public function view(User $user = null, Client $client)
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;
@@ -57,7 +54,7 @@ class PassportClientPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
         return Gate::check('api', $user);
     }
@@ -67,7 +64,7 @@ class PassportClientPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Client $client)
+    public function update(User $user = null, Client $client)
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;
@@ -81,7 +78,7 @@ class PassportClientPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Client $client)
+    public function delete(User $user = null, Client $client)
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;
@@ -95,7 +92,7 @@ class PassportClientPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Client $client)
+    public function restore(User $user = null, Client $client)
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;
@@ -109,7 +106,7 @@ class PassportClientPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Client $client)
+    public function forceDelete(User $user = null, Client $client)
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;

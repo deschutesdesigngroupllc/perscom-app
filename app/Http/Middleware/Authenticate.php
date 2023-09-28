@@ -2,15 +2,33 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
+use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate as Middleware;
+use Illuminate\Contracts\Container\BindingResolutionException;
 
 class Authenticate extends Middleware
 {
     /**
-     * Get the path the user should be redirected to when they are not authenticated.
+     * @return mixed
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return string|null
+     * @throws BindingResolutionException
+     */
+    public function handle($request, Closure $next, ...$guards)
+    {
+        try {
+            $this->authenticate($request, $guards);
+        } catch (AuthenticationException) {
+            $clientCredentialMiddleware = app()->make(CheckClientCredentials::class);
+
+            return $clientCredentialMiddleware->handle($request, $next);
+        }
+
+        return $next($request);
+    }
+
+    /**
+     * @return string|void|null
      */
     protected function redirectTo($request)
     {

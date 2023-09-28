@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\HasImages;
 use Laravel\Passport\Client as BaseClientModel;
 
 /**
@@ -23,12 +24,15 @@ use Laravel\Passport\Client as BaseClientModel;
  */
 class PassportClient extends BaseClientModel
 {
+    use HasImages;
+
     /**
      * @var false[]
      */
     protected $attributes = [
         'personal_access_client' => false,
         'password_client' => false,
+        'redirect' => 'http://your.redirect.path',
         'revoked' => false,
     ];
 }

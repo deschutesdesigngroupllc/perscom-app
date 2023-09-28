@@ -213,25 +213,25 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         ];
     }
 
-    /**
-     * Get the identifier that will be stored in the subject claim of the JWT.
-     *
-     * @return mixed
-     */
-    public function getJWTIdentifier()
+    public function getJWTIdentifier(): mixed
     {
         return $this->getKey();
     }
 
-    /**
-     * Return a key value array, containing any custom claims to be added to the JWT.
-     *
-     * @return array
-     */
-    public function getJWTCustomClaims()
+    public function getJWTCustomClaims(): array
     {
         return [
-            'tenant' => tenant()->getTenantKey(),
+            'name' => $this->name,
+            'preferred_username' => $this->email,
+            'profile' => $this->url,
+            'email' => $this->email,
+            'email_verified' => $this->hasVerifiedEmail(),
+            'picture' => $this->profile_photo_url,
+            'tenant_name' => tenant('name'),
+            'tenant_sub' => tenant()->getTenantKey(),
+            'locale' => config('app.locale'),
+            'zoneinfo' => setting('timezone', config('app.timezone')),
+            'updated_at' => Carbon::parse($this->updated_at)->getTimestamp(),
         ];
     }
 

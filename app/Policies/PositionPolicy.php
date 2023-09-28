@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Position;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class PositionPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class PositionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:position') || $user->tokenCan('view:position');
+        return $this->hasPermissionTo($user, 'view:position') || $user?->tokenCan('view:position');
     }
 
     /**
@@ -36,9 +33,9 @@ class PositionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Position $position)
+    public function view(User $user = null, Position $position)
     {
-        return $this->hasPermissionTo($user, 'view:position') || $user->tokenCan('view:position');
+        return $this->hasPermissionTo($user, 'view:position') || $user?->tokenCan('view:position');
     }
 
     /**
@@ -46,9 +43,9 @@ class PositionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:position') || $user->tokenCan('create:position');
+        return $this->hasPermissionTo($user, 'create:position') || $user?->tokenCan('create:position');
     }
 
     /**
@@ -56,9 +53,9 @@ class PositionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Position $position)
+    public function update(User $user = null, Position $position)
     {
-        return $this->hasPermissionTo($user, 'update:position') || $user->tokenCan('update:position');
+        return $this->hasPermissionTo($user, 'update:position') || $user?->tokenCan('update:position');
     }
 
     /**
@@ -66,9 +63,9 @@ class PositionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Position $position)
+    public function delete(User $user = null, Position $position)
     {
-        return $this->hasPermissionTo($user, 'delete:position') || $user->tokenCan('delete:position');
+        return $this->hasPermissionTo($user, 'delete:position') || $user?->tokenCan('delete:position');
     }
 
     /**
@@ -76,9 +73,9 @@ class PositionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Position $position)
+    public function restore(User $user = null, Position $position)
     {
-        return $this->hasPermissionTo($user, 'delete:position') || $user->tokenCan('delete:position');
+        return $this->hasPermissionTo($user, 'delete:position') || $user?->tokenCan('delete:position');
     }
 
     /**
@@ -86,8 +83,8 @@ class PositionPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Position $position)
+    public function forceDelete(User $user = null, Position $position)
     {
-        return $this->hasPermissionTo($user, 'delete:position') || $user->tokenCan('delete:position');
+        return $this->hasPermissionTo($user, 'delete:position') || $user?->tokenCan('delete:position');
     }
 }

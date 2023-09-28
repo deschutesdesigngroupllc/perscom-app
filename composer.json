@@ -31,11 +31,14 @@
         "perscom/dashboard-quick-actions": "*",
         "perscom/dashboard-title": "*",
         "perscom/document-viewer-tool": "*",
+        "perscom/featureos": "@dev",
         "perscom/forms": "*",
         "perscom/html-field": "*",
+        "perscom/newsfeed": "@dev",
         "perscom/roster": "*",
         "php-open-source-saver/jwt-auth": "^2.0",
         "rlanvin/php-rrule": "^2.4",
+        "ronvanderheijden/openid-connect": "dev-feature/use-previously-declared-passport-scopes",
         "sentry/sentry-laravel": "^3.2",
         "spatie/eloquent-sortable": "^4.0.2",
         "spatie/laravel-activitylog": "^4.7.3",
@@ -49,9 +52,7 @@
         "staudenmeir/eloquent-has-many-deep": "^1.18",
         "tailflow/laravel-orion": "^2.19",
         "tightenco/ziggy": "^1.4",
-        "timokoerber/laravel-one-time-operations": "^1.3",
-        "perscom/newsfeed": "@dev",
-        "perscom/featureos": "@dev"
+        "timokoerber/laravel-one-time-operations": "^1.3"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
@@ -68,6 +69,10 @@
         "zalas/phpunit-globals": "^3.0.0-alpha.1"
     },
     "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/JonErickson/openid-connect"
+        },
         {
             "type": "composer",
             "url": "https://nova.laravel.com"

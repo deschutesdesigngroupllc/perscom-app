@@ -4,14 +4,11 @@ namespace App\Policies;
 
 use App\Models\Attachment;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
 class AttachmentPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -27,9 +24,9 @@ class AttachmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $user->hasRole('Admin');
+        return $user?->hasRole('Admin');
     }
 
     /**
@@ -37,7 +34,7 @@ class AttachmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Attachment $attachment)
+    public function view(User $user = null, Attachment $attachment)
     {
         return Gate::check('view', $attachment->model);
     }
@@ -47,9 +44,9 @@ class AttachmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:attachment') || $user->tokenCan('create:attachment');
+        return $this->hasPermissionTo($user, 'create:attachment') || $user?->tokenCan('create:attachment');
     }
 
     /**
@@ -57,7 +54,7 @@ class AttachmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Attachment $attachment)
+    public function update(User $user = null, Attachment $attachment)
     {
         return Gate::check('update', $attachment->model);
     }
@@ -67,7 +64,7 @@ class AttachmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Attachment $attachment)
+    public function delete(User $user = null, Attachment $attachment)
     {
         return Gate::check('delete', $attachment->model);
     }
@@ -77,7 +74,7 @@ class AttachmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Attachment $attachment)
+    public function restore(User $user = null, Attachment $attachment)
     {
         return Gate::check('restore', $attachment->model);
     }
@@ -87,7 +84,7 @@ class AttachmentPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Attachment $attachment)
+    public function forceDelete(User $user = null, Attachment $attachment)
     {
         return Gate::check('forceDelete', $attachment->model);
     }

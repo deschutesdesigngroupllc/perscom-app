@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Form;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class FormPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,22 +23,22 @@ class FormPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:form') || $user->tokenCan('view:form');
+        return $this->hasPermissionTo($user, 'view:form') || $user?->tokenCan('view:form');
     }
 
     /**x
      * Determine whether the user can view the model.
      *
-     * @param \App\Models\User $user
+     * @param \App\Models\?User $user = null
      * @param \App\Models\Form $form
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Form $form)
+    public function view(User $user = null, Form $form)
     {
-        return $this->hasPermissionTo($user, 'view:form') || $user->tokenCan('view:form');
+        return $this->hasPermissionTo($user, 'view:form') || $user?->tokenCan('view:form');
     }
 
     /**
@@ -49,9 +46,9 @@ class FormPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:form') || $user->tokenCan('create:form');
+        return $this->hasPermissionTo($user, 'create:form') || $user?->tokenCan('create:form');
     }
 
     /**
@@ -59,9 +56,9 @@ class FormPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Form $form)
+    public function update(User $user = null, Form $form)
     {
-        return $this->hasPermissionTo($user, 'update:form') || $user->tokenCan('update:form');
+        return $this->hasPermissionTo($user, 'update:form') || $user?->tokenCan('update:form');
     }
 
     /**
@@ -69,9 +66,9 @@ class FormPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Form $form)
+    public function delete(User $user = null, Form $form)
     {
-        return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
+        return $this->hasPermissionTo($user, 'delete:form') || $user?->tokenCan('delete:form');
     }
 
     /**
@@ -79,9 +76,9 @@ class FormPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Form $form)
+    public function restore(User $user = null, Form $form)
     {
-        return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
+        return $this->hasPermissionTo($user, 'delete:form') || $user?->tokenCan('delete:form');
     }
 
     /**
@@ -89,8 +86,8 @@ class FormPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Form $form)
+    public function forceDelete(User $user = null, Form $form)
     {
-        return $this->hasPermissionTo($user, 'delete:form') || $user->tokenCan('delete:form');
+        return $this->hasPermissionTo($user, 'delete:form') || $user?->tokenCan('delete:form');
     }
 }

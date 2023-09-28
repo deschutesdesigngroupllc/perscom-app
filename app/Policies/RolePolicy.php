@@ -5,13 +5,10 @@ namespace App\Policies;
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class RolePolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -27,9 +24,9 @@ class RolePolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:role') || $user->tokenCan('view:role');
+        return $this->hasPermissionTo($user, 'view:role') || $user?->tokenCan('view:role');
     }
 
     /**
@@ -37,9 +34,9 @@ class RolePolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Role $role)
+    public function view(User $user = null, Role $role)
     {
-        return $this->hasPermissionTo($user, 'view:role') || $user->tokenCan('view:role');
+        return $this->hasPermissionTo($user, 'view:role') || $user?->tokenCan('view:role');
     }
 
     /**
@@ -47,9 +44,9 @@ class RolePolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:role') || $user->tokenCan('create:role');
+        return $this->hasPermissionTo($user, 'create:role') || $user?->tokenCan('create:role');
     }
 
     /**
@@ -57,13 +54,13 @@ class RolePolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Role $role)
+    public function update(User $user = null, Role $role)
     {
         if ($role->is_application_role) {
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'update:role') || $user->tokenCan('update:role');
+        return $this->hasPermissionTo($user, 'update:role') || $user?->tokenCan('update:role');
     }
 
     /**
@@ -71,13 +68,13 @@ class RolePolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Role $role)
+    public function delete(User $user = null, Role $role)
     {
         if ($role->is_application_role) {
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:role') || $user->tokenCan('delete:role');
+        return $this->hasPermissionTo($user, 'delete:role') || $user?->tokenCan('delete:role');
     }
 
     /**
@@ -85,7 +82,7 @@ class RolePolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function detachPermission(User $user, Role $role, Permission $permission)
+    public function detachPermission(User $user = null, Role $role, Permission $permission)
     {
         if ($role->is_application_role && $permission->is_application_permission) {
             return false;
@@ -99,13 +96,13 @@ class RolePolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Role $role)
+    public function restore(User $user = null, Role $role)
     {
         if ($role->is_application_role) {
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:role') || $user->tokenCan('delete:role');
+        return $this->hasPermissionTo($user, 'delete:role') || $user?->tokenCan('delete:role');
     }
 
     /**
@@ -113,12 +110,12 @@ class RolePolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Role $role)
+    public function forceDelete(User $user = null, Role $role)
     {
         if ($role->is_application_role) {
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:role') || $user->tokenCan('delete:role');
+        return $this->hasPermissionTo($user, 'delete:role') || $user?->tokenCan('delete:role');
     }
 }

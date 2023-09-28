@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\CombatRecord;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class CombatRecordsPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,7 +23,7 @@ class CombatRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
         return true;
     }
@@ -36,11 +33,11 @@ class CombatRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, CombatRecord $combat)
+    public function view(User $user = null, CombatRecord $combat)
     {
         return $this->hasPermissionTo($user, 'view:combatrecord') ||
-               $combat->user?->id === $user->id ||
-               $user->tokenCan('view:combatrecord');
+               $combat->user?->id === $user?->id ||
+               $user?->tokenCan('view:combatrecord');
     }
 
     /**
@@ -48,9 +45,9 @@ class CombatRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:combatrecord') || $user->tokenCan('create:combatrecord');
+        return $this->hasPermissionTo($user, 'create:combatrecord') || $user?->tokenCan('create:combatrecord');
     }
 
     /**
@@ -58,9 +55,9 @@ class CombatRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, CombatRecord $combat)
+    public function update(User $user = null, CombatRecord $combat)
     {
-        return $this->hasPermissionTo($user, 'update:combatrecord') || $user->tokenCan('update:combatrecord');
+        return $this->hasPermissionTo($user, 'update:combatrecord') || $user?->tokenCan('update:combatrecord');
     }
 
     /**
@@ -68,9 +65,9 @@ class CombatRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, CombatRecord $combat)
+    public function delete(User $user = null, CombatRecord $combat)
     {
-        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user->tokenCan('delete:combatrecord');
+        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user?->tokenCan('delete:combatrecord');
     }
 
     /**
@@ -78,9 +75,9 @@ class CombatRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, CombatRecord $combat)
+    public function restore(User $user = null, CombatRecord $combat)
     {
-        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user->tokenCan('delete:combatrecord');
+        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user?->tokenCan('delete:combatrecord');
     }
 
     /**
@@ -88,8 +85,8 @@ class CombatRecordsPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, CombatRecord $combat)
+    public function forceDelete(User $user = null, CombatRecord $combat)
     {
-        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user->tokenCan('delete:combatrecord');
+        return $this->hasPermissionTo($user, 'delete:combatrecord') || $user?->tokenCan('delete:combatrecord');
     }
 }

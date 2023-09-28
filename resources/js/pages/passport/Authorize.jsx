@@ -5,7 +5,7 @@ import { AuthLayout } from '../../layouts/Auth'
 import { ValidationErrors } from '../../components/ValidationErrors'
 import { Head, Link, useForm } from '@inertiajs/react'
 
-export function Authorize({ client, name, scopes, state, authToken, csrfToken }) {
+export function Authorize({ client, description, image, name, scopes, state, authToken, csrfToken }) {
   const { post, processing, errors } = useForm({
     state: state,
     client_id: client,
@@ -24,13 +24,18 @@ export function Authorize({ client, name, scopes, state, authToken, csrfToken })
   })
 
   return (
-    <AuthLayout>
+    <AuthLayout image={image}>
       <Head title='Authorization' />
       <ValidationErrors errors={errors} />
       <form onSubmit={submit}>
-        <div>
+        <div className='mb-4'>
           <span className='font-bold'>{name}</span> is requesting permission to access your account.
         </div>
+        {description && (
+          <div className='border-y py-2 text-center'>
+            <div className='text-sm'>{description}</div>
+          </div>
+        )}
         {scopeList.length > 0 && <ul className='my-4 list-inside list-disc'>{scopeList}</ul>}
         <div className='mt-4 flex items-center justify-end'>
           <Link href={route('passport.authorizations.deny')} method='delete' as='button' className='text-sm underline'>

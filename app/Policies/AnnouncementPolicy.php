@@ -4,13 +4,10 @@ namespace App\Policies;
 
 use App\Models\Announcement;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Support\Facades\Request;
 
 class AnnouncementPolicy extends Policy
 {
-    use HandlesAuthorization;
-
     /**
      * @return false|void
      */
@@ -26,9 +23,9 @@ class AnnouncementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'view:announcement') || $user->tokenCan('view:announcement');
+        return $this->hasPermissionTo($user, 'view:announcement') || $user?->tokenCan('view:announcement');
     }
 
     /**
@@ -36,9 +33,9 @@ class AnnouncementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Announcement $announcement)
+    public function view(User $user = null, Announcement $announcement)
     {
-        return $this->hasPermissionTo($user, 'view:announcement') || $user->tokenCan('view:announcement');
+        return $this->hasPermissionTo($user, 'view:announcement') || $user?->tokenCan('view:announcement');
     }
 
     /**
@@ -46,9 +43,9 @@ class AnnouncementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user = null)
     {
-        return $this->hasPermissionTo($user, 'create:announcement') || $user->tokenCan('create:announcement');
+        return $this->hasPermissionTo($user, 'create:announcement') || $user?->tokenCan('create:announcement');
     }
 
     /**
@@ -56,9 +53,9 @@ class AnnouncementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Announcement $announcement)
+    public function update(User $user = null, Announcement $announcement)
     {
-        return $this->hasPermissionTo($user, 'update:announcement') || $user->tokenCan('update:announcement');
+        return $this->hasPermissionTo($user, 'update:announcement') || $user?->tokenCan('update:announcement');
     }
 
     /**
@@ -66,9 +63,9 @@ class AnnouncementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Announcement $announcement)
+    public function delete(User $user = null, Announcement $announcement)
     {
-        return $this->hasPermissionTo($user, 'delete:announcement') || $user->tokenCan('delete:announcement');
+        return $this->hasPermissionTo($user, 'delete:announcement') || $user?->tokenCan('delete:announcement');
     }
 
     /**
@@ -76,9 +73,9 @@ class AnnouncementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Announcement $announcement)
+    public function restore(User $user = null, Announcement $announcement)
     {
-        return $this->hasPermissionTo($user, 'delete:announcement') || $user->tokenCan('delete:announcement');
+        return $this->hasPermissionTo($user, 'delete:announcement') || $user?->tokenCan('delete:announcement');
     }
 
     /**
@@ -86,8 +83,8 @@ class AnnouncementPolicy extends Policy
      *
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Announcement $announcement)
+    public function forceDelete(User $user = null, Announcement $announcement)
     {
-        return $this->hasPermissionTo($user, 'delete:announcement') || $user->tokenCan('delete:announcement');
+        return $this->hasPermissionTo($user, 'delete:announcement') || $user?->tokenCan('delete:announcement');
     }
 }

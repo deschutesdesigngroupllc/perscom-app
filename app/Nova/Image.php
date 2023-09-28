@@ -52,7 +52,13 @@ class Image extends Resource
             Text::make('Description', function () {
                 return Str::limit($this->description);
             })->onlyOnIndex(),
-            MorphTo::make('Resource', 'model'),
+            MorphTo::make('Resource', 'model')->types([
+                Award::class,
+                Event::class,
+                PassportClient::class,
+                Qualification::class,
+                Rank::class,
+            ]),
             URL::make('Image URL', function () {
                 return $this->image_url;
             })->displayUsing(function () {

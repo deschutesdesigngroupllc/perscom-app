@@ -78,7 +78,7 @@ class BatchCreateRankRecord extends Action
             MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')->options(
                 User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
             )->rules('required'),
-            BelongsTo::make('Rank', 'rank', Rank::class)->showCreateRelationButton(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)->showCreateRelationButton(),
             Select::make('Type')->options([
                 \App\Models\RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
                 \App\Models\RankRecord::RECORD_RANK_DEMOTION => 'Demotion',

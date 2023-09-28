@@ -2,20 +2,22 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Event;
 use Laravel\Passport\Passport;
 use Tests\Contracts\ApiResourceTestContract;
 use Tests\Feature\Tenant\Http\Controllers\Api\ApiTestCase;
 
 abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTestContract
 {
-    /**
-     * @var \Illuminate\Database\Eloquent\Collection|\Illuminate\Database\Eloquent\Model
-     */
-    protected $factory;
+    protected Collection|Model $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
+
+        Event::fake();
 
         $this->factory = $this->factory()->create();
     }

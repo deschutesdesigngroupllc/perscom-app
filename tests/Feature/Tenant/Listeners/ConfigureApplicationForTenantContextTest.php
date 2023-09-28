@@ -6,7 +6,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class ConfigureApplicationForTenantContextTest extends TenantTestCase
 {
-    public function beforeTenancyInitialized()
+    public function beforeInitializingTenancy()
     {
         $this->tenant->run(function () {
             nova_set_setting_value('timezone', 'Asia/Dhaka');

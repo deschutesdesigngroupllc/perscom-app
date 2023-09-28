@@ -3,11 +3,13 @@
 namespace App\Providers;
 
 use App\Actions\Passport\CreatePersonalAccessToken;
+use App\Auth\Providers\CustomJwtProvider;
 use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
 use App\Models\Permission;
 use App\Models\Tenant;
+use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
@@ -48,22 +50,30 @@ class AppServiceProvider extends ServiceProvider
         Passport::enableImplicitGrant();
         Passport::ignoreRoutes();
         Passport::ignoreMigrations();
-        Passport::tokensCan(Permission::getPermissionsFromConfig()->merge([
-            'openid' => 'Can perform single-sign on',
-            'email' => 'Can access the authenticated user\'s email',
-            'profile' => 'Can access the authenticated user\'s profile',
-        ])->toArray());
+        Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
         Passport::authorizationView(function ($parameters) {
             return Inertia::render('passport/Authorize', [
                 'client' => $parameters['client']->id,
+                'description' => $parameters['client']->description,
+                'image' => $parameters['client']->image?->image_url,
                 'name' => $parameters['client']->name,
                 'scopes' => $parameters['scopes'],
                 'state' => $parameters['request']->state,
                 'authToken' => $parameters['authToken'],
                 'csrfToken' => csrf_token(),
             ]);
+        });
+
+        $this->app->bind(CreatesPersonalAccessToken::class, CreatePersonalAccessToken::class);
+
+        $this->app->singleton('tymon.jwt.provider.jwt.lcobucci', function (Application $app) {
+            return new CustomJwtProvider(
+                $app->make('config')->get('jwt.secret'),
+                $app->make('config')->get('jwt.algo'),
+                $app->make('config')->get('jwt.keys')
+            );
         });
     }
 
@@ -80,8 +90,6 @@ class AppServiceProvider extends ServiceProvider
 
             return $socialite->buildProvider(DiscordSocialiteProvider::class, $config);
         });
-
-        $this->app->bind(CreatesPersonalAccessToken::class, CreatePersonalAccessToken::class);
 
         Feature::discover();
         Feature::resolveScopeUsing(static fn ($driver) => \tenant());

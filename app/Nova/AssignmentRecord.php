@@ -44,21 +44,23 @@ class AssignmentRecord extends Resource
     public static $search = ['id', 'text'];
 
     /**
+     * Get the displayable label of the resource.
+     *
+     * @return string
+     */
+    public static function label()
+    {
+        return Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Records';
+    }
+
+    /**
      * Get the URI key for the resource.
      *
      * @return string
      */
     public static function uriKey()
     {
-        return 'assignment-records';
-    }
-
-    /**
-     * @return string
-     */
-    public static function label()
-    {
-        return 'Assignment Records';
+        return Str::slug(Str::singular(setting('localization_assignment', 'assignment')).' records');
     }
 
     /**
@@ -89,19 +91,19 @@ class AssignmentRecord extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)->sortable(),
-            Panel::make('Position', [
+            Panel::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), [
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->sortable()->showCreateRelationButton(),
                 MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_position_ids')->options(
                     \App\Models\Position::all()->mapWithKeys(fn ($position) => [$position->id => $position->name])
                 )->hideFromIndex(),
             ]),
-            Panel::make('Specialty', [
+            Panel::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), [
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->sortable()->showCreateRelationButton(),
                 MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialty_ids')->options(
                     \App\Models\Specialty::all()->mapWithKeys(fn ($speciality) => [$speciality->id => $speciality->name])
                 )->hideFromIndex(),
             ]),
-            Panel::make('Unit', [
+            Panel::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), [
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->sortable()->showCreateRelationButton(),
                 MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_unit_ids')->options(
                     \App\Models\Unit::all()->mapWithKeys(fn ($unit) => [$unit->id => $unit->name])

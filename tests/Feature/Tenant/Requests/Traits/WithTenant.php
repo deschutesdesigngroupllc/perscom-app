@@ -6,64 +6,42 @@ use App\Models\Admin;
 use App\Models\Domain;
 use App\Models\Tenant;
 use App\Models\User;
+use Carbon\CarbonInterface;
+use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
+use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 
 trait WithTenant
 {
-    /**
-     * @var Tenant
-     */
-    protected $tenant = null;
+    protected ?Tenant $tenant = null;
+
+    protected ?Domain $domain = null;
+
+    protected ?User $user = null;
+
+    protected ?Admin $admin = null;
+
+    protected bool $withSubscription = false;
+
+    protected ?Subscription $subscription = null;
+
+    protected string $subscriptionStatus = 'active';
+
+    protected ?string $priceId = null;
+
+    protected bool $onTrial = false;
+
+    protected ?CarbonInterface $trialExpiresAt = null;
 
     /**
-     * @var Domain
+     * @throws TenantCouldNotBeIdentifiedById
+     * @throws Exception
      */
-    protected $domain = null;
-
-    /**
-     * @var User
-     */
-    protected $user = null;
-
-    /**
-     * @var User
-     */
-    protected $admin = null;
-
-    /**
-     * @var bool
-     */
-    protected $withSubscription = false;
-
-    /**
-     * @var Subscription
-     */
-    protected $subscription = null;
-
-    /**
-     * @var string
-     */
-    protected $subscriptionStatus = 'active';
-
-    protected $priceId = null;
-
-    /**
-     * @var bool
-     */
-    protected $onTrial = false;
-
-    protected $trialExpiresAt = null;
-
-    /**
-     * @return void
-     *
-     * @throws \Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById
-     */
-    protected function setUpTenancy()
+    protected function setUpTenancy(): void
     {
         if (method_exists($this, 'beforeSetUpTenancy')) {
             $this->beforeSetUpTenancy();
@@ -97,8 +75,8 @@ trait WithTenant
             ])->save();
         }
 
-        if (method_exists($this, 'beforeTenancyInitialized')) {
-            $this->beforeTenancyInitialized();
+        if (method_exists($this, 'beforeInitializingTenancy')) {
+            $this->beforeInitializingTenancy();
         }
 
         tenancy()->initialize($this->tenant);
@@ -109,10 +87,7 @@ trait WithTenant
         $this->user = User::factory()->create();
     }
 
-    /**
-     * @return void
-     */
-    protected function tearDownTenancy()
+    protected function tearDownTenancy(): void
     {
         if (method_exists($this, 'beforeTearDownTenant')) {
             $this->beforeTearDownTenant();
@@ -146,10 +121,7 @@ trait WithTenant
         ]);
     }
 
-    /**
-     * @return void
-     */
-    public function withoutSubscription()
+    public function withoutSubscription(): void
     {
         $this->tenant->subscriptions()->delete();
     }

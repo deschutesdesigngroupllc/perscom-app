@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Features\ApiAccessFeature;
 use App\Features\CustomSubDomainFeature;
+use App\Features\SingleSignOnFeature;
 use App\Features\SupportTicketFeature;
 use App\Models\EventRegistration as EventRegistrationModel;
 use App\Models\Submission as SubmissionModel;
@@ -34,7 +35,6 @@ use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
 use App\Nova\NewsfeedItem;
-use App\Nova\PassportAuthorizedApplications;
 use App\Nova\PassportClient;
 use App\Nova\PassportClientLog;
 use App\Nova\PassportPersonalAccessToken;
@@ -323,8 +323,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         ])->collapsable()
                             ->collapsedByDefault(),
                         MenuGroup::make('OAuth 2.0', [
-                            MenuItem::resource(PassportAuthorizedApplications::class),
-                            MenuItem::resource(PassportClient::class)->name('My Apps'),
+                            MenuItem::resource(PassportClient::class)->name('Applications'),
                             MenuItem::resource(PassportClientLog::class),
                         ])->collapsable()
                             ->collapsedByDefault(),
@@ -420,11 +419,14 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ]),
                     Tab::make('Localization', [
                         Text::make('Announcements (Plural)', 'localization_announcements')->placeholder('announcements'),
+                        Text::make('Assignment', 'localization_assignment')->placeholder('assignment'),
                         Text::make('Awards (Plural)', 'localization_awards')->placeholder('awards'),
+                        Text::make('Combat', 'localization_combat')->placeholder('combat'),
                         Text::make('Documents (Plural)', 'localization_documents')->placeholder('documents'),
                         Text::make('Positions (Plural)', 'localization_positions')->placeholder('positions'),
                         Text::make('Qualifications (Plural)', 'localization_qualifications')->placeholder('qualifications'),
                         Text::make('Ranks (Plural)', 'localization_ranks')->placeholder('ranks'),
+                        Text::make('Service', 'localization_service')->placeholder('service'),
                         Text::make('Specialties (Plural)', 'localization_specialties')->placeholder('specialties'),
                         Text::make('Statuses (Plural)', 'localization_statuses')->placeholder('statuses'),
                         Text::make('Units (Plural)', 'localization_units')->placeholder('units'),
@@ -434,6 +436,15 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         Boolean::make('Enabled', 'registration_enabled')->help('Deselect to disable registration.'),
                         Textarea::make('Disabled Message', 'registration_disabled_message')->help('Enter a message that will be provided when users attempt to register and registration is disabled.'),
                         Boolean::make('Admin Approval Required', 'registration_admin_approval_required')->help('Users can register for an account but will need admin approval to login.'),
+                    ]),
+                    Tab::make('Single Sign-On', [
+                        Text::make('Single Sign-On Key', 'single_sign_on_key')
+                            ->help('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM.io resources on the fly through the PERSCOM.io API.')
+                            ->readonly()
+                            ->copyable()
+                            ->canSee(function () {
+                                return Feature::active(SingleSignOnFeature::class);
+                            }),
                     ]),
                     Tab::make('Users', [
                         MultiSelect::make('Default Permissions', 'default_permissions')->options(
