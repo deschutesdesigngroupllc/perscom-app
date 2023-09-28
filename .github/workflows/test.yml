@@ -78,7 +78,7 @@ jobs:
 
       - name: Execute Tests
         run: |
-          php artisan test --parallel
+          php artisan test --parallel --recreate-databases
           ./cc-test-reporter after-build -t clover --exit-code $?
         env:
           DB_USERNAME: root
