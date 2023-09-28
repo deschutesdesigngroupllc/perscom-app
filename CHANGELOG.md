@@ -1,6 +1,26 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.51...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.52...HEAD)
+
+## [v1.0.52](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.51...v1.0.52) - 2023-09-28
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.52 -->
+### What's Changed
+
+#### Added
+
+- Allow OAuth implicit grant flow and added ability to restrict OAuth client scopes by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/209
+- Add app listener to revert app back to central context when tenancy ends by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/212
+- Update billing software by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/211
+- Updated users API endpoint by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/207
+- Add several new API endpoints by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/213
+- Improved OAuth client support by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/210
+
+#### Changed
+
+- Updated admin subscription management by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/208
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.51...v1.0.52
 
 ## [v1.0.51](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.50...v1.0.51) - 2023-09-06
 
