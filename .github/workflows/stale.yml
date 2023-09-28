@@ -11,7 +11,8 @@ jobs:
       issues: write
       pull-requests: write
     steps:
-      - uses: actions/stale@v5
+      - name: Mark Stale
+        uses: actions/stale@v5
         with:
           days-before-issue-stale: 30
           days-before-issue-close: 14
