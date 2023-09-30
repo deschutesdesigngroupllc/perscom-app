@@ -15,6 +15,8 @@ class CombatRecordScope implements Scope
      */
     public function apply(Builder $builder, Model $model)
     {
+        $builder->latest();
+
         if (! Gate::check('view', $model) && Auth::check()) {
             $builder->user(Auth::user());
         }
