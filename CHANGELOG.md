@@ -1,6 +1,30 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.52...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.53...HEAD)
+
+## [v1.0.53](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.52...v1.0.53) - 2023-09-29
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.53 -->
+### What's Changed
+
+#### Fixed
+
+- Fix dashboard quick actions not showing by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/219
+- Fix records not ordering by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/220
+
+#### Other
+
+- Bump @vitejs/plugin-react from 4.0.2 to 4.1.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/214
+- Bump sass from 1.63.6 to 1.68.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/215
+- Bump eslint-config-prettier from 8.8.0 to 9.0.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/216
+- Bump clsx from 1.2.1 to 2.0.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/217
+- Bump postcss-focus-visible from 6.0.4 to 9.0.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/218
+
+### New Contributors
+
+- @dependabot made their first contribution in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/214
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.52...v1.0.53
 
 ## [v1.0.52](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.51...v1.0.52) - 2023-09-28
 
