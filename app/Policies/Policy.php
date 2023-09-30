@@ -14,15 +14,17 @@ abstract class Policy
 
     public function hasPermissionTo(User $user = null, $permission): Response|bool
     {
-        if ($client = Auth::guard('passport')->client()) { // @phpstan-ignore-line
-            if ($client->type === 'client_credentials' && $token = request()->attributes->get('client_credentials_token')) {
-                return \in_array($permission, Arr::wrap($token->scopes));
+        if (Auth::getDefaultDriver() === 'api') {
+            if ($client = Auth::guard('passport')->client()) { // @phpstan-ignore-line
+                if ($client->type === 'client_credentials' && $token = request()->attributes->get('client_credentials_token')) {
+                    return \in_array($permission, Arr::wrap($token->scopes));
+                }
             }
-        }
 
-        if (Auth::guard('jwt')->check()) {
-            if ($payload = Auth::guard('jwt')->payload()) { // @phpstan-ignore-line
-                return \in_array($permission, Arr::wrap($payload->get('scope')));
+            if (Auth::guard('jwt')->check()) {
+                if ($payload = Auth::guard('jwt')->payload()) { // @phpstan-ignore-line
+                    return \in_array($permission, Arr::wrap($payload->get('scope')));
+                }
             }
         }
 
