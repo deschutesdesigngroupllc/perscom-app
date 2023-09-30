@@ -294,7 +294,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function assignment_records()
     {
-        return $this->hasMany(AssignmentRecord::class)->latest();
+        return $this->hasMany(AssignmentRecord::class);
     }
 
     /**
@@ -302,7 +302,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function award_records()
     {
-        return $this->hasMany(AwardRecord::class)->latest();
+        return $this->hasMany(AwardRecord::class);
     }
 
     /**
@@ -310,7 +310,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function combat_records()
     {
-        return $this->hasMany(CombatRecord::class)->latest();
+        return $this->hasMany(CombatRecord::class);
     }
 
     /**
@@ -355,7 +355,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function qualification_records()
     {
-        return $this->hasMany(QualificationRecord::class)->latest();
+        return $this->hasMany(QualificationRecord::class);
     }
 
     /**
@@ -382,7 +382,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function rank_records()
     {
-        return $this->hasMany(RankRecord::class)->latest();
+        return $this->hasMany(RankRecord::class);
     }
 
     /**
@@ -390,7 +390,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function service_records()
     {
-        return $this->hasMany(ServiceRecord::class)->latest();
+        return $this->hasMany(ServiceRecord::class);
     }
 
     /**
@@ -431,13 +431,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      */
     public function tasks()
     {
-        return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')->withPivot([
-            'id',
-            'assigned_by_id',
-            'completed_at',
-            'assigned_at',
-            'expires_at',
-        ])->latest()->as('assignment')->using(TaskAssignment::class)->withTimestamps();
+        return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')
+            ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
+            ->as('assignment')
+            ->using(TaskAssignment::class)
+            ->withTimestamps();
     }
 
     /**
