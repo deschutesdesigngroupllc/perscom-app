@@ -245,6 +245,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return Gate::check('impersonate', $this);
     }
 
+    protected function getDefaultGuardName(): string
+    {
+        return 'web';
+    }
+
     /**
      * @return \Illuminate\Support\Optional|mixed
      */

@@ -8,8 +8,6 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
-use Spatie\Permission\Exceptions\PermissionDoesNotExist;
-use Spatie\Permission\Exceptions\RoleDoesNotExist;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
 use Throwable;
 
@@ -21,8 +19,6 @@ class Handler extends ExceptionHandler
      * @var array<int, class-string<Throwable>>
      */
     protected $dontReport = [
-        PermissionDoesNotExist::class,
-        RoleDoesNotExist::class,
         TenantCouldNotBeIdentifiedOnDomainException::class,
         OAuthServerException::class,
     ];
