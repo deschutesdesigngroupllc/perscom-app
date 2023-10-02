@@ -63,7 +63,7 @@ class UsersController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['name', 'email', 'approved', 'online'];
+        return ['name', 'email', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved'];
     }
 
     /**
@@ -71,6 +71,6 @@ class UsersController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'email', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'online', 'created_at'];
+        return ['id', 'name', 'email', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'created_at'];
     }
 }
