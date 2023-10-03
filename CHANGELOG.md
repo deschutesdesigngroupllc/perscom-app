@@ -1,6 +1,20 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.53...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.54...HEAD)
+
+## [v1.0.54](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.53...v1.0.54) - 2023-10-02
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.54 -->
+### What's Changed
+
+#### Fixed
+
+- Fix users search endpoint and expose more attributes to be searched by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/225
+- Fix group by mysel error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/226
+- Fixed role not being assigned when creating a user when auth guard wasn't web by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/227
+- Fixs null actionable id for event registration by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/228
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.53...v1.0.54
 
 ## [v1.0.53](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.52...v1.0.53) - 2023-09-29
 
