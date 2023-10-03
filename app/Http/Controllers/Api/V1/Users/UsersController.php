@@ -59,11 +59,19 @@ class UsersController extends Controller
     }
 
     /**
+     * The attributes that are used for sorting.
+     */
+    public function sortableBy(): array
+    {
+        return ['id', 'name', 'email', 'email_verified_at', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'last_seen_at', 'updated_at', 'created_at'];
+    }
+
+    /**
      * @return string[]
      */
     public function searchableBy(): array
     {
-        return ['name', 'email', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved'];
+        return ['id', 'name', 'email', 'email_verified_at', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'last_seen_at', 'updated_at', 'created_at'];
     }
 
     /**
@@ -71,6 +79,6 @@ class UsersController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'email', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'created_at'];
+        return ['id', 'name', 'email', 'email_verified_at', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'last_seen_at', 'updated_at', 'created_at'];
     }
 }
