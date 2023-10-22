@@ -32,10 +32,10 @@ class NewSubscriptionMail extends Mailable
         return new Content(
             markdown: 'emails.admin.new-subscription',
             with: [
-                'tenant' => $this->subscription->owner->name,
-                'url' => $this->subscription->owner->url,
-                'plan' => $this->subscription->owner->sparkPlan()?->name,
-                'interval' => Str::ucfirst($this->subscription->owner->sparkPlan()?->interval),
+                'tenant' => $this->subscription->owner->name, // @phpstan-ignore-line
+                'url' => $this->subscription->owner->url, // @phpstan-ignore-line
+                'plan' => $this->subscription->owner->sparkPlan()?->name, // @phpstan-ignore-line
+                'interval' => Str::ucfirst($this->subscription->owner->sparkPlan()?->interval), // @phpstan-ignore-line
             ]
         );
     }

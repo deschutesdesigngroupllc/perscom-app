@@ -19,7 +19,9 @@ class GenerateOpenAiNewsfeedContent implements ShouldQueue
     public function __construct(protected Activity $activity, protected string $event, protected string $type = 'headline', protected string $prompt = '')
     {
         if (isset($this->activity->subject) && in_array(HasEventPrompts::class, class_uses_recursive($this->activity->subject))) {
-            $this->prompt = $this->activity->subject->generatePromptForEvent($this->event, $this->type);
+            if (method_exists($this->activity->subject, 'generatePromptForEvent')) {
+                $this->prompt = $this->activity->subject->generatePromptForEvent($this->event, $this->type);
+            }
         }
     }
 
