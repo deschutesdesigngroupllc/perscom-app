@@ -28,8 +28,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Unit|null $unit
  * @property-read \App\Models\User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord author($user)
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord document($document)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\AssignmentRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()

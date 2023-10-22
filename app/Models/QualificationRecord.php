@@ -26,8 +26,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Qualification|null $qualification
  * @property-read \App\Models\User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord author($user)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord document($document)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\QualificationRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newQuery()

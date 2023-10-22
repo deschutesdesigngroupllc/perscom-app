@@ -32,7 +32,7 @@ use RRule\RRule;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  *
- * @method static Builder|Event author($user)
+ * @method static Builder|Event author(\App\Models\User $user)
  * @method static Builder|Event datePeriod($start, $end)
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static Builder|Event future()

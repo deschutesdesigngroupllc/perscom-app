@@ -26,8 +26,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Document|null $document
  * @property-read \App\Models\User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord author($user)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord document($document)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\AwardRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newQuery()
