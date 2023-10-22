@@ -9,82 +9,44 @@ use Illuminate\Support\Facades\Request;
 
 class AttachmentPolicy extends Policy
 {
-    /**
-     * @return false|void
-     */
-    public function before()
+    public function before(): ?bool
     {
         if (Request::isCentralRequest()) {
             return false;
         }
     }
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user = null)
+    public function viewAny(User $user = null): bool
     {
         return $user?->hasRole('Admin');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user = null, Attachment $attachment)
+    public function view(User $user = null, Attachment $attachment): bool
     {
         return Gate::check('view', $attachment->model);
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function create(User $user = null)
+    public function create(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:attachment') || $user?->tokenCan('create:attachment');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user = null, Attachment $attachment)
+    public function update(User $user = null, Attachment $attachment): bool
     {
         return Gate::check('update', $attachment->model);
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function delete(User $user = null, Attachment $attachment)
+    public function delete(User $user = null, Attachment $attachment): bool
     {
         return Gate::check('delete', $attachment->model);
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user = null, Attachment $attachment)
+    public function restore(User $user = null, Attachment $attachment): bool
     {
         return Gate::check('restore', $attachment->model);
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user = null, Attachment $attachment)
+    public function forceDelete(User $user = null, Attachment $attachment): bool
     {
         return Gate::check('forceDelete', $attachment->model);
     }

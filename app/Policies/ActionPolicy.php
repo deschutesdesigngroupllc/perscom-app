@@ -8,32 +8,19 @@ use Laravel\Nova\Actions\ActionEvent;
 
 class ActionPolicy extends Policy
 {
-    /**
-     * @return true|void
-     */
-    public function before()
+    public function before(): ?bool
     {
         if (Request::isCentralRequest()) {
             return true;
         }
     }
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user = null)
+    public function viewAny(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:log') || $user?->tokenCan('view:log');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user = null, ActionEvent $actionEvent)
+    public function view(User $user = null, ActionEvent $actionEvent): bool
     {
         return $this->hasPermissionTo($user, 'view:log') || $user?->tokenCan('view:log');
     }
