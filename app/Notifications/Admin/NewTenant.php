@@ -15,31 +15,17 @@ class NewTenant extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(protected Tenant $tenant)
     {
         //
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail', NovaChannel::class];
     }
 
-    /**
-     * @return NewTenantMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): NewTenantMail
     {
         return (new NewTenantMail($this->tenant))->to($notifiable->email);
     }

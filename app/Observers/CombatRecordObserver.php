@@ -11,12 +11,7 @@ use Illuminate\Support\Facades\Notification;
 
 class CombatRecordObserver
 {
-    /**
-     * Handle the Combat "created" event.
-     *
-     * @return void
-     */
-    public function created(CombatRecord $combat)
+    public function created(CombatRecord $combat): void
     {
         Notification::send($combat->user, new NewCombatRecord($combat));
 
@@ -25,24 +20,14 @@ class CombatRecordObserver
         });
     }
 
-    /**
-     * Handle the Combat "updated" event.
-     *
-     * @return void
-     */
-    public function updated(CombatRecord $combat)
+    public function updated(CombatRecord $combat): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::COMBAT_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($combat) {
             WebhookService::dispatch($webhook, WebhookEvent::COMBAT_RECORD_UPDATED->value, $combat);
         });
     }
 
-    /**
-     * Handle the Combat "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(CombatRecord $combat)
+    public function deleted(CombatRecord $combat): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::COMBAT_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($combat) {
             WebhookService::dispatch($webhook, WebhookEvent::COMBAT_RECORD_DELETED->value, $combat);

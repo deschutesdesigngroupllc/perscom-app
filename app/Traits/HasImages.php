@@ -3,21 +3,17 @@
 namespace App\Traits;
 
 use App\Models\Image;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 trait HasImages
 {
-    /**
-     * @return mixed
-     */
-    public function image()
+    public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'model');
     }
 
-    /**
-     * @return mixed
-     */
-    public function images()
+    public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'model');
     }

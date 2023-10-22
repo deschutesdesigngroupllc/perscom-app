@@ -12,31 +12,17 @@ class NewMail extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(protected Mail $mail)
     {
         //
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return NewMailMailable
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): NewMailMailable
     {
         return (new NewMailMailable($this->mail))->to($notifiable->email);
     }

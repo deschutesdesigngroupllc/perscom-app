@@ -7,48 +7,26 @@ use Laravel\Socialite\Two\User;
 
 class DiscordSocialiteProvider extends AbstractProvider
 {
-    /**
-     * @var string[]
-     */
     protected $scopes = ['email', 'identify'];
 
-    /**
-     * @var string
-     */
     protected $scopeSeparator = ' ';
 
-    /**
-     * @return string
-     */
-    public function getDiscordUrl()
+    public function getDiscordUrl(): string
     {
         return config('services.discord.base_uri');
     }
 
-    /**
-     * @param  string  $state
-     * @return string
-     */
-    protected function getAuthUrl($state)
+    protected function getAuthUrl($state): string
     {
         return $this->buildAuthUrlFromBase($this->getDiscordUrl().'/oauth2/authorize', $state);
     }
 
-    /**
-     * @return string
-     */
-    protected function getTokenUrl()
+    protected function getTokenUrl(): string
     {
         return $this->getDiscordUrl().'/oauth2/token';
     }
 
-    /**
-     * @param  string  $token
-     * @return array|mixed
-     *
-     * @throws \GuzzleHttp\Exception\GuzzleException
-     */
-    protected function getUserByToken($token)
+    protected function getUserByToken($token): mixed
     {
         $response = $this->getHttpClient()->get($this->getDiscordUrl().'/users/@me', [
             'headers' => [
@@ -61,10 +39,7 @@ class DiscordSocialiteProvider extends AbstractProvider
         return json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
     }
 
-    /**
-     * @return User
-     */
-    protected function mapUserToObject(array $user)
+    protected function mapUserToObject(array $user): User
     {
         return (new User())->setRaw($user)->map([
             'id' => $user['id'],

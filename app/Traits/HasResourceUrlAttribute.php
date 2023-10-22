@@ -4,10 +4,7 @@ namespace App\Traits;
 
 trait HasResourceUrlAttribute
 {
-    /**
-     * @return string
-     */
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
         return optional($this->getKey(), function ($key) {
             return route('nova.pages.detail', [
@@ -17,10 +14,7 @@ trait HasResourceUrlAttribute
         });
     }
 
-    /**
-     * @return string
-     */
-    public function getRelativeUrlAttribute()
+    public function getRelativeUrlAttribute(): string
     {
         return optional($this->getKey(), function ($key) {
             return route('nova.pages.detail', [
@@ -30,10 +24,7 @@ trait HasResourceUrlAttribute
         });
     }
 
-    /**
-     * @return string
-     */
-    protected function findNovaResourceClass()
+    protected function findNovaResourceClass(): string
     {
         $class = class_basename(static::class);
 

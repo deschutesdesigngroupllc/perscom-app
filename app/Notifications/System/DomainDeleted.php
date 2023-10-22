@@ -11,31 +11,17 @@ class DomainDeleted extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(protected string $domain, protected string $url)
     {
         //
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return DomainDeletedMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): DomainDeletedMail
     {
         return (new DomainDeletedMail($this->domain, $this->url))->to($notifiable->email);
     }

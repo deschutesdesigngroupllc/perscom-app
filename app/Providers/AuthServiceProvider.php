@@ -147,14 +147,8 @@ class AuthServiceProvider extends ServiceProvider
         Webhook::class => WebhookPolicy::class,
     ];
 
-    /**
-     * Register any authentication / authorization services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
-        // Define a new api guard that allows access via the passport and jwt guards
         Auth::viaRequest('api', static function () {
             return Auth::guard('passport')->user() ?? Auth::guard('jwt')->user();
         });

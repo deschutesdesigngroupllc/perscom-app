@@ -21,12 +21,7 @@ use Laravel\Pennant\Feature;
 
 class FortifyServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(LoginResponseContract::class, LoginResponse::class);
 
@@ -43,12 +38,7 @@ class FortifyServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         Fortify::loginView(function () {
             return Inertia::render('auth/Login', [

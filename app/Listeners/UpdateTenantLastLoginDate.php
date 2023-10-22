@@ -7,12 +7,7 @@ use Illuminate\Auth\Events\Login;
 
 class UpdateTenantLastLoginDate
 {
-    /**
-     * Handle the event.
-     *
-     * @return void
-     */
-    public function handle(Login $event)
+    public function handle(Login $event): void
     {
         optional(tenant(), static function (Tenant $tenant) {
             $tenant->updateQuietly([

@@ -10,32 +10,17 @@ use Illuminate\Support\Facades\Notification;
 
 class DomainObserver
 {
-    /**
-     * Handle the Domain "created" event.
-     *
-     * @return void
-     */
-    public function created(Domain $domain)
+    public function created(Domain $domain): void
     {
         Notification::send($domain->tenant, new DomainCreated($domain));
     }
 
-    /**
-     * Handle the Domain "updated" event.
-     *
-     * @return void
-     */
-    public function updated(Domain $domain)
+    public function updated(Domain $domain): void
     {
         Notification::send($domain->tenant, new DomainUpdated($domain));
     }
 
-    /**
-     * Handle the Domain "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(Domain $domain)
+    public function deleted(Domain $domain): void
     {
         Notification::send($domain->tenant, new DomainDeleted($domain->url, $domain->tenant->url));
     }

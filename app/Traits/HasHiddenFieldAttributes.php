@@ -7,10 +7,7 @@ use Illuminate\Support\Facades\Gate;
 
 trait HasHiddenFieldAttributes
 {
-    /**
-     * @return array
-     */
-    public function getAttributesToHide()
+    public function getAttributesToHide(): array
     {
         $fields = Field::withoutGlobalScopes()->get();
 
@@ -21,12 +18,7 @@ trait HasHiddenFieldAttributes
         return [];
     }
 
-    /**
-     * Get the hidden attributes for the model.
-     *
-     * @return array<string>
-     */
-    public function getHidden()
+    public function getHidden(): array
     {
         return array_merge(parent::getHidden(), $this->getAttributesToHide());
     }

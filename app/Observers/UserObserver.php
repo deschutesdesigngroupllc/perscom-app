@@ -14,12 +14,7 @@ use Illuminate\Support\Facades\Notification;
 
 class UserObserver
 {
-    /**
-     * Handle the User "created" event.
-     *
-     * @return void
-     */
-    public function created(User $user)
+    public function created(User $user): void
     {
         $user->assignRole(setting('default_roles'));
         $user->givePermissionTo(setting('default_permissions'));
@@ -38,12 +33,7 @@ class UserObserver
         }
     }
 
-    /**
-     * Handle the User "updated" event.
-     *
-     * @return void
-     */
-    public function updated(User $user)
+    public function updated(User $user): void
     {
         if ($user->isDirty('notes')) {
             $user->updateQuietly([
@@ -64,12 +54,7 @@ class UserObserver
         });
     }
 
-    /**
-     * Handle the User "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(User $user)
+    public function deleted(User $user): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_DELETED->value])->each(function (Webhook $webhook) use ($user) {
             WebhookService::dispatch($webhook, WebhookEvent::USER_DELETED->value, $user);

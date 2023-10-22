@@ -13,31 +13,23 @@ class NewTenantMail extends Mailable implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(protected Tenant $tenant)
     {
         //
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
-        return $this->markdown('emails.admin.tenant.new')->subject('New Tenant Created')->with([
-            'organization' => $this->tenant->name,
-            'email' => $this->tenant->email,
-            'domain' => $this->tenant->url,
-            'url' => route('nova.pages.detail', [
-                'resource' => 'tenants',
-                'resourceId' => $this->tenant->getTenantKey(),
-            ]),
-        ]);
+        return $this->markdown('emails.admin.tenant.new')
+            ->subject('New Tenant Created')
+            ->with([
+                'organization' => $this->tenant->name,
+                'email' => $this->tenant->email,
+                'domain' => $this->tenant->url,
+                'url' => route('nova.pages.detail', [
+                    'resource' => 'tenants',
+                    'resourceId' => $this->tenant->getTenantKey(),
+                ]),
+            ]);
     }
 }

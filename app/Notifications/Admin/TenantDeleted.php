@@ -13,31 +13,17 @@ class TenantDeleted extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(protected string $tenant, protected string $email)
     {
         //
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail', NovaChannel::class];
     }
 
-    /**
-     * @return TenantDeletedMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): TenantDeletedMail
     {
         return (new TenantDeletedMail($this->tenant, $this->email))->to($notifiable->email);
     }

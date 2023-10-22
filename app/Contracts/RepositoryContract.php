@@ -4,18 +4,9 @@ namespace App\Contracts;
 
 interface RepositoryContract
 {
-    /**
-     * @return mixed
-     */
-    public function getAll();
+    public function getAll(): mixed;
 
-    /**
-     * @return mixed
-     */
-    public function findByKey($key, $value);
+    public function findByKey($key, $value): mixed;
 
-    /**
-     * @return mixed
-     */
-    public function findById($id);
+    public function findById($id): mixed;
 }

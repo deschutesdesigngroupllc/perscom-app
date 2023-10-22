@@ -11,21 +11,12 @@ class PasswordChanged extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return PasswordChangedMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): PasswordChangedMail
     {
         return (new PasswordChangedMail())->to($notifiable->email);
     }

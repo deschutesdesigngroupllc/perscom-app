@@ -41,7 +41,8 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 Route::group(['prefix' => 'v1'], static function () {
-    Route::get('spec.yaml', [SpecController::class, 'index'])->name('spec');
+    Route::get('spec.yaml', [SpecController::class, 'index'])
+        ->name('spec');
 
     Route::group([
         'middleware' => [
@@ -52,7 +53,8 @@ Route::group(['prefix' => 'v1'], static function () {
             'approved',
         ],
     ], static function () {
-        Orion::resource('me', MeController::class)->only('index');
+        Orion::resource('me', MeController::class)
+            ->only('index');
 
         Orion::resource('announcements', AnnouncementsController::class);
 
@@ -68,7 +70,8 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('groups', GroupsController::class);
 
         Orion::resource('newsfeed', NewsfeedController::class);
-        Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)->only(['index', 'attach', 'detach', 'sync']);
+        Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)
+            ->only(['index', 'attach', 'detach', 'sync']);
 
         Orion::resource('positions', PositionsController::class);
 
