@@ -11,22 +11,12 @@ use Spark\Spark;
 
 class SparkServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         Spark::ignoreMigrations();
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         Spark::billable(Tenant::class)->resolve(function (Request $request) {
             return \tenant();

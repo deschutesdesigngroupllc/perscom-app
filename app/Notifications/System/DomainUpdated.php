@@ -12,31 +12,17 @@ class DomainUpdated extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(protected Domain $domain)
     {
         //
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return DomainUpdatedMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): DomainUpdatedMail
     {
         return (new DomainUpdatedMail($this->domain))->to($notifiable->email);
     }

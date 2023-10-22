@@ -11,33 +11,19 @@ class AccountApproved extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var mixed|\Stancl\Tenancy\Contracts\Tenant|null
-     */
     protected mixed $tenant;
 
-    /**
-     * Constructor
-     */
     public function __construct()
     {
         $this->tenant = tenant();
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return AccountApprovedMail
-     */
-    public function toMail(object $notifiable)
+    public function toMail(mixed $notifiable): AccountApprovedMail
     {
         return (new AccountApprovedMail($this->tenant))->to($notifiable->email);
     }

@@ -11,12 +11,7 @@ use Illuminate\Support\Facades\Notification;
 
 class AwardRecordObserver
 {
-    /**
-     * Handle the Award "created" event.
-     *
-     * @return void
-     */
-    public function created(AwardRecord $award)
+    public function created(AwardRecord $award): void
     {
         Notification::send($award->user, new NewAwardRecord($award));
 
@@ -25,24 +20,14 @@ class AwardRecordObserver
         });
     }
 
-    /**
-     * Handle the Award "updated" event.
-     *
-     * @return void
-     */
-    public function updated(AwardRecord $award)
+    public function updated(AwardRecord $award): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::AWARD_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($award) {
             WebhookService::dispatch($webhook, WebhookEvent::AWARD_RECORD_UPDATED->value, $award);
         });
     }
 
-    /**
-     * Handle the Award "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(AwardRecord $award)
+    public function deleted(AwardRecord $award): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::AWARD_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($award) {
             WebhookService::dispatch($webhook, WebhookEvent::AWARD_RECORD_DELETED->value, $award);

@@ -22,27 +22,18 @@ class SetupInitialTenantAccount implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct(protected TenantWithDatabase $tenant)
     {
         //
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         $this->setInitialSettings();
         $this->createFirstNewsfeedItem();
     }
 
-    /**
-     * @return void
-     */
-    protected function setInitialSettings()
+    protected function setInitialSettings(): void
     {
         $this->tenant->run(function ($tenant) {
             Settings::withoutEvents(static function () use ($tenant) {
@@ -57,10 +48,7 @@ class SetupInitialTenantAccount implements ShouldQueue
         });
     }
 
-    /**
-     * @return void
-     */
-    protected function createFirstNewsfeedItem()
+    protected function createFirstNewsfeedItem(): void
     {
         $this->tenant->run(function ($tenant) {
             activity('newsfeed')
@@ -74,9 +62,6 @@ class SetupInitialTenantAccount implements ShouldQueue
         });
     }
 
-    /**
-     * Handle a job failure.
-     */
     public function failed($exception): void
     {
         Log::error('Failed to setup initial tenant settings', [

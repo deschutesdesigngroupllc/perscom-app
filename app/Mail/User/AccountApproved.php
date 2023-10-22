@@ -13,24 +13,14 @@ class AccountApproved extends Mailable implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    protected mixed $url;
+    protected string $url;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(protected Tenant $tenant)
     {
         $this->url = $tenant->url;
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
         return $this->markdown('emails.user.account-approved')
             ->subject('Account Approved')

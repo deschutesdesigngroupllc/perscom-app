@@ -4,21 +4,16 @@ namespace App\Traits;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasUser
 {
-    /**
-     * @return Builder
-     */
-    public function scopeUser(Builder $query, User $user)
+    public function scopeUser(Builder $query, User $user): void
     {
-        return $query->whereBelongsTo($user);
+        $query->whereBelongsTo($user);
     }
 
-    /**
-     * @return mixed
-     */
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }

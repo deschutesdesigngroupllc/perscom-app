@@ -9,9 +9,6 @@ use App\Services\WebhookService;
 
 class CalendarObserver
 {
-    /**
-     * Handle the Calendar "created" event.
-     */
     public function created(Calendar $calendar): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_CREATED->value])->each(function (Webhook $webhook) use ($calendar) {
@@ -19,9 +16,6 @@ class CalendarObserver
         });
     }
 
-    /**
-     * Handle the Calendar "updated" event.
-     */
     public function updated(Calendar $calendar): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_UPDATED->value])->each(function (Webhook $webhook) use ($calendar) {
@@ -29,9 +23,6 @@ class CalendarObserver
         });
     }
 
-    /**
-     * Handle the Calendar "deleted" event.
-     */
     public function deleted(Calendar $calendar): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_DELETED->value])->each(function (Webhook $webhook) use ($calendar) {

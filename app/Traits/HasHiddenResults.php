@@ -6,18 +6,12 @@ use Illuminate\Contracts\Database\Eloquent\Builder;
 
 trait HasHiddenResults
 {
-    /**
-     * @return void
-     */
-    public function scopeHidden(Builder $query)
+    public function scopeHidden(Builder $query): void
     {
         $query->where('hidden', true);
     }
 
-    /**
-     * @return void
-     */
-    public function scopeVisible(Builder $query)
+    public function scopeVisible(Builder $query): void
     {
         $query->where('hidden', false);
     }

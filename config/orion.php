@@ -27,7 +27,12 @@ return [
         'servers' => [
             ['url' => 'https://api.perscom.io', 'description' => 'Production Environment'],
         ],
-        'tags' => [],
+        'tags' => [
+            [
+                'name' => 'Me',
+                'description' => 'API documentation for the Current User',
+            ],
+        ],
     ],
     'transactions' => [
         'enabled' => false,

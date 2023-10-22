@@ -12,10 +12,7 @@ class UserEntity implements IdentityEntityInterface
 
     protected ?User $user;
 
-    /**
-     * @param  mixed  $identifier
-     */
-    public function setIdentifier($identifier): void
+    public function setIdentifier(mixed $identifier): void
     {
         $this->identifier = $identifier;
         $this->user = User::findOrFail($identifier);

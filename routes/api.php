@@ -3,12 +3,10 @@
 use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
 use App\Http\Controllers\Api\V1\Awards\AwardsController;
 use App\Http\Controllers\Api\V1\Calendars\CalendarsController;
-use App\Http\Controllers\Api\V1\Calendars\CalendarsEventsController;
 use App\Http\Controllers\Api\V1\Events\EventsController;
 use App\Http\Controllers\Api\V1\Forms\FormsController;
 use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\V1\Groups\GroupsController;
-use App\Http\Controllers\Api\V1\Groups\GroupsUnitsController;
 use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedController;
 use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedLikesController;
@@ -20,7 +18,6 @@ use App\Http\Controllers\Api\V1\Specialties\SpecialtiesController;
 use App\Http\Controllers\Api\V1\Submissions\SubmissionsController;
 use App\Http\Controllers\Api\V1\Tasks\TasksController;
 use App\Http\Controllers\Api\V1\Units\UnitsController;
-use App\Http\Controllers\Api\V1\Units\UnitsUsersController;
 use App\Http\Controllers\Api\V1\Users\UsersAssignmentRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersAwardRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersCombatRecordsController;
@@ -43,18 +40,9 @@ use Orion\Facades\Orion;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 Route::group(['prefix' => 'v1'], static function () {
-    Route::get('spec.yaml', [SpecController::class, 'index'])->name('spec');
+    Route::get('spec.yaml', [SpecController::class, 'index'])
+        ->name('spec');
 
     Route::group([
         'middleware' => [
@@ -65,14 +53,14 @@ Route::group(['prefix' => 'v1'], static function () {
             'approved',
         ],
     ], static function () {
-        Orion::resource('me', MeController::class)->only('index');
+        Orion::resource('me', MeController::class)
+            ->only('index');
 
         Orion::resource('announcements', AnnouncementsController::class);
 
         Orion::resource('awards', AwardsController::class);
 
         Orion::resource('calendars', CalendarsController::class);
-        Orion::hasManyResource('calendars', 'events', CalendarsEventsController::class);
 
         Orion::resource('events', EventsController::class);
 
@@ -80,10 +68,10 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
 
         Orion::resource('groups', GroupsController::class);
-        Orion::belongsToManyResource('groups', 'units', GroupsUnitsController::class);
 
         Orion::resource('newsfeed', NewsfeedController::class);
-        Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)->only(['index', 'attach', 'detach', 'sync']);
+        Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)
+            ->only(['index', 'attach', 'detach', 'sync']);
 
         Orion::resource('positions', PositionsController::class);
 
@@ -98,7 +86,6 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('tasks', TasksController::class);
 
         Orion::resource('units', UnitsController::class);
-        Orion::hasManyResource('units', 'users', UnitsUsersController::class);
 
         Orion::resource('users', UsersController::class);
         Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);

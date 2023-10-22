@@ -12,13 +12,9 @@ class DeleteAccount extends Mailable implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
-        return $this->markdown('emails.system.delete-account')->subject('Account Deleted');
+        return $this->markdown('emails.system.delete-account')
+            ->subject('Account Deleted');
     }
 }

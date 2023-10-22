@@ -8,12 +8,7 @@ use Illuminate\Support\Facades\Notification;
 
 class TaskAssignmentObserver
 {
-    /**
-     * Handle the TaskAssignment "created" event.
-     *
-     * @return void
-     */
-    public function created(TaskAssignment $taskAssignment)
+    public function created(TaskAssignment $taskAssignment): void
     {
         Notification::send($taskAssignment->user, new NewTaskAssignment($taskAssignment));
     }

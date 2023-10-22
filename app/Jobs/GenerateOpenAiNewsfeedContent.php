@@ -16,9 +16,6 @@ class GenerateOpenAiNewsfeedContent implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct(protected Activity $activity, protected string $event, protected string $type = 'headline', protected string $prompt = '')
     {
         if (isset($this->activity->subject) && in_array(HasEventPrompts::class, class_uses_recursive($this->activity->subject))) {
@@ -26,9 +23,6 @@ class GenerateOpenAiNewsfeedContent implements ShouldQueue
         }
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         if ($this->prompt) {

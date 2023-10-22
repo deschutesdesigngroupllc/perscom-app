@@ -11,12 +11,7 @@ use Illuminate\Support\Facades\Notification;
 
 class QualificationRecordObserver
 {
-    /**
-     * Handle the Qualification "created" event.
-     *
-     * @return void
-     */
-    public function created(QualificationRecord $qualification)
+    public function created(QualificationRecord $qualification): void
     {
         Notification::send($qualification->user, new NewQualificationRecord($qualification));
 
@@ -25,24 +20,14 @@ class QualificationRecordObserver
         });
     }
 
-    /**
-     * Handle the Qualification "updated" event.
-     *
-     * @return void
-     */
-    public function updated(QualificationRecord $qualification)
+    public function updated(QualificationRecord $qualification): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::QUALIFICATION_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($qualification) {
             WebhookService::dispatch($webhook, WebhookEvent::QUALIFICATION_RECORD_UPDATED->value, $qualification);
         });
     }
 
-    /**
-     * Handle the Qualification "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(QualificationRecord $qualification)
+    public function deleted(QualificationRecord $qualification): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::QUALIFICATION_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($qualification) {
             WebhookService::dispatch($webhook, WebhookEvent::QUALIFICATION_RECORD_DELETED->value, $qualification);

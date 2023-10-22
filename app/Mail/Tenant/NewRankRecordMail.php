@@ -13,28 +13,20 @@ class NewRankRecordMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(protected RankRecord $rankRecord, protected string $url)
     {
         //
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
-        return $this->markdown('emails.tenant.new-rank-record')->subject('New Rank Record')->with([
-            'rank' => $this->rankRecord->rank?->name,
-            'text' => $this->rankRecord->text,
-            'url' => $this->url,
-            'date' => Carbon::parse($this->rankRecord->created_at)->toFormattedDateString(),
-        ]);
+        return $this->markdown('emails.tenant.new-rank-record')
+            ->subject('New Rank Record')
+            ->with([
+                'rank' => $this->rankRecord->rank?->name,
+                'text' => $this->rankRecord->text,
+                'url' => $this->url,
+                'date' => Carbon::parse($this->rankRecord->created_at)->toFormattedDateString(),
+            ]);
     }
 }

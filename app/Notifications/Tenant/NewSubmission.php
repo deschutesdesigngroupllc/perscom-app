@@ -15,14 +15,8 @@ class NewSubmission extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var array|string|string[]
-     */
-    protected $url;
+    protected string $url;
 
-    /**
-     * Create a new notification instance.
-     */
     public function __construct(protected Submission $submission)
     {
         $this->url = route('nova.pages.detail', [
@@ -31,28 +25,17 @@ class NewSubmission extends Notification implements ShouldQueue
         ]);
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via(mixed $notifiable): array
     {
         return ['mail', NovaChannel::class];
     }
 
-    /**
-     * Get the mail representation of the notification.
-     */
-    public function toMail(object $notifiable): NewSubmissionMail
+    public function toMail(mixed $notifiable): NewSubmissionMail
     {
         return (new NewSubmissionMail($this->submission, $this->url))->to($notifiable->email);
     }
 
-    /**
-     * @return NovaNotification
-     */
-    public function toNova()
+    public function toNova(): NovaNotification
     {
         return (new NovaNotification())->message("A new {$this->submission->form?->name} has been submitted.")
             ->action("View {$this->submission->form?->name}", URL::remote($this->url))

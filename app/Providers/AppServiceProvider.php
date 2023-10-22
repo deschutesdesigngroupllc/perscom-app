@@ -21,12 +21,7 @@ use Laravel\Socialite\Contracts\Factory;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         Request::macro('isCentralRequest', function () {
             if (env('TENANT_TESTING', false)) {
@@ -77,12 +72,7 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $socialite = $this->app->make(Factory::class);
         $socialite->extend('discord', function () use ($socialite) {

@@ -11,26 +11,18 @@ class DomainDeletedMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(protected string $domain, protected string $url)
     {
         //
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
-        return $this->markdown('emails.system.domain-deleted')->subject('Domain Removed')->with([
-            'url' => $this->url,
-            'removed_url' => $this->domain,
-        ]);
+        return $this->markdown('emails.system.domain-deleted')
+            ->subject('Domain Removed')
+            ->with([
+                'url' => $this->url,
+                'removed_url' => $this->domain,
+            ]);
     }
 }

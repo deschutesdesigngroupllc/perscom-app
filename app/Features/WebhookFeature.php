@@ -7,10 +7,7 @@ use Spark\Plan;
 
 class WebhookFeature extends BaseFeature
 {
-    /**
-     * Resolve the feature's initial value.
-     */
-    public function resolve(?string $scope): mixed
+    public function resolve(?string $scope): bool
     {
         $tenant = $this->resolveTenant($scope);
 

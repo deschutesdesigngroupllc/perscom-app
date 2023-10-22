@@ -7,11 +7,9 @@ use Exception;
 trait HasEventPrompts
 {
     /**
-     * @return mixed|null
-     *
      * @throws Exception
      */
-    public function generatePromptForEvent($event, string $type = 'headline')
+    public function generatePromptForEvent($event, string $type = 'headline'): mixed
     {
         if (! static::$prompts) {
             throw new Exception('The $prompts property has not been set');

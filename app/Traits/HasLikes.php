@@ -3,13 +3,11 @@
 namespace App\Traits;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 trait HasLikes
 {
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function likes()
+    public function likes(): MorphToMany
     {
         return $this->morphToMany(User::class, 'model', 'model_has_likes')
             ->orderByPivot('created_at')

@@ -13,28 +13,20 @@ class NewAwardRecordMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(protected AwardRecord $awardRecord, protected string $url)
     {
         //
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
-        return $this->markdown('emails.tenant.new-award-record')->subject('New Award Record')->with([
-            'award' => $this->awardRecord->award?->name,
-            'text' => $this->awardRecord->text,
-            'url' => $this->url,
-            'date' => Carbon::parse($this->awardRecord->created_at)->toFormattedDateString(),
-        ]);
+        return $this->markdown('emails.tenant.new-award-record')
+            ->subject('New Award Record')
+            ->with([
+                'award' => $this->awardRecord->award?->name,
+                'text' => $this->awardRecord->text,
+                'url' => $this->url,
+                'date' => Carbon::parse($this->awardRecord->created_at)->toFormattedDateString(),
+            ]);
     }
 }
