@@ -14,9 +14,9 @@ class NewTenantMail extends Mailable implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    protected string $url;
+    protected ?string $url;
 
-    protected string $email;
+    protected ?string $email;
 
     public function __construct(Tenant $tenant, User $user, protected string $password)
     {
