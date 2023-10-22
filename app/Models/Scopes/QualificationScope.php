@@ -8,10 +8,7 @@ use Illuminate\Database\Eloquent\Scope;
 
 class QualificationScope implements Scope
 {
-    /**
-     * @return void
-     */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         $builder->ordered();
     }

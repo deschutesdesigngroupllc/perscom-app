@@ -8,9 +8,6 @@ use Illuminate\Database\Eloquent\Scope;
 
 class NewsfeedScope implements Scope
 {
-    /**
-     * Apply the scope to a given Eloquent query builder.
-     */
     public function apply(Builder $builder, Model $model): void
     {
         $builder->where('log_name', 'newsfeed')->latest();
