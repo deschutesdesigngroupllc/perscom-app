@@ -8,9 +8,12 @@ use App\Traits\HasImages;
 use App\Traits\HasTags;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
+use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use RRule\RRule;
 
 /**
@@ -78,7 +81,7 @@ class Event extends Model
     ];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'all_day' => 'boolean',
@@ -112,10 +115,7 @@ class Event extends Model
      */
     protected $with = ['calendar'];
 
-    /**
-     * Boot
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -187,17 +187,14 @@ class Event extends Model
         });
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopeDatePeriod(Builder $query, $start, $end)
+    public function scopeDatePeriod(Builder $query, mixed $start, mixed $end): void
     {
         $period = CarbonPeriod::create(
             Carbon::parse($start),
             Carbon::parse($end)
         );
 
-        return $query->where(function (Builder $query) use ($period) {
+        $query->where(function (Builder $query) use ($period) {
             $query->whereBetween('start', [$period->getStartDate(), $period->getEndDate()]);
         })->orWhere(function (Builder $query) use ($period) {
             $query->whereBetween('end', [$period->getStartDate(), $period->getEndDate()]);
@@ -217,12 +214,9 @@ class Event extends Model
         });
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopeFuture(Builder $query)
+    public function scopeFuture(Builder $query): void
     {
-        return $query->whereDate('start', '>', now())
+        $query->whereDate('start', '>', now())
             ->orWhereDate('end', '>', now())
             ->orWhere(function (Builder $query) {
                 $query->where('repeats', '=', true)
@@ -239,10 +233,7 @@ class Event extends Model
             });
     }
 
-    /**
-     * @return mixed|null
-     */
-    public function getComputedEndAttribute()
+    public function getComputedEndAttribute(): mixed
     {
         return match (true) {
             ! $this->repeats && $this->end => $this->end,
@@ -254,10 +245,7 @@ class Event extends Model
         };
     }
 
-    /**
-     * @return \Illuminate\Support\Optional|mixed|RRule|null
-     */
-    public function getNextOccurrenceAttribute()
+    public function getNextOccurrenceAttribute(): mixed
     {
         return match (true) {
             ! $this->repeats => $this->start,
@@ -267,38 +255,26 @@ class Event extends Model
         };
     }
 
-    /**
-     * @return false|\Illuminate\Support\Optional|mixed
-     */
-    public function getIsPastAttribute()
+    public function getIsPastAttribute(): mixed
     {
         return optional($this->computed_end, static function (Carbon $end) {
             return $end->isPast();
         }) ?: false;
     }
 
-    /**
-     * @return \Illuminate\Support\Optional|mixed|RRule
-     */
-    public function getHumanReadablePatternAttribute()
+    public function getHumanReadablePatternAttribute(): mixed
     {
         return optional($this->generateRRule(), static function (RRule $rule) {
             return $rule->humanReadable();
         });
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function calendar()
+    public function calendar(): BelongsTo
     {
         return $this->belongsTo(Calendar::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function registrations()
+    public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')
             ->withPivot(['id'])
@@ -308,9 +284,9 @@ class Event extends Model
     }
 
     /**
-     * @return RRule|null
+     * @return RRule<DateTime>|null
      */
-    protected function generateRRule()
+    public function generateRRule(): ?RRule
     {
         $payload = [
             'DTSTART' => $this->start->toDateTimeString(),

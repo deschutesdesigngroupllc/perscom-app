@@ -7,6 +7,9 @@ use Illuminate\Support\Facades\Gate;
 
 trait HasHiddenFieldAttributes
 {
+    /**
+     * @return array<int, mixed>
+     */
     public function getAttributesToHide(): array
     {
         $fields = Field::withoutGlobalScopes()->get();

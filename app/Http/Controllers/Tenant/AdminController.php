@@ -8,10 +8,7 @@ use Spark\Http\Controllers\DownloadReceiptController;
 
 class AdminController extends Controller
 {
-    /**
-     * @return mixed
-     */
-    public function downloadReceipt(Request $request, $id)
+    public function downloadReceipt(Request $request, string $id): mixed
     {
         return app()->call(DownloadReceiptController::class.'@__invoke', [
             'request' => $request,

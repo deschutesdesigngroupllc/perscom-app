@@ -30,12 +30,7 @@ class Qualification extends Model implements Sortable
     use HasImages;
     use SortableTrait;
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new QualificationScope());
     }

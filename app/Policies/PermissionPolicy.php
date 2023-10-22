@@ -14,6 +14,8 @@ class PermissionPolicy extends Policy
         if (Request::isCentralRequest() || Request::isDemoMode()) {
             return false;
         }
+
+        return null;
     }
 
     public function viewAny(User $user = null): bool

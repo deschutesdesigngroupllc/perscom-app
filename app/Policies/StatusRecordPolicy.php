@@ -14,6 +14,8 @@ class StatusRecordPolicy extends Policy
         if (Request::isCentralRequest()) {
             return false;
         }
+
+        return null;
     }
 
     public function viewAny(User $user = null): bool

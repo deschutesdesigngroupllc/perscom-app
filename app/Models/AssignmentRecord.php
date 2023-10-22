@@ -48,15 +48,12 @@ class AssignmentRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    /**
-     * @var string
-     */
-    protected static $prompts = AssignmentRecordPrompts::class;
+    protected static string $prompts = AssignmentRecordPrompts::class;
 
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -69,7 +66,7 @@ class AssignmentRecord extends Model
     protected $with = ['position', 'specialty', 'unit'];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'secondary_position_ids' => 'json',
@@ -78,18 +75,11 @@ class AssignmentRecord extends Model
     ];
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'records_assignments';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new AssignmentRecordScope);
     }

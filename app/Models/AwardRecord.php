@@ -46,15 +46,12 @@ class AwardRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    /**
-     * @var string
-     */
-    protected static $prompts = AwardRecordPrompts::class;
+    protected static string $prompts = AwardRecordPrompts::class;
 
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -73,12 +70,7 @@ class AwardRecord extends Model
      */
     protected $table = 'records_awards';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new AwardRecordScope());
     }

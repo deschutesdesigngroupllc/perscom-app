@@ -41,20 +41,16 @@ class Submission extends Model implements Htmlable, Stringable
     use VirtualColumn;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $guarded = [];
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
+     * @var string[]
      */
     protected $with = ['form', 'user', 'statuses'];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
      * @var array<int, string>
      */
     protected $hidden = [
@@ -78,7 +74,7 @@ class Submission extends Model implements Htmlable, Stringable
     /**
      * Run on boot
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -96,12 +92,7 @@ class Submission extends Model implements Htmlable, Stringable
         });
     }
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new SubmissionScope());
     }

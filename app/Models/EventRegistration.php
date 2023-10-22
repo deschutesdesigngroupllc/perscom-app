@@ -38,17 +38,14 @@ class EventRegistration extends Pivot
     protected $table = 'events_registrations';
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
-    /**
-     * Boot
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -65,12 +62,7 @@ class EventRegistration extends Pivot
         });
     }
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new EventRegistrationScope());
     }

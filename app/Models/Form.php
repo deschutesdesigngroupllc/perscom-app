@@ -8,6 +8,8 @@ use App\Traits\HasTags;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -43,16 +45,12 @@ class Form extends Model
     use HasTags;
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * @var string[]
      */
     protected $appends = ['url'];
 
     /**
-     * The relations to eager load on every query.
-     *
-     * @var array
+     * @var string[]
      */
     protected $with = ['fields'];
 
@@ -61,10 +59,7 @@ class Form extends Model
      */
     protected $fillable = ['name', 'slug', 'success_message', 'is_public', 'description', 'instructions'];
 
-    /**
-     * @return string
-     */
-    public function getUrlAttribute()
+    public function getUrlAttribute(): string
     {
         return route('nova.pages.create', [
             'resource' => \App\Nova\Submission::uriKey(),
@@ -73,18 +68,12 @@ class Form extends Model
         ]);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function submissions()
+    public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function submission_status()
+    public function submission_status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
     }

@@ -67,10 +67,7 @@ class Document extends Model implements Htmlable
         '{service_record_date}' => 'The date of the service record.',
     ];
 
-    /**
-     * @return mixed|string|null
-     */
-    protected function resolveTag($tag, User $user = null, $attachedModel = null)
+    protected function resolveTag(string $tag, User $user = null, mixed $attachedModel = null): mixed
     {
         return match (true) {
             $tag === '{user_name}' => $user->name ?? null,
@@ -105,10 +102,7 @@ class Document extends Model implements Htmlable
         };
     }
 
-    /**
-     * @return mixed|string
-     */
-    public function toHtml(User $user = null, $attachedModel = null)
+    public function toHtml(User $user = null, mixed $attachedModel = null): string
     {
         $content = $this->content;
         foreach (self::$availableTags as $tag => $description) {

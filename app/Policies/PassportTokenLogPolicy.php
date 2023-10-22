@@ -20,6 +20,8 @@ class PassportTokenLogPolicy extends Policy
         if (Feature::inactive(ApiAccessFeature::class)) {
             return false;
         }
+
+        return null;
     }
 
     public function viewAny(User $user = null): bool

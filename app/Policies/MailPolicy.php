@@ -8,11 +8,13 @@ use Illuminate\Support\Facades\Request;
 
 class MailPolicy extends Policy
 {
-    public function before()
+    public function before(): ?bool
     {
         if (Request::isCentralRequest()) {
             return true;
         }
+
+        return null;
     }
 
     public function viewAny(User $user = null): bool

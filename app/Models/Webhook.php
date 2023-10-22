@@ -34,7 +34,7 @@ class Webhook extends Model
     protected $fillable = ['url', 'description', 'events', 'method'];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'events' => 'array',

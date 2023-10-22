@@ -21,7 +21,7 @@ trait HasStatuses
             ->using(StatusRecord::class);
     }
 
-    public function scopeStatus(Builder $query, $statuses): void
+    public function scopeStatus(Builder $query, mixed $statuses): void
     {
         if ($statuses instanceof Collection) {
             $statuses = $statuses->all();

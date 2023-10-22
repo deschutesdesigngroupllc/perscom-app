@@ -8,7 +8,7 @@ use Spatie\WebhookServer\WebhookCall;
 
 class WebhookService
 {
-    public static function dispatch(Webhook $webhook, $event, $model): PendingDispatch
+    public static function dispatch(Webhook $webhook, string $event, mixed $model): PendingDispatch
     {
         $payload = [
             'event' => $event,

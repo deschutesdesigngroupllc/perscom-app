@@ -31,16 +31,6 @@ class Award extends Model implements Sortable
     use SortableTrait;
 
     /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
-    {
-        static::addGlobalScope(new AwardScope());
-    }
-
-    /**
      * @var string[]
      */
     protected $fillable = ['name', 'description', 'order'];
@@ -49,4 +39,9 @@ class Award extends Model implements Sortable
      * @var string[]
      */
     protected $with = ['image'];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new AwardScope());
+    }
 }

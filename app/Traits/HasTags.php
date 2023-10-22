@@ -14,7 +14,7 @@ trait HasTags
         return $this->belongsToMany(Tag::class, $this->getTable().'_tags');
     }
 
-    public function scopeTags(Builder $query, $tag): void
+    public function scopeTags(Builder $query, mixed $tag): void
     {
         $tags = Arr::wrap($tag);
 

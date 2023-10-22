@@ -40,12 +40,7 @@ class Rank extends Model implements Sortable
      */
     protected $with = ['image'];
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new RankScope());
     }

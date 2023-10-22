@@ -32,10 +32,7 @@ class Task extends Model
      */
     protected $fillable = ['title', 'description', 'instructions', 'form_id'];
 
-    /**
-     * Boot
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

@@ -42,12 +42,7 @@ class NewsfeedItem extends Activity
      */
     protected $appends = ['headline', 'text', 'color', 'item'];
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new NewsfeedScope());
     }

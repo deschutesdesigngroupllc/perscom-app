@@ -43,7 +43,7 @@ class Feature extends Model
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'scope' => 'string',

@@ -108,14 +108,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     use VirtualColumn;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $guarded = [];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * @var string[]
      */
     protected $fillable = [
         'name',
@@ -140,8 +138,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
      * @var array<int, string>
      */
     protected $hidden = [
@@ -162,15 +158,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     protected $with = ['position', 'specialty', 'rank', 'status', 'unit', 'tasks'];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * @var string[]
      */
     protected $appends = ['online', 'url', 'relative_url', 'profile_photo_url', 'cover_photo_url'];
 
     /**
-     * The attributes that should be cast.
-     *
      * @var array<string, string>
      */
     protected $casts = [
@@ -218,6 +210,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->getKey();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getJWTCustomClaims(): array
     {
         return [

@@ -47,7 +47,7 @@ class SocialLoginController extends Controller
     /**
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function tenant($driver, $function)
+    public function tenant(string $driver, string $function)
     {
         return redirect()->route('auth.social.redirect', [
             'driver' => $driver,
@@ -59,7 +59,7 @@ class SocialLoginController extends Controller
     /**
      * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function redirect($driver, $function, Tenant $tenant)
+    public function redirect(string $driver, string $function, Tenant $tenant)
     {
         session()->put(self::$sessionKey, [
             'tenant' => $tenant->getTenantKey(),
@@ -75,7 +75,7 @@ class SocialLoginController extends Controller
      * @throws \Psr\Container\ContainerExceptionInterface
      * @throws \Psr\Container\NotFoundExceptionInterface
      */
-    public function callback($driver, TenantRepository $tenantRepository)
+    public function callback(string $driver, TenantRepository $tenantRepository)
     {
         $sessionData = session()->get(self::$sessionKey, []);
 

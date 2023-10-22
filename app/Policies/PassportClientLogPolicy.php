@@ -20,6 +20,8 @@ class PassportClientLogPolicy extends Policy
         if (Feature::inactive(OAuth2AccessFeature::class)) {
             return false;
         }
+
+        return null;
     }
 
     public function viewAny(User $user = null): bool

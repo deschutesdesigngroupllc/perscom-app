@@ -4,44 +4,30 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class RunEnvoyerHeartbeat extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'perscom:heartbeat';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Sends a heartbeat to Envoyer.';
 
-    /**
-     * Execute the console command.
-     *
-     * @return int
-     */
-    public function handle()
+    public function handle(): int
     {
         if ($url = env('ENVOYER_HEARTBEAT_URL')) {
             $response = Http::get($url);
 
             if ($response->ok()) {
-                return Command::SUCCESS;
+                return CommandAlias::SUCCESS;
             }
 
             $this->error('There was an error when attempting the heartbeat.');
 
-            return Command::FAILURE;
+            return CommandAlias::FAILURE;
         }
 
         $this->info('No heartbeat URL found.');
 
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 }

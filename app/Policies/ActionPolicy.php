@@ -13,6 +13,8 @@ class ActionPolicy extends Policy
         if (Request::isCentralRequest()) {
             return true;
         }
+
+        return null;
     }
 
     public function viewAny(User $user = null): bool

@@ -32,10 +32,7 @@ class StatusRecord extends MorphPivot
      */
     protected $table = 'model_has_statuses';
 
-    /**
-     * Boot
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

@@ -25,6 +25,9 @@ class TenancyServiceProvider extends ServiceProvider
 {
     public static string $controllerNamespace = '';
 
+    /**
+     * @return array<string, mixed>
+     */
     public function events(): array
     {
         return [

@@ -25,7 +25,7 @@ class CalendarsController extends Controller
     protected $policy = CalendarPolicy::class;
 
     /**
-     * The list of available query scopes.
+     * @return string[]
      */
     public function exposedScopes(): array
     {

@@ -45,7 +45,7 @@ class LoginToken extends Model
     /**
      * Boot method
      */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

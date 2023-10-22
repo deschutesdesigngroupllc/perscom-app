@@ -105,6 +105,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         });
     }
 
+    /**
+     * @return array<int, mixed>
+     */
     protected function dashboards(): array
     {
         if (Request::isCentralRequest()) {
@@ -438,6 +441,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         ]);
     }
 
+    /**
+     * @return array<int, mixed>
+     */
     public function tools(): array
     {
         return [

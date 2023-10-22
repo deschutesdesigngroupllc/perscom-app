@@ -19,7 +19,7 @@ class Membership extends Pivot
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'created_at' => 'datetime',

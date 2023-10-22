@@ -20,6 +20,8 @@ class WebhookPolicy extends Policy
         if (Feature::inactive(WebhookFeature::class)) {
             return false;
         }
+
+        return null;
     }
 
     public function viewAny(User $user = null): bool

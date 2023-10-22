@@ -16,6 +16,9 @@ class DomainDeleted extends Notification implements ShouldQueue
         //
     }
 
+    /**
+     * @return string[]
+     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

@@ -45,15 +45,12 @@ class CombatRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    /**
-     * @var string
-     */
-    protected static $prompts = CombatRecordPrompts::class;
+    protected static string $prompts = CombatRecordPrompts::class;
 
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -67,12 +64,7 @@ class CombatRecord extends Model
      */
     protected $table = 'records_combat';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new CombatRecordScope);
     }

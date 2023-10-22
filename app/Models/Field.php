@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Color;
@@ -48,7 +49,7 @@ class Field extends Model
     use HasHiddenResults;
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'hidden' => 'boolean',
@@ -149,10 +150,7 @@ class Field extends Model
         self::FIELD_TIMEZONE => 'string',
     ];
 
-    /**
-     * Boot
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -162,20 +160,12 @@ class Field extends Model
         });
     }
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new FieldScope());
     }
 
-    /**
-     * @return false|mixed
-     */
-    public function constructNovaField()
+    public function constructNovaField(): mixed
     {
         $field = \call_user_func([$this->nova_type, 'make'], $this->name, $this->key);
 
@@ -224,10 +214,7 @@ class Field extends Model
         return $field;
     }
 
-    /**
-     * @return bool|Carbon|int
-     */
-    public function castValue($value)
+    public function castValue(mixed $value): mixed
     {
         return match ($this->cast) {
             self::$fieldCasts[self::FIELD_BOOLEAN] => (bool) $value,
@@ -237,10 +224,7 @@ class Field extends Model
         };
     }
 
-    /**
-     * @return string
-     */
-    public function getHumanReadableFormat($value)
+    public function getHumanReadableFormat(mixed $value): string
     {
         return match ($this->cast) {
             self::$fieldCasts[self::FIELD_BOOLEAN] => $value ? 'True' : 'False',
@@ -251,10 +235,7 @@ class Field extends Model
         };
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function forms()
+    public function forms(): MorphToMany
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
             ->as('forms')
@@ -262,10 +243,7 @@ class Field extends Model
             ->withTimestamps();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function users()
+    public function users(): MorphToMany
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
             ->as('users')
@@ -273,10 +251,7 @@ class Field extends Model
             ->withTimestamps();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getValidationRulesAttribute()
+    public function getValidationRulesAttribute(): ?string
     {
         $rules = explode('|', $this->rules);
 
