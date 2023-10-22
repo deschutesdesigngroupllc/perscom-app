@@ -1,6 +1,32 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.56...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.55...HEAD)
+
+## [v1.0.55](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.56...v1.0.55) - 2023-10-21
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.55 -->
+### What's Changed
+
+#### Added
+
+- Added sortable whitelist to users API endpoint by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/230
+- Added sortable whitelist to users endpoint by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/229
+
+#### Changed
+
+- Removed unnecessary API endpoints and modified API tags by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/234
+- Remove unecessary doc blocks and added return types by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/235
+
+#### Other
+
+- Bump eslint-plugin-react from 7.32.2 to 7.33.2 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/224
+- Bump laravel-vite-plugin from 0.7.8 to 0.8.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/223
+- Bump eslint from 8.44.0 to 8.51.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/232
+- Bump sass from 1.68.0 to 1.69.3 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/233
+- Bump eslint from 8.51.0 to 8.52.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/236
+- Bump swagger-ui-react from 5.1.0 to 5.9.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/221
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.54...v1.0.55
 
 ## [v1.0.56](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.54...v1.0.56) - 2023-10-21
 
