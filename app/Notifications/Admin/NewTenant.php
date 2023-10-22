@@ -33,12 +33,7 @@ class NewTenant extends Notification implements ShouldQueue
         return (new NewTenantMail($this->tenant))->to($notifiable->email);
     }
 
-    /**
-     * Get the nova representation of the notification
-     *
-     * @return NovaNotification
-     */
-    public function toNova()
+    public function toNova(): NovaNotification
     {
         return (new NovaNotification())->message('A new tenant has been created.')
             ->action('View Tenant', URL::remote(route('nova.pages.detail', [

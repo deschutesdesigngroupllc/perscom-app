@@ -14,9 +14,6 @@ class ApprovalRequired extends Notification implements ShouldQueue
     /**
      * @return string[]
      */
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];
