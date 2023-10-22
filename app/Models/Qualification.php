@@ -30,11 +30,6 @@ class Qualification extends Model implements Sortable
     use HasImages;
     use SortableTrait;
 
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new QualificationScope());
-    }
-
     /**
      * @var string[]
      */
@@ -44,4 +39,9 @@ class Qualification extends Model implements Sortable
      * @var string[]
      */
     protected $with = ['image'];
+
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new QualificationScope());
+    }
 }

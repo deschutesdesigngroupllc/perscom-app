@@ -24,9 +24,9 @@ use RRule\RRule;
  * @property-read \App\Models\User|null $author
  * @property-read \App\Models\Calendar|null $calendar
  * @property-read mixed|null $computed_end
- * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule $human_readable_pattern
- * @property-read false|\Illuminate\Support\Optional|mixed $is_past
- * @property-read \Illuminate\Support\Optional|mixed|\RRule\RRule|null $next_occurrence
+ * @property-read mixed|null $human_readable_pattern
+ * @property-read mixed|null $is_past
+ * @property-read mixed|null $next_occurrence
  * @property-read \App\Models\Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
@@ -36,13 +36,13 @@ use RRule\RRule;
  * @property-read int|null $tags_count
  *
  * @method static Builder|Event author(\App\Models\User $user)
- * @method static Builder|Event datePeriod($start, $end)
+ * @method static Builder|Event datePeriod(?mixed $start, ?mixed $end)
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static Builder|Event future()
  * @method static Builder|Event newModelQuery()
  * @method static Builder|Event newQuery()
  * @method static Builder|Event query()
- * @method static Builder|Event tags($tag)
+ * @method static Builder|Event tags(?mixed $tag)
  *
  * @mixin \Eloquent
  */

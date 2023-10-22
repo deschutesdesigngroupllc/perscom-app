@@ -59,9 +59,6 @@ class Field extends Model
         'disabled' => 'boolean',
     ];
 
-    /**
-     * Fields
-     */
     public const FIELD_BOOLEAN = 'boolean';
 
     public const FIELD_CODE = 'code';

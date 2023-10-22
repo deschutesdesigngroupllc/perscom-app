@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
  * App\Models\Status
@@ -41,18 +42,12 @@ class Status extends Model
         'bg-yellow-100 text-yellow-600' => 'Yellow',
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function users()
+    public function users(): MorphToMany
     {
         return $this->morphedByMany(User::class, 'model', 'model_has_statuses');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function submissions()
+    public function submissions(): MorphToMany
     {
         return $this->morphedByMany(Submission::class, 'model', 'model_has_statuses');
     }

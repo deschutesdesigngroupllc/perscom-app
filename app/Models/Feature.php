@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
@@ -49,18 +50,12 @@ class Feature extends Model
         'scope' => 'string',
     ];
 
-    /**
-     * @return void
-     */
-    public function scopeTenant(Builder $query, Tenant $tenant)
+    public function scopeTenant(Builder $query, Tenant $tenant): void
     {
         $query->where('scope', (string) $tenant->getTenantKey());
     }
 
-    /**
-     * @return mixed
-     */
-    public static function options()
+    public static function options(): mixed
     {
         return Collection::make(
             (new Finder())->files()->name('*.php')->depth(0)->in(base_path('app/Features'))
@@ -71,10 +66,7 @@ class Feature extends Model
         });
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function tenant()
+    public function tenant(): BelongsTo
     {
         return $this->belongsTo(Tenant::class, 'scope');
     }

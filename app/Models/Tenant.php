@@ -45,11 +45,11 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
  * @property-read int|null $domains_count
- * @property-read mixed $custom_domain
+ * @property-read mixed|null $custom_domain
  * @property-read mixed|null $custom_url
  * @property-read string $database_status
  * @property-read mixed|null $domain
- * @property-read mixed $fallback_domain
+ * @property-read mixed|null $fallback_domain
  * @property-read mixed|null $fallback_url
  * @property-read mixed|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spark\Receipt> $localReceipts

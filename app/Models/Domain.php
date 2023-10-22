@@ -15,7 +15,7 @@ use Spatie\Url\Url;
  * @property int $is_custom_subdomain
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Support\Optional|mixed|string $host
+ * @property-read mixed|null $host
  * @property-read mixed|null $url
  * @property-read \App\Models\Tenant $tenant
  *

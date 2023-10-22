@@ -29,9 +29,6 @@ class WebhookLog extends Activity
 {
     use HasFactory;
 
-    /**
-     * The "booted" method of the model.
-     */
     protected static function booted(): void
     {
         static::addGlobalScope('api', function (Builder $builder) {

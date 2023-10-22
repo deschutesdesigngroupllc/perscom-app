@@ -8,6 +8,7 @@ use App\Traits\HasUser;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\VirtualColumn\VirtualColumn;
@@ -27,7 +28,7 @@ use Stringable;
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission query()
- * @method static \Illuminate\Database\Eloquent\Builder|Submission status($statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission status(?mixed $statuses)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission user(\App\Models\User $user)
  *
  * @mixin \Eloquent
@@ -71,9 +72,6 @@ class Submission extends Model implements Htmlable, Stringable
         ];
     }
 
-    /**
-     * Run on boot
-     */
     public static function boot(): void
     {
         parent::boot();
@@ -97,10 +95,7 @@ class Submission extends Model implements Htmlable, Stringable
         static::addGlobalScope(new SubmissionScope());
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function form()
+    public function form(): BelongsTo
     {
         return $this->belongsTo(Form::class);
     }
@@ -110,10 +105,7 @@ class Submission extends Model implements Htmlable, Stringable
         return $this->toHtml();
     }
 
-    /**
-     * @return string
-     */
-    public function toHtml()
+    public function toHtml(): string
     {
         return view('models.submission')->with('submission', $this)->render();
     }

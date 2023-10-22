@@ -29,9 +29,6 @@ class PassportClientLog extends Activity
 {
     use HasFactory;
 
-    /**
-     * The "booted" method of the model.
-     */
     protected static function booted(): void
     {
         static::addGlobalScope('oauth', function (Builder $builder) {

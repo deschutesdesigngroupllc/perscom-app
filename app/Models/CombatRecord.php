@@ -58,8 +58,6 @@ class CombatRecord extends Model
     protected $fillable = ['user_id', 'document_id', 'author_id', 'text'];
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'records_combat';
@@ -76,10 +74,7 @@ class CombatRecord extends Model
             ->setDescriptionForEvent(fn ($event) => "A combat record has been $event");
     }
 
-    /**
-     * @return void
-     */
-    public function tapActivity(Activity $activity, string $eventName)
+    public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "A combat record has been added for {$this->user->name}");

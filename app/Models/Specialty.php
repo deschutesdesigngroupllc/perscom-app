@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Scopes\SpecialtyScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -29,28 +30,22 @@ class Specialty extends Model implements Sortable
     use HasFactory;
     use SortableTrait;
 
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new SpecialtyScope());
-    }
-
     /**
      * @var string[]
      */
     protected $fillable = ['name', 'abbreviation', 'description', 'order'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function assignment_records()
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new SpecialtyScope());
+    }
+
+    public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }

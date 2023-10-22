@@ -11,10 +11,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  *
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
  * @property-read \Illuminate\Support\Collection $changes
- * @property-read mixed $color
- * @property-read mixed $headline
- * @property-read mixed $item
- * @property-read mixed $text
+ * @property-read mixed|null $color
+ * @property-read mixed|null $headline
+ * @property-read mixed|null $item
+ * @property-read mixed|null $text
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $likes
  * @property-read int|null $likes_count
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
@@ -47,40 +47,28 @@ class NewsfeedItem extends Activity
         static::addGlobalScope(new NewsfeedScope());
     }
 
-    /**
-     * @return mixed
-     */
-    public function getHeadlineAttribute()
+    public function getHeadlineAttribute(): mixed
     {
         return optional($this->properties, function () {
             return $this->getExtraProperty('headline');
         });
     }
 
-    /**
-     * @return mixed
-     */
-    public function getTextAttribute()
+    public function getTextAttribute(): mixed
     {
         return optional($this->properties, function () {
             return $this->getExtraProperty('text');
         });
     }
 
-    /**
-     * @return mixed
-     */
-    public function getColorAttribute()
+    public function getColorAttribute(): mixed
     {
         return optional($this->properties, function () {
             return $this->getExtraProperty('color');
         });
     }
 
-    /**
-     * @return mixed
-     */
-    public function getItemAttribute()
+    public function getItemAttribute(): mixed
     {
         return optional($this->properties, function () {
             return $this->getExtraProperty('item');

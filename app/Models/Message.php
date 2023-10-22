@@ -44,26 +44,19 @@ class Message extends Model implements Sortable
     use SortableTrait;
 
     /**
-     * The attributes that are mass assignable.
-     *
      * @var array<int, string>
      */
     protected $fillable = ['title', 'message', 'active', 'order', 'url', 'link_text'];
 
     /**
-     * The attributes that should be cast to native types.
-     *
      * @var array<string, string>
      */
     protected $casts = [
         'active' => 'boolean',
     ];
 
-    /**
-     * @return mixed
-     */
-    public function scopeActive(Builder $query)
+    public function scopeActive(Builder $query): void
     {
-        return $query->where('active', '=', true);
+        $query->where('active', '=', true);
     }
 }

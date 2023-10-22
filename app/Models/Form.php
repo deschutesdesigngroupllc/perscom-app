@@ -32,7 +32,7 @@ use Laravel\Nova\Actions\Actionable;
  * @method static Builder|Form newModelQuery()
  * @method static Builder|Form newQuery()
  * @method static Builder|Form query()
- * @method static Builder|Form tags($tag)
+ * @method static Builder|Form tags(?mixed $tag)
  *
  * @mixin \Eloquent
  */
