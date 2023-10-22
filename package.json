@@ -30,7 +30,7 @@
         "eslint-plugin-prettier": "^5.0.0",
         "eslint-plugin-react": "^7.33.2",
         "focus-visible": "^5.2.0",
-        "laravel-vite-plugin": "^0.7.8",
+        "laravel-vite-plugin": "^0.8.1",
         "lodash": "^4.17.19",
         "postcss": "^8.1.14",
         "postcss-focus-visible": "^9.0.0",
