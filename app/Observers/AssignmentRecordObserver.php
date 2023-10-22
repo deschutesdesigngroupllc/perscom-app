@@ -11,12 +11,7 @@ use Illuminate\Support\Facades\Notification;
 
 class AssignmentRecordObserver
 {
-    /**
-     * Handle the Assignment "created" event.
-     *
-     * @return void
-     */
-    public function created(AssignmentRecord $assignment)
+    public function created(AssignmentRecord $assignment): void
     {
         if ($assignment->user) {
             $assignment->user->position_id = $assignment->position?->id;
@@ -35,24 +30,14 @@ class AssignmentRecordObserver
         });
     }
 
-    /**
-     * Handle the Assignment "updated" event.
-     *
-     * @return void
-     */
-    public function updated(AssignmentRecord $assignment)
+    public function updated(AssignmentRecord $assignment): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::ASSIGNMENT_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($assignment) {
             WebhookService::dispatch($webhook, WebhookEvent::ASSIGNMENT_RECORD_UPDATED->value, $assignment);
         });
     }
 
-    /**
-     * Handle the Assignment "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(AssignmentRecord $assignment)
+    public function deleted(AssignmentRecord $assignment): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::ASSIGNMENT_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($assignment) {
             WebhookService::dispatch($webhook, WebhookEvent::ASSIGNMENT_RECORD_DELETED->value, $assignment);

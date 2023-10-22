@@ -9,9 +9,6 @@ use Laravel\Pennant\Feature;
 
 class ActivityObserver
 {
-    /**
-     * Handle the NewsfeedItem "created" event.
-     */
     public function created(Activity $activity): void
     {
         if ($activity->log_name === 'newsfeed' && Feature::store('database')->active(OpenAiGeneratedContent::class)) {

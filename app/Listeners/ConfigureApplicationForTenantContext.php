@@ -10,10 +10,7 @@ class ConfigureApplicationForTenantContext
 {
     protected ?Tenant $tenant = null;
 
-    /**
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         optional(\tenant(), function (Tenant $tenant) {
             $this->tenant = $tenant;
@@ -26,10 +23,7 @@ class ConfigureApplicationForTenantContext
         });
     }
 
-    /**
-     * @return void
-     */
-    protected function configureTimezone()
+    protected function configureTimezone(): void
     {
         $timezone = setting('timezone', \config('app.timezone'));
 
@@ -37,18 +31,12 @@ class ConfigureApplicationForTenantContext
         date_default_timezone_set($timezone);
     }
 
-    /**
-     * @return void
-     */
-    protected function configureMail()
+    protected function configureMail(): void
     {
         Config::set('mail.from.name', $this->tenant?->name);
     }
 
-    /**
-     * @return void
-     */
-    protected function configureCache()
+    protected function configureCache(): void
     {
         PermissionRegistrar::$cacheKey = 'spatie.permission.cache.tenant.'.$this->tenant?->id;
     }

@@ -3,14 +3,12 @@
 namespace App\Services;
 
 use App\Models\Webhook;
+use Illuminate\Foundation\Bus\PendingDispatch;
 use Spatie\WebhookServer\WebhookCall;
 
 class WebhookService
 {
-    /**
-     * @return \Illuminate\Foundation\Bus\PendingDispatch
-     */
-    public static function dispatch(Webhook $webhook, $event, $model)
+    public static function dispatch(Webhook $webhook, $event, $model): PendingDispatch
     {
         $payload = [
             'event' => $event,

@@ -15,34 +15,19 @@ class NewSubscriptionMail extends Mailable
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(protected Subscription $subscription)
     {
         //
     }
 
-    /**
-     * Get the message envelope.
-     *
-     * @return \Illuminate\Mail\Mailables\Envelope
-     */
-    public function envelope()
+    public function envelope(): Envelope
     {
         return new Envelope(
             subject: 'New Subscription',
         );
     }
 
-    /**
-     * Get the message content definition.
-     *
-     * @return \Illuminate\Mail\Mailables\Content
-     */
-    public function content()
+    public function content(): Content
     {
         return new Content(
             markdown: 'emails.admin.new-subscription',

@@ -93,35 +93,19 @@ use Spatie\Url\Url;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
-    /**
-     * Register the Nova routes.
-     *
-     * @return void
-     */
-    protected function routes()
+    protected function routes(): void
     {
         Nova::routes()->register();
     }
 
-    /**
-     * Register the Nova gate.
-     * This gate determines who can access Nova in non-local environments.
-     *
-     * @return void
-     */
-    protected function gate()
+    protected function gate(): void
     {
         Gate::define('viewNova', function ($user) {
             return true;
         });
     }
 
-    /**
-     * Get the dashboards that should be listed in the Nova sidebar.
-     *
-     * @return array
-     */
-    protected function dashboards()
+    protected function dashboards(): array
     {
         if (Request::isCentralRequest()) {
             return [new Admin()];
@@ -130,12 +114,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         return [new Main()];
     }
 
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
         Nova::style('nova-custom', Vite::asset('resources/css/nova.css'));
         Nova::ignoreMigrations();
@@ -161,12 +140,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         $this->app->bind(ResourceDestroyController::class, \App\Http\Controllers\Nova\ResourceDestroyController::class);
     }
 
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         parent::boot();
 
@@ -464,12 +438,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         ]);
     }
 
-    /**
-     * Get the tools that should be listed in the Nova sidebar.
-     *
-     * @return array
-     */
-    public function tools()
+    public function tools(): array
     {
         return [
             (new NovaSettings())->canSee(function () {

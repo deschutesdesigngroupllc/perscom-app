@@ -12,26 +12,18 @@ class NewMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
-    /**
-     * Create a new message instance.
-     *
-     * @return void
-     */
     public function __construct(protected Mail $mail)
     {
         //
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
-        return $this->markdown('emails.tenant.mail')->subject($this->mail->subject)->with([
-            'content' => $this->mail->content,
-            'links' => $this->mail->links ?? [],
-        ]);
+        return $this->markdown('emails.tenant.mail')
+            ->subject($this->mail->subject)
+            ->with([
+                'content' => $this->mail->content,
+                'links' => $this->mail->links ?? [],
+            ]);
     }
 }

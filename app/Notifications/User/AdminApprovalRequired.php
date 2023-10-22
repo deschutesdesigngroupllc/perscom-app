@@ -14,9 +14,6 @@ class AdminApprovalRequired extends Notification implements ShouldQueue
 
     protected string $url;
 
-    /**
-     * Constructor
-     */
     public function __construct(protected User $user)
     {
         $this->url = route('nova.pages.detail', [
@@ -25,20 +22,12 @@ class AdminApprovalRequired extends Notification implements ShouldQueue
         ]);
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @return array<int, string>
-     */
-    public function via(object $notifiable): array
+    public function via(mixed $notifiable): array
     {
         return ['mail'];
     }
 
-    /**
-     * @return AdminApprovalRequiredMail
-     */
-    public function toMail(object $notifiable)
+    public function toMail(object $notifiable): AdminApprovalRequiredMail
     {
         return (new AdminApprovalRequiredMail($this->user, $this->url))->to($notifiable->email);
     }

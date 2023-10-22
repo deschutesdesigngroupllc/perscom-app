@@ -9,12 +9,7 @@ use Laravel\Cashier\Subscription;
 
 class SubscriptionObserver
 {
-    /**
-     * Handle the Subscription "created" event.
-     *
-     * @return void
-     */
-    public function created(Subscription $subscription)
+    public function created(Subscription $subscription): void
     {
         Notification::send(Admin::all(), new NewSubscription($subscription));
     }

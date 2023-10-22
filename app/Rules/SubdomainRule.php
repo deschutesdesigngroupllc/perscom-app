@@ -7,10 +7,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class SubdomainRule implements ValidationRule
 {
-    /**
-     * @var string[]
-     */
-    public static $reservedSubdomains = [
+    public static array $reservedSubdomains = [
         'admin',
         'api',
         'app',
@@ -28,12 +25,6 @@ class SubdomainRule implements ValidationRule
         'widget',
     ];
 
-    /**
-     * Run the validation rule.
-     *f
-     *
-     * @param  \Closure(string): \Illuminate\Translation\PotentiallyTranslatedString  $fail
-     */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if (\in_array($value, static::$reservedSubdomains, true)) {

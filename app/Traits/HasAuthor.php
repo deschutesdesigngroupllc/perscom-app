@@ -4,14 +4,12 @@ namespace App\Traits;
 
 use App\Models\User;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
 trait HasAuthor
 {
-    /**
-     * Run on boot
-     */
-    public static function bootHasAuthor()
+    public static function bootHasAuthor(): void
     {
         static::creating(function ($model) {
             if ($user = Auth::user() && ! $model->author_id) {
@@ -20,20 +18,12 @@ trait HasAuthor
         });
     }
 
-    /**
-     * @param  Builder  $query
-     * @param  User  $user
-     * @return Builder
-     */
-    public function scopeAuthor($query, $user)
+    public function scopeAuthor(Builder $query, User $user): void
     {
-        return $query->whereBelongsTo($user);
+        $query->whereBelongsTo($user);
     }
 
-    /**
-     * @return mixed
-     */
-    public function author()
+    public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
     }

@@ -26,12 +26,7 @@ class CreateInitialTenantUser implements ShouldQueue
         //
     }
 
-    /**
-     * Execute the job.
-     *
-     * @return void
-     */
-    public function handle()
+    public function handle(): void
     {
         $password = Str::password();
         $user = $this->tenant->run(function () use ($password) {
@@ -52,9 +47,6 @@ class CreateInitialTenantUser implements ShouldQueue
         }
     }
 
-    /**
-     * Handle a job failure.
-     */
     public function failed($exception): void
     {
         Log::error('Failed to create initial tenant user', [

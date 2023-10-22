@@ -15,16 +15,8 @@ class NewQualificationRecord extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @var array|string|string[]
-     */
-    protected $url;
+    protected string $url;
 
-    /**
-     * Create a new notification instance.
-     *
-     * @return void
-     */
     public function __construct(protected QualificationRecord $qualificationRecord)
     {
         $this->url = route('nova.pages.detail', [
@@ -33,31 +25,17 @@ class NewQualificationRecord extends Notification implements ShouldQueue
         ]);
     }
 
-    /**
-     * Get the notification's delivery channels.
-     *
-     * @param  mixed  $notifiable
-     * @return array
-     */
-    public function via($notifiable)
+    public function via(mixed $notifiable): array
     {
         return ['mail', NovaChannel::class];
     }
 
-    /**
-     * @return NewQualificationRecordMail
-     */
-    public function toMail($notifiable)
+    public function toMail(mixed $notifiable): NewQualificationRecordMail
     {
         return (new NewQualificationRecordMail($this->qualificationRecord, $this->url))->to($notifiable->email);
     }
 
-    /**
-     * Get the nova representation of the notification
-     *
-     * @return NovaNotification
-     */
-    public function toNova()
+    public function toNova(): NovaNotification
     {
         return (new NovaNotification())->message('A new qualification record has been added to your personnel file.')
             ->action('View Record', URL::remote($this->url))

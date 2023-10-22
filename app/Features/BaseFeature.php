@@ -9,10 +9,7 @@ class BaseFeature
 {
     protected ?Tenant $tenant = null;
 
-    /**
-     * @return Tenant|Optional
-     */
-    public function resolveTenant(?string $scope)
+    public function resolveTenant(?string $scope): Tenant|Optional
     {
         return $this->tenant = optional($scope, static function ($scope) {
             return Tenant::findOrFail($scope);

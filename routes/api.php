@@ -43,18 +43,9 @@ use Orion\Facades\Orion;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
 Route::group(['prefix' => 'v1'], static function () {
-    Route::get('spec.yaml', [SpecController::class, 'index'])->name('spec');
+    Route::get('spec.yaml', [SpecController::class, 'index'])
+        ->name('spec');
 
     Route::group([
         'middleware' => [
@@ -65,7 +56,8 @@ Route::group(['prefix' => 'v1'], static function () {
             'approved',
         ],
     ], static function () {
-        Orion::resource('me', MeController::class)->only('index');
+        Orion::resource('me', MeController::class)
+            ->only('index');
 
         Orion::resource('announcements', AnnouncementsController::class);
 
@@ -83,7 +75,8 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::belongsToManyResource('groups', 'units', GroupsUnitsController::class);
 
         Orion::resource('newsfeed', NewsfeedController::class);
-        Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)->only(['index', 'attach', 'detach', 'sync']);
+        Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)
+            ->only(['index', 'attach', 'detach', 'sync']);
 
         Orion::resource('positions', PositionsController::class);
 

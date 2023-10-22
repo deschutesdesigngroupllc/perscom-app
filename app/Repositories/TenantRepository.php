@@ -7,26 +7,17 @@ use App\Models\Tenant;
 
 class TenantRepository implements RepositoryContract
 {
-    /**
-     * @return mixed|\Stancl\Tenancy\Database\TenantCollection
-     */
-    public function getAll()
+    public function getAll(): mixed
     {
         return Tenant::all();
     }
 
-    /**
-     * @return Tenant
-     */
-    public function findByKey($key, $value)
+    public function findByKey($key, $value): mixed
     {
         return Tenant::where($key, '=', $value)->firstOrFail();
     }
 
-    /**
-     * @return Tenant
-     */
-    public function findById($id)
+    public function findById($id): mixed
     {
         return Tenant::findOrFail($id);
     }

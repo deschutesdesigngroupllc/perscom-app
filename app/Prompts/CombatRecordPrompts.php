@@ -7,10 +7,7 @@ use Illuminate\Support\Str;
 
 class CombatRecordPrompts
 {
-    /**
-     * @return string
-     */
-    public function created(CombatRecord $record, $type = 'headline')
+    public function created(CombatRecord $record, $type = 'headline'): string
     {
         $prompt = config("openai.prompts.combatrecord.created.$type");
 

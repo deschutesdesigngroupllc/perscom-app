@@ -7,12 +7,7 @@ use Illuminate\Support\Facades\Cache;
 
 class SettingsObserver
 {
-    /**
-     * Handle the Settings "created" event.
-     *
-     * @return void
-     */
-    public function created(Settings $settings)
+    public function created(Settings $settings): void
     {
         if ($settings->key === 'organization') {
             tenant()->update([
@@ -35,12 +30,7 @@ class SettingsObserver
         }
     }
 
-    /**
-     * Handle the Settings "updated" event.
-     *
-     * @return void
-     */
-    public function updated(Settings $settings)
+    public function updated(Settings $settings): void
     {
         Cache::forget($settings->key);
 
@@ -65,12 +55,7 @@ class SettingsObserver
         }
     }
 
-    /**
-     * Handle the Settings "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(Settings $settings)
+    public function deleted(Settings $settings): void
     {
         Cache::forget($settings->key);
     }

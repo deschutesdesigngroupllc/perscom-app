@@ -20,17 +20,11 @@ class RemoveInactiveAccounts implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Create a new job instance.
-     */
     public function __construct()
     {
         $this->onQueue('system');
     }
 
-    /**
-     * Execute the job.
-     */
     public function handle(): void
     {
         // @phpstan-ignore-next-line
@@ -67,19 +61,11 @@ class RemoveInactiveAccounts implements ShouldQueue
         });
     }
 
-    /**
-     * Calculate the number of seconds to wait before retrying the job.
-     *
-     * @return array<int, int>
-     */
     public function backoff(): array
     {
         return [1, 5, 10];
     }
 
-    /**
-     * Handle a job failure.
-     */
     public function failed($exception): void
     {
         Log::error('Failed to remove inactive accounts', [

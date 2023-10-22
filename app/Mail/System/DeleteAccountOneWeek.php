@@ -12,13 +12,9 @@ class DeleteAccountOneWeek extends Mailable implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
-        return $this->markdown('emails.system.delete-account-one-week')->subject('Account Deletion Warning');
+        return $this->markdown('emails.system.delete-account-one-week')
+            ->subject('Account Deletion Warning');
     }
 }

@@ -5,16 +5,14 @@ namespace App\Traits;
 use App\Models\Element;
 use App\Models\Field;
 use Closure;
+use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
 trait HasFields
 {
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphToMany
-     */
-    public function fields()
+    public function fields(): MorphToMany
     {
         return $this->morphToMany(Field::class, 'model', 'model_has_fields')
             ->using(Element::class)
@@ -24,10 +22,7 @@ trait HasFields
             ->withTimestamps();
     }
 
-    /**
-     * @return Hidden|Panel|mixed[]
-     */
-    protected function getNovaFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', Closure $modelResolver = null)
+    protected function getNovaFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', Closure $modelResolver = null): array|Panel|Hidden
     {
         if (($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest()) &&
             $request->resource() == static::class) { // @phpstan-ignore-line

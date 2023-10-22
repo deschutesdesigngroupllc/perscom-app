@@ -4,23 +4,16 @@ namespace App\Traits;
 
 use App\Models\Document;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 trait HasDocument
 {
-    /**
-     * @param  Builder  $query
-     * @param  Document  $document
-     * @return Builder
-     */
-    public function scopeDocument($query, $document)
+    public function scopeDocument(Builder $query, Document $document): void
     {
-        return $query->whereBelongsTo($document);
+        $query->whereBelongsTo($document);
     }
 
-    /**
-     * @return mixed
-     */
-    public function document()
+    public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
     }

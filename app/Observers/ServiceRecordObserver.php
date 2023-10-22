@@ -11,12 +11,7 @@ use Illuminate\Support\Facades\Notification;
 
 class ServiceRecordObserver
 {
-    /**
-     * Handle the Service "created" event.
-     *
-     * @return void
-     */
-    public function created(ServiceRecord $service)
+    public function created(ServiceRecord $service): void
     {
         Notification::send($service->user, new NewServiceRecord($service));
 
@@ -25,24 +20,14 @@ class ServiceRecordObserver
         });
     }
 
-    /**
-     * Handle the Service "updated" event.
-     *
-     * @return void
-     */
-    public function updated(ServiceRecord $service)
+    public function updated(ServiceRecord $service): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::SERVICE_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($service) {
             WebhookService::dispatch($webhook, WebhookEvent::SERVICE_RECORD_UPDATED->value, $service);
         });
     }
 
-    /**
-     * Handle the Service "deleted" event.
-     *
-     * @return void
-     */
-    public function deleted(ServiceRecord $service)
+    public function deleted(ServiceRecord $service): void
     {
         Webhook::query()->whereJsonContains('events', [WebhookEvent::SERVICE_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($service) {
             WebhookService::dispatch($webhook, WebhookEvent::SERVICE_RECORD_DELETED->value, $service);

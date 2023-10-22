@@ -18,12 +18,7 @@ class AdminApprovalRequired extends Mailable implements ShouldQueue
         //
     }
 
-    /**
-     * Build the message.
-     *
-     * @return $this
-     */
-    public function build()
+    public function build(): static
     {
         return $this->markdown('emails.user.admin-approval-required')
             ->subject('User Approval Required')

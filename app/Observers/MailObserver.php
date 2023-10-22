@@ -11,12 +11,7 @@ use Illuminate\Http\Request;
 
 class MailObserver
 {
-    /**
-     * Handle the Mail "created" event.
-     *
-     * @return void
-     */
-    public function created(Mail $mail)
+    public function created(Mail $mail): void
     {
         $connection = Request::isCentralRequest() ? 'central' : config('queue.default');
 

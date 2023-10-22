@@ -11,6 +11,7 @@ use App\Jobs\Tenant\CreateInitialTenantUser;
 use App\Jobs\Tenant\MigrateDatabase;
 use App\Jobs\Tenant\SeedDatabase;
 use App\Jobs\Tenant\SetupInitialTenantAccount;
+use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
@@ -22,13 +23,9 @@ use Stancl\Tenancy\Middleware;
 
 class TenancyServiceProvider extends ServiceProvider
 {
-    // By default, no namespace is used to support the callable array syntax.
     public static string $controllerNamespace = '';
 
-    /**
-     * @return array
-     */
-    public function events()
+    public function events(): array
     {
         return [
             Events\CreatingTenant::class => [],
@@ -88,28 +85,19 @@ class TenancyServiceProvider extends ServiceProvider
         ];
     }
 
-    /**
-     * @return void
-     */
-    public function register()
+    public function register(): void
     {
+        //
     }
 
-    /**
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->bootEvents();
         $this->mapRoutes();
-
         $this->makeTenancyMiddlewareHighestPriority();
     }
 
-    /**
-     * @return void
-     */
-    protected function bootEvents()
+    protected function bootEvents(): void
     {
         foreach ($this->events() as $event => $listeners) {
             foreach ($listeners as $listener) {
@@ -122,23 +110,16 @@ class TenancyServiceProvider extends ServiceProvider
         }
     }
 
-    /**
-     * @return void
-     */
-    protected function mapRoutes()
+    protected function mapRoutes(): void
     {
         if (file_exists(base_path('routes/tenant.php'))) {
             Route::namespace(static::$controllerNamespace)->group(base_path('routes/tenant.php'));
         }
     }
 
-    /**
-     * @return void
-     */
-    protected function makeTenancyMiddlewareHighestPriority()
+    protected function makeTenancyMiddlewareHighestPriority(): void
     {
         $tenancyMiddleware = [
-            // Even higher priority than the initialization middleware
             Middleware\PreventAccessFromCentralDomains::class,
             Middleware\InitializeTenancyByDomain::class,
             Middleware\InitializeTenancyBySubdomain::class,
@@ -150,7 +131,7 @@ class TenancyServiceProvider extends ServiceProvider
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {
-            $this->app[\Illuminate\Contracts\Http\Kernel::class]->prependToMiddlewarePriority($middleware);
+            $this->app[Kernel::class]->prependToMiddlewarePriority($middleware);
         }
     }
 }
