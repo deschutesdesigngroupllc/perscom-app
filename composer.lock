@@ -5972,7 +5972,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6008,7 +6008,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6044,7 +6044,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6080,7 +6080,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6116,7 +6116,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6152,7 +6152,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6188,7 +6188,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6224,7 +6224,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6260,7 +6260,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6296,7 +6296,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/improve-oauth-client-support",
+            "version": "dev-feature/api-docs-tags",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -12216,16 +12216,16 @@
         },
         {
             "name": "tailflow/laravel-orion",
-            "version": "2.21.1",
+            "version": "2.22.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/tailflow/laravel-orion.git",
-                "reference": "759d5123397a6d6bec39add02b0de10d4984fa92"
+                "reference": "6cc031fb6bdaf74b34a9f7d70006420c76d0746e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/tailflow/laravel-orion/zipball/759d5123397a6d6bec39add02b0de10d4984fa92",
-                "reference": "759d5123397a6d6bec39add02b0de10d4984fa92",
+                "url": "https://api.github.com/repos/tailflow/laravel-orion/zipball/6cc031fb6bdaf74b34a9f7d70006420c76d0746e",
+                "reference": "6cc031fb6bdaf74b34a9f7d70006420c76d0746e",
                 "shasum": ""
             },
             "require": {
@@ -12283,7 +12283,7 @@
                 "issues": "https://github.com/tailflow/laravel-orion/issues",
                 "source": "https://github.com/tailflow/laravel-orion"
             },
-            "time": "2023-04-03T12:09:39+00:00"
+            "time": "2023-10-13T09:32:07+00:00"
         },
         {
             "name": "tightenco/ziggy",

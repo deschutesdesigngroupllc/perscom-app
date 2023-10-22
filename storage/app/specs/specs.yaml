@@ -3285,7 +3285,7 @@ paths:
                           - status_id
                           - unit_id
                           - approved
-                          - online
+                          - created_at
                           - created_at
                       operator:
                         type: string
@@ -3310,13 +3310,13 @@ paths:
                         type: array
                         items:
                           type: object
-                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, online, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, created_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
                 search:
                   type: object
                   properties:
                     value:
                       type: string
-                      description: 'A search for the given value will be performed on the following fields: name, email, approved, online'
+                      description: 'A search for the given value will be performed on the following fields: name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved'
                     case_sensitive:
                       type: boolean
                       description: '(default: true) Set it to false to perform search in case-insensitive way'
@@ -3357,7 +3357,7 @@ paths:
                         type: object
                         properties:
                           type: array
-                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, online, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, online, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, created_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, created_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
       responses:
         200:
           description: OK
@@ -16812,7 +16812,7 @@ components:
 tags:
   -
     name: Me
-    description: 'API documentation for Me'
+    description: 'API documentation for the Current User'
   -
     name: Announcements
     description: 'API documentation for Announcements'
@@ -16822,9 +16822,6 @@ tags:
   -
     name: Calendars
     description: 'API documentation for Calendars'
-  -
-    name: 'Calendars Events'
-    description: 'API documentation for Calendars Events'
   -
     name: Events
     description: 'API documentation for Events'
@@ -16837,9 +16834,6 @@ tags:
   -
     name: Groups
     description: 'API documentation for Groups'
-  -
-    name: 'Groups Units'
-    description: 'API documentation for Groups Units'
   -
     name: Newsfeed
     description: 'API documentation for Newsfeed'
@@ -16867,9 +16861,6 @@ tags:
   -
     name: Units
     description: 'API documentation for Units'
-  -
-    name: 'Units Users'
-    description: 'API documentation for Units Users'
   -
     name: Users
     description: 'API documentation for Users'
@@ -16915,6 +16906,18 @@ tags:
   -
     name: 'Users Secondary Units'
     description: 'API documentation for Users Secondary Units'
+  -
+    name: 'Users Fields'
+    description: 'API documentation for Users Fields'
+  -
+    name: 'Users Secondary Specialties'
+    description: 'API documentation for Users Secondary Specialties'
+  -
+    name: 'Users Secondary Units'
+    description: 'API documentation for Users Secondary Units'
+  -
+    name: 'Users Fields'
+    description: 'API documentation for Users Fields'
   -
     name: 'Users Fields'
     description: 'API documentation for Users Fields'
