@@ -3279,13 +3279,15 @@ paths:
                           - id
                           - name
                           - email
+                          - email_verified_at
                           - position_id
                           - rank_id
                           - specialty_id
                           - status_id
                           - unit_id
                           - approved
-                          - created_at
+                          - last_seen_at
+                          - updated_at
                           - created_at
                       operator:
                         type: string
@@ -3310,13 +3312,13 @@ paths:
                         type: array
                         items:
                           type: object
-                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, created_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, email_verified_at, position_id, rank_id, specialty_id, status_id, unit_id, approved, last_seen_at, updated_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
                 search:
                   type: object
                   properties:
                     value:
                       type: string
-                      description: 'A search for the given value will be performed on the following fields: name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved'
+                      description: 'A search for the given value will be performed on the following fields: id, name, email, email_verified_at, position_id, rank_id, specialty_id, status_id, unit_id, approved, last_seen_at, updated_at, created_at'
                     case_sensitive:
                       type: boolean
                       description: '(default: true) Set it to false to perform search in case-insensitive way'
@@ -3357,7 +3359,35 @@ paths:
                         type: object
                         properties:
                           type: array
-                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, created_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, position_id, rank_id, specialty_id, status_id, unit_id, approved, created_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, email_verified_at, position_id, rank_id, specialty_id, status_id, unit_id, approved, last_seen_at, updated_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, email, email_verified_at, position_id, rank_id, specialty_id, status_id, unit_id, approved, last_seen_at, updated_at, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+                sort:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - email
+                          - email_verified_at
+                          - position_id
+                          - rank_id
+                          - specialty_id
+                          - status_id
+                          - unit_id
+                          - approved
+                          - last_seen_at
+                          - updated_at
+                          - created_at
+                      direction:
+                        type: string
+                        enum:
+                          - asc
+                          - desc
+                    required:
+                      - field
       responses:
         200:
           description: OK
@@ -15824,6 +15854,423 @@ paths:
       summary: 'Delete a batch of tasks'
       tags:
         - Tasks
+  /v1/statuses:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Status'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StatusResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create status'
+      tags:
+        - Statuses
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of statuses'
+      tags:
+        - Statuses
+  /v1/statuses/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - submissions
+                          - users
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for statuses'
+      tags:
+        - Statuses
+  '/v1/statuses/{status}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: status
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StatusResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get status'
+      tags:
+        - Statuses
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: status
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Status'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StatusResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update status'
+      tags:
+        - Statuses
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: status
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/StatusResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete status'
+      tags:
+        - Statuses
+  /v1/statuses/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Status'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of statuses'
+      tags:
+        - Statuses
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Status'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of statuses'
+      tags:
+        - Statuses
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - submissions
+              - users
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/StatusResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of statuses'
+      tags:
+        - Statuses
 components:
   securitySchemes:
     ApiKey:
@@ -16853,6 +17300,9 @@ tags:
     name: Specialties
     description: 'API documentation for Specialties'
   -
+    name: Statuses
+    description: 'API documentation for Statuses'
+  -
     name: Submissions
     description: 'API documentation for Submissions'
   -
@@ -16909,9 +17359,6 @@ tags:
   -
     name: 'Users Fields'
     description: 'API documentation for Users Fields'
-  -
-    name: 'Users Secondary Specialties'
-    description: 'API documentation for Users Secondary Specialties'
   -
     name: 'Users Secondary Units'
     description: 'API documentation for Users Secondary Units'
