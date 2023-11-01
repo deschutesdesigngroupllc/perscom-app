@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
 use App\Http\Controllers\Api\V1\Ranks\RanksController;
 use App\Http\Controllers\Api\V1\SpecController;
 use App\Http\Controllers\Api\V1\Specialties\SpecialtiesController;
+use App\Http\Controllers\Api\V1\Statuses\StatusesController;
 use App\Http\Controllers\Api\V1\Submissions\SubmissionsController;
 use App\Http\Controllers\Api\V1\Tasks\TasksController;
 use App\Http\Controllers\Api\V1\Units\UnitsController;
@@ -80,6 +81,8 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('ranks', RanksController::class);
 
         Orion::resource('specialties', SpecialtiesController::class);
+
+        Orion::resource('statuses', StatusesController::class);
 
         Orion::resource('submissions', SubmissionsController::class);
 
