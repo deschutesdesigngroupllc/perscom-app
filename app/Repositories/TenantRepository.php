@@ -12,12 +12,12 @@ class TenantRepository implements RepositoryContract
         return Tenant::all();
     }
 
-    public function findByKey($key, $value): mixed
+    public function findByKey(string $key, mixed $value): mixed
     {
         return Tenant::where($key, '=', $value)->firstOrFail();
     }
 
-    public function findById($id): mixed
+    public function findById(string|int $id): mixed
     {
         return Tenant::findOrFail($id);
     }

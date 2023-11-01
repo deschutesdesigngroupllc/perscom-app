@@ -11,6 +11,7 @@ use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -46,24 +47,18 @@ class RankRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    /**
-     * @var string
-     */
-    protected static $prompts = RankRecordPrompts::class;
+    protected static string $prompts = RankRecordPrompts::class;
 
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
      */
     protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text', 'type'];
 
-    /**
-     * Record types
-     */
     public const RECORD_RANK_PROMOTION = 0;
 
     public const RECORD_RANK_DEMOTION = 1;
@@ -74,18 +69,11 @@ class RankRecord extends Model
     protected $with = ['rank'];
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'records_ranks';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new RankRecordScope);
     }
@@ -97,10 +85,7 @@ class RankRecord extends Model
             ->setDescriptionForEvent(fn ($event) => "A rank record has been $event");
     }
 
-    /**
-     * @return void
-     */
-    public function tapActivity(Activity $activity, string $eventName)
+    public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "A rank record has been added for {$this->user->name}");
@@ -109,10 +94,7 @@ class RankRecord extends Model
         }
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function rank()
+    public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
     }

@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class QualificationRecordPrompts
 {
-    public function created(QualificationRecord $record, $type = 'headline'): string
+    public function created(QualificationRecord $record, string $type = 'headline'): string
     {
         $prompt = config("openai.prompts.qualificationrecord.created.$type");
 

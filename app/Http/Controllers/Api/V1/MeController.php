@@ -16,7 +16,7 @@ class MeController extends Controller
     protected $model = User::class;
 
     /**
-     * Builds Eloquent query for fetching entities in index method.
+     * @param  array<int, string>  $requestedRelations
      */
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
     {

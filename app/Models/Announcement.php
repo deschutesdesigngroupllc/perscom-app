@@ -28,7 +28,7 @@ class Announcement extends Model
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -36,8 +36,6 @@ class Announcement extends Model
     protected $fillable = ['title', 'content', 'color', 'expires_at'];
 
     /**
-     * The attributes that should be cast.
-     *
      * @var array<string, string>
      */
     protected $casts = [
@@ -51,10 +49,7 @@ class Announcement extends Model
             ->setDescriptionForEvent(fn ($event) => "An announcement has been $event");
     }
 
-    /**
-     * @return void
-     */
-    public function tapActivity(Activity $activity, string $eventName)
+    public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', $this->title);

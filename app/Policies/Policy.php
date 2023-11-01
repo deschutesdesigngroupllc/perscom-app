@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
-use Illuminate\Auth\Access\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,7 +11,7 @@ abstract class Policy
 {
     use HandlesAuthorization;
 
-    public function hasPermissionTo(User $user = null, $permission): Response|bool
+    public function hasPermissionTo(User $user = null, string $permission): bool
     {
         if (Auth::getDefaultDriver() === 'api') {
             if ($client = Auth::guard('passport')->client()) { // @phpstan-ignore-line

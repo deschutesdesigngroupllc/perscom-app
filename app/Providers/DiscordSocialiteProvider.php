@@ -7,6 +7,9 @@ use Laravel\Socialite\Two\User;
 
 class DiscordSocialiteProvider extends AbstractProvider
 {
+    /**
+     * @var string[]
+     */
     protected $scopes = ['email', 'identify'];
 
     protected $scopeSeparator = ' ';
@@ -26,6 +29,7 @@ class DiscordSocialiteProvider extends AbstractProvider
         return $this->getDiscordUrl().'/oauth2/token';
     }
 
+    // @phpstan-ignore-next-line
     protected function getUserByToken($token): mixed
     {
         $response = $this->getHttpClient()->get($this->getDiscordUrl().'/users/@me', [
@@ -39,6 +43,9 @@ class DiscordSocialiteProvider extends AbstractProvider
         return json_decode($response->getBody()->getContents(), true, 512, JSON_THROW_ON_ERROR);
     }
 
+    /**
+     * @param  array<string, mixed>  $user
+     */
     protected function mapUserToObject(array $user): User
     {
         return (new User())->setRaw($user)->map([

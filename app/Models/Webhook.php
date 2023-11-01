@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Enums\WebhookMethod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -34,17 +35,14 @@ class Webhook extends Model
     protected $fillable = ['url', 'description', 'events', 'method'];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'events' => 'array',
         'method' => WebhookMethod::class,
     ];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
-     */
-    public function logs()
+    public function logs(): MorphMany
     {
         return $this->morphMany(Activity::class, 'subject');
     }

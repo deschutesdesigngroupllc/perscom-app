@@ -11,6 +11,7 @@ use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -46,15 +47,12 @@ class QualificationRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    /**
-     * @var string
-     */
-    protected static $prompts = QualificationRecordPrompts::class;
+    protected static string $prompts = QualificationRecordPrompts::class;
 
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -67,18 +65,11 @@ class QualificationRecord extends Model
     protected $with = ['qualification'];
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'records_qualifications';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new QualificationRecordScope);
     }
@@ -90,10 +81,7 @@ class QualificationRecord extends Model
             ->setDescriptionForEvent(fn ($event) => "A qualification record has been $event");
     }
 
-    /**
-     * @return void
-     */
-    public function tapActivity(Activity $activity, string $eventName)
+    public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "A qualification record has been added for {$this->user->name}");
@@ -102,10 +90,7 @@ class QualificationRecord extends Model
         }
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function qualification()
+    public function qualification(): BelongsTo
     {
         return $this->belongsTo(Qualification::class);
     }

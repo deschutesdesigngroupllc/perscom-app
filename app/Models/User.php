@@ -8,6 +8,9 @@ use App\Traits\HasResourceUrlAttribute;
 use App\Traits\HasStatuses;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -43,8 +46,8 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read bool $online
  * @property-read string|null $profile_photo_url
  * @property-read string $relative_url
- * @property-read \Illuminate\Support\Optional|mixed $time_in_assignment
- * @property-read \Illuminate\Support\Optional|mixed $time_in_grade
+ * @property-read mixed|null $time_in_assignment
+ * @property-read mixed|null $time_in_grade
  * @property-read string $url
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
@@ -88,7 +91,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
- * @method static \Illuminate\Database\Eloquent\Builder|User status($statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder|User status(?mixed $statuses)
  *
  * @mixin \Eloquent
  */
@@ -108,14 +111,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     use VirtualColumn;
 
     /**
-     * @var array
+     * @var string[]
      */
     public $guarded = [];
 
     /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
+     * @var string[]
      */
     protected $fillable = [
         'name',
@@ -140,8 +141,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
-     *
      * @var array<int, string>
      */
     protected $hidden = [
@@ -162,15 +161,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     protected $with = ['position', 'specialty', 'rank', 'status', 'unit', 'tasks'];
 
     /**
-     * The accessors to append to the model's array form.
-     *
-     * @var array
+     * @var string[]
      */
     protected $appends = ['online', 'url', 'relative_url', 'profile_photo_url', 'cover_photo_url'];
 
     /**
-     * The attributes that should be cast.
-     *
      * @var array<string, string>
      */
     protected $casts = [
@@ -218,6 +213,9 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->getKey();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getJWTCustomClaims(): array
     {
         return [
@@ -235,12 +233,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         ];
     }
 
-    /**
-     * Determine if the user can impersonate another user.
-     *
-     * @return bool
-     */
-    public function canImpersonate()
+    public function canImpersonate(): bool
     {
         return Gate::check('impersonate', $this);
     }
@@ -250,78 +243,51 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return 'web';
     }
 
-    /**
-     * @return \Illuminate\Support\Optional|mixed
-     */
-    public function getTimeInAssignmentAttribute()
+    public function getTimeInAssignmentAttribute(): mixed
     {
         return optional($this->assignment_records->first()?->created_at, function ($date) {
             return Carbon::now()->diff($date, true);
         });
     }
 
-    /**
-     * @return bool
-     */
-    public function getOnlineAttribute()
+    public function getOnlineAttribute(): bool
     {
         return Cache::tags('user.online')->has("user.online.$this->id");
     }
 
-    /**
-     * @return string|null
-     */
-    public function getProfilePhotoUrlAttribute()
+    public function getProfilePhotoUrlAttribute(): ?string
     {
         return $this->profile_photo ? Storage::url($this->profile_photo) : null;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getCoverPhotoUrlAttribute()
+    public function getCoverPhotoUrlAttribute(): ?string
     {
         return $this->cover_photo ? Storage::url($this->cover_photo) : null;
     }
 
-    /**
-     * @return \Illuminate\Support\Optional|mixed
-     */
-    public function getTimeInGradeAttribute()
+    public function getTimeInGradeAttribute(): mixed
     {
         return optional($this->rank_records->first()?->created_at, function ($date) {
             return Carbon::now()->diff($date, true);
         });
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function assignment_records()
+    public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function award_records()
+    public function award_records(): HasMany
     {
         return $this->hasMany(AwardRecord::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function combat_records()
+    public function combat_records(): HasMany
     {
         return $this->hasMany(CombatRecord::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function events()
+    public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'events_registrations')
             ->withPivot(['id'])
@@ -330,51 +296,33 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             ->using(EventRegistration::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function position()
+    public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function secondary_positions()
+    public function secondary_positions(): BelongsToMany
     {
         return $this->belongsToMany(Position::class, 'users_positions')
             ->withTimestamps();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function qualifications()
+    public function qualifications(): BelongsToMany
     {
         return $this->belongsToMany(Qualification::class, 'records_qualifications')->withPivot(['text'])->as('record');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function qualification_records()
+    public function qualification_records(): HasMany
     {
         return $this->hasMany(QualificationRecord::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function rank()
+    public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function ranks()
+    public function ranks(): BelongsToMany
     {
         return $this->belongsToMany(Rank::class, 'records_ranks')
             ->withTimestamps()
@@ -382,59 +330,38 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             ->as('record');
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function rank_records()
+    public function rank_records(): HasMany
     {
         return $this->hasMany(RankRecord::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function service_records()
+    public function service_records(): HasMany
     {
         return $this->hasMany(ServiceRecord::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function specialty()
+    public function specialty(): BelongsTo
     {
         return $this->belongsTo(Specialty::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function secondary_specialties()
+    public function secondary_specialties(): BelongsToMany
     {
         return $this->belongsToMany(Specialty::class, 'users_specialties')
             ->withTimestamps();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function status()
+    public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function submissions()
+    public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function tasks()
+    public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')
             ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
@@ -443,18 +370,12 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             ->withTimestamps();
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function unit()
+    public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
-     */
-    public function secondary_units()
+    public function secondary_units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'users_units')
             ->withTimestamps();

@@ -7,17 +7,18 @@ use App\Models\Tenant;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 use Stancl\Tenancy\Events\DomainCreated;
 use Stancl\Tenancy\Events\TenantCreated;
 
 class CreateNewTenant
 {
     /**
-     * Validate and create a newly registered tenant.
+     * @param  array<string, mixed>  $input
      *
-     * @return \App\Models\User
+     * @throws ValidationException
      */
-    public function create(array $input)
+    public function create(array $input): Tenant
     {
         Validator::make($input, [
             'organization' => ['required', 'string', 'max:255', Rule::unique(Tenant::class, 'name')],

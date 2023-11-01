@@ -59,7 +59,7 @@ class UsersController extends Controller
     }
 
     /**
-     * The attributes that are used for sorting.
+     * @return string[]
      */
     public function sortableBy(): array
     {

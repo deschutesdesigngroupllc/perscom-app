@@ -31,8 +31,6 @@ class LoginToken extends Model
     public $incrementing = false;
 
     /**
-     * The primary key for the model.
-     *
      * @var string
      */
     protected $primaryKey = 'token';
@@ -42,10 +40,7 @@ class LoginToken extends Model
      */
     protected $fillable = ['user_id'];
 
-    /**
-     * Boot method
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 

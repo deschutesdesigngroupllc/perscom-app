@@ -9,52 +9,31 @@ use Illuminate\Support\Facades\Request;
 
 class RolePolicy extends Policy
 {
-    /**
-     * @return false|void
-     */
-    public function before()
+    public function before(): ?bool
     {
         if (Request::isCentralRequest() || Request::isDemoMode()) {
             return false;
         }
+
+        return null;
     }
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user = null)
+    public function viewAny(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:role') || $user?->tokenCan('view:role');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user = null, Role $role)
+    public function view(User $user = null, Role $role): bool
     {
         return $this->hasPermissionTo($user, 'view:role') || $user?->tokenCan('view:role');
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function create(User $user = null)
+    public function create(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:role') || $user?->tokenCan('create:role');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user = null, Role $role)
+    public function update(User $user = null, Role $role): bool
     {
         if ($role->is_application_role) {
             return false;
@@ -63,12 +42,7 @@ class RolePolicy extends Policy
         return $this->hasPermissionTo($user, 'update:role') || $user?->tokenCan('update:role');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function delete(User $user = null, Role $role)
+    public function delete(User $user = null, Role $role): bool
     {
         if ($role->is_application_role) {
             return false;
@@ -77,12 +51,7 @@ class RolePolicy extends Policy
         return $this->hasPermissionTo($user, 'delete:role') || $user?->tokenCan('delete:role');
     }
 
-    /**
-     * Determine whether the user can detach the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function detachPermission(User $user = null, Role $role, Permission $permission)
+    public function detachPermission(User $user = null, Role $role, Permission $permission): bool
     {
         if ($role->is_application_role && $permission->is_application_permission) {
             return false;
@@ -91,12 +60,7 @@ class RolePolicy extends Policy
         return $this->hasPermissionTo($user, 'update:role');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user = null, Role $role)
+    public function restore(User $user = null, Role $role): bool
     {
         if ($role->is_application_role) {
             return false;
@@ -105,12 +69,7 @@ class RolePolicy extends Policy
         return $this->hasPermissionTo($user, 'delete:role') || $user?->tokenCan('delete:role');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user = null, Role $role)
+    public function forceDelete(User $user = null, Role $role): bool
     {
         if ($role->is_application_role) {
             return false;

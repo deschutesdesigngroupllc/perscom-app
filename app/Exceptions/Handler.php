@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
+use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -28,12 +29,9 @@ class Handler extends ExceptionHandler
     }
 
     /**
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\JsonResponse|\Illuminate\Http\Response|\Symfony\Component\HttpFoundation\Response
-     *
      * @throws Throwable
      */
-    public function render($request, Throwable $e)
+    public function render($request, Throwable $e): Response
     {
         $response = parent::render($request, $e);
 

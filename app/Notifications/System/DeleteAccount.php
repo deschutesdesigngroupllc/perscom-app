@@ -11,6 +11,9 @@ class DeleteAccount extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    /**
+     * @return string[]
+     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

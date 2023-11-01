@@ -11,6 +11,7 @@ use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -46,15 +47,12 @@ class AwardRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    /**
-     * @var string
-     */
-    protected static $prompts = AwardRecordPrompts::class;
+    protected static string $prompts = AwardRecordPrompts::class;
 
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -67,18 +65,11 @@ class AwardRecord extends Model
     protected $with = ['award'];
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'records_awards';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new AwardRecordScope());
     }
@@ -90,10 +81,7 @@ class AwardRecord extends Model
             ->setDescriptionForEvent(fn ($event) => "An award record has been $event");
     }
 
-    /**
-     * @return void
-     */
-    public function tapActivity(Activity $activity, string $eventName)
+    public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "An award record has been added for {$this->user->name}");
@@ -102,10 +90,7 @@ class AwardRecord extends Model
         }
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function award()
+    public function award(): BelongsTo
     {
         return $this->belongsTo(Award::class);
     }

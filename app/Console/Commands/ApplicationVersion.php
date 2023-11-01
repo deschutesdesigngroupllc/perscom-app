@@ -4,27 +4,15 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class ApplicationVersion extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'perscom:version
                             {--set= : Set the current application version}';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Retrieves or sets the current application version.';
 
-    /**
-     * Execute the console command.
-     */
     public function handle(): int
     {
         $currentApplicationVersion = $this->getApplicationVersion();
@@ -35,18 +23,15 @@ class ApplicationVersion extends Command
             $this->setApplicationVersion($newVersion);
         }
 
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 
-    /**
-     * @return int
-     */
-    public function setApplicationVersion($version)
+    public function setApplicationVersion(string $version): int
     {
         if (! preg_match("/^(v+)(\d|[1-9]\d*)\.(\d|[1-9]\d*)\.(\d|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/", $version)) {
             $this->error('The supplied version is not a valid SemVer version.');
 
-            return Command::FAILURE;
+            return CommandAlias::FAILURE;
         }
 
         $path = App::environmentFilePath();
@@ -61,13 +46,10 @@ class ApplicationVersion extends Command
             file_get_contents($path)
         ));
 
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 
-    /**
-     * @return mixed
-     */
-    public function getApplicationVersion()
+    public function getApplicationVersion(): mixed
     {
         return env('APP_VERSION');
     }

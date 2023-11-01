@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Outl1ne\NovaSettings\NovaSettings;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
+use Throwable;
 
 class SetupInitialTenantAccount implements ShouldQueue
 {
@@ -62,7 +63,7 @@ class SetupInitialTenantAccount implements ShouldQueue
         });
     }
 
-    public function failed($exception): void
+    public function failed(Throwable $exception): void
     {
         Log::error('Failed to setup initial tenant settings', [
             'exception' => $exception,

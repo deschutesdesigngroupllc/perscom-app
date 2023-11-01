@@ -7,7 +7,7 @@ use Illuminate\Support\Str;
 
 class RankRecordPrompts
 {
-    public function created(RankRecord $record, $type = 'headline'): string
+    public function created(RankRecord $record, string $type = 'headline'): string
     {
         $prompt = config("openai.prompts.rankrecord.created.$type");
 

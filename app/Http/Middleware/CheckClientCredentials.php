@@ -7,6 +7,7 @@ use Laravel\Passport\Http\Middleware\CheckClientCredentials as BaseCheckClientCr
 
 class CheckClientCredentials extends BaseCheckClientCredentials
 {
+    // @phpstan-ignore-next-line
     protected function validate($psr, $scopes): void
     {
         parent::validate($psr, $scopes);

@@ -11,6 +11,7 @@ use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -48,15 +49,12 @@ class AssignmentRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    /**
-     * @var string
-     */
-    protected static $prompts = AssignmentRecordPrompts::class;
+    protected static string $prompts = AssignmentRecordPrompts::class;
 
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -69,7 +67,7 @@ class AssignmentRecord extends Model
     protected $with = ['position', 'specialty', 'unit'];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'secondary_position_ids' => 'json',
@@ -78,18 +76,11 @@ class AssignmentRecord extends Model
     ];
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'records_assignments';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new AssignmentRecordScope);
     }
@@ -101,10 +92,7 @@ class AssignmentRecord extends Model
             ->setDescriptionForEvent(fn ($event) => "An assignment record has been $event");
     }
 
-    /**
-     * @return void
-     */
-    public function tapActivity(Activity $activity, string $eventName)
+    public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "An assignment record has been added for {$this->user->name}");
@@ -113,26 +101,17 @@ class AssignmentRecord extends Model
         }
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function position()
+    public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function specialty()
+    public function specialty(): BelongsTo
     {
         return $this->belongsTo(Specialty::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function unit()
+    public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
     }

@@ -8,82 +8,46 @@ use Illuminate\Support\Facades\Request;
 
 class MailPolicy extends Policy
 {
-    /**
-     * @return true|void
-     */
-    public function before()
+    public function before(): ?bool
     {
         if (Request::isCentralRequest()) {
             return true;
         }
+
+        return null;
     }
 
-    /**
-     * Determine whether the user can view any models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function viewAny(User $user = null)
+    public function viewAny(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:mail') || $user?->tokenCan('view:mail');
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(User $user = null, Mail $mail)
+    public function view(User $user = null, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'view:mail') || $user?->tokenCan('view:mail');
     }
 
-    /**
-     * Determine whether the user can create models.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function create(User $user = null)
+    public function create(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:mail') || $user?->tokenCan('create:mail');
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function update(User $user = null, Mail $mail)
+    public function update(User $user = null, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'update:mail') || $user?->tokenCan('update:mail');
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function delete(User $user = null, Mail $mail)
+    public function delete(User $user = null, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'delete:mail') || $user?->tokenCan('delete:mail');
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function restore(User $user = null, Mail $mail)
+    public function restore(User $user = null, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'delete:mail') || $user?->tokenCan('delete:mail');
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function forceDelete(User $user = null, Mail $mail)
+    public function forceDelete(User $user = null, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'delete:mail') || $user?->tokenCan('delete:mail');
     }

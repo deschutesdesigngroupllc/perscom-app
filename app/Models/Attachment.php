@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * App\Models\Attachment
@@ -21,10 +22,7 @@ class Attachment extends Model
 {
     use HasFactory;
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function model()
+    public function model(): MorphTo
     {
         return $this->morphTo('model');
     }

@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Scopes\PositionScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -29,12 +30,7 @@ class Position extends Model implements Sortable
     use HasFactory;
     use SortableTrait;
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new PositionScope());
     }
@@ -44,18 +40,12 @@ class Position extends Model implements Sortable
      */
     protected $fillable = ['name', 'description', 'order'];
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function assignment_records()
+    public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     */
-    public function users()
+    public function users(): HasMany
     {
         return $this->hasMany(User::class);
     }

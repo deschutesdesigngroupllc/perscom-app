@@ -11,6 +11,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ResetDemoAccount implements ShouldQueue
 {
@@ -38,12 +39,15 @@ class ResetDemoAccount implements ShouldQueue
         }
     }
 
+    /**
+     * @return int[]
+     */
     public function backoff(): array
     {
         return [1, 5, 10];
     }
 
-    public function failed($exception): void
+    public function failed(Throwable $exception): void
     {
         Log::error('Failed to reset demo account', [
             'exception' => $exception,

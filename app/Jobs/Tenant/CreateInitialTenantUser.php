@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Contracts\CreatesNewUsers;
+use Throwable;
 
 class CreateInitialTenantUser implements ShouldQueue
 {
@@ -47,7 +48,7 @@ class CreateInitialTenantUser implements ShouldQueue
         }
     }
 
-    public function failed($exception): void
+    public function failed(Throwable $exception): void
     {
         Log::error('Failed to create initial tenant user', [
             'exception' => $exception,

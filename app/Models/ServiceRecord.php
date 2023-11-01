@@ -53,7 +53,7 @@ class ServiceRecord extends Model
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -61,18 +61,11 @@ class ServiceRecord extends Model
     protected $fillable = ['user_id', 'document_id', 'author_id', 'text'];
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'records_service';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new ServiceRecordScope);
     }
@@ -84,10 +77,7 @@ class ServiceRecord extends Model
             ->setDescriptionForEvent(fn ($event) => "A service record has been $event");
     }
 
-    /**
-     * @return void
-     */
-    public function tapActivity(Activity $activity, string $eventName)
+    public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "A service record has been added for {$this->user->name}");

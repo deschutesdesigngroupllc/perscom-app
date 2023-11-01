@@ -31,7 +31,7 @@ class PassportClient extends BaseClientModel
     use HasImages;
 
     /**
-     * @var false[]
+     * @var array<string, mixed>
      */
     protected $attributes = [
         'personal_access_client' => false,

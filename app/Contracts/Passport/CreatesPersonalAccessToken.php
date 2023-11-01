@@ -7,5 +7,8 @@ use Laravel\Passport\PersonalAccessTokenResult;
 
 interface CreatesPersonalAccessToken
 {
-    public function create(User $user, $name, array $scopes = []): PersonalAccessTokenResult;
+    /**
+     * @param  array<int, string>  $scopes
+     */
+    public function create(User $user, string $name, array $scopes = []): PersonalAccessTokenResult;
 }

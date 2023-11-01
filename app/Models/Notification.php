@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * App\Models\Notification
@@ -27,10 +28,7 @@ class Notification extends MorphPivot
      */
     protected $table = 'model_has_notifications';
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\MorphTo
-     */
-    public function model()
+    public function model(): MorphTo
     {
         return $this->morphTo('model');
     }

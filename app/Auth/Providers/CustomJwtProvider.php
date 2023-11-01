@@ -6,6 +6,9 @@ use PHPOpenSourceSaver\JWTAuth\Providers\JWT\Lcobucci;
 
 class CustomJwtProvider extends Lcobucci
 {
+    /**
+     * @param  array<string, mixed>  $keys
+     */
     public function __construct($secret, $algo, array $keys, $config = null)
     {
         $secret = setting('single_sign_on_key', $secret);

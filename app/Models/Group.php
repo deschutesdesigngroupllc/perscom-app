@@ -36,9 +36,6 @@ class Group extends Model implements Sortable
      */
     protected $fillable = ['name', 'description', 'order'];
 
-    /**
-     * The "booted" method of the model.
-     */
     protected static function booted(): void
     {
         static::addGlobalScope(new GroupScope());

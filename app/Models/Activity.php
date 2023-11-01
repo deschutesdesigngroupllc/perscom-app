@@ -29,7 +29,7 @@ class Activity extends \Spatie\Activitylog\Models\Activity
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'properties' => 'collection',

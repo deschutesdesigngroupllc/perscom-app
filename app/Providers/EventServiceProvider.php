@@ -55,8 +55,6 @@ use Stancl\Tenancy\Events\TenancyInitialized;
 class EventServiceProvider extends ServiceProvider
 {
     /**
-     * The event listener mappings for the application.
-     *
      * @var array<class-string, array<int, class-string>>
      */
     protected $listen = [

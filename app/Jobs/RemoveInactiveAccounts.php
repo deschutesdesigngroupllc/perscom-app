@@ -12,6 +12,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class RemoveInactiveAccounts implements ShouldQueue
 {
@@ -61,12 +62,15 @@ class RemoveInactiveAccounts implements ShouldQueue
         });
     }
 
+    /**
+     * @return int[]
+     */
     public function backoff(): array
     {
         return [1, 5, 10];
     }
 
-    public function failed($exception): void
+    public function failed(Throwable $exception): void
     {
         Log::error('Failed to remove inactive accounts', [
             'exception' => $exception,

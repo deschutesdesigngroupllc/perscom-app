@@ -4,32 +4,20 @@ namespace App\Console\Commands;
 
 use App\Jobs\ResetDemoAccount as ResetDemoAccountJob;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class ResetDemoAccount extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
     protected $signature = 'perscom:demo';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
     protected $description = 'Reset\'s the demo account data.';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function handle(): int
     {
         ResetDemoAccountJob::dispatch();
 
         $this->info('The job has been dispatched to the queue.');
 
-        return Command::SUCCESS;
+        return CommandAlias::SUCCESS;
     }
 }

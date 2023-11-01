@@ -25,7 +25,7 @@ class EventsController extends Controller
     protected $policy = EventPolicy::class;
 
     /**
-     * The list of available query scopes.
+     * @return string[]
      */
     public function exposedScopes(): array
     {

@@ -29,9 +29,7 @@ class PassportToken extends BaseTokenModel
     ];
 
     /**
-     * The attributes that should be cast to native types.
-     *
-     * @var array
+     * @var string[]
      */
     protected $casts = [
         'created_at' => 'datetime',

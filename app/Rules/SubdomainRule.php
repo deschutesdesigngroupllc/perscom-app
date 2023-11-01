@@ -7,6 +7,9 @@ use Illuminate\Contracts\Validation\ValidationRule;
 
 class SubdomainRule implements ValidationRule
 {
+    /**
+     * @var array|string[]
+     */
     public static array $reservedSubdomains = [
         'admin',
         'api',

@@ -53,10 +53,7 @@ class Subscribed extends VerifyBillableIsSubscribed
         return $response;
     }
 
-    /**
-     * @return bool
-     */
-    protected function redirectionIsToBillingPortal($response)
+    protected function redirectionIsToBillingPortal(mixed $response): bool
     {
         return $response instanceof RedirectResponse &&
                $response->getTargetUrl() === tenant()->url.'/'.config('spark.path').'/'.$this->guessBillableType();

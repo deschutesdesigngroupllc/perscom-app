@@ -11,9 +11,9 @@ use Orion\Http\Resources\Resource;
 class NewsfeedResource extends Resource
 {
     /**
-     * @return array
+     * @return array<string, mixed>
      */
-    public function toArray(Request $request)
+    public function toArray(Request $request): array
     {
         $author = optional($this->resource?->causer?->name, function ($name) {
             return Str::title($name);

@@ -10,10 +10,7 @@ use Illuminate\Support\Facades\Gate;
 
 class TaskAssignmentScope implements Scope
 {
-    /**
-     * @return void
-     */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
         $builder->latest();
 

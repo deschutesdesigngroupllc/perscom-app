@@ -27,7 +27,7 @@ class GroupsController extends Controller
     protected $policy = GroupPolicy::class;
 
     /**
-     * Builds Eloquent query for fetching entities in index method.
+     * @param  array<int, string>  $requestedRelations
      */
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
     {
@@ -39,7 +39,7 @@ class GroupsController extends Controller
     }
 
     /**
-     * The list of available query scopes.
+     * @return string[]
      */
     public function exposedScopes(): array
     {

@@ -7,8 +7,11 @@ use App\Traits\HasUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 use Staudenmeir\EloquentHasManyDeep\HasRelationships;
+use Znck\Eloquent\Relations\BelongsToThrough as BelongsToThroughRelation;
 use Znck\Eloquent\Traits\BelongsToThrough;
 
 /**
@@ -38,17 +41,14 @@ class EventRegistration extends Pivot
     protected $table = 'events_registrations';
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
     ];
 
-    /**
-     * Boot
-     */
-    public static function boot()
+    public static function boot(): void
     {
         parent::boot();
 
@@ -65,62 +65,39 @@ class EventRegistration extends Pivot
         });
     }
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new EventRegistrationScope());
     }
 
-    /**
-     * @return Builder
-     */
-    public function scopeFuture(Builder $query)
+    public function scopeFuture(Builder $query): void
     {
-        return $query->whereRelation('event', function (Builder $query) {
-            return $query->future();
+        $query->whereRelation('event', function (Builder $query) {
+            $query->future();
         });
     }
 
-    /**
-     * @return \Znck\Eloquent\Relations\BelongsToThrough
-     */
-    public function calendar()
+    public function calendar(): BelongsToThroughRelation
     {
         return $this->belongsToThrough(Calendar::class, Event::class);
     }
 
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function event()
+    public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
-    /**
-     * @return \Znck\Eloquent\Relations\BelongsToThrough
-     */
-    public function organizer()
+    public function organizer(): BelongsToThroughRelation
     {
         return $this->belongsToThrough(User::class, Event::class, null, '', [User::class => 'author_id']);
     }
 
-    /**
-     * @return \Staudenmeir\EloquentHasManyDeep\HasManyDeep
-     */
-    public function attachments()
+    public function attachments(): HasManyDeep
     {
         return $this->hasManyDeep(Attachment::class, [Event::class], [null, ['model_type', 'model_id']]);
     }
 
-    /**
-     * @return \Staudenmeir\EloquentHasManyDeep\HasManyDeep
-     */
-    public function images()
+    public function images(): HasManyDeep
     {
         return $this->hasManyDeep(Image::class, [Event::class], [null, ['model_type', 'model_id']]);
     }

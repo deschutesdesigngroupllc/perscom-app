@@ -45,15 +45,12 @@ class CombatRecord extends Model
     use HasUser;
     use LogsActivity;
 
-    /**
-     * @var string
-     */
-    protected static $prompts = CombatRecordPrompts::class;
+    protected static string $prompts = CombatRecordPrompts::class;
 
     /**
      * @var string[]
      */
-    protected static $recordEvents = ['created'];
+    protected static array $recordEvents = ['created'];
 
     /**
      * @var string[]
@@ -61,18 +58,11 @@ class CombatRecord extends Model
     protected $fillable = ['user_id', 'document_id', 'author_id', 'text'];
 
     /**
-     * The table associated with the model.
-     *
      * @var string
      */
     protected $table = 'records_combat';
 
-    /**
-     * The "booted" method of the model.
-     *
-     * @return void
-     */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new CombatRecordScope);
     }
@@ -84,10 +74,7 @@ class CombatRecord extends Model
             ->setDescriptionForEvent(fn ($event) => "A combat record has been $event");
     }
 
-    /**
-     * @return void
-     */
-    public function tapActivity(Activity $activity, string $eventName)
+    public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
             $activity->properties = $activity->properties->put('headline', "A combat record has been added for {$this->user->name}");

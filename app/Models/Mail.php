@@ -49,7 +49,7 @@ class Mail extends Model
     protected $fillable = ['subject', 'content', 'links', 'send_at', 'sent_at'];
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'links' => 'json',
