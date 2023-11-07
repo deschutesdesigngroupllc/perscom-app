@@ -58,7 +58,7 @@ class BatchCreateAssignmentRecord extends Action
         foreach ($fields->users as $userId) {
             $user = User::findOrFail($userId);
 
-            $record = $user->assignment_records()->create([
+            $user->assignment_records()->create([
                 'status_id' => $fields->status?->id,
                 'unit_id' => $fields->unit?->id,
                 'secondary_unit_ids' => $fields->secondary_units,

@@ -71,11 +71,14 @@ class BatchCreateCombatRecord extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')->options(
-                User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
-            )->rules('required'),
-            Textarea::make('Text')->rules('required'),
-            BelongsTo::make('Document')->nullable(),
+            MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')
+                ->options(
+                    User::all()->pluck('name', 'id')->sort()
+                )->rules('required'),
+            Textarea::make('Text')
+                ->rules('required'),
+            BelongsTo::make('Document')
+                ->nullable(),
         ];
     }
 }

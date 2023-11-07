@@ -198,7 +198,7 @@ class Event extends Resource
                                     )
                                 );
 
-                                return $period->mapWithKeys(function ($value, $key) {
+                                return $period->mapWithKeys(function ($value) {
                                     return [$value->format('j') => $value->format('jS')];
                                 });
                             });

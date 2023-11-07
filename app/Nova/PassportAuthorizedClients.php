@@ -79,14 +79,25 @@ class PassportAuthorizedClients extends Resource
     {
         return [
             BelongsTo::make('Application', 'client', PassportClient::class)->sortable()->readonly(),
-            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
-                return [$scope->id => $scope->id];
-            })->sort())->hideFromIndex()->readonly(),
-            Boolean::make('Revoked')->default(false)->sortable(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->sortable()->exceptOnForms(),
-            DateTime::make('Updated At')->onlyOnDetail(),
-            DateTime::make('Expires At')->sortable()->exceptOnForms(),
+            MultiSelect::make('Scopes')
+                ->options(
+                    Passport::scopes()->pluck('id', 'id')->sort()
+                )
+                ->hideFromIndex()
+                ->readonly(),
+            Boolean::make('Revoked')
+                ->default(false)
+                ->sortable(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
+            DateTime::make('Expires At')
+                ->sortable()
+                ->exceptOnForms(),
         ];
     }
 

@@ -121,10 +121,10 @@ class PassportPersonalAccessToken extends Resource
                 ->readonly()
                 ->language('shell')
                 ->help('API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'),
-            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
-                return [$scope->id => $scope->id];
-            })
-                ->sort())
+            MultiSelect::make('Scopes')
+                ->options(
+                    Passport::scopes()->pluck('id', 'id')->sort()
+                )
                 ->help('The scopes the API key has access to.')
                 ->rules('required')
                 ->hideFromIndex(),
