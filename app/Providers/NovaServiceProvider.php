@@ -425,10 +425,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ]),
                     Tab::make('Users', [
                         MultiSelect::make('Default Permissions', 'default_permissions')->options(
-                            \App\Models\Permission::all()->mapWithKeys(fn ($permission) => [$permission->name => $permission->name])->sort()
+                            \App\Models\Permission::all()->pluck('name', 'name')->sort()
                         )->help('The default permissions that will be given to new user accounts. Leave blank to assign no permissions.'),
                         MultiSelect::make('Default Roles', 'default_roles')->options(
-                            \App\Models\Role::all()->mapWithKeys(fn ($role) => [$role->name => $role->name])->sort()
+                            \App\Models\Role::all()->pluck('name', 'name')->sort()
                         )->help('The default roles that will be given to new user accounts. Leave blank to assign no role.'),
                     ]),
                 ])->showTitle(),

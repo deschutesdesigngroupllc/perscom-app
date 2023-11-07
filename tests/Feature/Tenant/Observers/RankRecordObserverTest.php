@@ -21,6 +21,17 @@ class RankRecordObserverTest extends TenantTestCase
         Queue::fake([GenerateOpenAiNewsfeedContent::class]);
     }
 
+    public function test_create_rank_record_assigns_user_rank(): void
+    {
+        $this->assertNull($this->user->rank);
+
+        $rank = RankRecord::factory()->for($this->user)->create();
+
+        $user = $this->user->fresh();
+
+        $this->assertSame($rank->rank->getKey(), $user->rank->getKey());
+    }
+
     public function test_create_rank_record_notification_sent()
     {
         Notification::fake();

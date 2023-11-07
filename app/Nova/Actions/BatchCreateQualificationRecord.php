@@ -73,13 +73,15 @@ class BatchCreateQualificationRecord extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')->options(
-                User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
-            )->rules('required'),
+            MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')
+                ->options(
+                    User::all()->pluck('name', 'id')->sort()
+                )->rules('required'),
             BelongsTo::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))), 'qualification', Qualification::class)
                 ->showCreateRelationButton(),
             Textarea::make('Text'),
-            BelongsTo::make('Document')->nullable(),
+            BelongsTo::make('Document')
+                ->nullable(),
         ];
     }
 }

@@ -21,6 +21,10 @@ class AssignmentRecordObserver
             $assignment->user->secondary_positions()->sync($assignment->secondary_position_ids);
             $assignment->user->secondary_specialties()->sync($assignment->secondary_specialty_ids);
             $assignment->user->secondary_units()->sync($assignment->secondary_unit_ids);
+
+            if ($assignment->status) {
+                $assignment->user->statuses()->attach($assignment->status);
+            }
         }
 
         Notification::send($assignment->user, new NewAssignmentRecord($assignment));

@@ -64,12 +64,14 @@ class BatchNewEventRegistration extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            MultiSelect::make('Users')->options(
-                User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
-            )->rules('required'),
-            Select::make('Event')->options(
-                Event::all()->mapWithKeys(fn ($event) => [$event->id => "$event->name ({$event->calendar?->name})"])->sort()
-            )->rules('required'),
+            MultiSelect::make('Users')
+                ->options(
+                    User::all()->pluck('name', 'id')->sort()
+                )->rules('required'),
+            Select::make('Event')
+                ->options(
+                    Event::all()->mapWithKeys(fn ($event) => [$event->id => "$event->name ({$event->calendar?->name})"])->sort()
+                )->rules('required'),
         ];
     }
 }

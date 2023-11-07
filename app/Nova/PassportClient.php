@@ -143,10 +143,10 @@ class PassportClient extends Resource
                 ->alwaysShow()
                 ->help('The description will also show on the authorization screen when a client attempts to authenticate.')
                 ->nullable(),
-            MultiSelect::make('Scopes')->options(Passport::scopes()->mapWithKeys(function ($scope) {
-                return [$scope->id => $scope->id];
-            })
-                ->sort())
+            MultiSelect::make('Scopes')
+                ->options(
+                    Passport::scopes()->pluck('id', 'id')->sort()
+                )
                 ->help('The scopes the client may request. Leave blank to allow access to all scopes.')
                 ->nullValues(['', '0', 'null', '[]'])
                 ->nullable()

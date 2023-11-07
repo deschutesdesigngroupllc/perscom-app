@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Models\RankRecord;
 use App\Models\User;
 use App\Nova\Rank;
 use Illuminate\Bus\Queueable;
@@ -75,16 +76,23 @@ class BatchCreateRankRecord extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')->options(
-                User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
-            )->rules('required'),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)->showCreateRelationButton(),
-            Select::make('Type')->options([
-                \App\Models\RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
-                \App\Models\RankRecord::RECORD_RANK_DEMOTION => 'Demotion',
-            ])->rules('required')->displayUsingLabels(),
+            MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')
+                ->options(
+                    User::all()->pluck('name', 'id')->sort()
+                )
+                ->rules('required'),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)
+                ->showCreateRelationButton(),
+            Select::make('Type')
+                ->options([
+                    RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
+                    RankRecord::RECORD_RANK_DEMOTION => 'Demotion',
+                ])
+                ->rules('required')
+                ->displayUsingLabels(),
             Textarea::make('Text'),
-            BelongsTo::make('Document')->nullable(),
+            BelongsTo::make('Document')
+                ->nullable(),
         ];
     }
 }

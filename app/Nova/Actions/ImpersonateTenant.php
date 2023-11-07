@@ -53,10 +53,8 @@ class ImpersonateTenant extends Action
     {
         if ($request->resourceId) {
             $tenant = Tenant::findOrFail($request->resourceId);
-            $options = $tenant->run(function ($tenant) {
-                return User::all()->mapWithKeys(function ($user) {
-                    return [$user->id => $user->name];
-                })->sort()->toArray();
+            $options = $tenant->run(function () {
+                return User::all()->pluck('name', 'id')->sort()->toArray();
             });
         }
 

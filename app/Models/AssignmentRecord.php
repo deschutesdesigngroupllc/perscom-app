@@ -8,6 +8,7 @@ use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
 use App\Traits\HasEventPrompts;
+use App\Traits\HasStatuses;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,6 +27,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Document|null $document
  * @property-read \App\Models\Position|null $position
  * @property-read \App\Models\Specialty|null $specialty
+ * @property-read \App\Models\Status|null $status
  * @property-read \App\Models\Unit|null $unit
  * @property-read \App\Models\User|null $user
  *
@@ -46,6 +48,7 @@ class AssignmentRecord extends Model
     use HasDocument;
     use HasEventPrompts;
     use HasFactory;
+    use HasStatuses;
     use HasUser;
     use LogsActivity;
 
@@ -59,7 +62,7 @@ class AssignmentRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text'];
+    protected $fillable = ['user_id', 'status_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text'];
 
     /**
      * @var string[]
@@ -109,6 +112,11 @@ class AssignmentRecord extends Model
     public function specialty(): BelongsTo
     {
         return $this->belongsTo(Specialty::class);
+    }
+
+    public function status(): BelongsTo
+    {
+        return $this->belongsTo(Status::class);
     }
 
     public function unit(): BelongsTo

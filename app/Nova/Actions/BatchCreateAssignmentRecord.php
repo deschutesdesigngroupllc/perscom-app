@@ -5,6 +5,7 @@ namespace App\Nova\Actions;
 use App\Models\User;
 use App\Nova\Position;
 use App\Nova\Specialty;
+use App\Nova\Status;
 use App\Nova\Unit;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -58,9 +59,13 @@ class BatchCreateAssignmentRecord extends Action
             $user = User::findOrFail($userId);
 
             $user->assignment_records()->create([
-                'position_id' => $fields->position?->id,
-                'specialty_id' => $fields->specialty?->id,
+                'status_id' => $fields->status?->id,
                 'unit_id' => $fields->unit?->id,
+                'secondary_unit_ids' => $fields->secondary_units,
+                'position_id' => $fields->position?->id,
+                'secondary_position_ids' => $fields->secondary_positions,
+                'specialty_id' => $fields->specialty?->id,
+                'secondary_specialty_ids' => $fields->secondary_specialties,
                 'text' => $fields->text,
                 'document_id' => $fields->document?->id,
             ]);
@@ -77,23 +82,35 @@ class BatchCreateAssignmentRecord extends Action
     public function fields(NovaRequest $request)
     {
         return [
-            MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')->options(
-                User::all()->mapWithKeys(fn ($user) => [$user->id => $user->name])->sort()
-            )->rules('required'),
-            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->sortable()->showCreateRelationButton(),
-            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))))->options(
-                \App\Models\Position::all()->mapWithKeys(fn ($position) => [$position->id => $position->name])
-            )->hideFromIndex(),
-            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)->sortable()->showCreateRelationButton(),
-            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Specialties'))))->options(
-                \App\Models\Specialty::all()->mapWithKeys(fn ($speciality) => [$speciality->id => $speciality->name])
-            )->hideFromIndex(),
-            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)->sortable()->showCreateRelationButton(),
-            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))))->options(
-                \App\Models\Unit::all()->mapWithKeys(fn ($unit) => [$unit->id => $unit->name])
-            )->hideFromIndex(),
+            MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')
+                ->options(
+                    User::all()->pluck('name', 'id')->sort()
+                )->rules('required'),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
+                ->required(false)
+                ->nullable()
+                ->showCreateRelationButton(),
+            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
+                ->showCreateRelationButton(),
+            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_positions')
+                ->options(
+                    \App\Models\Position::all()->pluck('name', 'id')->sort()
+                )->hideFromIndex(),
+            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
+                ->showCreateRelationButton(),
+            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialties')
+                ->options(
+                    \App\Models\Specialty::all()->pluck('name', 'id')->sort()
+                )->hideFromIndex(),
+            BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
+                ->showCreateRelationButton(),
+            MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_units')
+                ->options(
+                    \App\Models\Unit::all()->pluck('name', 'id')->sort()
+                )->hideFromIndex(),
             Textarea::make('Text'),
-            BelongsTo::make('Document')->nullable(),
+            BelongsTo::make('Document')
+                ->nullable(),
         ];
     }
 }

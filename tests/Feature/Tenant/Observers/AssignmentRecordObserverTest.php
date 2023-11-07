@@ -21,6 +21,21 @@ class AssignmentRecordObserverTest extends TenantTestCase
         Queue::fake([GenerateOpenAiNewsfeedContent::class]);
     }
 
+    public function test_create_assignment_record_assigns_user_properties(): void
+    {
+        $this->assertNull($this->user->unit);
+        $this->assertNull($this->user->position);
+        $this->assertNull($this->user->specialty);
+
+        $assignment = AssignmentRecord::factory()->for($this->user)->create();
+
+        $user = $this->user->fresh();
+
+        $this->assertSame($assignment->unit->getKey(), $user->unit->getKey());
+        $this->assertSame($assignment->position->getKey(), $user->position->getKey());
+        $this->assertSame($assignment->specialty->getKey(), $user->specialty->getKey());
+    }
+
     public function test_create_assignment_record_notification_sent()
     {
         Notification::fake();

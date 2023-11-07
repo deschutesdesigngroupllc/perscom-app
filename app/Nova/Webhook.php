@@ -77,9 +77,11 @@ class Webhook extends Resource
                 'GET' => 'info',
             ])->exceptOnForms(),
             MultiSelect::make('Events')
-                ->options(collect(WebhookEvent::cases())->mapWithKeys(function (WebhookEvent $method) {
-                    return [$method->value => $method->value];
-                })->sortKeys())
+                ->options(
+                    collect(WebhookEvent::cases())->mapWithKeys(function (WebhookEvent $method) {
+                        return [$method->value => $method->value];
+                    })->sortKeys()
+                )
                 ->rules('required')
                 ->help('The events the webhook will listen to.'),
             Text::make('Secret')
