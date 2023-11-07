@@ -1,6 +1,21 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.55...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.57...HEAD)
+
+## [v1.0.57](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.55...v1.0.57) - 2023-11-07
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.57 -->
+### What's Changed
+
+#### Added
+
+- Add status to new assignment record by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/242
+
+#### Other
+
+- Bump eslint from 8.52.0 to 8.53.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/241
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.56...v1.0.57
 
 ## [v1.0.55](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.56...v1.0.55) - 2023-10-21
 
