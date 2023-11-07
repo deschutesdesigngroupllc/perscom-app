@@ -24,11 +24,6 @@ class AssignmentRecordObserver
 
             if ($assignment->status) {
                 $assignment->user->statuses()->attach($assignment->status);
-
-                //                $record = StatusRecord::newModelInstance();
-                //                $record->status()->associate($assignment->status);
-                //                $record->model()->associate($assignment->user);
-                //                $record->save();
             }
         }
 

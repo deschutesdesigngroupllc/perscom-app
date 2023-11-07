@@ -12,6 +12,7 @@
 .phpunit.result.cache
 .phpunit.cache
 .phpstorm.meta.php
+.phpactor.json
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml

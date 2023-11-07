@@ -62,7 +62,7 @@ class AssignmentRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text'];
+    protected $fillable = ['user_id', 'status_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text'];
 
     /**
      * @var string[]
