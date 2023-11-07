@@ -91,6 +91,13 @@ class AssignmentRecord extends Resource
         return [
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)->sortable(),
+            Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
+                BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
+                    ->required(false)
+                    ->nullable()
+                    ->sortable()
+                    ->showCreateRelationButton(),
+            ]),
             Panel::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), [
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)->sortable()->showCreateRelationButton(),
                 MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_position_ids')->options(

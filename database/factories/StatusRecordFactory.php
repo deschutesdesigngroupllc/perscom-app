@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class StatusRecordFactory extends Factory
@@ -14,7 +15,7 @@ class StatusRecordFactory extends Factory
     public function definition()
     {
         return [
-
+            'status_id' => Status::factory(),
         ];
     }
 }

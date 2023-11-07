@@ -33,18 +33,6 @@ class StatusRecord extends MorphPivot
      */
     protected $table = 'model_has_statuses';
 
-    public static function boot(): void
-    {
-        parent::boot();
-
-        static::created(function (StatusRecord $record) {
-            if ($record->model instanceof User) {
-                $record->model->status_id = $record->status?->id;
-                $record->model->save();
-            }
-        });
-    }
-
     public function model(): BelongsTo
     {
         return $this->morphTo('model');
