@@ -17,37 +17,37 @@ class CategoryPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user): bool
+    public function viewAny(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:category') || $user?->tokenCan('view:category');
     }
 
-    public function view(User $user, Category $category): bool
+    public function view(User $user = null, Category $category): bool
     {
         return $this->hasPermissionTo($user, 'view:category') || $user?->tokenCan('view:category');
     }
 
-    public function create(User $user): bool
+    public function create(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:category') || $user?->tokenCan('create:category');
     }
 
-    public function update(User $user, Category $category): bool
+    public function update(User $user = null, Category $category): bool
     {
         return $this->hasPermissionTo($user, 'update:category') || $user?->tokenCan('update:category');
     }
 
-    public function delete(User $user, Category $category): bool
+    public function delete(User $user = null, Category $category): bool
     {
         return $this->hasPermissionTo($user, 'delete:category') || $user?->tokenCan('delete:category');
     }
 
-    public function restore(User $user, Category $category): bool
+    public function restore(User $user = null, Category $category): bool
     {
         return $this->hasPermissionTo($user, 'delete:category') || $user?->tokenCan('delete:category');
     }
 
-    public function forceDelete(User $user, Category $category): bool
+    public function forceDelete(User $user = null, Category $category): bool
     {
         return $this->hasPermissionTo($user, 'delete:category') || $user?->tokenCan('delete:category');
     }

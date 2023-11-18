@@ -19,7 +19,34 @@ class Category extends Model
     {
         return $this->belongsToMany(Award::class, 'awards_categories')
             ->withPivot('order')
-            ->ordered()
+            ->withTimestamps();
+    }
+
+    public function documents(): BelongsToMany
+    {
+        return $this->belongsToMany(Document::class, 'documents_categories')
+            ->withPivot('order')
+            ->withTimestamps();
+    }
+
+    public function forms(): BelongsToMany
+    {
+        return $this->belongsToMany(Form::class, 'forms_categories')
+            ->withPivot('order')
+            ->withTimestamps();
+    }
+
+    public function qualifications(): BelongsToMany
+    {
+        return $this->belongsToMany(Qualification::class, 'qualifications_categories')
+            ->withPivot('order')
+            ->withTimestamps();
+    }
+
+    public function ranks(): BelongsToMany
+    {
+        return $this->belongsToMany(Rank::class, 'ranks_categories')
+            ->withPivot('order')
             ->withTimestamps();
     }
 }

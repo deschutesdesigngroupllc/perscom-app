@@ -24,7 +24,7 @@ class CategoryFactory extends Factory
         return [
             'name' => $category,
             'description' => $this->faker->sentence,
-            'resource' => $this->faker->randomElement([Award::class, Rank::class, Qualification::class])
+            'resource' => $this->faker->randomElement([Award::class, Rank::class, Qualification::class]),
         ];
     }
 }

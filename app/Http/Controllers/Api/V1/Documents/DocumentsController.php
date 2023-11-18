@@ -1,35 +1,35 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Categories;
+namespace App\Http\Controllers\Api\V1\Documents;
 
-use App\Http\Requests\Api\CategoryRequest;
-use App\Models\Category;
-use App\Policies\CategoryPolicy;
+use App\Http\Requests\Api\DocumentRequest;
+use App\Models\Document;
+use App\Policies\DocumentPolicy;
 use Orion\Http\Controllers\Controller;
 
-class CategoriesController extends Controller
+class DocumentsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = Category::class;
+    protected $model = Document::class;
 
     /**
      * @var string
      */
-    protected $request = CategoryRequest::class;
+    protected $request = DocumentRequest::class;
 
     /**
      * @var string
      */
-    protected $policy = CategoryPolicy::class;
+    protected $policy = DocumentPolicy::class;
 
     /**
      * @return string[]
      */
-    public function includes(): array
+    public function exposedScopes(): array
     {
-        return ['awards', 'documents', 'forms', 'qualifications', 'ranks'];
+        return ['tags'];
     }
 
     /**

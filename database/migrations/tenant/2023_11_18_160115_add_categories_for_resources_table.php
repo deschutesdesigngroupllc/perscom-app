@@ -18,6 +18,38 @@ return new class extends Migration
             $table->integer('order')->default(0);
             $table->timestamps();
         });
+
+        Schema::create('documents_categories', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('document_id')->constrained('documents')->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->integer('order')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('forms_categories', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('form_id')->constrained('forms')->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->integer('order')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('qualifications_categories', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('qualification_id')->constrained('qualifications')->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->integer('order')->default(0);
+            $table->timestamps();
+        });
+
+        Schema::create('ranks_categories', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('rank_id')->constrained('ranks')->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained('categories')->cascadeOnDelete();
+            $table->integer('order')->default(0);
+            $table->timestamps();
+        });
     }
 
     /**
@@ -26,5 +58,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::drop('awards_categories');
+        Schema::drop('documents_categories');
+        Schema::drop('forms_categories');
+        Schema::drop('qualifications_categories');
+        Schema::drop('ranks_categories');
     }
 };

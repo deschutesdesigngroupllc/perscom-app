@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Laravel\Nova\Actions\Actionable;
 
@@ -66,6 +67,13 @@ class Form extends Model
             'viaResource' => \App\Nova\Form::uriKey(),
             'viaResourceId' => $this->id,
         ]);
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'forms_categories')
+            ->withPivot('order')
+            ->withTimestamps();
     }
 
     public function submissions(): HasMany

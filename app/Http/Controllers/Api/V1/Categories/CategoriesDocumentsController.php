@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers\Api\V1\Categories;
 
-use App\Http\Requests\Api\CategoryRequest;
+use App\Http\Requests\Api\DocumentRequest;
 use App\Models\Category;
-use App\Policies\CategoryPolicy;
-use Orion\Http\Controllers\Controller;
+use App\Policies\DocumentPolicy;
+use Orion\Http\Controllers\RelationController;
 
-class CategoriesController extends Controller
+class CategoriesDocumentsController extends RelationController
 {
     /**
      * @var string
@@ -17,19 +17,24 @@ class CategoriesController extends Controller
     /**
      * @var string
      */
-    protected $request = CategoryRequest::class;
+    protected $request = DocumentRequest::class;
 
     /**
      * @var string
      */
-    protected $policy = CategoryPolicy::class;
+    protected $policy = DocumentPolicy::class;
+
+    /**
+     * @var string
+     */
+    protected $relation = 'documents';
 
     /**
      * @return string[]
      */
     public function includes(): array
     {
-        return ['awards', 'documents', 'forms', 'qualifications', 'ranks'];
+        return ['image'];
     }
 
     /**

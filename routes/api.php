@@ -5,6 +5,11 @@ use App\Http\Controllers\Api\V1\Awards\AwardsController;
 use App\Http\Controllers\Api\V1\Calendars\CalendarsController;
 use App\Http\Controllers\Api\V1\Categories\CategoriesAwardsController;
 use App\Http\Controllers\Api\V1\Categories\CategoriesController;
+use App\Http\Controllers\Api\V1\Categories\CategoriesDocumentsController;
+use App\Http\Controllers\Api\V1\Categories\CategoriesFormsController;
+use App\Http\Controllers\Api\V1\Categories\CategoriesQualificationsController;
+use App\Http\Controllers\Api\V1\Categories\CategoriesRanksController;
+use App\Http\Controllers\Api\V1\Documents\DocumentsController;
 use App\Http\Controllers\Api\V1\Events\EventsController;
 use App\Http\Controllers\Api\V1\Forms\FormsController;
 use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
@@ -67,6 +72,12 @@ Route::group(['prefix' => 'v1'], static function () {
 
         Orion::resource('categories', CategoriesController::class);
         Orion::belongsToManyResource('categories', 'awards', CategoriesAwardsController::class);
+        Orion::belongsToManyResource('categories', 'documents', CategoriesDocumentsController::class);
+        Orion::belongsToManyResource('categories', 'forms', CategoriesFormsController::class);
+        Orion::belongsToManyResource('categories', 'qualifications', CategoriesQualificationsController::class);
+        Orion::belongsToManyResource('categories', 'ranks', CategoriesRanksController::class);
+
+        Orion::resource('documents', DocumentsController::class);
 
         Orion::resource('events', EventsController::class);
 

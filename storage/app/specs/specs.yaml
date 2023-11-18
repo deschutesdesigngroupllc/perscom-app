@@ -16274,7 +16274,18 @@ paths:
         - Statuses
   /v1/categories:
     post:
-      parameters: []
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -16300,7 +16311,18 @@ paths:
       tags:
         - Categories
     get:
-      parameters: []
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -16326,7 +16348,18 @@ paths:
         - Categories
   /v1/categories/search:
     post:
-      parameters: []
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -16382,6 +16415,24 @@ paths:
                     case_sensitive:
                       type: boolean
                       description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - awards
+                          - documents
+                          - forms
+                          - qualifications
+                          - ranks
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
       responses:
         200:
           description: OK
@@ -16414,6 +16465,17 @@ paths:
           name: category
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -16441,6 +16503,17 @@ paths:
           name: category
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -16475,6 +16548,17 @@ paths:
           name: category
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -16496,7 +16580,18 @@ paths:
         - Categories
   /v1/categories/batch:
     post:
-      parameters: []
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -16531,7 +16626,18 @@ paths:
       tags:
         - Categories
     patch:
-      parameters: []
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -16567,7 +16673,18 @@ paths:
       tags:
         - Categories
     delete:
-      parameters: []
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - awards
+              - documents
+              - forms
+              - qualifications
+              - ranks
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -17329,6 +17446,3320 @@ paths:
       summary: 'Update pivot'
       tags:
         - 'Categories Awards'
+  '/v1/categories/{category}/documents':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DocumentResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create document'
+      tags:
+        - 'Categories Documents'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of documents'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/documents/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - image
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for documents'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/documents/{document}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: document
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DocumentResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get document'
+      tags:
+        - 'Categories Documents'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: document
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DocumentResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update document'
+      tags:
+        - 'Categories Documents'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: document
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DocumentResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete document'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/documents/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Document'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of documents'
+      tags:
+        - 'Categories Documents'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Document'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of documents'
+      tags:
+        - 'Categories Documents'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of documents'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/documents/attach':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Attach documents'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/documents/detach':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach documents'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/documents/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync documents'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/documents/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle documents'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/documents/{document}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: document
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Categories Documents'
+  '/v1/categories/{category}/forms':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Form'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FormResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create form'
+      tags:
+        - 'Categories Forms'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of forms'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/forms/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scopes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        enum:
+                          - tags
+                      parameters:
+                        type: array
+                        items:
+                          type: string
+                    required:
+                      - name
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - slug
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, slug, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name, slug'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - fields
+                          - submissions
+                          - 'submissions.*'
+                          - tags
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, slug, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, slug, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for forms'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/forms/{form}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FormResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get form'
+      tags:
+        - 'Categories Forms'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Form'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FormResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update form'
+      tags:
+        - 'Categories Forms'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/FormResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete form'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/forms/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Form'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of forms'
+      tags:
+        - 'Categories Forms'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Form'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of forms'
+      tags:
+        - 'Categories Forms'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/FormResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of forms'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/forms/attach':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Attach forms'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/forms/detach':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach forms'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/forms/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync forms'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/forms/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle forms'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/forms/{form}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: form
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - fields
+              - submissions
+              - 'submissions.*'
+              - tags
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Categories Forms'
+  '/v1/categories/{category}/qualifications':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Qualification'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create qualification'
+      tags:
+        - 'Categories Qualifications'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of qualifications'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/qualifications/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - image
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for qualifications'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/qualifications/{qualification}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get qualification'
+      tags:
+        - 'Categories Qualifications'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Qualification'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update qualification'
+      tags:
+        - 'Categories Qualifications'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete qualification'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/qualifications/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Qualification'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of qualifications'
+      tags:
+        - 'Categories Qualifications'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Qualification'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of qualifications'
+      tags:
+        - 'Categories Qualifications'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of qualifications'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/qualifications/attach':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Attach qualifications'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/qualifications/detach':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach qualifications'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/qualifications/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync qualifications'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/qualifications/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle qualifications'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/qualifications/{qualification}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Categories Qualifications'
+  '/v1/categories/{category}/ranks':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rank'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create rank'
+      tags:
+        - 'Categories Ranks'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of ranks'
+      tags:
+        - 'Categories Ranks'
+  '/v1/categories/{category}/ranks/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - image
+                      filters:
+                        type: object
+                        properties:
+                          type: array
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for ranks'
+      tags:
+        - 'Categories Ranks'
+  '/v1/categories/{category}/ranks/{rank}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get rank'
+      tags:
+        - 'Categories Ranks'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Rank'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update rank'
+      tags:
+        - 'Categories Ranks'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete rank'
+      tags:
+        - 'Categories Ranks'
+  '/v1/categories/{category}/ranks/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Rank'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of ranks'
+      tags:
+        - 'Categories Ranks'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Rank'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of ranks'
+      tags:
+        - 'Categories Ranks'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of ranks'
+      tags:
+        - 'Categories Ranks'
+  '/v1/categories/{category}/ranks/attach':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Attach ranks'
+      tags:
+        - 'Categories Ranks'
+  '/v1/categories/{category}/ranks/detach':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Detach ranks'
+      tags:
+        - 'Categories Ranks'
+  '/v1/categories/{category}/ranks/sync':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Sync ranks'
+      tags:
+        - 'Categories Ranks'
+  '/v1/categories/{category}/ranks/toggle':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: object
+                    description: 'A key-value pairs, where keys are relation resource IDs and values are objects representing pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  attached:
+                    type: array
+                    items:
+                      type: integer
+                  detached:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Toggle ranks'
+      tags:
+        - 'Categories Ranks'
+  '/v1/categories/{category}/ranks/{rank}/pivot':
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: category
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - image
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                pivot:
+                  type: object
+                  description: 'Pivot fields'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  updated:
+                    type: array
+                    items:
+                      type: integer
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update pivot'
+      tags:
+        - 'Categories Ranks'
+  /v1/documents:
+    post:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DocumentResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create document'
+      tags:
+        - Documents
+    get:
+      parameters: []
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of documents'
+      tags:
+        - Documents
+  /v1/documents/search:
+    post:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                scopes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        type: string
+                        enum:
+                          - tags
+                      parameters:
+                        type: array
+                        items:
+                          type: string
+                    required:
+                      - name
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for documents'
+      tags:
+        - Documents
+  '/v1/documents/{document}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: document
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DocumentResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get document'
+      tags:
+        - Documents
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: document
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Document'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DocumentResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update document'
+      tags:
+        - Documents
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: document
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/DocumentResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete document'
+      tags:
+        - Documents
+  /v1/documents/batch:
+    post:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Document'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of documents'
+      tags:
+        - Documents
+    patch:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Document'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of documents'
+      tags:
+        - Documents
+    delete:
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/DocumentResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of documents'
+      tags:
+        - Documents
 components:
   securitySchemes:
     ApiKey:
@@ -18346,6 +21777,35 @@ components:
               type: string
               nullable: true
               format: date-time
+    Document:
+      title: Document
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        content:
+          type: string
+    DocumentResource:
+      title: DocumentResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Document'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
 tags:
   -
     name: Me
@@ -18365,6 +21825,21 @@ tags:
   -
     name: 'Categories Awards'
     description: 'API documentation for Categories Awards'
+  -
+    name: 'Categories Documents'
+    description: 'API documentation for Categories Documents'
+  -
+    name: 'Categories Forms'
+    description: 'API documentation for Categories Forms'
+  -
+    name: 'Categories Qualifications'
+    description: 'API documentation for Categories Qualifications'
+  -
+    name: 'Categories Ranks'
+    description: 'API documentation for Categories Ranks'
+  -
+    name: Documents
+    description: 'API documentation for Documents'
   -
     name: Events
     description: 'API documentation for Events'
@@ -18452,9 +21927,6 @@ tags:
   -
     name: 'Users Secondary Units'
     description: 'API documentation for Users Secondary Units'
-  -
-    name: 'Users Fields'
-    description: 'API documentation for Users Fields'
   -
     name: 'Users Fields'
     description: 'API documentation for Users Fields'

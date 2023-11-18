@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Http\Requests\Api;
+
+use Orion\Http\Requests\Request;
+
+class DocumentRequest extends Request
+{
+    /**
+     * @return string[]
+     */
+    public function commonRules(): array
+    {
+        return [
+            'name' => 'string',
+            'description' => 'nullable|string',
+            'content' => 'string',
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function storeRules(): array
+    {
+        return [
+            'name' => 'required|string',
+            'content' => 'required|string',
+        ];
+    }
+}
