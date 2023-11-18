@@ -67,15 +67,36 @@ return new class extends Migration
         });
 
         Schema::table('records_awards', function (Blueprint $table) {
+            $table->foreignId('user_id')->nullable()->change()->constrained('users')->nullOnDelete();
             $table->foreignId('award_id')->nullable()->change()->constrained('awards')->nullOnDelete();
+            $table->foreignId('document_id')->nullable()->change()->constrained('documents')->nullOnDelete();
+            $table->foreignId('author_id')->nullable()->change()->constrained('users')->nullOnDelete();
+        });
+
+        Schema::table('records_combat', function (Blueprint $table) {
+            $table->foreignId('user_id')->nullable()->change()->constrained('users')->nullOnDelete();
+            $table->foreignId('document_id')->nullable()->change()->constrained('documents')->nullOnDelete();
+            $table->foreignId('author_id')->nullable()->change()->constrained('users')->nullOnDelete();
         });
 
         Schema::table('records_qualifications', function (Blueprint $table) {
+            $table->foreignId('user_id')->nullable()->change()->constrained('users')->nullOnDelete();
             $table->foreignId('qualification_id')->nullable()->change()->constrained('qualifications')->nullOnDelete();
+            $table->foreignId('document_id')->nullable()->change()->constrained('documents')->nullOnDelete();
+            $table->foreignId('author_id')->nullable()->change()->constrained('users')->nullOnDelete();
         });
 
         Schema::table('records_ranks', function (Blueprint $table) {
+            $table->foreignId('user_id')->nullable()->change()->constrained('users')->nullOnDelete();
             $table->foreignId('rank_id')->nullable()->change()->constrained('ranks')->nullOnDelete();
+            $table->foreignId('document_id')->nullable()->change()->constrained('documents')->nullOnDelete();
+            $table->foreignId('author_id')->nullable()->change()->constrained('users')->nullOnDelete();
+        });
+
+        Schema::table('records_service', function (Blueprint $table) {
+            $table->foreignId('user_id')->nullable()->change()->constrained('users')->nullOnDelete();
+            $table->foreignId('document_id')->nullable()->change()->constrained('documents')->nullOnDelete();
+            $table->foreignId('author_id')->nullable()->change()->constrained('users')->nullOnDelete();
         });
 
         Schema::table('submissions', function (Blueprint $table) {
@@ -183,15 +204,36 @@ return new class extends Migration
         });
 
         Schema::table('records_awards', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
             $table->dropForeign(['award_id']);
+            $table->dropForeign(['document_id']);
+            $table->dropForeign(['author_id']);
+        });
+
+        Schema::table('records_combat', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['document_id']);
+            $table->dropForeign(['author_id']);
         });
 
         Schema::table('records_qualifications', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
             $table->dropForeign(['qualification_id']);
+            $table->dropForeign(['document_id']);
+            $table->dropForeign(['author_id']);
         });
 
         Schema::table('records_ranks', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
             $table->dropForeign(['rank_id']);
+            $table->dropForeign(['document_id']);
+            $table->dropForeign(['author_id']);
+        });
+
+        Schema::table('records_service', function (Blueprint $table) {
+            $table->dropForeign(['user_id']);
+            $table->dropForeign(['document_id']);
+            $table->dropForeign(['author_id']);
         });
 
         Schema::table('submissions', function (Blueprint $table) {
