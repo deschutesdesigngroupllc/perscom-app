@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
 use App\Http\Controllers\Api\V1\Awards\AwardsController;
 use App\Http\Controllers\Api\V1\Calendars\CalendarsController;
+use App\Http\Controllers\Api\V1\Categories\CategoriesAwardsController;
+use App\Http\Controllers\Api\V1\Categories\CategoriesController;
 use App\Http\Controllers\Api\V1\Events\EventsController;
 use App\Http\Controllers\Api\V1\Forms\FormsController;
 use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
@@ -62,6 +64,9 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('awards', AwardsController::class);
 
         Orion::resource('calendars', CalendarsController::class);
+
+        Orion::resource('categories', CategoriesController::class);
+        Orion::belongsToManyResource('categories', 'awards', CategoriesAwardsController::class);
 
         Orion::resource('events', EventsController::class);
 
