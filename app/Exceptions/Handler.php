@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedOnDomainException;
+use Stripe\Exception\InvalidRequestException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
@@ -23,6 +24,10 @@ class Handler extends ExceptionHandler
 
     public function register(): void
     {
+        $this->reportable(function (InvalidRequestException $e) {
+            return app()->environment() === 'production';
+        });
+
         $this->reportable(function (Throwable $e) {
             Integration::captureUnhandledException($e);
         });
