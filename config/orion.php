@@ -26,6 +26,7 @@ return [
         ],
         'servers' => [
             ['url' => 'https://api.perscom.io', 'description' => 'Production Environment'],
+            ['url' => 'https://api.staging.perscom.io', 'description' => 'Staging Environment'],
         ],
         'tags' => [
             [

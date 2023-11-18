@@ -6,6 +6,7 @@ use App\Models\Scopes\RankScope;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -43,5 +44,12 @@ class Rank extends Model implements Sortable
     protected static function booted(): void
     {
         static::addGlobalScope(new RankScope());
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'ranks_categories')
+            ->withPivot('order')
+            ->withTimestamps();
     }
 }

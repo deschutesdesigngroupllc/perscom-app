@@ -7,6 +7,7 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 /**
@@ -66,6 +67,13 @@ class Document extends Model implements Htmlable
         '{service_record_text}' => 'The text of the service record.',
         '{service_record_date}' => 'The date of the service record.',
     ];
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'documents_categories')
+            ->withPivot('order')
+            ->withTimestamps();
+    }
 
     protected function resolveTag(string $tag, User $user = null, mixed $attachedModel = null): mixed
     {

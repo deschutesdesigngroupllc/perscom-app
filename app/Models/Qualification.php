@@ -6,6 +6,7 @@ use App\Models\Scopes\QualificationScope;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -43,5 +44,12 @@ class Qualification extends Model implements Sortable
     protected static function booted(): void
     {
         static::addGlobalScope(new QualificationScope());
+    }
+
+    public function categories(): BelongsToMany
+    {
+        return $this->belongsToMany(Category::class, 'qualifications_categories')
+            ->withPivot('order')
+            ->withTimestamps();
     }
 }
