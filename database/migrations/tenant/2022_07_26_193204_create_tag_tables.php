@@ -27,7 +27,10 @@ class CreateTagTables extends Migration
 
     public function down()
     {
+        Schema::table('taggables', function (Blueprint $table) {
+            $table->dropForeign(['tag_id']);
+            $table->dropIfExists();
+        });
         Schema::dropIfExists('tags');
-        Schema::dropIfExists('taggables');
     }
 }
