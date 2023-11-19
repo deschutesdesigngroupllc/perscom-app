@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.61...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.62...HEAD)
+
+## [v1.0.62](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.61...v1.0.62) - 2023-11-18
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.62 -->
+### What's Changed
+
+#### Changed
+
+- Add production filters to telescope by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/250
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.61...v1.0.62
 
 ## [v1.0.61](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.60...v1.0.61) - 2023-11-18
 
