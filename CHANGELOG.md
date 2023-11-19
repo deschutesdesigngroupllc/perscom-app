@@ -1,6 +1,26 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.60...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.61...HEAD)
+
+## [v1.0.61](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.60...v1.0.61) - 2023-11-18
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.61 -->
+### What's Changed
+
+#### Added
+
+- Add category models by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/249
+
+#### Changed
+
+- Add foreign key constraints to all tenant tables by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/248
+
+#### Other
+
+- Bump prettier from 3.0.3 to 3.1.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/245
+- Bump @babel/preset-react from 7.22.5 to 7.23.3 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/244
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.60...v1.0.61
 
 ## [v1.0.60](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.58...v1.0.60) - 2023-11-17
 
