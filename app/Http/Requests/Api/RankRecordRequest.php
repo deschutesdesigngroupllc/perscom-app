@@ -16,7 +16,8 @@ class RankRecordRequest extends Request
             'rank_id' => 'integer|exists:ranks,id',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
-            'text' => 'string',
+            'text' => 'nullable|string',
+            'type' => 'integer|in:0,1',
         ];
     }
 
@@ -34,7 +35,7 @@ class RankRecordRequest extends Request
 
         return array_merge($rules, [
             'rank_id' => 'required|integer|exists:ranks,id',
-            'text' => 'required|string',
+            'type' => 'required|integer|in:0,1',
         ]);
     }
 }

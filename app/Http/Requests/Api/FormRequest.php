@@ -15,6 +15,7 @@ class FormRequest extends Request
             'name' => 'string',
             'slug' => 'slug',
             'success_message' => 'nullable|string',
+            'submission_status_id' => 'nullable|integer|exists:statuses,id',
             'is_public' => 'boolean',
             'description' => 'nullable|string',
             'instructions' => 'nullable|string',

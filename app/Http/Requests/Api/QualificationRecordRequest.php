@@ -16,7 +16,7 @@ class QualificationRecordRequest extends Request
             'qualification_id' => 'integer|exists:qualifications,id',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
-            'text' => 'string',
+            'text' => 'nullable|string',
         ];
     }
 
@@ -34,7 +34,6 @@ class QualificationRecordRequest extends Request
 
         return array_merge($rules, [
             'qualification_id' => 'required|integer|exists:qualifications,id',
-            'text' => 'required|string',
         ]);
     }
 }

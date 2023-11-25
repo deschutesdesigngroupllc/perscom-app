@@ -13,12 +13,16 @@ class AssignmentRecordRequest extends Request
     {
         return [
             'user_id' => 'integer|exists:users,id',
-            'unit_id' => 'integer|exists:units,id',
-            'position_id' => 'integer|exists:positions,id',
-            'specialty_id' => 'integer|exists:specialties,id',
+            'status_id' => 'nullable|integer|exists:statuses,id',
+            'unit_id' => 'nullable|integer|exists:units,id',
+            'secondary_unit_ids' => 'nullable|array',
+            'position_id' => 'nullable|integer|exists:positions,id',
+            'secondary_position_ids' => 'nullable|array',
+            'specialty_id' => 'nullable|integer|exists:specialties,id',
+            'secondary_specialty_ids' => 'nullable|array',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
-            'text' => 'string',
+            'text' => 'nullable|string',
         ];
     }
 
@@ -27,12 +31,13 @@ class AssignmentRecordRequest extends Request
      */
     public function storeRules(): array
     {
-        return [
-            'user_id' => 'required|integer|exists:users,id',
-            'unit_id' => 'required|integer|exists:units,id',
-            'position_id' => 'required|integer|exists:positions,id',
-            'specialty_id' => 'required|integer|exists:specialties,id',
-            'text' => 'required|string',
-        ];
+        $rules = [];
+        if (! $this->route('user')) {
+            $rules = [
+                'user_id' => 'required|integer|exists:users,id',
+            ];
+        }
+
+        return $rules;
     }
 }
