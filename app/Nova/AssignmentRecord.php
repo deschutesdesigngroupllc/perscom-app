@@ -92,13 +92,21 @@ class AssignmentRecord extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            MessageField::make('For Your Information', function () {
-                return 'When editing an assignment request, the updated values will not be applied to the user\'s profile. The user\'s profile is only updated on a newly created assignment records.';
-            })->color('warning')->onlyOnDetail(),
+            MessageField::make('For Your Information')
+                ->text('When editing an assignment record, the updated assignment values will not be applied to the user\'s profile. The user\'s profile is only updated during newly created assignment records.')
+                ->color('warning')
+                ->onlyOnForms()
+                ->hideWhenCreating(),
+            MessageField::make('For Your Information')
+                ->text('When creating an assignment record, all assignment values will be directly applied to the user\'s profile.')
+                ->color('info')
+                ->onlyOnForms()
+                ->hideWhenUpdating(),
             ID::make()->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)->sortable(),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'change_status')
+                    ->help('Leave unchecked to keep the status as is.')
                     ->fillUsing(fn () => null)
                     ->onlyOnForms(),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
@@ -115,6 +123,7 @@ class AssignmentRecord extends Resource
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), [
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'change_position')
+                    ->help('Leave unchecked to keep the position as is.')
                     ->fillUsing(fn () => null)
                     ->onlyOnForms(),
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
@@ -142,6 +151,7 @@ class AssignmentRecord extends Resource
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), [
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'change_specialty')
+                    ->help('Leave unchecked to keep the specialty as is.')
                     ->fillUsing(fn () => null)
                     ->onlyOnForms(),
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
@@ -169,6 +179,7 @@ class AssignmentRecord extends Resource
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), [
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'change_unit')
+                    ->help('Leave unchecked to keep the unit as is.')
                     ->fillUsing(fn () => null)
                     ->onlyOnForms(),
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
