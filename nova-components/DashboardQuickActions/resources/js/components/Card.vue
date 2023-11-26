@@ -9,9 +9,7 @@
           class="da-flex da-border-b da-items-center da-border-gray-200 dark:da-border-gray-700 hover:da-bg-gray-100 dark:hover:da-bg-gray-700"
         >
           <a :href="route.link" class="da-no-underline da-flex da-p-6">
-            <div
-              class="da-flex da-justify-center da-items-center da-w-10 da-flex-shrink-0 da-mr-6"
-            >
+            <div class="da-flex da-justify-center da-items-center da-w-10 da-flex-shrink-0 da-mr-6">
               <svg
                 class="text-primary-500 dark:text-primary-600"
                 xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +38,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive} from 'vue'
+import { onMounted, reactive } from 'vue'
 
 const routes = reactive({})
 
