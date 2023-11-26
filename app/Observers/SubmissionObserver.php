@@ -17,7 +17,7 @@ class SubmissionObserver
             WebhookService::dispatch($webhook, WebhookEvent::SUBMISSION_CREATED->value, $submission);
         });
 
-        if ($status = $submission->form?->submission_status) {
+        if ($status = optional($submission->form)->submission_status) {
             $submission->statuses()->attach($status->getKey());
         }
 

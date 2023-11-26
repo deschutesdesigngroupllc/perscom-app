@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import {onBeforeUnmount, onMounted, ref} from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const props = defineProps(['card'])
 const darkMode = ref(document.documentElement.classList.contains('dark'))

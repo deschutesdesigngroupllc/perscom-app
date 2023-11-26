@@ -9,7 +9,9 @@
         "format-components": "prettier './nova-components/**/*.{js,vue}' --write --config ./.prettierrc",
         "build-components": "chmod +x ./nova-components/build.sh && ./nova-components/build.sh",
         "build-featureos": "cd nova-components/Featureos && npm run dev",
-        "build-featureos-prod": "cd nova-components/Featureos && npm run prod"
+        "build-featureos-prod": "cd nova-components/Featureos && npm run prod",
+        "build-message-field": "cd nova-components/MessageField && npm run dev",
+        "build-message-field-prod": "cd nova-components/MessageField && npm run prod"
     },
     "dependencies": {
         "@inertiajs/react": "^1.0.9",

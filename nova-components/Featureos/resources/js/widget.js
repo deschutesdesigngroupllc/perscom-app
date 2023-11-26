@@ -2,8 +2,8 @@
   typeof exports == 'object' && typeof module < 'u'
     ? (module.exports = E())
     : typeof define == 'function' && define.amd
-    ? define(E)
-    : ((T = typeof globalThis < 'u' ? globalThis : T || self), (T.HellonextWidget = E()))
+      ? define(E)
+      : ((T = typeof globalThis < 'u' ? globalThis : T || self), (T.HellonextWidget = E()))
 })(this, function () {
   'use strict'
   var rt = Object.defineProperty

@@ -98,9 +98,21 @@ class AssignmentRecord extends Model
     public function tapActivity(Activity $activity, string $eventName): void
     {
         if ($eventName === 'created') {
+            $position = optional($this->position, function (Position $position) {
+                return $position->name;
+            }) ?? 'No Position Assigned';
+
+            $specialty = optional($this->specialty, function (Specialty $specialty) {
+                return $specialty->name;
+            }) ?? 'No Specialty Assigned';
+
+            $unit = optional($this->unit, function (Unit $unit) {
+                return $unit->name;
+            }) ?? 'No Unit Assigned';
+
             $activity->properties = $activity->properties->put('headline', "An assignment record has been added for {$this->user->name}");
             $activity->properties = $activity->properties->put('text', $this->text);
-            $activity->properties = $activity->properties->put('item', "Position: {$this->position->name}<br> Specialty: {$this->specialty->name}<br> Unit: {$this->unit->name}<br>");
+            $activity->properties = $activity->properties->put('item', "Position: {$position}<br> Specialty: {$specialty}<br> Unit: {$unit}<br>");
         }
     }
 

@@ -14,7 +14,7 @@ class RankRecordObserver
     public function created(RankRecord $rank): void
     {
         if ($rank->user) {
-            $rank->user->rank_id = $rank->rank?->id;
+            $rank->user->rank_id = optional($rank->rank)->id;
             $rank->user->save();
         }
 

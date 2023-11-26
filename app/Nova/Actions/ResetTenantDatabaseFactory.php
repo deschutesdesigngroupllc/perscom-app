@@ -83,7 +83,8 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
     public function fields(NovaRequest $request)
     {
         return [
-            Boolean::make('Reset Subdomain', 'new_subdomain')->help('Reset the tenant\'s subdomain.'),
+            Boolean::make('Reset Subdomain', 'new_subdomain')
+                ->help('Reset the tenant\'s subdomain.'),
             Text::make('Subdomain', 'subdomain')
                 ->hide()
                 ->help('The tenant\'s new subdomain. Leave blank to auto-generate.')
