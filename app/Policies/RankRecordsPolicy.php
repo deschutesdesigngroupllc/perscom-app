@@ -25,32 +25,32 @@ class RankRecordsPolicy extends Policy
     public function view(User $user = null, RankRecord $rank): bool
     {
         return $this->hasPermissionTo($user, 'view:rankrecord') ||
-               $rank->user?->id === $user?->id ||
-               $user?->tokenCan('view:rankrecord');
+               $rank->user?->id === optional($user)->id ||
+               optional($user)->tokenCan('view:rankrecord');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:rankrecord') || $user?->tokenCan('create:rankrecord');
+        return $this->hasPermissionTo($user, 'create:rankrecord') || optional($user)->tokenCan('create:rankrecord');
     }
 
     public function update(User $user = null, RankRecord $rank): bool
     {
-        return $this->hasPermissionTo($user, 'update:rankrecord') || $user?->tokenCan('update:rankrecord');
+        return $this->hasPermissionTo($user, 'update:rankrecord') || optional($user)->tokenCan('update:rankrecord');
     }
 
     public function delete(User $user = null, RankRecord $rank): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rankrecord') || $user?->tokenCan('delete:rankrecord');
+        return $this->hasPermissionTo($user, 'delete:rankrecord') || optional($user)->tokenCan('delete:rankrecord');
     }
 
     public function restore(User $user = null, RankRecord $rank): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rankrecord') || $user?->tokenCan('delete:rankrecord');
+        return $this->hasPermissionTo($user, 'delete:rankrecord') || optional($user)->tokenCan('delete:rankrecord');
     }
 
     public function forceDelete(User $user = null, RankRecord $rank): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rankrecord') || $user?->tokenCan('delete:rankrecord');
+        return $this->hasPermissionTo($user, 'delete:rankrecord') || optional($user)->tokenCan('delete:rankrecord');
     }
 }

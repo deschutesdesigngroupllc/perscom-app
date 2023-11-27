@@ -19,39 +19,39 @@ class TaskPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:task') || $user?->tokenCan('view:task');
+        return $this->hasPermissionTo($user, 'view:task') || optional($user)->tokenCan('view:task');
     }
 
     public function view(User $user = null, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'view:task') ||
-               $user?->tokenCan('view:task') ||
+               optional($user)->tokenCan('view:task') ||
                $task->users->contains($user);
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:task') || $user?->tokenCan('create:task');
+        return $this->hasPermissionTo($user, 'create:task') || optional($user)->tokenCan('create:task');
     }
 
     public function update(User $user = null, Task $task): bool
     {
-        return $this->hasPermissionTo($user, 'update:task') || $user?->tokenCan('update:task');
+        return $this->hasPermissionTo($user, 'update:task') || optional($user)->tokenCan('update:task');
     }
 
     public function delete(User $user = null, Task $task): bool
     {
-        return $this->hasPermissionTo($user, 'delete:task') || $user?->tokenCan('delete:task');
+        return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
     }
 
     public function restore(User $user = null, Task $task): bool
     {
-        return $this->hasPermissionTo($user, 'delete:task') || $user?->tokenCan('delete:task');
+        return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
     }
 
     public function forceDelete(User $user = null, Task $task): bool
     {
-        return $this->hasPermissionTo($user, 'delete:task') || $user?->tokenCan('delete:task');
+        return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
     }
 
     public function attachAnyUser(User $user = null, Task $task): bool

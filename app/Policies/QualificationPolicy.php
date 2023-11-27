@@ -19,36 +19,36 @@ class QualificationPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:qualification') || $user?->tokenCan('view:qualification');
+        return $this->hasPermissionTo($user, 'view:qualification') || optional($user)->tokenCan('view:qualification');
     }
 
     public function view(User $user = null, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'view:qualification') || $user?->tokenCan('view:qualification');
+        return $this->hasPermissionTo($user, 'view:qualification') || optional($user)->tokenCan('view:qualification');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:qualification') || $user?->tokenCan('create:qualification');
+        return $this->hasPermissionTo($user, 'create:qualification') || optional($user)->tokenCan('create:qualification');
     }
 
     public function update(User $user = null, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'update:qualification') || $user?->tokenCan('update:qualification');
+        return $this->hasPermissionTo($user, 'update:qualification') || optional($user)->tokenCan('update:qualification');
     }
 
     public function delete(User $user = null, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || $user?->tokenCan('delete:qualification');
+        return $this->hasPermissionTo($user, 'delete:qualification') || optional($user)->tokenCan('delete:qualification');
     }
 
     public function restore(User $user = null, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || $user?->tokenCan('delete:qualification');
+        return $this->hasPermissionTo($user, 'delete:qualification') || optional($user)->tokenCan('delete:qualification');
     }
 
     public function forceDelete(User $user = null, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || $user?->tokenCan('delete:qualification');
+        return $this->hasPermissionTo($user, 'delete:qualification') || optional($user)->tokenCan('delete:qualification');
     }
 }

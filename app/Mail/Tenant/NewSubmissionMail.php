@@ -21,8 +21,10 @@ class NewSubmissionMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
+        $name = optional($this->submission->form)->name;
+
         return new Envelope(
-            subject: "New {$this->submission->form?->name}",
+            subject: "New $name",
         );
     }
 

@@ -26,7 +26,7 @@ class EventRegistrationPolicy extends Policy
 
     public function view(User $user = null, EventRegistration $registration): bool
     {
-        return Gate::check('view', $registration->event ?? new Event()) || $registration->user?->id === $user?->id;
+        return Gate::check('view', $registration->event ?? new Event()) || optional($registration->user)->id === optional($user)->id;
     }
 
     public function create(User $user = null): bool

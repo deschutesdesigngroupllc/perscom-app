@@ -19,36 +19,36 @@ class DocumentPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:document') || $user?->tokenCan('view:document');
+        return $this->hasPermissionTo($user, 'view:document') || optional($user)->tokenCan('view:document');
     }
 
     public function view(User $user = null, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'view:document') || $user?->tokenCan('view:document');
+        return $this->hasPermissionTo($user, 'view:document') || optional($user)->tokenCan('view:document');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:document') || $user?->tokenCan('create:document');
+        return $this->hasPermissionTo($user, 'create:document') || optional($user)->tokenCan('create:document');
     }
 
     public function update(User $user = null, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'update:document') || $user?->tokenCan('update:document');
+        return $this->hasPermissionTo($user, 'update:document') || optional($user)->tokenCan('update:document');
     }
 
     public function delete(User $user = null, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'delete:document') || $user?->tokenCan('delete:document');
+        return $this->hasPermissionTo($user, 'delete:document') || optional($user)->tokenCan('delete:document');
     }
 
     public function restore(User $user = null, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'delete:document') || $user?->tokenCan('delete:document');
+        return $this->hasPermissionTo($user, 'delete:document') || optional($user)->tokenCan('delete:document');
     }
 
     public function forceDelete(User $user = null, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'delete:document') || $user?->tokenCan('delete:document');
+        return $this->hasPermissionTo($user, 'delete:document') || optional($user)->tokenCan('delete:document');
     }
 }

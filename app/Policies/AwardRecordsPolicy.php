@@ -25,32 +25,32 @@ class AwardRecordsPolicy extends Policy
     public function view(User $user = null, AwardRecord $award): bool
     {
         return $this->hasPermissionTo($user, 'view:awardrecord') ||
-               $award->user?->id === $user?->id ||
-               $user?->tokenCan('view:awardrecord');
+               $award->user?->id === optional($user)->id ||
+               optional($user)->tokenCan('view:awardrecord');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:awardrecord') || $user?->tokenCan('create:awardrecord');
+        return $this->hasPermissionTo($user, 'create:awardrecord') || optional($user)->tokenCan('create:awardrecord');
     }
 
     public function update(User $user = null, AwardRecord $award): bool
     {
-        return $this->hasPermissionTo($user, 'update:awardrecord') || $user?->tokenCan('update:awardrecord');
+        return $this->hasPermissionTo($user, 'update:awardrecord') || optional($user)->tokenCan('update:awardrecord');
     }
 
     public function delete(User $user = null, AwardRecord $award): bool
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user?->tokenCan('delete:awardrecord');
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || optional($user)->tokenCan('delete:awardrecord');
     }
 
     public function restore(User $user = null, AwardRecord $award): bool
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user?->tokenCan('delete:awardrecord');
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || optional($user)->tokenCan('delete:awardrecord');
     }
 
     public function forceDelete(User $user = null, AwardRecord $award): bool
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || $user?->tokenCan('delete:awardrecord');
+        return $this->hasPermissionTo($user, 'delete:awardrecord') || optional($user)->tokenCan('delete:awardrecord');
     }
 }

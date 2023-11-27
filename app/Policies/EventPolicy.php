@@ -19,39 +19,39 @@ class EventPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:event') || $user?->tokenCan('view:event');
+        return $this->hasPermissionTo($user, 'view:event') || optional($user)->tokenCan('view:event');
     }
 
     public function view(User $user = null, Event $event): bool
     {
         return $this->hasPermissionTo($user, 'view:event') ||
-               $user?->tokenCan('view:event') ||
+               optional($user)->tokenCan('view:event') ||
                $event->registrations->contains($user);
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:event') || $user?->tokenCan('create:event');
+        return $this->hasPermissionTo($user, 'create:event') || optional($user)->tokenCan('create:event');
     }
 
     public function update(User $user = null, Event $event): bool
     {
-        return $this->hasPermissionTo($user, 'update:event') || $user?->tokenCan('update:event');
+        return $this->hasPermissionTo($user, 'update:event') || optional($user)->tokenCan('update:event');
     }
 
     public function delete(User $user = null, Event $event): bool
     {
-        return $this->hasPermissionTo($user, 'delete:event') || $user?->tokenCan('delete:event');
+        return $this->hasPermissionTo($user, 'delete:event') || optional($user)->tokenCan('delete:event');
     }
 
     public function restore(User $user = null, Event $event): bool
     {
-        return $this->hasPermissionTo($user, 'delete:event') || $user?->tokenCan('delete:event');
+        return $this->hasPermissionTo($user, 'delete:event') || optional($user)->tokenCan('delete:event');
     }
 
     public function forceDelete(User $user = null, Event $event): bool
     {
-        return $this->hasPermissionTo($user, 'delete:event') || $user?->tokenCan('delete:event');
+        return $this->hasPermissionTo($user, 'delete:event') || optional($user)->tokenCan('delete:event');
     }
 
     public function attachAnyUser(User $user = null, Event $event): bool

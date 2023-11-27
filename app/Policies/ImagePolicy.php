@@ -20,7 +20,7 @@ class ImagePolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $user?->hasRole('Admin');
+        return optional($user)->hasRole('Admin');
     }
 
     public function view(User $user = null, Image $image): bool
@@ -30,7 +30,7 @@ class ImagePolicy extends Policy
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:image') || $user?->tokenCan('create:image');
+        return $this->hasPermissionTo($user, 'create:image') || optional($user)->tokenCan('create:image');
     }
 
     public function update(User $user = null, Image $image): bool
