@@ -1,6 +1,28 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.62...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.63...HEAD)
+
+## [v1.0.63](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.62...v1.0.63) - 2023-11-27
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.63 -->
+### What's Changed
+
+#### Changed
+
+* Add more field validations to multiple API resources by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/254
+* Refactored how assignment records affect user profiles by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/255
+
+#### Fixed
+
+* Fix passport being commented out by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/257
+
+#### Other
+
+* Bump swagger-ui-react from 5.9.0 to 5.10.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/253
+* Bump eslint from 8.53.0 to 8.54.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/252
+* Bump @vitejs/plugin-react from 4.1.0 to 4.2.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/251
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.62...v1.0.63
 
 ## [v1.0.62](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.61...v1.0.62) - 2023-11-18
 
