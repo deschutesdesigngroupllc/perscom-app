@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Users;
+namespace App\Http\Controllers\Api\V1\ServiceRecords;
 
 use App\Http\Requests\Api\ServiceRecordRequest;
-use App\Models\User;
+use App\Models\ServiceRecord;
 use App\Policies\ServiceRecordsPolicy;
-use Orion\Http\Controllers\RelationController;
+use Orion\Http\Controllers\Controller;
 
-class UsersServiceRecordsController extends RelationController
+class ServiceRecordsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = User::class;
+    protected $model = ServiceRecord::class;
 
     /**
      * @var string
@@ -25,11 +25,6 @@ class UsersServiceRecordsController extends RelationController
     protected $policy = ServiceRecordsPolicy::class;
 
     /**
-     * @var string
-     */
-    protected $relation = 'service_records';
-
-    /**
      * @return string[]
      */
     public function includes(): array
@@ -37,6 +32,7 @@ class UsersServiceRecordsController extends RelationController
         return [
             'author',
             'document',
+            'user',
         ];
     }
 }

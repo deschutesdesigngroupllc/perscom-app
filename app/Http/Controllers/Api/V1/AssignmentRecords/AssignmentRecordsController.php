@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Users;
+namespace App\Http\Controllers\Api\V1\AssignmentRecords;
 
 use App\Http\Requests\Api\AssignmentRecordRequest;
-use App\Models\User;
+use App\Models\AssignmentRecord;
 use App\Policies\AssignmentRecordsPolicy;
-use Orion\Http\Controllers\RelationController;
+use Orion\Http\Controllers\Controller;
 
-class UsersAssignmentRecordsController extends RelationController
+class AssignmentRecordsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = User::class;
+    protected $model = AssignmentRecord::class;
 
     /**
      * @var string
@@ -23,11 +23,6 @@ class UsersAssignmentRecordsController extends RelationController
      * @var string
      */
     protected $policy = AssignmentRecordsPolicy::class;
-
-    /**
-     * @var string
-     */
-    protected $relation = 'assignment_records';
 
     /**
      * @return string[]
@@ -41,6 +36,7 @@ class UsersAssignmentRecordsController extends RelationController
             'specialty',
             'status',
             'unit',
+            'user',
         ];
     }
 }

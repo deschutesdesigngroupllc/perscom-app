@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Users;
+namespace App\Http\Controllers\Api\V1\QualificationRecords;
 
 use App\Http\Requests\Api\QualificationRecordRequest;
-use App\Models\User;
+use App\Models\QualificationRecord;
 use App\Policies\QualificationRecordsPolicy;
-use Orion\Http\Controllers\RelationController;
+use Orion\Http\Controllers\Controller;
 
-class UsersQualificationRecordsController extends RelationController
+class QualificationRecordsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = User::class;
+    protected $model = QualificationRecord::class;
 
     /**
      * @var string
@@ -25,11 +25,6 @@ class UsersQualificationRecordsController extends RelationController
     protected $policy = QualificationRecordsPolicy::class;
 
     /**
-     * @var string
-     */
-    protected $relation = 'qualification_records';
-
-    /**
      * @return string[]
      */
     public function includes(): array
@@ -39,6 +34,7 @@ class UsersQualificationRecordsController extends RelationController
             'document',
             'qualification',
             'qualification.image',
+            'user',
         ];
     }
 }

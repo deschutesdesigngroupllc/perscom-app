@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Users;
+namespace App\Http\Controllers\Api\V1\RankRecords;
 
 use App\Http\Requests\Api\RankRecordRequest;
-use App\Models\User;
+use App\Models\RankRecord;
 use App\Policies\RankRecordsPolicy;
-use Orion\Http\Controllers\RelationController;
+use Orion\Http\Controllers\Controller;
 
-class UsersRankRecordsController extends RelationController
+class RankRecordsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = User::class;
+    protected $model = RankRecord::class;
 
     /**
      * @var string
@@ -25,11 +25,6 @@ class UsersRankRecordsController extends RelationController
     protected $policy = RankRecordsPolicy::class;
 
     /**
-     * @var string
-     */
-    protected $relation = 'rank_records';
-
-    /**
      * @return string[]
      */
     public function includes(): array
@@ -39,6 +34,7 @@ class UsersRankRecordsController extends RelationController
             'document',
             'rank',
             'rank.image',
+            'user',
         ];
     }
 }

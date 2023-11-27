@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Users;
+namespace App\Http\Controllers\Api\V1\CombatRecords;
 
 use App\Http\Requests\Api\CombatRecordRequest;
-use App\Models\User;
+use App\Models\CombatRecord;
 use App\Policies\CombatRecordsPolicy;
-use Orion\Http\Controllers\RelationController;
+use Orion\Http\Controllers\Controller;
 
-class UsersCombatRecordsController extends RelationController
+class CombatRecordsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = User::class;
+    protected $model = CombatRecord::class;
 
     /**
      * @var string
@@ -25,11 +25,6 @@ class UsersCombatRecordsController extends RelationController
     protected $policy = CombatRecordsPolicy::class;
 
     /**
-     * @var string
-     */
-    protected $relation = 'combat_records';
-
-    /**
      * @return string[]
      */
     public function includes(): array
@@ -37,6 +32,7 @@ class UsersCombatRecordsController extends RelationController
         return [
             'author',
             'document',
+            'user',
         ];
     }
 }

@@ -3810,8 +3810,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -3851,8 +3854,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -3892,8 +3898,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -3911,8 +3920,11 @@ paths:
                       relation:
                         type: string
                         enum:
+                          - author
+                          - document
                           - position
                           - specialty
+                          - status
                           - unit
                       filters:
                         type: object
@@ -3959,8 +3971,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -4001,8 +4016,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -4050,8 +4068,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -4087,8 +4108,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -4137,8 +4161,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -4188,8 +4215,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -4240,8 +4270,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -4285,8 +4318,11 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - position
               - specialty
+              - status
               - unit
           name: include
           in: query
@@ -4324,8 +4360,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       requestBody:
@@ -4364,8 +4402,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       responses:
@@ -4404,8 +4444,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       requestBody:
@@ -4422,8 +4464,10 @@ paths:
                       relation:
                         type: string
                         enum:
+                          - author
                           - award
                           - award.image
+                          - document
                       filters:
                         type: object
                         properties: null
@@ -4469,8 +4513,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       responses:
@@ -4510,8 +4556,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       requestBody:
@@ -4558,8 +4606,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       responses:
@@ -4594,8 +4644,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       requestBody:
@@ -4643,8 +4695,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       requestBody:
@@ -4693,8 +4747,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       requestBody:
@@ -4744,8 +4800,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       responses:
@@ -4788,8 +4846,10 @@ paths:
           schema:
             type: string
             enum:
+              - author
               - award
               - award.image
+              - document
           name: include
           in: query
       responses:
@@ -4822,6 +4882,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -4854,6 +4922,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -4886,6 +4962,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -4909,6 +4993,25 @@ paths:
       summary: 'Search for records combat'
       tags:
         - 'Users Combat Records'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - author
+                          - document
+                      filters:
+                        type: object
+                        properties: null
   '/v1/users/{user}/combat-records/{combat_record}':
     get:
       parameters:
@@ -4924,6 +5027,14 @@ paths:
           name: combat_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -4957,6 +5068,14 @@ paths:
           name: combat_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -4997,6 +5116,14 @@ paths:
           name: combat_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -5025,6 +5152,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -5066,6 +5201,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -5108,6 +5251,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -5151,6 +5302,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -5187,6 +5346,14 @@ paths:
           name: combat_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -5221,6 +5388,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5261,6 +5430,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5301,6 +5472,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5319,6 +5492,8 @@ paths:
                       relation:
                         type: string
                         enum:
+                          - author
+                          - document
                           - qualification
                           - qualification.image
                       filters:
@@ -5366,6 +5541,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5407,6 +5584,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5455,6 +5634,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5491,6 +5672,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5540,6 +5723,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5590,6 +5775,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5641,6 +5828,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5685,6 +5874,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - qualification
               - qualification.image
           name: include
@@ -5723,6 +5914,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -5763,6 +5956,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -5803,6 +5998,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -5821,6 +6018,8 @@ paths:
                       relation:
                         type: string
                         enum:
+                          - author
+                          - document
                           - rank
                           - rank.image
                       filters:
@@ -5868,6 +6067,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -5909,6 +6110,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -5957,6 +6160,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -5993,6 +6198,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -6042,6 +6249,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -6092,6 +6301,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -6143,6 +6354,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -6187,6 +6400,8 @@ paths:
           schema:
             type: string
             enum:
+              - author
+              - document
               - rank
               - rank.image
           name: include
@@ -6221,6 +6436,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -6253,6 +6476,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -6285,6 +6516,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -6308,6 +6547,25 @@ paths:
       summary: 'Search for records service'
       tags:
         - 'Users Service Records'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - author
+                          - document
+                      filters:
+                        type: object
+                        properties: null
   '/v1/users/{user}/service-records/{service_record}':
     get:
       parameters:
@@ -6323,6 +6581,14 @@ paths:
           name: service_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -6356,6 +6622,14 @@ paths:
           name: service_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -6396,6 +6670,14 @@ paths:
           name: service_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -6424,6 +6706,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -6465,6 +6755,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -6507,6 +6805,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       requestBody:
         content:
           application/json:
@@ -6550,6 +6856,14 @@ paths:
           name: user
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -6586,6 +6900,14 @@ paths:
           name: service_record
           in: path
           required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+          name: include
+          in: query
       responses:
         200:
           description: OK
@@ -20763,6 +21085,2362 @@ paths:
       summary: 'Delete a batch of documents'
       tags:
         - Documents
+  /v1/assignment-records:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentRecord'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AssignmentRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create records assignment'
+      tags:
+        - 'Assignment Records'
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignmentRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of records assignments'
+      tags:
+        - 'Assignment Records'
+  /v1/assignment-records/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - author
+                          - document
+                          - position
+                          - specialty
+                          - status
+                          - unit
+                          - user
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignmentRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for records assignments'
+      tags:
+        - 'Assignment Records'
+  '/v1/assignment-records/{assignment_record}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: assignment_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AssignmentRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get records assignment'
+      tags:
+        - 'Assignment Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: assignment_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignmentRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AssignmentRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update records assignment'
+      tags:
+        - 'Assignment Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: assignment_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AssignmentRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete records assignment'
+      tags:
+        - 'Assignment Records'
+  /v1/assignment-records/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AssignmentRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignmentRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of records assignments'
+      tags:
+        - 'Assignment Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/AssignmentRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignmentRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of records assignments'
+      tags:
+        - 'Assignment Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - position
+              - specialty
+              - status
+              - unit
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignmentRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of records assignments'
+      tags:
+        - 'Assignment Records'
+  /v1/award-records:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AwardRecord'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AwardRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create records award'
+      tags:
+        - 'Award Records'
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of records awards'
+      tags:
+        - 'Award Records'
+  /v1/award-records/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - author
+                          - award
+                          - award.image
+                          - document
+                          - user
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for records awards'
+      tags:
+        - 'Award Records'
+  '/v1/award-records/{award_record}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AwardRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get records award'
+      tags:
+        - 'Award Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AwardRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AwardRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update records award'
+      tags:
+        - 'Award Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/AwardRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete records award'
+      tags:
+        - 'Award Records'
+  /v1/award-records/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/AwardRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of records awards'
+      tags:
+        - 'Award Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/AwardRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of records awards'
+      tags:
+        - 'Award Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - award
+              - award.image
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AwardRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of records awards'
+      tags:
+        - 'Award Records'
+  /v1/combat-records:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CombatRecord'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CombatRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create records combat'
+      tags:
+        - 'Combat Records'
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CombatRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of records combat'
+      tags:
+        - 'Combat Records'
+  /v1/combat-records/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - author
+                          - document
+                          - user
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CombatRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for records combat'
+      tags:
+        - 'Combat Records'
+  '/v1/combat-records/{combat_record}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: combat_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CombatRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get records combat'
+      tags:
+        - 'Combat Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: combat_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CombatRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CombatRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update records combat'
+      tags:
+        - 'Combat Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: combat_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/CombatRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete records combat'
+      tags:
+        - 'Combat Records'
+  /v1/combat-records/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/CombatRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CombatRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of records combat'
+      tags:
+        - 'Combat Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/CombatRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CombatRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of records combat'
+      tags:
+        - 'Combat Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/CombatRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of records combat'
+      tags:
+        - 'Combat Records'
+  /v1/qualification-records:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QualificationRecord'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create records qualification'
+      tags:
+        - 'Qualification Records'
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of records qualifications'
+      tags:
+        - 'Qualification Records'
+  /v1/qualification-records/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - author
+                          - document
+                          - qualification
+                          - qualification.image
+                          - user
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for records qualifications'
+      tags:
+        - 'Qualification Records'
+  '/v1/qualification-records/{qualification_record}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get records qualification'
+      tags:
+        - 'Qualification Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/QualificationRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update records qualification'
+      tags:
+        - 'Qualification Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/QualificationRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete records qualification'
+      tags:
+        - 'Qualification Records'
+  /v1/qualification-records/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/QualificationRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of records qualifications'
+      tags:
+        - 'Qualification Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/QualificationRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of records qualifications'
+      tags:
+        - 'Qualification Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - qualification
+              - qualification.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/QualificationRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of records qualifications'
+      tags:
+        - 'Qualification Records'
+  /v1/rank-records:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RankRecord'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create records rank'
+      tags:
+        - 'Rank Records'
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of records ranks'
+      tags:
+        - 'Rank Records'
+  /v1/rank-records/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - author
+                          - document
+                          - rank
+                          - rank.image
+                          - user
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for records ranks'
+      tags:
+        - 'Rank Records'
+  '/v1/rank-records/{rank_record}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get records rank'
+      tags:
+        - 'Rank Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RankRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update records rank'
+      tags:
+        - 'Rank Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/RankRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete records rank'
+      tags:
+        - 'Rank Records'
+  /v1/rank-records/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/RankRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of records ranks'
+      tags:
+        - 'Rank Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/RankRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of records ranks'
+      tags:
+        - 'Rank Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - rank
+              - rank.image
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/RankRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of records ranks'
+      tags:
+        - 'Rank Records'
+  /v1/service-records:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRecord'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ServiceRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create records service'
+      tags:
+        - 'Service Records'
+    get:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of records service'
+      tags:
+        - 'Service Records'
+  /v1/service-records/search:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                includes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      relation:
+                        type: string
+                        enum:
+                          - author
+                          - document
+                          - user
+                      filters:
+                        type: object
+                        properties: null
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceRecordResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for records service'
+      tags:
+        - 'Service Records'
+  '/v1/service-records/{service_record}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: service_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ServiceRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get records service'
+      tags:
+        - 'Service Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: service_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ServiceRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ServiceRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update records service'
+      tags:
+        - 'Service Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: service_record
+          in: path
+          required: true
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ServiceRecordResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete records service'
+      tags:
+        - 'Service Records'
+  /v1/service-records/batch:
+    post:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/ServiceRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of records service'
+      tags:
+        - 'Service Records'
+    patch:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/ServiceRecord'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of records service'
+      tags:
+        - 'Service Records'
+    delete:
+      parameters:
+        -
+          schema:
+            type: string
+            enum:
+              - author
+              - document
+              - user
+          name: include
+          in: query
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ServiceRecordResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of records service'
+      tags:
+        - 'Service Records'
 components:
   securitySchemes:
     ApiKey:
@@ -21063,12 +23741,16 @@ components:
       properties:
         user_id:
           type: integer
+          nullable: true
         unit_id:
           type: integer
+          nullable: true
         position_id:
           type: integer
+          nullable: true
         specialty_id:
           type: integer
+          nullable: true
         document_id:
           type: integer
           nullable: true
@@ -21114,8 +23796,10 @@ components:
       properties:
         user_id:
           type: integer
+          nullable: true
         award_id:
           type: integer
+          nullable: true
         document_id:
           type: integer
           nullable: true
@@ -21149,6 +23833,7 @@ components:
       properties:
         user_id:
           type: integer
+          nullable: true
         document_id:
           type: integer
           nullable: true
@@ -21181,8 +23866,10 @@ components:
       properties:
         user_id:
           type: integer
+          nullable: true
         qualification_id:
           type: integer
+          nullable: true
         document_id:
           type: integer
           nullable: true
@@ -21216,8 +23903,10 @@ components:
       properties:
         user_id:
           type: integer
+          nullable: true
         rank_id:
           type: integer
+          nullable: true
         document_id:
           type: integer
           nullable: true
@@ -21255,6 +23944,7 @@ components:
       properties:
         user_id:
           type: integer
+          nullable: true
         document_id:
           type: integer
           nullable: true
@@ -21452,6 +24142,7 @@ components:
           type: string
         calendar_id:
           type: integer
+          nullable: true
         description:
           type: string
           nullable: true
@@ -21817,8 +24508,14 @@ tags:
     name: Announcements
     description: 'API documentation for Announcements'
   -
+    name: 'Assignment Records'
+    description: 'API documentation for Assignment Records'
+  -
     name: Awards
     description: 'API documentation for Awards'
+  -
+    name: 'Award Records'
+    description: 'API documentation for Award Records'
   -
     name: Calendars
     description: 'API documentation for Calendars'
@@ -21840,6 +24537,9 @@ tags:
   -
     name: 'Categories Ranks'
     description: 'API documentation for Categories Ranks'
+  -
+    name: 'Combat Records'
+    description: 'API documentation for Combat Records'
   -
     name: Documents
     description: 'API documentation for Documents'
@@ -21868,8 +24568,17 @@ tags:
     name: Qualifications
     description: 'API documentation for Qualifications'
   -
+    name: 'Qualification Records'
+    description: 'API documentation for Qualification Records'
+  -
     name: Ranks
     description: 'API documentation for Ranks'
+  -
+    name: 'Rank Records'
+    description: 'API documentation for Rank Records'
+  -
+    name: 'Service Records'
+    description: 'API documentation for Service Records'
   -
     name: Specialties
     description: 'API documentation for Specialties'

@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Http\Controllers\Api\V1\Users;
+namespace App\Http\Controllers\Api\V1\AwardRecords;
 
 use App\Http\Requests\Api\AwardRecordRequest;
-use App\Models\User;
+use App\Models\AwardRecord;
 use App\Policies\AwardRecordsPolicy;
-use Orion\Http\Controllers\RelationController;
+use Orion\Http\Controllers\Controller;
 
-class UsersAwardRecordsController extends RelationController
+class AwardRecordsController extends Controller
 {
     /**
      * @var string
      */
-    protected $model = User::class;
+    protected $model = AwardRecord::class;
 
     /**
      * @var string
@@ -25,11 +25,6 @@ class UsersAwardRecordsController extends RelationController
     protected $policy = AwardRecordsPolicy::class;
 
     /**
-     * @var string
-     */
-    protected $relation = 'award_records';
-
-    /**
      * @return string[]
      */
     public function includes(): array
@@ -39,6 +34,7 @@ class UsersAwardRecordsController extends RelationController
             'award',
             'award.image',
             'document',
+            'user',
         ];
     }
 }
