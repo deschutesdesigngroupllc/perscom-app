@@ -1,17 +1,15 @@
 <template>
   <div v-if="routes.value && Object.keys(routes.value).length > 0">
-    <Card class="dashboard-actions-rounded-lg">
-      <div class="md:dashboard-actions-grid md:dashboard-actions-grid-cols-1">
+    <Card class="da-rounded-lg">
+      <div class="md:da-grid md:da-grid-cols-1">
         <div
           v-for="(route, key, index) in routes.value"
           :key="index"
-          :class="{ 'dashboard-actions-border-none': index === Object.keys(routes.value).length - 1 }"
-          class="dashboard-actions-flex dashboard-actions-border-b dashboard-actions-items-center dashboard-actions-border-gray-200 dark:dashboard-actions-border-gray-700 hover:bg-gray-100"
+          :class="{ 'da-border-none': index === Object.keys(routes.value).length - 1 }"
+          class="da-flex da-border-b da-items-center da-border-gray-200 dark:da-border-gray-700 hover:da-bg-gray-100 dark:hover:da-bg-gray-700"
         >
-          <a :href="route.link" class="dashboard-actions-no-underline dashboard-actions-flex dashboard-actions-p-6">
-            <div
-              class="dashboard-actions-flex dashboard-actions-justify-center dashboard-actions-items-center dashboard-actions-w-10 dashboard-actions-flex-shrink-0 dashboard-actions-mr-6"
-            >
+          <a :href="route.link" class="da-no-underline da-flex da-p-6">
+            <div class="da-flex da-justify-center da-items-center da-w-10 da-flex-shrink-0 da-mr-6">
               <svg
                 class="text-primary-500 dark:text-primary-600"
                 xmlns="http://www.w3.org/2000/svg"
@@ -27,8 +25,8 @@
             </div>
 
             <div>
-              <Heading :level="3">{{ route.title }}</Heading>
-              <p class="dashboard-actions-leading-normal dashboard-actions-mt-3">
+              <Heading :level="3" class="dark:da-text-gray-400">{{ route.title }}</Heading>
+              <p class="da-leading-normal da-mt-3 dark:da-text-gray-400">
                 {{ route.description }}
               </p>
             </div>
@@ -40,7 +38,7 @@
 </template>
 
 <script setup>
-import {onMounted, reactive} from 'vue'
+import { onMounted, reactive } from 'vue'
 
 const routes = reactive({})
 

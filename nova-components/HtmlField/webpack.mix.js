@@ -6,5 +6,5 @@ mix
   .setPublicPath('dist')
   .js('resources/js/field.js', 'js')
   .vue({ version: 3 })
-  .css('resources/css/field.css', 'css')
+  .postCss('resources/css/field.css', 'css', [require('tailwindcss')])
   .nova('perscom/HtmlField')

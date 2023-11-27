@@ -14,17 +14,27 @@ class AssignmentRecordObserver
     public function created(AssignmentRecord $assignment): void
     {
         if ($assignment->user) {
-            $assignment->user->position_id = $assignment->position?->id;
-            $assignment->user->specialty_id = $assignment->specialty?->id;
-            $assignment->user->unit_id = $assignment->unit?->id;
+            if ($assignment->isDirty('position_id')) {
+                $assignment->user->position_id = optional($assignment->position)->id;
+            }
+            if ($assignment->isDirty('specialty_id')) {
+                $assignment->user->specialty_id = optional($assignment->specialty)->id;
+            }
+            if ($assignment->isDirty('unit_id')) {
+                $assignment->user->unit_id = optional($assignment->unit)->id;
+            }
+            if ($assignment->isDirty('status_id')) {
+                if (is_null($assignment->status_id)) {
+                    $assignment->user->status_id = null;
+                } else {
+                    $assignment->user->statuses()->attach($assignment->status);
+                }
+            }
+
             $assignment->user->save();
             $assignment->user->secondary_positions()->sync($assignment->secondary_position_ids);
             $assignment->user->secondary_specialties()->sync($assignment->secondary_specialty_ids);
             $assignment->user->secondary_units()->sync($assignment->secondary_unit_ids);
-
-            if ($assignment->status) {
-                $assignment->user->statuses()->attach($assignment->status);
-            }
         }
 
         Notification::send($assignment->user, new NewAssignmentRecord($assignment));

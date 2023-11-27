@@ -1,11 +1,8 @@
 <template>
-  <div
-    class="dashboard-title-flex dashboard-title-justify-center dashboard-title-items-center"
-    v-if="props.card.title || props.card.subtitle"
-  >
-    <div class="dashboard-title-w-full">
-      <Heading class="dashboard-title-font-bold" v-if="props.card.title">{{ props.card.title }}</Heading>
-      <p class="text-90 dashboard-title-leading-tight" v-if="props.card.subtitle">
+  <div class="dt-flex dt-justify-center dt-items-center" v-if="props.card.title || props.card.subtitle">
+    <div class="dt-w-full">
+      <Heading class="dt-font-bold" v-if="props.card.title">{{ props.card.title }}</Heading>
+      <p class="dt-text-opacity-90 dt-leading-tight" v-if="props.card.subtitle">
         {{ props.card.subtitle }}
       </p>
     </div>
