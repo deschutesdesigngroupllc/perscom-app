@@ -19,36 +19,36 @@ class CalendarPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:calendar') || $user?->tokenCan('view:calendar');
+        return $this->hasPermissionTo($user, 'view:calendar') || optional($user)->tokenCan('view:calendar');
     }
 
     public function view(User $user = null, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'view:calendar') || $user?->tokenCan('view:calendar');
+        return $this->hasPermissionTo($user, 'view:calendar') || optional($user)->tokenCan('view:calendar');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:calendar') || $user?->tokenCan('create:calendar');
+        return $this->hasPermissionTo($user, 'create:calendar') || optional($user)->tokenCan('create:calendar');
     }
 
     public function update(User $user = null, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'update:calendar') || $user?->tokenCan('update:calendar');
+        return $this->hasPermissionTo($user, 'update:calendar') || optional($user)->tokenCan('update:calendar');
     }
 
     public function delete(User $user = null, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || $user?->tokenCan('delete:calendar');
+        return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
     }
 
     public function restore(User $user = null, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || $user?->tokenCan('delete:calendar');
+        return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
     }
 
     public function forceDelete(User $user = null, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || $user?->tokenCan('delete:calendar');
+        return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
     }
 }

@@ -17,11 +17,11 @@ class SubmissionObserver
             WebhookService::dispatch($webhook, WebhookEvent::SUBMISSION_CREATED->value, $submission);
         });
 
-        if ($status = $submission->form?->submission_status) {
+        if ($status = optional($submission->form)->submission_status) {
             $submission->statuses()->attach($status->getKey());
         }
 
-        Notification::send($submission->form?->notifications, new NewSubmission($submission));
+        Notification::send(optional($submission->form)->notifications, new NewSubmission($submission));
     }
 
     public function updated(Submission $submission): void

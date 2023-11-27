@@ -35,8 +35,11 @@ class UsersAssignmentRecordsController extends RelationController
     public function includes(): array
     {
         return [
+            'author',
+            'document',
             'position',
             'specialty',
+            'status',
             'unit',
         ];
     }

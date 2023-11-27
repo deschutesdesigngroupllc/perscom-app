@@ -19,13 +19,23 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 /**
  * App\Models\TaskAssignment
  *
+ * @property int $id
+ * @property int $task_id
+ * @property int $user_id
+ * @property int|null $assigned_by_id
+ * @property \Illuminate\Support\Carbon $assigned_at
+ * @property \Illuminate\Support\Carbon|null $due_at
+ * @property \Illuminate\Support\Carbon|null $completed_at
+ * @property \Illuminate\Support\Carbon|null $expires_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\User|null $assigned_by
  * @property-read bool $complete
  * @property-read bool $expired
  * @property-read bool $past_due
  * @property-read TaskAssignmentStatus $status
  * @property-read \App\Models\Task|null $task
- * @property-read \App\Models\User|null $user
+ * @property-read \App\Models\User $user
  *
  * @method static Builder|TaskAssignment assigned()
  * @method static Builder|TaskAssignment expired()
@@ -35,6 +45,16 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @method static Builder|TaskAssignment pastDue()
  * @method static Builder|TaskAssignment query()
  * @method static Builder|TaskAssignment user(\App\Models\User $user)
+ * @method static Builder|TaskAssignment whereAssignedAt($value)
+ * @method static Builder|TaskAssignment whereAssignedById($value)
+ * @method static Builder|TaskAssignment whereCompletedAt($value)
+ * @method static Builder|TaskAssignment whereCreatedAt($value)
+ * @method static Builder|TaskAssignment whereDueAt($value)
+ * @method static Builder|TaskAssignment whereExpiresAt($value)
+ * @method static Builder|TaskAssignment whereId($value)
+ * @method static Builder|TaskAssignment whereTaskId($value)
+ * @method static Builder|TaskAssignment whereUpdatedAt($value)
+ * @method static Builder|TaskAssignment whereUserId($value)
  *
  * @mixin \Eloquent
  */

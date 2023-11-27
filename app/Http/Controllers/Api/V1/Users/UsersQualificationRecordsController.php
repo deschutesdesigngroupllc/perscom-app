@@ -34,6 +34,11 @@ class UsersQualificationRecordsController extends RelationController
      */
     public function includes(): array
     {
-        return ['qualification', 'qualification.image'];
+        return [
+            'author',
+            'document',
+            'qualification',
+            'qualification.image',
+        ];
     }
 }

@@ -21,7 +21,6 @@ class LogApiRequests
 
         if (tenant()) {
             $client = Auth::guard('passport')->client(); // @phpstan-ignore-line
-            $properties['client'] = $client->id ?? null;
 
             $name = match (true) {
                 Auth::guard('jwt')->check() => 'jwt',

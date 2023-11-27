@@ -15,6 +15,8 @@ class CategoryRequest extends Request
             'name' => 'string',
             'description' => 'nullable|string',
             'resource' => 'string',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

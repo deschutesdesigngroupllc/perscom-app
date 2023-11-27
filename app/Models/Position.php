@@ -12,6 +12,12 @@ use Spatie\EloquentSortable\SortableTrait;
 /**
  * App\Models\Position
  *
+ * @property int $id
+ * @property string $name
+ * @property string|null $description
+ * @property int $order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
@@ -22,6 +28,12 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Position newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Position ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Position query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Position whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Position whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Position whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Position whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Position whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Position whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -30,15 +42,15 @@ class Position extends Model implements Sortable
     use HasFactory;
     use SortableTrait;
 
+    /**
+     * @var string[]
+     */
+    protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
+
     protected static function booted(): void
     {
         static::addGlobalScope(new PositionScope());
     }
-
-    /**
-     * @var string[]
-     */
-    protected $fillable = ['name', 'description', 'order'];
 
     public function assignment_records(): HasMany
     {

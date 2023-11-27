@@ -19,36 +19,36 @@ class NewsfeedItemPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || $user?->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
     public function view(User $user = null, NewsfeedItem $newsfeed): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || $user?->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || $user?->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
     public function update(User $user = null, NewsfeedItem $newsfeed): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || $user?->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
     public function delete(User $user = null, NewsfeedItem $newsfeed): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || $user?->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
     public function restore(User $user = null, NewsfeedItem $newsfeed): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || $user?->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
     public function forceDelete(User $user = null, NewsfeedItem $newsfeed): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || $user?->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 }

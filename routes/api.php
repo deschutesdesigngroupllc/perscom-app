@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
+use App\Http\Controllers\Api\V1\AssignmentRecords\AssignmentRecordsController;
+use App\Http\Controllers\Api\V1\AwardRecords\AwardRecordsController;
 use App\Http\Controllers\Api\V1\Awards\AwardsController;
 use App\Http\Controllers\Api\V1\Calendars\CalendarsController;
 use App\Http\Controllers\Api\V1\Categories\CategoriesAwardsController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\Api\V1\Categories\CategoriesDocumentsController;
 use App\Http\Controllers\Api\V1\Categories\CategoriesFormsController;
 use App\Http\Controllers\Api\V1\Categories\CategoriesQualificationsController;
 use App\Http\Controllers\Api\V1\Categories\CategoriesRanksController;
+use App\Http\Controllers\Api\V1\CombatRecords\CombatRecordsController;
 use App\Http\Controllers\Api\V1\Documents\DocumentsController;
 use App\Http\Controllers\Api\V1\Events\EventsController;
 use App\Http\Controllers\Api\V1\Forms\FormsController;
@@ -18,8 +21,11 @@ use App\Http\Controllers\Api\V1\MeController;
 use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedController;
 use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedLikesController;
 use App\Http\Controllers\Api\V1\Positions\PositionsController;
+use App\Http\Controllers\Api\V1\QualificationRecords\QualificationRecordsController;
 use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
+use App\Http\Controllers\Api\V1\RankRecords\RankRecordsController;
 use App\Http\Controllers\Api\V1\Ranks\RanksController;
+use App\Http\Controllers\Api\V1\ServiceRecords\ServiceRecordsController;
 use App\Http\Controllers\Api\V1\SpecController;
 use App\Http\Controllers\Api\V1\Specialties\SpecialtiesController;
 use App\Http\Controllers\Api\V1\Statuses\StatusesController;
@@ -66,7 +72,11 @@ Route::group(['prefix' => 'v1'], static function () {
 
         Orion::resource('announcements', AnnouncementsController::class);
 
+        Orion::resource('assignment-records', AssignmentRecordsController::class);
+
         Orion::resource('awards', AwardsController::class);
+
+        Orion::resource('award-records', AwardRecordsController::class);
 
         Orion::resource('calendars', CalendarsController::class);
 
@@ -76,6 +86,8 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::belongsToManyResource('categories', 'forms', CategoriesFormsController::class);
         Orion::belongsToManyResource('categories', 'qualifications', CategoriesQualificationsController::class);
         Orion::belongsToManyResource('categories', 'ranks', CategoriesRanksController::class);
+
+        Orion::resource('combat-records', CombatRecordsController::class);
 
         Orion::resource('documents', DocumentsController::class);
 
@@ -94,7 +106,13 @@ Route::group(['prefix' => 'v1'], static function () {
 
         Orion::resource('qualifications', QualificationsController::class);
 
+        Orion::resource('qualification-records', QualificationRecordsController::class);
+
         Orion::resource('ranks', RanksController::class);
+
+        Orion::resource('rank-records', RankRecordsController::class);
+
+        Orion::resource('service-records', ServiceRecordsController::class);
 
         Orion::resource('specialties', SpecialtiesController::class);
 

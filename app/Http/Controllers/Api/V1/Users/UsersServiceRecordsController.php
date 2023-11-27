@@ -28,4 +28,15 @@ class UsersServiceRecordsController extends RelationController
      * @var string
      */
     protected $relation = 'service_records';
+
+    /**
+     * @return string[]
+     */
+    public function includes(): array
+    {
+        return [
+            'author',
+            'document',
+        ];
+    }
 }

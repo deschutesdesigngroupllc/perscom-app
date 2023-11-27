@@ -40,8 +40,10 @@ class NewSubmission extends Notification implements ShouldQueue
 
     public function toNova(): NovaNotification
     {
-        return (new NovaNotification())->message("A new {$this->submission->form?->name} has been submitted.")
-            ->action("View {$this->submission->form?->name}", URL::remote($this->url))
+        $name = optional($this->submission->form)->name;
+
+        return (new NovaNotification())->message("A new $name has been submitted.")
+            ->action("View $name", URL::remote($this->url))
             ->icon('document-text')
             ->type('info');
     }

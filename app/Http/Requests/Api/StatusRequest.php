@@ -14,6 +14,8 @@ class StatusRequest extends Request
         return [
             'name' => 'string',
             'color' => 'string',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

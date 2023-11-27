@@ -19,11 +19,11 @@ class ActionPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:log') || $user?->tokenCan('view:log');
+        return $this->hasPermissionTo($user, 'view:log') || optional($user)->tokenCan('view:log');
     }
 
     public function view(User $user = null, ActionEvent $actionEvent): bool
     {
-        return $this->hasPermissionTo($user, 'view:log') || $user?->tokenCan('view:log');
+        return $this->hasPermissionTo($user, 'view:log') || optional($user)->tokenCan('view:log');
     }
 }

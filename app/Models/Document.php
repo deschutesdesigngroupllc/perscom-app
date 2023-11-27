@@ -13,6 +13,14 @@ use Illuminate\Support\Str;
 /**
  * App\Models\Document
  *
+ * @property int $id
+ * @property string $name
+ * @property string|null $description
+ * @property string $content
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  *
@@ -21,6 +29,12 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
  * @method static \Illuminate\Database\Eloquent\Builder|Document tags(?mixed $tag)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -32,7 +46,7 @@ class Document extends Model implements Htmlable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description', 'content'];
+    protected $fillable = ['name', 'description', 'content', 'updated_at', 'created_at'];
 
     /**
      * @var string[]

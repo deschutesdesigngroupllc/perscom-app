@@ -20,17 +20,17 @@ class PermissionPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:permission') || $user?->tokenCan('view:permission');
+        return $this->hasPermissionTo($user, 'view:permission') || optional($user)->tokenCan('view:permission');
     }
 
     public function view(User $user = null, Permission $permission): bool
     {
-        return $this->hasPermissionTo($user, 'view:permission') || $user?->tokenCan('view:permission');
+        return $this->hasPermissionTo($user, 'view:permission') || optional($user)->tokenCan('view:permission');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:permission') || $user?->tokenCan('create:permission');
+        return $this->hasPermissionTo($user, 'create:permission') || optional($user)->tokenCan('create:permission');
     }
 
     public function update(User $user = null, Permission $permission): bool
@@ -39,7 +39,7 @@ class PermissionPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'update:permission') || $user?->tokenCan('update:permission');
+        return $this->hasPermissionTo($user, 'update:permission') || optional($user)->tokenCan('update:permission');
     }
 
     public function delete(User $user = null, Permission $permission): bool
@@ -48,7 +48,7 @@ class PermissionPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:permission') || $user?->tokenCan('delete:permission');
+        return $this->hasPermissionTo($user, 'delete:permission') || optional($user)->tokenCan('delete:permission');
     }
 
     public function detachRole(User $user = null, Permission $permission, Role $role): bool
@@ -66,7 +66,7 @@ class PermissionPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:permission') || $user?->tokenCan('delete:permission');
+        return $this->hasPermissionTo($user, 'delete:permission') || optional($user)->tokenCan('delete:permission');
     }
 
     public function forceDelete(User $user = null, Permission $permission): bool
@@ -75,6 +75,6 @@ class PermissionPolicy extends Policy
             return false;
         }
 
-        return $this->hasPermissionTo($user, 'delete:permission') || $user?->tokenCan('delete:permission');
+        return $this->hasPermissionTo($user, 'delete:permission') || optional($user)->tokenCan('delete:permission');
     }
 }

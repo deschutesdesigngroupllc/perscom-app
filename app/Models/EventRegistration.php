@@ -17,14 +17,24 @@ use Znck\Eloquent\Traits\BelongsToThrough;
 /**
  * App\Models\EventRegistration
  *
- * @property-read \App\Models\Event|null $event
- * @property-read \App\Models\User|null $user
+ * @property int $id
+ * @property int $user_id
+ * @property int $event_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Event $event
+ * @property-read \App\Models\User $user
  *
  * @method static Builder|EventRegistration future()
  * @method static Builder|EventRegistration newModelQuery()
  * @method static Builder|EventRegistration newQuery()
  * @method static Builder|EventRegistration query()
  * @method static Builder|EventRegistration user(\App\Models\User $user)
+ * @method static Builder|EventRegistration whereCreatedAt($value)
+ * @method static Builder|EventRegistration whereEventId($value)
+ * @method static Builder|EventRegistration whereId($value)
+ * @method static Builder|EventRegistration whereUpdatedAt($value)
+ * @method static Builder|EventRegistration whereUserId($value)
  *
  * @mixin \Eloquent
  */

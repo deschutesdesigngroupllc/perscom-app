@@ -9,6 +9,11 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
 /**
  * App\Models\Status
  *
+ * @property int $id
+ * @property string $name
+ * @property string $color
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
@@ -18,6 +23,11 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Status newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -28,7 +38,7 @@ class Status extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'color'];
+    protected $fillable = ['name', 'color', 'updated_at', 'created_at'];
 
     /**
      * @var string[]

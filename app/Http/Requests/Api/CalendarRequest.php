@@ -15,6 +15,8 @@ class CalendarRequest extends Request
             'name' => 'string',
             'description' => 'nullable|string',
             'color' => 'nullable|string',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

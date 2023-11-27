@@ -18,9 +18,14 @@ class EventRequest extends Request
             'content' => 'nullable|string',
             'location' => 'nullable|string',
             'url' => 'nullable|string',
+            'author_id' => 'nullable|integer|exists:users,id',
             'all_day' => 'boolean',
             'start' => 'date',
             'end' => 'date|after:start',
+            'registrations_enabled' => 'boolean',
+            'registrations_deadline' => 'nullable|datetime',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

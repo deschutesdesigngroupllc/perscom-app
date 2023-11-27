@@ -12,6 +12,13 @@ use Spatie\EloquentSortable\SortableTrait;
 /**
  * App\Models\Specialty
  *
+ * @property int $id
+ * @property string $name
+ * @property string|null $abbreviation
+ * @property string|null $description
+ * @property int $order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
@@ -22,6 +29,13 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Specialty newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Specialty ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Specialty query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereAbbreviation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -33,7 +47,7 @@ class Specialty extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'abbreviation', 'description', 'order'];
+    protected $fillable = ['name', 'abbreviation', 'description', 'order', 'updated_at', 'created_at'];
 
     protected static function booted(): void
     {

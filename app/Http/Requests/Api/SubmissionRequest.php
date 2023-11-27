@@ -33,6 +33,8 @@ class SubmissionRequest extends Request
         return array_merge([
             'form_id' => 'integer|exists:forms,id',
             'user_id' => 'integer|nullable|exists:users,id',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ], $this->getDynamicRules());
     }
 

@@ -19,6 +19,20 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * App\Models\AssignmentRecord
  *
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $status_id
+ * @property int|null $unit_id
+ * @property array|null $secondary_unit_ids
+ * @property int|null $position_id
+ * @property array|null $secondary_position_ids
+ * @property int|null $specialty_id
+ * @property array|null $secondary_specialty_ids
+ * @property int|null $document_id
+ * @property int|null $author_id
+ * @property string|null $text
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -28,6 +42,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Position|null $position
  * @property-read \App\Models\Specialty|null $specialty
  * @property-read \App\Models\Status|null $status
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
+ * @property-read int|null $statuses_count
  * @property-read \App\Models\Unit|null $unit
  * @property-read \App\Models\User|null $user
  *
@@ -37,7 +53,22 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord status(?mixed $statuses)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord wherePositionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSecondaryPositionIds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSecondarySpecialtyIds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSecondaryUnitIds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSpecialtyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -62,7 +93,7 @@ class AssignmentRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'status_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text'];
+    protected $fillable = ['user_id', 'status_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 
     /**
      * @var string[]

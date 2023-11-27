@@ -18,6 +18,14 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * App\Models\AwardRecord
  *
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $award_id
+ * @property int|null $document_id
+ * @property int|null $author_id
+ * @property string|null $text
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -34,6 +42,14 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereAwardId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -57,7 +73,7 @@ class AwardRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'award_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = ['user_id', 'award_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 
     /**
      * @var string[]

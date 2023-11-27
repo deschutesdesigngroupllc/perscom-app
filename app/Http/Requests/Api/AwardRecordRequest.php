@@ -16,7 +16,9 @@ class AwardRecordRequest extends Request
             'award_id' => 'integer|exists:awards,id',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
-            'text' => 'string',
+            'text' => 'nullable|string',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 
@@ -34,7 +36,6 @@ class AwardRecordRequest extends Request
 
         return array_merge($rules, [
             'award_id' => 'required|integer|exists:awards,id',
-            'text' => 'required|string',
         ]);
     }
 }

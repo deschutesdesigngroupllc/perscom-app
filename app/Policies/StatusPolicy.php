@@ -19,36 +19,36 @@ class StatusPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:status') || $user?->tokenCan('view:status');
+        return $this->hasPermissionTo($user, 'view:status') || optional($user)->tokenCan('view:status');
     }
 
     public function view(User $user = null, Status $status): bool
     {
-        return $this->hasPermissionTo($user, 'view:status') || $user?->tokenCan('view:status');
+        return $this->hasPermissionTo($user, 'view:status') || optional($user)->tokenCan('view:status');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:status') || $user?->tokenCan('create:status');
+        return $this->hasPermissionTo($user, 'create:status') || optional($user)->tokenCan('create:status');
     }
 
     public function update(User $user = null, Status $status): bool
     {
-        return $this->hasPermissionTo($user, 'update:status') || $user?->tokenCan('update:status');
+        return $this->hasPermissionTo($user, 'update:status') || optional($user)->tokenCan('update:status');
     }
 
     public function delete(User $user = null, Status $status): bool
     {
-        return $this->hasPermissionTo($user, 'delete:status') || $user?->tokenCan('delete:status');
+        return $this->hasPermissionTo($user, 'delete:status') || optional($user)->tokenCan('delete:status');
     }
 
     public function restore(User $user = null, Status $status): bool
     {
-        return $this->hasPermissionTo($user, 'delete:status') || $user?->tokenCan('delete:status');
+        return $this->hasPermissionTo($user, 'delete:status') || optional($user)->tokenCan('delete:status');
     }
 
     public function forceDelete(User $user = null, Status $status): bool
     {
-        return $this->hasPermissionTo($user, 'delete:status') || $user?->tokenCan('delete:status');
+        return $this->hasPermissionTo($user, 'delete:status') || optional($user)->tokenCan('delete:status');
     }
 }

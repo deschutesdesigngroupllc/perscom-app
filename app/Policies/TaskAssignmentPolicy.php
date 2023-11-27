@@ -26,7 +26,7 @@ class TaskAssignmentPolicy extends Policy
 
     public function view(User $user = null, TaskAssignment $taskAssignment): bool
     {
-        return Gate::check('view', $taskAssignment->task ?? new Task()) || $taskAssignment->user?->id === $user?->id;
+        return Gate::check('view', $taskAssignment->task ?? new Task()) || optional($taskAssignment->user)->id === optional($user)->id;
     }
 
     public function create(User $user = null): bool

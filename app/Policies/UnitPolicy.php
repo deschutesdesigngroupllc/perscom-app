@@ -19,36 +19,36 @@ class UnitPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'view:unit') || $user?->tokenCan('view:unit');
+        return $this->hasPermissionTo($user, 'view:unit') || optional($user)->tokenCan('view:unit');
     }
 
     public function view(User $user = null, Unit $unit): bool
     {
-        return $this->hasPermissionTo($user, 'view:unit') || $user?->tokenCan('view:unit');
+        return $this->hasPermissionTo($user, 'view:unit') || optional($user)->tokenCan('view:unit');
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:unit') || $user?->tokenCan('create:user');
+        return $this->hasPermissionTo($user, 'create:unit') || optional($user)->tokenCan('create:user');
     }
 
     public function update(User $user = null, Unit $unit): bool
     {
-        return $this->hasPermissionTo($user, 'update:unit') || $user?->tokenCan('update:user');
+        return $this->hasPermissionTo($user, 'update:unit') || optional($user)->tokenCan('update:user');
     }
 
     public function delete(User $user = null, Unit $unit): bool
     {
-        return $this->hasPermissionTo($user, 'delete:unit') || $user?->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:unit') || optional($user)->tokenCan('delete:user');
     }
 
     public function restore(User $user = null, Unit $unit): bool
     {
-        return $this->hasPermissionTo($user, 'delete:unit') || $user?->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:unit') || optional($user)->tokenCan('delete:user');
     }
 
     public function forceDelete(User $user = null, Unit $unit): bool
     {
-        return $this->hasPermissionTo($user, 'delete:unit') || $user?->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:unit') || optional($user)->tokenCan('delete:user');
     }
 }

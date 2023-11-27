@@ -18,6 +18,15 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * App\Models\RankRecord
  *
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $rank_id
+ * @property int|null $document_id
+ * @property int|null $author_id
+ * @property string|null $text
+ * @property int $type
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -34,6 +43,15 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereRankId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -57,7 +75,7 @@ class RankRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text', 'type'];
+    protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text', 'type', 'updated_at', 'created_at'];
 
     public const RECORD_RANK_PROMOTION = 0;
 

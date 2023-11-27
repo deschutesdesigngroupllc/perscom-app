@@ -20,7 +20,7 @@ class AttachmentPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $user?->hasRole('Admin');
+        return optional($user)->hasRole('Admin');
     }
 
     public function view(User $user = null, Attachment $attachment): bool
@@ -30,7 +30,7 @@ class AttachmentPolicy extends Policy
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:attachment') || $user?->tokenCan('create:attachment');
+        return $this->hasPermissionTo($user, 'create:attachment') || optional($user)->tokenCan('create:attachment');
     }
 
     public function update(User $user = null, Attachment $attachment): bool

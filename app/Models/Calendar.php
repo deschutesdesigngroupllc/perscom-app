@@ -10,6 +10,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 /**
  * App\Models\Calendar
  *
+ * @property int $id
+ * @property string $name
+ * @property string|null $description
+ * @property string|null $color
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Event> $events
  * @property-read int|null $events_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
@@ -20,6 +26,12 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar query()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar tags(?mixed $tag)
+ * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -31,7 +43,7 @@ class Calendar extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description', 'color'];
+    protected $fillable = ['name', 'description', 'color', 'updated_at', 'created_at'];
 
     public function events(): HasMany
     {
