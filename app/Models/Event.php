@@ -19,6 +19,33 @@ use RRule\RRule;
 /**
  * App\Models\Event
  *
+ * @property int $id
+ * @property string $name
+ * @property int|null $calendar_id
+ * @property string|null $description
+ * @property string|null $content
+ * @property string|null $location
+ * @property string|null $url
+ * @property int|null $author_id
+ * @property bool $all_day
+ * @property \Illuminate\Support\Carbon $start
+ * @property \Illuminate\Support\Carbon|null $end
+ * @property bool $repeats
+ * @property string|null $frequency
+ * @property int $interval
+ * @property string|null $end_type
+ * @property int|null $count
+ * @property \Illuminate\Support\Carbon|null $until
+ * @property \Illuminate\Support\Collection|null $by_day
+ * @property \Illuminate\Support\Collection|null $by_month
+ * @property mixed|null $by_set_position
+ * @property \Illuminate\Support\Collection|null $by_month_day
+ * @property mixed|null $by_year_day
+ * @property string|null $rrule
+ * @property bool $registration_enabled
+ * @property \Illuminate\Support\Carbon|null $registration_deadline
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read \App\Models\User|null $author
@@ -43,6 +70,33 @@ use RRule\RRule;
  * @method static Builder|Event newQuery()
  * @method static Builder|Event query()
  * @method static Builder|Event tags(?mixed $tag)
+ * @method static Builder|Event whereAllDay($value)
+ * @method static Builder|Event whereAuthorId($value)
+ * @method static Builder|Event whereByDay($value)
+ * @method static Builder|Event whereByMonth($value)
+ * @method static Builder|Event whereByMonthDay($value)
+ * @method static Builder|Event whereBySetPosition($value)
+ * @method static Builder|Event whereByYearDay($value)
+ * @method static Builder|Event whereCalendarId($value)
+ * @method static Builder|Event whereContent($value)
+ * @method static Builder|Event whereCount($value)
+ * @method static Builder|Event whereCreatedAt($value)
+ * @method static Builder|Event whereDescription($value)
+ * @method static Builder|Event whereEnd($value)
+ * @method static Builder|Event whereEndType($value)
+ * @method static Builder|Event whereFrequency($value)
+ * @method static Builder|Event whereId($value)
+ * @method static Builder|Event whereInterval($value)
+ * @method static Builder|Event whereLocation($value)
+ * @method static Builder|Event whereName($value)
+ * @method static Builder|Event whereRegistrationDeadline($value)
+ * @method static Builder|Event whereRegistrationEnabled($value)
+ * @method static Builder|Event whereRepeats($value)
+ * @method static Builder|Event whereRrule($value)
+ * @method static Builder|Event whereStart($value)
+ * @method static Builder|Event whereUntil($value)
+ * @method static Builder|Event whereUpdatedAt($value)
+ * @method static Builder|Event whereUrl($value)
  *
  * @mixin \Eloquent
  */
@@ -78,6 +132,8 @@ class Event extends Model
         'by_month_day',
         'by_month',
         'rrule',
+        'updated_at',
+        'created_at',
     ];
 
     /**

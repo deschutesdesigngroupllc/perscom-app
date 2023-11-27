@@ -14,6 +14,12 @@ use Spatie\EloquentSortable\SortableTrait;
 /**
  * App\Models\Group
  *
+ * @property int $id
+ * @property string $name
+ * @property string|null $description
+ * @property int $order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $units
  * @property-read int|null $units_count
  *
@@ -23,6 +29,12 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static Builder|Group orderForRoster()
  * @method static Builder|Group ordered(string $direction = 'asc')
  * @method static Builder|Group query()
+ * @method static Builder|Group whereCreatedAt($value)
+ * @method static Builder|Group whereDescription($value)
+ * @method static Builder|Group whereId($value)
+ * @method static Builder|Group whereName($value)
+ * @method static Builder|Group whereOrder($value)
+ * @method static Builder|Group whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -34,7 +46,7 @@ class Group extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description', 'order'];
+    protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
 
     protected static function booted(): void
     {

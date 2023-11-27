@@ -15,6 +15,8 @@ class DocumentRequest extends Request
             'name' => 'string',
             'description' => 'nullable|string',
             'content' => 'string',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

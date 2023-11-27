@@ -16,6 +16,8 @@ class AnnouncementRequest extends Request
             'content' => 'string|in:info,success,warning,danger',
             'color' => 'string',
             'expires_at' => 'nullable|date',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

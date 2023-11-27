@@ -151,7 +151,7 @@
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
         ],
-        "docs:models": "php artisan ide-helper:models --reset",
+        "docs:models": "php artisan tenants:run ide-helper:models --option=reset=1",
         "lint": "./vendor/bin/pint",
         "test": "XDEBUG_MODE=coverage php artisan test --parallel --recreate-databases",
         "test:lint": "./vendor/bin/pint --test",

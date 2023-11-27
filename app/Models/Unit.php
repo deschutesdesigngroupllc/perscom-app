@@ -13,6 +13,12 @@ use Spatie\EloquentSortable\SortableTrait;
 /**
  * App\Models\Unit
  *
+ * @property int $id
+ * @property string $name
+ * @property string|null $description
+ * @property int $order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
@@ -25,6 +31,12 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Unit query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -36,7 +48,7 @@ class Unit extends Model implements Sortable
     /**
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'description', 'order'];
+    protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
 
     protected static function booted(): void
     {

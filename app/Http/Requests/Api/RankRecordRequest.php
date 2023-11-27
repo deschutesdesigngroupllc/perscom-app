@@ -18,6 +18,8 @@ class RankRecordRequest extends Request
             'author_id' => 'nullable|integer|exists:users,id',
             'text' => 'nullable|string',
             'type' => 'integer|in:0,1',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

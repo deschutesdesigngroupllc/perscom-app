@@ -24,6 +24,8 @@ class EventRequest extends Request
             'end' => 'date|after:start',
             'registrations_enabled' => 'boolean',
             'registrations_deadline' => 'nullable|datetime',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

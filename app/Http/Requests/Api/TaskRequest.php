@@ -16,6 +16,8 @@ class TaskRequest extends Request
             'description' => 'nullable|string',
             'instructions' => 'nullable|string',
             'form_id' => 'integer|exists:forms,id',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

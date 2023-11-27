@@ -18,6 +18,14 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * App\Models\QualificationRecord
  *
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $qualification_id
+ * @property int|null $document_id
+ * @property int|null $author_id
+ * @property string|null $text
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -34,6 +42,14 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereQualificationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -57,7 +73,7 @@ class QualificationRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'qualification_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = ['user_id', 'qualification_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 
     /**
      * @var string[]

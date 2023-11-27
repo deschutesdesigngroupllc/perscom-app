@@ -19,6 +19,8 @@ class FormRequest extends Request
             'is_public' => 'boolean',
             'description' => 'nullable|string',
             'instructions' => 'nullable|string',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

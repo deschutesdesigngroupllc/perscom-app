@@ -17,6 +17,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
 /**
  * App\Models\ServiceRecord
  *
+ * @property int $id
+ * @property int|null $user_id
+ * @property int|null $document_id
+ * @property int|null $author_id
+ * @property string $text
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -32,6 +39,13 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -58,7 +72,7 @@ class ServiceRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'document_id', 'author_id', 'text'];
+    protected $fillable = ['user_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 
     /**
      * @var string

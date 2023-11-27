@@ -13,6 +13,16 @@ use Spatie\EloquentSortable\SortableTrait;
 /**
  * App\Models\Rank
  *
+ * @property int $id
+ * @property string $name
+ * @property string|null $description
+ * @property string|null $abbreviation
+ * @property string|null $paygrade
+ * @property int $order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read int|null $categories_count
  * @property-read \App\Models\Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
@@ -22,6 +32,14 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Rank newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Rank ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Rank query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Rank whereAbbreviation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rank whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rank whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rank whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rank whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rank whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rank wherePaygrade($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Rank whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -34,7 +52,7 @@ class Rank extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description', 'abbreviation', 'paygrade', 'order'];
+    protected $fillable = ['name', 'description', 'abbreviation', 'paygrade', 'order', 'updated_at', 'created_at'];
 
     /**
      * @var string[]

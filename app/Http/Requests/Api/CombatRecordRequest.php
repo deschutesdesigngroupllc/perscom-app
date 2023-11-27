@@ -16,6 +16,8 @@ class CombatRecordRequest extends Request
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
             'text' => 'string',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

@@ -27,7 +27,23 @@ use Laravel\Nova\Fields\Timezone;
 /**
  * App\Models\Field
  *
- * @property AsArrayObject $options
+ * @property int $id
+ * @property string $name
+ * @property string|null $key
+ * @property string $type
+ * @property string|null $nova_type
+ * @property string|null $cast
+ * @property string|null $description
+ * @property string|null $placeholder
+ * @property string|null $default
+ * @property string|null $help
+ * @property bool $required
+ * @property string|null $rules
+ * @property bool $readonly
+ * @property bool $hidden
+ * @property AsArrayObject|null $options
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
  * @property-read int|null $forms_count
  * @property-read string|null $validation_rules
@@ -40,6 +56,23 @@ use Laravel\Nova\Fields\Timezone;
  * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field query()
  * @method static \Illuminate\Database\Eloquent\Builder|Field visible()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereCast($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereDefault($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereHelp($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereHidden($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereKey($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereNovaType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field wherePlaceholder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereReadonly($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereRequired($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereRules($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

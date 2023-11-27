@@ -13,6 +13,14 @@ use Spatie\EloquentSortable\SortableTrait;
 /**
  * App\Models\Qualification
  *
+ * @property int $id
+ * @property string $name
+ * @property string|null $description
+ * @property int $order
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read int|null $categories_count
  * @property-read \App\Models\Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
@@ -22,6 +30,12 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -34,7 +48,7 @@ class Qualification extends Model implements Sortable
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'description', 'order'];
+    protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
 
     /**
      * @var string[]

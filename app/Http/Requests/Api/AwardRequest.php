@@ -15,6 +15,8 @@ class AwardRequest extends Request
             'name' => 'string',
             'description' => 'nullable|string',
             'order' => 'integer',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

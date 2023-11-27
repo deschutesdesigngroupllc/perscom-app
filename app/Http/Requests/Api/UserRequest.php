@@ -26,6 +26,8 @@ class UserRequest extends Request
             'profile_photo' => 'nullable|string',
             'cover_photo' => 'nullable|string',
             'last_seen_at' => 'nullable|date',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 

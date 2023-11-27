@@ -28,6 +28,30 @@ use Stancl\VirtualColumn\VirtualColumn;
 /**
  * App\Models\User
  *
+ * @property int $id
+ * @property string $name
+ * @property string $email
+ * @property Carbon|null $email_verified_at
+ * @property int|null $position_id
+ * @property int|null $rank_id
+ * @property int|null $specialty_id
+ * @property int|null $status_id
+ * @property int|null $unit_id
+ * @property bool $approved
+ * @property string|null $password
+ * @property string|null $remember_token
+ * @property string|null $notes
+ * @property Carbon|null $notes_updated_at
+ * @property string|null $profile_photo
+ * @property string|null $cover_photo
+ * @property string|null $social_id
+ * @property string|null $social_driver
+ * @property string|null $social_token
+ * @property string|null $social_refresh_token
+ * @property Carbon|null $last_seen_at
+ * @property array|null $data
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
@@ -92,6 +116,30 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
  * @method static \Illuminate\Database\Eloquent\Builder|User status(?mixed $statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereApproved($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCoverPhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastSeenAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereNotes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereNotesUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereProfilePhoto($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRankId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialDriver($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialRefreshToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereSpecialtyId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -138,6 +186,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'social_token',
         'social_refresh_token',
         'last_seen_at',
+        'updated_at',
+        'created_at',
     ];
 
     /**

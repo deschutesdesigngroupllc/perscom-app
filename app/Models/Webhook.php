@@ -11,7 +11,14 @@ use Laravel\Nova\Actions\Actionable;
 /**
  * App\Models\Webhook
  *
+ * @property int $id
+ * @property string $url
+ * @property string|null $description
  * @property WebhookMethod $method
+ * @property array $events
+ * @property string $secret
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
@@ -21,6 +28,14 @@ use Laravel\Nova\Actions\Actionable;
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereEvents($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereMethod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUrl($value)
  *
  * @mixin \Eloquent
  */

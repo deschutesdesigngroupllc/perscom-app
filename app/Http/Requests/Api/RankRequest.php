@@ -17,6 +17,8 @@ class RankRequest extends Request
             'abbreviation' => 'nullable|string',
             'paygrade' => 'nullable|string',
             'order' => 'integer',
+            'updated_at' => 'date',
+            'created_at' => 'date',
         ];
     }
 
