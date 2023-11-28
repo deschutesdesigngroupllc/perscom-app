@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.63...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.64...HEAD)
+
+## [v1.0.64](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.63...v1.0.64) - 2023-11-27
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.64 -->
+### What's Changed
+
+#### Added
+
+* Up rate limiter to 1000/m for authenticated users by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/258
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.63...v1.0.64
 
 ## [v1.0.63](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.62...v1.0.63) - 2023-11-27
 
