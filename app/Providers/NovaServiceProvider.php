@@ -174,6 +174,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                             ->withScheme(config('app.scheme'))
                             ->__toString())
                             ->openInNewTab(),
+                        MenuItem::externalLink('Pulse', Url::fromString(config('app.url').'/'.config('pulse.path'))
+                            ->withScheme(config('app.scheme'))
+                            ->__toString())
+                            ->openInNewTab(),
                         MenuItem::externalLink('Telescope', Url::fromString(config('app.url').'/'.config('telescope.path'))
                             ->withScheme(config('app.scheme'))
                             ->__toString())
