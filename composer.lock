@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "796319f020866f59b4867c29544c13ac",
+    "content-hash": "591fd3a9ee80a156f1874bd11b9f79fa",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1091,6 +1091,58 @@
                 }
             ],
             "time": "2022-12-15T16:57:16+00:00"
+        },
+        {
+            "name": "doctrine/sql-formatter",
+            "version": "1.1.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/doctrine/sql-formatter.git",
+                "reference": "25a06c7bf4c6b8218f47928654252863ffc890a5"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/doctrine/sql-formatter/zipball/25a06c7bf4c6b8218f47928654252863ffc890a5",
+                "reference": "25a06c7bf4c6b8218f47928654252863ffc890a5",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "bamarni/composer-bin-plugin": "^1.4"
+            },
+            "bin": [
+                "bin/sql-formatter"
+            ],
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Doctrine\\SqlFormatter\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jeremy Dorn",
+                    "email": "jeremy@jeremydorn.com",
+                    "homepage": "https://jeremydorn.com/"
+                }
+            ],
+            "description": "a PHP SQL highlighting library",
+            "homepage": "https://github.com/doctrine/sql-formatter/",
+            "keywords": [
+                "highlight",
+                "sql"
+            ],
+            "support": {
+                "issues": "https://github.com/doctrine/sql-formatter/issues",
+                "source": "https://github.com/doctrine/sql-formatter/tree/1.1.3"
+            },
+            "time": "2022-05-23T21:33:49+00:00"
         },
         {
             "name": "dompdf/dompdf",
@@ -3023,6 +3075,91 @@
             "time": "2023-10-27T13:53:59+00:00"
         },
         {
+            "name": "laravel/pulse",
+            "version": "v1.0.0-beta2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/pulse.git",
+                "reference": "1de2604de554c6a0c8c29f706615b4e30995628d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/pulse/zipball/1de2604de554c6a0c8c29f706615b4e30995628d",
+                "reference": "1de2604de554c6a0c8c29f706615b4e30995628d",
+                "shasum": ""
+            },
+            "require": {
+                "doctrine/sql-formatter": "^1.1",
+                "guzzlehttp/promises": "^1.0 || ^2.0",
+                "illuminate/auth": "^9.0 || ^10.0",
+                "illuminate/cache": "^9.0 || ^10.0",
+                "illuminate/config": "^9.0 || ^10.0",
+                "illuminate/console": "^9.0 || ^10.0",
+                "illuminate/contracts": "^9.0 || ^10.0",
+                "illuminate/database": "^9.0 || ^10.0",
+                "illuminate/events": "^9.0 || ^10.0",
+                "illuminate/http": "^9.0 || ^10.0",
+                "illuminate/queue": "^9.0 || ^10.0",
+                "illuminate/redis": "^9.0 || ^10.0",
+                "illuminate/routing": "^9.0 || ^10.0",
+                "illuminate/support": "^9.0 || ^10.0",
+                "illuminate/view": "^9.0 || ^10.0",
+                "livewire/livewire": "^3.0",
+                "nesbot/carbon": "^2.67",
+                "php": "^8.1"
+            },
+            "conflict": {
+                "nunomaduro/collision": "<7.7.0"
+            },
+            "require-dev": {
+                "guzzlehttp/guzzle": "^7.7",
+                "mockery/mockery": "^1.0",
+                "orchestra/testbench": "^8.0",
+                "pestphp/pest": "^2.0",
+                "pestphp/pest-plugin-laravel": "^2.2",
+                "phpstan/phpstan": "^1.11",
+                "predis/predis": "^2.2"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Laravel\\Pulse\\PulseServiceProvider"
+                    ],
+                    "aliases": {
+                        "Pulse": "Laravel\\Pulse\\Facades\\Pulse"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Laravel\\Pulse\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Taylor Otwell",
+                    "email": "taylor@laravel.com"
+                }
+            ],
+            "homepage": "https://github.com/laravel/pulse",
+            "keywords": [
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/pulse/issues",
+                "source": "https://github.com/laravel/pulse"
+            },
+            "time": "2023-12-01T18:46:10+00:00"
+        },
+        {
             "name": "laravel/serializable-closure",
             "version": "v1.3.3",
             "source": {
@@ -4416,6 +4553,80 @@
                 }
             ],
             "time": "2023-09-09T17:21:43+00:00"
+        },
+        {
+            "name": "livewire/livewire",
+            "version": "v3.2.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/livewire/livewire.git",
+                "reference": "724e712cac25c40455102f0b5abd002fd269433b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/livewire/livewire/zipball/724e712cac25c40455102f0b5abd002fd269433b",
+                "reference": "724e712cac25c40455102f0b5abd002fd269433b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^10.0",
+                "illuminate/support": "^10.0",
+                "illuminate/validation": "^10.0",
+                "league/mime-type-detection": "^1.9",
+                "php": "^8.1",
+                "symfony/http-kernel": "^6.2"
+            },
+            "require-dev": {
+                "calebporzio/sushi": "^2.1",
+                "laravel/framework": "^10.0",
+                "laravel/prompts": "^0.1.6",
+                "mockery/mockery": "^1.3.1",
+                "orchestra/testbench": "^8.0",
+                "orchestra/testbench-dusk": "^8.0",
+                "phpunit/phpunit": "^9.0",
+                "psy/psysh": "@stable"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Livewire\\LivewireServiceProvider"
+                    ],
+                    "aliases": {
+                        "Livewire": "Livewire\\Livewire"
+                    }
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/helpers.php"
+                ],
+                "psr-4": {
+                    "Livewire\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Caleb Porzio",
+                    "email": "calebporzio@gmail.com"
+                }
+            ],
+            "description": "A front-end framework for Laravel.",
+            "support": {
+                "issues": "https://github.com/livewire/livewire/issues",
+                "source": "https://github.com/livewire/livewire/tree/v3.2.3"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/livewire",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-12-02T18:55:31+00:00"
         },
         {
             "name": "masterminds/html5",
@@ -5973,7 +6184,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6009,7 +6220,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6045,7 +6256,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6081,7 +6292,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6117,7 +6328,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6153,7 +6364,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6189,7 +6400,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6225,7 +6436,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6261,7 +6472,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6297,7 +6508,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6333,7 +6544,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-feature/add-pulse",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -16783,11 +16994,12 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "laravel/pulse": 10,
         "perscom/featureos": 20,
+        "perscom/message-field": 20,
         "perscom/newsfeed": 20,
         "ronvanderheijden/openid-connect": 20,
         "stancl/jobpipeline": 20,
-        "perscom/message-field": 20,
         "roave/security-advisories": 20
     },
     "prefer-stable": true,
