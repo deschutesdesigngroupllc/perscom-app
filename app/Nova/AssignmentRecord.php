@@ -107,7 +107,8 @@ class AssignmentRecord extends Resource
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'change_status')
                     ->help('Leave unchecked to keep the status as is.')
-                    ->fillUsing(fn () => null)
+                    ->fillUsing(fn () => true)
+                    ->resolveUsing(fn () => isset($this->status))
                     ->onlyOnForms(),
                 BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
                     ->help('Leave blank to remove the status.')
@@ -125,6 +126,7 @@ class AssignmentRecord extends Resource
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'change_position')
                     ->help('Leave unchecked to keep the position as is.')
                     ->fillUsing(fn () => null)
+                    ->resolveUsing(fn () => isset($this->position))
                     ->onlyOnForms(),
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
                     ->help('Leave blank to remove the position.')
@@ -153,6 +155,7 @@ class AssignmentRecord extends Resource
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'change_specialty')
                     ->help('Leave unchecked to keep the specialty as is.')
                     ->fillUsing(fn () => null)
+                    ->resolveUsing(fn () => isset($this->specialty))
                     ->onlyOnForms(),
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
                     ->help('Leave blank to remove the specialty.')
@@ -181,6 +184,7 @@ class AssignmentRecord extends Resource
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'change_unit')
                     ->help('Leave unchecked to keep the unit as is.')
                     ->fillUsing(fn () => null)
+                    ->resolveUsing(fn () => isset($this->unit))
                     ->onlyOnForms(),
                 BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
                     ->help('Leave blank to remove the unit.')
