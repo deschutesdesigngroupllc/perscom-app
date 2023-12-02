@@ -5973,7 +5973,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6009,7 +6009,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6045,7 +6045,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6081,7 +6081,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6117,7 +6117,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6153,7 +6153,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6189,7 +6189,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6225,7 +6225,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6261,7 +6261,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6297,7 +6297,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6333,7 +6333,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/adjust-assignment-record-ux",
+            "version": "dev-hotfix/assignment-record-fix",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
