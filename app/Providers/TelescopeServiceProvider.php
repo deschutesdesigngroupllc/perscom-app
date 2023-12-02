@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Models\Admin;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Telescope\IncomingEntry;
 use Laravel\Telescope\Telescope;
 use Laravel\Telescope\TelescopeApplicationServiceProvider;
@@ -38,8 +40,8 @@ class TelescopeServiceProvider extends TelescopeApplicationServiceProvider
 
     protected function gate(): void
     {
-        Gate::define('viewTelescope', function ($user) {
-            return $user->email === 'jon@deschutesdesigngroup.com';
+        Gate::define('viewTelescope', function (Admin $admin) {
+            return Str::endsWith($admin->email, '@deschutesdesigngroup.com');
         });
     }
 }

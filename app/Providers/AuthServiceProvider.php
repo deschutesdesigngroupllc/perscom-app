@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Action;
 use App\Models\Activity;
+use App\Models\Admin;
 use App\Models\Announcement;
 use App\Models\AssignmentRecord;
 use App\Models\Attachment;
@@ -90,6 +91,8 @@ use App\Policies\UserPolicy;
 use App\Policies\WebhookPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
 use Laravel\Cashier\SubscriptionItem;
 
@@ -149,6 +152,10 @@ class AuthServiceProvider extends ServiceProvider
     {
         Auth::viaRequest('api', static function () {
             return Auth::guard('passport')->user() ?? Auth::guard('jwt')->user();
+        });
+
+        Gate::define('viewPulse', function (Admin $admin) {
+            return Str::endsWith($admin->email, '@deschutesdesigngroup.com');
         });
     }
 }
