@@ -1,6 +1,21 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.64...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.65...HEAD)
+
+## [v1.0.65](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.64...v1.0.65) - 2023-12-02
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.65 -->
+### What's Changed
+
+#### Changed
+
+* Add laravel pulse by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/259
+
+#### Fixed
+
+* Fix assignment record error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/260
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.64...v1.0.65
 
 ## [v1.0.64](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.63...v1.0.64) - 2023-11-27
 
