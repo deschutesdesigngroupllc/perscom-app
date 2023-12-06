@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
+use Spatie\WebhookServer\CallWebhookJob;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\AwardRecord;
 use App\Models\Enums\WebhookEvent;
@@ -50,7 +50,7 @@ class AwardRecordObserverTest extends TenantTestCase
 
         AwardRecord::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_award_record_webhook_sent()
@@ -66,7 +66,7 @@ class AwardRecordObserverTest extends TenantTestCase
             'text' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_award_record_webhook_sent()
@@ -80,6 +80,6 @@ class AwardRecordObserverTest extends TenantTestCase
         $award = AwardRecord::factory()->create();
         $award->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }

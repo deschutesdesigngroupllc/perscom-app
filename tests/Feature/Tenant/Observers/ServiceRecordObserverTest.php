@@ -2,7 +2,7 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
+use Spatie\WebhookServer\CallWebhookJob;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\ServiceRecord;
@@ -50,7 +50,7 @@ class ServiceRecordObserverTest extends TenantTestCase
 
         ServiceRecord::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_service_record_webhook_sent()
@@ -66,7 +66,7 @@ class ServiceRecordObserverTest extends TenantTestCase
             'text' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_service_record_webhook_sent()
@@ -80,6 +80,6 @@ class ServiceRecordObserverTest extends TenantTestCase
         $service = ServiceRecord::factory()->create();
         $service->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }
