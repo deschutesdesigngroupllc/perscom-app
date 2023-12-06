@@ -3,10 +3,11 @@
 namespace App\Dispatchers\Bus;
 
 use Illuminate\Bus\Dispatcher as BaseDispatcher;
+use Illuminate\Contracts\Container\Container;
 
 class Dispatcher extends BaseDispatcher
 {
-    public function __construct($app, $dispatcher)
+    public function __construct(Container $app, BaseDispatcher $dispatcher)
     {
         parent::__construct($app, $dispatcher->queueResolver);
     }
