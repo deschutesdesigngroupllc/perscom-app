@@ -18,6 +18,6 @@ class Dispatcher extends BaseDispatcher
             return null;
         }
 
-        return parent::dispatchToQueue($command);
+        return parent::dispatch($command);
     }
 }
