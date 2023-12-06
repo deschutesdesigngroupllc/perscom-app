@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use Spatie\WebhookServer\CallWebhookJob;
 use App\Models\Calendar;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Webhook;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class CalendarObserverTest extends TenantTestCase

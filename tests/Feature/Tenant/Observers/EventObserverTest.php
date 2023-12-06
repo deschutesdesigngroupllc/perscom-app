@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use Spatie\WebhookServer\CallWebhookJob;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Event;
 use App\Models\Webhook;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class EventObserverTest extends TenantTestCase

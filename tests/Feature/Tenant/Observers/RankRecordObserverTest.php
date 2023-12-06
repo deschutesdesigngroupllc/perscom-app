@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use Spatie\WebhookServer\CallWebhookJob;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\RankRecord;
@@ -10,6 +9,7 @@ use App\Models\Webhook;
 use App\Notifications\Tenant\NewRankRecord;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class RankRecordObserverTest extends TenantTestCase

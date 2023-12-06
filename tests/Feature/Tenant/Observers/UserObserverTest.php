@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use Spatie\WebhookServer\CallWebhookJob;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
 use App\Models\Webhook;
@@ -14,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class UserObserverTest extends TenantTestCase

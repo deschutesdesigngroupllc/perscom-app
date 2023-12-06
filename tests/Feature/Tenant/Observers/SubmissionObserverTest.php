@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use Spatie\WebhookServer\CallWebhookJob;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Form;
 use App\Models\Status;
@@ -11,6 +10,7 @@ use App\Models\Webhook;
 use App\Notifications\Tenant\NewSubmission;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class SubmissionObserverTest extends TenantTestCase
