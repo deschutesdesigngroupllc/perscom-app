@@ -5,10 +5,12 @@ namespace App\Providers;
 use App\Actions\Passport\CreatePersonalAccessToken;
 use App\Auth\Providers\CustomJwtProvider;
 use App\Contracts\Passport\CreatesPersonalAccessToken;
+use App\Dispatchers\Bus\Dispatcher;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
 use App\Models\Permission;
 use App\Models\Tenant;
+use Illuminate\Bus\Dispatcher as BusDispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
@@ -61,6 +63,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
+        $this->app->extend(BusDispatcher::class, fn ($dispatcher, $app) => new Dispatcher($app, $dispatcher));
         $this->app->bind(CreatesPersonalAccessToken::class, CreatePersonalAccessToken::class);
 
         $this->app->singleton('tymon.jwt.provider.jwt.lcobucci', function (Application $app) {
