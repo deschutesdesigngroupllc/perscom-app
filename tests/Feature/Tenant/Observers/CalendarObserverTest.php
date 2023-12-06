@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
 use App\Models\Calendar;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Webhook;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class CalendarObserverTest extends TenantTestCase
@@ -21,7 +21,7 @@ class CalendarObserverTest extends TenantTestCase
 
         Calendar::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_calendar_webhook_sent()
@@ -37,7 +37,7 @@ class CalendarObserverTest extends TenantTestCase
             'name' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_calendar_webhook_sent()
@@ -51,6 +51,6 @@ class CalendarObserverTest extends TenantTestCase
         $calendar = Calendar::factory()->create();
         $calendar->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }

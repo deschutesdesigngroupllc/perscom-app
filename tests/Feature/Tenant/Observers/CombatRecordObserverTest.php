@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\CombatRecord;
 use App\Models\Enums\WebhookEvent;
@@ -10,6 +9,7 @@ use App\Models\Webhook;
 use App\Notifications\Tenant\NewCombatRecord;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class CombatRecordObserverTest extends TenantTestCase
@@ -50,7 +50,7 @@ class CombatRecordObserverTest extends TenantTestCase
 
         CombatRecord::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_combat_record_webhook_sent()
@@ -66,7 +66,7 @@ class CombatRecordObserverTest extends TenantTestCase
             'text' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_combat_record_webhook_sent()
@@ -80,6 +80,6 @@ class CombatRecordObserverTest extends TenantTestCase
         $combat = CombatRecord::factory()->create();
         $combat->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }

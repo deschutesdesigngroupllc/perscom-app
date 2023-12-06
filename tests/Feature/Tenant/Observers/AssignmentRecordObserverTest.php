@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\WebhookEvent;
@@ -10,6 +9,7 @@ use App\Models\Webhook;
 use App\Notifications\Tenant\NewAssignmentRecord;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class AssignmentRecordObserverTest extends TenantTestCase
@@ -65,7 +65,7 @@ class AssignmentRecordObserverTest extends TenantTestCase
 
         AssignmentRecord::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_assignment_record_webhook_sent()
@@ -81,7 +81,7 @@ class AssignmentRecordObserverTest extends TenantTestCase
             'text' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_assignment_record_webhook_sent()
@@ -95,6 +95,6 @@ class AssignmentRecordObserverTest extends TenantTestCase
         $assignment = AssignmentRecord::factory()->create();
         $assignment->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }

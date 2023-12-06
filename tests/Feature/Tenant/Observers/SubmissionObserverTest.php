@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Form;
 use App\Models\Status;
@@ -11,6 +10,7 @@ use App\Models\Webhook;
 use App\Notifications\Tenant\NewSubmission;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class SubmissionObserverTest extends TenantTestCase
@@ -56,7 +56,7 @@ class SubmissionObserverTest extends TenantTestCase
 
         Submission::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_submission_webhook_sent()
@@ -72,7 +72,7 @@ class SubmissionObserverTest extends TenantTestCase
             'text' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_submission_webhook_sent()
@@ -86,6 +86,6 @@ class SubmissionObserverTest extends TenantTestCase
         $submission = Submission::factory()->create();
         $submission->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }

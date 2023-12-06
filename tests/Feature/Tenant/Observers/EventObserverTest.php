@@ -2,11 +2,11 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Event;
 use App\Models\Webhook;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class EventObserverTest extends TenantTestCase
@@ -21,7 +21,7 @@ class EventObserverTest extends TenantTestCase
 
         Event::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_event_webhook_sent()
@@ -37,7 +37,7 @@ class EventObserverTest extends TenantTestCase
             'name' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_event_webhook_sent()
@@ -51,6 +51,6 @@ class EventObserverTest extends TenantTestCase
         $event = Event::factory()->create();
         $event->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }
