@@ -96,6 +96,10 @@ trait WithTenant
         URL::forceRootUrl($this->tenant->url);
 
         $this->user = User::factory()->create();
+
+        if (method_exists($this, 'afterSetUpTenancy')) {
+            $this->afterSetUpTenancy();
+        }
     }
 
     protected function tearDownTenancy(): void

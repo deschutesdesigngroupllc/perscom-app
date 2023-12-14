@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7eaaeaabdb1cd8651014578c2c9c3734",
+    "content-hash": "931c9a8c1be4d4ae085b4163ae79040b",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6254,7 +6254,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6290,7 +6290,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6326,7 +6326,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6362,7 +6362,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6398,7 +6398,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6434,7 +6434,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6470,7 +6470,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6506,7 +6506,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6542,7 +6542,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6578,7 +6578,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6614,7 +6614,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/disable-email-middleware",
+            "version": "dev-hotfix/tenancy-queue",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
