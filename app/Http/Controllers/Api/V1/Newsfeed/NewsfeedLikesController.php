@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Newsfeed;
 
-use App\Models\NewsfeedItem;
+use App\Models\Newsfeed;
 use Orion\Http\Controllers\RelationController;
 
 class NewsfeedLikesController extends RelationController
@@ -10,7 +10,7 @@ class NewsfeedLikesController extends RelationController
     /**
      * @var string
      */
-    protected $model = NewsfeedItem::class;
+    protected $model = Newsfeed::class;
 
     /**
      * @var string

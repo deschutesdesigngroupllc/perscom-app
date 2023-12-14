@@ -8,6 +8,7 @@ use App\Nova\Actions\RegenerateNewsfeedText;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\MorphTo;
@@ -17,12 +18,12 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
 
-class NewsfeedItem extends Resource
+class Newsfeed extends Resource
 {
     /**
      * @var string
      */
-    public static $model = \App\Models\NewsfeedItem::class;
+    public static $model = \App\Models\Newsfeed::class;
 
     /**
      * @var string
@@ -39,9 +40,17 @@ class NewsfeedItem extends Resource
     /**
      * @return string
      */
+    public static function label()
+    {
+        return 'Newsfeed';
+    }
+
+    /**
+     * @return string
+     */
     public static function uriKey()
     {
-        return 'newsfeed-items';
+        return 'newsfeed';
     }
 
     /**
@@ -50,6 +59,22 @@ class NewsfeedItem extends Resource
     public function subtitle()
     {
         return $this->resource->item;
+    }
+
+    /**
+     * @return string
+     */
+    public static function createButtonLabel()
+    {
+        return 'Create Newsfeed Item';
+    }
+
+    /**
+     * @return string
+     */
+    public static function updateButtonLabel()
+    {
+        return 'Update Newsfeed Item';
     }
 
     /**
@@ -94,6 +119,14 @@ class NewsfeedItem extends Resource
                 ])->help('Set a resource that this newsfeed item is about.')->nullable(),
             ]),
         ];
+    }
+
+    /**
+     * @return bool
+     */
+    public static function authorizedToViewAny(Request $request)
+    {
+        return Gate::check('newsfeed', Auth::user());
     }
 
     /**

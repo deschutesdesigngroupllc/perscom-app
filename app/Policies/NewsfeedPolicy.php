@@ -2,11 +2,12 @@
 
 namespace App\Policies;
 
-use App\Models\NewsfeedItem;
+use App\Models\Newsfeed;
 use App\Models\User;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Request;
 
-class NewsfeedItemPolicy extends Policy
+class NewsfeedPolicy extends Policy
 {
     public function before(): ?bool
     {
@@ -19,35 +20,38 @@ class NewsfeedItemPolicy extends Policy
 
     public function viewAny(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
+        return true;
     }
 
-    public function view(User $user = null, NewsfeedItem $newsfeed): bool
+    public function view(User $user = null, Newsfeed $newsfeed): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed')
+            || optional($user)->tokenCan('manage:newsfeed')
+            || Gate::check('view', $newsfeed->subject);
     }
 
     public function create(User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
+        return $this->hasPermissionTo($user, 'manage:newsfeed')
+            || optional($user)->tokenCan('manage:newsfeed');
     }
 
-    public function update(User $user = null, NewsfeedItem $newsfeed): bool
+    public function update(User $user = null, Newsfeed $newsfeed): bool
     {
         return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
-    public function delete(User $user = null, NewsfeedItem $newsfeed): bool
+    public function delete(User $user = null, Newsfeed $newsfeed): bool
     {
         return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
-    public function restore(User $user = null, NewsfeedItem $newsfeed): bool
+    public function restore(User $user = null, Newsfeed $newsfeed): bool
     {
         return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }
 
-    public function forceDelete(User $user = null, NewsfeedItem $newsfeed): bool
+    public function forceDelete(User $user = null, Newsfeed $newsfeed): bool
     {
         return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
     }

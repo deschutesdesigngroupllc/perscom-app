@@ -8,7 +8,7 @@
 **Term**: {{ $interval }}<br>
 
 @component('mail::button', ['url' => $url])
-    View Tenant
+View Tenant
 @endcomponent
 
 {{__('Thanks,')}}<br>

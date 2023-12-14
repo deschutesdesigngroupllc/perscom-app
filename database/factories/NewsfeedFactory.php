@@ -2,17 +2,11 @@
 
 namespace Database\Factories;
 
-use App\Models\NewsfeedItem;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
-class NewsfeedItemFactory extends Factory
+class NewsfeedFactory extends Factory
 {
-    /**
-     * @var string
-     */
-    protected $model = NewsfeedItem::class;
-
     /**
      * @return array|mixed[]
      */

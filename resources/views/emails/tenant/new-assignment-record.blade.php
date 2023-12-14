@@ -3,14 +3,27 @@
 
 {{__('A new assignment record has been added to your personnel file.')}}
 
+@if($status)
+**Status**: {{ $status }}<br>
+@endif
+@if($unit)
 **Unit**: {{ $unit }}<br>
+@endif
+@if($position)
 **Position**: {{ $position }}<br>
+@endif
+@if($specialty)
 **Specialty**: {{ $specialty }}<br>
+@endif
+@if($text)
 **Text**: {{ $text }}<br>
+@endif
+@if($date)
 **Date**: {{ $date }}<br>
+@endif
 
 @component('mail::button', ['url' => $url])
-    View Record
+View Record
 @endcomponent
 
 {{__('Thanks,')}}<br>

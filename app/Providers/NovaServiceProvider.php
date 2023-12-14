@@ -34,7 +34,7 @@ use App\Nova\Lenses\MyEvents;
 use App\Nova\Lenses\MyTasks;
 use App\Nova\Mail;
 use App\Nova\Message;
-use App\Nova\NewsfeedItem;
+use App\Nova\Newsfeed;
 use App\Nova\PassportClient;
 use App\Nova\PassportClientLog;
 use App\Nova\PassportPersonalAccessToken;
@@ -231,7 +231,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                     MenuSection::make('Communications', [
                         MenuItem::resource(Mail::class),
-                        MenuItem::resource(NewsfeedItem::class),
+                        MenuItem::resource(Newsfeed::class),
                     ])->icon('newspaper')
                         ->collapsable()
                         ->collapsedByDefault(),

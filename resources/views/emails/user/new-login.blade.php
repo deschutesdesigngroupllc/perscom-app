@@ -8,7 +8,7 @@
 **Password**: {{ $password }}
 
 @component('mail::button', ['url' => $url])
-    Go To Dashboard
+Go To Dashboard
 @endcomponent
 
 {{__('Thanks,')}}<br>

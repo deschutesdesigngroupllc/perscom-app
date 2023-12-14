@@ -16,6 +16,8 @@ class NewTaskAssignment extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public bool $deleteWhenMissingModels = true;
+
     protected string $url;
 
     public function __construct(protected TaskAssignment $taskAssignment)

@@ -3,37 +3,26 @@
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
 use App\Models\User;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserTest extends ApiResourceTestCase
 {
-    /**
-     * @return string
-     */
-    public function endpoint()
+    public function endpoint(): string
     {
         return 'users';
     }
 
-    /**
-     * @return string
-     */
-    public function model()
+    public function model(): string
     {
         return User::class;
     }
 
-    /**
-     * @return \Database\Factories\UserFactory
-     */
-    public function factory()
+    public function factory(): Factory
     {
         return User::factory();
     }
 
-    /**
-     * @return string[]
-     */
-    public function scopes()
+    public function scopes(): array
     {
         return [
             'index' => 'view:user',
@@ -44,10 +33,7 @@ class UserTest extends ApiResourceTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function storeData()
+    public function storeData(): array
     {
         return [
             'name' => 'Test User',
@@ -55,10 +41,7 @@ class UserTest extends ApiResourceTestCase
         ];
     }
 
-    /**
-     * @return array
-     */
-    public function updateData()
+    public function updateData(): array
     {
         return [
             'name' => $this->faker->name,
