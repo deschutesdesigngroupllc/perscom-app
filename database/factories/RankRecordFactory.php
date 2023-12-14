@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Document;
 use App\Models\Rank;
 use App\Models\RankRecord;
 use App\Models\User;
@@ -17,11 +18,12 @@ class RankRecordFactory extends Factory
     public function definition()
     {
         return [
-            'text' => $this->faker->sentence(),
-            'type' => $this->faker->randomElement([RankRecord::RECORD_RANK_PROMOTION, RankRecord::RECORD_RANK_DEMOTION]),
-            'author_id' => User::factory(),
             'user_id' => User::factory(),
             'rank_id' => Rank::factory(),
+            'document_id' => $this->faker->randomElement([Document::factory(), null]),
+            'author_id' => User::factory(),
+            'text' => $this->faker->sentence(),
+            'type' => $this->faker->randomElement([RankRecord::RECORD_RANK_PROMOTION, RankRecord::RECORD_RANK_DEMOTION]),
         ];
     }
 }

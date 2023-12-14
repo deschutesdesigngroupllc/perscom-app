@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Document;
 use App\Models\Qualification;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -16,10 +17,11 @@ class QualificationRecordFactory extends Factory
     public function definition()
     {
         return [
-            'text' => $this->faker->sentence(),
-            'author_id' => User::factory(),
             'user_id' => User::factory(),
             'qualification_id' => Qualification::factory(),
+            'document_id' => $this->faker->randomElement([Document::factory(), null]),
+            'author_id' => User::factory(),
+            'text' => $this->faker->sentence(),
         ];
     }
 }

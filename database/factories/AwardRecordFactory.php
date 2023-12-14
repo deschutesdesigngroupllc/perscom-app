@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Award;
+use App\Models\Document;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,10 +17,11 @@ class AwardRecordFactory extends Factory
     public function definition()
     {
         return [
-            'text' => $this->faker->sentence(),
-            'author_id' => User::factory(),
             'user_id' => User::factory(),
             'award_id' => Award::factory(),
+            'document_id' => $this->faker->randomElement([Document::factory(), null]),
+            'author_id' => User::factory(),
+            'text' => $this->faker->sentence(),
         ];
     }
 }

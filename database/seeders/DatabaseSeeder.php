@@ -3,12 +3,15 @@
 namespace Database\Seeders;
 
 use App\Models\Announcement;
+use App\Models\AssignmentRecord;
 use App\Models\Award;
 use App\Models\AwardRecord;
 use App\Models\Calendar;
 use App\Models\CombatRecord;
 use App\Models\Document;
 use App\Models\Event;
+use App\Models\Field;
+use App\Models\Form;
 use App\Models\Group;
 use App\Models\Position;
 use App\Models\Qualification;
@@ -38,8 +41,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             //AssignmentRecordSeeder::class,
-            FieldSeeder::class,
-            FormSeeder::class,
         ]);
 
         $user = User::factory()->create([
@@ -49,21 +50,23 @@ class DatabaseSeeder extends Seeder
         $user->assignRole('Admin');
 
         Announcement::factory()
-            ->count(5)
+            ->count(2)
             ->sequence(fn (Sequence $sequence) => ['title' => "Announcement $sequence->index"])
             ->create();
 
-        Document::factory()
+        $documents = Document::factory()
             ->count(5)
             ->sequence(fn (Sequence $sequence) => ['name' => "Document $sequence->index"])
             ->create();
 
+        $units = Unit::factory()
+            ->count(3)
+            ->sequence(fn (Sequence $sequence) => ['name' => "Unit $sequence->index"])
+            ->create();
+
         Group::factory()
-            ->count(2)
             ->sequence(fn (Sequence $sequence) => ['name' => "Group $sequence->index"])
-            ->has(Unit::factory()
-                ->count(3)
-                ->sequence(fn (Sequence $sequence) => ['name' => "Unit $sequence->index"]))
+            ->hasAttached($units)
             ->create();
 
         $awards = Award::factory()
@@ -81,6 +84,17 @@ class DatabaseSeeder extends Seeder
             ->recycle($calendars)
             ->sequence(fn (Sequence $sequence) => ['name' => "Event $sequence->index"])
             ->for($user, 'author')
+            ->create();
+
+        $fields = Field::factory()
+            ->count(5)
+            ->sequence(
+                ['name' => 'Field 1', 'type' => Field::$fieldTypes[Field::FIELD_TEXT], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_TEXT], 'cast' => Field::$fieldCasts[Field::FIELD_TEXT]],
+                ['name' => 'Field 2', 'type' => Field::$fieldTypes[Field::FIELD_BOOLEAN], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_BOOLEAN], 'cast' => Field::$fieldCasts[Field::FIELD_BOOLEAN]],
+                ['name' => 'Field 3', 'type' => Field::$fieldTypes[Field::FIELD_DATE], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_DATE], 'cast' => Field::$fieldCasts[Field::FIELD_DATE]],
+                ['name' => 'Field 4', 'type' => Field::$fieldTypes[Field::FIELD_EMAIL], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_EMAIL], 'cast' => Field::$fieldCasts[Field::FIELD_EMAIL]],
+                ['name' => 'Field 5', 'type' => Field::$fieldTypes[Field::FIELD_TIMEZONE], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_TIMEZONE], 'cast' => Field::$fieldCasts[Field::FIELD_TIMEZONE]],
+            )
             ->create();
 
         $qualifications = Qualification::factory()
@@ -120,14 +134,43 @@ class DatabaseSeeder extends Seeder
             ->recycle($ranks)
             ->recycle($statuses)
             ->recycle($tasks)
-            ->for(Unit::all()->random(1)->first())
-            ->has(AwardRecord::factory()->for($user, 'author')->recycle($awards)->count(5), 'award_records')
-            ->has(CombatRecord::factory()->for($user, 'author')->count(5), 'combat_records')
-            ->has(QualificationRecord::factory()->for($user, 'author')->recycle($qualifications)->count(5), 'combat_records')
-            ->has(RankRecord::factory()->for($user, 'author')->recycle($ranks)->count(5), 'rank_records')
-            ->has(ServiceRecord::factory()->for($user, 'author')->count(5), 'service_records')
+            ->recycle($units)
+            ->has(AssignmentRecord::factory()
+                ->for($user, 'author')
+                ->recycle([$positions, $specialties, $statuses, $units, $documents])
+                ->count(5), 'service_records')
+            ->has(AwardRecord::factory()
+                ->for($user, 'author')
+                ->recycle([$awards, $documents])
+                ->count(5), 'award_records')
+            ->has(CombatRecord::factory()
+                ->for($user, 'author')
+                ->recycle($documents)
+                ->count(5), 'combat_records')
+            ->has(QualificationRecord::factory()
+                ->for($user, 'author')
+                ->recycle([$qualifications, $documents])
+                ->count(5), 'combat_records')
+            ->has(RankRecord::factory()
+                ->for($user, 'author')
+                ->recycle([$ranks, $documents])
+                ->count(5), 'rank_records')
+            ->has(ServiceRecord::factory()
+                ->for($user, 'author')
+                ->recycle($documents)
+                ->count(5), 'service_records')
             ->hasAttached($tasks->random(3), ['assigned_by_id' => $user->getKey(), 'assigned_at' => now()])
             ->hasAttached($events->random(3))
+            ->hasAttached($positions->take(2), [], 'secondary_positions')
+            ->hasAttached($specialties->take(2), [], 'secondary_specialties')
+            ->hasAttached($units->take(2), [], 'secondary_units')
+            ->hasAttached($fields->take(3))
+            ->create();
+
+        Form::factory()
+            ->count(3)
+            ->sequence(fn (Sequence $sequence) => ['name' => "Form $sequence->index"])
+            ->hasAttached($fields->random(3))
             ->create();
     }
 }

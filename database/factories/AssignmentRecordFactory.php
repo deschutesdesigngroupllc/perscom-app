@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\Document;
 use App\Models\Position;
 use App\Models\Specialty;
+use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -19,13 +20,14 @@ class AssignmentRecordFactory extends Factory
     public function definition()
     {
         return [
-            'text' => $this->faker->sentence(),
-            'author_id' => User::factory(),
             'user_id' => User::factory(),
-            'unit_id' => Unit::factory(),
-            'position_id' => Position::factory(),
-            'specialty_id' => Specialty::factory(),
-            'document_id' => Document::factory(),
+            'status_id' => $this->faker->randomElement([Status::factory(), null]),
+            'unit_id' => $this->faker->randomElement([Unit::factory(), null]),
+            'position_id' => $this->faker->randomElement([Position::factory(), null]),
+            'specialty_id' => $this->faker->randomElement([Specialty::factory(), null]),
+            'document_id' => $this->faker->randomElement([Document::factory(), null]),
+            'author_id' => User::factory(),
+            'text' => $this->faker->sentence(),
         ];
     }
 }
