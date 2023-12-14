@@ -2,35 +2,19 @@
 
 namespace Tests\Contracts;
 
+use Illuminate\Database\Eloquent\Factories\Factory;
+
 interface ApiResourceTestContract
 {
-    /**
-     * @return string
-     */
-    public function endpoint();
+    public function endpoint(): string;
 
-    /**
-     * @return string
-     */
-    public function model();
+    public function model(): string;
 
-    /**
-     * @return \Database\Factories\UserFactory
-     */
-    public function factory();
+    public function factory(): Factory;
 
-    /**
-     * @return array
-     */
-    public function scopes();
+    public function scopes(): array;
 
-    /**
-     * @return array
-     */
-    public function storeData();
+    public function storeData(): array;
 
-    /**
-     * @return array
-     */
-    public function updateData();
+    public function updateData(): array;
 }
