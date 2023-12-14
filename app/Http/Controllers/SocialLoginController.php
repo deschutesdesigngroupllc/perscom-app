@@ -71,9 +71,6 @@ class SocialLoginController extends Controller
 
     /**
      * @return \Illuminate\Http\RedirectResponse
-     *
-     * @throws \Psr\Container\ContainerExceptionInterface
-     * @throws \Psr\Container\NotFoundExceptionInterface
      */
     public function callback(string $driver, TenantRepository $tenantRepository)
     {

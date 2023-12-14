@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\RankRecord;
@@ -10,6 +9,7 @@ use App\Models\Webhook;
 use App\Notifications\Tenant\NewRankRecord;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class RankRecordObserverTest extends TenantTestCase
@@ -61,7 +61,7 @@ class RankRecordObserverTest extends TenantTestCase
 
         RankRecord::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_rank_record_webhook_sent()
@@ -77,7 +77,7 @@ class RankRecordObserverTest extends TenantTestCase
             'text' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_rank_record_webhook_sent()
@@ -91,6 +91,6 @@ class RankRecordObserverTest extends TenantTestCase
         $rank = RankRecord::factory()->create();
         $rank->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }

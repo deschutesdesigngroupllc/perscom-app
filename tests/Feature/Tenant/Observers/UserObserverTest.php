@@ -2,7 +2,6 @@
 
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\CallWebhook;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
 use App\Models\Webhook;
@@ -14,6 +13,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
+use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class UserObserverTest extends TenantTestCase
@@ -118,7 +118,7 @@ class UserObserverTest extends TenantTestCase
 
         User::factory()->create();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_update_user_webhook_sent()
@@ -134,7 +134,7 @@ class UserObserverTest extends TenantTestCase
             'name' => 'foo bar',
         ]);
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 
     public function test_delete_user_webhook_sent()
@@ -148,6 +148,6 @@ class UserObserverTest extends TenantTestCase
         $user = User::factory()->create();
         $user->delete();
 
-        Queue::assertPushed(CallWebhook::class);
+        Queue::assertPushed(CallWebhookJob::class);
     }
 }
