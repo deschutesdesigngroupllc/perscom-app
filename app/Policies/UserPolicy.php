@@ -63,6 +63,11 @@ class UserPolicy extends Policy
         return $this->hasPermissionTo($user, 'note:user') || optional($user)->tokenCan('note:user');
     }
 
+    public function newsfeed(User $user = null): bool
+    {
+        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
+    }
+
     public function billing(User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'manage:billing') || optional($user)->tokenCan('manage:billing');

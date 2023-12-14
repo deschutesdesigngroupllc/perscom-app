@@ -7,7 +7,7 @@
 **Email**: {{ $email }}<br>
 
 @component('mail::button', ['url' => $url])
-    Go To Tenants
+Go To Tenants
 @endcomponent
 
 {{__('Thanks,')}}<br>

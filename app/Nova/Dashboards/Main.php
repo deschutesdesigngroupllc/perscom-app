@@ -25,22 +25,12 @@ use Perscom\Newsfeed\Newsfeed;
 
 class Main extends Dashboard
 {
-    /**
-     * Get the displayable name of the dashboard.
-     *
-     * @return string
-     */
-    public function name()
+    public function name(): string
     {
         return 'Dashboard';
     }
 
-    /**
-     * Get the cards for the dashboard.
-     *
-     * @return array
-     */
-    public function cards()
+    public function cards(): array
     {
         return [
             $this->setupDashboardTitle(),
@@ -53,46 +43,21 @@ class Main extends Dashboard
         ];
     }
 
-    /**
-     * @return DashboardTitle
-     */
-    protected function setupDashboardTitle()
+    protected function setupDashboardTitle(): DashboardTitle
     {
-        return (new DashboardTitle())
+        return tap(new DashboardTitle())
             ->withTitle(setting('dashboard_title') ?? \tenant('name'))
             ->withSubtitle(setting('dashboard_subtitle'));
     }
 
-    /**
-     * @return Newsfeed
-     */
-    protected function setupNewsfeed()
+    protected function setupNewsfeed(): Newsfeed
     {
         $width = $this->canSeeAdminQuickActions() ? '2/3' : 'full';
 
-        return (new Newsfeed())->withMeta([
-            'jwt' => Auth::guard('jwt')->claims([
-                'scope' => [
-                    'manage:newsfeed',
-                    'view:user',
-                    'view:announcement',
-                    'view:assignmentrecord',
-                    'view:awardrecord',
-                    'view:combatrecord',
-                    'view:qualificationrecord',
-                    'view:rankrecord',
-                    'view:servicerecord',
-                ],
-            ])->login(Auth::guard('web')->user()),
-            'tenant_id' => tenant()->getTenantKey(),
-            'widget_url' => env('WIDGET_URL'),
-        ])->width($width);
+        return tap(new Newsfeed())->width($width);
     }
 
-    /**
-     * @return AlertCard
-     */
-    protected function setupAlertCard()
+    protected function setupAlertCard(): AlertCard
     {
         $card = new AlertCard();
 
@@ -125,20 +90,14 @@ class Main extends Dashboard
         return $card;
     }
 
-    /**
-     * @return DashboardQuickActions
-     */
-    protected function setupDashboardQuickActions()
+    protected function setupDashboardQuickActions(): DashboardQuickActions
     {
-        return (new DashboardQuickActions())->canSee(function () {
+        return tap(new DashboardQuickActions())->canSee(function () {
             return $this->canSeeAdminQuickActions();
         });
     }
 
-    /**
-     * @return bool
-     */
-    protected function canSeeAdminQuickActions()
+    protected function canSeeAdminQuickActions(): bool
     {
         return Gate::check('create', User::class) ||
             Gate::check('create', AssignmentRecord::class) ||

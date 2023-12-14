@@ -15,6 +15,8 @@ class NewTenant extends Notification implements ShouldQueue
 {
     use Queueable;
 
+    public bool $deleteWhenMissingModels = true;
+
     public function __construct(protected Tenant $tenant)
     {
         //

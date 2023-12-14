@@ -2,23 +2,35 @@
 
 namespace Perscom\Newsfeed;
 
+use App\Models\Permission;
+use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Card;
 
 class Newsfeed extends Card
 {
     /**
-     * The width of the card (1/3, 1/2, or full).
-     *
      * @var string
      */
     public $width = '2/3';
 
-    /**
-     * Get the component name for the element.
-     *
-     * @return string
-     */
-    public function component()
+    public function __construct($component = null)
+    {
+        parent::__construct($component);
+
+        $this->withMeta([
+            'jwt' => Auth::guard('jwt')->claims([
+                'scope' => Auth::guard('web')
+                    ->user()
+                    ->getAllPermissions()
+                    ->map(fn (Permission $permission) => $permission->name)
+                    ->toArray(),
+            ])->login(Auth::guard('web')->user()),
+            'tenant_id' => tenant()->getTenantKey(),
+            'widget_url' => env('WIDGET_URL'),
+        ]);
+    }
+
+    public function component(): string
     {
         return 'newsfeed';
     }
