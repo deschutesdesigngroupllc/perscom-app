@@ -10,12 +10,19 @@ use Stancl\Tenancy\Contracts\Tenant;
 
 class ConfigBootstrapper implements TenancyBootstrapper
 {
+    protected ?string $mailFromName = null;
+
+    protected ?string $timezone = null;
+
     public function bootstrap(Tenant $tenant): void
     {
+        $this->mailFromName = config('mail.from.name');
+        $this->timezone = config('app.timezone');
+
         App::forgetInstance('mail.manager');
 
         Config::set('mail.from.name', $tenant->getAttribute('name'));
-        Config::set('app.timezone', setting('timezone', \config('app.timezone')));
+        Config::set('app.timezone', setting('timezone', config('app.timezone')));
         PermissionRegistrar::$cacheKey = "'spatie.permission.cache.tenant.{$tenant->getTenantKey()}";
     }
 
@@ -23,8 +30,8 @@ class ConfigBootstrapper implements TenancyBootstrapper
     {
         App::forgetInstance('mail.manager');
 
-        Config::set('mail.from.name', env('MAIL_FROM_NAME', 'TEST'));
-        Config::set('app.timezone', 'UTC');
+        Config::set('mail.from.name', $this->mailFromName);
+        Config::set('app.timezone', $this->timezone);
         PermissionRegistrar::$cacheKey = 'spatie.permission.cache';
     }
 }
