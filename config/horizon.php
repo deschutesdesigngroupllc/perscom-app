@@ -192,7 +192,7 @@ return [
         ],
 
         'supervisor-3' => [
-            'connection' => 'redis',
+            'connection' => 'central',
             'queue' => ['system'],
             'balance' => 'auto',
             'maxProcesses' => 1,
