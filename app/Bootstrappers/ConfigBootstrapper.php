@@ -30,8 +30,8 @@ class ConfigBootstrapper implements TenancyBootstrapper
     {
         App::forgetInstance('mail.manager');
 
-        Config::set('mail.from.name', $this->mailFromName);
-        Config::set('app.timezone', $this->timezone);
+        Config::set('mail.from.name', $this->mailFromName ?? env('MAIL_FROM_NAME'));
+        Config::set('app.timezone', $this->timezone ?? 'UTC');
         PermissionRegistrar::$cacheKey = 'spatie.permission.cache';
     }
 }
