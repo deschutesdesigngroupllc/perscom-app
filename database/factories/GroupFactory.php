@@ -16,8 +16,10 @@ class GroupFactory extends Factory
      */
     public function definition(): array
     {
+        $group = "Group {$this->faker->unique()->randomNumber()}";
+
         return [
-            'name' => $this->faker->word,
+            'name' => $group,
             'description' => $this->faker->sentence,
         ];
     }

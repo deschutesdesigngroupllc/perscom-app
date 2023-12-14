@@ -10,6 +10,12 @@ class TaskAssignmentObserver
 {
     public function created(TaskAssignment $taskAssignment): void
     {
+        if (is_null($taskAssignment->assigned_at)) {
+            $taskAssignment->forceFill([
+                'assigned_at' => now(),
+            ])->save();
+        }
+
         Notification::send($taskAssignment->user, new NewTaskAssignment($taskAssignment));
     }
 }

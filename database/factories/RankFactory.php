@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 class RankFactory extends Factory
 {
@@ -16,7 +17,7 @@ class RankFactory extends Factory
         return [
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'abbreviation' => $this->faker->word,
+            'abbreviation' => Str::upper($this->faker->lexify('???')),
             'paygrade' => $this->faker->word,
         ];
     }
