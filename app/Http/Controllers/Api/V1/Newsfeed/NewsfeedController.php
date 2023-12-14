@@ -38,10 +38,12 @@ class NewsfeedController extends Controller
     {
         $entities = parent::runIndexFetchQuery($request, $query, $paginationLimit);
 
-        return tap($entities, function (LengthAwarePaginator $entities) {
-            $entities->setCollection($entities->getCollection()->filter(function (Newsfeed $item) {
-                return Gate::check('view', $item);
-            }));
+        return tap($entities, function ($entities) {
+            if ($entities instanceof LengthAwarePaginator) {
+                $entities->setCollection($entities->getCollection()->filter(function (Newsfeed $item) {
+                    return Gate::check('view', $item);
+                }));
+            }
         });
     }
 }

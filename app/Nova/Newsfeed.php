@@ -2,9 +2,7 @@
 
 namespace App\Nova;
 
-use App\Features\OAuth2AccessFeature;
 use App\Features\OpenAiGeneratedContent;
-use App\Models\PassportToken;
 use App\Nova\Actions\RegenerateNewsfeedHeadline;
 use App\Nova\Actions\RegenerateNewsfeedText;
 use Illuminate\Http\Request;
