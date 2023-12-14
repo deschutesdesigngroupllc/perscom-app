@@ -3,8 +3,6 @@
 namespace App\Providers;
 
 use App\Listeners\CheckTenantDatabaseExists;
-use App\Listeners\ConfigureApplicationForCentralContext;
-use App\Listeners\ConfigureApplicationForTenantContext;
 use App\Listeners\ResetTenantFeatures;
 use App\Listeners\UpdateTenantLastLoginDate;
 use App\Models\Activity;
@@ -50,8 +48,6 @@ use Laravel\Cashier\Subscription;
 use Spark\Events\SubscriptionCancelled;
 use Spark\Events\SubscriptionCreated;
 use Spark\Events\SubscriptionUpdated;
-use Stancl\Tenancy\Events\RevertedToCentralContext;
-use Stancl\Tenancy\Events\TenancyBootstrapped;
 use Stancl\Tenancy\Events\TenancyInitialized;
 
 class EventServiceProvider extends ServiceProvider
@@ -66,9 +62,6 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        RevertedToCentralContext::class => [
-            ConfigureApplicationForCentralContext::class,
-        ],
         SubscriptionCancelled::class => [
             ResetTenantFeatures::class,
         ],
@@ -80,9 +73,6 @@ class EventServiceProvider extends ServiceProvider
         ],
         TenancyInitialized::class => [
             CheckTenantDatabaseExists::class,
-        ],
-        TenancyBootstrapped::class => [
-            ConfigureApplicationForTenantContext::class,
         ],
     ];
 

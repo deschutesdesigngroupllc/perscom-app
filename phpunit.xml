@@ -44,6 +44,7 @@
     <server name="LOG_CHANNEL" value="single"/>
     <server name="LOG_LEVEL" value="debug"/>
     <server name="MAIL_MAILER" value="array"/>
+    <server name="MAIL_FROM_NAME" value="Test"/>
     <server name="PENNANT_STORE" value="array"/>
     <server name="QUEUE_CONNECTION" value="sync"/>
     <server name="SESSION_DRIVER" value="array"/>
