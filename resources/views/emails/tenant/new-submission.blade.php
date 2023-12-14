@@ -6,7 +6,7 @@
 {!! $submission->toHtml() !!}
 
 @component('mail::button', ['url' => $url])
-    View Submission
+View Submission
 @endcomponent
 
 {{__('Thanks,')}}<br>

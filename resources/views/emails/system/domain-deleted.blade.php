@@ -7,7 +7,7 @@
 **Domain Removed**: [{{ $removed_url }}]({{ $removed_url }})<br>
 
 @component('mail::button', ['url' => $url])
-    Go To Dashboard
+Go To Dashboard
 @endcomponent
 
 {{__('Thanks,')}}<br>

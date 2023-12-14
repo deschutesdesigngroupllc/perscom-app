@@ -7,7 +7,7 @@
 **Email**: {{ $email }}
 
 @component('mail::button', ['url' => $url])
-    Approve Account
+Approve Account
 @endcomponent
 
 {{__('Thanks,')}}<br>

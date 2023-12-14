@@ -7,7 +7,7 @@
 **Fallback URL**: [{{ $fallback_url }}]({{ $fallback_url }})<br>
 
 @component('mail::button', ['url' => $url])
-    Go To Dashboard
+Go To Dashboard
 @endcomponent
 
 {{__('Thanks,')}}<br>

@@ -4,7 +4,7 @@
 {{__('Your account has been approved.')}}
 
 @component('mail::button', ['url' => $url])
-    Go To Dashboard
+Go To Dashboard
 @endcomponent
 
 {{__('Thanks,')}}<br>

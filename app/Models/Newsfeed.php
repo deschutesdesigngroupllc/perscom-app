@@ -7,7 +7,7 @@ use App\Traits\HasLikes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\NewsfeedItem
+ * App\Models\Newsfeed
  *
  * @property int $id
  * @property string|null $log_name
@@ -32,31 +32,31 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
  *
  * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
- * @method static \Database\Factories\NewsfeedItemFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\NewsfeedFactory factory($count = null, $state = [])
  * @method static Builder|Activity forBatch(string $batchUuid)
  * @method static Builder|Activity forEvent(string $event)
  * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder|Activity hasBatch()
  * @method static Builder|Activity inLog(...$logNames)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem query()
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereBatchUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereCauserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereCauserType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereEvent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereLogName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereProperties($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereSubjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereSubjectType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|NewsfeedItem whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereBatchUuid($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereCauserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereCauserType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereEvent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereLogName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereProperties($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereSubjectId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereSubjectType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
-class NewsfeedItem extends Activity
+class Newsfeed extends Activity
 {
     use HasFactory;
     use HasLikes;
