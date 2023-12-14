@@ -39,10 +39,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call([
-            //AssignmentRecordSeeder::class,
-        ]);
-
         $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@deschutesdesigngroup.com',
@@ -127,7 +123,7 @@ class DatabaseSeeder extends Seeder
             ->sequence(fn (Sequence $sequence) => ['title' => "Task $sequence->index"])
             ->create();
 
-        $users = User::factory()
+        User::factory()
             ->count(10)
             ->recycle($positions)
             ->recycle($specialties)
