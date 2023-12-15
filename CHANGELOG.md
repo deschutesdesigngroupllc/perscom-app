@@ -1,6 +1,27 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.65...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.66...HEAD)
+
+## [v1.0.66](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.65...v1.0.66) - 2023-12-15
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.66 -->
+### What's Changed
+
+#### Added
+
+* Add feature to disable jobs when performing functions via API by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/264
+* Fix formatting in emails, queued notifications and JWTs now only contain permissions the user is allowed by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/270
+* Build out seeding data by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/271
+
+#### Fixed
+
+* Fix queued mail error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/267
+
+#### Other
+
+* Bump eslint-config-prettier from 9.0.0 to 9.1.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/262
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.65...v1.0.66
 
 ## [v1.0.65](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.64...v1.0.65) - 2023-12-02
 
