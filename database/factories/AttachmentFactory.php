@@ -2,21 +2,23 @@
 
 namespace Database\Factories;
 
+use App\Models\Attachment;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Attachment>
+ * @extends Factory<Attachment>
  */
 class AttachmentFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        return [//
+        return [
+            'name' => $this->faker->word,
+            'filename' => $this->faker->word.$this->faker->fileExtension(),
+            'path' => $this->faker->filePath(),
         ];
     }
 }

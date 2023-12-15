@@ -7,17 +7,19 @@ use App\Models\Rank;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
+/**
+ * @extends Factory<User>
+ */
 class UserFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->name(),

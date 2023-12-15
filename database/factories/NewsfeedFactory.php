@@ -2,13 +2,17 @@
 
 namespace Database\Factories;
 
+use App\Models\Newsfeed;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Carbon;
 
+/**
+ * @extends Factory<Newsfeed>
+ */
 class NewsfeedFactory extends Factory
 {
     /**
-     * @return array|mixed[]
+     * @return array<string, mixed>
      */
     public function definition(): array
     {
@@ -20,7 +24,7 @@ class NewsfeedFactory extends Factory
             'causer_type' => $this->faker->word(),
             'updated_at' => Carbon::now(),
             'subject_type' => $this->faker->word(),
-            'log_name' => $this->faker->name(),
+            'log_name' => 'newsfeed',
             'causer_id' => $this->faker->randomNumber(),
             'properties' => $this->faker->word(),
             'event' => $this->faker->word(),

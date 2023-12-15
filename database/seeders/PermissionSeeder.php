@@ -7,12 +7,7 @@ use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         foreach (config('permissions.guards') as $guard) {
             foreach (config('permissions.permissions') as $permission => $description) {

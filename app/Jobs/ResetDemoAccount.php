@@ -3,7 +3,7 @@
 namespace App\Jobs;
 
 use App\Models\Tenant;
-use Database\Seeders\Demo\Military\DemoDataSeeder;
+use Database\Seeders\TenantSeeder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,7 +20,7 @@ class ResetDemoAccount implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct()
+    public function __construct(protected string $seederClass)
     {
         $this->onQueue('system');
     }
@@ -34,7 +34,12 @@ class ResetDemoAccount implements ShouldQueue
 
             Artisan::call('tenants:seed', [
                 '--tenants' => $tenant->getTenantKey(),
-                '--class' => DemoDataSeeder::class,
+                '--class' => TenantSeeder::class,
+            ]);
+
+            Artisan::call('tenants:seed', [
+                '--tenants' => $tenant->getTenantKey(),
+                '--class' => $this->seederClass,
             ]);
         }
     }

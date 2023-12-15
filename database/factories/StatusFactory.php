@@ -5,14 +5,15 @@ namespace Database\Factories;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Status>
+ */
 class StatusFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         $colors = collect(Status::$colors)->keys();
         $status = "Status  {$this->faker->unique()->randomNumber()}";

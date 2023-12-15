@@ -2,22 +2,25 @@
 
 namespace Database\Factories;
 
+use App\Models\Message;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Message>
+ * @extends Factory<Message>
  */
 class MessageFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'title' => $this->faker->word,
+            'message' => $this->faker->sentences(2),
+            'link_text' => $this->faker->word,
+            'url' => $this->faker->url,
+            'active' => $this->faker->boolean,
         ];
     }
 }

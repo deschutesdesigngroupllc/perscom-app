@@ -3,17 +3,19 @@
 namespace Database\Factories;
 
 use App\Models\Document;
+use App\Models\ServiceRecord;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<ServiceRecord>
+ */
 class ServiceRecordFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory(),

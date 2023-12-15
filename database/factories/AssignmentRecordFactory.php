@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\AssignmentRecord;
 use App\Models\Document;
 use App\Models\Position;
 use App\Models\Specialty;
@@ -10,14 +11,15 @@ use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<AssignmentRecord>
+ */
 class AssignmentRecordFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'user_id' => User::factory(),

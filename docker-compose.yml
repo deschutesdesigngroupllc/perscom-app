@@ -1,13 +1,12 @@
-# For more information: https://laravel.com/docs/sail
 version: '3'
 services:
     laravel.test:
         build:
-            context: ./docker/8.1
+            context: ./docker/8.2
             dockerfile: Dockerfile
             args:
                 WWWGROUP: '${WWWGROUP}'
-        image: sail-8.1/app
+        image: sail-8.2/app
         extra_hosts:
             - 'host.docker.internal:host-gateway'
         ports:
@@ -26,7 +25,8 @@ services:
         depends_on:
             - mysql
             - redis
-            - selenium
+            - minio
+            - mailpit
     mysql:
         image: 'mysql/mysql-server:8.0'
         ports:
@@ -59,19 +59,34 @@ services:
             test: ["CMD", "redis-cli", "ping"]
             retries: 3
             timeout: 5s
-    mailhog:
-        image: 'mailhog/mailhog:latest'
+    mailpit:
+        image: 'axllent/mailpit:latest'
         ports:
-            - '${FORWARD_MAILHOG_PORT:-1025}:1025'
-            - '${FORWARD_MAILHOG_DASHBOARD_PORT:-8025}:8025'
+            - '${FORWARD_MAILPIT_PORT:-1025}:1025'
+            - '${FORWARD_MAILPIT_DASHBOARD_PORT:-8025}:8025'
         networks:
             - sail
-    selenium:
-        image: 'selenium/standalone-chrome'
+    minio:
+        image: 'minio/minio:latest'
+        ports:
+            - '${FORWARD_MINIO_PORT:-9000}:9000'
+            - '${FORWARD_MINIO_CONSOLE_PORT:-8900}:8900'
+        environment:
+            MINIO_ROOT_USER: sail
+            MINIO_ROOT_PASSWORD: password
         volumes:
-            - '/dev/shm:/dev/shm'
+            - 'sail-minio:/data/minio'
         networks:
             - sail
+        command: 'minio server /data/minio --console-address ":8900"'
+        healthcheck:
+            test:
+                - CMD
+                - curl
+                - '-f'
+                - 'http://localhost:9000/minio/health/live'
+            retries: 3
+            timeout: 5s
 networks:
     sail:
         driver: bridge
@@ -79,4 +94,6 @@ volumes:
     sail-mysql:
         driver: local
     sail-redis:
+        driver: local
+    sail-minio:
         driver: local

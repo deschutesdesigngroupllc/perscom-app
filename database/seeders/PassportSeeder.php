@@ -7,12 +7,7 @@ use Laravel\Passport\ClientRepository;
 
 class PassportSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         $client = new ClientRepository();
         $client->createPasswordGrantClient(null, 'Default Password Grant Client', 'http://your.redirect.path');

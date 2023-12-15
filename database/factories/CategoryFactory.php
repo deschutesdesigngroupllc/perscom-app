@@ -3,18 +3,17 @@
 namespace Database\Factories;
 
 use App\Models\Award;
+use App\Models\Category;
 use App\Models\Qualification;
 use App\Models\Rank;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Category>
+ * @extends Factory<Category>
  */
 class CategoryFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array

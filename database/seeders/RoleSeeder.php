@@ -7,12 +7,7 @@ use Illuminate\Database\Seeder;
 
 class RoleSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
-    public function run()
+    public function run(): void
     {
         $allPermissions = collect(config('permissions.permissions'))->keys()->values();
         $defaultPermissions = collect(config('permissions.default'));
