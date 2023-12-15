@@ -83,6 +83,13 @@ jobs:
         env:
           DB_USERNAME: root
 
+      - name: Upload Code Coverage Report
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODE_COV_TOKEN }}
+          files: ./clover.xml
+          verbose: true
+
       - name: Upload Logs
         uses: actions/upload-artifact@v3
         if: always()
