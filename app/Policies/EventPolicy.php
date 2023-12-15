@@ -17,54 +17,54 @@ class EventPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:event') || optional($user)->tokenCan('view:event');
     }
 
-    public function view(User $user = null, Event $event): bool
+    public function view(?User $user, Event $event): bool
     {
         return $this->hasPermissionTo($user, 'view:event') ||
                optional($user)->tokenCan('view:event') ||
                $event->registrations->contains($user);
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:event') || optional($user)->tokenCan('create:event');
     }
 
-    public function update(User $user = null, Event $event): bool
+    public function update(?User $user, Event $event): bool
     {
         return $this->hasPermissionTo($user, 'update:event') || optional($user)->tokenCan('update:event');
     }
 
-    public function delete(User $user = null, Event $event): bool
+    public function delete(?User $user, Event $event): bool
     {
         return $this->hasPermissionTo($user, 'delete:event') || optional($user)->tokenCan('delete:event');
     }
 
-    public function restore(User $user = null, Event $event): bool
+    public function restore(?User $user, Event $event): bool
     {
         return $this->hasPermissionTo($user, 'delete:event') || optional($user)->tokenCan('delete:event');
     }
 
-    public function forceDelete(User $user = null, Event $event): bool
+    public function forceDelete(?User $user, Event $event): bool
     {
         return $this->hasPermissionTo($user, 'delete:event') || optional($user)->tokenCan('delete:event');
     }
 
-    public function attachAnyUser(User $user = null, Event $event): bool
+    public function attachAnyUser(?User $user, Event $event): bool
     {
         return $this->update($user, $event);
     }
 
-    public function attachUser(User $user = null, Event $event): bool
+    public function attachUser(?User $user, Event $event): bool
     {
         return $this->update($user, $event);
     }
 
-    public function detachUser(User $user = null, Event $event): bool
+    public function detachUser(?User $user, Event $event): bool
     {
         return $this->update($user, $event);
     }

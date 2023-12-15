@@ -24,37 +24,37 @@ class PassportClientLogPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function view(User $user = null, PassportClientLog $log): bool
+    public function view(?User $user, PassportClientLog $log): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return false;
     }
 
-    public function update(User $user = null, PassportClientLog $log): bool
+    public function update(?User $user, PassportClientLog $log): bool
     {
         return false;
     }
 
-    public function delete(User $user = null, PassportClientLog $log): bool
+    public function delete(?User $user, PassportClientLog $log): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function restore(User $user = null, PassportClientLog $log): bool
+    public function restore(?User $user, PassportClientLog $log): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function forceDelete(User $user = null, PassportClientLog $log): bool
+    public function forceDelete(?User $user, PassportClientLog $log): bool
     {
         return Gate::check('api', $user);
     }

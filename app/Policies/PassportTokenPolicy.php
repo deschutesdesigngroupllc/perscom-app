@@ -31,37 +31,37 @@ class PassportTokenPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function view(User $user = null, PassportToken $token): bool
+    public function view(?User $user, PassportToken $token): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function update(User $user = null, PassportToken $token): bool
+    public function update(?User $user, PassportToken $token): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function delete(User $user = null, PassportToken $token): bool
+    public function delete(?User $user, PassportToken $token): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function restore(User $user = null, PassportToken $token): bool
+    public function restore(?User $user, PassportToken $token): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function forceDelete(User $user = null, PassportToken $token): bool
+    public function forceDelete(?User $user, PassportToken $token): bool
     {
         return Gate::check('api', $user);
     }

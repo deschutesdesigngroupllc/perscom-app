@@ -24,37 +24,37 @@ class WebhookPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return Gate::check('webhook', $user);
     }
 
-    public function view(User $user = null, Webhook $webhook): bool
+    public function view(?User $user, Webhook $webhook): bool
     {
         return Gate::check('webhook', $user);
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return Gate::check('webhook', $user);
     }
 
-    public function update(User $user = null, Webhook $webhook): bool
+    public function update(?User $user, Webhook $webhook): bool
     {
         return Gate::check('webhook', $user);
     }
 
-    public function delete(User $user = null, Webhook $webhook): bool
+    public function delete(?User $user, Webhook $webhook): bool
     {
         return Gate::check('webhook', $user);
     }
 
-    public function restore(User $user = null, Webhook $webhook): bool
+    public function restore(?User $user, Webhook $webhook): bool
     {
         return Gate::check('webhook', $user);
     }
 
-    public function forceDelete(User $user = null, Webhook $webhook): bool
+    public function forceDelete(?User $user, Webhook $webhook): bool
     {
         return Gate::check('webhook', $user);
     }

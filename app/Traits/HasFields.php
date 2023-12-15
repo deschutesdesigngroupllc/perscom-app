@@ -25,7 +25,7 @@ trait HasFields
     /**
      * @return array<int, mixed>|Panel|Hidden
      */
-    protected function getNovaFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', Closure $modelResolver = null): array|Panel|Hidden
+    protected function getNovaFields(NovaRequest $request, bool $wrapInPanel = false, string|Closure $panelName = 'Panel', ?Closure $modelResolver = null): array|Panel|Hidden
     {
         if (($request->isUpdateOrUpdateAttachedRequest() || $request->isPresentationRequest()) &&
             $request->resource() == static::class) { // @phpstan-ignore-line

@@ -17,54 +17,54 @@ class TaskPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:task') || optional($user)->tokenCan('view:task');
     }
 
-    public function view(User $user = null, Task $task): bool
+    public function view(?User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'view:task') ||
                optional($user)->tokenCan('view:task') ||
                $task->users->contains($user);
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:task') || optional($user)->tokenCan('create:task');
     }
 
-    public function update(User $user = null, Task $task): bool
+    public function update(?User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'update:task') || optional($user)->tokenCan('update:task');
     }
 
-    public function delete(User $user = null, Task $task): bool
+    public function delete(?User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
     }
 
-    public function restore(User $user = null, Task $task): bool
+    public function restore(?User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
     }
 
-    public function forceDelete(User $user = null, Task $task): bool
+    public function forceDelete(?User $user, Task $task): bool
     {
         return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
     }
 
-    public function attachAnyUser(User $user = null, Task $task): bool
+    public function attachAnyUser(?User $user, Task $task): bool
     {
         return $this->update($user, $task);
     }
 
-    public function attachUser(User $user = null, Task $task): bool
+    public function attachUser(?User $user, Task $task): bool
     {
         return $this->update($user, $task);
     }
 
-    public function detachUser(User $user = null, Task $task): bool
+    public function detachUser(?User $user, Task $task): bool
     {
         return $this->update($user, $task);
     }

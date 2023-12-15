@@ -17,7 +17,7 @@ class MessagePolicy extends Policy
         return false;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -26,7 +26,7 @@ class MessagePolicy extends Policy
         return false;
     }
 
-    public function view(User $user = null, Message $message): bool
+    public function view(?User $user, Message $message): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -35,7 +35,7 @@ class MessagePolicy extends Policy
         return false;
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -44,7 +44,7 @@ class MessagePolicy extends Policy
         return false;
     }
 
-    public function update(User $user = null, Message $message): bool
+    public function update(?User $user, Message $message): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -53,7 +53,7 @@ class MessagePolicy extends Policy
         return false;
     }
 
-    public function delete(User $user = null, Message $message): bool
+    public function delete(?User $user, Message $message): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -62,7 +62,7 @@ class MessagePolicy extends Policy
         return false;
     }
 
-    public function restore(User $user = null, Message $message): bool
+    public function restore(?User $user, Message $message): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -71,7 +71,7 @@ class MessagePolicy extends Policy
         return false;
     }
 
-    public function forceDelete(User $user = null, Message $message): bool
+    public function forceDelete(?User $user, Message $message): bool
     {
         if (Request::isCentralRequest()) {
             return true;

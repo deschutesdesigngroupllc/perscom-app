@@ -17,37 +17,37 @@ class TagPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return true;
     }
 
-    public function view(User $user = null, Tag $tag): bool
+    public function view(?User $user, Tag $tag): bool
     {
         return true;
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return true;
     }
 
-    public function update(User $user = null, Tag $tag): bool
+    public function update(?User $user, Tag $tag): bool
     {
         return true;
     }
 
-    public function delete(User $user = null, Tag $tag): bool
+    public function delete(?User $user, Tag $tag): bool
     {
         return true;
     }
 
-    public function restore(User $user = null, Tag $tag): bool
+    public function restore(?User $user, Tag $tag): bool
     {
         return true;
     }
 
-    public function forceDelete(User $user = null, Tag $tag): bool
+    public function forceDelete(?User $user, Tag $tag): bool
     {
         return true;
     }

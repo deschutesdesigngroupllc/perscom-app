@@ -17,37 +17,37 @@ class FieldPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:field') || optional($user)->tokenCan('view:field');
     }
 
-    public function view(User $user = null, Field $field): bool
+    public function view(?User $user, Field $field): bool
     {
         return $this->hasPermissionTo($user, 'view:field') || optional($user)->tokenCan('view:field');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:field') || optional($user)->tokenCan('create:field');
     }
 
-    public function update(User $user = null, Field $field): bool
+    public function update(?User $user, Field $field): bool
     {
         return $this->hasPermissionTo($user, 'update:field') || optional($user)->tokenCan('update:field');
     }
 
-    public function delete(User $user = null, Field $field): bool
+    public function delete(?User $user, Field $field): bool
     {
         return $this->hasPermissionTo($user, 'delete:field') || optional($user)->tokenCan('delete:field');
     }
 
-    public function restore(User $user = null, Field $field): bool
+    public function restore(?User $user, Field $field): bool
     {
         return $this->hasPermissionTo($user, 'delete:field') || optional($user)->tokenCan('delete:field');
     }
 
-    public function forceDelete(User $user = null, Field $field): bool
+    public function forceDelete(?User $user, Field $field): bool
     {
         return $this->hasPermissionTo($user, 'delete:field') || optional($user)->tokenCan('delete:field');
     }

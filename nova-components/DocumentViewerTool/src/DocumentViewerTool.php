@@ -16,14 +16,14 @@ class DocumentViewerTool extends ResourceTool
         return 'document-viewer-tool';
     }
 
-    public function withTitle(string $title = null): DocumentViewerTool
+    public function withTitle(?string $title = null): DocumentViewerTool
     {
         return $this->withMeta([
             'title' => $title ?? null,
         ]);
     }
 
-    public function withContent(string $content = null): DocumentViewerTool
+    public function withContent(?string $content = null): DocumentViewerTool
     {
         return $this->withMeta([
             'content' => $content ?? null,

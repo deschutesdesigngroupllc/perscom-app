@@ -18,22 +18,22 @@ class RolePolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:role') || optional($user)->tokenCan('view:role');
     }
 
-    public function view(User $user = null, Role $role): bool
+    public function view(?User $user, Role $role): bool
     {
         return $this->hasPermissionTo($user, 'view:role') || optional($user)->tokenCan('view:role');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:role') || optional($user)->tokenCan('create:role');
     }
 
-    public function update(User $user = null, Role $role): bool
+    public function update(?User $user, Role $role): bool
     {
         if ($role->is_application_role) {
             return false;
@@ -42,7 +42,7 @@ class RolePolicy extends Policy
         return $this->hasPermissionTo($user, 'update:role') || optional($user)->tokenCan('update:role');
     }
 
-    public function delete(User $user = null, Role $role): bool
+    public function delete(?User $user, Role $role): bool
     {
         if ($role->is_application_role) {
             return false;
@@ -51,7 +51,7 @@ class RolePolicy extends Policy
         return $this->hasPermissionTo($user, 'delete:role') || optional($user)->tokenCan('delete:role');
     }
 
-    public function detachPermission(User $user = null, Role $role, Permission $permission): bool
+    public function detachPermission(?User $user, Role $role, Permission $permission): bool
     {
         if ($role->is_application_role && $permission->is_application_permission) {
             return false;
@@ -60,7 +60,7 @@ class RolePolicy extends Policy
         return $this->hasPermissionTo($user, 'update:role');
     }
 
-    public function restore(User $user = null, Role $role): bool
+    public function restore(?User $user, Role $role): bool
     {
         if ($role->is_application_role) {
             return false;
@@ -69,7 +69,7 @@ class RolePolicy extends Policy
         return $this->hasPermissionTo($user, 'delete:role') || optional($user)->tokenCan('delete:role');
     }
 
-    public function forceDelete(User $user = null, Role $role): bool
+    public function forceDelete(?User $user, Role $role): bool
     {
         if ($role->is_application_role) {
             return false;

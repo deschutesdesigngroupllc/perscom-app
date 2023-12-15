@@ -17,37 +17,37 @@ class FormPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:form') || optional($user)->tokenCan('view:form');
     }
 
-    public function view(User $user = null, Form $form): bool
+    public function view(?User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'view:form') || optional($user)->tokenCan('view:form');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:form') || optional($user)->tokenCan('create:form');
     }
 
-    public function update(User $user = null, Form $form): bool
+    public function update(?User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'update:form') || optional($user)->tokenCan('update:form');
     }
 
-    public function delete(User $user = null, Form $form): bool
+    public function delete(?User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'delete:form') || optional($user)->tokenCan('delete:form');
     }
 
-    public function restore(User $user = null, Form $form): bool
+    public function restore(?User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'delete:form') || optional($user)->tokenCan('delete:form');
     }
 
-    public function forceDelete(User $user = null, Form $form): bool
+    public function forceDelete(?User $user, Form $form): bool
     {
         return $this->hasPermissionTo($user, 'delete:form') || optional($user)->tokenCan('delete:form');
     }

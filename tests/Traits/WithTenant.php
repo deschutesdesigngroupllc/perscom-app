@@ -112,7 +112,7 @@ trait WithTenant
         $this->tenant->deleteQuietly();
     }
 
-    public function withSubscription(string|int $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void
+    public function withSubscription(string|int|null $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void
     {
         $priceId = $priceId ?? env('STRIPE_PRODUCT_BASIC_MONTH');
 

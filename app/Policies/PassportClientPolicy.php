@@ -24,26 +24,12 @@ class PassportClientPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return Gate::check('api', $user);
     }
 
-    public function view(User $user = null, Client $client): bool
-    {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
-
-        return Gate::check('api', $user);
-    }
-
-    public function create(User $user = null): bool
-    {
-        return Gate::check('api', $user);
-    }
-
-    public function update(User $user = null, Client $client): bool
+    public function view(?User $user, Client $client): bool
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;
@@ -52,7 +38,12 @@ class PassportClientPolicy extends Policy
         return Gate::check('api', $user);
     }
 
-    public function delete(User $user = null, Client $client): bool
+    public function create(?User $user = null): bool
+    {
+        return Gate::check('api', $user);
+    }
+
+    public function update(?User $user, Client $client): bool
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;
@@ -61,7 +52,7 @@ class PassportClientPolicy extends Policy
         return Gate::check('api', $user);
     }
 
-    public function restore(User $user = null, Client $client): bool
+    public function delete(?User $user, Client $client): bool
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;
@@ -70,7 +61,16 @@ class PassportClientPolicy extends Policy
         return Gate::check('api', $user);
     }
 
-    public function forceDelete(User $user = null, Client $client): bool
+    public function restore(?User $user, Client $client): bool
+    {
+        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
+            return false;
+        }
+
+        return Gate::check('api', $user);
+    }
+
+    public function forceDelete(?User $user, Client $client): bool
     {
         if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
             return false;
