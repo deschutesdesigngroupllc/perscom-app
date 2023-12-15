@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Tenant\Requests\Traits;
+namespace Tests\Traits;
 
 use App\Models\Admin;
 use App\Models\Domain;

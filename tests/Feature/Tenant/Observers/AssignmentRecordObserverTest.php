@@ -5,6 +5,10 @@ namespace Tests\Feature\Tenant\Observers;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\WebhookEvent;
+use App\Models\Position;
+use App\Models\Specialty;
+use App\Models\Status;
+use App\Models\Unit;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewAssignmentRecord;
 use Illuminate\Support\Facades\Notification;
@@ -23,17 +27,22 @@ class AssignmentRecordObserverTest extends TenantTestCase
 
     public function test_create_assignment_record_assigns_user_properties(): void
     {
-        $this->assertNull($this->user->unit);
-        $this->assertNull($this->user->position);
-        $this->assertNull($this->user->specialty);
-
-        $assignment = AssignmentRecord::factory()->for($this->user)->create();
+        $assignment = AssignmentRecord::factory()
+            ->state([
+                'status_id' => Status::factory(),
+                'unit_id' => Unit::factory(),
+                'position_id' => Position::factory(),
+                'specialty_id' => Specialty::factory(),
+            ])
+            ->for($this->user)
+            ->create();
 
         $user = $this->user->fresh();
 
         $this->assertSame($assignment->unit->getKey(), $user->unit->getKey());
         $this->assertSame($assignment->position->getKey(), $user->position->getKey());
         $this->assertSame($assignment->specialty->getKey(), $user->specialty->getKey());
+        $this->assertSame($assignment->status->getKey(), $user->status->getKey());
     }
 
     public function test_create_assignment_record_notification_sent()

@@ -23,8 +23,6 @@ class RankRecordObserverTest extends TenantTestCase
 
     public function test_create_rank_record_assigns_user_rank(): void
     {
-        $this->assertNull($this->user->rank);
-
         $rank = RankRecord::factory()->for($this->user)->create();
 
         $user = $this->user->fresh();

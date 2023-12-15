@@ -11,8 +11,6 @@ class StatusRecordObserverTest extends TenantTestCase
     {
         $status = Status::factory()->create();
 
-        $this->assertNull($this->user->status);
-
         $this->user->statuses()->attach($status);
 
         $user = $this->user->fresh();

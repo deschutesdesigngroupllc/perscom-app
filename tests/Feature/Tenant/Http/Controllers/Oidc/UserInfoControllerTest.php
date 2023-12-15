@@ -3,8 +3,8 @@
 namespace Tests\Feature\Tenant\Http\Controllers\Oidc;
 
 use Laravel\Passport\Passport;
-use Tests\Feature\Tenant\Requests\Traits\MakesApiRequests;
 use Tests\Feature\Tenant\TenantTestCase;
+use Tests\Traits\MakesApiRequests;
 
 class UserInfoControllerTest extends TenantTestCase
 {
