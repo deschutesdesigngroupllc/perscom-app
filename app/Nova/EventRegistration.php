@@ -21,127 +21,111 @@ use Laravel\Nova\Panel;
 
 class EventRegistration extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\EventRegistration>
-     */
-    public static $model = \App\Models\EventRegistration::class;
+    public static string $model = \App\Models\EventRegistration::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'id';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
-    public static $search = [
-        'id',
-    ];
+    public static $search = ['id'];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            BelongsTo::make('Event')->sortable(),
-            BelongsTo::make('Calendar')->sortable()->exceptOnForms(),
-            BelongsTo::make('User')->default(function (NovaRequest $request) {
-                return $request->user()->getAuthIdentifier();
-            })->readonly(function () {
-                return ! Gate::check('create', $this->model());
-            })->sortable(),
+            ID::make()
+                ->sortable(),
+            BelongsTo::make('Event')
+                ->sortable(),
+            BelongsTo::make('Calendar')
+                ->sortable()
+                ->exceptOnForms(),
+            BelongsTo::make('User')
+                ->default(function (NovaRequest $request) {
+                    return $request->user()
+                        ->getAuthIdentifier();
+                })
+                ->readonly(function () {
+                    return ! Gate::check('create', $this->model());
+                })
+                ->sortable(),
             Text::make('Description', function () {
                 return Str::limit($this->event?->description);
             }),
             Textarea::make('Location', function () {
                 return $this->event?->location;
-            })->alwaysShow()->hideFromIndex(),
+            })
+                ->alwaysShow()
+                ->hideFromIndex(),
             URL::make('URL', function () {
                 return $this->event?->url;
-            })->hideFromIndex(),
-            DateTime::make('Registered', 'created_at')->exceptOnForms()->sortable(),
+            })
+                ->hideFromIndex(),
+            DateTime::make('Registered', 'created_at')
+                ->exceptOnForms()
+                ->sortable(),
             new Panel('Event', [
                 Text::make('Starts', function () {
                     return optional($this->event?->start, function ($start) {
                         return $this->event?->all_day ? $start->toFormattedDayDateString() : $start->toDayDateTimeString();
                     });
-                })->exceptOnForms(),
+                })
+                    ->exceptOnForms(),
                 Text::make('Ends', function () {
                     return optional($this->event?->computed_end, function ($end) {
                         return $this->event?->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
                     });
-                })->exceptOnForms(),
+                })
+                    ->exceptOnForms(),
                 Boolean::make('All Day', function () {
                     return $this->event?->all_day;
-                })->onlyOnDetail(),
+                })
+                    ->onlyOnDetail(),
                 Boolean::make('Repeats', function () {
                     return $this->event?->repeats;
-                })->onlyOnDetail(),
+                })
+                    ->onlyOnDetail(),
                 Boolean::make('Has Passed', function () {
                     return $this->event?->is_past;
-                })->onlyOnDetail(),
+                })
+                    ->onlyOnDetail(),
                 Text::make('Pattern', function () {
                     return Str::ucfirst($this->event?->human_readable_pattern);
-                })->onlyOnDetail(),
+                })
+                    ->onlyOnDetail(),
             ]),
             new Panel('Details', [
                 Trix::make('Content', function () {
                     return $this->event?->content;
-                })->alwaysShow(),
+                })
+                    ->alwaysShow(),
             ]),
             MorphMany::make('Images'),
             MorphMany::make('Attachments'),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [
             new MyEvents(),
         ];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [
             (new BatchNewEventRegistration())->canSee(function () {

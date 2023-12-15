@@ -17,20 +17,30 @@ class TaskAssignmentFields
      */
     public function __invoke($request, $relatedModel)
     {
-        $users = \App\Models\User::all()->pluck('name', 'id')->sort()->toArray();
+        $users = \App\Models\User::all()
+            ->pluck('name', 'id')
+            ->sort()
+            ->toArray();
 
         return [
-            Select::make('Assigned By', 'assigned_by_id')->displayUsing(function ($id) use ($users) {
-                if (\array_key_exists($id, $users)) {
-                    return $users[$id];
-                }
+            Select::make('Assigned By', 'assigned_by_id')
+                ->displayUsing(function ($id) use ($users) {
+                    if (\array_key_exists($id, $users)) {
+                        return $users[$id];
+                    }
 
-                return null;
-            })->options($users)->default(function (NovaRequest $request) {
-                return $request->user()->getAuthIdentifier();
-            }),
-            DateTime::make('Assigned At')->default(now()),
-            DateTime::make('Due At')->nullable()->help('Set to assign a due date to the task.'),
+                    return null;
+                })
+                ->options($users)
+                ->default(function (NovaRequest $request) {
+                    return $request->user()
+                        ->getAuthIdentifier();
+                }),
+            DateTime::make('Assigned At')
+                ->default(now()),
+            DateTime::make('Due At')
+                ->nullable()
+                ->help('Set to assign a due date to the task.'),
             DateTime::make('Expires At')
                 ->nullable()
                 ->help('Set to assign an expiration date if the task is not completed.'),

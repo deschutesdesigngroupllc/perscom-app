@@ -10,12 +10,7 @@ use Perscom\Roster\Http\Middleware\Authorize;
 
 class AssetServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->app->booted(function () {
             Route::middleware(['nova', Authorize::class, 'universal'])
@@ -29,15 +24,5 @@ class AssetServiceProvider extends ServiceProvider
                 Nova::style('featureos', __DIR__.'/../dist/css/asset.css');
             }
         });
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

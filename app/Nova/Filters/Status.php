@@ -34,6 +34,9 @@ class Status extends Filter
      */
     public function options(NovaRequest $request)
     {
-        return StatusModel::query()->orderBy('name')->pluck('id', 'name')->toArray();
+        return StatusModel::query()
+            ->orderBy('name')
+            ->pluck('id', 'name')
+            ->toArray();
     }
 }

@@ -20,10 +20,7 @@ use Laravel\Pennant\Feature;
 
 class Newsfeed extends Resource
 {
-    /**
-     * @var string
-     */
-    public static $model = \App\Models\Newsfeed::class;
+    public static string $model = \App\Models\Newsfeed::class;
 
     /**
      * @var string
@@ -33,67 +30,52 @@ class Newsfeed extends Resource
     /**
      * @var string[]
      */
-    public static $search = [
-        'description', 'id', 'properties',
-    ];
+    public static $search = ['description', 'id', 'properties'];
 
-    /**
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return 'Newsfeed';
     }
 
-    /**
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'newsfeed';
     }
 
-    /**
-     * @return string|null
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return $this->resource->item;
     }
 
-    /**
-     * @return string
-     */
-    public static function createButtonLabel()
+    public static function createButtonLabel(): string
     {
         return 'Create Newsfeed Item';
     }
 
-    /**
-     * @return string
-     */
-    public static function updateButtonLabel()
+    public static function updateButtonLabel(): string
     {
         return 'Update Newsfeed Item';
     }
 
-    /**
-     * @return array
-     */
-    public function fields(Request $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            Hidden::make('Log Name', 'log_name')->default('newsfeed'),
-            Hidden::make('Description', 'description')->default('created'),
-            Hidden::make('Event', 'event')->default('created'),
+            Hidden::make('Log Name', 'log_name')
+                ->default('newsfeed'),
+            Hidden::make('Description', 'description')
+                ->default('created'),
+            Hidden::make('Event', 'event')
+                ->default('created'),
             Text::make('Headline')
                 ->fillUsing(function (NovaRequest $request, $activity, $attribute, $requestAttribute) {
-                    $activity->properties = Collection::wrap($activity->properties)->put('headline', $request->input($requestAttribute));
+                    $activity->properties = Collection::wrap($activity->properties)
+                        ->put('headline', $request->input($requestAttribute));
                 })
                 ->rules('required'),
             Trix::make('Text')
                 ->fillUsing(function (NovaRequest $request, $activity, $attribute, $requestAttribute) {
-                    $activity->properties = Collection::wrap($activity->properties)->put('text', $request->input($requestAttribute));
+                    $activity->properties = Collection::wrap($activity->properties)
+                        ->put('text', $request->input($requestAttribute));
                 })
                 ->rules('required')
                 ->alwaysShow(),
@@ -102,46 +84,60 @@ class Newsfeed extends Resource
                 ->rules('required')
                 ->sortable(),
             Panel::make('Details', [
-                MorphTo::make('Author', 'causer')->types([
-                    User::class,
-                ])
+                MorphTo::make('Author', 'causer')
+                    ->types([
+                        User::class,
+                    ])
                     ->help('Set the author of this newsfeed item.')
-                    ->default(Auth::user()->getKey())
+                    ->default(Auth::user()
+                        ->getKey())
                     ->defaultResource(User::class),
-                MorphTo::make('Subject', 'subject')->types([
-                    Announcement::class,
-                    AssignmentRecord::class,
-                    AwardRecord::class,
-                    CombatRecord::class,
-                    QualificationRecord::class,
-                    RankRecord::class,
-                    ServiceRecord::class,
-                ])->help('Set a resource that this newsfeed item is about.')->nullable(),
+                MorphTo::make('Subject', 'subject')
+                    ->types([
+                        Announcement::class,
+                        AssignmentRecord::class,
+                        AwardRecord::class,
+                        CombatRecord::class,
+                        QualificationRecord::class,
+                        RankRecord::class,
+                        ServiceRecord::class,
+                    ])
+                    ->help('Set a resource that this newsfeed item is about.')
+                    ->nullable(),
             ]),
         ];
     }
 
-    /**
-     * @return bool
-     */
-    public static function authorizedToViewAny(Request $request)
+    public static function authorizedToViewAny(Request $request): bool
     {
         return Gate::check('newsfeed', Auth::user());
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function cards(NovaRequest $request): array
+    {
+        return [];
+    }
+
+    public function filters(NovaRequest $request): array
+    {
+        return [];
+    }
+
+    public function lenses(NovaRequest $request): array
+    {
+        return [];
+    }
+
+    public function actions(NovaRequest $request): array
     {
         return [
             (new RegenerateNewsfeedHeadline())->canSee(function () {
-                return Feature::driver('database')->active(OpenAiGeneratedContent::class);
+                return Feature::driver('database')
+                    ->active(OpenAiGeneratedContent::class);
             }),
             (new RegenerateNewsfeedText())->canSee(function () {
-                return Feature::driver('database')->active(OpenAiGeneratedContent::class);
+                return Feature::driver('database')
+                    ->active(OpenAiGeneratedContent::class);
             }),
         ];
     }

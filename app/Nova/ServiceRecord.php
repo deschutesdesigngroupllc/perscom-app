@@ -22,137 +22,100 @@ use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class ServiceRecord extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\ServiceRecord::class;
+    public static string $model = \App\Models\ServiceRecord::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'text'];
 
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return Str::singular(Str::title(setting('localization_service', 'Service'))).' Records';
     }
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return Str::slug(Str::singular(setting('localization_service', 'service')).' records');
     }
 
-    /**
-     * @return string
-     */
-    public function title()
+    public function title(): ?string
     {
         return $this->id.optional($this->user, static function ($user) {
             return " - $user->name";
         });
     }
 
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return "Created At: {$this->created_at->toDayDateTimeString()}";
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
+            ID::make()
+                ->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
                 ->sortable(),
-            Textarea::make('Text')->rules(['required'])->hideFromIndex()->alwaysShow(),
+            Textarea::make('Text')
+                ->rules(['required'])
+                ->hideFromIndex()
+                ->alwaysShow(),
             Text::make('Text', function ($model) {
                 return $model->text;
-            })->onlyOnIndex(),
-            BelongsTo::make('Document')->nullable()->onlyOnForms(),
+            })
+                ->onlyOnIndex(),
+            BelongsTo::make('Document')
+                ->nullable()
+                ->onlyOnForms(),
             new Panel('History', [
-                BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-                DateTime::make('Created At')->sortable()->exceptOnForms(),
-                DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
+                BelongsTo::make('Author', 'author', User::class)
+                    ->onlyOnDetail(),
+                DateTime::make('Created At')
+                    ->sortable()
+                    ->exceptOnForms(),
+                DateTime::make('Updated At')
+                    ->exceptOnForms()
+                    ->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document?->toHtml($this->user, $this)),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)
+                ->withContent($this->document?->toHtml($this->user, $this)),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [new TotalServiceRecords(), new NewServiceRecords()];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [
             (new BatchCreateServiceRecord())->canSee(function () {
                 return Gate::check('create', \App\Models\ServiceRecord::class);
             }),
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::active(ExportDataFeature::class);
-            })->nameable(),
+            ExportAsCsv::make('Export '.self::label())
+                ->canSee(function () {
+                    return Feature::active(ExportDataFeature::class);
+                })
+                ->nameable(),
         ];
     }
 }

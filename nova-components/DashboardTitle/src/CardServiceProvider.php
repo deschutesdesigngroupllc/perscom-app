@@ -9,12 +9,7 @@ use Laravel\Nova\Nova;
 
 class CardServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->app->booted(function () {
             $this->routes();
@@ -26,27 +21,14 @@ class CardServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Register the card's routes.
-     *
-     * @return void
-     */
-    protected function routes()
+    protected function routes(): void
     {
         if ($this->app->routesAreCached()) {
             return;
         }
 
-        Route::middleware(['nova'])->prefix('nova-vendor/dashboard-title')->group(__DIR__.'/../routes/api.php');
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
+        Route::middleware(['nova'])
+            ->prefix('nova-vendor/dashboard-title')
+            ->group(__DIR__.'/../routes/api.php');
     }
 }

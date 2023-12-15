@@ -23,22 +23,30 @@ class UpcomingEvents extends Table
      */
     public function calculate(NovaRequest $request)
     {
-        return EventRegistration::query()->user($request->user())->get()->map(function (EventRegistration $registration) {
-            return MetricTableRow::make()
-                ->icon('calendar')
-                ->title($registration->event?->name)
-                ->subtitle(Carbon::parse($registration->event?->next_occurrence)->toDayDateTimeString())
-                ->actions(function () use ($registration) {
-                    return [
-                        MenuItem::externalLink('Open Event', route('nova.pages.detail', [
-                            'resource' => \App\Nova\EventRegistration::uriKey(),
-                            'resourceId' => $registration->id,
-                        ])),
-                    ];
-                });
-        })->sortBy(function ($row) {
-            return $row->subtitle;
-        }, SORT_REGULAR, false)->take(2)->values()->all();
+        return EventRegistration::query()
+            ->user($request->user())
+            ->get()
+            ->map(function (EventRegistration $registration) {
+                return MetricTableRow::make()
+                    ->icon('calendar')
+                    ->title($registration->event?->name)
+                    ->subtitle(Carbon::parse($registration->event?->next_occurrence)
+                        ->toDayDateTimeString())
+                    ->actions(function () use ($registration) {
+                        return [
+                            MenuItem::externalLink('Open Event', route('nova.pages.detail', [
+                                'resource' => \App\Nova\EventRegistration::uriKey(),
+                                'resourceId' => $registration->id,
+                            ])),
+                        ];
+                    });
+            })
+            ->sortBy(function ($row) {
+                return $row->subtitle;
+            }, SORT_REGULAR, false)
+            ->take(2)
+            ->values()
+            ->all();
     }
 
     /**

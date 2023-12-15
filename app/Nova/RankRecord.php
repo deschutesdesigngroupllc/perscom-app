@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Models\Enums\RankRecordType;
 use App\Nova\Actions\BatchCreateRankRecord;
 use App\Nova\Metrics\NewRankRecords;
 use App\Nova\Metrics\RankRecordsByType;
@@ -23,137 +24,100 @@ use Perscom\DocumentViewerTool\DocumentViewerTool;
 
 class RankRecord extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\RankRecord::class;
+    public static string $model = \App\Models\RankRecord::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'id';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'text'];
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return Str::singular(Str::slug(setting('localization_ranks', 'rank'))).'-records';
     }
 
-    /**
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Records';
     }
 
-    /**
-     * @return string
-     */
-    public function title()
+    public function title(): ?string
     {
         return "{$this->id} - {$this->user?->name} - {$this->rank?->name}";
     }
 
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return "Created At: {$this->created_at->toDayDateTimeString()}";
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
+            ID::make()
+                ->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
                 ->sortable(),
             BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', \App\Nova\Rank::class)
                 ->sortable()
                 ->showCreateRelationButton(),
-            Select::make('Type')->options([
-                \App\Models\RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
-                \App\Models\RankRecord::RECORD_RANK_DEMOTION => 'Demotion',
-            ])->rules('required')->displayUsingLabels(),
-            Textarea::make('Text')->alwaysShow()->hideFromIndex(),
-            BelongsTo::make('Document')->nullable()->onlyOnForms(),
+            Select::make('Type')
+                ->options(collect(RankRecordType::cases())->mapWithKeys(fn (RankRecordType $case) => [$case->value => $case->getLabel()]))
+                ->rules('required')
+                ->displayUsingLabels(),
+            Textarea::make('Text')
+                ->alwaysShow()
+                ->hideFromIndex(),
+            BelongsTo::make('Document')
+                ->nullable()
+                ->onlyOnForms(),
             new Panel('History', [
-                BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-                DateTime::make('Created At')->sortable()->exceptOnForms(),
-                DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
+                BelongsTo::make('Author', 'author', User::class)
+                    ->onlyOnDetail(),
+                DateTime::make('Created At')
+                    ->sortable()
+                    ->exceptOnForms(),
+                DateTime::make('Updated At')
+                    ->exceptOnForms()
+                    ->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document?->toHtml($this->user, $this)),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)
+                ->withContent($this->document?->toHtml($this->user, $this)),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [new TotalRankRecords(), new NewRankRecords(), new RankRecordsByType()];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [
             (new BatchCreateRankRecord())->canSee(function () {
                 return Gate::check('create', \App\Models\RankRecord::class);
             }),
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::active(ExportDataFeature::class);
-            })->nameable(),
+            ExportAsCsv::make('Export '.self::label())
+                ->canSee(function () {
+                    return Feature::active(ExportDataFeature::class);
+                })
+                ->nameable(),
         ];
     }
 }

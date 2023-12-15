@@ -55,11 +55,12 @@ class BatchCreateQualificationRecord extends Action
         foreach ($fields->users as $userId) {
             $user = User::findOrFail($userId);
 
-            $user->qualification_records()->create([
-                'qualification_id' => $fields->qualification?->id,
-                'text' => $fields->text,
-                'document_id' => $fields->document?->id,
-            ]);
+            $user->qualification_records()
+                ->create([
+                    'qualification_id' => $fields->qualification?->id,
+                    'text' => $fields->text,
+                    'document_id' => $fields->document?->id,
+                ]);
         }
 
         return Action::message('You have successfully created the qualification records.');
@@ -67,16 +68,17 @@ class BatchCreateQualificationRecord extends Action
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')
                 ->options(
-                    User::all()->pluck('name', 'id')->sort()
-                )->rules('required'),
+                    User::all()
+                        ->pluck('name', 'id')
+                        ->sort()
+                )
+                ->rules('required'),
             BelongsTo::make(Str::singular(Str::title(setting('localization_qualifications', 'Qualification'))), 'qualification', Qualification::class)
                 ->showCreateRelationButton(),
             Textarea::make('Text'),

@@ -46,15 +46,16 @@ class ImpersonateTenant extends Action
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         if ($request->resourceId) {
             $tenant = Tenant::findOrFail($request->resourceId);
             $options = $tenant->run(function () {
-                return User::all()->pluck('name', 'id')->sort()->toArray();
+                return User::all()
+                    ->pluck('name', 'id')
+                    ->sort()
+                    ->toArray();
             });
         }
 

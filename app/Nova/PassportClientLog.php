@@ -16,58 +16,37 @@ use Symfony\Component\HttpFoundation\Response;
 
 class PassportClientLog extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\PassportClientLog::class;
+    public static string $model = \App\Models\PassportClientLog::class;
+
+    public static array $orderBy = ['created_at' => 'desc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'id';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['created_at' => 'desc'];
-
-    /**
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return 'Logs';
     }
 
-    /**
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'oauth-logs';
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            DateTime::make('Requested At', 'created_at')->sortable(),
+            ID::make()
+                ->sortable(),
+            DateTime::make('Requested At', 'created_at')
+                ->sortable(),
             new Panel('Client', [
                 MorphTo::make('Performed By', 'causer', User::class),
                 Text::make('IP Address', function (Activity $log) {
@@ -77,83 +56,74 @@ class PassportClientLog extends Resource
             new Panel('Request', [
                 Badge::make('Method', function (Activity $log) {
                     return $log->properties->get('method') ?? 'No Method Logged';
-                })->map([
-                    'No Method Logged' => 'info',
-                    Request::METHOD_HEAD => 'info',
-                    Request::METHOD_DELETE => 'danger',
-                    Request::METHOD_GET => 'info',
-                    Request::METHOD_OPTIONS => 'info',
-                    Request::METHOD_PATCH => 'info',
-                    Request::METHOD_POST => 'success',
-                    Request::METHOD_PUT => 'warning',
-                ])->sortable(),
+                })
+                    ->map([
+                        'No Method Logged' => 'info',
+                        Request::METHOD_HEAD => 'info',
+                        Request::METHOD_DELETE => 'danger',
+                        Request::METHOD_GET => 'info',
+                        Request::METHOD_OPTIONS => 'info',
+                        Request::METHOD_PATCH => 'info',
+                        Request::METHOD_POST => 'success',
+                        Request::METHOD_PUT => 'warning',
+                    ])
+                    ->sortable(),
                 Text::make('Endpoint', function (Activity $log) {
                     return $log->properties->get('endpoint') ?? 'No Endpoint Logged';
-                })->copyable()->sortable(),
+                })
+                    ->copyable()
+                    ->sortable(),
                 Code::make('Headers', function (Activity $log) {
                     return $log->properties->get('request_headers');
-                })->language('vim')->onlyOnDetail(),
+                })
+                    ->language('vim')
+                    ->onlyOnDetail(),
             ]),
             new Panel('Response', [
                 Text::make('Status', function (Activity $log) {
                     $status = $log->properties->get('status');
                     if ($status) {
-                        $message = Response::$statusTexts[$status];
+                        $message = Response::$statusTexts[(int) $status];
 
                         return "$status $message";
                     }
 
                     return 'No Status Logged';
                 }),
-                MorphTo::make('Subject')->onlyOnDetail(),
+                MorphTo::make('Subject')
+                    ->onlyOnDetail(),
                 Code::make('Content', function (Activity $log) {
                     return optional($log->properties->get('content'), function ($data) {
                         return json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
                     });
-                })->json()->onlyOnDetail(),
+                })
+                    ->json()
+                    ->onlyOnDetail(),
                 Code::make('Headers', function (Activity $log) {
                     return $log->properties->get('response_headers');
-                })->language('vim')->onlyOnDetail(),
+                })
+                    ->language('vim')
+                    ->onlyOnDetail(),
             ]),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

@@ -26,23 +26,16 @@ class Field extends Resource
 {
     use HasSortableManyToManyRows;
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Field::class;
+    public static string $model = \App\Models\Field::class;
+
+    public static array $orderBy = ['name' => 'asc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name'];
@@ -52,30 +45,16 @@ class Field extends Resource
      */
     public static $perPageViaRelationship = 10;
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['name' => 'asc'];
-
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return 'Type: '.Str::ucfirst($this->type);
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->hideFromIndex(),
+            ID::make()
+                ->hideFromIndex(),
             Text::make('Name')
                 ->sortable()
                 ->rules(['required']),
@@ -83,7 +62,8 @@ class Field extends Resource
                 ->from('Name')
                 ->rules([
                     'required',
-                    Rule::unique('fields', 'key')->ignore($this->id),
+                    Rule::unique('fields', 'key')
+                        ->ignore($this->id),
                     'regex:/^[0-9a-zA-Z_]+$/',
                 ])
                 ->hideFromIndex()
@@ -95,7 +75,8 @@ class Field extends Resource
                 ->showOnPreview(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
-            })->onlyOnIndex(),
+            })
+                ->onlyOnIndex(),
             Select::make('Type')
                 ->rules('required')
                 ->options(\App\Models\Field::$fieldTypes)
@@ -110,9 +91,12 @@ class Field extends Resource
                         $field->show();
                     }
                 }),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
             Panel::make('Details', [
                 Text::make('Placeholder')
                     ->hideFromIndex()
@@ -138,51 +122,34 @@ class Field extends Resource
                     ->help('A pipe delimited list of validation rules that can be found <a target="_blank" href="https://laravel.com/docs/10.x/validation#available-validation-rules">here</a>.'),
             ]),
             Panel::make('Visibility', [
-                Boolean::make('Hidden')->help('The field will only be shown if the user has editable permissions.'),
+                Boolean::make('Hidden')
+                    ->help('The field will only be shown if the user has editable permissions.'),
             ]),
             MorphedByMany::make('Assigned Forms', 'forms', Form::class),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [ExportAsCsv::make('Export '.self::label())
+            ->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })
+            ->nameable()];
     }
 }

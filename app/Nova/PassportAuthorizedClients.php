@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Features\OAuth2AccessFeature;
 use App\Models\PassportToken;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
@@ -19,69 +20,46 @@ use Laravel\Pennant\Feature;
 
 class PassportAuthorizedClients extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = PassportToken::class;
+    public static string $model = PassportToken::class;
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name'];
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'authorized-clients';
     }
 
-    /**
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return 'Authorized Clients';
     }
 
-    /**
-     * @return string
-     */
-    public function title()
+    public function title(): ?string
     {
         return $this->client?->name ?? 'Client';
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function indexQuery(NovaRequest $request, $query)
+    public static function indexQuery(NovaRequest $request, $query): Builder
     {
         $personalAccessClient = app()->make(ClientRepository::class)->personalAccessClient();
 
         return $query->where('client_id', '<>', $personalAccessClient?->id);
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            BelongsTo::make('Application', 'client', PassportClient::class)->sortable()->readonly(),
+            BelongsTo::make('Application', 'client', PassportClient::class)
+                ->sortable()
+                ->readonly(),
             MultiSelect::make('Scopes')
                 ->options(
-                    Passport::scopes()->pluck('id', 'id')->sort()
+                    Passport::scopes()
+                        ->pluck('id', 'id')
+                        ->sort()
                 )
                 ->hideFromIndex()
                 ->readonly(),
@@ -101,76 +79,44 @@ class PassportAuthorizedClients extends Resource
         ];
     }
 
-    /**
-     * @return bool
-     */
-    public static function authorizedToViewAny(Request $request)
+    public static function authorizedToViewAny(Request $request): bool
     {
         return Feature::active(OAuth2AccessFeature::class) && Gate::check('viewAny', PassportToken::class);
     }
 
-    /**
-     * @return false
-     */
-    public static function authorizedToCreate(Request $request)
+    public static function authorizedToCreate(Request $request): bool
     {
         return false;
     }
 
-    /**
-     * @param  \Laravel\Nova\Resource  $resource
-     * @return string
-     */
-    public static function redirectAfterCreate(NovaRequest $request, $resource)
+    public static function redirectAfterCreate(NovaRequest $request, $resource): string
     {
         return '/resources/'.static::uriKey();
     }
 
-    /**
-     * @return void
-     */
-    public static function afterCreate(NovaRequest $request, Model $model)
+    public static function afterCreate(NovaRequest $request, Model $model): void
     {
-        $request->user()->createToken($model->name, $model->scopes);
+        $request->user()
+            ->createToken($model->name, $model->scopes);
         $model->delete();
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

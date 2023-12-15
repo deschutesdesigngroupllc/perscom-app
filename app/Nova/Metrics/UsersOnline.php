@@ -26,11 +26,14 @@ class UsersOnline extends Value
      */
     public function calculate(NovaRequest $request)
     {
-        $keys = \App\Models\User::all()->map(function ($user) {
-            return "user.online.$user->id";
-        })->toArray();
+        $keys = \App\Models\User::all()
+            ->map(function ($user) {
+                return "user.online.$user->id";
+            })
+            ->toArray();
 
-        $count = collect(\Illuminate\Support\Facades\Cache::tags('user.online')->many($keys))
+        $count = collect(\Illuminate\Support\Facades\Cache::tags('user.online')
+            ->many($keys))
             ->filter(function ($value) {
                 return $value === true;
             })

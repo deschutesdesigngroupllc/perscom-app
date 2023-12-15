@@ -39,88 +39,95 @@ class Tenant extends Resource
     use HasActionsInTabs;
     use HasTabs;
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Tenant::class;
+    public static string $model = TenantModel::class;
+
+    public static array $orderBy = ['name' => 'asc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name', 'email'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['name' => 'asc'];
-
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return "URL: {$this->url}";
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make('PERSCOM ID', 'id')->sortable(),
+            ID::make('PERSCOM ID', 'id')
+                ->sortable(),
             Text::make('Name')
                 ->sortable()
-                ->rules(['required', Rule::unique('tenants', 'name')->ignore($this->id)])
+                ->rules(['required', Rule::unique('tenants', 'name')
+                    ->ignore($this->id)])
                 ->copyable(),
             Email::make('Email')
                 ->sortable()
                 ->hideFromIndex()
-                ->rules(['required', Rule::unique('tenants', 'email')->ignore($this->id)]),
-            Text::make('Website')->hideFromIndex(),
-            URL::make('Domain', 'url')->displayUsing(function ($url) {
-                return $url;
-            })->exceptOnForms(),
+                ->rules(['required', Rule::unique('tenants', 'email')
+                    ->ignore($this->id)]),
+            Text::make('Website')
+                ->hideFromIndex(),
+            URL::make('Domain', 'url')
+                ->displayUsing(function ($url) {
+                    return $url;
+                })
+                ->exceptOnForms(),
             Boolean::make('Demo Account', function () {
                 return (string) $this->id === (string) env('TENANT_DEMO_ID');
-            })->hideFromIndex()->readonly(),
-            Text::make('Domain', 'domain')->rules([
-                'required',
-                'string',
-                'max:255',
-                Rule::unique(Domain::class, 'domain'),
-            ])->onlyOnForms()->hideWhenUpdating()->fillUsing(function ($request) {
-                return null;
-            }),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Last Login At')->sortable()->exceptOnForms(),
-            DateTime::make('Created At')->sortable()->exceptOnForms()->onlyOnDetail(),
-            DateTime::make('Updated At')->sortable()->exceptOnForms()->onlyOnDetail(),
+            })
+                ->hideFromIndex()
+                ->readonly(),
+            Text::make('Domain', 'domain')
+                ->rules([
+                    'required',
+                    'string',
+                    'max:255',
+                    Rule::unique(Domain::class, 'domain'),
+                ])
+                ->onlyOnForms()
+                ->hideWhenUpdating()
+                ->fillUsing(function ($request) {
+                    return null;
+                }),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Last Login At')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->exceptOnForms()
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->sortable()
+                ->exceptOnForms()
+                ->onlyOnDetail(),
             Tabs::make('Relations', [
                 Tab::make('Billing Settings', [
-                    Text::make('Billing Address')->hideFromIndex(),
-                    Text::make('Billing Address Line 2')->hideFromIndex(),
-                    Text::make('Billing City')->hideFromIndex(),
-                    Text::make('Billing State')->hideFromIndex(),
-                    Text::make('Billing Postal Code')->hideFromIndex(),
-                    Country::make('Billing Country')->hideFromIndex(),
-                    Text::make('VAT ID')->hideFromIndex(),
-                    Textarea::make('Extra Billing Information')->hideFromIndex(),
+                    Text::make('Billing Address')
+                        ->hideFromIndex(),
+                    Text::make('Billing Address Line 2')
+                        ->hideFromIndex(),
+                    Text::make('Billing City')
+                        ->hideFromIndex(),
+                    Text::make('Billing State')
+                        ->hideFromIndex(),
+                    Text::make('Billing Postal Code')
+                        ->hideFromIndex(),
+                    Country::make('Billing Country')
+                        ->hideFromIndex(),
+                    Text::make('VAT ID')
+                        ->hideFromIndex(),
+                    Textarea::make('Extra Billing Information')
+                        ->hideFromIndex(),
                 ]),
                 Tab::make('Current Subscription', [
                     Boolean::make('Customer', function ($model) {
@@ -134,29 +141,45 @@ class Tenant extends Resource
                     }),
                     Badge::make('Status', function () {
                         return $this->subscription()->stripe_status ?? null;
-                    })->map([
-                        'active' => 'success',
-                        'incomplete' => 'warning',
-                        'incomplete_expired' => 'danger',
-                        'trialing' => 'info',
-                        'past_due' => 'warning',
-                        'canceled' => 'danger',
-                        'unpaid' => 'danger',
-                        '' => 'info',
-                    ])->label(function ($value) {
-                        return $value ? Str::replace('_', ' ', $value) : 'No Subscription';
-                    })->sortable(),
-                    Text::make('Stripe ID')->hideFromIndex()->copyable(),
-                    Text::make('Card Brand', 'pm_type')->hideFromIndex(),
-                    Text::make('Card Last Four', 'pm_last_four')->hideFromIndex(),
-                    Text::make('Card Expiration', 'pm_expiration')->hideFromIndex(),
-                    DateTime::make('Trial Ends At')->hideFromIndex(),
-                    DateTime::make('Plan Ends At')->hideFromIndex(),
-                    Text::make('Receipt Emails')->hideFromIndex(),
+                    })
+                        ->map([
+                            'active' => 'success',
+                            'incomplete' => 'warning',
+                            'incomplete_expired' => 'danger',
+                            'trialing' => 'info',
+                            'past_due' => 'warning',
+                            'canceled' => 'danger',
+                            'unpaid' => 'danger',
+                            '' => 'info',
+                        ])
+                        ->label(function ($value) {
+                            return $value ? Str::replace('_', ' ', $value) : 'No Subscription';
+                        })
+                        ->sortable(),
+                    Text::make('Stripe ID')
+                        ->hideFromIndex()
+                        ->copyable(),
+                    Text::make('Card Brand', 'pm_type')
+                        ->hideFromIndex(),
+                    Text::make('Card Last Four', 'pm_last_four')
+                        ->hideFromIndex(),
+                    Text::make('Card Expiration', 'pm_expiration')
+                        ->hideFromIndex(),
+                    DateTime::make('Trial Ends At')
+                        ->hideFromIndex(),
+                    DateTime::make('Plan Ends At')
+                        ->hideFromIndex(),
+                    Text::make('Receipt Emails')
+                        ->hideFromIndex(),
                 ]),
                 Tab::make('Database', [
-                    Text::make('Database Name', 'tenancy_db_name')->hideFromIndex(),
-                    Status::make('Database Status')->hideFromIndex()->loadingWhen(['creating'])->failedWhen([])->readonly(),
+                    Text::make('Database Name', 'tenancy_db_name')
+                        ->hideFromIndex(),
+                    Status::make('Database Status')
+                        ->hideFromIndex()
+                        ->loadingWhen(['creating'])
+                        ->failedWhen([])
+                        ->readonly(),
                 ]),
                 Tab::make('Domains', [HasMany::make('Domains')]),
                 Tab::make('Features', [
@@ -169,19 +192,17 @@ class Tenant extends Resource
         ];
     }
 
-    /**
-     * Register a callback to be called after the resource is created.
-     *
-     * @return void
-     */
-    public static function afterCreate(NovaRequest $request, Model $model)
+    public static function afterCreate(NovaRequest $request, Model $model): void
     {
         $values = $request->all();
 
         $domain = Domain::withoutEvents(function () use ($model, $values) {
-            return $model->domains()->create([
-                'domain' => $values['domain'],
-            ]);
+            if ($model instanceof TenantModel) {
+                return $model->domains()
+                    ->create([
+                        'domain' => $values['domain'],
+                    ]);
+            }
         });
 
         $model->load('domains');
@@ -192,42 +213,22 @@ class Tenant extends Resource
         event('eloquent.created: '.Domain::class, $domain);
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [
             new CreateTenantUser(),

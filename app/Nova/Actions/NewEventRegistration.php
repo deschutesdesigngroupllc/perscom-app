@@ -37,9 +37,12 @@ class NewEventRegistration extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            $model->registrations()->attach([
-                'user_id' => request()->user()->getAuthIdentifier(),
-            ]);
+            $model->registrations()
+                ->attach([
+                    'user_id' => request()
+                        ->user()
+                        ->getAuthIdentifier(),
+                ]);
         }
 
         return Action::message('You have successfully registered for the/these event(s).');
@@ -47,10 +50,8 @@ class NewEventRegistration extends Action
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [];
     }

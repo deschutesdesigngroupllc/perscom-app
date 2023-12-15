@@ -2,6 +2,7 @@
 
 namespace App\Nova\Metrics;
 
+use App\Models\Enums\RankRecordType;
 use App\Models\RankRecord;
 use Illuminate\Support\Str;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -16,17 +17,16 @@ class RankRecordsByType extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, RankRecord::class, 'type')->label(function ($value) {
-            $labels = [
-                RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
-                RankRecord::RECORD_RANK_DEMOTION => 'Demotion',
-            ];
+        $colors = collect(RankRecordType::cases())
+            ->mapWithKeys(fn (RankRecordType $case) => [$case->value => $case->getColor()])
+            ->toArray();
 
-            return $labels[$value];
-        })->colors([
-            RankRecord::RECORD_RANK_PROMOTION => '#16A34A',
-            RankRecord::RECORD_RANK_DEMOTION => '#DC2626',
-        ]);
+        return $this->count($request, RankRecord::class, 'type')
+            ->label(function ($value) {
+                return RankRecordType::from($value)
+                    ->getLabel();
+            })
+            ->colors($colors);
     }
 
     /**

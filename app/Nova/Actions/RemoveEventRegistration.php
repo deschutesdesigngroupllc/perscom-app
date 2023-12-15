@@ -41,7 +41,11 @@ class RemoveEventRegistration extends DestructiveAction
     {
         foreach ($models as $model) {
             if ($model instanceof Event) {
-                $model->registrations()->wherePivot('user_id', '=', request()->user()->getAuthIdentifier())->detach();
+                $model->registrations()
+                    ->wherePivot('user_id', '=', request()
+                        ->user()
+                        ->getAuthIdentifier())
+                    ->detach();
             }
 
             if ($model instanceof EventRegistration) {
@@ -54,10 +58,8 @@ class RemoveEventRegistration extends DestructiveAction
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [];
     }

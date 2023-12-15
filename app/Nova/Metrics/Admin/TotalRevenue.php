@@ -24,7 +24,8 @@ class TotalRevenue extends Value
         $timezone = Nova::resolveUserTimezone($request) ?? $request->timezone ?? config('app.timezone');
         $range = $request->range ?? 1;
 
-        $query = DB::table('receipts')->select(DB::raw('SUM( TRIM( REPLACE(amount, \'$\', \'\')) + 0.0) as total'));
+        $query = DB::table('receipts')
+            ->select(DB::raw('SUM( TRIM( REPLACE(amount, \'$\', \'\')) + 0.0) as total'));
 
         if ($request->range === 'ALL') {
             return $this->result(
@@ -33,7 +34,9 @@ class TotalRevenue extends Value
                     $this->roundingPrecision,
                     $this->roundingMode
                 )
-            )->dollars()->format('0,0.00');
+            )
+                ->dollars()
+                ->format('0,0.00');
         }
 
         $currentRange = $this->currentRange($range, $timezone);
@@ -42,7 +45,8 @@ class TotalRevenue extends Value
         $previousValue = round(
             (clone $query)->whereBetween(
                 'paid_at', $this->formatQueryDateBetween($previousRange)
-            )->first()->total ?? 0,
+            )
+                ->first()->total ?? 0,
             $this->roundingPrecision,
             $this->roundingMode
         );
@@ -50,12 +54,16 @@ class TotalRevenue extends Value
         $currentValue = round(
             (clone $query)->whereBetween(
                 'paid_at', $this->formatQueryDateBetween($currentRange)
-            )->first()->total ?? 0,
+            )
+                ->first()->total ?? 0,
             $this->roundingPrecision,
             $this->roundingMode
         );
 
-        return $this->result($currentValue)->previous($previousValue)->dollars()->format('0,0.00');
+        return $this->result($currentValue)
+            ->previous($previousValue)
+            ->dollars()
+            ->format('0,0.00');
     }
 
     /**
