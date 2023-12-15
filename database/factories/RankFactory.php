@@ -2,21 +2,24 @@
 
 namespace Database\Factories;
 
+use App\Models\Rank;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
+/**
+ * @extends Factory<Rank>
+ */
 class RankFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
-            'abbreviation' => $this->faker->word,
+            'abbreviation' => Str::upper($this->faker->lexify('???')),
             'paygrade' => $this->faker->word,
         ];
     }

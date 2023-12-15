@@ -4,17 +4,16 @@ namespace Database\Factories;
 
 use App\Models\Enums\WebhookEvent;
 use App\Models\Enums\WebhookMethod;
+use App\Models\Webhook;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Webhook>
+ * @extends Factory<Webhook>
  */
 class WebhookFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
     public function definition(): array

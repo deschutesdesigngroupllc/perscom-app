@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Tenant\Requests\Traits;
+namespace Tests\Traits;
 
 use App\Http\Middleware\LogApiRequests;
 use App\Http\Middleware\SentryContext;

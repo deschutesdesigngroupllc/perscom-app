@@ -2,22 +2,24 @@
 
 namespace Database\Factories;
 
+use App\Models\Image;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Image>
+ * @extends Factory<Image>
  */
 class ImageFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
      * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->word,
+            'description' => $this->faker->paragraph,
+            'filename' => $this->faker->word.$this->faker->fileExtension(),
+            'path' => $this->faker->filePath(),
         ];
     }
 }

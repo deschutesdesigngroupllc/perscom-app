@@ -3,8 +3,8 @@
 namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\URL;
-use Tests\Feature\Tenant\Requests\Traits\MakesApiRequests;
 use Tests\Feature\Tenant\TenantTestCase;
+use Tests\Traits\MakesApiRequests;
 
 class ApiTestCase extends TenantTestCase
 {

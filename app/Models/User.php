@@ -413,8 +413,8 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 
     public function tasks(): BelongsToMany
     {
-        return $this->belongsToMany(Task::class, 'users_tasks', 'task_id')
-            ->withPivot(['id', 'assigned_by_id', 'completed_at', 'assigned_at', 'expires_at'])
+        return $this->belongsToMany(Task::class, 'users_tasks')
+            ->withPivot(['id', 'task_id', 'user_id', 'assigned_by_id', 'assigned_at', 'due_at', 'completed_at', 'expires_at'])
             ->as('assignment')
             ->using(TaskAssignment::class)
             ->withTimestamps();

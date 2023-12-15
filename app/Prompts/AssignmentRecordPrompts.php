@@ -3,6 +3,10 @@
 namespace App\Prompts;
 
 use App\Models\AssignmentRecord;
+use App\Models\Position;
+use App\Models\Specialty;
+use App\Models\Status;
+use App\Models\Unit;
 use Illuminate\Support\Str;
 
 class AssignmentRecordPrompts
@@ -13,12 +17,44 @@ class AssignmentRecordPrompts
 
         $prompt = Str::replace('{user}', $record->user->name, $prompt);
         $prompt = Str::replace('{text}', $record->text, $prompt);
-        $prompt = Str::replace('{unit}', $record->unit->name, $prompt);
-        $prompt = Str::replace('{unit_description}', $record->unit->description, $prompt);
-        $prompt = Str::replace('{position}', $record->position->name, $prompt);
-        $prompt = Str::replace('{position_description}', $record->position->description, $prompt);
-        $prompt = Str::replace('{specialty}', $record->specialty->name, $prompt);
-        $prompt = Str::replace('{specialty_description}', $record->specialty->description, $prompt);
+
+        $status = optional($record->status, function (Status $status) use ($prompt) {
+            return Str::replace('{status}', $status->name, $prompt);
+        });
+
+        if ($status) {
+            $prompt = $status;
+        }
+
+        $unit = optional($record->unit, function (Unit $unit) use ($prompt) {
+            $prompt = Str::replace('{unit}', $unit->name, $prompt);
+
+            return Str::replace('{unit_description}', $unit->description, $prompt);
+        });
+
+        if ($unit) {
+            $prompt = $unit;
+        }
+
+        $specialty = optional($record->specialty, function (Specialty $specialty) use ($prompt) {
+            $prompt = Str::replace('{specialty}', $specialty->name, $prompt);
+
+            return Str::replace('{specialty_description}', $specialty->description, $prompt);
+        });
+
+        if ($specialty) {
+            $prompt = $specialty;
+        }
+
+        $position = optional($record->position, function (Position $position) use ($prompt) {
+            $prompt = Str::replace('{position}', $position->name, $prompt);
+
+            return Str::replace('{position_description}', $position->description, $prompt);
+        });
+
+        if ($position) {
+            $prompt = $position;
+        }
 
         return $prompt;
     }

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Tenant;
 
-use Tests\Feature\Tenant\Requests\Traits\WithTenant;
 use Tests\TestCase;
+use Tests\Traits\WithTenant;
 
 class TenantTestCase extends TestCase
 {

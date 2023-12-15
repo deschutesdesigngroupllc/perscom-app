@@ -2,18 +2,23 @@
 
 namespace Database\Factories;
 
+use App\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<Role>
+ */
 class RoleFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
-        return [//
+        return [
+            'name' => $this->faker->word,
+            'description' => $this->faker->paragraph,
+            'guard_name' => 'web',
         ];
     }
 }

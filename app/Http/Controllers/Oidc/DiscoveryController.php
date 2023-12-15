@@ -3,13 +3,11 @@
 namespace App\Http\Controllers\Oidc;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 
 class DiscoveryController extends Controller
 {
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index()
+    public function index(): JsonResponse
     {
         return response()->json([
             'issuer' => tenant()->url,

@@ -16,13 +16,17 @@ abstract class Policy
         if (Auth::getDefaultDriver() === 'api') {
             if ($client = Auth::guard('passport')->client()) { // @phpstan-ignore-line
                 if ($client->type === 'client_credentials' && $token = request()->attributes->get('client_credentials_token')) {
-                    return \in_array($permission, Arr::wrap($token->scopes));
+                    $scopes = Arr::wrap($token->scopes);
+
+                    return \in_array('*', $scopes) || \in_array($permission, Arr::wrap($token->scopes));
                 }
             }
 
             if (Auth::guard('jwt')->check()) {
                 if ($payload = Auth::guard('jwt')->payload()) { // @phpstan-ignore-line
-                    return \in_array($permission, Arr::wrap($payload->get('scope')));
+                    $scopes = Arr::wrap($payload->get('scope'));
+
+                    return \in_array('*', $scopes) || \in_array($permission, $scopes);
                 }
             }
         }

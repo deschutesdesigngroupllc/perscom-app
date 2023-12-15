@@ -3,16 +3,18 @@
 namespace Database\Factories;
 
 use App\Models\Status;
+use App\Models\StatusRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<StatusRecord>
+ */
 class StatusRecordFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'status_id' => Status::factory(),

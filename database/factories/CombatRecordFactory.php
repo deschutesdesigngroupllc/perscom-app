@@ -2,22 +2,26 @@
 
 namespace Database\Factories;
 
+use App\Models\CombatRecord;
+use App\Models\Document;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
+/**
+ * @extends Factory<CombatRecord>
+ */
 class CombatRecordFactory extends Factory
 {
     /**
-     * Define the model's default state.
-     *
-     * @return array
+     * @return array<string, mixed>
      */
-    public function definition()
+    public function definition(): array
     {
         return [
-            'text' => $this->faker->sentence(),
-            'author_id' => User::factory(),
             'user_id' => User::factory(),
+            'document_id' => $this->faker->randomElement([Document::factory(), null]),
+            'author_id' => User::factory(),
+            'text' => $this->faker->sentence(),
         ];
     }
 }

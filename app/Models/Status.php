@@ -48,7 +48,7 @@ class Status extends Model
         'bg-gray-100 text-gray-600' => 'Gray',
         'bg-green-100 text-green-600' => 'Green',
         'bg-red-100 text-red-600' => 'Red',
-        'bg-white-100 text-black-600' => 'White',
+        'bg-white text-black' => 'White',
         'bg-yellow-100 text-yellow-600' => 'Yellow',
     ];
 
