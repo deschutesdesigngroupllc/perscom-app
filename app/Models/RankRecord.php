@@ -89,7 +89,7 @@ class RankRecord extends Model
     protected $table = 'records_ranks';
 
     /**
-     * @var string[]
+     * @var array<string, string>
      */
     protected $casts = [
         'type' => RankRecordType::class,
