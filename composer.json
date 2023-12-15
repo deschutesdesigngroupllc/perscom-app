@@ -7,6 +7,7 @@
     ],
     "license": "MIT",
     "require": {
+        "php": "^8.2",
         "aws/aws-sdk-php": "^3.230",
         "doctrine/dbal": "^3.4",
         "dompdf/dompdf": "^2.0",
