@@ -13,6 +13,8 @@ use App\Models\Event;
 use App\Models\Field;
 use App\Models\Form;
 use App\Models\Group;
+use App\Models\PassportClient;
+use App\Models\PassportToken;
 use App\Models\Position;
 use App\Models\Qualification;
 use App\Models\QualificationRecord;
@@ -162,6 +164,14 @@ class DatabaseSeeder extends Seeder
             ->count(3)
             ->sequence(fn (Sequence $sequence) => ['name' => "Form $sequence->index"])
             ->hasAttached($fields->random(3))
+            ->create();
+
+        PassportToken::factory()
+            ->for($user, 'user')
+            ->for(PassportClient::query()->where('name', '=', 'Default Personal Access Client')->first(), 'client')
+            ->state([
+                'name' => 'Default API Key',
+            ])
             ->create();
     }
 }
