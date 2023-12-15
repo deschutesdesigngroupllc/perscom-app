@@ -48,10 +48,8 @@ class DeleteTenantDatabase extends DestructiveAction
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [];
     }

@@ -8,8 +8,6 @@ use Laravel\Nova\Actions\ActionResource;
 class Action extends ActionResource
 {
     /**
-     * The model the resource corresponds to.
-     *
      * @var class-string<TActionModel>
      */
     public static $model = \App\Models\Action::class;
@@ -24,22 +22,12 @@ class Action extends ActionResource
         return true;
     }
 
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return 'Logs';
     }
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'logs';
     }

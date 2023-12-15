@@ -32,121 +32,106 @@ class Form extends Resource
     use HasActionsInTabs;
     use HasTabs;
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Form::class;
+    public static string $model = \App\Models\Form::class;
+
+    public static array $orderBy = ['name' => 'asc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['name' => 'asc'];
-
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->hideFromIndex(),
-            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
+            ID::make()
+                ->hideFromIndex(),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required'])
+                ->showOnPreview(),
             Slug::make('Slug')
                 ->from('Name')
-                ->rules(['required', Rule::unique('forms', 'slug')->ignore($this->id)])
+                ->rules(['required', Rule::unique('forms', 'slug')
+                    ->ignore($this->id)])
                 ->help('The slug will be used in the URL to access the form.')
                 ->canSee(function (NovaRequest $request) {
                     return Gate::check('update', $request->findModel());
                 }),
             Text::make('Description', function () {
                 return Str::limit($this->description);
-            })->onlyOnIndex(),
-            Tag::make('Tags')->showCreateRelationButton()->withPreview(),
-            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
+            })
+                ->onlyOnIndex(),
+            Tag::make('Tags')
+                ->showCreateRelationButton()
+                ->withPreview(),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
             Markdown::make('Instructions'),
             new Panel('Submission', [
                 Textarea::make('Success Message')
                     ->help('The message displayed when the form is successfully submitted.')
                     ->alwaysShow(),
-                BelongsTo::make('Default Submission Status', 'submission_status', Status::class)->nullable()->hideFromIndex(),
+                BelongsTo::make('Default Submission Status', 'submission_status', Status::class)
+                    ->nullable()
+                    ->hideFromIndex(),
             ]),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
             Tabs::make('Settings', [
                 Tab::make('Fields', [
-                    MorphToMany::make('Fields', 'fields', Field::class)->showCreateRelationButton(),
+                    MorphToMany::make('Fields', 'fields', Field::class)
+                        ->showCreateRelationButton(),
                 ]),
                 Tab::make('Submissions', [HasMany::make('Submissions', 'submissions', Submission::class)]),
                 Tab::make('Notifications', [MorphToMany::make('Notifications', 'notifications', User::class)]),
                 Tab::make('Logs', [$this->actionfield()]),
-            ])->showTitle(),
+            ])
+                ->showTitle(),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::active(ExportDataFeature::class);
-            })->nameable(),
-            (new OpenForm())->showInline()->canRun(function (NovaRequest $request) {
-                return Gate::check('view', $request->findModel());
-            })->canSee(function (NovaRequest $request) {
-                return Gate::check('view', $request->findModel());
-            }),
+            ExportAsCsv::make('Export '.self::label())
+                ->canSee(function () {
+                    return Feature::active(ExportDataFeature::class);
+                })
+                ->nameable(),
+            (new OpenForm())->showInline()
+                ->canRun(function (NovaRequest $request) {
+                    return Gate::check('view', $request->findModel());
+                })
+                ->canSee(function (NovaRequest $request) {
+                    return Gate::check('view', $request->findModel());
+                }),
 
         ];
     }

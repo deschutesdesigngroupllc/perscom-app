@@ -11,12 +11,7 @@ use Perscom\Calendar\Http\Middleware\Authorize;
 
 class ToolServiceProvider extends ServiceProvider
 {
-    /**
-     * Bootstrap any application services.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         $this->app->booted(function () {
             $this->routes();
@@ -27,12 +22,7 @@ class ToolServiceProvider extends ServiceProvider
         });
     }
 
-    /**
-     * Register the tool's routes.
-     *
-     * @return void
-     */
-    protected function routes()
+    protected function routes(): void
     {
         if ($this->app->routesAreCached()) {
             return;
@@ -44,15 +34,5 @@ class ToolServiceProvider extends ServiceProvider
         Route::middleware(['nova', Authorize::class])
             ->prefix('nova-vendor/calendar')
             ->group(__DIR__.'/../routes/api.php');
-    }
-
-    /**
-     * Register any application services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //
     }
 }

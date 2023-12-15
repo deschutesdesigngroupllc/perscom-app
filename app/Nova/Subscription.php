@@ -2,11 +2,8 @@
 
 namespace App\Nova;
 
-use App\Notifications\Admin\NewSubscription;
 use App\Nova\Actions\OpenStripeSubscription;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -19,46 +16,28 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Subscription extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \Laravel\Cashier\Subscription::class;
+    public static string $model = \Laravel\Cashier\Subscription::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'stripe_id';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'stripe_id', 'stripe_price', 'stripe_status'];
 
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return "Tenant: {$this->owner->name}";
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
+            ID::make()
+                ->sortable(),
             BelongsTo::make('Tenant', 'owner', Tenant::class)
                 ->sortable(),
             Text::make('Name')
@@ -66,28 +45,36 @@ class Subscription extends Resource
                 ->placeholder('default')
                 ->hideFromIndex()
                 ->sortable(),
-            Text::make('ID', 'stripe_id')->readonly(function ($request) {
-                return $request->isUpdateOrUpdateAttachedRequest();
-            })->rules(['required']),
-            Text::make('Price', 'stripe_price')->readonly(function ($request) {
-                return $request->isUpdateOrUpdateAttachedRequest();
-            })->rules(['required']),
+            Text::make('ID', 'stripe_id')
+                ->readonly(function ($request) {
+                    return $request->isUpdateOrUpdateAttachedRequest();
+                })
+                ->rules(['required']),
+            Text::make('Price', 'stripe_price')
+                ->readonly(function ($request) {
+                    return $request->isUpdateOrUpdateAttachedRequest();
+                })
+                ->rules(['required']),
             Text::make('Plan', function () {
                 return $this->owner->sparkPlan()->name ?? null;
             }),
-            Badge::make('Status', 'stripe_status')->map([
-                'active' => 'success',
-                'incomplete' => 'warning',
-                'incomplete_expired' => 'danger',
-                'trialing' => 'info',
-                'past_due' => 'warning',
-                'canceled' => 'danger',
-                'unpaid' => 'danger',
-            ])->label(function ($value) {
-                return Str::replace('_', ' ', $value);
-            })->sortable(),
+            Badge::make('Status', 'stripe_status')
+                ->map([
+                    'active' => 'success',
+                    'incomplete' => 'warning',
+                    'incomplete_expired' => 'danger',
+                    'trialing' => 'info',
+                    'past_due' => 'warning',
+                    'canceled' => 'danger',
+                    'unpaid' => 'danger',
+                ])
+                ->label(function ($value) {
+                    return Str::replace('_', ' ', $value);
+                })
+                ->sortable(),
             Number::make('Quantity')
-                ->rules(['required'])->sortable(),
+                ->rules(['required'])
+                ->sortable(),
             DateTime::make('Trial Ends At')
                 ->sortable(),
             DateTime::make('Ends At')
@@ -96,69 +83,33 @@ class Subscription extends Resource
         ];
     }
 
-    /**
-     * @return false
-     */
-    public static function authorizedToCreate(Request $request)
+    public static function authorizedToCreate(Request $request): bool
     {
         return false;
     }
 
-    /**
-     * @return false
-     */
-    public function authorizedToReplicate(Request $request)
+    public function authorizedToReplicate(Request $request): bool
     {
         return false;
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [new OpenStripeSubscription()];
-    }
-
-    /**
-     * Register a callback to be called after the resource is created.
-     *
-     * @return void
-     */
-    public static function afterCreate(NovaRequest $request, Model $model)
-    {
-        Notification::send(\App\Models\User::all(), new NewSubscription($model));
     }
 }

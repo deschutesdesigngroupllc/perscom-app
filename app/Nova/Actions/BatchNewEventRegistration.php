@@ -48,9 +48,10 @@ class BatchNewEventRegistration extends Action
         $event = Event::findOrFail($fields->event);
 
         foreach ($fields->users as $userId) {
-            $event->registrations()->attach([
-                'user_id' => $userId,
-            ]);
+            $event->registrations()
+                ->attach([
+                    'user_id' => $userId,
+                ]);
         }
 
         return Action::message('You have successfully registered the user(s).');
@@ -58,20 +59,24 @@ class BatchNewEventRegistration extends Action
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             MultiSelect::make('Users')
                 ->options(
-                    User::all()->pluck('name', 'id')->sort()
-                )->rules('required'),
+                    User::all()
+                        ->pluck('name', 'id')
+                        ->sort()
+                )
+                ->rules('required'),
             Select::make('Event')
                 ->options(
-                    Event::all()->mapWithKeys(fn ($event) => [$event->id => "$event->name ({$event->calendar?->name})"])->sort()
-                )->rules('required'),
+                    Event::all()
+                        ->mapWithKeys(fn ($event) => [$event->id => "$event->name ({$event->calendar?->name})"])
+                        ->sort()
+                )
+                ->rules('required'),
         ];
     }
 }

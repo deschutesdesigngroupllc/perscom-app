@@ -55,10 +55,12 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
             ]);
 
             if ($fields->new_subdomain) {
-                $model->domains()->delete();
-                $model->domains()->create([
-                    'domain' => $fields->subdomain ?? Domain::generateSubdomain(),
-                ]);
+                $model->domains()
+                    ->delete();
+                $model->domains()
+                    ->create([
+                        'domain' => $fields->subdomain ?? Domain::generateSubdomain(),
+                    ]);
             }
 
             if ($fields->remove_subscription) {
@@ -77,10 +79,8 @@ class ResetTenantDatabaseFactory extends DestructiveAction implements ShouldQueu
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             Boolean::make('Reset Subdomain', 'new_subdomain')

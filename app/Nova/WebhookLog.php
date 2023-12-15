@@ -12,106 +12,69 @@ use Spatie\Activitylog\Models\Activity;
 
 class WebhookLog extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\WebhookLog::class;
+    public static string $model = \App\Models\WebhookLog::class;
+
+    public static array $orderBy = ['created_at' => 'desc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'description';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['created_at' => 'desc'];
-
-    /**
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return 'Logs';
     }
 
-    /**
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'webhook-logs';
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
+            ID::make()
+                ->sortable(),
             Text::make('Event', function (Activity $activity) {
                 return $activity->getExtraProperty('event');
-            })->sortable(),
-            MorphTo::make('Resource', 'causer')->sortable(),
-            DateTime::make('Created At')->sortable(),
+            })
+                ->sortable(),
+            MorphTo::make('Resource', 'causer')
+                ->sortable(),
+            DateTime::make('Created At')
+                ->sortable(),
             Code::make('Payload', function (Activity $log) {
                 return optional($log->properties, function ($data) {
                     return json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
                 });
-            })->json()->onlyOnDetail(),
+            })
+                ->json()
+                ->onlyOnDetail(),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

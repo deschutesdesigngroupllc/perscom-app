@@ -29,64 +29,70 @@ use Laravel\Nova\Panel;
 
 class Event extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\Event>
-     */
-    public static $model = \App\Models\Event::class;
+    public static string $model = \App\Models\Event::class;
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
-    public static $search = [
-        'id',
-        'name',
-    ];
+    public static $search = ['id', 'name'];
 
-    /**
-     * @return string
-     */
-    public function title()
+    public function title(): ?string
     {
         return $this->name.optional($this->calendar, static function ($calendar) {
             return " ($calendar->name)";
         });
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Name')->sortable()->rules('required')->showOnPreview(),
-            BelongsTo::make('Calendar')->sortable()->rules('required')
+            ID::make()
+                ->sortable(),
+            Text::make('Name')
+                ->sortable()
+                ->rules('required')
+                ->showOnPreview(),
+            BelongsTo::make('Calendar')
+                ->sortable()
+                ->rules('required')
                 ->showOnPreview()
                 ->showCreateRelationButton(),
-            BelongsTo::make('Organizer', 'author', User::class)->default(function (NovaRequest $request) {
-                return $request->user()->getAuthIdentifier();
-            })->rules('required')->sortable()->showOnPreview(),
-            Tag::make('Tags')->showCreateRelationButton(),
-            Textarea::make('Description')->alwaysShow()->hideFromIndex()->showOnPreview(),
-            Textarea::make('Location')->alwaysShow()->hideFromIndex()->showOnPreview(),
-            URL::make('URL')->hideFromIndex()->showOnPreview(),
+            BelongsTo::make('Organizer', 'author', User::class)
+                ->default(function (NovaRequest $request) {
+                    return $request->user()
+                        ->getAuthIdentifier();
+                })
+                ->rules('required')
+                ->sortable()
+                ->showOnPreview(),
+            Tag::make('Tags')
+                ->showCreateRelationButton(),
+            Textarea::make('Description')
+                ->alwaysShow()
+                ->hideFromIndex()
+                ->showOnPreview(),
+            Textarea::make('Location')
+                ->alwaysShow()
+                ->hideFromIndex()
+                ->showOnPreview(),
+            URL::make('URL')
+                ->hideFromIndex()
+                ->showOnPreview(),
             new Panel('Event', [
                 Text::make('Starts', function () {
                     return optional($this->start, function ($start) {
                         return $this->all_day ? $start->toFormattedDayDateString() : $start->toDayDateTimeString();
                     });
-                })->showOnPreview()->exceptOnForms(),
+                })
+                    ->showOnPreview()
+                    ->exceptOnForms(),
                 Text::make('Ends', function () {
                     return optional($this->computed_end, function ($end) {
                         return $this->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
                     });
-                })->showOnPreview()->exceptOnForms(),
+                })
+                    ->showOnPreview()
+                    ->exceptOnForms(),
                 Boolean::make('All Day', 'all_day'),
                 DateTime::make('Starts', 'start')
                     ->rules('required')
@@ -94,7 +100,8 @@ class Event extends Resource
                     ->onlyOnForms()
                     ->dependsOn(['all_day'], function (DateTime $field, NovaRequest $request, FormData $formData) {
                         if ($formData->all_day) {
-                            $field->rules('')->hide();
+                            $field->rules('')
+                                ->hide();
                         }
                     }),
                 Date::make('Starts', 'start')
@@ -104,7 +111,8 @@ class Event extends Resource
                     ->dependsOn(['all_day'],
                         function (Date $field, NovaRequest $request, FormData $formData) {
                             if ($formData->all_day) {
-                                $field->rules('required')->show();
+                                $field->rules('required')
+                                    ->show();
                             }
                         }),
                 DateTime::make('Ends', 'end')
@@ -114,7 +122,8 @@ class Event extends Resource
                     ->dependsOn(['all_day', 'repeats'],
                         function (DateTime $field, NovaRequest $request, FormData $formData) {
                             if ($formData->all_day || $formData->repeats) {
-                                $field->rules('')->hide();
+                                $field->rules('')
+                                    ->hide();
                             }
                         }),
                 Date::make('Ends', 'end')
@@ -123,7 +132,8 @@ class Event extends Resource
                     ->onlyOnForms()
                     ->dependsOn(['all_day', 'repeats'], function (Date $field, NovaRequest $request, FormData $formData) {
                         if ($formData->all_day) {
-                            $field->rules(['required', 'after_or_equal:start'])->show();
+                            $field->rules(['required', 'after_or_equal:start'])
+                                ->show();
                         }
 
                         if ($formData->repeats) {
@@ -136,7 +146,8 @@ class Event extends Resource
                 }),
                 Text::make('Pattern', function () {
                     return Str::ucfirst($this->human_readable_pattern);
-                })->onlyOnDetail(),
+                })
+                    ->onlyOnDetail(),
                 Number::make('Every', 'interval')
                     ->hide()
                     ->help('The interval at which the event will repeat.')
@@ -144,21 +155,25 @@ class Event extends Resource
                     ->onlyOnForms()
                     ->dependsOn(['repeats'], function (Number $field, NovaRequest $request, FormData $formData) {
                         if ($formData->repeats) {
-                            $field->rules('required')->show();
+                            $field->rules('required')
+                                ->show();
                         }
                     }),
-                Select::make('Frequency', 'frequency')->options([
-                    'DAILY' => 'Day(s)',
-                    'WEEKLY' => 'Week(s)',
-                    'MONTHLY' => 'Month(s)',
-                    'YEARLY' => 'Year(s)',
-                ])->default('WEEKLY')
+                Select::make('Frequency', 'frequency')
+                    ->options([
+                        'DAILY' => 'Day(s)',
+                        'WEEKLY' => 'Week(s)',
+                        'MONTHLY' => 'Month(s)',
+                        'YEARLY' => 'Year(s)',
+                    ])
+                    ->default('WEEKLY')
                     ->hide()
                     ->help('The frequency at which the event will repeat.')
                     ->onlyOnForms()
                     ->dependsOn(['repeats'], function (Select $field, NovaRequest $request, FormData $formData) {
                         if ($formData->repeats) {
-                            $field->rules('required')->show();
+                            $field->rules('required')
+                                ->show();
                         }
                     }),
                 MultiSelect::make('On', 'by_day')
@@ -191,11 +206,14 @@ class Event extends Resource
 
                         if ($start = $formData->start) {
                             $field->options(function () use ($start) {
-                                $month = Carbon::parse($start)->startOfMonth();
+                                $month = Carbon::parse($start)
+                                    ->startOfMonth();
                                 $period = collect(
-                                    $month->toPeriod($month->copy()->endOfMonth(), 1, 'day')->settings(
-                                        ['monthOverflow' => false]
-                                    )
+                                    $month->toPeriod($month->copy()
+                                        ->endOfMonth(), 1, 'day')
+                                        ->settings(
+                                            ['monthOverflow' => false]
+                                        )
                                 );
 
                                 return $period->mapWithKeys(function ($value) {
@@ -227,17 +245,20 @@ class Event extends Resource
                             $field->show();
                         }
                     }),
-                Select::make('Ends', 'end_type')->options([
-                    'never' => 'Never',
-                    'on' => 'On',
-                    'after' => 'After',
-                ])->default('never')
+                Select::make('Ends', 'end_type')
+                    ->options([
+                        'never' => 'Never',
+                        'on' => 'On',
+                        'after' => 'After',
+                    ])
+                    ->default('never')
                     ->hide()
                     ->help('Specify when the event will end.')
                     ->onlyOnForms()
                     ->dependsOn(['repeats'], function (Select $field, NovaRequest $request, FormData $formData) {
                         if ($formData->repeats) {
-                            $field->rules('required')->show();
+                            $field->rules('required')
+                                ->show();
                         }
                     }),
                 Date::make('On', 'until')
@@ -247,7 +268,8 @@ class Event extends Resource
                     ->onlyOnForms()
                     ->dependsOn(['end_type'], function (Date $field, NovaRequest $request, FormData $formData) {
                         if ($formData->end_type === 'on') {
-                            $field->rules(['required', 'after_or_equal:start'])->show();
+                            $field->rules(['required', 'after_or_equal:start'])
+                                ->show();
                         }
                     }),
                 Number::make('After', 'count')
@@ -257,21 +279,27 @@ class Event extends Resource
                     ->onlyOnForms()
                     ->dependsOn(['end_type'], function (Number $field, NovaRequest $request, FormData $formData) {
                         if ($formData->end_type === 'after') {
-                            $field->rules('required')->show();
+                            $field->rules('required')
+                                ->show();
                         }
                     }),
             ]),
             new Panel('Details', [
-                Trix::make('Content')->alwaysShow(),
+                Trix::make('Content')
+                    ->alwaysShow(),
             ]),
             new Panel('Registration', [
-                Boolean::make('Registrations Enabled', 'registration_enabled')->default(true),
-                DateTime::make('Registration Deadline', 'registration_deadline')->help('Leave blank to set no deadline.')->nullable(),
+                Boolean::make('Registrations Enabled', 'registration_enabled')
+                    ->default(true),
+                DateTime::make('Registration Deadline', 'registration_deadline')
+                    ->help('Leave blank to set no deadline.')
+                    ->nullable(),
             ]),
             BelongsToMany::make('Registrations', 'registrations', User::class)
                 ->fields(function () {
                     return [
-                        DateTime::make('Registered At', 'created_at')->default(now()),
+                        DateTime::make('Registered At', 'created_at')
+                            ->default(now()),
                     ];
                 })
                 ->referToPivotAs('registration'),
@@ -280,53 +308,35 @@ class Event extends Resource
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [
             (new BatchNewEventRegistration())->canSee(function () {
                 return Gate::check('create', \App\Models\EventRegistration::class);
             }),
-            (new NewEventRegistration())->showInline()->canRun(function (NovaRequest $request, ?\App\Models\Event $event) {
-                return ! $event?->registrations->contains($request->user());
-            }),
-            (new RemoveEventRegistration())->showInline()->canRun(function (NovaRequest $request, ?\App\Models\Event $event) {
-                return $event?->registrations->contains($request->user());
-            }),
+            (new NewEventRegistration())->showInline()
+                ->canRun(function (NovaRequest $request, ?\App\Models\Event $event) {
+                    return ! $event?->registrations->contains($request->user());
+                }),
+            (new RemoveEventRegistration())->showInline()
+                ->canRun(function (NovaRequest $request, ?\App\Models\Event $event) {
+                    return $event?->registrations->contains($request->user());
+                }),
         ];
     }
 }

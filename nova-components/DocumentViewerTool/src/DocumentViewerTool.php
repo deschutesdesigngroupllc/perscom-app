@@ -6,40 +6,24 @@ use Laravel\Nova\ResourceTool;
 
 class DocumentViewerTool extends ResourceTool
 {
-    /**
-     * Get the displayable name of the resource tool.
-     *
-     * @return string
-     */
-    public function name()
+    public function name(): string
     {
         return 'Document Viewer Tool';
     }
 
-    /**
-     * Get the component name for the resource tool.
-     *
-     * @return string
-     */
-    public function component()
+    public function component(): string
     {
         return 'document-viewer-tool';
     }
 
-    /**
-     * @return DocumentViewerTool
-     */
-    public function withTitle(string $title = null)
+    public function withTitle(string $title = null): DocumentViewerTool
     {
         return $this->withMeta([
             'title' => $title ?? null,
         ]);
     }
 
-    /**
-     * @return DocumentViewerTool
-     */
-    public function withContent(string $content = null)
+    public function withContent(string $content = null): DocumentViewerTool
     {
         return $this->withMeta([
             'content' => $content ?? null,

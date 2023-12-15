@@ -2,7 +2,7 @@
 
 namespace App\Nova\Actions;
 
-use App\Models\RankRecord;
+use App\Models\Enums\RankRecordType;
 use App\Models\User;
 use App\Nova\Rank;
 use Illuminate\Bus\Queueable;
@@ -57,12 +57,13 @@ class BatchCreateRankRecord extends Action
         foreach ($fields->users as $userId) {
             $user = User::findOrFail($userId);
 
-            $user->rank_records()->create([
-                'rank_id' => $fields->rank?->id,
-                'type' => $fields->type,
-                'text' => $fields->text,
-                'document_id' => $fields->document?->id,
-            ]);
+            $user->rank_records()
+                ->create([
+                    'rank_id' => $fields->rank?->id,
+                    'type' => $fields->type,
+                    'text' => $fields->text,
+                    'document_id' => $fields->document?->id,
+                ]);
         }
 
         return Action::message('You have successfully created the rank records.');
@@ -70,24 +71,21 @@ class BatchCreateRankRecord extends Action
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             MultiSelect::make(Str::plural(Str::title(setting('localization_users', 'Users'))), 'users')
                 ->options(
-                    User::all()->pluck('name', 'id')->sort()
+                    User::all()
+                        ->pluck('name', 'id')
+                        ->sort()
                 )
                 ->rules('required'),
             BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)
                 ->showCreateRelationButton(),
             Select::make('Type')
-                ->options([
-                    RankRecord::RECORD_RANK_PROMOTION => 'Promotion',
-                    RankRecord::RECORD_RANK_DEMOTION => 'Demotion',
-                ])
+                ->options(collect(RankRecordType::cases())->mapWithKeys(fn (RankRecordType $case) => [$case->value => $case->getLabel()]))
                 ->rules('required')
                 ->displayUsingLabels(),
             Textarea::make('Text'),

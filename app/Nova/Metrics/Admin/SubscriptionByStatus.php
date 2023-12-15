@@ -15,18 +15,20 @@ class SubscriptionByStatus extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Subscription::class, 'stripe_status')->label(fn ($value) => match ($value) {
-            null => 'None',
-            default => ucfirst($value),
-        })->colors([
-            'active' => '#16A34A',
-            'incomplete' => '#FACC15',
-            'incomplete_expired' => '#DC2626',
-            'trialing' => '#2563EB',
-            'past_due' => '#FACC15',
-            'canceled' => '#DC2626',
-            'unpaid' => '#DC2626',
-        ]);
+        return $this->count($request, Subscription::class, 'stripe_status')
+            ->label(fn ($value) => match ($value) {
+                null => 'None',
+                default => ucfirst($value),
+            })
+            ->colors([
+                'active' => '#16A34A',
+                'incomplete' => '#FACC15',
+                'incomplete_expired' => '#DC2626',
+                'trialing' => '#2563EB',
+                'past_due' => '#FACC15',
+                'canceled' => '#DC2626',
+                'unpaid' => '#DC2626',
+            ]);
     }
 
     /**

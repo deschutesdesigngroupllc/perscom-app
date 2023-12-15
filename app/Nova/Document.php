@@ -19,118 +19,88 @@ use Perscom\HtmlField\HtmlField;
 
 class Document extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Document::class;
+    public static string $model = \App\Models\Document::class;
+
+    public static array $orderBy = ['name' => 'asc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['name' => 'asc'];
-
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return Str::plural(Str::title(setting('localization_documents', 'Documents')));
     }
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return Str::plural(Str::slug(setting('localization_documents', 'documents')));
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->hideFromIndex(),
-            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-            Tag::make('Tags')->showCreateRelationButton()->withPreview()->showOnPreview(),
-            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
+            ID::make()
+                ->hideFromIndex(),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required'])
+                ->showOnPreview(),
+            Tag::make('Tags')
+                ->showCreateRelationButton()
+                ->withPreview()
+                ->showOnPreview(),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
             Trix::make('Content')
                 ->hideFromIndex()
                 ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
                 ->rules(['required'])
                 ->showOnPreview()
                 ->withFiles('s3_public'),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
             new Panel('Document Tags', [
-                HtmlField::make('Document Tags')->view('fields.html.document-tags')->onlyOnForms(),
+                HtmlField::make('Document Tags')
+                    ->view('fields.html.document-tags')
+                    ->onlyOnForms(),
             ]),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
-        return [ExportAsCsv::make('Export Documents')->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [ExportAsCsv::make('Export Documents')
+            ->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })
+            ->nameable()];
     }
 }

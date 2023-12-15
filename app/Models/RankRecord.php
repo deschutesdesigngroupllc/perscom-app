@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\RankRecordType;
 use App\Models\Scopes\RankRecordScope;
 use App\Prompts\RankRecordPrompts;
 use App\Traits\HasAttachments;
@@ -77,10 +78,6 @@ class RankRecord extends Model
      */
     protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text', 'type', 'updated_at', 'created_at'];
 
-    public const RECORD_RANK_PROMOTION = 0;
-
-    public const RECORD_RANK_DEMOTION = 1;
-
     /**
      * @var string[]
      */
@@ -90,6 +87,13 @@ class RankRecord extends Model
      * @var string
      */
     protected $table = 'records_ranks';
+
+    /**
+     * @var string[]
+     */
+    protected $casts = [
+        'type' => RankRecordType::class,
+    ];
 
     protected static function booted(): void
     {

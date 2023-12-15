@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\ID;
@@ -13,132 +14,92 @@ use Spatie\Permission\PermissionRegistrar;
 
 class Permission extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Permission::class;
+    public static string $model = \App\Models\Permission::class;
+
+    public static array $orderBy = ['name' => 'asc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * Indicates if the resource should be globally searchable.
-     *
      * @var bool
      */
     public static $globallySearchable = false;
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['name' => 'asc'];
-
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->hideFromIndex(),
-            Text::make('Name')->sortable()->rules(['required']),
-            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
+            ID::make()
+                ->hideFromIndex(),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required']),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
             Text::make('Description', function ($model) {
                 return $model->description;
-            })->onlyOnIndex(),
+            })
+                ->onlyOnIndex(),
             Boolean::make('Custom Permission', function ($permission) {
                 return $permission->is_custom_permission;
             }),
             Boolean::make('Application Permission', function ($permission) {
                 return $permission->is_application_permission;
             }),
-            Tag::make('Roles')->showCreateRelationButton(),
+            Tag::make('Roles')
+                ->showCreateRelationButton(),
         ];
     }
 
     /**
-     * Register a callback to be called after the resource is created.
-     *
-     * @return void
+     * @throws BindingResolutionException
      */
-    public static function afterCreate(NovaRequest $request, Model $model)
+    public static function afterCreate(NovaRequest $request, Model $model): void
     {
-        // Reset permission cache
         app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
-     * Register a callback to be called after the resource is updated.
-     *
-     * @return void
+     * @throws BindingResolutionException
      */
-    public static function afterUpdate(NovaRequest $request, Model $model)
+    public static function afterUpdate(NovaRequest $request, Model $model): void
     {
-        // Reset permission cache
         app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
     /**
-     * Register a callback to be called after the resource is deleted.
-     *
-     * @return void
+     * @throws BindingResolutionException
      */
-    public static function afterDelete(NovaRequest $request, Model $model)
+    public static function afterDelete(NovaRequest $request, Model $model): void
     {
-        // Reset permission cache
         app()->make(PermissionRegistrar::class)->forgetCachedPermissions();
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

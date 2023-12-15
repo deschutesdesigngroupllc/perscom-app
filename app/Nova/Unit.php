@@ -21,109 +21,75 @@ class Unit extends Resource
     use HasSortableManyToManyRows;
     use HasSortableRows;
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Unit::class;
+    public static string $model = \App\Models\Unit::class;
+
+    public static array $orderBy = ['order' => 'asc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['order' => 'asc'];
-
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return Str::plural(Str::title(setting('localization_units', 'Units')));
     }
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return Str::plural(Str::slug(setting('localization_units', 'units')));
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->hideFromIndex(),
-            Text::make('Name')->sortable()->rules(['required'])->showOnPreview(),
-            Textarea::make('Description')->nullable()->alwaysShow()->showOnPreview(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
-            BelongsToMany::make('Groups')->showCreateRelationButton(),
+            ID::make()
+                ->hideFromIndex(),
+            Text::make('Name')
+                ->sortable()
+                ->rules(['required'])
+                ->showOnPreview(),
+            Textarea::make('Description')
+                ->nullable()
+                ->alwaysShow()
+                ->showOnPreview(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
+            BelongsToMany::make('Groups')
+                ->showCreateRelationButton(),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [ExportAsCsv::make('Export '.self::label())
+            ->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })
+            ->nameable()];
     }
 }

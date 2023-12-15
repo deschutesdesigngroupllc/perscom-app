@@ -38,16 +38,15 @@ class ActivateFeature extends Action
     public function handle(ActionFields $fields, Collection $models)
     {
         foreach ($models as $model) {
-            Feature::for($model->scope)->activate($model->name);
+            Feature::for($model->scope)
+                ->activate($model->name);
         }
     }
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [];
     }

@@ -25,71 +25,39 @@ use Perscom\MessageField\MessageField;
 
 class AssignmentRecord extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\AssignmentRecord::class;
+    public static string $model = \App\Models\AssignmentRecord::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'id';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'text'];
 
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Records';
     }
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return Str::slug(Str::singular(setting('localization_assignment', 'assignment')).' records');
     }
 
-    /**
-     * @return string
-     */
-    public function title()
+    public function title(): ?string
     {
         return "{$this->id} - {$this->user?->name} - {$this->unit?->name} - {$this->position?->name}";
     }
 
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return "Created At: {$this->created_at->toDayDateTimeString()}";
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             MessageField::make('For Your Information')
@@ -102,8 +70,10 @@ class AssignmentRecord extends Resource
                 ->color('info')
                 ->onlyOnForms()
                 ->hideWhenUpdating(),
-            ID::make()->sortable(),
-            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)->sortable(),
+            ID::make()
+                ->sortable(),
+            BelongsTo::make(Str::singular(Str::title(setting('localization_users', 'User'))), 'user', User::class)
+                ->sortable(),
             Panel::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), [
                 Boolean::make('Change '.Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'change_status')
                     ->help('Leave unchecked to keep the status as is.')
@@ -141,7 +111,9 @@ class AssignmentRecord extends Resource
                     }),
                 MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_position_ids')
                     ->help('Leave blank to remove the secondary positions.')
-                    ->options(\App\Models\Position::all()->pluck('name', 'id')->sort())
+                    ->options(\App\Models\Position::all()
+                        ->pluck('name', 'id')
+                        ->sort())
                     ->hideFromIndex()
                     ->nullable()
                     ->hide()
@@ -170,7 +142,9 @@ class AssignmentRecord extends Resource
                     }),
                 MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialty_ids')
                     ->help('Leave blank to remove the secondary specialties.')
-                    ->options(\App\Models\Specialty::all()->pluck('name', 'id')->sort())
+                    ->options(\App\Models\Specialty::all()
+                        ->pluck('name', 'id')
+                        ->sort())
                     ->hideFromIndex()
                     ->nullable()
                     ->hide()
@@ -199,7 +173,9 @@ class AssignmentRecord extends Resource
                     }),
                 MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_unit_ids')
                     ->help('Leave blank to remove the secondary units.')
-                    ->options(\App\Models\Unit::all()->pluck('name', 'id')->sort())
+                    ->options(\App\Models\Unit::all()
+                        ->pluck('name', 'id')
+                        ->sort())
                     ->hideFromIndex()
                     ->nullable()
                     ->hide()
@@ -209,62 +185,54 @@ class AssignmentRecord extends Resource
                         }
                     }),
             ]),
-            Textarea::make('Text')->alwaysShow()->hideFromIndex(),
-            BelongsTo::make('Document')->nullable()->onlyOnForms(),
+            Textarea::make('Text')
+                ->alwaysShow()
+                ->hideFromIndex(),
+            BelongsTo::make('Document')
+                ->nullable()
+                ->onlyOnForms(),
             new Panel('History', [
-                BelongsTo::make('Author', 'author', User::class)->onlyOnDetail(),
-                DateTime::make('Created At')->sortable()->exceptOnForms(),
-                DateTime::make('Updated At')->exceptOnForms()->hideFromIndex(),
+                BelongsTo::make('Author', 'author', User::class)
+                    ->onlyOnDetail(),
+                DateTime::make('Created At')
+                    ->sortable()
+                    ->exceptOnForms(),
+                DateTime::make('Updated At')
+                    ->exceptOnForms()
+                    ->hideFromIndex(),
             ]),
-            (new DocumentViewerTool())->withTitle($this->document->name ?? null)->withContent($this->document?->toHtml($this->user, $this)),
+            (new DocumentViewerTool())->withTitle($this->document->name ?? null)
+                ->withContent($this->document?->toHtml($this->user, $this)),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [new TotalAssignmentRecords(), new NewAssignmentRecords()];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [
             (new BatchCreateAssignmentRecord())->canSee(function () {
                 return Gate::check('create', \App\Models\AssignmentRecord::class);
             }),
-            ExportAsCsv::make('Export '.self::label())->canSee(function () {
-                return Feature::active(ExportDataFeature::class);
-            })->nameable(),
+            ExportAsCsv::make('Export '.self::label())
+                ->canSee(function () {
+                    return Feature::active(ExportDataFeature::class);
+                })
+                ->nameable(),
         ];
     }
 }

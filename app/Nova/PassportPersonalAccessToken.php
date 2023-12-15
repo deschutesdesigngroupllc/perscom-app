@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Models\PassportToken;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Crypt;
 use Illuminate\Support\Str;
@@ -20,87 +21,48 @@ use Laravel\Passport\Passport;
 
 class PassportPersonalAccessToken extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = PassportToken::class;
+    public static string $model = PassportToken::class;
+
+    public static array $orderBy = ['created_at' => 'desc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['created_at' => 'desc'];
-
-    /**
-     * Get the text for the create resource button.
-     *
-     * @return string|null
-     */
-    public static function createButtonLabel()
+    public static function createButtonLabel(): string
     {
         return 'Create API Key';
     }
 
-    /**
-     * Get the text for the update resource button.
-     *
-     * @return string|null
-     */
-    public static function updateButtonLabel()
+    public static function updateButtonLabel(): string
     {
         return 'Update API Key';
     }
 
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return 'API Keys';
     }
 
-    /**
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'api-keys';
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function indexQuery(NovaRequest $request, $query)
+    public static function indexQuery(NovaRequest $request, $query): Builder
     {
         $personalAccessClient = app()->make(ClientRepository::class)->personalAccessClient();
 
         return $query->where('client_id', '=', $personalAccessClient?->id);
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             Hidden::make('ID', 'id')
@@ -112,9 +74,13 @@ class PassportPersonalAccessToken extends Resource
                 ->sortable(),
             Text::make('API Key', function () {
                 return Crypt::decryptString($this->token);
-            })->displayUsing(function ($value) {
-                return Str::limit($value, 50);
-            })->onlyOnIndex()->readonly()->copyable(),
+            })
+                ->displayUsing(function ($value) {
+                    return Str::limit($value, 50);
+                })
+                ->onlyOnIndex()
+                ->readonly()
+                ->copyable(),
             Code::make('API Key', function () {
                 return Crypt::decryptString($this->token);
             })
@@ -123,7 +89,9 @@ class PassportPersonalAccessToken extends Resource
                 ->help('API Keys must be passed as Bearer tokens within the Authorization header of your HTTP request.'),
             MultiSelect::make('Scopes')
                 ->options(
-                    Passport::scopes()->pluck('id', 'id')->sort()
+                    Passport::scopes()
+                        ->pluck('id', 'id')
+                        ->sort()
                 )
                 ->help('The scopes the API key has access to.')
                 ->rules('required')
@@ -167,42 +135,22 @@ class PassportPersonalAccessToken extends Resource
         $model->delete();
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

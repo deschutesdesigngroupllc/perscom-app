@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Actions\Passport\RegenerateClientSecret;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -24,111 +25,92 @@ use Laravel\Passport\Passport;
 
 class PassportClient extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\PassportClient::class;
+    public static string $model = \App\Models\PassportClient::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id'];
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'applications';
     }
 
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return 'Applications';
     }
 
-    /**
-     * @param  \Illuminate\Database\Eloquent\Builder  $query
-     * @return \Illuminate\Database\Eloquent\Builder
-     */
-    public static function indexQuery(NovaRequest $request, $query)
+    public static function indexQuery(NovaRequest $request, $query): Builder
     {
         return $query->where('name', '<>', 'Default Personal Access Client')
             ->where('name', '<>', 'Default Password Grant Client');
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             Text::make('Name')
                 ->rules('required')
                 ->sortable(),
-            Select::make('Type')->options([
-                'authorization_code' => 'Regular Web Application',
-                'implicit' => 'Single Page Web Applications or Native Applications',
-                'client_credentials' => 'Machine-to-Machine',
-                'password' => 'Resource Owner',
-            ])
+            Select::make('Type')
+                ->options([
+                    'authorization_code' => 'Regular Web Application',
+                    'implicit' => 'Single Page Web Applications or Native Applications',
+                    'client_credentials' => 'Machine-to-Machine',
+                    'password' => 'Resource Owner',
+                ])
                 ->onlyOnForms()
                 ->default('authorization_code')
                 ->required()
                 ->help('Check out the <a href="https://docs.perscom.io/external-integration/oauth/oidc" target="_blank">documentation</a> on how to choose the correct application type.'),
             Badge::make('Type', function () {
                 return $this->type;
-            })->map([
-                'authorization_code' => 'info',
-                'implicit' => 'warning',
-                'password' => 'danger',
-                'client_credentials' => 'success',
-            ])->label(function ($value) {
-                return match (true) {
-                    $value === 'authorization_code' => 'Regular Web Application',
-                    $value === 'implicit' => 'Single Page Web/Native Application',
-                    $value === 'client_credentials' => 'Machine-to-Machine',
-                    $value === 'password' => 'Resource Owner'
-                };
-            })->exceptOnForms(),
+            })
+                ->map([
+                    'authorization_code' => 'info',
+                    'implicit' => 'warning',
+                    'password' => 'danger',
+                    'client_credentials' => 'success',
+                ])
+                ->label(function ($value) {
+                    return match (true) {
+                        $value === 'authorization_code' => 'Regular Web Application',
+                        $value === 'implicit' => 'Single Page Web/Native Application',
+                        $value === 'client_credentials' => 'Machine-to-Machine',
+                        $value === 'password' => 'Resource Owner'
+                    };
+                })
+                ->exceptOnForms(),
             Badge::make('Flow', function () {
                 return $this->type;
-            })->map([
-                'authorization_code' => 'neutral',
-                'implicit' => 'neutral',
-                'password' => 'neutral',
-                'client_credentials' => 'neutral',
-            ])->label(function ($value) {
-                return Str::title(Str::replace('_', ' ', $value));
-            })->addTypes([
-                'neutral' => 'bg-gray-50 text-gray-600',
-            ])->exceptOnForms(),
+            })
+                ->map([
+                    'authorization_code' => 'neutral',
+                    'implicit' => 'neutral',
+                    'password' => 'neutral',
+                    'client_credentials' => 'neutral',
+                ])
+                ->label(function ($value) {
+                    return Str::title(Str::replace('_', ' ', $value));
+                })
+                ->addTypes([
+                    'neutral' => 'bg-gray-50 text-gray-600',
+                ])
+                ->exceptOnForms(),
             ID::make('Client ID', 'id')
                 ->hide()
                 ->sortable(),
             Text::make('Client ID', function () {
                 return $this->id;
-            })->copyable()
+            })
+                ->copyable()
                 ->exceptOnForms(),
             Hidden::make('Secret')
                 ->default(Str::random(40)),
@@ -145,7 +127,9 @@ class PassportClient extends Resource
                 ->nullable(),
             MultiSelect::make('Scopes')
                 ->options(
-                    Passport::scopes()->pluck('id', 'id')->sort()
+                    Passport::scopes()
+                        ->pluck('id', 'id')
+                        ->sort()
                 )
                 ->help('The scopes the client may request. Leave blank to allow access to all scopes.')
                 ->nullValues(['', '0', 'null', '[]'])
@@ -165,7 +149,8 @@ class PassportClient extends Resource
                     ->onlyOnForms()
                     ->dependsOn(['type'], function (URL $field, NovaRequest $request, FormData $formData) {
                         if ($formData->type !== 'authorization_code' || $formData !== 'implicit') {
-                            $field->rules([])->hide();
+                            $field->rules([])
+                                ->hide();
                         }
                     })
                     ->rules('required'),
@@ -180,7 +165,8 @@ class PassportClient extends Resource
                 URL::make('Logout URL', 'logout')
                     ->dependsOn(['type'], function (URL $field, NovaRequest $request, FormData $formData) {
                         if ($formData->type !== 'authorization_code' || $formData !== 'implicit') {
-                            $field->rules([])->hide();
+                            $field->rules([])
+                                ->hide();
                         }
                     })
                     ->onlyOnForms()
@@ -197,28 +183,35 @@ class PassportClient extends Resource
             Panel::make('Application Endpoints', [
                 Text::make('Discovery Endpoint', function () {
                     return route('oidc.discovery');
-                })->copyable()->onlyOnDetail(),
+                })
+                    ->copyable()
+                    ->onlyOnDetail(),
                 Text::make('Authorization Endpoint', function () {
                     return route('passport.authorizations.authorize');
-                })->copyable()->onlyOnDetail(),
+                })
+                    ->copyable()
+                    ->onlyOnDetail(),
                 Text::make('Token Endpoint', function () {
                     return route('passport.token');
-                })->copyable()->onlyOnDetail(),
+                })
+                    ->copyable()
+                    ->onlyOnDetail(),
                 Text::make('Logout Endpoint', function () {
                     return route('oidc.logout');
-                })->copyable()->onlyOnDetail(),
+                })
+                    ->copyable()
+                    ->onlyOnDetail(),
                 Text::make('User Info Endpoint', function () {
                     return route('oidc.userinfo');
-                })->copyable()->onlyOnDetail(),
+                })
+                    ->copyable()
+                    ->onlyOnDetail(),
             ]),
             HasMany::make('Authorized Clients', 'tokens', PassportAuthorizedClients::class),
         ];
     }
 
-    /**
-     * @return void
-     */
-    public static function afterCreate(NovaRequest $request, Model $model)
+    public static function afterCreate(NovaRequest $request, Model $model): void
     {
         if ($model instanceof \App\Models\PassportClient) {
             if ($model->type === 'client_credentials') {
@@ -233,50 +226,27 @@ class PassportClient extends Resource
         }
     }
 
-    /**
-     * @return false
-     */
-    public function authorizedToReplicate(Request $request)
+    public function authorizedToReplicate(Request $request): bool
     {
         return false;
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [(new RegenerateClientSecret())->onlyOnDetail()];
     }
