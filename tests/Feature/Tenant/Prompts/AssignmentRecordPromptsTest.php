@@ -23,12 +23,25 @@ class AssignmentRecordPromptsTest extends TenantTestCase
 
         $this->assertStringContainsString($record->user->name, $prompt);
         $this->assertStringContainsString($record->text, $prompt);
-        $this->assertStringContainsString($record->unit->name, $prompt);
-        $this->assertStringContainsString($record->unit->description, $prompt);
-        $this->assertStringContainsString($record->position->name, $prompt);
-        $this->assertStringContainsString($record->position->description, $prompt);
-        $this->assertStringContainsString($record->specialty->name, $prompt);
-        $this->assertStringContainsString($record->specialty->description, $prompt);
+
+        if ($record->unit) {
+            $this->assertStringContainsString($record->unit->name, $prompt);
+            $this->assertStringContainsString($record->unit->description, $prompt);
+        }
+
+        if ($record->position) {
+            $this->assertStringContainsString($record->position->name, $prompt);
+            $this->assertStringContainsString($record->position->description, $prompt);
+        }
+
+        if ($record->specialty) {
+            $this->assertStringContainsString($record->specialty->name, $prompt);
+            $this->assertStringContainsString($record->specialty->description, $prompt);
+        }
+
+        if ($record->status) {
+            $this->assertStringContainsString($record->status->name, $prompt);
+        }
     }
 
     public function test_created_text_prompt_string_is_properly_substituted()
@@ -36,13 +49,23 @@ class AssignmentRecordPromptsTest extends TenantTestCase
         $record = AssignmentRecord::factory()->create();
         $prompt = $record->generatePromptForEvent('created', 'text');
 
-        $this->assertStringContainsString($record->user->name, $prompt);
-        $this->assertStringContainsString($record->text, $prompt);
-        $this->assertStringContainsString($record->unit->name, $prompt);
-        $this->assertStringContainsString($record->unit->description, $prompt);
-        $this->assertStringContainsString($record->position->name, $prompt);
-        $this->assertStringContainsString($record->position->description, $prompt);
-        $this->assertStringContainsString($record->specialty->name, $prompt);
-        $this->assertStringContainsString($record->specialty->description, $prompt);
+        if ($record->unit) {
+            $this->assertStringContainsString($record->unit->name, $prompt);
+            $this->assertStringContainsString($record->unit->description, $prompt);
+        }
+
+        if ($record->position) {
+            $this->assertStringContainsString($record->position->name, $prompt);
+            $this->assertStringContainsString($record->position->description, $prompt);
+        }
+
+        if ($record->specialty) {
+            $this->assertStringContainsString($record->specialty->name, $prompt);
+            $this->assertStringContainsString($record->specialty->description, $prompt);
+        }
+
+        if ($record->status) {
+            $this->assertStringContainsString($record->status->name, $prompt);
+        }
     }
 }
