@@ -7,47 +7,29 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Repositories\TenantRepository;
 use Carbon\Carbon;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
 
 class SocialLoginController extends Controller
 {
-    /**
-     * Login function
-     */
     public const SOCIAL_LOGIN = 'login';
 
-    /**
-     * Register function
-     */
     public const SOCIAL_REGISTER = 'register';
 
-    /**
-     * @var string
-     */
-    protected static $sessionKey = 'auth.social.login.tenant';
+    protected static string $sessionKey = 'auth.social.login.tenant';
 
-    /**
-     * @var int
-     */
-    protected static $loginTokenTtl = 60;
+    protected static int $loginTokenTtl = 60;
 
-    /**
-     * Instantiate a new controller instance.
-     *
-     * @return void
-     */
     public function __construct()
     {
         $this->middleware('feature:App\Features\SocialLoginFeature');
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function tenant(string $driver, string $function)
+    public function tenant(string $driver, string $function): RedirectResponse
     {
         return redirect()->route('auth.social.redirect', [
             'driver' => $driver,
@@ -56,10 +38,7 @@ class SocialLoginController extends Controller
         ]);
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse|\Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function redirect(string $driver, string $function, Tenant $tenant)
+    public function redirect(string $driver, string $function, Tenant $tenant): SymfonyRedirectResponse|RedirectResponse
     {
         session()->put(self::$sessionKey, [
             'tenant' => $tenant->getTenantKey(),
@@ -69,10 +48,7 @@ class SocialLoginController extends Controller
         return Socialite::driver($driver)->redirect();
     }
 
-    /**
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function callback(string $driver, TenantRepository $tenantRepository)
+    public function callback(string $driver, TenantRepository $tenantRepository): RedirectResponse
     {
         $sessionData = session()->get(self::$sessionKey, []);
 
@@ -145,10 +121,7 @@ class SocialLoginController extends Controller
             ])) : ($redirect ?? redirect()->to($tenant->url));
     }
 
-    /**
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
-     */
-    public function login(LoginToken $token)
+    public function login(LoginToken $token): RedirectResponse
     {
         if ($token->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
             abort(403);
@@ -158,6 +131,6 @@ class SocialLoginController extends Controller
 
         $token->delete();
 
-        return redirect(tenant()->url);
+        return redirect()->to(tenant()->url);
     }
 }

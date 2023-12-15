@@ -3,15 +3,12 @@
 namespace App\Http\Controllers\Oidc;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 
 class UserInfoController extends Controller
 {
-    /**
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function index(Request $request)
+    public function index(): JsonResponse
     {
         $user = Auth::guard('passport')->user();
 

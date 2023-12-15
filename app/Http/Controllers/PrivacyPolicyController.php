@@ -3,13 +3,11 @@
 namespace App\Http\Controllers;
 
 use Inertia\Inertia;
+use Inertia\Response;
 
 class PrivacyPolicyController extends Controller
 {
-    /**
-     * @return \Inertia\Response
-     */
-    public function index()
+    public function index(): Response
     {
         return Inertia::render('PrivacyPolicy');
     }
