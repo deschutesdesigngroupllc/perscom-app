@@ -1,6 +1,22 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.66...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.67...HEAD)
+
+## [v1.0.67](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.66...v1.0.67) - 2023-12-15
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.67 -->
+### What's Changed
+
+#### Added
+
+* Fix document save error and add lateral rank record type by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/273
+* Support PHP 8.2 by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/274
+
+#### Other
+
+* Bump eslint from 8.54.0 to 8.55.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/263
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.66...v1.0.67
 
 ## [v1.0.66](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.65...v1.0.66) - 2023-12-15
 
