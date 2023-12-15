@@ -18,22 +18,22 @@ class PermissionPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:permission') || optional($user)->tokenCan('view:permission');
     }
 
-    public function view(User $user = null, Permission $permission): bool
+    public function view(?User $user, Permission $permission): bool
     {
         return $this->hasPermissionTo($user, 'view:permission') || optional($user)->tokenCan('view:permission');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:permission') || optional($user)->tokenCan('create:permission');
     }
 
-    public function update(User $user = null, Permission $permission): bool
+    public function update(?User $user, Permission $permission): bool
     {
         if ($permission->is_application_permission) {
             return false;
@@ -42,7 +42,7 @@ class PermissionPolicy extends Policy
         return $this->hasPermissionTo($user, 'update:permission') || optional($user)->tokenCan('update:permission');
     }
 
-    public function delete(User $user = null, Permission $permission): bool
+    public function delete(?User $user, Permission $permission): bool
     {
         if ($permission->is_application_permission) {
             return false;
@@ -51,7 +51,7 @@ class PermissionPolicy extends Policy
         return $this->hasPermissionTo($user, 'delete:permission') || optional($user)->tokenCan('delete:permission');
     }
 
-    public function detachRole(User $user = null, Permission $permission, Role $role): bool
+    public function detachRole(?User $user, Permission $permission, Role $role): bool
     {
         if ($permission->is_application_permission && $role->is_application_role) {
             return false;
@@ -60,7 +60,7 @@ class PermissionPolicy extends Policy
         return $this->hasPermissionTo($user, 'update:permission');
     }
 
-    public function restore(User $user = null, Permission $permission): bool
+    public function restore(?User $user, Permission $permission): bool
     {
         if ($permission->is_application_permission) {
             return false;
@@ -69,7 +69,7 @@ class PermissionPolicy extends Policy
         return $this->hasPermissionTo($user, 'delete:permission') || optional($user)->tokenCan('delete:permission');
     }
 
-    public function forceDelete(User $user = null, Permission $permission): bool
+    public function forceDelete(?User $user, Permission $permission): bool
     {
         if ($permission->is_application_permission) {
             return false;

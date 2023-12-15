@@ -17,37 +17,37 @@ class CalendarPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:calendar') || optional($user)->tokenCan('view:calendar');
     }
 
-    public function view(User $user = null, Calendar $calendar): bool
+    public function view(?User $user, Calendar $calendar): bool
     {
         return $this->hasPermissionTo($user, 'view:calendar') || optional($user)->tokenCan('view:calendar');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:calendar') || optional($user)->tokenCan('create:calendar');
     }
 
-    public function update(User $user = null, Calendar $calendar): bool
+    public function update(?User $user, Calendar $calendar): bool
     {
         return $this->hasPermissionTo($user, 'update:calendar') || optional($user)->tokenCan('update:calendar');
     }
 
-    public function delete(User $user = null, Calendar $calendar): bool
+    public function delete(?User $user, Calendar $calendar): bool
     {
         return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
     }
 
-    public function restore(User $user = null, Calendar $calendar): bool
+    public function restore(?User $user, Calendar $calendar): bool
     {
         return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
     }
 
-    public function forceDelete(User $user = null, Calendar $calendar): bool
+    public function forceDelete(?User $user, Calendar $calendar): bool
     {
         return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
     }

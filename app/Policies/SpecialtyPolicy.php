@@ -17,37 +17,37 @@ class SpecialtyPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:specialty') || optional($user)->tokenCan('view:specialty');
     }
 
-    public function view(User $user = null, Specialty $mos): bool
+    public function view(?User $user, Specialty $mos): bool
     {
         return $this->hasPermissionTo($user, 'view:specialty') || optional($user)->tokenCan('view:specialty');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:specialty') || optional($user)->tokenCan('create:specialty');
     }
 
-    public function update(User $user = null, Specialty $mos): bool
+    public function update(?User $user, Specialty $mos): bool
     {
         return $this->hasPermissionTo($user, 'update:specialty') || optional($user)->tokenCan('update:specialty');
     }
 
-    public function delete(User $user = null, Specialty $mos): bool
+    public function delete(?User $user, Specialty $mos): bool
     {
         return $this->hasPermissionTo($user, 'delete:specialty') || optional($user)->tokenCan('delete:specialty');
     }
 
-    public function restore(User $user = null, Specialty $mos): bool
+    public function restore(?User $user, Specialty $mos): bool
     {
         return $this->hasPermissionTo($user, 'delete:specialty') || optional($user)->tokenCan('delete:specialty');
     }
 
-    public function forceDelete(User $user = null, Specialty $mos): bool
+    public function forceDelete(?User $user, Specialty $mos): bool
     {
         return $this->hasPermissionTo($user, 'delete:specialty') || optional($user)->tokenCan('delete:specialty');
     }

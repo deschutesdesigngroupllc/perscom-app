@@ -17,12 +17,12 @@ class ActionPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:log') || optional($user)->tokenCan('view:log');
     }
 
-    public function view(User $user = null, ActionEvent $actionEvent): bool
+    public function view(?User $user, ActionEvent $actionEvent): bool
     {
         return $this->hasPermissionTo($user, 'view:log') || optional($user)->tokenCan('view:log');
     }

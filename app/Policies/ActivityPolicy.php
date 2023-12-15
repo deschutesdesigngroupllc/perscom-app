@@ -18,37 +18,37 @@ class ActivityPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return true;
     }
 
-    public function view(User $user = null, Activity $activity): bool
+    public function view(?User $user, Activity $activity): bool
     {
         return Gate::check('view', $activity->subject);
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return false;
     }
 
-    public function update(User $user = null, Activity $activity): bool
+    public function update(?User $user, Activity $activity): bool
     {
         return Gate::check('update', $activity->subject);
     }
 
-    public function delete(User $user = null, Activity $activity): bool
+    public function delete(?User $user, Activity $activity): bool
     {
         return Gate::check('delete', $activity->subject);
     }
 
-    public function restore(User $user = null, Activity $activity): bool
+    public function restore(?User $user, Activity $activity): bool
     {
         return Gate::check('restore', $activity->subject);
     }
 
-    public function forceDelete(User $user = null, Activity $activity): bool
+    public function forceDelete(?User $user, Activity $activity): bool
     {
         return Gate::check('forceDelete', $activity->subject);
     }

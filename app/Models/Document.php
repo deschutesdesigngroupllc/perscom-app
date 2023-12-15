@@ -89,7 +89,7 @@ class Document extends Model implements Htmlable
             ->withTimestamps();
     }
 
-    protected function resolveTag(string $tag, User $user = null, mixed $attachedModel = null): mixed
+    protected function resolveTag(string $tag, ?User $user = null, mixed $attachedModel = null): mixed
     {
         return match (true) {
             $tag === '{user_name}' => $user->name ?? null,
@@ -124,7 +124,7 @@ class Document extends Model implements Htmlable
         };
     }
 
-    public function toHtml(User $user = null, mixed $attachedModel = null): string
+    public function toHtml(?User $user = null, mixed $attachedModel = null): string
     {
         $content = $this->content;
         foreach (self::$availableTags as $tag => $description) {

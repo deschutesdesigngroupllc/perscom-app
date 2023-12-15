@@ -153,7 +153,7 @@ class TaskAssignment extends Pivot
         return $this->complete ? TaskAssignmentStatus::TASK_COMPLETE : TaskAssignmentStatus::TASK_ASSIGNED;
     }
 
-    public function complete(CarbonInterface $completedAt = null): bool
+    public function complete(?CarbonInterface $completedAt = null): bool
     {
         return $this->update([
             'completed_at' => now(),

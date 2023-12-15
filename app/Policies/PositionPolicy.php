@@ -17,37 +17,37 @@ class PositionPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:position') || optional($user)->tokenCan('view:position');
     }
 
-    public function view(User $user = null, Position $position): bool
+    public function view(?User $user, Position $position): bool
     {
         return $this->hasPermissionTo($user, 'view:position') || optional($user)->tokenCan('view:position');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:position') || optional($user)->tokenCan('create:position');
     }
 
-    public function update(User $user = null, Position $position): bool
+    public function update(?User $user, Position $position): bool
     {
         return $this->hasPermissionTo($user, 'update:position') || optional($user)->tokenCan('update:position');
     }
 
-    public function delete(User $user = null, Position $position): bool
+    public function delete(?User $user, Position $position): bool
     {
         return $this->hasPermissionTo($user, 'delete:position') || optional($user)->tokenCan('delete:position');
     }
 
-    public function restore(User $user = null, Position $position): bool
+    public function restore(?User $user, Position $position): bool
     {
         return $this->hasPermissionTo($user, 'delete:position') || optional($user)->tokenCan('delete:position');
     }
 
-    public function forceDelete(User $user = null, Position $position): bool
+    public function forceDelete(?User $user, Position $position): bool
     {
         return $this->hasPermissionTo($user, 'delete:position') || optional($user)->tokenCan('delete:position');
     }

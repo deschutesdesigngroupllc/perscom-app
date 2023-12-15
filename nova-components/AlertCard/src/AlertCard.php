@@ -56,7 +56,7 @@ class AlertCard extends Card
      * @param  null  $button
      * @param  null  $url
      */
-    public function withSubscriptionMessage(string $message = null, string $button = null, string $url = null): AlertCard
+    public function withSubscriptionMessage(?string $message = null, ?string $button = null, ?string $url = null): AlertCard
     {
         return $this->withMeta([
             'subscription' => [

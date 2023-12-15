@@ -17,43 +17,43 @@ class QualificationRecordsPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return true;
     }
 
-    public function view(User $user = null, QualificationRecord $qualification): bool
+    public function view(?User $user, QualificationRecord $qualification): bool
     {
         return $this->hasPermissionTo($user, 'view:qualificationrecord') ||
                $qualification->user?->id === optional($user)->id ||
                optional($user)->tokenCan('view:qualificationrecord');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:qualificationrecord') ||
                optional($user)->tokenCan('create:qualificationrecord');
     }
 
-    public function update(User $user = null, QualificationRecord $qualification): bool
+    public function update(?User $user, QualificationRecord $qualification): bool
     {
         return $this->hasPermissionTo($user, 'update:qualificationrecord') ||
                optional($user)->tokenCan('update:qualificationrecord');
     }
 
-    public function delete(User $user = null, QualificationRecord $qualification): bool
+    public function delete(?User $user, QualificationRecord $qualification): bool
     {
         return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
                optional($user)->tokenCan('delete:qualificationrecord');
     }
 
-    public function restore(User $user = null, QualificationRecord $qualification): bool
+    public function restore(?User $user, QualificationRecord $qualification): bool
     {
         return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
                optional($user)->tokenCan('delete:qualificationrecord');
     }
 
-    public function forceDelete(User $user = null, QualificationRecord $qualification): bool
+    public function forceDelete(?User $user, QualificationRecord $qualification): bool
     {
         return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
                optional($user)->tokenCan('delete:qualificationrecord');

@@ -18,37 +18,37 @@ class ImagePolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return optional($user)->hasRole('Admin');
     }
 
-    public function view(User $user = null, Image $image): bool
+    public function view(?User $user, Image $image): bool
     {
         return Gate::check('view', $image->model);
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:image') || optional($user)->tokenCan('create:image');
     }
 
-    public function update(User $user = null, Image $image): bool
+    public function update(?User $user, Image $image): bool
     {
         return Gate::check('update', $image->model);
     }
 
-    public function delete(User $user = null, Image $image): bool
+    public function delete(?User $user, Image $image): bool
     {
         return Gate::check('delete', $image->model);
     }
 
-    public function restore(User $user = null, Image $image): bool
+    public function restore(?User $user, Image $image): bool
     {
         return Gate::check('restore', $image->model);
     }
 
-    public function forceDelete(User $user = null, Image $image): bool
+    public function forceDelete(?User $user, Image $image): bool
     {
         return Gate::check('forceDelete', $image->model);
     }

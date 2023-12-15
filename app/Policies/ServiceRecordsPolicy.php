@@ -17,39 +17,39 @@ class ServiceRecordsPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return true;
     }
 
-    public function view(User $user = null, ServiceRecord $service): bool
+    public function view(?User $user, ServiceRecord $service): bool
     {
         return $this->hasPermissionTo($user, 'view:servicerecord') ||
                $service->user?->id === optional($user)->id ||
                optional($user)->tokenCan('view:servicerecord');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:servicerecord') || optional($user)->tokenCan('create:servicerecord');
     }
 
-    public function update(User $user = null, ServiceRecord $service): bool
+    public function update(?User $user, ServiceRecord $service): bool
     {
         return $this->hasPermissionTo($user, 'update:servicerecord') || optional($user)->tokenCan('update:servicerecord');
     }
 
-    public function delete(User $user = null, ServiceRecord $service): bool
+    public function delete(?User $user, ServiceRecord $service): bool
     {
         return $this->hasPermissionTo($user, 'delete:servicerecord') || optional($user)->tokenCan('delete:servicerecord');
     }
 
-    public function restore(User $user = null, ServiceRecord $service): bool
+    public function restore(?User $user, ServiceRecord $service): bool
     {
         return $this->hasPermissionTo($user, 'delete:servicerecord') || optional($user)->tokenCan('delete:servicerecord');
     }
 
-    public function forceDelete(User $user = null, ServiceRecord $service): bool
+    public function forceDelete(?User $user, ServiceRecord $service): bool
     {
         return $this->hasPermissionTo($user, 'delete:servicerecord') || optional($user)->tokenCan('delete:servicerecord');
     }

@@ -17,37 +17,37 @@ class MailPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:mail') || optional($user)->tokenCan('view:mail');
     }
 
-    public function view(User $user = null, Mail $mail): bool
+    public function view(?User $user, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'view:mail') || optional($user)->tokenCan('view:mail');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:mail') || optional($user)->tokenCan('create:mail');
     }
 
-    public function update(User $user = null, Mail $mail): bool
+    public function update(?User $user, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'update:mail') || optional($user)->tokenCan('update:mail');
     }
 
-    public function delete(User $user = null, Mail $mail): bool
+    public function delete(?User $user, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'delete:mail') || optional($user)->tokenCan('delete:mail');
     }
 
-    public function restore(User $user = null, Mail $mail): bool
+    public function restore(?User $user, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'delete:mail') || optional($user)->tokenCan('delete:mail');
     }
 
-    public function forceDelete(User $user = null, Mail $mail): bool
+    public function forceDelete(?User $user, Mail $mail): bool
     {
         return $this->hasPermissionTo($user, 'delete:mail') || optional($user)->tokenCan('delete:mail');
     }

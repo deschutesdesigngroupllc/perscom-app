@@ -11,7 +11,7 @@ abstract class Policy
 {
     use HandlesAuthorization;
 
-    public function hasPermissionTo(User $user = null, string $permission): bool
+    public function hasPermissionTo(?User $user, string $permission): bool
     {
         if (Auth::getDefaultDriver() === 'api') {
             if ($client = Auth::guard('passport')->client()) { // @phpstan-ignore-line

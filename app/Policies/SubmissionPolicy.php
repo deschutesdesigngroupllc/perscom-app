@@ -17,37 +17,37 @@ class SubmissionPolicy extends Policy
         return null;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'view:submission') || optional($user)->tokenCan('view:submission');
     }
 
-    public function view(User $user = null, Submission $submission): bool
+    public function view(?User $user, Submission $submission): bool
     {
         return $this->hasPermissionTo($user, 'view:submission') || optional($user)->tokenCan('view:submission');
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         return $this->hasPermissionTo($user, 'create:submission') || optional($user)->tokenCan('create:submission');
     }
 
-    public function update(User $user = null, Submission $submission): bool
+    public function update(?User $user, Submission $submission): bool
     {
         return $this->hasPermissionTo($user, 'update:submission') || optional($user)->tokenCan('update:submission');
     }
 
-    public function delete(User $user = null, Submission $submission): bool
+    public function delete(?User $user, Submission $submission): bool
     {
         return $this->hasPermissionTo($user, 'delete:submission') || optional($user)->tokenCan('delete:submission');
     }
 
-    public function restore(User $user = null, Submission $submission): bool
+    public function restore(?User $user, Submission $submission): bool
     {
         return $this->hasPermissionTo($user, 'delete:submission') || optional($user)->tokenCan('delete:submission');
     }
 
-    public function forceDelete(User $user = null, Submission $submission): bool
+    public function forceDelete(?User $user, Submission $submission): bool
     {
         return $this->hasPermissionTo($user, 'delete:submission') || optional($user)->tokenCan('delete:submission');
     }

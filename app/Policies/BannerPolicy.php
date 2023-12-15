@@ -17,7 +17,7 @@ class BannerPolicy extends Policy
         return false;
     }
 
-    public function viewAny(User $user = null): bool
+    public function viewAny(?User $user = null): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -26,7 +26,7 @@ class BannerPolicy extends Policy
         return false;
     }
 
-    public function view(User $user = null, Banner $banner): bool
+    public function view(?User $user, Banner $banner): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -35,7 +35,7 @@ class BannerPolicy extends Policy
         return false;
     }
 
-    public function create(User $user = null): bool
+    public function create(?User $user = null): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -44,7 +44,7 @@ class BannerPolicy extends Policy
         return false;
     }
 
-    public function update(User $user = null, Banner $banner): bool
+    public function update(?User $user, Banner $banner): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -53,7 +53,7 @@ class BannerPolicy extends Policy
         return false;
     }
 
-    public function delete(User $user = null, Banner $banner): bool
+    public function delete(?User $user, Banner $banner): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -62,7 +62,7 @@ class BannerPolicy extends Policy
         return false;
     }
 
-    public function restore(User $user = null, Banner $banner): bool
+    public function restore(?User $user, Banner $banner): bool
     {
         if (Request::isCentralRequest()) {
             return true;
@@ -71,7 +71,7 @@ class BannerPolicy extends Policy
         return false;
     }
 
-    public function forceDelete(User $user = null, Banner $banner): bool
+    public function forceDelete(?User $user, Banner $banner): bool
     {
         if (Request::isCentralRequest()) {
             return true;
