@@ -10,23 +10,13 @@ use Laravel\Nova\Tool;
 
 class Forms extends Tool
 {
-    /**
-     * Perform any tasks that need to happen when the tool is booted.
-     *
-     * @return void
-     */
-    public function boot()
+    public function boot(): void
     {
         Nova::script('forms', __DIR__.'/../dist/js/tool.js');
         Nova::style('forms', __DIR__.'/../dist/css/tool.css');
     }
 
-    /**
-     * Build the menu that renders the navigation links for the tool.
-     *
-     * @return mixed
-     */
-    public function menu(Request $request)
+    public function menu(Request $request): MenuSection
     {
         return MenuSection::make('Forms')
             ->path('/forms')

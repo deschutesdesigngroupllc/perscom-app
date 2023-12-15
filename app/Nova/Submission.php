@@ -28,68 +28,56 @@ class Submission extends Resource
     use HasFields;
     use HasTabs;
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Submission::class;
+    public static string $model = \App\Models\Submission::class;
+
+    public static array $orderBy = ['created_at' => 'desc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'id';
 
     /**
-     * Indicates if the resource should be globally searchable.
-     *
      * @var bool
      */
     public static $globallySearchable = false;
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['created_at' => 'desc'];
-
-    /**
-     * @return string
-     */
-    public function title()
+    public function title(): ?string
     {
         return $this->id.optional($this->form, static function ($form) {
             return " - $form->name";
         });
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            BelongsTo::make('Form')->showOnPreview()->default(function (NovaRequest $request) {
-                return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
-            }),
-            BelongsTo::make('User')->showOnPreview()->default(function (NovaRequest $request) {
-                return $request->user()->id;
-            }),
+            ID::make()
+                ->sortable(),
+            BelongsTo::make('Form')
+                ->showOnPreview()
+                ->default(function (NovaRequest $request) {
+                    return $request->viaResource === Form::uriKey() ? $request->viaResourceId : null;
+                }),
+            BelongsTo::make('User')
+                ->showOnPreview()
+                ->default(function (NovaRequest $request) {
+                    return $request->user()->id;
+                }),
             $this->generateBadgeField($this),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->exceptOnForms()->sortable(),
-            DateTime::make('Updated At')->exceptOnForms()->sortable(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->exceptOnForms()
+                ->sortable(),
+            DateTime::make('Updated At')
+                ->exceptOnForms()
+                ->sortable(),
             $this->getNovaFields($request, true, function ($form) {
                 return $form?->name;
             }, function ($model) {
@@ -106,29 +94,33 @@ class Submission extends Resource
                                 Text::make('Text', function ($model) {
                                     return $model->text;
                                 }),
-                                DateTime::make('Updated At')->sortable()->onlyOnIndex(),
+                                DateTime::make('Updated At')
+                                    ->sortable()
+                                    ->onlyOnIndex(),
                             ];
                         }),
                 ]),
                 Tab::make('Logs', [$this->actionfield()]),
-            ])->showTitle(),
+            ])
+                ->showTitle(),
         ];
     }
 
-    /**
-     * @return Badge
-     */
-    protected function generateBadgeField($submission)
+    protected function generateBadgeField($submission): Badge
     {
-        $status = $submission->statuses()->first();
+        $status = $submission->statuses()
+            ->first();
 
         $badge = Badge::make('Status', static function () use ($status) {
             return $status->name ?? 'No Current Status';
-        })->types([
-            'No Current Status' => 'bg-gray-100 text-gray-600',
-        ])->label(function ($status) {
-            return $status ?? 'No Current Status';
-        })->showOnPreview();
+        })
+            ->types([
+                'No Current Status' => 'bg-gray-100 text-gray-600',
+            ])
+            ->label(function ($status) {
+                return $status ?? 'No Current Status';
+            })
+            ->showOnPreview();
 
         if ($status) {
             $badge->addTypes([
@@ -139,10 +131,7 @@ class Submission extends Resource
         return $badge;
     }
 
-    /**
-     * @return Panel
-     */
-    protected function getCustomFields(NovaRequest $request)
+    protected function getCustomFields(NovaRequest $request): Panel
     {
         $form = $this->getForm($request);
 
@@ -156,45 +145,27 @@ class Submission extends Resource
         return new Panel($form->name ?? 'Form', $fields);
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [new StatusFilter()];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [ExportAsCsv::make('Export '.self::label())
+            ->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })
+            ->nameable()];
     }
 }

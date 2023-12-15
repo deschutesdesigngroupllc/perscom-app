@@ -14,112 +14,80 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Attachment extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Attachment::class;
+    public static string $model = \App\Models\Attachment::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'name'];
 
-    /**
-     * @return string|null
-     */
-    public static function createButtonLabel()
+    public static function createButtonLabel(): string
     {
         return 'Add Attachment';
     }
 
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return 'Resource: '.class_basename($this->model);
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Name')->rules('required'),
-            File::make('File', 'path')->rules('required')->storeOriginalName('filename')->prunable(),
-            MorphTo::make('Resource', 'model')->types([
-                AssignmentRecord::class,
-                AwardRecord::class,
-                CombatRecord::class,
-                QualificationRecord::class,
-                RankRecord::class,
-                ServiceRecord::class,
-                Task::class,
-            ]),
+            ID::make()
+                ->sortable(),
+            Text::make('Name')
+                ->rules('required'),
+            File::make('File', 'path')
+                ->rules('required')
+                ->storeOriginalName('filename')
+                ->prunable(),
+            MorphTo::make('Resource', 'model')
+                ->types([
+                    AssignmentRecord::class,
+                    AwardRecord::class,
+                    CombatRecord::class,
+                    QualificationRecord::class,
+                    RankRecord::class,
+                    ServiceRecord::class,
+                    Task::class,
+                ]),
             URL::make('Download', function () {
                 return Storage::temporaryUrl($this->path, now()->addMinute(), [
                     'disk' => 's3',
                 ]);
-            })->onlyOnIndex(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            })
+                ->onlyOnIndex(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

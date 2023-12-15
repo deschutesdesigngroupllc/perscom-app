@@ -34,6 +34,9 @@ class Role extends Filter
      */
     public function options(NovaRequest $request)
     {
-        return RoleModel::query()->orderBy('name')->pluck('id', 'name')->toArray();
+        return RoleModel::query()
+            ->orderBy('name')
+            ->pluck('id', 'name')
+            ->toArray();
     }
 }

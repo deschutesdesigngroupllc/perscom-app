@@ -28,10 +28,8 @@ class CreateAwardRecord extends Action implements ShouldQueue
 
     /**
      * Get the fields available on the action.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
             BelongsTo::make('Award', 'award', Award::class),

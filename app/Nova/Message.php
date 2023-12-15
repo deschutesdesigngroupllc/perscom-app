@@ -17,102 +17,70 @@ class Message extends Resource
 {
     use HasSortableRows;
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\Message>
-     */
-    public static $model = \App\Models\Message::class;
+    public static string $model = \App\Models\Message::class;
+
+    public static array $orderBy = ['order' => 'asc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'title';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
-    public static $search = [
-        'id', 'title', 'message',
-    ];
+    public static $search = ['id', 'title', 'message'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['order' => 'asc'];
-
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return $this->active ? 'Active: True' : 'Active: False';
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Title')->sortable()->rules('required'),
-            Textarea::make('Message')->alwaysShow()->rules('required'),
-            Boolean::make('Active')->sortable(),
+            ID::make()
+                ->sortable(),
+            Text::make('Title')
+                ->sortable()
+                ->rules('required'),
+            Textarea::make('Message')
+                ->alwaysShow()
+                ->rules('required'),
+            Boolean::make('Active')
+                ->sortable(),
             new Panel('Link', [
-                Text::make('Text', 'link_text')->hideFromIndex(),
-                URL::make('URL')->nullable(),
+                Text::make('Text', 'link_text')
+                    ->hideFromIndex(),
+                URL::make('URL')
+                    ->nullable(),
             ]),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->exceptOnForms()->sortable(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->exceptOnForms()
+                ->sortable(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

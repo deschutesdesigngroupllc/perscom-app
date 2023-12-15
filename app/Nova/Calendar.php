@@ -14,85 +14,61 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Calendar extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\Calendar>
-     */
-    public static $model = \App\Models\Calendar::class;
+    public static string $model = \App\Models\Calendar::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
-    public static $search = [
-        'id', 'name',
-    ];
+    public static $search = ['id', 'name'];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Name')->sortable()->rules('required')->showOnPreview(),
-            Tag::make('Tags')->showCreateRelationButton(),
-            Textarea::make('Description')->alwaysShow()->hideFromIndex()->showOnPreview(),
-            Color::make('Color')->sortable(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            ID::make()
+                ->sortable(),
+            Text::make('Name')
+                ->sortable()
+                ->rules('required')
+                ->showOnPreview(),
+            Tag::make('Tags')
+                ->showCreateRelationButton(),
+            Textarea::make('Description')
+                ->alwaysShow()
+                ->hideFromIndex()
+                ->showOnPreview(),
+            Color::make('Color')
+                ->sortable(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
             HasMany::make('Events'),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

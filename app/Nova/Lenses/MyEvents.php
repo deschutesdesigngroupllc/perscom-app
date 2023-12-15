@@ -15,8 +15,6 @@ use Laravel\Nova\Lenses\Lens;
 class MyEvents extends Lens
 {
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = [];
@@ -36,59 +34,58 @@ class MyEvents extends Lens
 
     /**
      * Get the fields available to the lens.
-     *
-     * @return array
      */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make(__('ID'), 'id')->sortable(),
-            BelongsTo::make('Event')->sortable(),
-            BelongsTo::make('Calendar')->sortable(),
-            BelongsTo::make('Organizer', 'organizer', User::class)->sortable(),
+            ID::make(__('ID'), 'id')
+                ->sortable(),
+            BelongsTo::make('Event')
+                ->sortable(),
+            BelongsTo::make('Calendar')
+                ->sortable(),
+            BelongsTo::make('Organizer', 'organizer', User::class)
+                ->sortable(),
             Text::make('Description', function () {
                 return Str::limit($this->event?->description);
             }),
-            DateTime::make('Registered', 'created_at')->sortable(),
+            DateTime::make('Registered', 'created_at')
+                ->sortable(),
             Text::make('Starts', function () {
                 return optional($this->event?->start, function ($start) {
                     return $this->event?->all_day ? $start->toFormattedDayDateString() : $start->toDayDateTimeString();
                 });
-            })->exceptOnForms(),
+            })
+                ->exceptOnForms(),
             Text::make('Ends', function () {
                 return optional($this->event?->computed_end, function ($end) {
                     return $this->event?->all_day ? $end->toFormattedDayDateString() : $end->toDayDateTimeString();
                 });
-            })->exceptOnForms(),
+            })
+                ->exceptOnForms(),
         ];
     }
 
     /**
      * Get the cards available on the lens.
-     *
-     * @return array
      */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
     /**
      * Get the filters available for the lens.
-     *
-     * @return array
      */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
     /**
      * Get the actions available on the lens.
-     *
-     * @return array
      */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return parent::actions($request);
     }

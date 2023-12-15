@@ -11,115 +11,76 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Receipt extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \Spark\Receipt::class;
+    public static string $model = \Spark\Receipt::class;
+
+    public static array $orderBy = ['paid_at' => 'desc'];
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'id';
 
     /**
-     * Indicates if the resource should be globally searchable.
-     *
      * @var bool
      */
     public static $globallySearchable = false;
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'amount'];
 
-    /**
-     * @var string[]
-     */
-    public static $orderBy = ['paid_at' => 'desc'];
-
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            BelongsTo::make('Tenant', 'owner')->showCreateRelationButton()->sortable(),
-            Text::make('Amount')->readonly()->sortable(),
-            Text::make('Tax')->readonly()->sortable(),
-            Text::make('Paid At')->readonly()->sortable(),
+            ID::make()
+                ->sortable(),
+            BelongsTo::make('Tenant', 'owner')
+                ->showCreateRelationButton()
+                ->sortable(),
+            Text::make('Amount')
+                ->readonly()
+                ->sortable(),
+            Text::make('Tax')
+                ->readonly()
+                ->sortable(),
+            Text::make('Paid At')
+                ->readonly()
+                ->sortable(),
         ];
     }
 
-    /**
-     * @return false
-     */
-    public static function authorizedToCreate(Request $request)
+    public static function authorizedToCreate(Request $request): bool
     {
         return false;
     }
 
-    /**
-     * @return false
-     */
-    public function authorizedToReplicate(Request $request)
+    public function authorizedToReplicate(Request $request): bool
     {
         return false;
     }
 
-    /**
-     * @return false
-     */
-    public function authorizedToUpdate(Request $request)
+    public function authorizedToUpdate(Request $request): bool
     {
         return false;
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [new DownloadReceipt()];
     }

@@ -18,85 +18,62 @@ use Laravel\Nova\Panel;
 
 class Mail extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\Mail>
-     */
-    public static $model = \App\Models\Mail::class;
+    public static string $model = \App\Models\Mail::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'subject';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
-    public static $search = [
-        'id',
-        'subject',
-        'content',
-    ];
+    public static $search = ['id', 'subject', 'content'];
 
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return 'Mail';
     }
 
-    /**
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return 'mail';
     }
 
-    /**
-     * @return string
-     */
-    public static function createButtonLabel()
+    public static function createButtonLabel(): string
     {
         return 'Send Mail';
     }
 
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return "Sent At: {$this->sent_at->toDayDateTimeString()}";
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Subject')->rules('required')->sortable(),
-            Markdown::make('Content')->rules('required'),
-            MultiSelect::make('Recipients')->options(function () {
-                if (Request::isCentralRequest()) {
-                    return Tenant::all()->pluck('name', 'id')->sort();
-                }
+            ID::make()
+                ->sortable(),
+            Text::make('Subject')
+                ->rules('required')
+                ->sortable(),
+            Markdown::make('Content')
+                ->rules('required'),
+            MultiSelect::make('Recipients')
+                ->options(function () {
+                    if (Request::isCentralRequest()) {
+                        return Tenant::all()
+                            ->pluck('name', 'id')
+                            ->sort();
+                    }
 
-                return User::all()->pluck('name', 'id')->sort();
-            })->hideFromIndex()->rules('required'),
+                    return User::all()
+                        ->pluck('name', 'id')
+                        ->sort();
+                })
+                ->hideFromIndex()
+                ->rules('required'),
             Boolean::make('Send Now', 'send_now')
                 ->default(true)
                 ->sortable()
@@ -105,55 +82,46 @@ class Mail extends Resource
                 ->hide()
                 ->dependsOn(['send_now'], function (DateTime $field, NovaRequest $request, $formData) {
                     if ($formData->send_now === false) {
-                        $field->rules('required')->show();
+                        $field->rules('required')
+                            ->show();
                     }
-                })->onlyOnForms(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Sent At', 'sent_at')->sortable()->exceptOnForms(),
-            DateTime::make('Created At')->exceptOnForms()->sortable(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+                })
+                ->onlyOnForms(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Sent At', 'sent_at')
+                ->sortable()
+                ->exceptOnForms(),
+            DateTime::make('Created At')
+                ->exceptOnForms()
+                ->sortable(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
             new Panel('Links', [
-                KeyValue::make('Links', 'links')->rules('json')->keyLabel('Text')->valueLabel('URL'),
+                KeyValue::make('Links', 'links')
+                    ->rules('json')
+                    ->keyLabel('Text')
+                    ->valueLabel('URL'),
             ]),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

@@ -16,15 +16,16 @@ class SubscriptionsByPlan extends Partition
      */
     public function calculate(NovaRequest $request)
     {
-        return $this->count($request, Subscription::class, 'stripe_price')->label(function ($value) {
-            $plans = Spark::plans('tenant');
+        return $this->count($request, Subscription::class, 'stripe_price')
+            ->label(function ($value) {
+                $plans = Spark::plans('tenant');
 
-            $plan = $plans->first(function ($plan) use ($value) {
-                return $plan->id == $value;
+                $plan = $plans->first(function ($plan) use ($value) {
+                    return $plan->id == $value;
+                });
+
+                return $plan->name ?? $value;
             });
-
-            return $plan->name ?? $value;
-        });
     }
 
     /**

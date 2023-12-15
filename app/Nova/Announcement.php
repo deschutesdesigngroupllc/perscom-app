@@ -16,122 +16,91 @@ use Laravel\Pennant\Feature;
 
 class Announcement extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var string
-     */
-    public static $model = \App\Models\Announcement::class;
+    public static string $model = \App\Models\Announcement::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'title';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
     public static $search = ['id', 'title'];
 
-    /**
-     * Get the displayable label of the resource.
-     *
-     * @return string
-     */
-    public static function label()
+    public static function label(): string
     {
         return Str::plural(Str::title(setting('localization_announcements', 'Announcements')));
     }
 
-    /**
-     * Get the URI key for the resource.
-     *
-     * @return string
-     */
-    public static function uriKey()
+    public static function uriKey(): string
     {
         return Str::plural(Str::slug(setting('localization_announcements', 'announcements')));
     }
 
-    /**
-     * Get the search result subtitle for the resource.
-     *
-     * @return string
-     */
-    public function subtitle()
+    public function subtitle(): ?string
     {
         return "Created At: {$this->created_at->toDayDateTimeString()}";
     }
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->hideFromIndex(),
-            Text::make('Title')->rules('required')->hideFromDetail()->showOnPreview(),
-            Trix::make('Content')->rules('required')->alwaysShow()->hideFromDetail()->showOnPreview(),
-            Select::make('Color')->displayUsingLabels()->options([
-                'info' => 'Information (Blue)',
-                'success' => 'Success (Green)',
-                'warning' => 'Warning (Yellow)',
-                'failure' => 'Failure (Red)',
-            ])->rules('required')->default(function () {
-                return 'info';
-            })->onlyOnForms(),
+            ID::make()
+                ->hideFromIndex(),
+            Text::make('Title')
+                ->rules('required')
+                ->hideFromDetail()
+                ->showOnPreview(),
+            Trix::make('Content')
+                ->rules('required')
+                ->alwaysShow()
+                ->hideFromDetail()
+                ->showOnPreview(),
+            Select::make('Color')
+                ->displayUsingLabels()
+                ->options([
+                    'info' => 'Information (Blue)',
+                    'success' => 'Success (Green)',
+                    'warning' => 'Warning (Yellow)',
+                    'failure' => 'Failure (Red)',
+                ])
+                ->rules('required')
+                ->default(function () {
+                    return 'info';
+                })
+                ->onlyOnForms(),
             DateTime::make('Expires At'),
             new Panel($this->title, [
-                Trix::make('Details', 'content')->rules('required')->onlyOnDetail()->alwaysShow(),
+                Trix::make('Details', 'content')
+                    ->rules('required')
+                    ->onlyOnDetail()
+                    ->alwaysShow(),
             ]),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [ExportAsCsv::make('Export '.self::label())
+            ->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })
+            ->nameable()];
     }
 }

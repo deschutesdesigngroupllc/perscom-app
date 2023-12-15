@@ -68,15 +68,20 @@ class Main extends Dashboard
                 $card->withAnnouncement($announcement->title, $announcement->content, $announcement->color);
             });
 
-        Message::query()->active()->ordered()->each(function ($message) use ($card) {
-            $card->withSystemMessage($message->title, $message->message, $message->link_text, $message->url);
-        });
+        Message::query()
+            ->active()
+            ->ordered()
+            ->each(function ($message) use ($card) {
+                $card->withSystemMessage($message->title, $message->message, $message->link_text, $message->url);
+            });
 
         if (! Request::isDemoMode() && Gate::check('billing', Auth::user())) {
             if (\tenant()->onTrial()) {
                 $date = \tenant()->trial_ends_at;
-                $ends = Carbon::parse($date)->toFormattedDateString();
-                $left = Carbon::parse($date)->longRelativeToNowDiffForHumans();
+                $ends = Carbon::parse($date)
+                    ->toFormattedDateString();
+                $left = Carbon::parse($date)
+                    ->longRelativeToNowDiffForHumans();
                 $card->withSubscriptionMessage("You are currently on trial. Your trial will end $left on $ends.", 'Sign Up For Subscription', route('spark.portal'));
             } elseif (! \tenant()->subscribed()) {
                 $card->withSubscriptionMessage('You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.', 'Sign Up For Subscription', route('spark.portal'));

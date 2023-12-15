@@ -21,48 +21,44 @@ use Laravel\Pennant\Feature;
 
 class Task extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\Task>
-     */
-    public static $model = \App\Models\Task::class;
+    public static string $model = \App\Models\Task::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'title';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
-    public static $search = [
-        'id',
-        'title',
-    ];
+    public static $search = ['id', 'title'];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Title')->rules('required')->showOnPreview(),
-            Textarea::make('Description')->alwaysShow()->showOnPreview(),
+            ID::make()
+                ->sortable(),
+            Text::make('Title')
+                ->rules('required')
+                ->showOnPreview(),
+            Textarea::make('Description')
+                ->alwaysShow()
+                ->showOnPreview(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
-            })->onlyOnIndex(),
-            Markdown::make('Instructions')->nullable()->help('Set to add some instructions to the task.'),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->sortable()->onlyOnDetail(),
-            DateTime::make('Updated At')->sortable()->onlyOnDetail(),
+            })
+                ->onlyOnIndex(),
+            Markdown::make('Instructions')
+                ->nullable()
+                ->help('Set to add some instructions to the task.'),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->sortable()
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->sortable()
+                ->onlyOnDetail(),
             new Panel('Details', [
                 BelongsTo::make('Form')
                     ->nullable()
@@ -76,45 +72,27 @@ class Task extends Resource
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
-        return [ExportAsCsv::make('Export '.self::label())->canSee(function () {
-            return Feature::active(ExportDataFeature::class);
-        })->nameable()];
+        return [ExportAsCsv::make('Export '.self::label())
+            ->canSee(function () {
+                return Feature::active(ExportDataFeature::class);
+            })
+            ->nameable()];
     }
 }

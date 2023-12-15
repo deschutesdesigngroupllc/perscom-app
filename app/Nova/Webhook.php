@@ -24,43 +24,32 @@ class Webhook extends Resource
     use HasActionsInTabs;
     use HasTabs;
 
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\Webhook>
-     */
-    public static $model = \App\Models\Webhook::class;
+    public static string $model = \App\Models\Webhook::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'url';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
-    public static $search = [
-        'id',
-        'url',
-    ];
+    public static $search = ['id', 'url'];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            URL::make('URL')->rules('required')->onlyOnForms(),
+            ID::make()
+                ->sortable(),
+            URL::make('URL')
+                ->rules('required')
+                ->onlyOnForms(),
             Text::make('URL', function () {
                 return $this->url;
-            })->copyable()->exceptOnForms()->sortable(),
+            })
+                ->copyable()
+                ->exceptOnForms()
+                ->sortable(),
             Textarea::make('Description'),
             Select::make('Method')
                 ->options(collect(WebhookMethod::cases())->mapWithKeys(function (WebhookMethod $method) {
@@ -72,15 +61,19 @@ class Webhook extends Resource
                 ->onlyOnForms(),
             Badge::make('Method', function () {
                 return Str::upper($this->method?->value);
-            })->map([
-                'POST' => 'info',
-                'GET' => 'info',
-            ])->exceptOnForms(),
+            })
+                ->map([
+                    'POST' => 'info',
+                    'GET' => 'info',
+                ])
+                ->exceptOnForms(),
             MultiSelect::make('Events')
                 ->options(
-                    collect(WebhookEvent::cases())->mapWithKeys(function (WebhookEvent $method) {
-                        return [$method->value => $method->value];
-                    })->sortKeys()
+                    collect(WebhookEvent::cases())
+                        ->mapWithKeys(function (WebhookEvent $method) {
+                            return [$method->value => $method->value];
+                        })
+                        ->sortKeys()
                 )
                 ->rules('required')
                 ->help('The events the webhook will listen to.'),
@@ -96,46 +89,27 @@ class Webhook extends Resource
                 Tab::make('Actions', [
                     $this->actionfield(),
                 ]),
-            ])->showTitle(),
+            ])
+                ->showTitle(),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }

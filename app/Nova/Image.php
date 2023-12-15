@@ -15,102 +15,76 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 
 class Image extends Resource
 {
-    /**
-     * The model the resource corresponds to.
-     *
-     * @var class-string<\App\Models\Image>
-     */
-    public static $model = \App\Models\Image::class;
+    public static string $model = \App\Models\Image::class;
 
     /**
-     * The single value that should be used to represent the resource when being displayed.
-     *
      * @var string
      */
     public static $title = 'name';
 
     /**
-     * The columns that should be searched.
-     *
      * @var array
      */
-    public static $search = [
-        'id', 'name',
-    ];
+    public static $search = ['id', 'name'];
 
-    /**
-     * Get the fields displayed by the resource.
-     *
-     * @return array
-     */
-    public function fields(NovaRequest $request)
+    public function fields(NovaRequest $request): array
     {
         return [
-            ID::make()->sortable(),
-            Text::make('Name')->rules('required'),
-            Textarea::make('Description')->alwaysShow()->nullable(),
+            ID::make()
+                ->sortable(),
+            Text::make('Name')
+                ->rules('required'),
+            Textarea::make('Description')
+                ->alwaysShow()
+                ->nullable(),
             Text::make('Description', function () {
                 return Str::limit($this->description);
-            })->onlyOnIndex(),
-            MorphTo::make('Resource', 'model')->types([
-                Award::class,
-                Event::class,
-                PassportClient::class,
-                Qualification::class,
-                Rank::class,
-            ]),
+            })
+                ->onlyOnIndex(),
+            MorphTo::make('Resource', 'model')
+                ->types([
+                    Award::class,
+                    Event::class,
+                    PassportClient::class,
+                    Qualification::class,
+                    Rank::class,
+                ]),
             URL::make('Image URL', function () {
                 return $this->image_url;
-            })->displayUsing(function () {
-                return $this->image_url;
-            }),
+            })
+                ->displayUsing(function () {
+                    return $this->image_url;
+                }),
             ImageField::make('Image', 'path')
                 ->rules('required')
                 ->storeOriginalName('filename')
                 ->disk('s3_public')
                 ->prunable(),
-            Heading::make('Meta')->onlyOnDetail(),
-            DateTime::make('Created At')->onlyOnDetail(),
-            DateTime::make('Updated At')->onlyOnDetail(),
+            Heading::make('Meta')
+                ->onlyOnDetail(),
+            DateTime::make('Created At')
+                ->onlyOnDetail(),
+            DateTime::make('Updated At')
+                ->onlyOnDetail(),
         ];
     }
 
-    /**
-     * Get the cards available for the request.
-     *
-     * @return array
-     */
-    public function cards(NovaRequest $request)
+    public function cards(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the filters available for the resource.
-     *
-     * @return array
-     */
-    public function filters(NovaRequest $request)
+    public function filters(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the lenses available for the resource.
-     *
-     * @return array
-     */
-    public function lenses(NovaRequest $request)
+    public function lenses(NovaRequest $request): array
     {
         return [];
     }
 
-    /**
-     * Get the actions available for the resource.
-     *
-     * @return array
-     */
-    public function actions(NovaRequest $request)
+    public function actions(NovaRequest $request): array
     {
         return [];
     }
