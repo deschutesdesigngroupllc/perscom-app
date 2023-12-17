@@ -115,7 +115,7 @@ class Document extends Model implements Htmlable
             $tag === '{qualification_record_text}' => $attachedModel->text ?? null,
             $tag === '{qualification_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{rank_record_rank}' => $attachedModel->award->name ?? null,
-            $tag === '{rank_record_type}' => $attachedModel->type->getLabel() ?? null,
+            $tag === '{rank_record_type}' => optional($attachedModel->type)->getLabel() ?? null,
             $tag === '{rank_record_text}' => $attachedModel->text ?? null,
             $tag === '{rank_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{service_record_text}' => $attachedModel->text ?? null,
