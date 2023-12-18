@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "931c9a8c1be4d4ae085b4163ae79040b",
+    "content-hash": "a2f72e91151dd98029c9d743a8e94bd4",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6261,7 +6261,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6297,7 +6297,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6333,7 +6333,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6369,7 +6369,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6405,7 +6405,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6441,7 +6441,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6477,7 +6477,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6513,7 +6513,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6549,7 +6549,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6585,7 +6585,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6621,7 +6621,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/php-82",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -9516,16 +9516,16 @@
         },
         {
             "name": "staudenmeir/belongs-to-through",
-            "version": "v2.14",
+            "version": "v2.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/staudenmeir/belongs-to-through.git",
-                "reference": "b85c0e41e5a7175c7b3f3eab396e31ae7e74d23c"
+                "reference": "18b5d55ee0db5cc14bbba75702bf312dd28051f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/staudenmeir/belongs-to-through/zipball/b85c0e41e5a7175c7b3f3eab396e31ae7e74d23c",
-                "reference": "b85c0e41e5a7175c7b3f3eab396e31ae7e74d23c",
+                "url": "https://api.github.com/repos/staudenmeir/belongs-to-through/zipball/18b5d55ee0db5cc14bbba75702bf312dd28051f3",
+                "reference": "18b5d55ee0db5cc14bbba75702bf312dd28051f3",
                 "shasum": ""
             },
             "require": {
@@ -9533,13 +9533,23 @@
                 "php": "^8.1"
             },
             "require-dev": {
+                "barryvdh/laravel-ide-helper": "^2.13",
+                "orchestra/testbench": "^8.17",
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^10.1"
             },
             "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Staudenmeir\\BelongsToThrough\\IdeHelperServiceProvider"
+                    ]
+                }
+            },
             "autoload": {
                 "psr-4": {
-                    "Znck\\Eloquent\\": "src/"
+                    "Znck\\Eloquent\\": "src/",
+                    "Staudenmeir\\BelongsToThrough\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -9559,7 +9569,7 @@
             "description": "Laravel Eloquent BelongsToThrough relationships",
             "support": {
                 "issues": "https://github.com/staudenmeir/belongs-to-through/issues",
-                "source": "https://github.com/staudenmeir/belongs-to-through/tree/v2.14"
+                "source": "https://github.com/staudenmeir/belongs-to-through/tree/v2.15"
             },
             "funding": [
                 {
@@ -9567,7 +9577,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2023-11-27T21:12:07+00:00"
+            "time": "2023-12-16T22:07:22+00:00"
         },
         {
             "name": "staudenmeir/eloquent-has-many-deep",
@@ -14521,16 +14531,16 @@
         },
         {
             "name": "phpstan/phpdoc-parser",
-            "version": "1.24.4",
+            "version": "1.24.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
-                "reference": "6bd0c26f3786cd9b7c359675cb789e35a8e07496"
+                "reference": "fedf211ff14ec8381c9bf5714e33a7a552dd1acc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/6bd0c26f3786cd9b7c359675cb789e35a8e07496",
-                "reference": "6bd0c26f3786cd9b7c359675cb789e35a8e07496",
+                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fedf211ff14ec8381c9bf5714e33a7a552dd1acc",
+                "reference": "fedf211ff14ec8381c9bf5714e33a7a552dd1acc",
                 "shasum": ""
             },
             "require": {
@@ -14562,9 +14572,9 @@
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.4"
+                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.5"
             },
-            "time": "2023-11-26T18:29:22+00:00"
+            "time": "2023-12-16T09:33:33+00:00"
         },
         {
             "name": "phpstan/phpstan",
@@ -17112,7 +17122,9 @@
     },
     "prefer-stable": true,
     "prefer-lowest": false,
-    "platform": [],
+    "platform": {
+        "php": "^8.2"
+    },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
