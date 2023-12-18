@@ -25,7 +25,7 @@
         "laravel/telescope": "^4.12",
         "laravel/tinker": "^2.8",
         "league/flysystem-aws-s3-v3": "^3.0",
-        "openai-php/laravel": "^0.6.0",
+        "openai-php/laravel": "^0.8.1",
         "outl1ne/nova-settings": "^5.0",
         "outl1ne/nova-sortable": "^3.4.2",
         "perscom/alert-card": "*",
