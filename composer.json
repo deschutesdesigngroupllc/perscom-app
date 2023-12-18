@@ -45,7 +45,7 @@
         "sentry/sentry-laravel": "^3.2",
         "spatie/eloquent-sortable": "^4.0.2",
         "spatie/laravel-activitylog": "^4.7.3",
-        "spatie/laravel-permission": "^5.8",
+        "spatie/laravel-permission": "^6.2",
         "spatie/laravel-webhook-server": "^3.4",
         "spatie/url": "^2.2",
         "stancl/jobpipeline": "dev-master as v1.6.2",
