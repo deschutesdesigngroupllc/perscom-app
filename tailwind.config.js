@@ -3,6 +3,7 @@ const colors = require('tailwindcss/colors')
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  mode: 'jit',
   content: ['./app/Nova/**/*.{js,jsx,php}', './resources/**/*.{js,jsx,php}', './nova-components/**/*.{vue,php}'],
   theme: {
     fontSize: {

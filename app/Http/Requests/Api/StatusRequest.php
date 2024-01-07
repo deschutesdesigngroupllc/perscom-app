@@ -13,7 +13,8 @@ class StatusRequest extends Request
     {
         return [
             'name' => 'string',
-            'color' => 'string',
+            'text_color' => 'string',
+            'bg_color' => 'string',
             'updated_at' => 'date',
             'created_at' => 'date',
         ];
@@ -26,7 +27,8 @@ class StatusRequest extends Request
     {
         return [
             'name' => 'required|string',
-            'color' => 'required|string',
+            'text_color' => 'required|string',
+            'bg_color' => 'required|string',
         ];
     }
 }

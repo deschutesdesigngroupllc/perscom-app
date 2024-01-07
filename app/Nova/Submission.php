@@ -10,7 +10,6 @@ use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Laravel\Nova\Actions\ExportAsCsv;
-use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
@@ -69,7 +68,11 @@ class Submission extends Resource
                 ->default(function (NovaRequest $request) {
                     return $request->user()->id;
                 }),
-            $this->generateBadgeField($this),
+            Text::make('Status', function () {
+                return optional($this->statuses()->first(), function (\App\Models\Status $status) {
+                    return $status->name;
+                }) ?? 'No Status Assigned';
+            }),
             Heading::make('Meta')
                 ->onlyOnDetail(),
             DateTime::make('Created At')
@@ -104,31 +107,6 @@ class Submission extends Resource
             ])
                 ->showTitle(),
         ];
-    }
-
-    protected function generateBadgeField($submission): Badge
-    {
-        $status = $submission->statuses()
-            ->first();
-
-        $badge = Badge::make('Status', static function () use ($status) {
-            return $status->name ?? 'No Current Status';
-        })
-            ->types([
-                'No Current Status' => 'bg-gray-100 text-gray-600',
-            ])
-            ->label(function ($status) {
-                return $status ?? 'No Current Status';
-            })
-            ->showOnPreview();
-
-        if ($status) {
-            $badge->addTypes([
-                $status->name => $status->color,
-            ]);
-        }
-
-        return $badge;
     }
 
     protected function getCustomFields(NovaRequest $request): Panel

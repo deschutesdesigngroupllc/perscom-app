@@ -15,12 +15,12 @@ class StatusFactory extends Factory
      */
     public function definition(): array
     {
-        $colors = collect(Status::$colors)->keys();
         $status = "Status  {$this->faker->unique()->randomNumber()}";
 
         return [
             'name' => $status,
-            'color' => $this->faker->randomElement($colors),
+            'text_color' => $this->faker->hexColor,
+            'bg_color' => $this->faker->hexColor,
         ];
     }
 }

@@ -8,7 +8,6 @@ use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
 use App\Traits\HasEventPrompts;
-use App\Traits\HasStatuses;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -42,8 +41,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read \App\Models\Position|null $position
  * @property-read \App\Models\Specialty|null $specialty
  * @property-read \App\Models\Status|null $status
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
- * @property-read int|null $statuses_count
  * @property-read \App\Models\Unit|null $unit
  * @property-read \App\Models\User|null $user
  *
@@ -53,7 +50,6 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord status(?mixed $statuses)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereCreatedAt($value)
@@ -79,7 +75,6 @@ class AssignmentRecord extends Model
     use HasDocument;
     use HasEventPrompts;
     use HasFactory;
-    use HasStatuses;
     use HasUser;
     use LogsActivity;
 

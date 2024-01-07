@@ -21,6 +21,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @property-read \App\Models\PassportClient|null $client
  * @property-read \App\Models\User|null $user
  *
+ * @method static \Database\Factories\PassportTokenFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken query()

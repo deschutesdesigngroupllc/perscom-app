@@ -26,7 +26,7 @@ use Laravel\Nova\Actions\ActionEvent;
  * @property array|null $original
  * @property array|null $changes
  * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $target
- * @property-read \App\Models\Admin|null $user
+ * @property-read \App\Models\Admin $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Action newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Action newQuery()

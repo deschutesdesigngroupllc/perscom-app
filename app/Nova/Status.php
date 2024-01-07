@@ -5,11 +5,10 @@ namespace App\Nova;
 use App\Features\ExportDataFeature;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
-use Laravel\Nova\Fields\Badge;
+use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Pennant\Feature;
@@ -49,23 +48,10 @@ class Status extends Resource
                 ->sortable()
                 ->rules(['required'])
                 ->showOnPreview(),
-            Badge::make('Color', function ($model) {
-                return $model->color;
-            })
-                ->types(collect(\App\Models\Status::$colors)
-                    ->mapWithKeys(function ($value, $key) {
-                        return [$key => $key];
-                    })
-                    ->toArray())
-                ->label(function ($value) {
-                    return \App\Models\Status::$colors[$value];
-                }),
-            Select::make('Color')
-                ->rules(['required'])
-                ->showOnPreview()
-                ->displayUsingLabels()
-                ->onlyOnForms()
-                ->options(\App\Models\Status::$colors),
+            Color::make('Text Color')
+                ->rules(['required']),
+            Color::make('Background Color', 'bg_color')
+                ->rules(['required']),
             Heading::make('Meta')
                 ->onlyOnDetail(),
             DateTime::make('Created At')
