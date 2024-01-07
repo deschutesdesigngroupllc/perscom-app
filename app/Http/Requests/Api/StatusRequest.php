@@ -13,8 +13,8 @@ class StatusRequest extends Request
     {
         return [
             'name' => 'string',
-            'text_color' => 'string',
-            'bg_color' => 'string',
+            'text_color' => ['string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'bg_color' => ['string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
             'updated_at' => 'date',
             'created_at' => 'date',
         ];
@@ -27,8 +27,8 @@ class StatusRequest extends Request
     {
         return [
             'name' => 'required|string',
-            'text_color' => 'required|string',
-            'bg_color' => 'required|string',
+            'text_color' => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'bg_color' => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
         ];
     }
 
