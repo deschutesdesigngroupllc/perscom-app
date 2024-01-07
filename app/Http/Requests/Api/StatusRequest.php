@@ -31,4 +31,14 @@ class StatusRequest extends Request
             'bg_color' => 'required|string',
         ];
     }
+
+    /**
+     * @return string[]
+     */
+    public function attributes(): array
+    {
+        return [
+            'bg_color' => 'background color',
+        ];
+    }
 }
