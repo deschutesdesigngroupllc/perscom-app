@@ -29,7 +29,11 @@ return new class extends OneTimeOperation
             $status->each(function (Status $status) use ($tailwindMatcher) {
                 $existingColor = $status->text_color;
 
-                [$color1, $color2] = explode(' ', $existingColor);
+                [$color1, $color2] = rescue(function () use ($existingColor) {
+                    [$color1, $color2] = explode(' ', $existingColor);
+
+                    return [$color1, $color2];
+                }, fn () => ['bg-sky-100', 'text-sky-600']);
 
                 $textColor = $tailwindMatcher[$color2] ?? '#4b5563';
                 $bgColor = $tailwindMatcher[$color1] ?? '#f3f4f6';
