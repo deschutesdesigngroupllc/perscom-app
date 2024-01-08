@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.67...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.69...HEAD)
+
+## [v1.0.69](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.67...v1.0.69) - 2024-01-08
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.69 -->
+### What's Changed
+
+#### Added
+
+* Feature/update status colors by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/288
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.68...v1.0.69
 
 ## [v1.0.67](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.66...v1.0.67) - 2023-12-15
 
