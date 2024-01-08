@@ -36,6 +36,8 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property-read TaskAssignmentStatus $status
  * @property-read \App\Models\Task|null $task
  * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attachment[] $attachments
+ * @property-read int|null $attachments_count
  *
  * @method static Builder|TaskAssignment assigned()
  * @method static Builder|TaskAssignment expired()

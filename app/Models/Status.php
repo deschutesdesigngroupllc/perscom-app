@@ -11,7 +11,8 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  *
  * @property int $id
  * @property string $name
- * @property string $color
+ * @property string|null $text_color
+ * @property string|null $bg_color
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
@@ -23,10 +24,11 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Illuminate\Database\Eloquent\Builder|Status newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status query()
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereBgColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereTextColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereUpdatedAt($value)
  *
  * @mixin \Eloquent
@@ -38,19 +40,7 @@ class Status extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['name', 'color', 'updated_at', 'created_at'];
-
-    /**
-     * @var string[]
-     */
-    public static $colors = [
-        'bg-sky-100 text-sky-600' => 'Blue',
-        'bg-gray-100 text-gray-600' => 'Gray',
-        'bg-green-100 text-green-600' => 'Green',
-        'bg-red-100 text-red-600' => 'Red',
-        'bg-white text-black' => 'White',
-        'bg-yellow-100 text-yellow-600' => 'Yellow',
-    ];
+    protected $fillable = ['name', 'text_color', 'bg_color', 'updated_at', 'created_at'];
 
     public function users(): MorphToMany
     {

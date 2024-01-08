@@ -172,13 +172,16 @@ class FireServiceSeeder extends Seeder
             ->sequence(
                 [
                     'name' => 'Active',
-                    'color' => 'bg-green-100 text-green-600',
+                    'text_color' => '#16a34a',
+                    'bg_color' => '#dcfce7',
                 ], [
                     'name' => 'Inactive',
-                    'color' => 'bg-red-100 text-red-600',
+                    'text_color' => '#dc2626',
+                    'bg_color' => '#fee2e2',
                 ], [
                     'name' => 'On Leave',
-                    'color' => 'bg-sky-100 text-sky-600',
+                    'text_color' => '#0284c7',
+                    'bg_color' => '#e0f2fe',
                 ],
             )
             ->create();

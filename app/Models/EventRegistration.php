@@ -24,6 +24,10 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \App\Models\Event $event
  * @property-read \App\Models\User $user
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attachment[] $attachments
+ * @property-read int|null $attachments_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Image[] $images
+ * @property-read int|null $images_count
  *
  * @method static Builder|EventRegistration future()
  * @method static Builder|EventRegistration newModelQuery()

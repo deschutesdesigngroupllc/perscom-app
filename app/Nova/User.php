@@ -112,17 +112,6 @@ class User extends Resource
                 ->readonly(function () {
                     return Request::isDemoMode();
                 }),
-            Badge::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), function () {
-                return $this->status->name ?? 'none';
-            })
-                ->types([
-                    'none' => 'bg-gray-100 text-gray-600',
-                    $this->status?->name => $this->status?->color,
-                ])
-                ->label(function () {
-                    return $this->status->name ?? 'No Current Status';
-                })
-                ->showOnPreview(),
             Badge::make('Online', function ($user) {
                 return $user->online;
             })
@@ -159,7 +148,7 @@ class User extends Resource
                 ->onlyOnDetail(),
             Tabs::make(Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
                 Tab::make('Current '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
-                    Stack::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), [
+                    Stack::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), [
                         Line::make('Position', function ($model) {
                             return $model->position->name ?? null;
                         })
@@ -170,10 +159,12 @@ class User extends Resource
                                     ->longRelativeToNowDiffForHumans();
                             });
                         })
+                            ->onlyOnDetail()
                             ->asSmall(),
                     ])
+                        ->onlyOnDetail()
                         ->showOnPreview(),
-                    Stack::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), [
+                    Stack::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), [
                         Line::make('Specialty', function ($model) {
                             return $model->specialty->name ?? null;
                         })
@@ -186,8 +177,9 @@ class User extends Resource
                         })
                             ->asSmall(),
                     ])
+                        ->onlyOnDetail()
                         ->showOnPreview(),
-                    Stack::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), [
+                    Stack::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), [
                         Line::make('Unit', function ($model) {
                             return $model->unit->name ?? null;
                         })
@@ -200,6 +192,7 @@ class User extends Resource
                         })
                             ->asSmall(),
                     ])
+                        ->onlyOnDetail()
                         ->showOnPreview(),
                     DateTime::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Change Date', function ($model) {
                         return $model->assignment_records->first()->created_at ?? null;
@@ -222,22 +215,22 @@ class User extends Resource
             ])
                 ->showTitle(),
             Panel::make(Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
-                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
+                BelongsTo::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), 'position', Position::class)
                     ->help('You can manually set the user\'s position. Creating an assignment record will also change their position.')
                     ->nullable()
-                    ->onlyOnForms()
+                    ->hideFromDetail()
                     ->showOnPreview()
                     ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
-                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
+                BelongsTo::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'specialty', Specialty::class)
                     ->help('You can manually set the user\'s specialty. Creating an assignment record will also change their specialty.')
                     ->nullable()
-                    ->onlyOnForms()
+                    ->hideFromDetail()
                     ->showOnPreview()
                     ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
-                BelongsTo::make('Primary '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
+                BelongsTo::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), 'unit', Unit::class)
                     ->help('You can manually set the user\'.s unit. Creating an assignment record will also change their unit.')
                     ->nullable()
-                    ->onlyOnForms()
+                    ->hideFromDetail()
                     ->showOnPreview()
                     ->canSeeWhen('create', \App\Models\AssignmentRecord::class),
             ]),
@@ -268,6 +261,7 @@ class User extends Resource
                     })
                         ->asSmall(),
                 ])
+                    ->onlyOnDetail()
                     ->showOnPreview(),
                 DateTime::make('Last '.Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Change Date', function ($model) {
                     return $model->rank_records->first()->created_at ?? null;
@@ -285,7 +279,7 @@ class User extends Resource
                 BelongsTo::make(Str::singular(Str::title(setting('localization_ranks', 'Rank'))), 'rank', Rank::class)
                     ->help('You can manually set the user\'s rank. Creating a rank record will also change their rank.')
                     ->nullable()
-                    ->onlyOnForms()
+                    ->hideFromDetail()
                     ->showOnPreview()
                     ->canSeeWhen('create', \App\Models\RankRecord::class),
             ]),
@@ -341,7 +335,7 @@ class User extends Resource
                 BelongsTo::make(Str::singular(Str::title(setting('localization_statuses', 'Status'))), 'status', Status::class)
                     ->help('You can manually set the user\'s status. Creating a status record will also change their status.')
                     ->nullable()
-                    ->onlyOnForms()
+                    ->hideFromDetail()
                     ->canSeeWhen('create', \App\Models\StatusRecord::class),
             ]),
             Tabs::make('Settings', [

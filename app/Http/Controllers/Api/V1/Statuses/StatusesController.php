@@ -37,7 +37,7 @@ class StatusesController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['name', 'color'];
+        return ['name', 'text_color', 'bg_color'];
     }
 
     /**
@@ -45,6 +45,6 @@ class StatusesController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'color', 'created_at'];
+        return ['id', 'name', 'text_color', 'bg_color', 'created_at'];
     }
 }
