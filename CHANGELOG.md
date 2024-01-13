@@ -1,6 +1,21 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.69...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.70...HEAD)
+
+## [v1.0.70](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.69...v1.0.70) - 2024-01-13
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.70 -->
+### What's Changed
+
+#### Changed
+
+* Remove code climate from CI/CD by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/292
+
+#### Fixed
+
+* Fix status delete error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/291
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.69...v1.0.70
 
 ## [v1.0.69](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.67...v1.0.69) - 2024-01-08
 
