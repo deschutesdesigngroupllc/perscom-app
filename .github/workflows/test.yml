@@ -71,15 +71,8 @@ jobs:
       - name: Install Passport Keys
         run: php artisan passport:keys --force
 
-      - name: Code Climate Setup
-        run: |
-          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter && chmod +x ./cc-test-reporter
-          ./cc-test-reporter before-build
-
       - name: Execute Tests
-        run: |
-          php artisan test --parallel --recreate-databases
-          ./cc-test-reporter after-build -t clover --exit-code $?
+        run: php artisan test --parallel --recreate-databases
         env:
           DB_USERNAME: root
 
@@ -96,9 +89,3 @@ jobs:
         with:
           name: logs
           path: storage/logs/
-
-      - name: Upload Coverage Report
-        uses: actions/upload-artifact@v3
-        with:
-          name: coverage
-          path: tests/Coverage/html
