@@ -28,7 +28,7 @@ class ImageRequest extends Request
     {
         return [
             'name' => 'required|string',
-            'image' => 'required|image',
+            'image' => 'required|image|min:1|max:10000',
         ];
     }
 }
