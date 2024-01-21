@@ -7,6 +7,7 @@ use App\Traits\HasHiddenFieldAttributes;
 use App\Traits\HasResourceUrlAttribute;
 use App\Traits\HasStatuses;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -305,14 +306,18 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return Cache::tags('user.online')->has("user.online.$this->id");
     }
 
-    public function getProfilePhotoUrlAttribute(): ?string
+    public function profilePhotoUrl(): Attribute
     {
-        return $this->profile_photo ? Storage::url($this->profile_photo) : null;
+        return Attribute::make(
+            get: fn (): ?string => $this->profile_photo ? Storage::url($this->profile_photo) : null
+        );
     }
 
-    public function getCoverPhotoUrlAttribute(): ?string
+    public function coverPhotoUrl(): Attribute
     {
-        return $this->cover_photo ? Storage::url($this->cover_photo) : null;
+        return Attribute::make(
+            get: fn (): ?string => $this->cover_photo ? Storage::url($this->cover_photo) : null
+        );
     }
 
     public function getTimeInGradeAttribute(): mixed
