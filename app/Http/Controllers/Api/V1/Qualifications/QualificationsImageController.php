@@ -1,0 +1,63 @@
+<?php
+
+namespace App\Http\Controllers\Api\V1\Qualifications;
+
+use App\Http\Requests\Api\ImageRequest;
+use App\Models\Qualification;
+use App\Policies\ImagePolicy;
+use Illuminate\Database\Eloquent\Model;
+use Orion\Http\Controllers\RelationController;
+use Orion\Http\Requests\Request;
+
+class QualificationsImageController extends RelationController
+{
+    /**
+     * @var string
+     */
+    protected $model = Qualification::class;
+
+    /**
+     * @var string
+     */
+    protected $request = ImageRequest::class;
+
+    /**
+     * @var string
+     */
+    protected $policy = ImagePolicy::class;
+
+    /**
+     * @var string
+     */
+    protected $relation = 'image';
+
+    /**
+     * @return string[]
+     */
+    public function searchableBy(): array
+    {
+        return ['name'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function filterableBy(): array
+    {
+        return ['id', 'name', 'created_at'];
+    }
+
+    protected function beforeSave(Request $request, Model $parentEntity, Model $entity): void
+    {
+        if ($request->hasFile('image') && $request->file('image')->isValid()) {
+            $file = $request->file('image');
+
+            $path = $file->store('/', 's3_public');
+
+            $entity->forceFill([
+                'path' => $path,
+                'filename' => $file->getClientOriginalName(),
+            ]);
+        }
+    }
+}

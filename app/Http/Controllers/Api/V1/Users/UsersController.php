@@ -85,14 +85,14 @@ class UsersController extends Controller
         return ['id', 'name', 'email', 'email_verified_at', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'last_seen_at', 'updated_at', 'created_at'];
     }
 
-    public function afterSave(Request $request, Model $entity): void
+    public function beforeSave(Request $request, Model $entity): void
     {
         if ($request->hasFile('profile_photo') && $request->file('profile_photo')->isValid()) {
             $path = $request->file('profile_photo')->store('profile-photos', 's3_public');
 
             $entity->forceFill([
                 'profile_photo' => $path,
-            ])->save();
+            ]);
         }
 
         if ($request->hasFile('cover_photo') && $request->file('cover_photo')->isValid()) {
@@ -100,7 +100,7 @@ class UsersController extends Controller
 
             $entity->forceFill([
                 'cover_photo' => $path,
-            ])->save();
+            ]);
         }
     }
 }

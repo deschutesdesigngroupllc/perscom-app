@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\File;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
@@ -56,9 +57,10 @@ class Image extends Resource
                     return $this->image_url;
                 }),
             ImageField::make('Image', 'path')
-                ->rules('required')
+                ->rules(['required', File::image()->min('1kb')->max('10mb')])
                 ->storeOriginalName('filename')
                 ->disk('s3_public')
+                ->deletable()
                 ->prunable(),
             Heading::make('Meta')
                 ->onlyOnDetail(),
