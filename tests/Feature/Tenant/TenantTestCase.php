@@ -63,7 +63,7 @@ class TenantTestCase extends TestCase
         Domain::factory()->state([
             'domain' => "tenant{$testToken}",
             'tenant_id' => $tenant->getKey(),
-        ])->create();
+        ])->createQuietly();
 
         if (! $tenant->database()->manager()->databaseExists($tenantDatabaseName)) {
             $tenant->database()->manager()->createDatabase($tenant);
