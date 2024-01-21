@@ -7,9 +7,6 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\ParallelTesting;
-use Illuminate\Support\Str;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -26,17 +23,5 @@ abstract class TestCase extends BaseTestCase
         Http::preventStrayRequests();
 
         $this->withoutMiddleware(ThrottleRequestsWithRedis::class);
-
-        $this->testToken = ParallelTesting::token() ?: Str::random();
-
-        Log::debug('Running test', [
-            'test' => $this->toString(),
-            'token' => $this->getTestToken(),
-        ]);
-    }
-
-    protected function getTestToken(): string
-    {
-        return $this->testToken;
     }
 }
