@@ -130,16 +130,20 @@ class User extends Resource
                 ->onlyOnDetail(),
             Avatar::make('Profile Photo')
                 ->disk('s3_public')
+                ->path('profile-photos')
                 ->deletable()
                 ->prunable()
                 ->squared()
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->rules([Rules\File::image()->min('1kb')->max('10mb')]),
             Image::make('Cover Photo')
                 ->disk('s3_public')
+                ->path('cover-photos')
                 ->deletable()
                 ->prunable()
                 ->squared()
-                ->hideFromIndex(),
+                ->hideFromIndex()
+                ->rules([Rules\File::image()->min('1kb')->max('10mb')]),
             Heading::make('Meta')
                 ->onlyOnDetail(),
             DateTime::make('Created At')

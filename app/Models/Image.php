@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -45,11 +46,18 @@ class Image extends Model
     /**
      * @var string[]
      */
+    protected $fillable = ['name', 'description', 'filename', 'path'];
+
+    /**
+     * @var string[]
+     */
     protected $appends = ['image_url'];
 
-    public function getImageUrlAttribute(): ?string
+    public function imageUrl(): Attribute
     {
-        return $this->path ? Storage::url($this->path) : null;
+        return Attribute::make(
+            get: fn (): ?string => $this->path ? Storage::url($this->path) : null
+        );
     }
 
     public function model(): MorphTo

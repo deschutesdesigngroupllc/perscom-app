@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
 use App\Http\Controllers\Api\V1\AssignmentRecords\AssignmentRecordsController;
 use App\Http\Controllers\Api\V1\AwardRecords\AwardRecordsController;
 use App\Http\Controllers\Api\V1\Awards\AwardsController;
+use App\Http\Controllers\Api\V1\Awards\AwardsImageController;
 use App\Http\Controllers\Api\V1\Calendars\CalendarsController;
 use App\Http\Controllers\Api\V1\Categories\CategoriesAwardsController;
 use App\Http\Controllers\Api\V1\Categories\CategoriesController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Api\V1\Categories\CategoriesRanksController;
 use App\Http\Controllers\Api\V1\CombatRecords\CombatRecordsController;
 use App\Http\Controllers\Api\V1\Documents\DocumentsController;
 use App\Http\Controllers\Api\V1\Events\EventsController;
+use App\Http\Controllers\Api\V1\Events\EventsImagesController;
 use App\Http\Controllers\Api\V1\Forms\FormsController;
 use App\Http\Controllers\Api\V1\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\V1\Groups\GroupsController;
@@ -23,8 +25,10 @@ use App\Http\Controllers\Api\V1\Newsfeed\NewsfeedLikesController;
 use App\Http\Controllers\Api\V1\Positions\PositionsController;
 use App\Http\Controllers\Api\V1\QualificationRecords\QualificationRecordsController;
 use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
+use App\Http\Controllers\Api\V1\Qualifications\QualificationsImageController;
 use App\Http\Controllers\Api\V1\RankRecords\RankRecordsController;
 use App\Http\Controllers\Api\V1\Ranks\RanksController;
+use App\Http\Controllers\Api\V1\Ranks\RanksImageController;
 use App\Http\Controllers\Api\V1\ServiceRecords\ServiceRecordsController;
 use App\Http\Controllers\Api\V1\SpecController;
 use App\Http\Controllers\Api\V1\Specialties\SpecialtiesController;
@@ -75,6 +79,7 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('assignment-records', AssignmentRecordsController::class);
 
         Orion::resource('awards', AwardsController::class);
+        Orion::hasOneResource('awards', 'image', AwardsImageController::class);
 
         Orion::resource('award-records', AwardRecordsController::class);
 
@@ -92,6 +97,7 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('documents', DocumentsController::class);
 
         Orion::resource('events', EventsController::class);
+        Orion::hasManyResource('events', 'images', EventsImagesController::class);
 
         Orion::resource('forms', FormsController::class);
         Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
@@ -105,10 +111,12 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('positions', PositionsController::class);
 
         Orion::resource('qualifications', QualificationsController::class);
+        Orion::hasOneResource('qualifications', 'image', QualificationsImageController::class);
 
         Orion::resource('qualification-records', QualificationRecordsController::class);
 
         Orion::resource('ranks', RanksController::class);
+        Orion::hasOneResource('ranks', 'image', RanksImageController::class);
 
         Orion::resource('rank-records', RankRecordsController::class);
 

@@ -7,7 +7,7 @@ trait HasResourceUrlAttribute
     public function getUrlAttribute(): string
     {
         return optional($this->getKey(), function ($key) {
-            return route('nova.pages.detail', [
+            return tenant_route(tenant('domain')?->host, 'nova.pages.detail', [
                 'resource' => \call_user_func_array([$this->findNovaResourceClass(), 'uriKey'], []),
                 'resourceId' => $key,
             ]);

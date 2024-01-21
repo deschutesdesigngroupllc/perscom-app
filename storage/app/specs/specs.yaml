@@ -3123,6 +3123,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -3180,6 +3181,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -3237,6 +3239,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -3337,6 +3340,7 @@ paths:
                           - assignment_records.position
                           - assignment_records.specialty
                           - assignment_records.unit
+                          - assignment_records.status
                           - award_records
                           - award_records.award
                           - award_records.award.image
@@ -3431,6 +3435,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -3489,6 +3494,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -3554,6 +3560,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -3607,6 +3614,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -3673,6 +3681,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -3740,6 +3749,7 @@ paths:
               - assignment_records.position
               - assignment_records.specialty
               - assignment_records.unit
+              - assignment_records.status
               - award_records
               - award_records.award
               - award_records.award.image
@@ -12806,7 +12816,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewsfeedItem'
+              $ref: '#/components/schemas/Newsfeed'
       responses:
         201:
           description: OK
@@ -12816,7 +12826,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/NewsfeedItemResource'
+                    $ref: '#/components/schemas/NewsfeedResource'
         401:
           description: Unauthenticated
         403:
@@ -12848,7 +12858,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/NewsfeedItemResource'
+                      $ref: '#/components/schemas/NewsfeedResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -12883,7 +12893,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/NewsfeedItemResource'
+                      $ref: '#/components/schemas/NewsfeedResource'
                   links:
                     $ref: '#/components/schemas/ResourceLinks'
                   meta:
@@ -12922,7 +12932,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/NewsfeedItemResource'
+                    $ref: '#/components/schemas/NewsfeedResource'
         401:
           description: Unauthenticated
         403:
@@ -12953,7 +12963,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/NewsfeedItem'
+              $ref: '#/components/schemas/Newsfeed'
       responses:
         200:
           description: OK
@@ -12963,7 +12973,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/NewsfeedItemResource'
+                    $ref: '#/components/schemas/NewsfeedResource'
         401:
           description: Unauthenticated
         403:
@@ -13001,7 +13011,7 @@ paths:
                 type: object
                 properties:
                   data:
-                    $ref: '#/components/schemas/NewsfeedItemResource'
+                    $ref: '#/components/schemas/NewsfeedResource'
         401:
           description: Unauthenticated
         403:
@@ -13032,7 +13042,7 @@ paths:
                 resources:
                   type: array
                   items:
-                    $ref: '#/components/schemas/NewsfeedItem'
+                    $ref: '#/components/schemas/Newsfeed'
       responses:
         200:
           description: OK
@@ -13044,7 +13054,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/NewsfeedItemResource'
+                      $ref: '#/components/schemas/NewsfeedResource'
         422:
           description: 'Validation error'
         401:
@@ -13077,7 +13087,7 @@ paths:
                   type: object
                   properties:
                     '{key}':
-                      $ref: '#/components/schemas/NewsfeedItem'
+                      $ref: '#/components/schemas/Newsfeed'
       responses:
         200:
           description: OK
@@ -13089,7 +13099,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/NewsfeedItemResource'
+                      $ref: '#/components/schemas/NewsfeedResource'
         422:
           description: 'Validation error'
         401:
@@ -13134,7 +13144,7 @@ paths:
                   data:
                     type: array
                     items:
-                      $ref: '#/components/schemas/NewsfeedItemResource'
+                      $ref: '#/components/schemas/NewsfeedResource'
         422:
           description: 'Validation error'
         401:
@@ -16279,7 +16289,8 @@ paths:
                         enum:
                           - id
                           - name
-                          - color
+                          - text_color
+                          - bg_color
                           - created_at
                       operator:
                         type: string
@@ -16304,13 +16315,13 @@ paths:
                         type: array
                         items:
                           type: object
-                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, color, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, text_color, bg_color, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
                 search:
                   type: object
                   properties:
                     value:
                       type: string
-                      description: 'A search for the given value will be performed on the following fields: name, color'
+                      description: 'A search for the given value will be performed on the following fields: name, text_color, bg_color'
                     case_sensitive:
                       type: boolean
                       description: '(default: true) Set it to false to perform search in case-insensitive way'
@@ -16328,7 +16339,7 @@ paths:
                         type: object
                         properties:
                           type: array
-                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, color, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, color, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
+                          items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, text_color, bg_color, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string }, nested: { type: array, items: { type: object, properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, text_color, bg_color, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } } } } } }
       responses:
         200:
           description: OK
@@ -23441,6 +23452,876 @@ paths:
       summary: 'Delete a batch of records service'
       tags:
         - 'Service Records'
+  '/v1/awards/{award}/image':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create image'
+      tags:
+        - 'Awards Image'
+  '/v1/awards/{award}/image/{image}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get image'
+      tags:
+        - 'Awards Image'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update image'
+      tags:
+        - 'Awards Image'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: award
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete image'
+      tags:
+        - 'Awards Image'
+  '/v1/events/{event}/images':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create image'
+      tags:
+        - 'Events Images'
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ImageResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Get a list of images'
+      tags:
+        - 'Events Images'
+  '/v1/events/{event}/images/search':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                filters:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - and
+                          - or
+                      field:
+                        type: string
+                        enum:
+                          - id
+                          - name
+                          - created_at
+                      operator:
+                        type: string
+                        enum:
+                          - '<'
+                          - '<='
+                          - '>'
+                          - '>='
+                          - '='
+                          - '!='
+                          - like
+                          - 'not like'
+                          - ilike
+                          - 'not ilike'
+                          - in
+                          - 'not in'
+                          - 'all in'
+                          - 'any in'
+                      value:
+                        type: string
+                      nested:
+                        type: array
+                        items:
+                          type: object
+                          properties: { type: { type: string, enum: [and, or] }, field: { type: string, enum: [id, name, created_at] }, operator: { type: string, enum: ['<', '<=', '>', '>=', '=', '!=', like, 'not like', ilike, 'not ilike', in, 'not in', 'all in', 'any in'] }, value: { type: string } }
+                search:
+                  type: object
+                  properties:
+                    value:
+                      type: string
+                      description: 'A search for the given value will be performed on the following fields: name'
+                    case_sensitive:
+                      type: boolean
+                      description: '(default: true) Set it to false to perform search in case-insensitive way'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ImageResource'
+                  links:
+                    $ref: '#/components/schemas/ResourceLinks'
+                  meta:
+                    $ref: '#/components/schemas/ResourceMeta'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+      summary: 'Search for images'
+      tags:
+        - 'Events Images'
+  '/v1/events/{event}/images/{image}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get image'
+      tags:
+        - 'Events Images'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update image'
+      tags:
+        - 'Events Images'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete image'
+      tags:
+        - 'Events Images'
+  '/v1/events/{event}/images/batch':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Image'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ImageResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Create a batch of images'
+      tags:
+        - 'Events Images'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: object
+                  properties:
+                    '{key}':
+                      $ref: '#/components/schemas/Image'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ImageResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Update a batch of images'
+      tags:
+        - 'Events Images'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                resources:
+                  type: array
+                  items:
+                    type: integer
+                    description: 'A list of resource IDs'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ImageResource'
+        422:
+          description: 'Validation error'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete a batch of images'
+      tags:
+        - 'Events Images'
+  '/v1/events/{event}/images/associate':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Associate image with event'
+      tags:
+        - 'Events Images'
+  '/v1/events/{event}/images/{image}/dissociate':
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: event
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Dissociate image from event'
+      tags:
+        - 'Events Images'
+  '/v1/qualifications/{qualification}/image':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create image'
+      tags:
+        - 'Qualifications Image'
+  '/v1/qualifications/{qualification}/image/{image}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get image'
+      tags:
+        - 'Qualifications Image'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update image'
+      tags:
+        - 'Qualifications Image'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: qualification
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete image'
+      tags:
+        - 'Qualifications Image'
+  '/v1/ranks/{rank}/image':
+    post:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        201:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        422:
+          description: 'Validation error'
+      summary: 'Create image'
+      tags:
+        - 'Ranks Image'
+  '/v1/ranks/{rank}/image/{image}':
+    get:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Get image'
+      tags:
+        - 'Ranks Image'
+    patch:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Image'
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+        422:
+          description: 'Validation error'
+      summary: 'Update image'
+      tags:
+        - 'Ranks Image'
+    delete:
+      parameters:
+        -
+          schema:
+            type: integer
+          name: rank
+          in: path
+          required: true
+        -
+          schema:
+            type: integer
+          name: image
+          in: path
+          required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: '#/components/schemas/ImageResource'
+        401:
+          description: Unauthenticated
+        403:
+          description: Unauthorized
+        404:
+          description: 'Resource not found'
+      summary: 'Delete image'
+      tags:
+        - 'Ranks Image'
 components:
   securitySchemes:
     ApiKey:
@@ -24044,6 +24925,12 @@ components:
           type: string
         color:
           type: string
+        text_color:
+          type: string
+          nullable: true
+        bg_color:
+          type: string
+          nullable: true
     StatusResource:
       title: StatusResource
       allOf:
@@ -24500,6 +25387,79 @@ components:
               type: string
               nullable: true
               format: date-time
+    Image:
+      title: Image
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+          nullable: true
+        filename:
+          type: string
+        path:
+          type: string
+    ImageResource:
+      title: ImageResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Image'
+        -
+          type: object
+          properties:
+            id:
+              type: integer
+            model_type:
+              type: string
+            model_id:
+              type: string
+            created_at:
+              type: string
+              nullable: true
+              format: date-time
+            updated_at:
+              type: string
+              nullable: true
+              format: date-time
+    Newsfeed:
+      title: Newsfeed
+      type: object
+      properties:
+        log_name:
+          type: string
+          nullable: true
+        description:
+          type: string
+        subject_type:
+          type: string
+          nullable: true
+        event:
+          type: string
+          nullable: true
+        subject_id:
+          type: integer
+          nullable: true
+        causer_type:
+          type: string
+          nullable: true
+        causer_id:
+          type: string
+          nullable: true
+        properties:
+          type: object
+          additionalProperties: true
+        batch_uuid:
+          type: string
+          nullable: true
+    NewsfeedResource:
+      title: NewsfeedResource
+      allOf:
+        -
+          $ref: '#/components/schemas/Newsfeed'
+        -
+          type: object
+          properties: []
 tags:
   -
     name: Me
@@ -24513,6 +25473,9 @@ tags:
   -
     name: Awards
     description: 'API documentation for Awards'
+  -
+    name: 'Awards Image'
+    description: 'API documentation for Awards Image'
   -
     name: 'Award Records'
     description: 'API documentation for Award Records'
@@ -24547,6 +25510,9 @@ tags:
     name: Events
     description: 'API documentation for Events'
   -
+    name: 'Events Images'
+    description: 'API documentation for Events Images'
+  -
     name: Forms
     description: 'API documentation for Forms'
   -
@@ -24568,11 +25534,17 @@ tags:
     name: Qualifications
     description: 'API documentation for Qualifications'
   -
+    name: 'Qualifications Image'
+    description: 'API documentation for Qualifications Image'
+  -
     name: 'Qualification Records'
     description: 'API documentation for Qualification Records'
   -
     name: Ranks
     description: 'API documentation for Ranks'
+  -
+    name: 'Ranks Image'
+    description: 'API documentation for Ranks Image'
   -
     name: 'Rank Records'
     description: 'API documentation for Rank Records'

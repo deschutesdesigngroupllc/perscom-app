@@ -4,31 +4,29 @@ namespace App\Http\Middleware;
 
 use App\Features\ApiAccessFeature;
 use App\Features\OAuth2AccessFeature;
+use Closure;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
 class Subscribed extends VerifyBillableIsSubscribed
 {
     /**
-     * Verify the incoming request's user has a subscription.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Request  $request
+     * @param  Closure  $next
      * @param  string  $billableType
      * @param  string  $plan
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function handle($request, $next, $billableType = null, $plan = null)
     {
-        if ($request->isDemoMode() ||
-            $request->isCentralRequest() ||
-            $request->routeIs('nova.pages.dashboard', 'nova.pages.dashboard.*', 'nova.pages.home', 'nova.api.*') ||
-            Str::contains($request->path(), 'nova-vendor') ||
-            Auth::guard('jwt')->check()) {
+        if (app()->environment('local') ||
+            $request->isDemoMode() ||
+            $request->isCentralRequest()) {
             return $next($request);
         }
 
