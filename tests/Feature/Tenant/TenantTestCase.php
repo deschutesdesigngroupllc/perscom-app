@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant;
 
+use App\Models\Domain;
 use App\Models\Tenant;
 use App\Models\User;
 use Database\Seeders\TestingCentralSeeder;
@@ -12,12 +13,9 @@ use Illuminate\Support\Str;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Tests\TestCase;
-use Tests\Traits\WithTenant;
 
 class TenantTestCase extends TestCase
 {
-    use WithTenant;
-
     public string $seeder = TestingCentralSeeder::class;
 
     /**
@@ -34,6 +32,7 @@ class TenantTestCase extends TestCase
         }
 
         $this->tenant = Tenant::firstOrFail();
+        $this->domain = Domain::firstOrFail();
 
         tenancy()->initialize($this->tenant);
         tenant()->load('domains');
@@ -60,6 +59,11 @@ class TenantTestCase extends TestCase
             'name' => $tenantName,
             'tenancy_db_name' => $tenantDatabaseName
         ])->createQuietly();
+
+        Domain::factory()->state([
+            'domain' => "tenant{$testToken}",
+            'tenant_id' => $tenant->getKey(),
+        ])->create();
 
         if (! $tenant->database()->manager()->databaseExists($tenantDatabaseName)) {
             $tenant->database()->manager()->createDatabase($tenant);
