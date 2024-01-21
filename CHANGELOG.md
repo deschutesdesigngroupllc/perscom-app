@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.70...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.71...HEAD)
+
+## [v1.0.71](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.70...v1.0.71) - 2024-01-21
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.71 -->
+### What's Changed
+
+#### Added
+
+* Add image upload API endpoints by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/295
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.70...v1.0.71
 
 ## [v1.0.70](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.69...v1.0.70) - 2024-01-13
 
