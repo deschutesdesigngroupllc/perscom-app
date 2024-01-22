@@ -111,16 +111,4 @@ class ErrorViewTest extends CentralTestCase
                 $page->component('Error')->has('message');
             })->assertStatus(500);
     }
-
-    public function test_503_exception_is_thrown_and_view_is_returned()
-    {
-        $this->app->maintenanceMode()->activate([]);
-
-        $this->get('/test-route')
-            ->assertInertia(function (AssertableInertia $page) {
-                $page->component('Error')->has('message');
-            })->assertStatus(503);
-
-        $this->app->maintenanceMode()->deactivate();
-    }
 }

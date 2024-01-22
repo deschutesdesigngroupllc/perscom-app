@@ -15,7 +15,7 @@ class TestingTenantSeeder extends Seeder
             'rank_id' => null,
             'specialty_id' => null,
             'status_id' => null,
-            'unit_id' => null
+            'unit_id' => null,
         ])->createQuietly();
     }
 }

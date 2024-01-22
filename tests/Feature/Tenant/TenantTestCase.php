@@ -59,7 +59,7 @@ class TenantTestCase extends TestCase
 
         $tenant = Tenant::factory()->state([
             'name' => $tenantName,
-            'tenancy_db_name' => $tenantDatabaseName
+            'tenancy_db_name' => $tenantDatabaseName,
         ])->createQuietly();
 
         Domain::factory()->state([
@@ -79,7 +79,7 @@ class TenantTestCase extends TestCase
         ]);
         $this->artisan('tenants:seed', [
             '--tenants' => $tenant->getKey(),
-            '--class' => TestingTenantSeeder::class
+            '--class' => TestingTenantSeeder::class,
         ]);
     }
 

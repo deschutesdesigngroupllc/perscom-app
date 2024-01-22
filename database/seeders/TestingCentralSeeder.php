@@ -10,7 +10,7 @@ class TestingCentralSeeder extends Seeder
     public function run(): void
     {
         Admin::factory()->state([
-            'name' => 'Test Admin'
+            'name' => 'Test Admin',
         ])->create();
     }
 }
