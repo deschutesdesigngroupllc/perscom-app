@@ -29,6 +29,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->getJson("/{$this->endpoint()}")
+            ->assertJsonStructure(['data', 'links', 'meta'])
             ->assertSuccessful();
     }
 
@@ -39,6 +40,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+            ->assertJsonStructure(['data'])
             ->assertSuccessful();
     }
 
@@ -51,6 +53,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $data = $this->storeData();
 
         $this->postJson("/{$this->endpoint()}", $data)
+            ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
         $this->assertDatabaseHas($this->endpoint(), $data);
@@ -65,6 +68,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $data = $this->updateData();
 
         $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $data)
+            ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
         $this->assertDatabaseHas($this->endpoint(), $data);
@@ -77,6 +81,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+            ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
         $this->assertDatabaseMissing($this->endpoint(), [
