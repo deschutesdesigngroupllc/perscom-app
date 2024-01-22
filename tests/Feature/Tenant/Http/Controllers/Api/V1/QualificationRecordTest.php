@@ -2,29 +2,30 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
-use App\Models\ServiceRecord;
+use App\Models\Qualification;
+use App\Models\QualificationRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ServiceRecordTest extends ApiResourceTestCase
+class QualificationRecordTest extends ApiResourceTestCase
 {
     public function endpoint(): string
     {
-        return 'service-records';
+        return 'qualification-records';
     }
 
     public function table(): string
     {
-        return 'records_service';
+        return 'records_qualifications';
     }
 
     public function model(): string
     {
-        return ServiceRecord::class;
+        return QualificationRecord::class;
     }
 
     public function factory(): Factory
     {
-        return ServiceRecord::factory()->state([
+        return QualificationRecord::factory()->state([
             'user_id' => $this->user->getKey(),
         ]);
     }
@@ -32,11 +33,11 @@ class ServiceRecordTest extends ApiResourceTestCase
     public function scopes(): array
     {
         return [
-            'index' => 'view:servicerecord',
-            'show' => 'view:servicerecord',
-            'store' => 'create:servicerecord',
-            'update' => 'update:servicerecord',
-            'delete' => 'delete:servicerecord',
+            'index' => 'view:qualificationrecord',
+            'show' => 'view:qualificationrecord',
+            'store' => 'create:qualificationrecord',
+            'update' => 'update:qualificationrecord',
+            'delete' => 'delete:qualificationrecord',
         ];
     }
 
@@ -45,6 +46,7 @@ class ServiceRecordTest extends ApiResourceTestCase
         return [
             'user_id' => $this->user->getKey(),
             'author_id' => $this->user->getKey(),
+            'qualification_id' => Qualification::factory()->create()->getKey(),
             'text' => $this->faker->paragraph,
         ];
     }

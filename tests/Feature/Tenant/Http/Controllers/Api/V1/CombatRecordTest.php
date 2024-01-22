@@ -2,29 +2,29 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
-use App\Models\ServiceRecord;
+use App\Models\CombatRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ServiceRecordTest extends ApiResourceTestCase
+class CombatRecordTest extends ApiResourceTestCase
 {
     public function endpoint(): string
     {
-        return 'service-records';
+        return 'combat-records';
     }
 
     public function table(): string
     {
-        return 'records_service';
+        return 'records_combat';
     }
 
     public function model(): string
     {
-        return ServiceRecord::class;
+        return CombatRecord::class;
     }
 
     public function factory(): Factory
     {
-        return ServiceRecord::factory()->state([
+        return CombatRecord::factory()->state([
             'user_id' => $this->user->getKey(),
         ]);
     }
@@ -32,11 +32,11 @@ class ServiceRecordTest extends ApiResourceTestCase
     public function scopes(): array
     {
         return [
-            'index' => 'view:servicerecord',
-            'show' => 'view:servicerecord',
-            'store' => 'create:servicerecord',
-            'update' => 'update:servicerecord',
-            'delete' => 'delete:servicerecord',
+            'index' => 'view:combatrecord',
+            'show' => 'view:combatrecord',
+            'store' => 'create:combatrecord',
+            'update' => 'update:combatrecord',
+            'delete' => 'delete:combatrecord',
         ];
     }
 

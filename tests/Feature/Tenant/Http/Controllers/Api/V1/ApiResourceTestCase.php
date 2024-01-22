@@ -5,6 +5,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 use Laravel\Passport\Passport;
 use Tests\Contracts\ApiResourceTestContract;
 use Tests\Feature\Tenant\Http\Controllers\Api\ApiTestCase;
@@ -56,7 +57,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseHas($this->endpoint(), $data);
+        $this->assertDatabaseHas(method_exists($this, 'table') ? $this->table() : $this->endpoint(), $data);
     }
 
     public function test_can_reach_update_endpoint()
@@ -71,7 +72,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseHas($this->endpoint(), $data);
+        $this->assertDatabaseHas(method_exists($this, 'table') ? $this->table() : $this->endpoint(), $data);
     }
 
     public function test_can_reach_delete_endpoint()
@@ -84,13 +85,19 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseMissing($this->endpoint(), [
+        $this->assertDatabaseMissing(method_exists($this, 'table') ? $this->table() : $this->endpoint(), [
             'id' => $this->factory->getKey(),
         ]);
     }
 
     public function test_cannot_reach_index_endpoint_with_missing_scope()
     {
+        $class = class_basename($this->model());
+
+        if (Str::contains($class, 'Record')) {
+            $this->markTestSkipped("The $class class policy allows everyone to always view all records so this test is not necessary.");
+        }
+
         Passport::actingAs($this->user);
 
         $this->getJson("/{$this->endpoint()}")
@@ -99,6 +106,12 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
 
     public function test_cannot_reach_show_endpoint_with_missing_scope()
     {
+        $class = class_basename($this->model());
+
+        if (Str::contains($class, 'Record')) {
+            $this->markTestSkipped("The $class class policy allows the user to always view records associated with the user so this test is not necessary.");
+        }
+
         Passport::actingAs($this->user);
 
         $this->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")

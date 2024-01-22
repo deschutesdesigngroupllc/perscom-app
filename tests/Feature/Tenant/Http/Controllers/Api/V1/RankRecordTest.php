@@ -2,29 +2,31 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
-use App\Models\ServiceRecord;
+use App\Models\Enums\RankRecordType;
+use App\Models\Rank;
+use App\Models\RankRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ServiceRecordTest extends ApiResourceTestCase
+class RankRecordTest extends ApiResourceTestCase
 {
     public function endpoint(): string
     {
-        return 'service-records';
+        return 'rank-records';
     }
 
     public function table(): string
     {
-        return 'records_service';
+        return 'records_ranks';
     }
 
     public function model(): string
     {
-        return ServiceRecord::class;
+        return RankRecord::class;
     }
 
     public function factory(): Factory
     {
-        return ServiceRecord::factory()->state([
+        return RankRecord::factory()->state([
             'user_id' => $this->user->getKey(),
         ]);
     }
@@ -32,11 +34,11 @@ class ServiceRecordTest extends ApiResourceTestCase
     public function scopes(): array
     {
         return [
-            'index' => 'view:servicerecord',
-            'show' => 'view:servicerecord',
-            'store' => 'create:servicerecord',
-            'update' => 'update:servicerecord',
-            'delete' => 'delete:servicerecord',
+            'index' => 'view:rankrecord',
+            'show' => 'view:rankrecord',
+            'store' => 'create:rankrecord',
+            'update' => 'update:rankrecord',
+            'delete' => 'delete:rankrecord',
         ];
     }
 
@@ -45,6 +47,8 @@ class ServiceRecordTest extends ApiResourceTestCase
         return [
             'user_id' => $this->user->getKey(),
             'author_id' => $this->user->getKey(),
+            'rank_id' => Rank::factory()->create()->getKey(),
+            'type' => RankRecordType::RANK_RECORD_PROMOTION,
             'text' => $this->faker->paragraph,
         ];
     }

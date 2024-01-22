@@ -2,29 +2,30 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
-use App\Models\ServiceRecord;
+use App\Models\Award;
+use App\Models\AwardRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ServiceRecordTest extends ApiResourceTestCase
+class AwardRecordTest extends ApiResourceTestCase
 {
     public function endpoint(): string
     {
-        return 'service-records';
+        return 'award-records';
     }
 
     public function table(): string
     {
-        return 'records_service';
+        return 'records_awards';
     }
 
     public function model(): string
     {
-        return ServiceRecord::class;
+        return AwardRecord::class;
     }
 
     public function factory(): Factory
     {
-        return ServiceRecord::factory()->state([
+        return AwardRecord::factory()->state([
             'user_id' => $this->user->getKey(),
         ]);
     }
@@ -32,11 +33,11 @@ class ServiceRecordTest extends ApiResourceTestCase
     public function scopes(): array
     {
         return [
-            'index' => 'view:servicerecord',
-            'show' => 'view:servicerecord',
-            'store' => 'create:servicerecord',
-            'update' => 'update:servicerecord',
-            'delete' => 'delete:servicerecord',
+            'index' => 'view:awardrecord',
+            'show' => 'view:awardrecord',
+            'store' => 'create:awardrecord',
+            'update' => 'update:awardrecord',
+            'delete' => 'delete:awardrecord',
         ];
     }
 
@@ -45,6 +46,7 @@ class ServiceRecordTest extends ApiResourceTestCase
         return [
             'user_id' => $this->user->getKey(),
             'author_id' => $this->user->getKey(),
+            'award_id' => Award::factory()->create()->getKey(),
             'text' => $this->faker->paragraph,
         ];
     }
