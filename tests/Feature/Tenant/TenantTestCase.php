@@ -21,6 +21,8 @@ class TenantTestCase extends TestCase
 
     public string $seeder = TestingCentralSeeder::class;
 
+    protected array $connectionsToTransact = ['mysql'];
+
     /**
      * @throws TenantCouldNotBeIdentifiedById
      */
