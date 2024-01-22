@@ -10,7 +10,12 @@ class TestingTenantSeeder extends Seeder
     public function run(): void
     {
         User::factory()->state([
-            'name' => 'Test User'
+            'name' => 'Test User',
+            'position_id' => null,
+            'rank_id' => null,
+            'specialty_id' => null,
+            'status_id' => null,
+            'unit_id' => null
         ])->createQuietly();
     }
 }

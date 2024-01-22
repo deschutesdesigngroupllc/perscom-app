@@ -9,13 +9,15 @@ use Database\Seeders\TestingCentralSeeder;
 use Database\Seeders\TestingTenantSeeder;
 use Exception;
 use Illuminate\Support\Facades\ParallelTesting;
-use Illuminate\Support\Str;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Tests\TestCase;
+use Tests\Traits\WithTenant;
 
 class TenantTestCase extends TestCase
 {
+    use WithTenant;
+
     public string $seeder = TestingCentralSeeder::class;
 
     /**
@@ -50,7 +52,7 @@ class TenantTestCase extends TestCase
      */
     protected function afterRefreshingDatabase(): void
     {
-        $testToken = ParallelTesting::token() ?: Str::random();
+        $testToken = ParallelTesting::token() ?: 1;
 
         $tenantName = "Tenant {$testToken}";
         $tenantDatabaseName = "tenant{$testToken}_testing";
@@ -61,7 +63,7 @@ class TenantTestCase extends TestCase
         ])->createQuietly();
 
         Domain::factory()->state([
-            'domain' => "tenant{$testToken}",
+            'domain' => "tenant_{$tenant->getKey()}_$testToken",
             'tenant_id' => $tenant->getKey(),
         ])->createQuietly();
 
@@ -69,9 +71,14 @@ class TenantTestCase extends TestCase
             $tenant->database()->manager()->createDatabase($tenant);
         }
 
-        $this->artisan('tenants:migrate-fresh');
-        $this->artisan('tenants:seed');
+        $this->artisan('tenants:migrate-fresh', [
+            '--tenants' => $tenant->getKey(),
+        ]);
         $this->artisan('tenants:seed', [
+            '--tenants' => $tenant->getKey(),
+        ]);
+        $this->artisan('tenants:seed', [
+            '--tenants' => $tenant->getKey(),
             '--class' => TestingTenantSeeder::class
         ]);
     }
