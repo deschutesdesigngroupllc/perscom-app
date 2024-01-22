@@ -73,7 +73,7 @@ jobs:
         run: php artisan passport:keys --force
 
       - name: Execute Tests
-        run: php artisan test --parallel
+        run: php artisan test
         env:
           DB_USERNAME: root
 
