@@ -76,7 +76,7 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Execute Tests
-        run: php artisan test --parallel
+        run: php artisan test
         env:
           DB_USERNAME: root
 
