@@ -9,6 +9,7 @@ use Database\Seeders\TestingCentralSeeder;
 use Database\Seeders\TestingTenantSeeder;
 use Exception;
 use Illuminate\Support\Facades\ParallelTesting;
+use Illuminate\Support\Facades\URL;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Tests\TestCase;
@@ -38,6 +39,8 @@ class TenantTestCase extends TestCase
 
         tenancy()->initialize($this->tenant);
         tenant()->load('domains');
+
+        URL::forceRootUrl($this->tenant->url);
 
         if (method_exists($this, 'afterInitializingTenancy')) {
             $this->afterInitializingTenancy($this->tenant);
