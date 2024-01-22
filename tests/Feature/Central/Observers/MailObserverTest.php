@@ -15,7 +15,7 @@ class MailObserverTest extends CentralTestCase
     {
         Queue::fake();
 
-        $tenant = Tenant::factory()->create();
+        $tenant = Tenant::factory()->createQuietly();
 
         Mail::factory()->state([
             'recipients' => Arr::wrap($tenant->getKey()),

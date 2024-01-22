@@ -2,26 +2,36 @@
 
 namespace Tests\Feature\Tenant;
 
+use App\Models\Admin;
 use App\Models\Domain;
 use App\Models\Tenant;
 use App\Models\User;
 use Database\Seeders\TestingCentralSeeder;
 use Database\Seeders\TestingTenantSeeder;
 use Exception;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\URL;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Tests\TestCase;
-use Tests\Traits\WithTenant;
+use Tests\Traits\TenantHelpers;
 
 class TenantTestCase extends TestCase
 {
-    use WithTenant;
+    use TenantHelpers;
+
+    protected ?Admin $admin = null;
+
+    protected ?Domain $domain = null;
+
+    protected ?Tenant $tenant = null;
+
+    protected ?User $user = null;
 
     public string $seeder = TestingCentralSeeder::class;
 
-    protected array $connectionsToTransact = ['mysql'];
+    public array $connectionsToTransact = ['mysql'];
 
     /**
      * @throws TenantCouldNotBeIdentifiedById
@@ -44,11 +54,11 @@ class TenantTestCase extends TestCase
 
         URL::forceRootUrl($this->tenant->url);
 
+        $this->user = User::firstOrFail();
+
         if (method_exists($this, 'afterInitializingTenancy')) {
             $this->afterInitializingTenancy($this->tenant);
         }
-
-        $this->user = User::firstOrFail();
     }
 
     /**
@@ -57,6 +67,9 @@ class TenantTestCase extends TestCase
      */
     protected function afterRefreshingDatabase(): void
     {
+        Log::debug('Admins', [
+            'admin' => Admin::count(),
+        ]);
         $testToken = ParallelTesting::token() ?: 1;
 
         $tenantName = "Tenant {$testToken}";
@@ -90,6 +103,10 @@ class TenantTestCase extends TestCase
 
     protected function tearDown(): void
     {
+        $this->beforeApplicationDestroyed(function () {
+            tenancy()->end();
+        });
+
         parent::tearDown();
 
         putenv('TENANT_TESTING=false');

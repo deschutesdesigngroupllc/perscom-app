@@ -2,15 +2,12 @@
 
 namespace Tests\Traits;
 
-use App\Models\Tenant;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Laravel\Cashier\Subscription;
 
-trait WithTenant
+trait TenantHelpers
 {
-    protected ?Tenant $tenant = null;
-
     protected ?Subscription $subscription = null;
 
     public function withSubscription(string|int|null $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void

@@ -18,6 +18,7 @@ class TenantFactory extends Factory
         return [
             'name' => $this->faker->company,
             'email' => $this->faker->companyEmail,
+            'tenancy_db_name' => "tenant{$this->faker->numberBetween()}_ondemand_testing",
         ];
     }
 }

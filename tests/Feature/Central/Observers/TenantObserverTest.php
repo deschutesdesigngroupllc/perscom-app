@@ -6,18 +6,22 @@ use App\Models\Tenant;
 use App\Notifications\Admin\NewSubscription;
 use App\Notifications\Admin\NewTenant;
 use App\Notifications\Admin\TenantDeleted;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
+use Stancl\Tenancy\Events\TenantCreated;
 use Tests\Feature\Central\CentralTestCase;
 
 class TenantObserverTest extends CentralTestCase
 {
     public function test_new_tenant_notification_sent()
     {
+        Event::fake([TenantCreated::class]);
         Notification::fake();
 
         Tenant::factory()->create();
 
+        Event::assertDispatched(TenantCreated::class);
         Notification::assertSentTo($this->admin, NewTenant::class, function ($notification, $channels) {
             $this->assertContains('mail', $channels);
 
@@ -32,7 +36,7 @@ class TenantObserverTest extends CentralTestCase
     {
         Notification::fake();
 
-        $tenant = Tenant::factory()->create();
+        $tenant = Tenant::factory()->createQuietly();
         $tenant->subscriptions()->create([
             'name' => 'default',
             'stripe_id' => Str::random(10),
