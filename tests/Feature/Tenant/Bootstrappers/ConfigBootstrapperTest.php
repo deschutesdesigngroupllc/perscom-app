@@ -2,14 +2,15 @@
 
 namespace Tests\Feature\Tenant\Bootstrappers;
 
+use App\Models\Tenant;
 use Spatie\Permission\PermissionRegistrar;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class ConfigBootstrapperTest extends TenantTestCase
 {
-    public function beforeInitializingTenancy()
+    public function beforeInitializingTenancy(Tenant $tenant): void
     {
-        $this->tenant->run(function () {
+        $tenant->run(function () {
             nova_set_setting_value('timezone', 'Asia/Dhaka');
         });
     }

@@ -29,21 +29,21 @@ class TenantTestCase extends TestCase
 
         parent::setUp();
 
-        if (method_exists($this, 'beforeSetUpTenancy')) {
-            $this->beforeSetUpTenancy();
-        }
-
         $this->tenant = Tenant::firstOrFail();
         $this->domain = Domain::firstOrFail();
+
+        if (method_exists($this, 'beforeInitializingTenancy')) {
+            $this->beforeInitializingTenancy($this->tenant);
+        }
 
         tenancy()->initialize($this->tenant);
         tenant()->load('domains');
 
-        $this->user = User::firstOrFail();
-
-        if (method_exists($this, 'afterSetUpTenancy')) {
-            $this->afterSetUpTenancy();
+        if (method_exists($this, 'afterInitializingTenancy')) {
+            $this->afterInitializingTenancy($this->tenant);
         }
+
+        $this->user = User::firstOrFail();
     }
 
     /**
