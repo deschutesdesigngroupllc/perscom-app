@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Database\Seeders\DatabaseSeeder;
+use App\Models\Tenant;
+use Database\Seeders\CentralDatabaseSeeder;
+use Database\Seeders\TenantDatabaseSeeder;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
@@ -20,10 +22,21 @@ class ResetLocalEnvironment extends Command
             return CommandAlias::FAILURE;
         }
 
+        $this->call('migrate:fresh');
+        $this->call('db:seed', [
+            '--class' => CentralDatabaseSeeder::class,
+        ]);
+
+        $tenant = Tenant::firstOrFail();
+
+        if (! $tenant->database()->manager()->databaseExists($tenant->tenancy_db_name)) {
+            $tenant->database()->manager()->createDatabase($tenant);
+        }
+
         $this->call('tenants:migrate-fresh');
         $this->call('tenants:seed');
         $this->call('tenants:seed', [
-            '--class' => DatabaseSeeder::class,
+            '--class' => TenantDatabaseSeeder::class,
         ]);
 
         return CommandAlias::SUCCESS;

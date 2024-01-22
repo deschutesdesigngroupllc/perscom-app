@@ -174,7 +174,7 @@
         ],
         "docs:models": "php artisan tenants:run ide-helper:models --option=reset=1",
         "lint": "./vendor/bin/pint",
-        "test": "php artisan test --parallel --no-coverage --stop-on-failure",
+        "test": "php artisan test --parallel --no-coverage --recreate-databases --stop-on-failure",
         "test:lint": "./vendor/bin/pint --test",
         "test:types": "./vendor/bin/phpstan analyse --memory-limit 1G"
     },
