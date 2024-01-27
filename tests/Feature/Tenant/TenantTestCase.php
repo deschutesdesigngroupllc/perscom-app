@@ -9,7 +9,7 @@ use App\Models\User;
 use Database\Seeders\TestingCentralSeeder;
 use Database\Seeders\TestingTenantSeeder;
 use Exception;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Foundation\Testing\DatabaseTransactionsManager;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\URL;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
@@ -56,9 +56,7 @@ class TenantTestCase extends TestCase
 
         $this->user = User::firstOrFail();
 
-        if (method_exists($this, 'afterInitializingTenancy')) {
-            $this->afterInitializingTenancy($this->tenant);
-        }
+        $this->setupTenantTransactions();
     }
 
     /**
@@ -67,9 +65,6 @@ class TenantTestCase extends TestCase
      */
     protected function afterRefreshingDatabase(): void
     {
-        Log::debug('Admins', [
-            'admin' => Admin::count(),
-        ]);
         $testToken = ParallelTesting::token() ?: 1;
 
         $tenantName = "Tenant {$testToken}";
@@ -99,6 +94,31 @@ class TenantTestCase extends TestCase
             '--tenants' => $tenant->getKey(),
             '--class' => TestingTenantSeeder::class,
         ]);
+    }
+
+    public function setupTenantTransactions()
+    {
+        $database = $this->app->make('db');
+
+        $this->app->instance('db.transactions', $transactionsManager = new DatabaseTransactionsManager);
+
+        $connection = $database->connection('tenant');
+        $connection->setTransactionManager($transactionsManager);
+        $dispatcher = $connection->getEventDispatcher();
+
+        $connection->unsetEventDispatcher();
+        $connection->beginTransaction();
+        $connection->setEventDispatcher($dispatcher);
+
+        $this->beforeApplicationDestroyed(function () use ($database) {
+            $connection = $database->connection('tenant');
+            $dispatcher = $connection->getEventDispatcher();
+
+            $connection->unsetEventDispatcher();
+            $connection->rollBack();
+            $connection->setEventDispatcher($dispatcher);
+            $connection->disconnect();
+        });
     }
 
     protected function tearDown(): void

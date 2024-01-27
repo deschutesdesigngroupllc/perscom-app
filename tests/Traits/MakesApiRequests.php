@@ -9,7 +9,7 @@ use Illuminate\Routing\Middleware\ThrottleRequests;
 
 trait MakesApiRequests
 {
-    public function withoutApiMiddleware()
+    public function withoutApiMiddleware(): void
     {
         $this->withoutMiddleware([
             SentryContext::class,

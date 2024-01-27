@@ -9,7 +9,7 @@ class TestingTenantSeeder extends Seeder
 {
     public function run(): void
     {
-        User::factory()->state([
+        $user = User::factory()->state([
             'name' => 'Test User',
             'position_id' => null,
             'rank_id' => null,
@@ -17,5 +17,7 @@ class TestingTenantSeeder extends Seeder
             'status_id' => null,
             'unit_id' => null,
         ])->createQuietly();
+
+        $user->assignRole('user');
     }
 }
