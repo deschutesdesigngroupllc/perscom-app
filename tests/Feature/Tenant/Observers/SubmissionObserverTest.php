@@ -6,6 +6,7 @@ use App\Models\Enums\WebhookEvent;
 use App\Models\Form;
 use App\Models\Status;
 use App\Models\Submission;
+use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewSubmission;
 use Illuminate\Support\Facades\Notification;
@@ -20,11 +21,11 @@ class SubmissionObserverTest extends TenantTestCase
         Notification::fake();
 
         $form = Form::factory()->create();
-        $form->notifications()->attach($this->user);
+        $form->notifications()->attach($user = User::factory()->create());
 
         $submission = Submission::factory()->for($form)->create();
 
-        Notification::assertSentTo($this->user, NewSubmission::class, function ($notification, $channels) use ($submission) {
+        Notification::assertSentTo($user, NewSubmission::class, function ($notification, $channels) use ($submission) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($submission->user);

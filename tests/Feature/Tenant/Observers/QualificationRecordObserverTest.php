@@ -5,6 +5,7 @@ namespace Tests\Feature\Tenant\Observers;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\QualificationRecord;
+use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewQualificationRecord;
 use Illuminate\Support\Facades\Notification;
@@ -25,9 +26,9 @@ class QualificationRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $qualification = QualificationRecord::factory()->for($this->user)->create();
+        $qualification = QualificationRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($this->user, NewQualificationRecord::class, function ($notification, $channels) use ($qualification) {
+        Notification::assertSentTo($user, NewQualificationRecord::class, function ($notification, $channels) use ($qualification) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($qualification->user);

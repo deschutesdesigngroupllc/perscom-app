@@ -3,6 +3,7 @@
 namespace Tests\Feature\Tenant\Observers;
 
 use App\Models\TaskAssignment;
+use App\Models\User;
 use App\Notifications\Tenant\NewTaskAssignment;
 use Illuminate\Support\Facades\Notification;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -13,9 +14,9 @@ class TaskAssignmentObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $assignment = TaskAssignment::factory()->for($this->user)->create();
+        $assignment = TaskAssignment::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($this->user, NewTaskAssignment::class, function ($notification, $channels) use ($assignment) {
+        Notification::assertSentTo($user, NewTaskAssignment::class, function ($notification, $channels) use ($assignment) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($assignment->user);

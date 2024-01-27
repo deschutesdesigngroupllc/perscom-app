@@ -5,6 +5,7 @@ namespace Tests\Feature\Tenant\Observers;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\RankRecord;
+use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewRankRecord;
 use Illuminate\Support\Facades\Notification;
@@ -23,20 +24,18 @@ class RankRecordObserverTest extends TenantTestCase
 
     public function test_create_rank_record_assigns_user_rank(): void
     {
-        $rank = RankRecord::factory()->for($this->user)->create();
+        $rank = RankRecord::factory()->for($user = User::factory()->create())->create();
 
-        $user = $this->user->fresh();
-
-        $this->assertSame($rank->rank->getKey(), $user->rank->getKey());
+        $this->assertSame($rank->rank->getKey(), $user->fresh()->rank->getKey());
     }
 
     public function test_create_rank_record_notification_sent()
     {
         Notification::fake();
 
-        $rank = RankRecord::factory()->for($this->user)->create();
+        $rank = RankRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($this->user, NewRankRecord::class, function ($notification, $channels) use ($rank) {
+        Notification::assertSentTo($user, NewRankRecord::class, function ($notification, $channels) use ($rank) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($rank->user);

@@ -3,6 +3,7 @@
 namespace Tests\Feature\Tenant\Http\Controllers\Passport;
 
 use App\Http\Middleware\Subscribed;
+use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 use Laravel\Passport\Database\Factories\ClientFactory;
 use Spatie\Url\Url;
@@ -14,7 +15,9 @@ class AuthorizationControllerTest extends TenantTestCase
     {
         $this->withoutMiddleware(Subscribed::class);
 
-        $client = ClientFactory::new()->create(['user_id' => $this->user->getKey()]);
+        $user = User::factory()->create();
+
+        $client = ClientFactory::new()->create(['user_id' => $user->getKey()]);
 
         $url = Url::fromString($this->tenant->url.'/oauth/authorize')->withQueryParameters([
             'response_type' => 'code',
@@ -23,7 +26,7 @@ class AuthorizationControllerTest extends TenantTestCase
             'redirect_url' => $client->redirect,
         ])->__toString();
 
-        $this->actingAs($this->user)
+        $this->actingAs($user)
             ->get($url)
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('passport/Authorize');

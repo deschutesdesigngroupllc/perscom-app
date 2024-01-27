@@ -19,5 +19,6 @@ class TestingTenantSeeder extends Seeder
         ])->createQuietly();
 
         $user->assignRole('user');
+        $user->givePermissionTo('view:user');
     }
 }

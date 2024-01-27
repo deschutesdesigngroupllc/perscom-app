@@ -5,6 +5,7 @@ namespace Tests\Feature\Tenant\Observers;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\ServiceRecord;
+use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewServiceRecord;
 use Illuminate\Support\Facades\Notification;
@@ -25,9 +26,9 @@ class ServiceRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $service = ServiceRecord::factory()->for($this->user)->create();
+        $service = ServiceRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($this->user, NewServiceRecord::class, function ($notification, $channels) use ($service) {
+        Notification::assertSentTo($user, NewServiceRecord::class, function ($notification, $channels) use ($service) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($service->user);

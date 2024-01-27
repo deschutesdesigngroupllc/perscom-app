@@ -9,6 +9,7 @@ use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
+use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewAssignmentRecord;
 use Illuminate\Support\Facades\Notification;
@@ -34,10 +35,10 @@ class AssignmentRecordObserverTest extends TenantTestCase
                 'position_id' => Position::factory(),
                 'specialty_id' => Specialty::factory(),
             ])
-            ->for($this->user)
+            ->for($user = User::factory()->create())
             ->create();
 
-        $user = $this->user->fresh();
+        $user = $user->fresh();
 
         $this->assertSame($assignment->unit->getKey(), $user->unit->getKey());
         $this->assertSame($assignment->position->getKey(), $user->position->getKey());
@@ -49,9 +50,9 @@ class AssignmentRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $assignment = AssignmentRecord::factory()->for($this->user)->create();
+        $assignment = AssignmentRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($this->user, NewAssignmentRecord::class, function ($notification, $channels) use ($assignment) {
+        Notification::assertSentTo($user, NewAssignmentRecord::class, function ($notification, $channels) use ($assignment) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($assignment->user);

@@ -5,6 +5,7 @@ namespace Tests\Feature\Tenant\Observers;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\AwardRecord;
 use App\Models\Enums\WebhookEvent;
+use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewAwardRecord;
 use Illuminate\Support\Facades\Notification;
@@ -25,9 +26,9 @@ class AwardRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $award = AwardRecord::factory()->for($this->user)->create();
+        $award = AwardRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($this->user, NewAwardRecord::class, function ($notification, $channels) use ($award) {
+        Notification::assertSentTo($user, NewAwardRecord::class, function ($notification, $channels) use ($award) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($award->user);
