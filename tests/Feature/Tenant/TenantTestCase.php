@@ -13,9 +13,9 @@ use Illuminate\Foundation\Testing\DatabaseTransactionsManager;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\URL;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
-use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Tests\TestCase;
 use Tests\Traits\TenantHelpers;
+use Throwable;
 
 class TenantTestCase extends TestCase
 {
@@ -33,37 +33,36 @@ class TenantTestCase extends TestCase
 
     public array $connectionsToTransact = ['mysql'];
 
-    /**
-     * @throws TenantCouldNotBeIdentifiedById
-     */
+    public bool $tenantDatabaseMigrated = false;
+
     protected function setUp(): void
     {
         putenv('TENANT_TESTING=true');
 
         parent::setUp();
+    }
 
-        $this->tenant = Tenant::firstOrFail();
-        $this->domain = Domain::firstOrFail();
+    /**
+     * @throws Exception
+     * @throws Throwable
+     */
+    protected function afterRefreshingDatabase(): void
+    {
+        $this->setupTenantDatabase();
 
-        if (method_exists($this, 'beforeInitializingTenancy')) {
-            $this->beforeInitializingTenancy($this->tenant);
-        }
-
-        tenancy()->initialize($this->tenant);
-        tenant()->load('domains');
-
-        URL::forceRootUrl($this->tenant->url);
-
-        $this->user = User::firstOrFail();
+        $this->setupTenancy();
 
         $this->setupTenantTransactions();
+
+        $this->beforeApplicationDestroyed(function () {
+            tenancy()->end();
+        });
     }
 
     /**
      * @throws DatabaseManagerNotRegisteredException
-     * @throws Exception
      */
-    protected function afterRefreshingDatabase(): void
+    public function setupTenantDatabase(): void
     {
         $testToken = ParallelTesting::token() ?: 1;
 
@@ -84,19 +83,47 @@ class TenantTestCase extends TestCase
             $tenant->database()->manager()->createDatabase($tenant);
         }
 
-        $this->artisan('tenants:migrate-fresh', [
-            '--tenants' => $tenant->getKey(),
-        ]);
-        $this->artisan('tenants:seed', [
-            '--tenants' => $tenant->getKey(),
-        ]);
-        $this->artisan('tenants:seed', [
-            '--tenants' => $tenant->getKey(),
-            '--class' => TestingTenantSeeder::class,
-        ]);
+        if (! $this->tenantDatabaseMigrated) {
+            $this->artisan('tenants:migrate-fresh', [
+                '--tenants' => $tenant->getKey(),
+            ]);
+            $this->artisan('tenants:seed', [
+                '--tenants' => $tenant->getKey(),
+            ]);
+            $this->artisan('tenants:seed', [
+                '--tenants' => $tenant->getKey(),
+                '--class' => TestingTenantSeeder::class,
+            ]);
+
+            $this->tenantDatabaseMigrated = true;
+        }
     }
 
-    public function setupTenantTransactions()
+    public function setupTenancy(): void
+    {
+        $this->tenant = Tenant::firstOrFail();
+        $this->domain = Domain::firstOrFail();
+
+        if (method_exists($this, 'beforeInitializingTenancy')) {
+            $this->beforeInitializingTenancy($this->tenant);
+        }
+
+        tenancy()->initialize($this->tenant);
+        tenant()->load('domains');
+
+        URL::forceRootUrl($this->tenant->url);
+
+        $this->user = User::firstOrFail();
+
+        if (method_exists($this, 'afterInitializingTenancy')) {
+            $this->afterInitializingTenancy($this->tenant);
+        }
+    }
+
+    /**
+     * @throws Throwable
+     */
+    public function setupTenantTransactions(): void
     {
         $database = $this->app->make('db');
 
@@ -123,10 +150,6 @@ class TenantTestCase extends TestCase
 
     protected function tearDown(): void
     {
-        $this->beforeApplicationDestroyed(function () {
-            tenancy()->end();
-        });
-
         parent::tearDown();
 
         putenv('TENANT_TESTING=false');
