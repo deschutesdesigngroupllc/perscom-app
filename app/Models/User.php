@@ -63,22 +63,20 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read int|null $clients_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CombatRecord> $combat_records
  * @property-read int|null $combat_records_count
+ * @property-read string|null $cover_photo_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Event> $events
  * @property-read int|null $events_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
  * @property-read int|null $fields_count
- * @property-read string|null $cover_photo_url
  * @property-read bool $online
- * @property-read string|null $profile_photo_url
- * @property-read string $relative_url
  * @property-read mixed|null $time_in_assignment
  * @property-read mixed|null $time_in_grade
- * @property-read string $url
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
  * @property-read int|null $permissions_count
  * @property-read \App\Models\Position|null $position
+ * @property-read string|null $profile_photo_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Qualification> $qualifications
@@ -88,6 +86,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read int|null $rank_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank> $ranks
  * @property-read int|null $ranks_count
+ * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Position> $secondary_positions
@@ -109,6 +108,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read \App\Models\Unit|null $unit
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()

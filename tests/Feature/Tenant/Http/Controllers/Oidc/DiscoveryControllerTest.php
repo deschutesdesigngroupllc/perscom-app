@@ -7,11 +7,11 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class DiscoveryControllerTest extends TenantTestCase
 {
-    public function test_discovey_page_can_be_reached()
+    public function test_discovery_page_can_be_reached()
     {
         $this->withoutMiddleware(Subscribed::class);
 
-        $this->get($this->tenant->url.'/.well-known/openid-configuration')
+        $this->get(route('oidc.discovery'))
             ->assertSuccessful()
             ->assertExactJson([
                 'issuer' => $this->tenant->url,

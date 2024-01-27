@@ -6,6 +6,7 @@ use App\Models\Tenant;
 use Database\Seeders\CentralDatabaseSeeder;
 use Database\Seeders\TenantDatabaseSeeder;
 use Illuminate\Console\Command;
+use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class ResetLocalEnvironment extends Command
@@ -14,6 +15,9 @@ class ResetLocalEnvironment extends Command
 
     protected $description = 'Reset the local development environment.';
 
+    /**
+     * @throws DatabaseManagerNotRegisteredException
+     */
     public function handle(): int
     {
         if (! app()->environment('local')) {

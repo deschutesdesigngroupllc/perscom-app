@@ -79,6 +79,7 @@ jobs:
         run: php artisan test --parallel --recreate-databases
         env:
           DB_USERNAME: root
+          DB_DATABASE: testing
 
       - name: Upload Code Coverage Report
         uses: codecov/codecov-action@v3

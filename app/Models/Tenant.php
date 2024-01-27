@@ -61,6 +61,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read int|null $pennants_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Cashier\Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
+ * @property string|null $tenancy_db_name
  *
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
  * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
