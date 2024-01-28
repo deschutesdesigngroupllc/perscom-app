@@ -1,6 +1,18 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.71...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.72...HEAD)
+
+## [v1.0.72](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.71...v1.0.72) - 2024-01-28
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.72 -->
+### What's Changed
+
+#### Fixed
+
+* Fix failing migration by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/301
+* Fix failing CI [skip tests] by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/302
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.71...v1.0.72
 
 ## [v1.0.71](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.70...v1.0.71) - 2024-01-21
 
