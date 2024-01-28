@@ -23,7 +23,7 @@ class AuthControllerTest extends TenantTestCase
 {
     public function test_login_page_can_be_reached()
     {
-        $this->get('/login')
+        $this->get(route('login'))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('auth/Login');
             })->assertSuccessful();
@@ -37,7 +37,7 @@ class AuthControllerTest extends TenantTestCase
             'email' => $this->user->email,
             'password' => 'password',
         ])
-            ->assertRedirect($this->tenant->url.'/dashboard')
+            ->assertRedirect(route('nova.pages.dashboard'))
             ->assertSessionHasNoErrors();
 
         $this->assertAuthenticatedAs($this->user);
@@ -83,7 +83,7 @@ class AuthControllerTest extends TenantTestCase
 
         $this->actingAs($this->user);
 
-        $this->post('/logout')
+        $this->post(route('logout'))
             ->assertRedirect($this->tenant->url);
 
         $this->assertGuest();
@@ -93,7 +93,7 @@ class AuthControllerTest extends TenantTestCase
 
     public function test_register_page_can_be_reached()
     {
-        $this->get('/register')
+        $this->get(route('register'))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('auth/Register');
             })->assertSuccessful();
@@ -107,7 +107,7 @@ class AuthControllerTest extends TenantTestCase
 
         $this->actingAs($this->user);
 
-        $this->get('/email/verify')
+        $this->get(route('verification.notice'))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('auth/VerifyEmail');
             })->assertSuccessful();
@@ -123,7 +123,7 @@ class AuthControllerTest extends TenantTestCase
 
         $this->actingAs($this->user);
 
-        $this->post('/email/verification-notification')
+        $this->post(route('verification.send'))
             ->assertRedirect()
             ->assertSessionHasNoErrors()
             ->assertSessionHas('status', Fortify::VERIFICATION_LINK_SENT);
@@ -148,8 +148,10 @@ class AuthControllerTest extends TenantTestCase
 
         $this->actingAs($this->user);
 
-        $this->get('/email/verify/'.Str::random().'/'.Str::random())
-            ->assertRedirect();
+        $this->get(route('verification.verify', [
+            'id' => Str::random(),
+            'hash' => Str::random(),
+        ]))->assertRedirect();
 
         $this->assertTrue($this->user->hasVerifiedEmail());
 
@@ -158,7 +160,7 @@ class AuthControllerTest extends TenantTestCase
 
     public function test_forgot_password_page_can_be_reached()
     {
-        $this->get('/forgot-password')
+        $this->get(route('password.request'))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('auth/ForgotPassword');
             })->assertSuccessful();
@@ -168,16 +170,17 @@ class AuthControllerTest extends TenantTestCase
     {
         Notification::fake();
 
-        $this->post('/forgot-password', [
+        $this->post(route('password.email', [
             'email' => $this->user->email,
-        ])
+        ]))
             ->assertRedirect()
             ->assertSessionHasNoErrors()
             ->assertSessionHas('status', Lang::get('passwords.sent'));
 
         Notification::assertSentTo([$this->user], ResetPassword::class, function (ResetPassword $notification) {
-            $this->get('/reset-password/'.$notification->token)
-                ->assertSuccessful();
+            $this->get(route('password.reset', [
+                'token' => $notification->token,
+            ]))->assertSuccessful();
 
             return true;
         });
@@ -188,21 +191,21 @@ class AuthControllerTest extends TenantTestCase
         Notification::fake();
         Event::fake(PasswordReset::class);
 
-        $this->post('/forgot-password', [
+        $this->post(route('password.email', [
             'email' => $this->user->email,
-        ])
+        ]))
             ->assertRedirect()
             ->assertSessionHasNoErrors()
             ->assertSessionHas('status', Lang::get('passwords.sent'));
 
         Notification::assertSentTo([$this->user], ResetPassword::class, function (ResetPassword $notification) {
-            $this->post('/reset-password', [
+            $this->post(route('password.update', [
                 'token' => $notification->token,
                 'email' => $this->user->email,
                 'password' => 'password',
                 'password_confirmation' => 'password',
-            ])
-                ->assertRedirect($this->tenant->url.'/login')
+            ]))
+                ->assertRedirect(route('login'))
                 ->assertSessionHasNoErrors()
                 ->assertSessionHas('status', Lang::get('passwords.reset'));
 

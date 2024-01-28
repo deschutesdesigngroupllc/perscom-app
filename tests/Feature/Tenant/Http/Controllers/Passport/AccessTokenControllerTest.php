@@ -34,7 +34,7 @@ class AccessTokenControllerTest extends TenantTestCase
         });
         $this->instance(ClientRepository::class, $clientRepository);
 
-        $authorizationUrl = Url::fromString($this->tenant->url.'/oauth/authorize')->withQueryParameters([
+        $authorizationUrl = Url::fromString(route('passport.authorizations.authorize'))->withQueryParameters([
             'response_type' => 'code',
             'client_id' => $client->id,
             'state' => 'test',
@@ -50,7 +50,7 @@ class AccessTokenControllerTest extends TenantTestCase
 
         $redirectUrl = Url::fromString($authorizationResponse->headers->get('location'));
 
-        $tokenResponse = $this->post($this->tenant->url.'/oauth/token', [
+        $tokenResponse = $this->post('/oauth/token', [
             'grant_type' => 'authorization_code',
             'code' => $redirectUrl->getQueryParameter('code'),
             'redirect_url' => $client->redirect,
@@ -92,7 +92,7 @@ class AccessTokenControllerTest extends TenantTestCase
         });
         $this->instance(ClientRepository::class, $clientRepository);
 
-        $authorizationUrl = Url::fromString($this->tenant->url.'/oauth/authorize')->withQueryParameters([
+        $authorizationUrl = Url::fromString(route('passport.authorizations.authorize'))->withQueryParameters([
             'response_type' => 'code',
             'client_id' => $client->id,
             'state' => 'test',
@@ -109,7 +109,7 @@ class AccessTokenControllerTest extends TenantTestCase
         $redirectUrl = Url::fromString($authorizationResponse->headers->get('location'));
 
         $tokenResponse = $this->actingAs($this->user)
-            ->post($this->tenant->url.'/oauth/token', [
+            ->post('/oauth/token', [
                 'grant_type' => 'authorization_code',
                 'code' => $redirectUrl->getQueryParameter('code'),
                 'redirect_url' => $client->redirect,
@@ -246,7 +246,7 @@ class AccessTokenControllerTest extends TenantTestCase
         });
         $this->instance(ClientRepository::class, $clientRepository);
 
-        $authorizationUrl = Url::fromString($this->tenant->url.'/oauth/authorize')->withQueryParameters([
+        $authorizationUrl = Url::fromString(route('passport.authorizations.authorize'))->withQueryParameters([
             'response_type' => 'token',
             'client_id' => $client->id,
             'redirect_url' => $client->redirect,

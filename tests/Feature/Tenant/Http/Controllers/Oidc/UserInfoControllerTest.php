@@ -18,7 +18,7 @@ class UserInfoControllerTest extends TenantTestCase
             'openid', 'profile', 'email',
         ], 'passport');
 
-        $response = $this->get($this->tenant->url.'/oauth/userinfo')
+        $this->get(route('oidc.userinfo'))
             ->assertSuccessful()
             ->assertJson([
                 'sub' => $this->user->getAuthIdentifier(),
@@ -35,7 +35,7 @@ class UserInfoControllerTest extends TenantTestCase
             'profile', 'email',
         ], 'passport');
 
-        $response = $this->get($this->tenant->url.'/oauth/userinfo')
+        $response = $this->get(route('oidc.userinfo'))
             ->assertForbidden();
     }
 
@@ -47,7 +47,7 @@ class UserInfoControllerTest extends TenantTestCase
             'openid', 'profile',
         ], 'passport');
 
-        $response = $this->get($this->tenant->url.'/oauth/userinfo')
+        $response = $this->get(route('oidc.userinfo'))
             ->assertSuccessful()
             ->assertJsonMissing(['email' => $this->user->email]);
     }
@@ -60,7 +60,7 @@ class UserInfoControllerTest extends TenantTestCase
             'openid', 'email',
         ], 'passport');
 
-        $response = $this->get($this->tenant->url.'/oauth/userinfo')
+        $response = $this->get(route('oidc.userinfo'))
             ->assertSuccessful()
             ->assertJsonMissing(['name' => $this->user->name]);
     }
