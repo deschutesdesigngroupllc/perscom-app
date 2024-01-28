@@ -3,6 +3,7 @@
 namespace Tests\Feature\Tenant\Http\Controllers\Oidc;
 
 use App\Http\Middleware\Subscribed;
+use App\Models\Domain;
 use Illuminate\Support\Facades\Log;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -12,18 +13,13 @@ class DiscoveryControllerTest extends TenantTestCase
     {
         $this->withoutMiddleware(Subscribed::class);
 
-        Log::debug('Tenant url', [
-            'url' => $this->tenant->url,
-            'route' => route('oidc.discovery'),
+        Log::debug('Debug', [
+            'domains' => Domain::all(),
+            'tenant' => $this->tenant,
         ]);
 
-        $response = $this->get(route('oidc.discovery'));
-
-        Log::debug('Response', [
-            'response' => $response,
-        ]);
-
-        $response->assertSuccessful()
+        $this->get(route('oidc.discovery'))
+            ->assertSuccessful()
             ->assertExactJson([
                 'issuer' => $this->tenant->url,
                 'authorization_endpoint' => $this->tenant->url.'/oauth/authorize',
