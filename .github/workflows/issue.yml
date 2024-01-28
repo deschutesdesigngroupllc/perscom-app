@@ -12,6 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       issues: write
+
     steps:
       - name: Label Issue
         uses: actions/github-script@v6

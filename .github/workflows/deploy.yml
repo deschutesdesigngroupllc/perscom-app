@@ -12,12 +12,13 @@ jobs:
     name: Test Application
     uses: ./.github/workflows/test.yml
     secrets: inherit
-    if: ${{ !contains(github.event.head_commit.message, '[skip deploy]') }}
 
   deploy-application:
     name: Deploy Application
     runs-on: ubuntu-latest
     needs: test-application
+    if: ${{ !contains(github.event.head_commit.message, '[skip deploy]') }}
+
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3

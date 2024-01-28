@@ -8,8 +8,10 @@ jobs:
   update-changelog:
     name: Update Changelog
     runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip changelog]') }}
     permissions:
       contents: write
+
     steps:
       - name: Checkout Source Code
         uses: actions/checkout@v3
