@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        DB::table('images')->whereNull('name')->update(['name', '']);
+        DB::table('images')->whereNull('name')->update(['name' => 'Image']);
 
         Schema::table('images', function (Blueprint $table) {
             $table->string('name')->nullable(false)->change();
