@@ -152,13 +152,13 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertStatus(422);
     }
 
-    public function test_show_store_endpoint_returns_not_found()
+    public function test_show_endpoint_returns_not_found()
     {
         Passport::actingAs($this->user, [
             $this->scopes()['show'],
         ]);
 
-        $this->getJson("/{$this->endpoint()}/{$this->faker->numberBetween(10, 20)}")
+        $this->getJson("/{$this->endpoint()}/{$this->faker->randomDigitNot($this->factory->getKey())}")
             ->assertNotFound();
     }
 }
