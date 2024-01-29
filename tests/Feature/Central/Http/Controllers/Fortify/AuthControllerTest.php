@@ -12,7 +12,7 @@ class AuthControllerTest extends CentralTestCase
 
     public function test_login_page_can_be_reached()
     {
-        $this->get('/admin/login')
+        $this->get(route('login'))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('auth/Login');
             })->assertSuccessful();

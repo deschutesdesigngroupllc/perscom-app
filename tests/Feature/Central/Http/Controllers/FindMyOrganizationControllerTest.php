@@ -14,7 +14,7 @@ class FindMyOrganizationControllerTest extends CentralTestCase
 {
     public function test_find_my_organization_index_page_can_be_reached()
     {
-        $this->get('/find-my-organization')
+        $this->get(route('web.find-my-organization.index'))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('auth/FindMyOrganization');
             })->assertSuccessful();
@@ -38,19 +38,19 @@ class FindMyOrganizationControllerTest extends CentralTestCase
 
         $url = URL::signedRoute('web.find-my-organization.show', ['tenant' => 1]);
 
-        $this->post('/find-my-organization', [
+        $this->post(route('web.find-my-organization.store'), [
             'email' => $email,
         ])->assertRedirect($url);
     }
 
     public function test_find_my_organization_store_page_cannot_be_reached_without_email_parameter()
     {
-        $this->post('/find-my-organization')->assertSessionHasErrors('email');
+        $this->post(route('web.find-my-organization.store'))->assertSessionHasErrors('email');
     }
 
     public function test_find_my_organization_store_page_cannot_be_reached_with_invalid_email_parameter()
     {
-        $this->post('/find-my-organization', [
+        $this->post(route('web.find-my-organization.store'), [
             'email' => $this->faker->word,
         ])->assertSessionHasErrors('email');
     }
@@ -71,7 +71,7 @@ class FindMyOrganizationControllerTest extends CentralTestCase
         $validator->allows('validate')->andReturnSelf();
         Validator::shouldReceive('make')->once()->andReturn($validator);
 
-        $this->post('/find-my-organization', [
+        $this->post(route('web.find-my-organization.store'), [
             'email' => $email,
         ])->assertNotFound();
     }
@@ -85,9 +85,7 @@ class FindMyOrganizationControllerTest extends CentralTestCase
 
         $this->instance(Tenant::class, $tenant);
 
-        $url = URL::signedRoute('web.find-my-organization.show', ['tenant' => 1]);
-
-        $this->get($url)
+        $this->get(URL::signedRoute('web.find-my-organization.show', ['tenant' => 1]))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('auth/FindMyOrganization');
             })->assertSuccessful();
@@ -102,9 +100,7 @@ class FindMyOrganizationControllerTest extends CentralTestCase
 
         $this->instance(Tenant::class, $tenant);
 
-        $url = URL::signedRoute('web.find-my-organization.show', ['tenant' => 1]);
-
-        $this->get($url)
+        $this->get(URL::signedRoute('web.find-my-organization.show', ['tenant' => 1]))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('auth/FindMyOrganization');
             })->assertSuccessful();

@@ -9,7 +9,7 @@ class ApiControllerTest extends ApiTestCase
 {
     public function test_api_cannot_be_reached_without_bearer_token()
     {
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertUnauthorized();
     }
 
@@ -19,7 +19,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me', [
+        $this->getJson(route('api.me.index'), [
             'X-Perscom-Id' => null,
         ])->assertUnauthorized();
     }
@@ -30,7 +30,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me', [
+        $this->getJson(route('api.me.index'), [
             'X-Perscom-Id' => $this->faker->randomDigitNot($this->tenant->getTenantKey()),
         ])->assertUnauthorized();
     }
@@ -41,7 +41,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 
@@ -55,7 +55,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertStatus(402);
     }
 
@@ -69,7 +69,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 
@@ -83,7 +83,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertStatus(402);
     }
 
@@ -97,7 +97,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertStatus(402);
     }
 
@@ -111,7 +111,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 
@@ -126,7 +126,7 @@ class ApiControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 }

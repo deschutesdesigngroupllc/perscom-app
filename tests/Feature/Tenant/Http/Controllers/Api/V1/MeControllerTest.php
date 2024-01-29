@@ -13,7 +13,7 @@ class MeControllerTest extends ApiTestCase
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 
@@ -21,7 +21,7 @@ class MeControllerTest extends ApiTestCase
     {
         Passport::actingAs($this->user);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertForbidden();
     }
 }

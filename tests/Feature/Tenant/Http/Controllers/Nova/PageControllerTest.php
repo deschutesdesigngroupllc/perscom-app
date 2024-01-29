@@ -12,7 +12,9 @@ class PageControllerTest extends TenantTestCase
         $this->withoutMiddleware([Subscribed::class]);
 
         $this->actingAs($this->user)
-            ->get('/dashboards/main')
+            ->get(route('nova.pages.dashboard.custom', [
+                'name' => 'main',
+            ]))
             ->assertSuccessful();
     }
 }

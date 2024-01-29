@@ -50,7 +50,7 @@ class AccessTokenControllerTest extends TenantTestCase
 
         $redirectUrl = Url::fromString($authorizationResponse->headers->get('location'));
 
-        $tokenResponse = $this->post('/oauth/token', [
+        $tokenResponse = $this->post(route('passport.token'), [
             'grant_type' => 'authorization_code',
             'code' => $redirectUrl->getQueryParameter('code'),
             'redirect_url' => $client->redirect,
@@ -109,7 +109,7 @@ class AccessTokenControllerTest extends TenantTestCase
         $redirectUrl = Url::fromString($authorizationResponse->headers->get('location'));
 
         $tokenResponse = $this->actingAs($this->user)
-            ->post('/oauth/token', [
+            ->post(route('passport.token'), [
                 'grant_type' => 'authorization_code',
                 'code' => $redirectUrl->getQueryParameter('code'),
                 'redirect_url' => $client->redirect,
@@ -173,7 +173,7 @@ class AccessTokenControllerTest extends TenantTestCase
 
         $client = ClientFactory::new()->asPasswordClient()->create(['user_id' => $this->user->getKey()]);
 
-        $response = $this->post('/oauth/token', [
+        $response = $this->post(route('passport.token'), [
             'grant_type' => 'password',
             'client_id' => $client->getKey(),
             'client_secret' => $client->secret,
@@ -209,7 +209,7 @@ class AccessTokenControllerTest extends TenantTestCase
     {
         $client = ClientFactory::new()->asClientCredentials()->create(['user_id' => $this->user->getKey()]);
 
-        $response = $this->post('/oauth/token', [
+        $response = $this->post(route('passport.token'), [
             'grant_type' => 'client_credentials',
             'client_id' => $client->getKey(),
             'client_secret' => $client->secret,

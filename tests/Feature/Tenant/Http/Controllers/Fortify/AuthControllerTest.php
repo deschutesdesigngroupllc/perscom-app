@@ -33,7 +33,7 @@ class AuthControllerTest extends TenantTestCase
     {
         Event::fake(Authenticated::class);
 
-        $this->post('/login', [
+        $this->post(route('login'), [
             'email' => $this->user->email,
             'password' => 'password',
         ])
@@ -49,7 +49,7 @@ class AuthControllerTest extends TenantTestCase
     {
         Event::fake(Failed::class);
 
-        $this->post('/login', [
+        $this->post(route('login'), [
             'email' => $this->user->email,
             'password' => 'wrong',
         ])
@@ -65,7 +65,7 @@ class AuthControllerTest extends TenantTestCase
     {
         Event::fake(Failed::class);
 
-        $this->post('/login', [
+        $this->post(route('login'), [
             'email' => $this->faker->email,
             'password' => 'password',
         ])
