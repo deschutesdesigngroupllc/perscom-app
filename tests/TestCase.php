@@ -14,8 +14,6 @@ abstract class TestCase extends BaseTestCase
     use RefreshDatabase;
     use WithFaker;
 
-    protected string $testToken;
-
     protected function setUp(): void
     {
         parent::setUp();

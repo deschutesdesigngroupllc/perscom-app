@@ -35,7 +35,6 @@ class DomainObserverTest extends TenantTestCase
         Notification::fake();
 
         $tenant = Tenant::factory()->createQuietly();
-
         $domain = $tenant->domains()->createQuietly([
             'domain' => 'foo',
         ]);
