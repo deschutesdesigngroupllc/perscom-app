@@ -1,6 +1,24 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.72...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.73...HEAD)
+
+## [v1.0.73](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.72...v1.0.73) - 2024-02-03
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.73 -->
+### What's Changed
+
+#### Added
+
+* Add TinyMCE by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/309
+
+#### Other
+
+* Bump laravel/framework from 10.37.3 to 10.42.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/307
+* Bump sass from 1.69.3 to 1.70.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/306
+* Bump prettier from 3.1.0 to 3.2.4 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/304
+* Bump clsx from 2.0.0 to 2.1.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/303
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.72...v1.0.73
 
 ## [v1.0.72](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.71...v1.0.72) - 2024-01-28
 
