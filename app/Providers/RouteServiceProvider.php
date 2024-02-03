@@ -38,6 +38,11 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/web.php'));
 
+            Route::prefix('files')
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/files.php'));
+
             Route::prefix('oauth')
                 ->as('passport.')
                 ->namespace('Laravel\Passport\Http\Controllers')
