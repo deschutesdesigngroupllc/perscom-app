@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
@@ -11,7 +12,6 @@ use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
-use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
@@ -60,12 +60,10 @@ class Document extends Resource
                 ->nullable()
                 ->alwaysShow()
                 ->showOnPreview(),
-            Trix::make('Content')
+            NovaTinyMCE::make('Content')
                 ->hideFromIndex()
                 ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
-                ->rules(['required'])
-                ->showOnPreview()
-                ->withFiles('s3_public'),
+                ->rules(['required']),
             Heading::make('Meta')
                 ->onlyOnDetail(),
             DateTime::make('Created At')

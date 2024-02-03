@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0c0e166e6ae7c884a0337c685600c042",
+    "content-hash": "a6a13f50b8dfee932a78ad41334d0d01",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -1404,6 +1404,53 @@
             "time": "2023-10-06T06:47:41+00:00"
         },
         {
+            "name": "emilianotisato/nova-tinymce",
+            "version": "2.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/emilianotisato/nova-tinymce.git",
+                "reference": "2e640a2e62e9d5f5bb3976ace0245126fbf95fe8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/emilianotisato/nova-tinymce/zipball/2e640a2e62e9d5f5bb3976ace0245126fbf95fe8",
+                "reference": "2e640a2e62e9d5f5bb3976ace0245126fbf95fe8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Emilianotisato\\NovaTinyMCE\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Emilianotisato\\NovaTinyMCE\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This Nova package allow you to use TinyMCE editor for text areas.You can customize the editor options and... you can upload images to your server and put them rigth there on the text without leaving the text editor!",
+            "keywords": [
+                "editor",
+                "laravel",
+                "nova",
+                "tiny"
+            ],
+            "support": {
+                "issues": "https://github.com/emilianotisato/nova-tinymce/issues",
+                "source": "https://github.com/emilianotisato/nova-tinymce/tree/2.0.1"
+            },
+            "time": "2023-06-29T15:23:55+00:00"
+        },
+        {
             "name": "eminiarts/nova-tabs",
             "version": "2.2.3",
             "source": {
@@ -2321,6 +2368,90 @@
                 }
             ],
             "time": "2023-10-27T10:59:02+00:00"
+        },
+        {
+            "name": "intervention/image",
+            "version": "2.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Intervention/image.git",
+                "reference": "04be355f8d6734c826045d02a1079ad658322dad"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Intervention/image/zipball/04be355f8d6734c826045d02a1079ad658322dad",
+                "reference": "04be355f8d6734c826045d02a1079ad658322dad",
+                "shasum": ""
+            },
+            "require": {
+                "ext-fileinfo": "*",
+                "guzzlehttp/psr7": "~1.1 || ^2.0",
+                "php": ">=5.4.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9.2",
+                "phpunit/phpunit": "^4.8 || ^5.7 || ^7.5.15"
+            },
+            "suggest": {
+                "ext-gd": "to use GD library based image processing.",
+                "ext-imagick": "to use Imagick based image processing.",
+                "intervention/imagecache": "Caching extension for the Intervention Image library"
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "2.4-dev"
+                },
+                "laravel": {
+                    "providers": [
+                        "Intervention\\Image\\ImageServiceProvider"
+                    ],
+                    "aliases": {
+                        "Image": "Intervention\\Image\\Facades\\Image"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Intervention\\Image\\": "src/Intervention/Image"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Oliver Vogel",
+                    "email": "oliver@intervention.io",
+                    "homepage": "https://intervention.io/"
+                }
+            ],
+            "description": "Image handling and manipulation library with support for Laravel integration",
+            "homepage": "http://image.intervention.io/",
+            "keywords": [
+                "gd",
+                "image",
+                "imagick",
+                "laravel",
+                "thumbnail",
+                "watermark"
+            ],
+            "support": {
+                "issues": "https://github.com/Intervention/image/issues",
+                "source": "https://github.com/Intervention/image/tree/2.7.2"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/interventionio",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/Intervention",
+                    "type": "github"
+                }
+            ],
+            "time": "2022-05-21T17:30:32+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -6267,7 +6398,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6303,7 +6434,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6339,7 +6470,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6375,7 +6506,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6411,7 +6542,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6447,7 +6578,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6483,7 +6614,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6519,7 +6650,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6555,7 +6686,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6591,7 +6722,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6627,7 +6758,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-main",
+            "version": "dev-feature/tinymce",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -12811,6 +12942,86 @@
             "time": "2023-04-19T12:54:36+00:00"
         },
         {
+            "name": "unisharp/laravel-filemanager",
+            "version": "v2.6.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/UniSharp/laravel-filemanager.git",
+                "reference": "6c8306d4cca0b2682f9f54f8857a32f7450adac4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/UniSharp/laravel-filemanager/zipball/6c8306d4cca0b2682f9f54f8857a32f7450adac4",
+                "reference": "6c8306d4cca0b2682f9f54f8857a32f7450adac4",
+                "shasum": ""
+            },
+            "require": {
+                "ext-exif": "*",
+                "ext-fileinfo": "*",
+                "illuminate/config": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/container": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/filesystem": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/http": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "illuminate/support": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0",
+                "intervention/image": "2.*",
+                "league/flysystem": ">=2.0.0",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.9",
+                "phpunit/phpunit": "^6.2",
+                "squizlabs/php_codesniffer": "^3.1"
+            },
+            "suggest": {
+                "ext-gd": "to use GD library based image processing.",
+                "ext-imagick": "to use Imagick based image processing."
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "UniSharp\\LaravelFilemanager\\LaravelFilemanagerServiceProvider"
+                    ],
+                    "aliases": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "UniSharp\\LaravelFilemanager\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Trevor Sawler",
+                    "email": "trevor.sawler@gmail.com"
+                },
+                {
+                    "name": "UniSharp Ltd.",
+                    "email": "opensource@unisharp.com"
+                }
+            ],
+            "description": "A file upload/editor intended for use with Laravel 5 to 10 and CKEditor / TinyMCE",
+            "keywords": [
+                "CKEditor",
+                "file",
+                "filemanager",
+                "image",
+                "laravel",
+                "manager",
+                "tinymce",
+                "upload"
+            ],
+            "support": {
+                "issues": "https://github.com/UniSharp/laravel-filemanager/issues",
+                "source": "https://github.com/UniSharp/laravel-filemanager/tree/v2.6.4"
+            },
+            "time": "2023-11-24T08:18:55+00:00"
+        },
+        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.0",
             "source": {
@@ -17122,5 +17333,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }
