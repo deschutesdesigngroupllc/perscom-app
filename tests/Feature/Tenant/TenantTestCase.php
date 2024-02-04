@@ -6,7 +6,6 @@ use App\Models\Admin;
 use App\Models\Domain;
 use App\Models\Tenant;
 use App\Models\User;
-use Database\Seeders\TestingCentralSeeder;
 use Database\Seeders\TestingTenantSeeder;
 use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactionsManager;
@@ -29,17 +28,19 @@ class TenantTestCase extends TestCase
 
     protected ?User $user = null;
 
-    public string $seeder = TestingCentralSeeder::class;
+//    public string $seeder = TestingCentralSeeder::class;
 
-    public array $connectionsToTransact = ['mysql'];
+//    public array $connectionsToTransact = ['mysql'];
 
-    public bool $tenantDatabaseMigrated = false;
+//    public bool $tenantDatabaseMigrated = false;
 
     protected function setUp(): void
     {
         putenv('TENANT_TESTING=true');
 
         parent::setUp();
+
+        $this->tenant = tenant();
     }
 
     /**
@@ -48,15 +49,15 @@ class TenantTestCase extends TestCase
      */
     protected function afterRefreshingDatabase(): void
     {
-        $this->setupTenantDatabase();
-
-        $this->setupTenancy();
-
-        $this->setupTenantTransactions();
-
-        $this->beforeApplicationDestroyed(function () {
-            tenancy()->end();
-        });
+//        $this->setupTenantDatabase();
+//
+//        $this->setupTenancy();
+//
+//        $this->setupTenantTransactions();
+//
+//        $this->beforeApplicationDestroyed(function () {
+//            tenancy()->end();
+//        });
     }
 
     /**
