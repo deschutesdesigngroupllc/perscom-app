@@ -1,23 +1,27 @@
 <?php
 
-namespace Tests\Feature\Tenant\Observers;
+namespace Tests\Feature\Central\Observers;
 
 use App\Models\Tenant;
 use App\Notifications\Admin\NewSubscription;
 use App\Notifications\Admin\NewTenant;
 use App\Notifications\Admin\TenantDeleted;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
-use Tests\Feature\Tenant\TenantTestCase;
+use Illuminate\Support\Str;
+use Stancl\Tenancy\Events\TenantCreated;
+use Tests\Feature\Central\CentralTestCase;
 
-class TenantObserverTest extends TenantTestCase
+class TenantObserverTest extends CentralTestCase
 {
-    public function beforeSetUpTenancy()
-    {
-        Notification::fake();
-    }
-
     public function test_new_tenant_notification_sent()
     {
+        Event::fake([TenantCreated::class]);
+        Notification::fake();
+
+        Tenant::factory()->create();
+
+        Event::assertDispatched(TenantCreated::class);
         Notification::assertSentTo($this->admin, NewTenant::class, function ($notification, $channels) {
             $this->assertContains('mail', $channels);
 
@@ -30,7 +34,18 @@ class TenantObserverTest extends TenantTestCase
 
     public function test_new_subscription_notification_sent()
     {
-        $this->withSubscription();
+        Notification::fake();
+
+        $tenant = Tenant::factory()->createQuietly();
+        $tenant->subscriptions()->create([
+            'name' => 'default',
+            'stripe_id' => Str::random(10),
+            'stripe_status' => 'active',
+            'stripe_price' => env('STRIPE_PRODUCT_BASIC_MONTH'),
+            'quantity' => 1,
+            'trial_ends_at' => now()->addWeek(),
+            'ends_at' => null,
+        ]);
 
         Notification::assertSentTo($this->admin, NewSubscription::class, function ($notification, $channels) {
             $this->assertContains('mail', $channels);
@@ -44,6 +59,8 @@ class TenantObserverTest extends TenantTestCase
 
     public function test_tenant_deleted_notification_sent()
     {
+        Notification::fake();
+
         $tenant = Tenant::factory()->create();
         $tenant->delete();
 

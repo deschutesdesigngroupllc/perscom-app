@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Tenant\Jobs;
+namespace Tests\Feature\Central\Jobs;
 
 use App\Jobs\RemoveInactiveAccounts as RemoveInactiveAccountsJob;
 use App\Models\Tenant;

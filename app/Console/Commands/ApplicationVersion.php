@@ -20,7 +20,7 @@ class ApplicationVersion extends Command
         $this->info("The current application version is: $currentApplicationVersion");
 
         if ($newVersion = $this->option('set')) {
-            $this->setApplicationVersion($newVersion);
+            return $this->setApplicationVersion($newVersion);
         }
 
         return CommandAlias::SUCCESS;

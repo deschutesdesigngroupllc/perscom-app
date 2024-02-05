@@ -9,7 +9,7 @@ class PrivacyPolicyControllerTest extends CentralTestCase
 {
     public function test_privacy_policy_page_can_be_reached()
     {
-        $this->get('/privacy-policy')
+        $this->get(route('web.privacy-policy.index'))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('PrivacyPolicy');
             })->assertSuccessful();

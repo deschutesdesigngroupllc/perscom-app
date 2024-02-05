@@ -2,9 +2,11 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 use Laravel\Passport\Passport;
 use Tests\Contracts\ApiResourceTestContract;
 use Tests\Feature\Tenant\Http\Controllers\Api\ApiTestCase;
@@ -13,12 +15,15 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
 {
     protected Collection|Model $factory;
 
+    protected User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         Event::fake();
 
+        $this->user = User::factory()->create();
         $this->factory = $this->factory()->create();
     }
 
@@ -29,6 +34,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->getJson("/{$this->endpoint()}")
+            ->assertJsonStructure(['data', 'links', 'meta'])
             ->assertSuccessful();
     }
 
@@ -39,6 +45,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+            ->assertJsonStructure(['data'])
             ->assertSuccessful();
     }
 
@@ -51,9 +58,10 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $data = $this->storeData();
 
         $this->postJson("/{$this->endpoint()}", $data)
+            ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseHas($this->endpoint(), $data);
+        $this->assertDatabaseHas(method_exists($this, 'table') ? $this->table() : $this->endpoint(), $data);
     }
 
     public function test_can_reach_update_endpoint()
@@ -65,9 +73,10 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $data = $this->updateData();
 
         $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $data)
+            ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseHas($this->endpoint(), $data);
+        $this->assertDatabaseHas(method_exists($this, 'table') ? $this->table() : $this->endpoint(), $data);
     }
 
     public function test_can_reach_delete_endpoint()
@@ -77,15 +86,22 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
 
         $this->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+            ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseMissing($this->endpoint(), [
+        $this->assertDatabaseMissing(method_exists($this, 'table') ? $this->table() : $this->endpoint(), [
             'id' => $this->factory->getKey(),
         ]);
     }
 
     public function test_cannot_reach_index_endpoint_with_missing_scope()
     {
+        $class = class_basename($this->model());
+
+        if (Str::contains($class, 'Record')) {
+            $this->markTestSkipped("The $class class policy allows everyone to always view all records so this test is not necessary.");
+        }
+
         Passport::actingAs($this->user);
 
         $this->getJson("/{$this->endpoint()}")
@@ -94,6 +110,12 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
 
     public function test_cannot_reach_show_endpoint_with_missing_scope()
     {
+        $class = class_basename($this->model());
+
+        if (Str::contains($class, 'Record')) {
+            $this->markTestSkipped("The $class class policy allows the user to always view records associated with the user so this test is not necessary.");
+        }
+
         Passport::actingAs($this->user);
 
         $this->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
@@ -134,13 +156,13 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertStatus(422);
     }
 
-    public function test_show_store_endpoint_returns_not_found()
+    public function test_show_endpoint_returns_not_found()
     {
         Passport::actingAs($this->user, [
             $this->scopes()['show'],
         ]);
 
-        $this->getJson("/{$this->endpoint()}/{$this->faker->numberBetween(10, 20)}")
+        $this->getJson("/{$this->endpoint()}/{$this->faker->randomDigitNot($this->factory->getKey())}")
             ->assertNotFound();
     }
 }

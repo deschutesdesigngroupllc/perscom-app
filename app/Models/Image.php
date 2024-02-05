@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Storage;
  * App\Models\Image
  *
  * @property int $id
- * @property string|null $name
+ * @property string $name
  * @property string|null $description
  * @property string $filename
  * @property string $model_type

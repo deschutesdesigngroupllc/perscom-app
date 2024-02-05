@@ -2,26 +2,39 @@
 
 namespace App\Traits;
 
+use App\Models\Domain;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+
 trait HasResourceUrlAttribute
 {
-    public function getUrlAttribute(): string
+    public function url(): Attribute
     {
-        return optional($this->getKey(), function ($key) {
-            return tenant_route(tenant('domain')?->host, 'nova.pages.detail', [
-                'resource' => \call_user_func_array([$this->findNovaResourceClass(), 'uriKey'], []),
-                'resourceId' => $key,
-            ]);
-        });
+        return Attribute::make(
+            get: function (): ?string {
+                return optional($this->getKey(), function ($key) {
+                    return optional(tenant('domain'), function (Domain $domain) use ($key) {
+                        return tenant_route($domain->host, 'nova.pages.detail', [
+                            'resource' => \call_user_func_array([$this->findNovaResourceClass(), 'uriKey'], []),
+                            'resourceId' => $key,
+                        ]);
+                    });
+                });
+            }
+        );
     }
 
-    public function getRelativeUrlAttribute(): string
+    public function relativeUrl(): Attribute
     {
-        return optional($this->getKey(), function ($key) {
-            return route('nova.pages.detail', [
-                'resource' => \call_user_func_array([$this->findNovaResourceClass(), 'uriKey'], []),
-                'resourceId' => $key,
-            ], false);
-        });
+        return Attribute::make(
+            get: function (): ?string {
+                return optional($this->getKey(), function ($key) {
+                    return route('nova.pages.detail', [
+                        'resource' => \call_user_func_array([$this->findNovaResourceClass(), 'uriKey'], []),
+                        'resourceId' => $key,
+                    ], false);
+                });
+            }
+        );
     }
 
     protected function findNovaResourceClass(): string

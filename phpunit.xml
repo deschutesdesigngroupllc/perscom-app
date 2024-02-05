@@ -16,6 +16,12 @@
     <testsuite name="Unit">
       <directory suffix="Test.php">./tests/Unit</directory>
     </testsuite>
+    <testsuite name="Central">
+      <directory suffix="Test.php">./tests/Feature/Central</directory>
+    </testsuite>
+    <testsuite name="Tenant">
+      <directory suffix="Test.php">./tests/Feature/Tenant</directory>
+    </testsuite>
   </testsuites>
 
   <coverage includeUncoveredFiles="true">
@@ -39,6 +45,7 @@
     <server name="DB_CONNECTION" value="mysql"/>
     <server name="DB_DATABASE" value="testing"/>
     <server name="DB_HOST" value="127.0.0.1"/>
+    <server name="ENVOYER_HEARTBEAT_URL" value="https://foo.bar" />
     <server name='HTTP_HOST' value='http://lvh.me' />
     <server name="JWT_ALGO" value="HS256"/>
     <server name="JWT_SECRET" value="3juKTvPLQ2Vw7djDKazHaGQ0UXht2D3wUC94hroyzy6RLNaRbMWJnKdjo9YfCtHU"/>

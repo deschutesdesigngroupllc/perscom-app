@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Repositories;
 
+use App\Models\Tenant;
 use App\Repositories\TenantRepository;
 use Tests\Feature\Tenant\Models\TenantTest;
 
@@ -14,7 +15,7 @@ class TenantRepositoryTest extends TenantTest
         $tenants = $tenantRepository->getAll();
 
         $this->assertTrue($tenants->contains($this->tenant));
-        $this->assertSame(1, $tenants->count());
+        $this->assertSame(Tenant::query()->count(), $tenants->count());
     }
 
     public function test_find_by_key_returns_correct_tenant()

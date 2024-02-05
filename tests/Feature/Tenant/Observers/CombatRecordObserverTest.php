@@ -5,6 +5,7 @@ namespace Tests\Feature\Tenant\Observers;
 use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\CombatRecord;
 use App\Models\Enums\WebhookEvent;
+use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\Tenant\NewCombatRecord;
 use Illuminate\Support\Facades\Notification;
@@ -25,9 +26,9 @@ class CombatRecordObserverTest extends TenantTestCase
     {
         Notification::fake();
 
-        $combat = CombatRecord::factory()->for($this->user)->create();
+        $combat = CombatRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($this->user, NewCombatRecord::class, function ($notification, $channels) use ($combat) {
+        Notification::assertSentTo($user, NewCombatRecord::class, function ($notification, $channels) use ($combat) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($combat->user);

@@ -2,14 +2,16 @@
 
 namespace Tests\Feature\Tenant\Bootstrappers;
 
+use App\Models\Tenant;
 use Spatie\Permission\PermissionRegistrar;
+use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class ConfigBootstrapperTest extends TenantTestCase
 {
-    public function beforeInitializingTenancy()
+    public function beforeInitializingTenancy(Tenant $tenant): void
     {
-        $this->tenant->run(function () {
+        $tenant->run(function () {
             nova_set_setting_value('timezone', 'Asia/Dhaka');
         });
     }
@@ -21,12 +23,18 @@ class ConfigBootstrapperTest extends TenantTestCase
         $this->assertEquals(PermissionRegistrar::$cacheKey, "'spatie.permission.cache.tenant.{$this->tenant->getTenantKey()}");
     }
 
+    /**
+     * @throws TenantCouldNotBeIdentifiedById
+     */
     public function test_revert_method_resets_config()
     {
+        $tenant = \tenant();
         tenancy()->end();
 
         $this->assertEquals(config('mail.from.name'), env('MAIL_FROM_NAME'));
         $this->assertEquals(config('app.timezone'), 'UTC');
         $this->assertEquals(PermissionRegistrar::$cacheKey, 'spatie.permission.cache');
+
+        tenancy()->initialize($tenant);
     }
 }

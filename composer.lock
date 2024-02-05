@@ -6390,7 +6390,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6426,7 +6426,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6462,7 +6462,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6498,7 +6498,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6534,7 +6534,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6570,7 +6570,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6606,7 +6606,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6642,7 +6642,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6678,7 +6678,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6714,7 +6714,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6750,7 +6750,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -6786,7 +6786,7 @@
         },
         {
             "name": "perscom/text-action-field",
-            "version": "dev-hotfix/jwt-fix",
+            "version": "dev-tests",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/TextActionField",

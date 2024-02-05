@@ -29,26 +29,26 @@ class GroupPolicy extends Policy
 
     public function create(?User $user = null): bool
     {
-        return $this->hasPermissionTo($user, 'create:group') || optional($user)->tokenCan('create:user');
+        return $this->hasPermissionTo($user, 'create:group') || optional($user)->tokenCan('create:group');
     }
 
     public function update(?User $user, Group $group): bool
     {
-        return $this->hasPermissionTo($user, 'update:group') || optional($user)->tokenCan('update:user');
+        return $this->hasPermissionTo($user, 'update:group') || optional($user)->tokenCan('update:group');
     }
 
     public function delete(?User $user, Group $group): bool
     {
-        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:group');
     }
 
     public function restore(?User $user, Group $group): bool
     {
-        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:group');
     }
 
     public function forceDelete(?User $user, Group $group): bool
     {
-        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:user');
+        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:group');
     }
 }

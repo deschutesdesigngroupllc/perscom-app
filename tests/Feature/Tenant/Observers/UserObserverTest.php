@@ -20,30 +20,38 @@ class UserObserverTest extends TenantTestCase
 {
     public function test_user_assigned_appropriate_permissions()
     {
-        $this->assertEquals($this->user->roles->pluck('id')->toArray(), setting('default_roles', []));
-        $this->assertEquals($this->user->permissions->pluck('id')->toArray(), setting('default_permissions', []));
+        $settings = nova_get_settings();
+
+        $user = User::factory()->create();
+
+        $this->assertEquals($user->roles->pluck('id')->toArray(), data_get($settings, 'default_roles', []));
+        $this->assertEquals($user->permissions->pluck('id')->toArray(), data_get($settings, 'default_permissions', []));
     }
 
     public function test_user_notes_updated_date_set()
     {
-        $this->user->update(['notes' => 'foo bar']);
+        $user = User::factory()->create();
 
-        $this->assertEqualsWithDelta(now(), $this->user->notes_updated_at, 1);
+        $user->update(['notes' => 'foo bar']);
+
+        $this->assertEqualsWithDelta(now(), $user->notes_updated_at, 1);
     }
 
     public function test_user_password_changed_notification_sent()
     {
         Notification::fake();
 
-        $this->user->update([
+        $user = User::factory()->create();
+
+        $user->update([
             'password' => Str::password(),
         ]);
 
-        Notification::assertSentTo($this->user, PasswordChanged::class, function ($notification, $channels) {
+        Notification::assertSentTo($user, PasswordChanged::class, function ($notification, $channels) use ($user) {
             $this->assertContains('mail', $channels);
 
-            $mail = $notification->toMail($this->user);
-            $mail->assertTo($this->user->email);
+            $mail = $notification->toMail($user);
+            $mail->assertTo($user->email);
 
             return true;
         });
@@ -73,15 +81,16 @@ class UserObserverTest extends TenantTestCase
 
         Cache::put('registration_admin_approval_required', true, 3600);
 
-        $this->user->assignRole('Admin');
+        $user = User::factory()->create();
+        $user->assignRole('Admin');
 
         User::factory()->create();
 
-        Notification::assertSentTo($this->user, AdminApprovalRequired::class, function ($notification, $channels) {
+        Notification::assertSentTo($user, AdminApprovalRequired::class, function ($notification, $channels) use ($user) {
             $this->assertContains('mail', $channels);
 
-            $mail = $notification->toMail($this->user);
-            $mail->assertTo($this->user->email);
+            $mail = $notification->toMail($user);
+            $mail->assertTo($user->email);
 
             return true;
         });

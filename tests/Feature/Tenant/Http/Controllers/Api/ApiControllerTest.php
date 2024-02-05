@@ -3,45 +3,46 @@
 namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use App\Http\Middleware\Subscribed;
+use App\Models\User;
 use Laravel\Passport\Passport;
 
 class ApiControllerTest extends ApiTestCase
 {
     public function test_api_cannot_be_reached_without_bearer_token()
     {
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertUnauthorized();
     }
 
     public function test_api_cannot_be_reached_without_perscom_id()
     {
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me', [
+        $this->getJson(route('api.me.index'), [
             'X-Perscom-Id' => null,
         ])->assertUnauthorized();
     }
 
     public function test_api_cannot_be_reached_with_incorrect_perscom_id()
     {
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me', [
+        $this->getJson(route('api.me.index'), [
             'X-Perscom-Id' => $this->faker->randomDigitNot($this->tenant->getTenantKey()),
         ])->assertUnauthorized();
     }
 
     public function test_api_can_be_reached_with_perscom_id()
     {
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 
@@ -51,11 +52,11 @@ class ApiControllerTest extends ApiTestCase
 
         $this->withMiddleware(Subscribed::class);
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertStatus(402);
     }
 
@@ -65,11 +66,11 @@ class ApiControllerTest extends ApiTestCase
 
         $this->withMiddleware(Subscribed::class);
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 
@@ -79,11 +80,11 @@ class ApiControllerTest extends ApiTestCase
 
         $this->withMiddleware(Subscribed::class);
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertStatus(402);
     }
 
@@ -93,11 +94,11 @@ class ApiControllerTest extends ApiTestCase
 
         $this->withMiddleware(Subscribed::class);
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertStatus(402);
     }
 
@@ -107,11 +108,11 @@ class ApiControllerTest extends ApiTestCase
 
         $this->withMiddleware(Subscribed::class);
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 
@@ -122,11 +123,11 @@ class ApiControllerTest extends ApiTestCase
 
         $this->withMiddleware(Subscribed::class);
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
-        $this->getJson('/me')
+        $this->getJson(route('api.me.index'))
             ->assertSuccessful();
     }
 }

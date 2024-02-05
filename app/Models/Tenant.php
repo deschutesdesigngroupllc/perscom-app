@@ -13,6 +13,7 @@ use Laravel\Pennant\Concerns\HasFeatures;
 use Laravel\Pennant\Contracts\FeatureScopeable;
 use Spark\Billable;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
+use Stancl\Tenancy\Database\Concerns\CentralConnection;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 
@@ -60,6 +61,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read int|null $pennants_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Cashier\Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
+ * @property string|null $tenancy_db_name
  *
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
  * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
@@ -98,6 +100,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureSc
 {
     use Actionable;
     use Billable;
+    use CentralConnection;
     use HasDatabase;
     use HasDomains;
     use HasFactory;

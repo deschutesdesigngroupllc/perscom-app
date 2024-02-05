@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Oidc;
 
+use App\Models\User;
 use Laravel\Passport\Passport;
 use Tests\Feature\Tenant\TenantTestCase;
 use Tests\Traits\MakesApiRequests;
@@ -9,6 +10,15 @@ use Tests\Traits\MakesApiRequests;
 class UserInfoControllerTest extends TenantTestCase
 {
     use MakesApiRequests;
+
+    protected User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
 
     public function test_userinfo_endpoint_can_be_reached()
     {
@@ -18,7 +28,7 @@ class UserInfoControllerTest extends TenantTestCase
             'openid', 'profile', 'email',
         ], 'passport');
 
-        $response = $this->get($this->tenant->url.'/oauth/userinfo')
+        $this->get(route('oidc.userinfo'))
             ->assertSuccessful()
             ->assertJson([
                 'sub' => $this->user->getAuthIdentifier(),
@@ -35,7 +45,7 @@ class UserInfoControllerTest extends TenantTestCase
             'profile', 'email',
         ], 'passport');
 
-        $response = $this->get($this->tenant->url.'/oauth/userinfo')
+        $this->get(route('oidc.userinfo'))
             ->assertForbidden();
     }
 
@@ -47,7 +57,7 @@ class UserInfoControllerTest extends TenantTestCase
             'openid', 'profile',
         ], 'passport');
 
-        $response = $this->get($this->tenant->url.'/oauth/userinfo')
+        $this->get(route('oidc.userinfo'))
             ->assertSuccessful()
             ->assertJsonMissing(['email' => $this->user->email]);
     }
@@ -60,7 +70,7 @@ class UserInfoControllerTest extends TenantTestCase
             'openid', 'email',
         ], 'passport');
 
-        $response = $this->get($this->tenant->url.'/oauth/userinfo')
+        $this->get(route('oidc.userinfo'))
             ->assertSuccessful()
             ->assertJsonMissing(['name' => $this->user->name]);
     }

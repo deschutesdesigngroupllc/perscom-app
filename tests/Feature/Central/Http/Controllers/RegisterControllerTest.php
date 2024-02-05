@@ -13,7 +13,7 @@ class RegisterControllerTest extends CentralTestCase
 {
     public function test_register_index_page_can_be_reached()
     {
-        $this->get('/register')
+        $this->get(route('web.register.index'))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('Register');
             })->assertSuccessful();
@@ -31,7 +31,7 @@ class RegisterControllerTest extends CentralTestCase
 
         $url = URL::signedRoute('web.register.complete', ['tenant' => 1]);
 
-        $this->post('/register')
+        $this->post(route('web.register.store'))
             ->assertRedirect($url);
     }
 
@@ -42,7 +42,7 @@ class RegisterControllerTest extends CentralTestCase
 
         $this->instance(CreateNewTenant::class, $createNewTenant);
 
-        $this->post('/register')
+        $this->post(route('web.register.store'))
             ->assertRedirect()
             ->assertSessionHasErrors('email');
     }
@@ -54,7 +54,7 @@ class RegisterControllerTest extends CentralTestCase
 
         $this->instance(CreateNewTenant::class, $createNewTenant);
 
-        $this->post('/register')
+        $this->post(route('web.register.store'))
             ->assertRedirect()
             ->assertSessionHasErrors('organization');
     }
@@ -66,7 +66,7 @@ class RegisterControllerTest extends CentralTestCase
 
         $this->instance(CreateNewTenant::class, $createNewTenant);
 
-        $this->post('/register')
+        $this->post(route('web.register.store'))
             ->assertRedirect()
             ->assertSessionHasErrors('privacy');
     }
@@ -79,9 +79,7 @@ class RegisterControllerTest extends CentralTestCase
 
         $this->instance(Tenant::class, $tenant);
 
-        $url = URL::signedRoute('web.register.complete', ['tenant' => 1]);
-
-        $this->get($url)
+        $this->get(URL::signedRoute('web.register.complete', ['tenant' => 1]))
             ->assertInertia(function (AssertableInertia $page) {
                 $page->component('Complete');
             })->assertSuccessful();

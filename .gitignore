@@ -7,6 +7,7 @@
 /storage/*.key
 /vendor
 /tests/Coverage
+!.env.example
 .env
 .env.backup
 .env.*

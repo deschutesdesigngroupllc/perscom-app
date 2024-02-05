@@ -3,21 +3,28 @@
 namespace Tests\Feature\Tenant\Http\Controllers\Oidc;
 
 use App\Http\Middleware\Subscribed;
+use App\Models\Domain;
+use Illuminate\Support\Facades\Log;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class DiscoveryControllerTest extends TenantTestCase
 {
-    public function test_discovey_page_can_be_reached()
+    public function test_discovery_page_can_be_reached()
     {
         $this->withoutMiddleware(Subscribed::class);
 
-        $this->get($this->tenant->url.'/.well-known/openid-configuration')
+        Log::debug('Debug', [
+            'domains' => Domain::all(),
+            'tenant' => $this->tenant,
+        ]);
+
+        $this->get(route('oidc.discovery'))
             ->assertSuccessful()
             ->assertExactJson([
                 'issuer' => $this->tenant->url,
-                'authorization_endpoint' => $this->tenant->url.'/oauth/authorize',
-                'token_endpoint' => $this->tenant->url.'/oauth/token',
-                'userinfo_endpoint' => $this->tenant->url.'/oauth/userinfo',
+                'authorization_endpoint' => route('passport.authorizations.authorize'),
+                'token_endpoint' => route('passport.token'),
+                'userinfo_endpoint' => route('oidc.userinfo'),
                 'grant_types_supported' => [
                     'authorization_code',
                     'implicit',
@@ -69,7 +76,7 @@ class DiscoveryControllerTest extends TenantTestCase
                     'zonefinfo',
                     'updated_at',
                 ],
-                'end_session_endpoint' => $this->tenant->url.'/oauth/logout',
+                'end_session_endpoint' => route('oidc.logout'),
             ]);
     }
 }

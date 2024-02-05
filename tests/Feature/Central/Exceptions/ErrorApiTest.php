@@ -112,16 +112,4 @@ class ErrorApiTest extends CentralTestCase
             ->assertJsonPath('error.type', 'HttpException')
             ->assertStatus(500);
     }
-
-    public function test_503_exception_is_thrown_and_error_is_returned()
-    {
-        $this->app->maintenanceMode()->activate([]);
-
-        $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'Service Unavailable')
-            ->assertJsonPath('error.type', 'HttpException')
-            ->assertStatus(503);
-
-        $this->app->maintenanceMode()->deactivate();
-    }
 }

@@ -6,7 +6,7 @@ class SpecControllerTest extends ApiTestCase
 {
     public function test_spec_endpoint_can_be_reached()
     {
-        $this->get('/spec.yaml')
+        $this->get(route('api.spec'))
             ->assertSuccessful()
             ->assertHeader('Content-Type', 'text/yaml; charset=UTF-8');
     }

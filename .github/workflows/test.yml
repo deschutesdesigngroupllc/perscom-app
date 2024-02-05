@@ -72,10 +72,14 @@ jobs:
       - name: Install Passport Keys
         run: php artisan passport:keys --force
 
+      - name: Make Environment File
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
       - name: Execute Tests
         run: php artisan test --parallel --recreate-databases
         env:
           DB_USERNAME: root
+          DB_DATABASE: testing
 
       - name: Upload Code Coverage Report
         uses: codecov/codecov-action@v3

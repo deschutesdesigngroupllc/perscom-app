@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
+use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
  * App\Models\Domain
@@ -34,6 +35,7 @@ use Spatie\Url\Url;
  */
 class Domain extends \Stancl\Tenancy\Database\Models\Domain
 {
+    use CentralConnection;
     use HasFactory;
 
     /**

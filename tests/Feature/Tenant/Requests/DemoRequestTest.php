@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Requests;
 
+use App\Models\User;
 use Laravel\Fortify\Features;
 use Laravel\Passport\Passport;
 use Tests\Feature\Tenant\TenantTestCase;
@@ -16,7 +17,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_host', $this->domain->host);
         config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
-        $this->get('/login')
+        $this->get(route('login'))
             ->assertSuccessful();
 
         $this->assertTrue(\Request::isDemoMode());
@@ -27,7 +28,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_host', $this->faker->domainWord.config('app.base_url'));
         config()->set('tenancy.demo_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
 
-        $this->get('/login')
+        $this->get(route('login'))
             ->assertSuccessful();
 
         $this->assertFalse(\Request::isDemoMode());
@@ -38,7 +39,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_host', $this->domain->host);
         config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
@@ -56,7 +57,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_host', $this->faker->domainWord.config('app.base_url'));
         config()->set('tenancy.demo_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
@@ -74,7 +75,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_host', $this->domain->host);
         config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
@@ -91,7 +92,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_host', $this->faker->domainWord.config('app.base_url'));
         config()->set('tenancy.demo_id', $this->faker->randomDigitNot($this->tenant->getTenantKey()));
 
-        Passport::actingAs($this->user, [
+        Passport::actingAs(User::factory()->create(), [
             'view:user',
         ]);
 
@@ -108,7 +109,7 @@ class DemoRequestTest extends TenantTestCase
         config()->set('tenancy.demo_host', $this->domain->host);
         config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
 
-        $this->get('/login')
+        $this->get(route('login'))
             ->assertSuccessful();
 
         $this->assertSame('web', config('fortify.guard'));
