@@ -3,6 +3,7 @@
 namespace Tests\Feature\Tenant\Http\Controllers\Passport;
 
 use App\Http\Middleware\Subscribed;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use DateInterval;
@@ -19,11 +20,15 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class AccessTokenControllerTest extends TenantTestCase
 {
+    protected User $user;
+
     public function setUp(): void
     {
         parent::setUp();
 
         $this->withoutMiddleware(Subscribed::class);
+
+        $this->user = User::factory()->create();
     }
 
     public function test_access_token_with_authorization_code_grant_can_be_issued()

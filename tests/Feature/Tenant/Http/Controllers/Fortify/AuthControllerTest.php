@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Fortify;
 
+use App\Models\User;
 use Illuminate\Auth\Events\Authenticated;
 use Illuminate\Auth\Events\Failed;
 use Illuminate\Auth\Events\Logout;
@@ -21,6 +22,15 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class AuthControllerTest extends TenantTestCase
 {
+    protected User $user;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
+
     public function test_login_page_can_be_reached()
     {
         $this->get(route('login'))

@@ -2,11 +2,8 @@
 
 namespace Tests\Feature\Tenant;
 
-use App\Models\Admin;
 use App\Models\Domain;
 use App\Models\Tenant;
-use App\Models\User;
-use Database\Seeders\TestingTenantSeeder;
 use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactionsManager;
 use Illuminate\Support\Facades\ParallelTesting;
@@ -20,15 +17,9 @@ class TenantTestCase extends TestCase
 {
     use TenantHelpers;
 
-    protected ?Admin $admin = null;
-
     protected ?Domain $domain = null;
 
     protected ?Tenant $tenant = null;
-
-    protected ?User $user = null;
-
-    //public string $seeder = TestingCentralSeeder::class;
 
     public array $connectionsToTransact = ['mysql'];
 
@@ -68,30 +59,26 @@ class TenantTestCase extends TestCase
         $tenantName = "Tenant {$testToken}";
         $tenantDatabaseName = "tenant{$testToken}_testing";
 
-        $tenant = Tenant::factory()->state([
+        $this->tenant = Tenant::factory()->state([
             'name' => $tenantName,
             'tenancy_db_name' => $tenantDatabaseName,
         ])->createQuietly();
 
-        Domain::factory()->state([
-            'domain' => "tenant_{$tenant->getKey()}_$testToken",
-            'tenant_id' => $tenant->getKey(),
+        $this->domain = Domain::factory()->state([
+            'domain' => "tenant_{$this->tenant->getKey()}_$testToken",
+            'tenant_id' => $this->tenant->getKey(),
         ])->createQuietly();
 
-        if (! $tenant->database()->manager()->databaseExists($tenantDatabaseName)) {
-            $tenant->database()->manager()->createDatabase($tenant);
+        if (! $this->tenant->database()->manager()->databaseExists($tenantDatabaseName)) {
+            $this->tenant->database()->manager()->createDatabase($this->tenant);
         }
 
         if (! $this->tenantDatabaseMigrated) {
             $this->artisan('tenants:migrate', [
-                '--tenants' => $tenant->getKey(),
+                '--tenants' => $this->tenant->getKey(),
             ]);
             $this->artisan('tenants:seed', [
-                '--tenants' => $tenant->getKey(),
-            ]);
-            $this->artisan('tenants:seed', [
-                '--tenants' => $tenant->getKey(),
-                '--class' => TestingTenantSeeder::class,
+                '--tenants' => $this->tenant->getKey(),
             ]);
 
             $this->tenantDatabaseMigrated = true;
@@ -100,9 +87,6 @@ class TenantTestCase extends TestCase
 
     public function setupTenancy(): void
     {
-        $this->tenant = Tenant::firstOrFail();
-        $this->domain = Domain::firstOrFail();
-
         if (method_exists($this, 'beforeInitializingTenancy')) {
             $this->beforeInitializingTenancy($this->tenant);
         }
@@ -111,8 +95,6 @@ class TenantTestCase extends TestCase
         tenant()->load('domains');
 
         URL::forceRootUrl($this->tenant->url);
-
-        $this->user = User::firstOrFail();
 
         if (method_exists($this, 'afterInitializingTenancy')) {
             $this->afterInitializingTenancy($this->tenant);

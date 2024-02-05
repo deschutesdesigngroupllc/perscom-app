@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Oidc;
 
+use App\Models\User;
 use Laravel\Passport\Passport;
 use Tests\Feature\Tenant\TenantTestCase;
 use Tests\Traits\MakesApiRequests;
@@ -9,6 +10,15 @@ use Tests\Traits\MakesApiRequests;
 class UserInfoControllerTest extends TenantTestCase
 {
     use MakesApiRequests;
+
+    protected User $user;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->user = User::factory()->create();
+    }
 
     public function test_userinfo_endpoint_can_be_reached()
     {

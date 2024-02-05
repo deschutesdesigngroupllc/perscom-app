@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
@@ -14,12 +15,15 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
 {
     protected Collection|Model $factory;
 
+    protected User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         Event::fake();
 
+        $this->user = User::factory()->create();
         $this->factory = $this->factory()->create();
     }
 
