@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.73...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.74...HEAD)
+
+## [v1.0.74](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.73...v1.0.74) - 2024-02-05
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.74 -->
+### What's Changed
+
+#### Fixed
+
+* Fix JWT not allowing first party API requests by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/312
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.73...v1.0.74
 
 ## [v1.0.73](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.72...v1.0.73) - 2024-02-03
 
