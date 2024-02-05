@@ -2,7 +2,10 @@
 
 namespace App\Features;
 
+use App\Services\JwtService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
+use PHPOpenSourceSaver\JWTAuth\Facades\JWTAuth;
 use Spark\Plan;
 
 class ApiAccessFeature extends BaseFeature
@@ -14,6 +17,7 @@ class ApiAccessFeature extends BaseFeature
         return match (true) {
             Request::isCentralRequest() => false,
             Request::isDemoMode() => true,
+            Auth::guard('jwt')->check() && JwtService::signedByPerscom(JWTAuth::getToken()) => true,
             $tenant->onTrial() => true,
             optional($tenant->sparkPlan(), static function (Plan $plan) {
                 return \in_array(__CLASS__, $plan->options, true);

@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 use Spark\Http\Middleware\VerifyBillableIsSubscribed;
 
@@ -24,8 +25,7 @@ class Subscribed extends VerifyBillableIsSubscribed
      */
     public function handle($request, $next, $billableType = null, $plan = null)
     {
-        if (app()->environment('local') ||
-            $request->isDemoMode() ||
+        if ($request->isDemoMode() ||
             $request->isCentralRequest()) {
             return $next($request);
         }
@@ -53,8 +53,6 @@ class Subscribed extends VerifyBillableIsSubscribed
 
     protected function redirectionIsToBillingPortal(mixed $response): bool
     {
-        return $response instanceof RedirectResponse &&
-               $response->getTargetUrl() === tenant()->url.'/'.config('spark.path').'/'.$this->guessBillableType();
-
+        return $response instanceof RedirectResponse && Str::contains($response->getTargetUrl(), config('spark.path'));
     }
 }
