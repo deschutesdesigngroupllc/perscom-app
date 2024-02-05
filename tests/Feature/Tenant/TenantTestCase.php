@@ -28,19 +28,17 @@ class TenantTestCase extends TestCase
 
     protected ?User $user = null;
 
-//    public string $seeder = TestingCentralSeeder::class;
+    //public string $seeder = TestingCentralSeeder::class;
 
-//    public array $connectionsToTransact = ['mysql'];
+    public array $connectionsToTransact = ['mysql'];
 
-//    public bool $tenantDatabaseMigrated = false;
+    public bool $tenantDatabaseMigrated = false;
 
     protected function setUp(): void
     {
         putenv('TENANT_TESTING=true');
 
         parent::setUp();
-
-        $this->tenant = tenant();
     }
 
     /**
@@ -49,15 +47,15 @@ class TenantTestCase extends TestCase
      */
     protected function afterRefreshingDatabase(): void
     {
-//        $this->setupTenantDatabase();
-//
-//        $this->setupTenancy();
-//
-//        $this->setupTenantTransactions();
-//
-//        $this->beforeApplicationDestroyed(function () {
-//            tenancy()->end();
-//        });
+        $this->setupTenantDatabase();
+
+        $this->setupTenancy();
+
+        $this->setupTenantTransactions();
+
+        $this->beforeApplicationDestroyed(function () {
+            tenancy()->end();
+        });
     }
 
     /**
@@ -85,7 +83,7 @@ class TenantTestCase extends TestCase
         }
 
         if (! $this->tenantDatabaseMigrated) {
-            $this->artisan('tenants:migrate-fresh', [
+            $this->artisan('tenants:migrate', [
                 '--tenants' => $tenant->getKey(),
             ]);
             $this->artisan('tenants:seed', [
