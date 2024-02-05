@@ -24,7 +24,7 @@ class Subscribed extends VerifyBillableIsSubscribed
      */
     public function handle($request, $next, $billableType = null, $plan = null)
     {
-        if (app()->environment('local') ||
+        if (app()->environment('testing') ||
             $request->isDemoMode() ||
             $request->isCentralRequest()) {
             return $next($request);

@@ -67,6 +67,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Vite;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Email;
@@ -88,6 +89,7 @@ use Outl1ne\NovaSettings\NovaSettings;
 use Perscom\Calendar\Calendar as CalendarWidget;
 use Perscom\Forms\Forms as FormsWidget;
 use Perscom\Roster\Roster as RosterWidget;
+use Perscom\TextActionField\TextActionField;
 use Sentry\Laravel\Integration;
 use Spatie\Url\Url;
 
@@ -419,10 +421,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         Boolean::make('Admin Approval Required', 'registration_admin_approval_required')->help('Users can register for an account but will need admin approval to login.'),
                     ]),
                     Tab::make('Single Sign-On', [
-                        Text::make('Single Sign-On Key', 'single_sign_on_key')
+                        TextActionField::make('Single Sign-On Key', 'single_sign_on_key')
                             ->help('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM.io resources on the fly through the PERSCOM.io API.')
-                            ->readonly()
+                            //->readonly()
                             ->copyable()
+                            ->actionText('Regenerate Key')
+                            ->actionMessage('The key has been successfully regenerated.')
+                            ->actionCallback(function () {
+                                return tap(Str::random(40), function (string $key) {
+                                    NovaSettings::setSettingValue('single_sign_on_key', $key);
+                                });
+                            })
                             ->canSee(function () {
                                 return Feature::active(SingleSignOnFeature::class);
                             }),
