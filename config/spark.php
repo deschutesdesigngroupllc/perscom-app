@@ -82,7 +82,7 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Receipt Configuration
+    | Invoice Configuration
     |--------------------------------------------------------------------------
     |
     | The following configuration options allow you to configure the data that

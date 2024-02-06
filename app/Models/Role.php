@@ -47,7 +47,7 @@ class Role extends \Spatie\Permission\Models\Role
     ];
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['is_custom_role', 'is_application_role'];
 

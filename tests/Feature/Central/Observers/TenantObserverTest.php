@@ -38,7 +38,7 @@ class TenantObserverTest extends CentralTestCase
 
         $tenant = Tenant::factory()->createQuietly();
         $tenant->subscriptions()->create([
-            'name' => 'default',
+            'type' => 'default',
             'stripe_id' => Str::random(10),
             'stripe_status' => 'active',
             'stripe_price' => env('STRIPE_PRODUCT_BASIC_MONTH'),

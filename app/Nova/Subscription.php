@@ -40,7 +40,7 @@ class Subscription extends Resource
                 ->sortable(),
             BelongsTo::make('Tenant', 'owner', Tenant::class)
                 ->sortable(),
-            Text::make('Name')
+            Text::make('Type')
                 ->rules(['required'])
                 ->placeholder('default')
                 ->hideFromIndex()

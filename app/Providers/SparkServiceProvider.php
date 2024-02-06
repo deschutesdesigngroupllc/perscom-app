@@ -11,11 +11,6 @@ use Spark\Spark;
 
 class SparkServiceProvider extends ServiceProvider
 {
-    public function register(): void
-    {
-        Spark::ignoreMigrations();
-    }
-
     public function boot(): void
     {
         Spark::billable(Tenant::class)->resolve(function (Request $request) {

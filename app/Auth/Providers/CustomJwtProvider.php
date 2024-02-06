@@ -22,6 +22,8 @@ class CustomJwtProvider extends Lcobucci
     }
 
     /**
+     * @return array<string, mixed>
+     *
      * @throws TokenInvalidException
      */
     public function decode($token): array
@@ -41,7 +43,8 @@ class CustomJwtProvider extends Lcobucci
             throw new TokenInvalidException('Token signature could not be verified.');
         }
 
-        return collect($jwt->claims()->all())->map(function ($claim) {
+        // @phpstan-ignore-next-line
+        return collect($jwt->claims()->allx())->map(function ($claim) {
             if (is_a($claim, DateTimeImmutable::class)) {
                 return $claim->getTimestamp();
             }

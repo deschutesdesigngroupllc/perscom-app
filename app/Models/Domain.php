@@ -39,7 +39,7 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['host', 'url'];
 

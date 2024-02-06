@@ -212,7 +212,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     protected $with = ['position', 'specialty', 'rank', 'status', 'unit', 'tasks'];
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['online', 'url', 'relative_url', 'profile_photo_url', 'cover_photo_url'];
 

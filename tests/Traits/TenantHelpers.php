@@ -17,7 +17,7 @@ trait TenantHelpers
         $this->withoutSubscription();
 
         $this->subscription = $this->tenant->subscriptions()->create([
-            'name' => 'default',
+            'type' => 'default',
             'stripe_id' => Str::random(10),
             'stripe_status' => $subscriptionStatus,
             'stripe_price' => $priceId,

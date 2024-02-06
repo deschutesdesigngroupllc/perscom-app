@@ -72,7 +72,7 @@ class TaskAssignment extends Pivot
     protected $table = 'users_tasks';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['complete', 'expired', 'past_due', 'status'];
 

@@ -158,7 +158,7 @@ class Event extends Model
     ];
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = [
         'is_past',

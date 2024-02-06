@@ -169,7 +169,7 @@ class Tenant extends Resource
                         ->hideFromIndex(),
                     DateTime::make('Plan Ends At')
                         ->hideFromIndex(),
-                    Text::make('Receipt Emails')
+                    Text::make('Invoice Emails')
                         ->hideFromIndex(),
                 ]),
                 Tab::make('Database', [
@@ -185,7 +185,6 @@ class Tenant extends Resource
                 Tab::make('Features', [
                     HasMany::make('Features', 'pennants', Feature::class),
                 ]),
-                Tab::make('Receipts', [HasMany::make('Receipts', 'localReceipts', Receipt::class)]),
                 Tab::make('Subscriptions', [HasMany::make('Subscriptions')]),
                 Tab::make('Logs', [$this->actionfield()]),
             ]),

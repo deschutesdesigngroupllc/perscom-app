@@ -68,7 +68,7 @@ class Form extends Model
     use HasTags;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['url'];
 

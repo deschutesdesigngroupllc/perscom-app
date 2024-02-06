@@ -45,7 +45,6 @@ use App\Nova\Qualification;
 use App\Nova\QualificationRecord;
 use App\Nova\Rank;
 use App\Nova\RankRecord;
-use App\Nova\Receipt;
 use App\Nova\Role;
 use App\Nova\ServiceRecord;
 use App\Nova\Specialty;
@@ -159,7 +158,6 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                         MenuItem::resource(AdminResource::class),
                         MenuItem::resource(Domain::class),
                         MenuItem::resource(NovaFeature::class),
-                        MenuItem::resource(Receipt::class),
                         MenuItem::resource(Subscription::class),
                         MenuItem::resource(Tenant::class),
                     ])->icon('terminal')

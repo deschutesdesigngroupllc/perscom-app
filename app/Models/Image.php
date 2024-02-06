@@ -49,7 +49,7 @@ class Image extends Model
     protected $fillable = ['name', 'description', 'filename', 'path'];
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['image_url'];
 

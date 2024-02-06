@@ -62,7 +62,7 @@ class Newsfeed extends Activity
     use HasLikes;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['headline', 'text', 'color', 'item'];
 

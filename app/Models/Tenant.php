@@ -118,7 +118,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureSc
     ];
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $appends = ['database_status', 'url', 'custom_url', 'fallback_url'];
 
