@@ -1,6 +1,23 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.74...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.75...HEAD)
+
+## [v1.0.75](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.74...v1.0.75) - 2024-02-06
+
+<!-- Release notes generated using configuration in .github/release.yml at master -->
+### What's Changed
+
+#### Added
+
+* Update test suite by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/296
+
+#### Other
+
+* Bump swagger-ui-react from 5.10.0 to 5.11.2 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/305
+* Bump staudenmeir/belongs-to-through from 2.14 to 2.15.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/285
+* Bump sentry/sentry-laravel from 3.8.2 to 4.2.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/308
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.74...v1.0.75
 
 ## [v1.0.74](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.73...v1.0.74) - 2024-02-05
 
