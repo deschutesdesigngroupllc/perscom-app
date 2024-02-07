@@ -44,7 +44,7 @@ class CustomJwtProvider extends Lcobucci
         }
 
         // @phpstan-ignore-next-line
-        return collect($jwt->claims()->allx())->map(function ($claim) {
+        return collect($jwt->claims()->all())->map(function ($claim) {
             if (is_a($claim, DateTimeImmutable::class)) {
                 return $claim->getTimestamp();
             }
