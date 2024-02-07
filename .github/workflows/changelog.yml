@@ -48,7 +48,7 @@ jobs:
         run: rm -rf commitmessage.txt
 
       - name: Commit Updated Changelog
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: ${{ github.event.release.target_commitish }}
           commit_message: ${{ steps.commit_message.outputs.commit_message }}
