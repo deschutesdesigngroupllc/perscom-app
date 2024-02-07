@@ -80,15 +80,15 @@ class FortifyServiceProvider extends ServiceProvider
                 'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
                 'googleLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'google',
-                    'function' => SocialLoginController::SOCIAL_LOGIN,
+                    'function' => SocialLoginController::SOCIAL_REGISTER,
                 ]),
                 'discordLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'discord',
-                    'function' => SocialLoginController::SOCIAL_LOGIN,
+                    'function' => SocialLoginController::SOCIAL_REGISTER,
                 ]),
                 'githubLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'github',
-                    'function' => SocialLoginController::SOCIAL_LOGIN,
+                    'function' => SocialLoginController::SOCIAL_REGISTER,
                 ]),
             ]);
         });
