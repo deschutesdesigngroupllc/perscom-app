@@ -78,13 +78,17 @@ class FortifyServiceProvider extends ServiceProvider
             return Inertia::render('auth/Register', [
                 'status' => session('status') ?? request()->input('status'),
                 'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
-                'githubLogin' => \route('tenant.auth.social.redirect', [
-                    'driver' => 'github',
-                    'function' => SocialLoginController::SOCIAL_REGISTER,
+                'googleLogin' => \route('tenant.auth.social.redirect', [
+                    'driver' => 'google',
+                    'function' => SocialLoginController::SOCIAL_LOGIN,
                 ]),
                 'discordLogin' => \route('tenant.auth.social.redirect', [
                     'driver' => 'discord',
-                    'function' => SocialLoginController::SOCIAL_REGISTER,
+                    'function' => SocialLoginController::SOCIAL_LOGIN,
+                ]),
+                'githubLogin' => \route('tenant.auth.social.redirect', [
+                    'driver' => 'github',
+                    'function' => SocialLoginController::SOCIAL_LOGIN,
                 ]),
             ]);
         });
