@@ -12,7 +12,7 @@ enum RankRecordType: int
 
     public function getLabel(): string
     {
-        return Str::title($this->value);
+        return Str::title($this->name);
     }
 
     public function getColor(): string
