@@ -4,11 +4,10 @@ namespace App\Models\Enums;
 
 use Illuminate\Support\Str;
 
-enum RankRecordType: int
+enum AssignmentRecordType: string
 {
-    case PROMOTION = 0;
-    case DEMOTION = 1;
-    case LATERAL = 2;
+    case PRIMARY = 'primary';
+    case SECONDARY = 'secondary';
 
     public function getLabel(): string
     {
@@ -18,9 +17,8 @@ enum RankRecordType: int
     public function getColor(): string
     {
         return match ($this) {
-            RankRecordType::PROMOTION => '#16A34A',
-            RankRecordType::DEMOTION => '#DC2626',
-            RankRecordType::LATERAL => '#334155'
+            self::PRIMARY => 'success',
+            self::SECONDARY => 'info'
         };
     }
 }

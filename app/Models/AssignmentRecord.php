@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\AssignmentRecordScope;
 use App\Prompts\AssignmentRecordPrompts;
 use App\Traits\ClearsResponseCache;
@@ -30,6 +31,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property array|null $secondary_specialty_ids
  * @property int|null $document_id
  * @property int|null $author_id
+ * @property AssignmentRecordType|null $type
  * @property string|null $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -63,6 +65,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSpecialtyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUserId($value)
@@ -90,7 +93,7 @@ class AssignmentRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'status_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
+    protected $fillable = ['user_id', 'status_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'type', 'text', 'updated_at', 'created_at'];
 
     /**
      * @var string[]
@@ -104,6 +107,7 @@ class AssignmentRecord extends Model
         'secondary_position_ids' => 'json',
         'secondary_specialty_ids' => 'json',
         'secondary_unit_ids' => 'json',
+        'type' => AssignmentRecordType::class,
     ];
 
     /**

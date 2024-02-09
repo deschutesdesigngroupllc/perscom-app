@@ -49,7 +49,7 @@ class RankRecordTest extends ApiResourceTestCase
             'user_id' => $this->user->getKey(),
             'author_id' => $this->user->getKey(),
             'rank_id' => Rank::factory()->create()->getKey(),
-            'type' => RankRecordType::RANK_RECORD_PROMOTION,
+            'type' => RankRecordType::PROMOTION,
             'text' => $this->faker->paragraph,
         ];
     }
