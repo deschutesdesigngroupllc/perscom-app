@@ -25,7 +25,7 @@ class PassportClientFactory extends Factory
             'name' => $this->faker->word,
             'description' => $this->faker->paragraph,
             'type' => $this->faker->randomElement(['authorization_code', 'implicit', 'client_credentials', 'password']),
-            'secret' => Str::random(32),
+            'secret' => Str::random(40),
             'provider' => null,
             'redirect' => $this->faker->url,
             'personal_access_client' => false,

@@ -31,7 +31,7 @@ class PassportTokenFactory extends Factory
             'token' => Crypt::encryptString(JWT::encode([
                 'sub' => 1,
                 'scope' => ['*'],
-            ], env('JWT_SECRET', Str::random(32)), 'HS256')),
+            ], env('JWT_SECRET', Str::random(40)), 'HS256')),
             'revoked' => false,
         ];
     }
