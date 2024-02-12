@@ -5436,25 +5436,27 @@
         },
         {
             "name": "nikic/php-parser",
-            "version": "v4.18.0",
+            "version": "v5.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "1bcbb2179f97633e98bbbc87044ee2611c7d7999"
+                "reference": "4a21235f7e56e713259a6f76bf4b5ea08502b9dc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/1bcbb2179f97633e98bbbc87044ee2611c7d7999",
-                "reference": "1bcbb2179f97633e98bbbc87044ee2611c7d7999",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/4a21235f7e56e713259a6f76bf4b5ea08502b9dc",
+                "reference": "4a21235f7e56e713259a6f76bf4b5ea08502b9dc",
                 "shasum": ""
             },
             "require": {
+                "ext-ctype": "*",
+                "ext-json": "*",
                 "ext-tokenizer": "*",
-                "php": ">=7.0"
+                "php": ">=7.4"
             },
             "require-dev": {
                 "ircmaxell/php-yacc": "^0.0.7",
-                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0 || ^9.0"
+                "phpunit/phpunit": "^7.0 || ^8.0 || ^9.0"
             },
             "bin": [
                 "bin/php-parse"
@@ -5462,7 +5464,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.9-dev"
+                    "dev-master": "5.0-dev"
                 }
             },
             "autoload": {
@@ -5486,9 +5488,9 @@
             ],
             "support": {
                 "issues": "https://github.com/nikic/PHP-Parser/issues",
-                "source": "https://github.com/nikic/PHP-Parser/tree/v4.18.0"
+                "source": "https://github.com/nikic/PHP-Parser/tree/v5.0.0"
             },
-            "time": "2023-12-10T21:03:43+00:00"
+            "time": "2024-01-07T17:17:35+00:00"
         },
         {
             "name": "nova-kit/nova-packages-tool",
@@ -6266,7 +6268,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6302,7 +6304,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6338,7 +6340,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6374,7 +6376,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6410,7 +6412,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6446,7 +6448,7 @@
         },
         {
             "name": "perscom/featureos",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Featureos",
@@ -6482,7 +6484,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6518,7 +6520,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6554,7 +6556,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6590,7 +6592,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6626,7 +6628,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -6662,7 +6664,7 @@
         },
         {
             "name": "perscom/text-action-field",
-            "version": "dev-develop",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/TextActionField",
@@ -12668,16 +12670,16 @@
         },
         {
             "name": "barryvdh/laravel-ide-helper",
-            "version": "v2.13.0",
+            "version": "v2.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-ide-helper.git",
-                "reference": "81d5b223ff067a1f38e14c100997e153b837fe4a"
+                "reference": "485c756f6cff408d6b273274c5e86112c3973d98"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/81d5b223ff067a1f38e14c100997e153b837fe4a",
-                "reference": "81d5b223ff067a1f38e14c100997e153b837fe4a",
+                "url": "https://api.github.com/repos/barryvdh/laravel-ide-helper/zipball/485c756f6cff408d6b273274c5e86112c3973d98",
+                "reference": "485c756f6cff408d6b273274c5e86112c3973d98",
                 "shasum": ""
             },
             "require": {
@@ -12688,7 +12690,7 @@
                 "illuminate/console": "^8 || ^9 || ^10",
                 "illuminate/filesystem": "^8 || ^9 || ^10",
                 "illuminate/support": "^8 || ^9 || ^10",
-                "nikic/php-parser": "^4.7",
+                "nikic/php-parser": "^4.18 || ^5",
                 "php": "^7.3 || ^8.0",
                 "phpdocumentor/type-resolver": "^1.1.0"
             },
@@ -12701,7 +12703,7 @@
                 "orchestra/testbench": "^6 || ^7 || ^8",
                 "phpunit/phpunit": "^8.5 || ^9",
                 "spatie/phpunit-snapshot-assertions": "^3 || ^4",
-                "vimeo/psalm": "^3.12"
+                "vimeo/psalm": "^5.4"
             },
             "suggest": {
                 "illuminate/events": "Required for automatic helper generation (^6|^7|^8|^9|^10)."
@@ -12709,7 +12711,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.12-dev"
+                    "dev-master": "2.14-dev"
                 },
                 "laravel": {
                     "providers": [
@@ -12746,7 +12748,7 @@
             ],
             "support": {
                 "issues": "https://github.com/barryvdh/laravel-ide-helper/issues",
-                "source": "https://github.com/barryvdh/laravel-ide-helper/tree/v2.13.0"
+                "source": "https://github.com/barryvdh/laravel-ide-helper/tree/v2.14.0"
             },
             "funding": [
                 {
@@ -12758,7 +12760,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-02-04T13:56:40+00:00"
+            "time": "2024-02-05T08:16:36+00:00"
         },
         {
             "name": "barryvdh/reflection-docblock",
@@ -16693,5 +16695,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
