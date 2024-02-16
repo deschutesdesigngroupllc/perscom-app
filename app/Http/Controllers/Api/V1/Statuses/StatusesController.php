@@ -35,9 +35,17 @@ class StatusesController extends Controller
     /**
      * @return string[]
      */
+    public function sortableBy(): array
+    {
+        return ['id', 'name', 'text_color', 'bg_color', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function searchableBy(): array
     {
-        return ['name', 'text_color', 'bg_color'];
+        return ['id', 'name', 'text_color', 'bg_color', 'created_at', 'updated_at'];
     }
 
     /**
@@ -45,6 +53,6 @@ class StatusesController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'text_color', 'bg_color', 'created_at'];
+        return ['id', 'name', 'text_color', 'bg_color', 'created_at', 'updated_at'];
     }
 }

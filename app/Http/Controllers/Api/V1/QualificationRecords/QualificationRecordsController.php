@@ -37,4 +37,28 @@ class QualificationRecordsController extends Controller
             'user',
         ];
     }
+
+    /**
+     * @return string[]
+     */
+    public function sortableBy(): array
+    {
+        return ['id', 'user_id', 'user.*', 'qualification_id', 'qualification.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function searchableBy(): array
+    {
+        return ['id', 'user_id', 'qualification_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function filterableBy(): array
+    {
+        return ['id', 'user_id', 'user.*', 'qualification_id', 'qualification.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
+    }
 }

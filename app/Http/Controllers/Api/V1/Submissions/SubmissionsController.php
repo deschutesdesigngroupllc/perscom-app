@@ -29,7 +29,15 @@ class SubmissionsController extends Controller
      */
     public function includes(): array
     {
-        return ['form', 'user', 'statuses'];
+        return ['form', 'form.*', 'user', 'user.*', 'statuses'];
+    }
+
+    /**
+     * @return string[]
+     */
+    public function sortableBy(): array
+    {
+        return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'data', 'created_at', 'updated_at'];
     }
 
     /**
@@ -37,7 +45,7 @@ class SubmissionsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['form_id', 'user_id'];
+        return ['id', 'form_id', 'user_id', 'data', 'created_at', 'updated_at'];
     }
 
     /**
@@ -45,6 +53,6 @@ class SubmissionsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'form_id', 'user_id', 'created_at'];
+        return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'created_at', 'updated_at'];
     }
 }

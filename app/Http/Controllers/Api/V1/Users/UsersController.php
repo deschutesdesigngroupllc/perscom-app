@@ -33,24 +33,20 @@ class UsersController extends Controller
     {
         return [
             'assignment_records',
-            'assignment_records.position',
-            'assignment_records.specialty',
-            'assignment_records.unit',
-            'assignment_records.status',
+            'assignment_records.*',
             'award_records',
-            'award_records.award',
-            'award_records.award.image',
+            'award_records.*',
+            'award_records.award.*',
             'combat_records',
             'fields',
             'position',
             'qualification_records',
-            'qualification_records.qualification',
-            'qualification_records.qualification.image',
+            'qualification_records.*',
             'rank',
-            'rank.image',
+            'rank.*',
             'rank_records',
-            'rank_records.rank',
-            'rank_records.rank.image',
+            'rank_records.*',
+            'rank_records.rank.*',
             'secondary_positions',
             'secondary_specialties',
             'secondary_units',
@@ -66,7 +62,26 @@ class UsersController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'name', 'email', 'email_verified_at', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'last_seen_at', 'updated_at', 'created_at'];
+        return [
+            'id',
+            'name',
+            'email',
+            'email_verified_at',
+            'position_id',
+            'position.*',
+            'rank_id',
+            'rank.*',
+            'specialty_id',
+            'specialty.*',
+            'status_id',
+            'status.*',
+            'unit_id',
+            'unit.*',
+            'approved',
+            'last_seen_at',
+            'updated_at',
+            'created_at',
+        ];
     }
 
     /**
@@ -74,7 +89,21 @@ class UsersController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'name', 'email', 'email_verified_at', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'last_seen_at', 'updated_at', 'created_at'];
+        return [
+            'id',
+            'name',
+            'email',
+            'email_verified_at',
+            'position_id',
+            'rank_id',
+            'specialty_id',
+            'status_id',
+            'unit_id',
+            'approved',
+            'last_seen_at',
+            'updated_at',
+            'created_at',
+        ];
     }
 
     /**
@@ -82,7 +111,26 @@ class UsersController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'email', 'email_verified_at', 'position_id', 'rank_id', 'specialty_id', 'status_id', 'unit_id', 'approved', 'last_seen_at', 'updated_at', 'created_at'];
+        return [
+            'id',
+            'name',
+            'email',
+            'email_verified_at',
+            'position_id',
+            'position.*',
+            'rank_id',
+            'rank.*',
+            'specialty_id',
+            'specialty.*',
+            'status_id',
+            'status.*',
+            'unit_id',
+            'unit.*',
+            'approved',
+            'last_seen_at',
+            'updated_at',
+            'created_at',
+        ];
     }
 
     public function beforeSave(Request $request, Model $entity): void

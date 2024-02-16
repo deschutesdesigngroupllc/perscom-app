@@ -43,9 +43,17 @@ class EventsController extends Controller
     /**
      * @return string[]
      */
+    public function sortableBy(): array
+    {
+        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'start', 'end', 'repeats', 'frequency', 'interval', 'end_type', 'count', 'until', 'by_day', 'by_month', 'by_set_position', 'by_month_day', 'by_year_day', 'rrule', 'registration_enabled', 'registration_deadline', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function searchableBy(): array
     {
-        return ['name', 'calendar_id', 'start', 'end'];
+        return ['id', 'name', 'calendar_id', 'description', 'content', 'location', 'url', 'author_id', 'all_day', 'start', 'end', 'repeats', 'frequency', 'interval', 'end_type', 'count', 'until', 'by_day', 'by_month', 'by_set_position', 'by_month_day', 'by_year_day', 'rrule', 'registration_enabled', 'registration_deadline', 'created_at', 'updated_at'];
     }
 
     /**
@@ -53,6 +61,6 @@ class EventsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'calendar_id', 'start', 'end', 'created_at'];
+        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'start', 'end', 'repeats', 'frequency', 'interval', 'end_type', 'count', 'until', 'by_day', 'by_month', 'by_set_position', 'by_month_day', 'by_year_day', 'rrule', 'registration_enabled', 'registration_deadline', 'created_at', 'updated_at'];
     }
 }
