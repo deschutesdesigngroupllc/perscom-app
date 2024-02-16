@@ -12,9 +12,12 @@ class SubmissionRequest extends Request
     protected function getDynamicRules(): mixed
     {
         $submissionId = $this->route('form') ?? optional($this->route('submission'), function ($submissionId) {
-            return Submission::find($submissionId)->form_id;
+            return optional(Submission::find($submissionId))->form_id;
         });
-        $form = Form::find($submissionId);
+
+        $form = optional($submissionId, function ($submissionId) {
+            return Form::find($submissionId);
+        });
 
         if ($form) {
             return $form->fields->filter->validation_rules->mapWithKeys(function (Field $field) {

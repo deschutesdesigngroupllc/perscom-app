@@ -171,7 +171,10 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     {
         $controller = $this->app->make($this->controller());
 
-        $required = Schema::getColumnListing($this->getTable($this->model()));
+        $model = $this->newModelFor($this->model());
+
+        $required = array_diff(Schema::getColumnListing($this->getTable($this->model())), $model->getHidden());
+
         $intersection = array_intersect($controller->sortableBy(), $required);
 
         $this->assertIsArray($controller->sortableBy());
@@ -182,7 +185,10 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     {
         $controller = $this->app->make($this->controller());
 
-        $required = Schema::getColumnListing($this->getTable($this->model()));
+        $model = $this->newModelFor($this->model());
+
+        $required = array_diff(Schema::getColumnListing($this->getTable($this->model())), $model->getHidden());
+
         $intersection = array_intersect($controller->searchableBy(), $required);
 
         $this->assertIsArray($controller->sortableBy());
@@ -193,7 +199,10 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     {
         $controller = $this->app->make($this->controller());
 
-        $required = Schema::getColumnListing($this->getTable($this->model()));
+        $model = $this->newModelFor($this->model());
+
+        $required = array_diff(Schema::getColumnListing($this->getTable($this->model())), $model->getHidden());
+
         $intersection = array_intersect($controller->filterableBy(), $required);
 
         $this->assertIsArray($controller->sortableBy());

@@ -43,7 +43,7 @@ class RankRecordsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'user_id', 'user.*', 'rank_id', 'rank.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'user.*', 'rank_id', 'rank.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'type', 'created_at', 'updated_at'];
     }
 
     /**
@@ -51,7 +51,7 @@ class RankRecordsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'user_id', 'rank_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'rank_id', 'document_id', 'author_id', 'text', 'type', 'created_at', 'updated_at'];
     }
 
     /**
@@ -59,6 +59,6 @@ class RankRecordsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'user_id', 'user.*', 'rank_id', 'rank.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'user.*', 'rank_id', 'rank.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'type', 'created_at', 'updated_at'];
     }
 }
