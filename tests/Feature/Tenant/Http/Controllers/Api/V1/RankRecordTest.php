@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\RankRecords\RankRecordsController;
 use App\Models\Enums\RankRecordType;
 use App\Models\Rank;
 use App\Models\RankRecord;
@@ -14,9 +15,9 @@ class RankRecordTest extends ApiResourceTestCase
         return 'rank-records';
     }
 
-    public function table(): string
+    public function controller(): string
     {
-        return 'records_ranks';
+        return RankRecordsController::class;
     }
 
     public function model(): string

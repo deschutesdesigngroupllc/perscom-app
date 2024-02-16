@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Announcements\AnnouncementsController;
 use App\Models\Announcement;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class AnnouncementTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'announcements';
+    }
+
+    public function controller(): string
+    {
+        return AnnouncementsController::class;
     }
 
     public function model(): string

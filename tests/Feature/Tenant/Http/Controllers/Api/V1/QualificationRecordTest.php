@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\QualificationRecords\QualificationRecordsController;
 use App\Models\Qualification;
 use App\Models\QualificationRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,9 +14,9 @@ class QualificationRecordTest extends ApiResourceTestCase
         return 'qualification-records';
     }
 
-    public function table(): string
+    public function controller(): string
     {
-        return 'records_qualifications';
+        return QualificationRecordsController::class;
     }
 
     public function model(): string

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\AwardRecords\AwardRecordsController;
 use App\Models\Award;
 use App\Models\AwardRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -13,9 +14,9 @@ class AwardRecordTest extends ApiResourceTestCase
         return 'award-records';
     }
 
-    public function table(): string
+    public function controller(): string
     {
-        return 'records_awards';
+        return AwardRecordsController::class;
     }
 
     public function model(): string

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Tasks\TasksController;
 use App\Models\Task;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class TaskTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'tasks';
+    }
+
+    public function controller(): string
+    {
+        return TasksController::class;
     }
 
     public function model(): string

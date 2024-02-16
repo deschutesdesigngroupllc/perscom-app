@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Positions\PositionsController;
 use App\Models\Position;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class PositionTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'positions';
+    }
+
+    public function controller(): string
+    {
+        return PositionsController::class;
     }
 
     public function model(): string

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Statuses\StatusesController;
 use App\Models\Status;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class StatusTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'statuses';
+    }
+
+    public function controller(): string
+    {
+        return StatusesController::class;
     }
 
     public function model(): string

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Units\UnitsController;
 use App\Models\Unit;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class UnitTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'units';
+    }
+
+    public function controller(): string
+    {
+        return UnitsController::class;
     }
 
     public function model(): string

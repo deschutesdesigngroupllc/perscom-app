@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Specialties\SpecialtiesController;
 use App\Models\Specialty;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class SpecialtyTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'specialties';
+    }
+
+    public function controller(): string
+    {
+        return SpecialtiesController::class;
     }
 
     public function model(): string

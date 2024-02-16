@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Qualifications\QualificationsController;
 use App\Models\Qualification;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class QualificationTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'qualifications';
+    }
+
+    public function controller(): string
+    {
+        return QualificationsController::class;
     }
 
     public function model(): string
