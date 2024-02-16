@@ -159,7 +159,7 @@
         "post-install-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
             "@php artisan vendor:publish --tag=lfm_public --ansi --force",
-            "@php artisan vendor:publish --provider=\"Emilianotisato\\NovaTinyMCE\\FieldServiceProvider\" --ansi --force"
+            "@php artisan vendor:publish --tag=public --ansi --force"
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force",
