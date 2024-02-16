@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.76...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.77...HEAD)
+
+## [v1.0.77](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.76...v1.0.77) - 2024-02-16
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.77 -->
+### What's Changed
+
+#### Changed
+
+* Add new whitelists to API by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/319
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.76...v1.0.77
 
 ## [v1.0.76](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.75...v1.0.76) - 2024-02-07
 
