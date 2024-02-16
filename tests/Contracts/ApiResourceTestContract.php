@@ -10,6 +10,8 @@ interface ApiResourceTestContract
 
     public function model(): string;
 
+    public function controller(): string;
+
     public function factory(): Factory;
 
     public function scopes(): array;

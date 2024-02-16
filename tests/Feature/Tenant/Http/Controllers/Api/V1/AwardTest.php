@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Awards\AwardsController;
 use App\Models\Award;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class AwardTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'awards';
+    }
+
+    public function controller(): string
+    {
+        return AwardsController::class;
     }
 
     public function model(): string

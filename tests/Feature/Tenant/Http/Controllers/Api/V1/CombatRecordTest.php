@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\CombatRecords\CombatRecordsController;
 use App\Models\CombatRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,9 +13,9 @@ class CombatRecordTest extends ApiResourceTestCase
         return 'combat-records';
     }
 
-    public function table(): string
+    public function controller(): string
     {
-        return 'records_combat';
+        return CombatRecordsController::class;
     }
 
     public function model(): string

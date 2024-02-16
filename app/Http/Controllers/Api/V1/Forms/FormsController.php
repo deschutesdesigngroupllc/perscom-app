@@ -43,9 +43,17 @@ class FormsController extends Controller
     /**
      * @return string[]
      */
+    public function sortableBy(): array
+    {
+        return ['id', 'name', 'slug', 'success_message', 'submission_status_id', 'submission_status.*', 'is_public', 'description', 'instructions', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function searchableBy(): array
     {
-        return ['name', 'slug'];
+        return ['id', 'name', 'slug', 'success_message', 'submission_status_id', 'is_public', 'description', 'instructions', 'created_at', 'updated_at'];
     }
 
     /**
@@ -53,6 +61,6 @@ class FormsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'slug', 'created_at'];
+        return ['id', 'name', 'slug', 'success_message', 'submission_status_id', 'submission_status.*', 'is_public', 'description', 'instructions', 'created_at', 'updated_at'];
     }
 }

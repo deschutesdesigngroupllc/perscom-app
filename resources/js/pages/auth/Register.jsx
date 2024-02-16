@@ -1,10 +1,10 @@
-import React, {useEffect} from 'react'
-import {AuthLayout} from '../../layouts/Auth'
-import {Button} from '../../components/Button'
-import {Input} from '../../components/Input'
-import {Label} from '../../components/Label'
-import {ValidationErrors} from '../../components/ValidationErrors'
-import {Head, Link, useForm} from '@inertiajs/react'
+import React, { useEffect } from 'react'
+import { AuthLayout } from '../../layouts/Auth'
+import { Button } from '../../components/Button'
+import { Input } from '../../components/Input'
+import { Label } from '../../components/Label'
+import { ValidationErrors } from '../../components/ValidationErrors'
+import { Head, Link, useForm } from '@inertiajs/react'
 import PropTypes from 'prop-types'
 
 export function Register({ status, enableSocialLogin, googleLogin, discordLogin, githubLogin }) {

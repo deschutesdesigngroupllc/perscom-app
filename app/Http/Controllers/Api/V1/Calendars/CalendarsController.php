@@ -43,9 +43,17 @@ class CalendarsController extends Controller
     /**
      * @return string[]
      */
+    public function sortableBy(): array
+    {
+        return ['id', 'name', 'description', 'color', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function searchableBy(): array
     {
-        return ['name', 'timezone', 'author_id'];
+        return ['id', 'name', 'description', 'color', 'created_at', 'updated_at'];
     }
 
     /**
@@ -53,6 +61,6 @@ class CalendarsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'timezone', 'author_id', 'created_at'];
+        return ['id', 'name', 'description', 'color', 'created_at', 'updated_at'];
     }
 }

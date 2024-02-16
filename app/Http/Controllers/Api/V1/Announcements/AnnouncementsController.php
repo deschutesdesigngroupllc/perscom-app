@@ -27,9 +27,17 @@ class AnnouncementsController extends Controller
     /**
      * @return string[]
      */
+    public function sortableBy(): array
+    {
+        return ['id', 'title', 'content', 'color', 'expires_at', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function searchableBy(): array
     {
-        return ['title'];
+        return ['id', 'title', 'content', 'color', 'expires_at', 'created_at', 'updated_at'];
     }
 
     /**
@@ -37,6 +45,6 @@ class AnnouncementsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'title', 'created_at', 'expires_at'];
+        return ['id', 'title', 'content', 'color', 'expires_at', 'created_at', 'updated_at'];
     }
 }

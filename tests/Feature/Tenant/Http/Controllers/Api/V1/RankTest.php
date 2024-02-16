@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\Ranks\RanksController;
 use App\Models\Rank;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,6 +11,11 @@ class RankTest extends ApiResourceTestCase
     public function endpoint(): string
     {
         return 'ranks';
+    }
+
+    public function controller(): string
+    {
+        return RanksController::class;
     }
 
     public function model(): string

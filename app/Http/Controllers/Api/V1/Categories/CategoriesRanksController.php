@@ -40,9 +40,17 @@ class CategoriesRanksController extends RelationController
     /**
      * @return string[]
      */
+    public function sortableBy(): array
+    {
+        return ['id', 'name', 'description', 'abbreviation', 'paygrade', 'order', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function searchableBy(): array
     {
-        return ['name'];
+        return ['id', 'name', 'description', 'abbreviation', 'paygrade', 'order', 'created_at', 'updated_at'];
     }
 
     /**
@@ -50,6 +58,6 @@ class CategoriesRanksController extends RelationController
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'created_at'];
+        return ['id', 'name', 'description', 'abbreviation', 'paygrade', 'order', 'created_at', 'updated_at'];
     }
 }

@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 use Laravel\Passport\Passport;
 use Tests\Contracts\ApiResourceTestContract;
@@ -61,7 +62,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseHas(method_exists($this, 'table') ? $this->table() : $this->endpoint(), $data);
+        $this->assertDatabaseHas($this->getTable($this->model()), $data);
     }
 
     public function test_can_reach_update_endpoint()
@@ -76,7 +77,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseHas(method_exists($this, 'table') ? $this->table() : $this->endpoint(), $data);
+        $this->assertDatabaseHas($this->getTable($this->model()), $data);
     }
 
     public function test_can_reach_delete_endpoint()
@@ -89,7 +90,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseMissing(method_exists($this, 'table') ? $this->table() : $this->endpoint(), [
+        $this->assertDatabaseMissing($this->getTable($this->model()), [
             'id' => $this->factory->getKey(),
         ]);
     }
@@ -164,5 +165,47 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
 
         $this->getJson("/{$this->endpoint()}/{$this->faker->randomDigitNot($this->factory->getKey())}")
             ->assertNotFound();
+    }
+
+    public function test_sortable_fields_match_table_columns()
+    {
+        $controller = $this->app->make($this->controller());
+
+        $model = $this->newModelFor($this->model());
+
+        $required = array_diff(Schema::getColumnListing($this->getTable($this->model())), $model->getHidden());
+
+        $intersection = array_intersect($controller->sortableBy(), $required);
+
+        $this->assertIsArray($controller->sortableBy());
+        $this->assertCount(count($required), $intersection);
+    }
+
+    public function test_searchable_fields_match_table_columns()
+    {
+        $controller = $this->app->make($this->controller());
+
+        $model = $this->newModelFor($this->model());
+
+        $required = array_diff(Schema::getColumnListing($this->getTable($this->model())), $model->getHidden());
+
+        $intersection = array_intersect($controller->searchableBy(), $required);
+
+        $this->assertIsArray($controller->sortableBy());
+        $this->assertCount(count($required), $intersection);
+    }
+
+    public function test_filterable_fields_match_table_columns()
+    {
+        $controller = $this->app->make($this->controller());
+
+        $model = $this->newModelFor($this->model());
+
+        $required = array_diff(Schema::getColumnListing($this->getTable($this->model())), $model->getHidden());
+
+        $intersection = array_intersect($controller->filterableBy(), $required);
+
+        $this->assertIsArray($controller->sortableBy());
+        $this->assertCount(count($required), $intersection);
     }
 }

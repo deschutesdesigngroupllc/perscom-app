@@ -16,12 +16,6 @@
     <testsuite name="Unit">
       <directory suffix="Test.php">./tests/Unit</directory>
     </testsuite>
-    <testsuite name="Central">
-      <directory suffix="Test.php">./tests/Feature/Central</directory>
-    </testsuite>
-    <testsuite name="Tenant">
-      <directory suffix="Test.php">./tests/Feature/Tenant</directory>
-    </testsuite>
   </testsuites>
 
   <coverage includeUncoveredFiles="true">

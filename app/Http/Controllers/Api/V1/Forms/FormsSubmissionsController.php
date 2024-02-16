@@ -40,9 +40,17 @@ class FormsSubmissionsController extends RelationController
     /**
      * @return string[]
      */
+    public function sortableBy(): array
+    {
+        return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'data', 'created_at', 'updated_at'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function searchableBy(): array
     {
-        return ['form_id', 'user_id'];
+        return ['id', 'form_id', 'user_id', 'data', 'created_at', 'updated_at'];
     }
 
     /**
@@ -50,6 +58,6 @@ class FormsSubmissionsController extends RelationController
      */
     public function filterableBy(): array
     {
-        return ['id', 'form_id', 'user_id', 'created_at'];
+        return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'created_at', 'updated_at'];
     }
 }

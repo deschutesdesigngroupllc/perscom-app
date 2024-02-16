@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\ServiceRecords\ServiceRecordsController;
 use App\Models\ServiceRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,9 +13,9 @@ class ServiceRecordTest extends ApiResourceTestCase
         return 'service-records';
     }
 
-    public function table(): string
+    public function controller(): string
     {
-        return 'records_service';
+        return ServiceRecordsController::class;
     }
 
     public function model(): string

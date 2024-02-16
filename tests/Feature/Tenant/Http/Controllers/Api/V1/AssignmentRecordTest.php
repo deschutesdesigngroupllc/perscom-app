@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api\V1;
 
+use App\Http\Controllers\Api\V1\AssignmentRecords\AssignmentRecordsController;
 use App\Models\AssignmentRecord;
 use App\Models\Position;
 use App\Models\Specialty;
@@ -16,9 +17,9 @@ class AssignmentRecordTest extends ApiResourceTestCase
         return 'assignment-records';
     }
 
-    public function table(): string
+    public function controller(): string
     {
-        return 'records_assignments';
+        return AssignmentRecordsController::class;
     }
 
     public function model(): string
