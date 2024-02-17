@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -33,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Like extends MorphPivot
 {
+    use ClearsResponseCache;
     use HasUser;
 
     /**

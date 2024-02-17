@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasImages;
@@ -102,6 +103,7 @@ use RRule\RRule;
  */
 class Event extends Model
 {
+    use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;
     use HasFactory;

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Scopes\QualificationRecordScope;
 use App\Prompts\QualificationRecordPrompts;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
@@ -55,6 +56,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class QualificationRecord extends Model
 {
+    use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;
     use HasDocument;

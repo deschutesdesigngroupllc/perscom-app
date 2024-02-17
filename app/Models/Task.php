@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +41,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  */
 class Task extends Model
 {
+    use ClearsResponseCache;
     use HasAttachments;
     use HasFactory;
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Scopes\ServiceRecordScope;
 use App\Prompts\ServiceRecordPrompts;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
@@ -51,6 +52,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class ServiceRecord extends Model
 {
+    use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;
     use HasDocument;

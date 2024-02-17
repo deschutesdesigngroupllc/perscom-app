@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\EventRegistrationScope;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,6 +46,7 @@ use Znck\Eloquent\Traits\BelongsToThrough;
 class EventRegistration extends Pivot
 {
     use BelongsToThrough;
+    use ClearsResponseCache;
     use HasFactory;
     use HasRelationships;
     use HasUser;

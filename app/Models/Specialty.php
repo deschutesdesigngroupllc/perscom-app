@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\SpecialtyScope;
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -41,6 +42,7 @@ use Spatie\EloquentSortable\SortableTrait;
  */
 class Specialty extends Model implements Sortable
 {
+    use ClearsResponseCache;
     use HasFactory;
     use SortableTrait;
 

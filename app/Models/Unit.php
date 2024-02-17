@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\UnitScope;
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -42,6 +43,7 @@ use Spatie\EloquentSortable\SortableTrait;
  */
 class Unit extends Model implements Sortable
 {
+    use ClearsResponseCache;
     use HasFactory;
     use SortableTrait;
 
