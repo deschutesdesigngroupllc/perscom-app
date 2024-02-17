@@ -34,6 +34,7 @@ use App\Http\Controllers\Api\V1\SpecController;
 use App\Http\Controllers\Api\V1\Specialties\SpecialtiesController;
 use App\Http\Controllers\Api\V1\Statuses\StatusesController;
 use App\Http\Controllers\Api\V1\Submissions\SubmissionsController;
+use App\Http\Controllers\Api\V1\Submissions\SubmissionsStatusesController;
 use App\Http\Controllers\Api\V1\Tasks\TasksController;
 use App\Http\Controllers\Api\V1\Units\UnitsController;
 use App\Http\Controllers\Api\V1\Users\UsersAssignmentRecordsController;
@@ -51,6 +52,8 @@ use App\Http\Controllers\Api\V1\Users\UsersSecondaryUnitsController;
 use App\Http\Controllers\Api\V1\Users\UsersServiceRecordsController;
 use App\Http\Controllers\Api\V1\Users\UsersSpecialtyController;
 use App\Http\Controllers\Api\V1\Users\UsersStatusController;
+use App\Http\Controllers\Api\V1\Users\UsersStatusRecordsController;
+use App\Http\Controllers\Api\V1\Users\UsersTasksController;
 use App\Http\Controllers\Api\V1\Users\UsersUnitController;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use Illuminate\Support\Facades\Route;
@@ -127,6 +130,7 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::resource('statuses', StatusesController::class);
 
         Orion::resource('submissions', SubmissionsController::class);
+        Orion::morphToManyResource('submissions', 'statuses', SubmissionsStatusesController::class);
 
         Orion::resource('tasks', TasksController::class);
 
@@ -147,7 +151,9 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::belongsToManyResource('users', 'secondary-positions', UsersSecondaryPositionsController::class);
         Orion::belongsToManyResource('users', 'secondary-specialties', UsersSecondarySpecialtiesController::class);
         Orion::belongsToManyResource('users', 'secondary-units', UsersSecondaryUnitsController::class);
+        Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
         Orion::morphToManyResource('users', 'fields', UsersFieldsController::class);
+        Orion::morphToManyResource('users', 'status-records', UsersStatusRecordsController::class);
     });
 
     Route::fallback(static function () {
