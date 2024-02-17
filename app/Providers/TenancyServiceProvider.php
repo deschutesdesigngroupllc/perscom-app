@@ -102,7 +102,7 @@ class TenancyServiceProvider extends ServiceProvider
 
         DomainTenantResolver::$shouldCache = true;
         DomainTenantResolver::$cacheTTL = 3600;
-        DomainTenantResolver::$cacheStore = 'redis';
+        DomainTenantResolver::$cacheStore = config('cache.default', 'redis');
     }
 
     protected function bootEvents(): void
