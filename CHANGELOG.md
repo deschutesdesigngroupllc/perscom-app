@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.78...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.79...HEAD)
+
+## [v1.0.79](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.78...v1.0.79) - 2024-02-16
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.79 -->
+### What's Changed
+
+#### Fixed
+
+* Fix tenant based response helper by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/324
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.78...v1.0.79
 
 ## [v1.0.78](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.77...v1.0.78) - 2024-02-16
 
