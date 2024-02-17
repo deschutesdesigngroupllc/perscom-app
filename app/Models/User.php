@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasFields;
 use App\Traits\HasHiddenFieldAttributes;
 use App\Traits\HasResourceUrlAttribute;
@@ -147,6 +148,7 @@ use Stancl\VirtualColumn\VirtualColumn;
 class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 {
     use Actionable;
+    use ClearsResponseCache;
     use HasApiTokens;
     use HasFactory;
     use HasFields;

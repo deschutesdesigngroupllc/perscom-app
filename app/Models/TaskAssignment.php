@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Enums\TaskAssignmentStatus;
 use App\Models\Scopes\TaskAssignmentScope;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
@@ -62,6 +63,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  */
 class TaskAssignment extends Pivot
 {
+    use ClearsResponseCache;
     use HasFactory;
     use HasRelationships;
     use HasUser;

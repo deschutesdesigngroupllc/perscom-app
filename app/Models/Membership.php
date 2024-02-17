@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class Membership extends Pivot
 {
+    use ClearsResponseCache;
     use HasFactory;
 
     /**

@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\GroupScope;
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -40,6 +41,7 @@ use Spatie\EloquentSortable\SortableTrait;
  */
 class Group extends Model implements Sortable
 {
+    use ClearsResponseCache;
     use HasFactory;
     use SortableTrait;
 

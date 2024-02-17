@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\FieldScope;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasHiddenResults;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -78,6 +79,7 @@ use Laravel\Nova\Fields\Timezone;
  */
 class Field extends Model
 {
+    use ClearsResponseCache;
     use HasFactory;
     use HasHiddenResults;
 

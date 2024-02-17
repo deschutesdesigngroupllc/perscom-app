@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasFields;
 use App\Traits\HasNotifications;
 use App\Traits\HasTags;
@@ -62,6 +63,7 @@ use Laravel\Nova\Actions\Actionable;
 class Form extends Model
 {
     use Actionable;
+    use ClearsResponseCache;
     use HasFactory;
     use HasFields;
     use HasNotifications;

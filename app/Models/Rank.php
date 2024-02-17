@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\RankScope;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -45,6 +46,7 @@ use Spatie\EloquentSortable\SortableTrait;
  */
 class Rank extends Model implements Sortable
 {
+    use ClearsResponseCache;
     use HasFactory;
     use HasImages;
     use SortableTrait;

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasTags;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Htmlable;
@@ -40,6 +41,7 @@ use Illuminate\Support\Str;
  */
 class Document extends Model implements Htmlable
 {
+    use ClearsResponseCache;
     use HasFactory;
     use HasTags;
 

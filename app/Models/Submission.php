@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\SubmissionScope;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasStatuses;
 use App\Traits\HasUser;
 use Illuminate\Contracts\Support\Htmlable;
@@ -48,6 +49,7 @@ use Stringable;
 class Submission extends Model implements Htmlable, Stringable
 {
     use Actionable;
+    use ClearsResponseCache;
     use HasFactory;
     use HasStatuses;
     use HasUser;

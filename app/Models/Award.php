@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\AwardScope;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -41,6 +42,7 @@ use Spatie\EloquentSortable\SortableTrait;
  */
 class Award extends Model implements Sortable
 {
+    use ClearsResponseCache;
     use HasFactory;
     use HasImages;
     use SortableTrait;

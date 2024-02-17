@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Scopes\AssignmentRecordScope;
 use App\Prompts\AssignmentRecordPrompts;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
 use App\Traits\HasDocument;
@@ -70,6 +71,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  */
 class AssignmentRecord extends Model
 {
+    use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;
     use HasDocument;

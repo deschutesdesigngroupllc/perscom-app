@@ -29,7 +29,6 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\HandleInertiaRequests::class,
             \App\Http\Middleware\CaptureUserOnlineStatus::class,
             \App\Http\Middleware\SentryContext::class,
-            \Spatie\ResponseCache\Middlewares\CacheResponse::class,
         ],
 
         'auth_web' => [
