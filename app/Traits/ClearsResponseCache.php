@@ -8,16 +8,18 @@ trait ClearsResponseCache
 {
     public static function bootClearsResponseCache(): void
     {
-        self::created(function () {
-            ResponseCache::clear();
-        });
+        if (config('responsecache.enabled')) {
+            self::created(function () {
+                ResponseCache::clear();
+            });
 
-        self::updated(function () {
-            ResponseCache::clear();
-        });
+            self::updated(function () {
+                ResponseCache::clear();
+            });
 
-        self::deleted(function () {
-            ResponseCache::clear();
-        });
+            self::deleted(function () {
+                ResponseCache::clear();
+            });
+        }
     }
 }

@@ -20,6 +20,11 @@ class RouteServiceProvider extends ServiceProvider
         $this->configureRateLimiting();
 
         $this->routes(function () {
+            Route::prefix('files')
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/files.php'));
+
             Route::domain(config('app.api_url'))
                 ->as('api.')
                 ->middleware('api')
@@ -32,25 +37,25 @@ class RouteServiceProvider extends ServiceProvider
                 ->namespace($this->namespace)
                 ->group(base_path('routes/auth.php'));
 
-            Route::domain(config('app.url'))
-                ->as('web.')
-                ->middleware('web')
+            Route::as('oidc.')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/web.php'));
-
-            Route::prefix('files')
-                ->middleware('web')
-                ->namespace($this->namespace)
-                ->group(base_path('routes/files.php'));
+                ->group(base_path('routes/oidc.php'));
 
             Route::prefix('oauth')
                 ->as('passport.')
                 ->namespace('Laravel\Passport\Http\Controllers')
                 ->group(base_path('routes/passport.php'));
 
-            Route::as('oidc.')
+            Route::prefix('sso')
+                ->as('sso.')
                 ->namespace($this->namespace)
-                ->group(base_path('routes/oidc.php'));
+                ->group(base_path('routes/sso.php'));
+
+            Route::domain(config('app.url'))
+                ->as('web.')
+                ->middleware('web')
+                ->namespace($this->namespace)
+                ->group(base_path('routes/web.php'));
         });
     }
 

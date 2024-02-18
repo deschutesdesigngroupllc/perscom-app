@@ -3,13 +3,13 @@
 namespace App\Providers;
 
 use App\Actions\Passport\CreatePersonalAccessToken;
-use App\Auth\Providers\CustomJwtProvider;
 use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Dispatchers\Bus\Dispatcher;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
 use App\Models\Permission;
 use App\Models\Tenant;
+use App\Support\JwtAuth\Providers\CustomJwtProvider;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Support\Facades\Request;

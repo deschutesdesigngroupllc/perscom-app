@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entities;
+namespace App\Support\OpenIDConnect\Entities;
 
 use App\Models\User;
 use League\OAuth2\Server\Entities\Traits\EntityTrait;

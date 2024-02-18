@@ -36,7 +36,7 @@ return [
         Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class,
-        App\Bootstrappers\ConfigBootstrapper::class,
+        \App\Support\Tenancy\Bootstrappers\ConfigBootstrapper::class,
     ],
 
     /**

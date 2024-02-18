@@ -7,7 +7,7 @@ use App\Actions\Fortify\ResetUserPassword;
 use App\Actions\Fortify\UpdateUserPassword;
 use App\Actions\Fortify\UpdateUserProfileInformation;
 use App\Features\SocialLoginFeature;
-use App\Http\Controllers\SocialLoginController;
+use App\Http\Controllers\Login\Social\LoginController;
 use App\Http\Responses\LoginResponse;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
@@ -48,17 +48,17 @@ class FortifyServiceProvider extends ServiceProvider
                 'demoMode' => Request::isDemoMode(),
                 'adminMode' => Request::isCentralRequest(),
                 'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
-                'googleLogin' => \route('tenant.auth.social.redirect', [
+                'googleLogin' => \route('tenant.auth.social.redirect.index', [
                     'driver' => 'google',
-                    'function' => SocialLoginController::SOCIAL_LOGIN,
+                    'function' => LoginController::SOCIAL_LOGIN,
                 ]),
-                'discordLogin' => \route('tenant.auth.social.redirect', [
+                'discordLogin' => \route('tenant.auth.social.redirect.index', [
                     'driver' => 'discord',
-                    'function' => SocialLoginController::SOCIAL_LOGIN,
+                    'function' => LoginController::SOCIAL_LOGIN,
                 ]),
-                'githubLogin' => \route('tenant.auth.social.redirect', [
+                'githubLogin' => \route('tenant.auth.social.redirect.index', [
                     'driver' => 'github',
-                    'function' => SocialLoginController::SOCIAL_LOGIN,
+                    'function' => LoginController::SOCIAL_LOGIN,
                 ]),
             ]);
         });
@@ -78,17 +78,17 @@ class FortifyServiceProvider extends ServiceProvider
             return Inertia::render('auth/Register', [
                 'status' => session('status') ?? request()->input('status'),
                 'enableSocialLogin' => Feature::active(SocialLoginFeature::class),
-                'googleLogin' => \route('tenant.auth.social.redirect', [
+                'googleLogin' => \route('tenant.auth.social.redirect.index', [
                     'driver' => 'google',
-                    'function' => SocialLoginController::SOCIAL_REGISTER,
+                    'function' => LoginController::SOCIAL_REGISTER,
                 ]),
-                'discordLogin' => \route('tenant.auth.social.redirect', [
+                'discordLogin' => \route('tenant.auth.social.redirect.index', [
                     'driver' => 'discord',
-                    'function' => SocialLoginController::SOCIAL_REGISTER,
+                    'function' => LoginController::SOCIAL_REGISTER,
                 ]),
-                'githubLogin' => \route('tenant.auth.social.redirect', [
+                'githubLogin' => \route('tenant.auth.social.redirect.index', [
                     'driver' => 'github',
-                    'function' => SocialLoginController::SOCIAL_REGISTER,
+                    'function' => LoginController::SOCIAL_REGISTER,
                 ]),
             ]);
         });

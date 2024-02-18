@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Auth\Providers;
+namespace App\Support\JwtAuth\Providers;
 
 use DateTimeImmutable;
 use Exception;

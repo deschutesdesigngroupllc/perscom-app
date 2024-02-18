@@ -1,20 +1,18 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Login\Social;
 
+use App\Http\Controllers\Controller;
 use App\Models\LoginToken;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Repositories\TenantRepository;
-use Carbon\Carbon;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
-use Symfony\Component\HttpFoundation\RedirectResponse as SymfonyRedirectResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
-class SocialLoginController extends Controller
+class LoginController extends Controller
 {
     public const SOCIAL_LOGIN = 'login';
 
@@ -22,23 +20,7 @@ class SocialLoginController extends Controller
 
     protected static string $sessionKey = 'auth.social.login.tenant';
 
-    protected static int $loginTokenTtl = 60;
-
-    public function __construct()
-    {
-        $this->middleware('feature:App\Features\SocialLoginFeature');
-    }
-
-    public function tenant(string $driver, string $function): RedirectResponse
-    {
-        return redirect()->route('auth.social.redirect', [
-            'driver' => $driver,
-            'function' => $function,
-            'tenant' => tenant()->getTenantKey(),
-        ]);
-    }
-
-    public function redirect(string $driver, string $function, Tenant $tenant): SymfonyRedirectResponse|RedirectResponse
+    public function redirect(string $driver, string $function, Tenant $tenant): RedirectResponse
     {
         session()->put(self::$sessionKey, [
             'tenant' => $tenant->getTenantKey(),
@@ -116,21 +98,8 @@ class SocialLoginController extends Controller
         }
 
         return $token ?
-            redirect()->to($tenant->route('tenant.auth.social.login', [
+            redirect()->to($tenant->route('sso.index', [
                 'token' => $token->token,
             ])) : ($redirect ?? redirect()->to($tenant->url));
-    }
-
-    public function login(LoginToken $token): RedirectResponse
-    {
-        if ($token->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
-            abort(403);
-        }
-
-        Auth::loginUsingId($token->user_id);
-
-        $token->delete();
-
-        return redirect()->to(tenant()->url);
     }
 }
