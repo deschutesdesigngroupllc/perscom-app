@@ -31,7 +31,7 @@ return [
      * You can override the repositories below.
      */
     'repositories' => [
-        'identity' => \OpenIDConnect\Repositories\IdentityRepository::class,
+        'identity' => \App\Support\OpenIDConnect\Repositories\IdentityRepository::class,
         'scope' => \Laravel\Passport\Bridge\ScopeRepository::class,
     ],
 

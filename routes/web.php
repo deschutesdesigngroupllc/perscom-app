@@ -19,7 +19,7 @@ Route::group(['prefix' => 'find-my-organization'], static function () {
     Route::post('/', [FindMyOrganizationController::class, 'store'])
         ->name('find-my-organization.store')
         ->middleware('throttle:find-my-organization');
-    Route::get('/{tenant}', [FindMyOrganizationController::class, 'show'])
+    Route::get('{tenant}', [FindMyOrganizationController::class, 'show'])
         ->middleware('signed')
         ->name('find-my-organization.show');
 });
@@ -33,7 +33,7 @@ Route::group(['prefix' => 'register'], static function () {
     Route::post('/', [RegisterController::class, 'store'])
         ->name('register.store')
         ->middleware('throttle:register');
-    Route::get('/complete/{tenant}', [RegisterController::class, 'complete'])
+    Route::get('complete/{tenant}', [RegisterController::class, 'complete'])
         ->name('register.complete')
         ->middleware('signed');
 });

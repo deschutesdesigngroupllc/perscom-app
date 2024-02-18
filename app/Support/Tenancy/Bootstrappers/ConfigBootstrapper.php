@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Bootstrappers;
+namespace App\Support\Tenancy\Bootstrappers;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
