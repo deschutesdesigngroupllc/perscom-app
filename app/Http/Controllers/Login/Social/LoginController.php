@@ -98,7 +98,7 @@ class LoginController extends Controller
         }
 
         return $token ?
-            redirect()->to($tenant->route('sso.index', [
+            redirect()->to($tenant->route('sso.login', [
                 'token' => $token->token,
             ])) : ($redirect ?? redirect()->to($tenant->url));
     }

@@ -30,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
                 return false;
             }
 
+            return false;
+
             return collect(config('tenancy.central_domains'))->contains(\request()->getHost());
         });
 

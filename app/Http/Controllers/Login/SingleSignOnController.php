@@ -13,7 +13,7 @@ class SingleSignOnController extends Controller
 {
     protected static int $loginTokenTtl = 60;
 
-    public function index(LoginToken $token): RedirectResponse
+    public function login(LoginToken $token): RedirectResponse
     {
         if ($token->created_at->diffInSeconds(Carbon::now()) > self::$loginTokenTtl) {
             abort(403, 'The login token has expired.');
@@ -26,14 +26,14 @@ class SingleSignOnController extends Controller
         return redirect()->to(route('nova.pages.home'));
     }
 
-    public function store(): JsonResponse
+    public function redirect(): JsonResponse
     {
         if (! $user = Auth::guard('jwt')->user()) {
             abort(403, 'The user in the authentication token is not valid.');
         }
 
         return response()->json([
-            'redirect_to' => route('sso.index', [
+            'redirect_to' => route('sso.login', [
                 'token' => LoginToken::create([
                     'user_id' => $user->getAuthIdentifier(),
                 ]),

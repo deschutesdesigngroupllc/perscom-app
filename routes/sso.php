@@ -6,12 +6,12 @@ use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class]], function () {
     Route::group(['middleware' => ['api', 'auth:jwt', 'feature:App\Features\SingleSignOnFeature']], function () {
-        Route::post('login', [SingleSignOnController::class, 'store'])
-            ->name('store');
+        Route::post('login', [SingleSignOnController::class, 'redirect'])
+            ->name('redirect');
     });
 
     Route::group(['middleware' => 'web'], function () {
-        Route::get('login/{token}', [SingleSignOnController::class, 'index'])
-            ->name('index');
+        Route::get('login/{token}', [SingleSignOnController::class, 'login'])
+            ->name('login');
     });
 });

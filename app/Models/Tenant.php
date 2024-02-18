@@ -234,6 +234,9 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureSc
         return $this->hasMany(Feature::class, 'scope');
     }
 
+    /**
+     * @param  array<string, mixed>  $parameters
+     */
     public function route(string $name, array $parameters = []): string
     {
         return "$this->url".route($name, $parameters, false);

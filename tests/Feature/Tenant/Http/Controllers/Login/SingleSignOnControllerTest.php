@@ -13,7 +13,7 @@ class SingleSignOnControllerTest extends TenantTestCase
 {
     public function test_it_will_return_an_error_when_no_jwt_is_used()
     {
-        $this->postJson(route('sso.store'))
+        $this->postJson(route('sso.redirect'))
             ->assertUnauthorized();
     }
 
@@ -24,7 +24,7 @@ class SingleSignOnControllerTest extends TenantTestCase
         $token = Auth::guard('jwt')->login(User::factory()->create());
 
         $this->withToken($token)
-            ->postJson(route('sso.store'))
+            ->postJson(route('sso.redirect'))
             ->assertForbidden();
     }
 
@@ -35,7 +35,7 @@ class SingleSignOnControllerTest extends TenantTestCase
         $token = Auth::guard('jwt')->login(User::factory()->create());
 
         $this->withToken($token)
-            ->postJson(route('sso.store'))
+            ->postJson(route('sso.redirect'))
             ->assertSuccessful();
     }
 
@@ -49,7 +49,7 @@ class SingleSignOnControllerTest extends TenantTestCase
             'user_id' => $user->getKey(),
         ])->create();
 
-        $this->getJson(route('sso.index', [
+        $this->getJson(route('sso.login', [
             'token' => $token,
         ]))
             ->assertRedirect();
