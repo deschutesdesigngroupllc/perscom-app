@@ -51,7 +51,7 @@ class GroupsController extends Controller
      */
     public function includes(): array
     {
-        return ['units', 'units.users', 'units.users.*'];
+        return ['units', 'units.*', 'units.users', 'units.users.*'];
     }
 
     /**

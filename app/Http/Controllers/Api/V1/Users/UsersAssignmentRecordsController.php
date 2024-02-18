@@ -49,7 +49,7 @@ class UsersAssignmentRecordsController extends RelationController
      */
     public function sortableBy(): array
     {
-        return ['id', 'user_id', 'user.*', 'status_id', 'status.*', 'unit_id', 'unit.*', 'secondary_unit_ids', 'position_id', 'position.*', 'secondary_position_ids', 'specialty_id', 'specialty.*', 'secondary_specialty_ids', 'document_id', 'document.*', 'author_id', 'author.*', 'type', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'user.*', 'status_id', 'status.*', 'unit_id', 'unit.*', 'position_id', 'position.*', 'specialty_id', 'specialty.*', 'document_id', 'document.*', 'author_id', 'author.*', 'type', 'text', 'created_at', 'updated_at'];
     }
 
     /**
@@ -57,7 +57,7 @@ class UsersAssignmentRecordsController extends RelationController
      */
     public function searchableBy(): array
     {
-        return ['id', 'user_id', 'status_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'type', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'status_id', 'unit_id', 'position_id', 'specialty_id', 'document_id', 'author_id', 'type', 'text', 'created_at', 'updated_at'];
     }
 
     /**
@@ -65,6 +65,6 @@ class UsersAssignmentRecordsController extends RelationController
      */
     public function filterableBy(): array
     {
-        return ['id', 'user_id', 'user.*', 'status_id', 'status.*', 'unit_id', 'unit.*', 'secondary_unit_ids', 'position_id', 'position.*', 'secondary_position_ids', 'specialty_id', 'specialty.*', 'secondary_specialty_ids', 'document_id', 'document.*', 'author_id', 'author.*', 'type', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'user.*', 'status_id', 'status.*', 'unit_id', 'unit.*', 'position_id', 'position.*', 'specialty_id', 'specialty.*', 'document_id', 'document.*', 'author_id', 'author.*', 'type', 'text', 'created_at', 'updated_at'];
     }
 }

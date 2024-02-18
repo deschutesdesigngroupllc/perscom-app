@@ -40,7 +40,7 @@ class ApiControllerTest extends ApiTestCase
         ]);
 
         $this->getJson(route('api.me.index'), [
-            'X-Perscom-Id' => $this->faker->randomDigitNot($this->tenant->getTenantKey()),
+            'X-Perscom-Id' => $this->faker->randomNumber(5),
         ])->assertUnauthorized();
     }
 

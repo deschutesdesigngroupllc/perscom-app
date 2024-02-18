@@ -35,18 +35,6 @@ class AssignmentRecordObserver
             }
 
             $assignment->user->save();
-
-            if ($assignment->isDirty('secondary_position_ids')) {
-                $assignment->user->secondary_positions()->sync($assignment->secondary_position_ids);
-            }
-
-            if ($assignment->isDirty('secondary_specialty_ids')) {
-                $assignment->user->secondary_specialties()->sync($assignment->secondary_specialty_ids);
-            }
-
-            if ($assignment->isDirty('secondary_unit_ids')) {
-                $assignment->user->secondary_units()->sync($assignment->secondary_unit_ids);
-            }
         }
 
         Notification::send($assignment->user, new NewAssignmentRecord($assignment));

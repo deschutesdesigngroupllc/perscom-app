@@ -17,7 +17,6 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\MorphMany;
-use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -124,24 +123,6 @@ class AssignmentRecord extends Resource
                             $field->show();
                         }
                     }),
-                Boolean::make('Add/Remove Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'change_secondary_positions')
-                    ->help('Secondary positions can also be managed in the user\'s personnel profile.')
-                    ->fillUsing(fn () => true)
-                    ->resolveUsing(fn () => isset($this->status))
-                    ->onlyOnForms(),
-                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_position_ids')
-                    ->help('Leave blank to remove the secondary positions.')
-                    ->options(\App\Models\Position::all()
-                        ->pluck('name', 'id')
-                        ->sort())
-                    ->hideFromIndex()
-                    ->nullable()
-                    ->hide()
-                    ->dependsOn(['change_secondary_positions'], static function (MultiSelect $field, NovaRequest $request, FormData $formData) {
-                        if ($formData->change_secondary_positions) {
-                            $field->show();
-                        }
-                    }),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), [
                 Boolean::make('Assign '.Str::singular(Str::title(setting('localization_specialties', 'Specialty'))), 'change_specialty')
@@ -160,24 +141,6 @@ class AssignmentRecord extends Resource
                             $field->show();
                         }
                     }),
-                Boolean::make('Add/Remove Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'change_secondary_specialties')
-                    ->help('Secondary specialties can also be managed in the user\'s personnel profile.')
-                    ->fillUsing(fn () => true)
-                    ->resolveUsing(fn () => isset($this->status))
-                    ->onlyOnForms(),
-                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialty_ids')
-                    ->help('Leave blank to remove the secondary specialties. Secondary specialties can also be managed in the user\'s personnel profile.')
-                    ->options(\App\Models\Specialty::all()
-                        ->pluck('name', 'id')
-                        ->sort())
-                    ->hideFromIndex()
-                    ->nullable()
-                    ->hide()
-                    ->dependsOn(['change_secondary_specialties'], static function (MultiSelect $field, NovaRequest $request, FormData $formData) {
-                        if ($formData->change_secondary_specialties) {
-                            $field->show();
-                        }
-                    }),
             ]),
             Panel::make(Str::singular(Str::title(setting('localization_units', 'Unit'))), [
                 Boolean::make('Assign '.Str::singular(Str::title(setting('localization_units', 'Unit'))), 'change_unit')
@@ -193,24 +156,6 @@ class AssignmentRecord extends Resource
                     ->hide()
                     ->dependsOn(['change_unit'], static function (BelongsTo $field, NovaRequest $request, FormData $formData) {
                         if ($formData->change_unit) {
-                            $field->show();
-                        }
-                    }),
-                Boolean::make('Add/Remove Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'change_secondary_units')
-                    ->help('Secondary units can also be managed in the user\'s personnel profile.')
-                    ->fillUsing(fn () => true)
-                    ->resolveUsing(fn () => isset($this->status))
-                    ->onlyOnForms(),
-                MultiSelect::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_unit_ids')
-                    ->help('Leave blank to remove the secondary units. Secondary units can also be managed in the user\'s personnel profile.')
-                    ->options(\App\Models\Unit::all()
-                        ->pluck('name', 'id')
-                        ->sort())
-                    ->hideFromIndex()
-                    ->nullable()
-                    ->hide()
-                    ->dependsOn(['change_secondary_units'], static function (MultiSelect $field, NovaRequest $request, FormData $formData) {
-                        if ($formData->change_secondary_units) {
                             $field->show();
                         }
                     }),

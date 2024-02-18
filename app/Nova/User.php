@@ -151,14 +151,14 @@ class User extends Resource
             DateTime::make('Updated At')
                 ->onlyOnDetail(),
             Tabs::make(Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
-                Tab::make('Current '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
+                Tab::make('Primary '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
                     Stack::make(Str::singular(Str::title(setting('localization_positions', 'Position'))), [
                         Line::make('Position', function ($model) {
                             return $model->position->name ?? null;
                         })
                             ->asSubTitle(),
                         Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
-                            return optional($model->assignment_records->first()?->created_at, function ($date) {
+                            return optional($model->primary_assignment_records->first()?->created_at, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)
                                     ->longRelativeToNowDiffForHumans();
                             });
@@ -174,7 +174,7 @@ class User extends Resource
                         })
                             ->asSubTitle(),
                         Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
-                            return optional($model->assignment_records->first()?->created_at, function ($date) {
+                            return optional($model->primary_assignment_records->first()?->created_at, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)
                                     ->longRelativeToNowDiffForHumans();
                             });
@@ -189,7 +189,7 @@ class User extends Resource
                         })
                             ->asSubTitle(),
                         Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
-                            return optional($model->assignment_records->first()?->created_at, function ($date) {
+                            return optional($model->primary_assignment_records->first()?->created_at, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)
                                     ->longRelativeToNowDiffForHumans();
                             });
@@ -199,7 +199,7 @@ class User extends Resource
                         ->onlyOnDetail()
                         ->showOnPreview(),
                     DateTime::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Change Date', function ($model) {
-                        return $model->assignment_records->first()->created_at ?? null;
+                        return $model->primary_assignment_records->first()->created_at ?? null;
                     })
                         ->onlyOnDetail(),
                     Text::make('Time In '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), function ($model) {
@@ -210,12 +210,9 @@ class User extends Resource
                     })
                         ->onlyOnDetail(),
                 ]),
-                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_positions', 'Positions'))), 'secondary_positions', Position::class)
-                    ->showCreateRelationButton(),
-                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_specialties', 'Specialties'))), 'secondary_specialties', Specialty::class)
-                    ->showCreateRelationButton(),
-                BelongsToMany::make('Secondary '.Str::plural(Str::title(setting('localization_units', 'Units'))), 'secondary_units', Unit::class)
-                    ->showCreateRelationButton(),
+                Tab::make('Secondary '.Str::plural(Str::title(setting('localization_assignment', 'Assignments'))), [
+                    HasMany::make('Secondary Assignments', 'secondary_assignment_records', AssignmentRecord::class),
+                ]),
             ])
                 ->showTitle(),
             Panel::make(Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), [
