@@ -19,7 +19,7 @@ class FeatureOsService
 
     public static function generateJwt(): ?string
     {
-        if (! Auth::check() || ! env('FEATUREOS_SSO_KEY')) {
+        if (! Auth::check() || ! config('services.featureos.sso_key')) {
             return null;
         }
 
@@ -33,6 +33,6 @@ class FeatureOsService
             'custom_fields' => [
                 'Tenant' => tenant('name'),
             ],
-        ], env('FEATUREOS_SSO_KEY'), 'HS256');
+        ], config('services.featureos.sso_key'), 'HS256');
     }
 }

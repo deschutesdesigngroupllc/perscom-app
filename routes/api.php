@@ -147,6 +147,7 @@ Route::group(['prefix' => 'v1'], static function () {
         Orion::belongsToResource('users', 'status', UsersStatusController::class);
         Orion::morphToManyResource('users', 'fields', UsersFieldsController::class);
         Orion::morphToManyResource('users', 'status-records', UsersStatusRecordsController::class);
+        Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
     });
 
     Route::fallback(static function () {

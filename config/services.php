@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'featureos' => [
+        'sso_key' => env('FEATUREOS_SSO_KEY'),
+    ],
+
     'mailgun' => [
         'domain' => env('MAILGUN_DOMAIN'),
         'secret' => env('MAILGUN_SECRET'),
