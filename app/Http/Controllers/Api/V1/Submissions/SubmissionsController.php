@@ -29,7 +29,7 @@ class SubmissionsController extends Controller
      */
     public function includes(): array
     {
-        return ['form', 'form.*', 'user', 'user.*', 'statuses'];
+        return ['form', 'form.*', 'user', 'user.*', 'statuses', 'statuses.record'];
     }
 
     /**
