@@ -343,7 +343,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function lastAssignmentChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->primary_assignment_records()->latest()->first(), function (AssignmentRecord|null $record) {
+            get: fn () => optional($this->primary_assignment_records()->latest()->first(), function (?AssignmentRecord $record) {
                 return $record->created_at;
             })
         );
@@ -352,7 +352,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function lastRankChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->rank_records()->latest()->first(), function (RankRecord|null $record) {
+            get: fn () => optional($this->rank_records()->latest()->first(), function (?RankRecord $record) {
                 return $record->created_at;
             })
         );
