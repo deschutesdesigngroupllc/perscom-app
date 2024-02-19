@@ -73,6 +73,8 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read bool $online
  * @property-read mixed|null $time_in_assignment
  * @property-read mixed|null $time_in_grade
+ * @property-read mixed $last_assignment_change_date
+ * @property-read mixed $last_rank_change_date
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
@@ -341,7 +343,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function lastAssignmentChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->primary_assignment_records()->latest()->first(), function (AssignmentRecord $record) {
+            get: fn () => optional($this->primary_assignment_records()->latest()->first(), function (AssignmentRecord|null $record) {
                 return $record->created_at;
             })
         );
@@ -350,7 +352,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function lastRankChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->rank_records()->latest()->first(), function (RankRecord $record) {
+            get: fn () => optional($this->rank_records()->latest()->first(), function (RankRecord|null $record) {
                 return $record->created_at;
             })
         );
