@@ -42,7 +42,7 @@ use Laravel\Nova\Fields\Timezone;
  * @property string|null $rules
  * @property bool $readonly
  * @property bool $hidden
- * @property AsArrayObject|null $options
+ * @property \ArrayObject|null $options
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms

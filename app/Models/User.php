@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\AssignmentRecordType;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasFields;
 use App\Traits\HasHiddenFieldAttributes;
@@ -72,11 +73,15 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read bool $online
  * @property-read mixed|null $time_in_assignment
  * @property-read mixed|null $time_in_grade
+ * @property-read mixed $last_assignment_change_date
+ * @property-read mixed $last_rank_change_date
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
  * @property-read int|null $permissions_count
  * @property-read \App\Models\Position|null $position
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
+ * @property-read int|null $primary_assignment_records_count
  * @property-read string|null $profile_photo_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
@@ -90,12 +95,8 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Position> $secondary_positions
- * @property-read int|null $secondary_positions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Specialty> $secondary_specialties
- * @property-read int|null $secondary_specialties_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $secondary_units
- * @property-read int|null $secondary_units_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
+ * @property-read int|null $secondary_assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord> $service_records
  * @property-read int|null $service_records_count
  * @property-read \App\Models\Specialty|null $specialty
@@ -216,7 +217,17 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     /**
      * @var array<int, string>
      */
-    protected $appends = ['online', 'url', 'relative_url', 'profile_photo_url', 'cover_photo_url'];
+    protected $appends = [
+        'online',
+        'url',
+        'relative_url',
+        'profile_photo_url',
+        'cover_photo_url',
+        'last_assignment_change_date',
+        'last_rank_change_date',
+        'time_in_assignment',
+        'time_in_grade',
+    ];
 
     /**
      * @var array<string, string>
@@ -298,7 +309,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 
     public function getTimeInAssignmentAttribute(): mixed
     {
-        return optional($this->assignment_records->first()?->created_at, function ($date) {
+        return optional($this->primary_assignment_records->first()?->created_at, function ($date) {
             return Carbon::now()->diff($date, true);
         });
     }
@@ -329,9 +340,37 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         });
     }
 
+    public function lastAssignmentChangeDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => optional($this->primary_assignment_records()->latest()->first(), function (?AssignmentRecord $record) {
+                return $record->created_at;
+            })
+        );
+    }
+
+    public function lastRankChangeDate(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => optional($this->rank_records()->latest()->first(), function (?RankRecord $record) {
+                return $record->created_at;
+            })
+        );
+    }
+
     public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class);
+    }
+
+    public function primary_assignment_records(): HasMany
+    {
+        return $this->assignment_records()->where('type', AssignmentRecordType::PRIMARY);
+    }
+
+    public function secondary_assignment_records(): HasMany
+    {
+        return $this->assignment_records()->where('type', AssignmentRecordType::SECONDARY);
     }
 
     public function award_records(): HasMany
@@ -356,12 +395,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
-    }
-
-    public function secondary_positions(): BelongsToMany
-    {
-        return $this->belongsToMany(Position::class, 'users_positions')
-            ->withTimestamps();
     }
 
     public function qualifications(): BelongsToMany
@@ -402,12 +435,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return $this->belongsTo(Specialty::class);
     }
 
-    public function secondary_specialties(): BelongsToMany
-    {
-        return $this->belongsToMany(Specialty::class, 'users_specialties')
-            ->withTimestamps();
-    }
-
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
@@ -430,11 +457,5 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
-    }
-
-    public function secondary_units(): BelongsToMany
-    {
-        return $this->belongsToMany(Unit::class, 'users_units')
-            ->withTimestamps();
     }
 }

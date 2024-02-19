@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Enums\AssignmentRecordType;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
 /**
@@ -16,6 +18,12 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string|null $bg_color
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
+ * @property-read int|null $assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
+ * @property-read int|null $primary_assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
+ * @property-read int|null $secondary_assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
@@ -43,6 +51,21 @@ class Status extends Model
      * @var string[]
      */
     protected $fillable = ['name', 'text_color', 'bg_color', 'updated_at', 'created_at'];
+
+    public function assignment_records(): HasMany
+    {
+        return $this->hasMany(AssignmentRecord::class);
+    }
+
+    public function primary_assignment_records(): HasMany
+    {
+        return $this->assignment_records()->where('type', AssignmentRecordType::PRIMARY);
+    }
+
+    public function secondary_assignment_records(): HasMany
+    {
+        return $this->assignment_records()->where('type', AssignmentRecordType::SECONDARY);
+    }
 
     public function users(): MorphToMany
     {

@@ -36,7 +36,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property string|null $billing_state
  * @property string|null $billing_postal_code
  * @property string|null $vat_id
- * @property array $receipt_emails
+ * @property string|null $receipt_emails
  * @property string|null $billing_country
  * @property \Illuminate\Support\Carbon|null $last_login_at
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -52,9 +52,8 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read mixed|null $domain
  * @property-read mixed|null $fallback_domain
  * @property-read mixed|null $fallback_url
+ * @property-read array $invoice_emails
  * @property-read mixed|null $url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Spark\Receipt> $localReceipts
- * @property-read int|null $local_receipts_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Feature> $pennants

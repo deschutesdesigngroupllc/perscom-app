@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\AssignmentRecordScope;
 use App\Prompts\AssignmentRecordPrompts;
 use App\Traits\ClearsResponseCache;
@@ -23,13 +24,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property int|null $user_id
  * @property int|null $status_id
  * @property int|null $unit_id
- * @property array|null $secondary_unit_ids
  * @property int|null $position_id
- * @property array|null $secondary_position_ids
  * @property int|null $specialty_id
- * @property array|null $secondary_specialty_ids
  * @property int|null $document_id
  * @property int|null $author_id
+ * @property AssignmentRecordType|null $type
  * @property string|null $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -57,12 +56,10 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord wherePositionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSecondaryPositionIds($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSecondarySpecialtyIds($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSecondaryUnitIds($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereSpecialtyId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUserId($value)
@@ -90,7 +87,7 @@ class AssignmentRecord extends Model
     /**
      * @var string[]
      */
-    protected $fillable = ['user_id', 'status_id', 'unit_id', 'secondary_unit_ids', 'position_id', 'secondary_position_ids', 'specialty_id', 'secondary_specialty_ids', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
+    protected $fillable = ['user_id', 'status_id', 'unit_id', 'position_id', 'specialty_id', 'document_id', 'author_id', 'type', 'text', 'updated_at', 'created_at'];
 
     /**
      * @var string[]
@@ -101,9 +98,7 @@ class AssignmentRecord extends Model
      * @var array<string, string>
      */
     protected $casts = [
-        'secondary_position_ids' => 'json',
-        'secondary_specialty_ids' => 'json',
-        'secondary_unit_ids' => 'json',
+        'type' => AssignmentRecordType::class,
     ];
 
     /**

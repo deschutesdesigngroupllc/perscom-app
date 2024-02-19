@@ -26,6 +26,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         Request::macro('isCentralRequest', function () {
+            // @phpstan-ignore-next-line`
             if (env('TENANT_TESTING', false)) {
                 return false;
             }

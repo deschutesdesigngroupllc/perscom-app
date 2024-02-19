@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\AssignmentRecord;
 use App\Models\Document;
+use App\Models\Enums\AssignmentRecordType;
 use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\Status;
@@ -29,6 +30,7 @@ class AssignmentRecordFactory extends Factory
             'specialty_id' => $this->faker->randomElement([Specialty::factory(), null]),
             'document_id' => $this->faker->randomElement([Document::factory(), null]),
             'author_id' => User::factory(),
+            'type' => $this->faker->randomElement(AssignmentRecordType::cases()),
             'text' => $this->faker->sentence(),
         ];
     }

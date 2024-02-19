@@ -241,9 +241,6 @@ class FireServiceSeeder extends Seeder
                 ->count(5), 'service_records')
             ->hasAttached($tasks->random(2), ['assigned_by_id' => $user->getKey(), 'assigned_at' => now()])
             ->hasAttached($events->random(3))
-            ->hasAttached($positions->take(1), [], 'secondary_positions')
-            ->hasAttached($specialties->take(1), [], 'secondary_specialties')
-            ->hasAttached($units->take(1), [], 'secondary_units')
             ->hasAttached($fields->take(3))
             ->create();
 

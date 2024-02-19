@@ -16,8 +16,8 @@ class ConfigBootstrapper implements TenancyBootstrapper
 
     public function bootstrap(Tenant $tenant): void
     {
-        $this->mailFromName = config('mail.from.name');
-        $this->timezone = config('app.timezone');
+        $this->mailFromName = config('mail.from.name', config('app.name'));
+        $this->timezone = config('app.timezone', 'UTC');
 
         App::forgetInstance('mail.manager');
 
@@ -30,8 +30,8 @@ class ConfigBootstrapper implements TenancyBootstrapper
     {
         App::forgetInstance('mail.manager');
 
-        Config::set('mail.from.name', $this->mailFromName ?? env('MAIL_FROM_NAME'));
-        Config::set('app.timezone', $this->timezone ?? 'UTC');
+        Config::set('mail.from.name', $this->mailFromName);
+        Config::set('app.timezone', $this->timezone);
         PermissionRegistrar::$cacheKey = 'permissioncache';
     }
 }

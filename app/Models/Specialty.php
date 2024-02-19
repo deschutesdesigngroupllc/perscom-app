@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\SpecialtyScope;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -22,6 +23,10 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
+ * @property-read int|null $primary_assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
+ * @property-read int|null $secondary_assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
@@ -59,6 +64,16 @@ class Specialty extends Model implements Sortable
     public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class);
+    }
+
+    public function primary_assignment_records(): HasMany
+    {
+        return $this->assignment_records()->where('type', AssignmentRecordType::PRIMARY);
+    }
+
+    public function secondary_assignment_records(): HasMany
+    {
+        return $this->assignment_records()->where('type', AssignmentRecordType::SECONDARY);
     }
 
     public function users(): HasMany

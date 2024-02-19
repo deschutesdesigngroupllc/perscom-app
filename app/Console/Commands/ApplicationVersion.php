@@ -36,7 +36,7 @@ class ApplicationVersion extends Command
 
         $path = App::environmentFilePath();
 
-        $escaped = preg_quote('='.env('APP_VERSION'), '/');
+        $escaped = preg_quote('='.config('app.version'), '/');
 
         $this->info("Setting the current application version to: $version");
 
@@ -51,6 +51,6 @@ class ApplicationVersion extends Command
 
     public function getApplicationVersion(): mixed
     {
-        return env('APP_VERSION');
+        return config('app.version');
     }
 }

@@ -59,8 +59,8 @@ class Webhook extends Resource
                 ->rules('required')
                 ->help('The HTTP method the webhook request will use.')
                 ->onlyOnForms(),
-            Badge::make('Method', function () {
-                return Str::upper($this->method?->value);
+            Badge::make('Method', function (\App\Models\Webhook $method) {
+                return $method->method->getLabel();
             })
                 ->map([
                     'POST' => 'info',
