@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.80...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.81...HEAD)
+
+## [v1.0.81](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.80...v1.0.81) - 2024-02-19
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.81 -->
+### What's Changed
+
+#### Fixed
+
+* Add record to status endpoints by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/332
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.80...v1.0.81
 
 ## [v1.0.80](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.79...v1.0.80) - 2024-02-19
 
