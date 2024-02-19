@@ -2,8 +2,8 @@
 
 namespace Tests\Feature\Tenant\Auth\Providers;
 
-use App\Auth\Providers\CustomJwtProvider;
 use App\Models\User;
+use App\Support\JwtAuth\Providers\CustomJwtProvider;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
