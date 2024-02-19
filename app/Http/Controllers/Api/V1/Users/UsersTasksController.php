@@ -32,7 +32,7 @@ class UsersTasksController extends RelationController
     /**
      * @return string[]
      */
-    public function alwaysIncludes(): array
+    public function includes(): array
     {
         return ['assignment'];
     }

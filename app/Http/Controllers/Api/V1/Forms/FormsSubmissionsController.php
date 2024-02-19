@@ -34,7 +34,7 @@ class FormsSubmissionsController extends RelationController
      */
     public function includes(): array
     {
-        return ['form', 'user', 'statuses'];
+        return ['form', 'user', 'statuses', 'statuses.record'];
     }
 
     /**
