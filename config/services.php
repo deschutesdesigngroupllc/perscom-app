@@ -14,6 +14,10 @@ return [
     |
     */
 
+    'envoyer' => [
+        'heartbeat_url' => env('ENVOYER_HEARTBEAT_URL'),
+    ],
+
     'featureos' => [
         'sso_key' => env('FEATUREOS_SSO_KEY'),
     ],

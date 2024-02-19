@@ -14,7 +14,7 @@ class RunEnvoyerHeartbeat extends Command
 
     public function handle(): int
     {
-        if ($url = env('ENVOYER_HEARTBEAT_URL')) {
+        if ($url = config('services.envoyer.heartbeat_url')) {
             $response = Http::get($url);
 
             if ($response->ok()) {

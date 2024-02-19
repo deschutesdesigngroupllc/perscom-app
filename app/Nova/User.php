@@ -158,7 +158,7 @@ class User extends Resource
                         })
                             ->asSubTitle(),
                         Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
-                            return optional($model->primary_assignment_records->first()?->created_at, function ($date) {
+                            return optional($model->last_assignment_change_date, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)
                                     ->longRelativeToNowDiffForHumans();
                             });
@@ -174,7 +174,7 @@ class User extends Resource
                         })
                             ->asSubTitle(),
                         Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
-                            return optional($model->primary_assignment_records->first()?->created_at, function ($date) {
+                            return optional($model->last_assignment_change_date, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)
                                     ->longRelativeToNowDiffForHumans();
                             });
@@ -189,7 +189,7 @@ class User extends Resource
                         })
                             ->asSubTitle(),
                         Line::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Date', function ($model) {
-                            return optional($model->primary_assignment_records->first()?->created_at, function ($date) {
+                            return optional($model->last_assignment_change_date, function ($date) {
                                 return 'Updated: '.Carbon::parse($date)
                                     ->longRelativeToNowDiffForHumans();
                             });
@@ -199,7 +199,7 @@ class User extends Resource
                         ->onlyOnDetail()
                         ->showOnPreview(),
                     DateTime::make('Last '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))).' Change Date', function ($model) {
-                        return $model->primary_assignment_records->first()->created_at ?? null;
+                        return $model->last_assignment_change_date;
                     })
                         ->onlyOnDetail(),
                     Text::make('Time In '.Str::singular(Str::title(setting('localization_assignment', 'Assignment'))), function ($model) {
@@ -255,7 +255,7 @@ class User extends Resource
                     })
                         ->asSubTitle(),
                     Line::make('Last '.Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Change Date', function ($model) {
-                        return optional($model->rank_records->first()?->created_at, function ($date) {
+                        return optional($model->last_rank_change_date, function ($date) {
                             return 'Updated: '.Carbon::parse($date)
                                 ->longRelativeToNowDiffForHumans();
                         });
@@ -265,7 +265,7 @@ class User extends Resource
                     ->onlyOnDetail()
                     ->showOnPreview(),
                 DateTime::make('Last '.Str::singular(Str::title(setting('localization_ranks', 'Rank'))).' Change Date', function ($model) {
-                    return $model->rank_records->first()->created_at ?? null;
+                    return $model->last_rank_change_date;
                 })
                     ->onlyOnDetail(),
                 Text::make('Time In Grade', function ($model) {

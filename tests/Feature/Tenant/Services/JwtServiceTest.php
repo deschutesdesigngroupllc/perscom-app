@@ -2,9 +2,9 @@
 
 namespace Tests\Feature\Tenant\Services;
 
-use App\Auth\Providers\CustomJwtProvider;
 use App\Models\User;
 use App\Services\JwtService;
+use App\Support\JwtAuth\Providers\CustomJwtProvider;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Tests\Feature\Tenant\TenantTestCase;
