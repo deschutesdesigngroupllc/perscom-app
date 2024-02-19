@@ -1,6 +1,27 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.79...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.80...HEAD)
+
+## [v1.0.80](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.79...v1.0.80) - 2024-02-19
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.80 -->
+### What's Changed
+
+#### Added
+
+* Add submission status api endpoint by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/325
+* Add SSO login by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/326
+* Add secondary assignments by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/314
+
+#### Other
+
+* Bump laravel/socialite from 5.11.0 to 5.12.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/327
+* Bump sass from 1.70.0 to 1.71.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/331
+* Bump laravel/horizon from 5.22.1 to 5.23.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/329
+* Bump aws/aws-sdk-php from 3.298.2 to 3.299.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/328
+* Bump larastan/larastan from 2.8.1 to 2.9.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/330
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.79...v1.0.80
 
 ## [v1.0.79](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.78...v1.0.79) - 2024-02-16
 
