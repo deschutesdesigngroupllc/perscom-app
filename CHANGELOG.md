@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.81...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.82...HEAD)
+
+## [v1.0.82](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.81...v1.0.82) - 2024-02-23
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.82 -->
+### What's Changed
+
+#### Changed
+
+* Add pivot fields as fillable for status API end points by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/333
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.81...v1.0.82
 
 ## [v1.0.81](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.80...v1.0.81) - 2024-02-19
 
