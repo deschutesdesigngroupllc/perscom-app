@@ -30,6 +30,11 @@ class CategoriesFormsController extends RelationController
     protected $relation = 'forms';
 
     /**
+     * @var string[]
+     */
+    protected $pivotFillable = ['order'];
+
+    /**
      * @return string[]
      */
     public function exposedScopes(): array

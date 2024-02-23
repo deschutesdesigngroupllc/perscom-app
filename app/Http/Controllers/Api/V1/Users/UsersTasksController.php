@@ -30,6 +30,11 @@ class UsersTasksController extends RelationController
     protected $relation = 'tasks';
 
     /**
+     * @var string[]
+     */
+    protected $pivotFillable = ['assigned_by_id', 'assigned_at', 'due_at', 'completed_at', 'expires_at'];
+
+    /**
      * @return string[]
      */
     public function includes(): array

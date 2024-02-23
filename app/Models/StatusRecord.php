@@ -42,6 +42,13 @@ class StatusRecord extends MorphPivot
     /**
      * @var string[]
      */
+    protected $fillable = [
+        'text',
+    ];
+
+    /**
+     * @var string[]
+     */
     protected $with = ['status'];
 
     /**
