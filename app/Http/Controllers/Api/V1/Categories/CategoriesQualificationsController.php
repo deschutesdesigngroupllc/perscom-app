@@ -30,6 +30,11 @@ class CategoriesQualificationsController extends RelationController
     protected $relation = 'qualifications';
 
     /**
+     * @var string[]
+     */
+    protected $pivotFillable = ['order'];
+
+    /**
      * @return string[]
      */
     public function includes(): array

@@ -30,6 +30,11 @@ class SubmissionsStatusesController extends RelationController
     protected $relation = 'statuses';
 
     /**
+     * @var string[]
+     */
+    protected $pivotFillable = ['text'];
+
+    /**
      * @return string[]
      */
     public function includes(): array

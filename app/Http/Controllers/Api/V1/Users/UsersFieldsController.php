@@ -22,4 +22,9 @@ class UsersFieldsController extends RelationController
      * @var string
      */
     protected $relation = 'fields';
+
+    /**
+     * @var string[]
+     */
+    protected $pivotFillable = ['order'];
 }
