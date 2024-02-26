@@ -50,6 +50,10 @@ class UserPolicy extends Policy
             return false;
         }
 
+        if ($model->email === tenant('email')) {
+            return false;
+        }
+
         return $this->hasPermissionTo($user, 'delete:user') || optional($user)->tokenCan('delete:user');
     }
 
