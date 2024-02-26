@@ -126,8 +126,8 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_can_be_reached_while_in_demo_mode()
     {
-        config()->set('tenancy.demo_host', $this->domain->host);
-        config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
+        config()->set('demo.host', $this->domain->host);
+        config()->set('demo.tenant_id', $this->tenant->getTenantKey());
 
         $this->withMiddleware(Subscribed::class);
 

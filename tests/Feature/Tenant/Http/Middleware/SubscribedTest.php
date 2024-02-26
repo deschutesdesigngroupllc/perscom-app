@@ -35,8 +35,8 @@ class SubscribedTest extends TenantTestCase
 
     public function test_demo_mode_does_not_require_subscription()
     {
-        config()->set('tenancy.demo_host', $this->domain->host);
-        config()->set('tenancy.demo_id', $this->tenant->getTenantKey());
+        config()->set('demo.host', $this->domain->host);
+        config()->set('demo.tenant_id', $this->tenant->getTenantKey());
 
         $user = User::factory()->create();
 

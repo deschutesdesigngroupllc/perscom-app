@@ -24,9 +24,9 @@ class ServiceRecordsPolicy extends Policy
 
     public function view(?User $user, ServiceRecord $service): bool
     {
-        return $this->hasPermissionTo($user, 'view:servicerecord') ||
-               $service->user?->id === optional($user)->id ||
-               optional($user)->tokenCan('view:servicerecord');
+        return $this->hasPermissionTo($user, 'view:servicerecord')
+            || $service->user?->id === optional($user)->id
+            || optional($user)->tokenCan('view:servicerecord');
     }
 
     public function create(?User $user = null): bool

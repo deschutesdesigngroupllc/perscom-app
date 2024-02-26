@@ -24,9 +24,9 @@ class AssignmentRecordsPolicy extends Policy
 
     public function view(?User $user, AssignmentRecord $assignment): bool
     {
-        return $this->hasPermissionTo($user, 'view:assignmentrecord') ||
-               $assignment->user?->id === optional($user)->id ||
-               optional($user)->tokenCan('view:assignmentrecord');
+        return $this->hasPermissionTo($user, 'view:assignmentrecord')
+            || $assignment->user?->id === optional($user)->id
+            || optional($user)->tokenCan('view:assignmentrecord');
     }
 
     public function create(?User $user = null): bool

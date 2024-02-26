@@ -24,9 +24,9 @@ class RankRecordsPolicy extends Policy
 
     public function view(?User $user, RankRecord $rank): bool
     {
-        return $this->hasPermissionTo($user, 'view:rankrecord') ||
-               $rank->user?->id === optional($user)->id ||
-               optional($user)->tokenCan('view:rankrecord');
+        return $this->hasPermissionTo($user, 'view:rankrecord')
+            || $rank->user?->id === optional($user)->id
+            || optional($user)->tokenCan('view:rankrecord');
     }
 
     public function create(?User $user = null): bool
