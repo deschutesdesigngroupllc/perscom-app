@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.82...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.83...HEAD)
+
+## [v1.0.83](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.82...v1.0.83) - 2024-02-25
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.83 -->
+### What's Changed
+
+#### Fixed
+
+* Change demo restrictions to policy level rather than UI level by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/334
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.82...v1.0.83
 
 ## [v1.0.82](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.81...v1.0.82) - 2024-02-23
 
