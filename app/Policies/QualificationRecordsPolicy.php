@@ -24,9 +24,9 @@ class QualificationRecordsPolicy extends Policy
 
     public function view(?User $user, QualificationRecord $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'view:qualificationrecord') ||
-               $qualification->user?->id === optional($user)->id ||
-               optional($user)->tokenCan('view:qualificationrecord');
+        return $this->hasPermissionTo($user, 'view:qualificationrecord')
+            || $qualification->user?->id === optional($user)->id
+            || optional($user)->tokenCan('view:qualificationrecord');
     }
 
     public function create(?User $user = null): bool

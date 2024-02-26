@@ -24,9 +24,9 @@ class AwardRecordsPolicy extends Policy
 
     public function view(?User $user, AwardRecord $award): bool
     {
-        return $this->hasPermissionTo($user, 'view:awardrecord') ||
-               $award->user?->id === optional($user)->id ||
-               optional($user)->tokenCan('view:awardrecord');
+        return $this->hasPermissionTo($user, 'view:awardrecord')
+            || $award->user?->id === optional($user)->id
+            || optional($user)->tokenCan('view:awardrecord');
     }
 
     public function create(?User $user = null): bool

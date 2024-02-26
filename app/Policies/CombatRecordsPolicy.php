@@ -24,9 +24,9 @@ class CombatRecordsPolicy extends Policy
 
     public function view(?User $user, CombatRecord $combat): bool
     {
-        return $this->hasPermissionTo($user, 'view:combatrecord') ||
-               $combat->user?->id === optional($user)->id ||
-               optional($user)->tokenCan('view:combatrecord');
+        return $this->hasPermissionTo($user, 'view:combatrecord')
+            || $combat->user?->id === optional($user)->id
+            || optional($user)->tokenCan('view:combatrecord');
     }
 
     public function create(?User $user = null): bool

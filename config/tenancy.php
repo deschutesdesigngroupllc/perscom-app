@@ -8,12 +8,6 @@ return [
     'domain_model' => \App\Models\Domain::class,
 
     /**
-     * The host and ID of the demo tenant
-     */
-    'demo_host' => env('TENANT_DEMO_HOST'),
-    'demo_id' => env('TENANT_DEMO_ID'),
-
-    /**
      * The list of domains hosting your central app.
      *
      * Only relevant if you're using the domain or subdomain identification middleware.

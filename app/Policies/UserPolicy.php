@@ -23,7 +23,9 @@ class UserPolicy extends Policy
 
     public function view(?User $user, User $model): bool
     {
-        return $this->hasPermissionTo($user, 'view:user') || optional($user)->id === $model->id || optional($user)->tokenCan('view:user');
+        return $this->hasPermissionTo($user, 'view:user')
+            || optional($user)->id === $model->id
+            || optional($user)->tokenCan('view:user');
     }
 
     public function create(?User $user = null): bool
@@ -33,13 +35,25 @@ class UserPolicy extends Policy
 
     public function update(?User $user, User $model): bool
     {
-        return $this->hasPermissionTo($user, 'update:user') ||
-               optional($user)->id === $model->id ||
-               optional($user)->tokenCan('update:user');
+        if (Request::isDemoMode() && $model->email === config('demo.email')) {
+            return false;
+        }
+
+        return $this->hasPermissionTo($user, 'update:user')
+            || optional($user)->id === $model->id
+            || optional($user)->tokenCan('update:user');
     }
 
     public function delete(?User $user, User $model): bool
     {
+        if (Request::isDemoMode() && $model->email === config('demo.email')) {
+            return false;
+        }
+
+        if ($model->email === tenant('email')) {
+            return false;
+        }
+
         return $this->hasPermissionTo($user, 'delete:user') || optional($user)->tokenCan('delete:user');
     }
 

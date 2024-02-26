@@ -21,6 +21,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules;
 use Laravel\Nova\Actions\ExportAsCsv;
+use Laravel\Nova\Exceptions\HelperNotSupported;
 use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
@@ -73,6 +74,9 @@ class User extends Resource
         return Str::plural(Str::slug(setting('localization_users', 'users')));
     }
 
+    /**
+     * @throws HelperNotSupported
+     */
     public function fields(NovaRequest $request): array
     {
         return [
@@ -81,20 +85,14 @@ class User extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255')
-                ->showOnPreview()
-                ->readonly(function () {
-                    return Request::isDemoMode();
-                }),
+                ->showOnPreview(),
             Text::make('Email')
                 ->sortable()
                 ->rules('required', 'email', 'max:254')
                 ->creationRules('unique:users,email')
                 ->updateRules('unique:users,email,{{resourceId}}')
                 ->showOnPreview()
-                ->copyable()
-                ->readonly(function () {
-                    return Request::isDemoMode();
-                }),
+                ->copyable(),
             Boolean::make('Email Verified', function () {
                 return $this->email_verified_at !== null;
             })
@@ -108,10 +106,7 @@ class User extends Resource
             Password::make('Password')
                 ->onlyOnForms()
                 ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults())
-                ->readonly(function () {
-                    return Request::isDemoMode();
-                }),
+                ->updateRules('nullable', Rules\Password::defaults()),
             Badge::make('Online', function ($user) {
                 return $user->online;
             })

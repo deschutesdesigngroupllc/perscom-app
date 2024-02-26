@@ -35,12 +35,12 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Request::macro('isDemoMode', function () {
-            return \request()->getHost() === \config('tenancy.demo_host') ||
+            return \request()->getHost() === \config('demo.host') ||
                     (\request()->expectsJson() &&
                      ((\request()->headers->has('X-Perscom-Id') &&
-                       \request()->header('X-Perscom-Id') == \config('tenancy.demo_id')) ||
+                       \request()->header('X-Perscom-Id') == \config('demo.tenant_id')) ||
                       (\request()->get('perscom_id') != null &&
-                       \request()->get('perscom_id') == \config('tenancy.demo_id'))));
+                       \request()->get('perscom_id') == \config('demo.tenant_id'))));
         });
 
         Cashier::useCustomerModel(Tenant::class);
