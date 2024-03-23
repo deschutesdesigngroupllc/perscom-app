@@ -3,8 +3,12 @@
 namespace App\Traits;
 
 use App\Models\User;
+use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasNotifications
 {
     public function notifications(): MorphToMany

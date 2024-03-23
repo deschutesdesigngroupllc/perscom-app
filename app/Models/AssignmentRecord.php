@@ -80,9 +80,9 @@ class AssignmentRecord extends Model
     protected static string $prompts = AssignmentRecordPrompts::class;
 
     /**
-     * @var string[]
+     * @var string
      */
-    protected static array $recordEvents = ['created'];
+    protected $table = 'records_assignments';
 
     /**
      * @var string[]
@@ -102,9 +102,9 @@ class AssignmentRecord extends Model
     ];
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $table = 'records_assignments';
+    protected static array $recordEvents = ['created'];
 
     protected static function booted(): void
     {

@@ -71,9 +71,9 @@ class RankRecord extends Model
     protected static string $prompts = RankRecordPrompts::class;
 
     /**
-     * @var string[]
+     * @var string
      */
-    protected static array $recordEvents = ['created'];
+    protected $table = 'records_ranks';
 
     /**
      * @var string[]
@@ -86,16 +86,16 @@ class RankRecord extends Model
     protected $with = ['rank'];
 
     /**
-     * @var string
-     */
-    protected $table = 'records_ranks';
-
-    /**
      * @var array<string, string>
      */
     protected $casts = [
         'type' => RankRecordType::class,
     ];
+
+    /**
+     * @var string[]
+     */
+    protected static array $recordEvents = ['created'];
 
     protected static function booted(): void
     {

@@ -3,8 +3,12 @@
 namespace App\Traits;
 
 use App\Models\Field;
+use Eloquent;
 use Illuminate\Support\Facades\Gate;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasHiddenFieldAttributes
 {
     /**

@@ -5,11 +5,15 @@ namespace App\Traits;
 use App\Models\Element;
 use App\Models\Field;
 use Closure;
+use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasFields
 {
     public function fields(): MorphToMany

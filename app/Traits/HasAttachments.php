@@ -3,8 +3,12 @@
 namespace App\Traits;
 
 use App\Models\Attachment;
+use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasAttachments
 {
     public function attachments(): MorphMany

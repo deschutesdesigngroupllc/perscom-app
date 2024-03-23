@@ -3,10 +3,14 @@
 namespace App\Traits;
 
 use App\Models\User;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasAuthor
 {
     public static function bootHasAuthor(): void

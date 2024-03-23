@@ -2,8 +2,12 @@
 
 namespace App\Traits;
 
+use Eloquent;
 use Exception;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasEventPrompts
 {
     /**

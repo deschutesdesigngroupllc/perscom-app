@@ -53,7 +53,7 @@ class Document extends Model implements Htmlable
     /**
      * @var string[]
      */
-    public static $availableTags = [
+    public static array $availableTags = [
         '{user_name}' => 'The user\'s name.',
         '{user_email}' => 'The user\'s email.',
         '{user_email_verified_at}' => 'The user\'s email verification date. Null if email has not been verified',
@@ -94,7 +94,7 @@ class Document extends Model implements Htmlable
     protected function resolveTag(string $tag, ?User $user = null, mixed $attachedModel = null): mixed
     {
         return match (true) {
-            $tag === '{user_name}' => $user->name ?? null,
+            $tag === '{user_name}' => data_get($user, 'name'),
             $tag === '{user_email}' => $user->email ?? null,
             $tag === '{user_email_verified_at}' => optional($user)->email_verified_at ? Carbon::parse($user?->email_verified_at)->toDayDateTimeString() : null,
             $tag === '{user_status}' => $user->status->name ?? null,
@@ -106,22 +106,12 @@ class Document extends Model implements Htmlable
             $tag === '{assignment_record_unit}' => $attachedModel->unit->name ?? null,
             $tag === '{assignment_record_position}' => $attachedModel->position->name ?? null,
             $tag === '{assignment_record_speciality}' => $attachedModel->specialty->name ?? null,
-            $tag === '{assignment_record_text}' => $attachedModel->text ?? null,
-            $tag === '{assignment_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
+            $tag === '{assignment_record_text}', $tag === '{award_record_text}', $tag === '{combat_record_text}', $tag === '{qualification_record_text}', $tag === '{service_record_text}', $tag === '{rank_record_text}' => $attachedModel->text ?? null,
+            $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{service_record_date}', $tag === '{rank_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{award_record_award}' => $attachedModel->award->name ?? null,
-            $tag === '{award_record_text}' => $attachedModel->text ?? null,
-            $tag === '{award_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
-            $tag === '{combat_record_text}' => $attachedModel->text ?? null,
-            $tag === '{combat_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{qualification_record_qualification}' => $attachedModel->qualification->name ?? null,
-            $tag === '{qualification_record_text}' => $attachedModel->text ?? null,
-            $tag === '{qualification_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
-            $tag === '{rank_record_rank}' => $attachedModel->award->name ?? null,
+            $tag === '{rank_record_rank}' => $attachedModel->rank->name ?? null,
             $tag === '{rank_record_type}' => optional($attachedModel->type)->getLabel() ?? null,
-            $tag === '{rank_record_text}' => $attachedModel->text ?? null,
-            $tag === '{rank_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
-            $tag === '{service_record_text}' => $attachedModel->text ?? null,
-            $tag === '{service_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             default => null
         };
     }
