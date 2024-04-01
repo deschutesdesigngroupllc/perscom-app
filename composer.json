@@ -70,7 +70,7 @@
         "laravel/sail": "^1.18",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
-        "phpunit/phpunit": "10.2.*",
+        "phpunit/phpunit": "10.5.*",
         "roave/security-advisories": "dev-latest",
         "spatie/laravel-ignition": "^2.0",
         "zalas/phpunit-globals": "^3.0.0-alpha.1"
