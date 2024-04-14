@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e617649c15f1b223d70d962fc96d6b4",
+    "content-hash": "a6e6b71a5c3f027ff074feeddada2dd0",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6320,7 +6320,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6356,7 +6356,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6392,7 +6392,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6428,7 +6428,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6464,7 +6464,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6499,44 +6499,8 @@
             }
         },
         {
-            "name": "perscom/featureos",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "./nova-components/Featureos",
-                "reference": "64624c9d7cd706b8e4111a973522f593b383e5cd"
-            },
-            "require": {
-                "php": "^7.3|^8.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Perscom\\Featureos\\AssetServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Perscom\\Featureos\\": "src/"
-                }
-            },
-            "license": [
-                "MIT"
-            ],
-            "description": "A Laravel Nova asset.",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "transport-options": {
-                "relative": true
-            }
-        },
-        {
             "name": "perscom/forms",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6572,7 +6536,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6608,7 +6572,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6644,7 +6608,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6680,7 +6644,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -6716,7 +6680,7 @@
         },
         {
             "name": "perscom/text-action-field",
-            "version": "dev-main",
+            "version": "dev-feature/remove-feature-os",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/TextActionField",
@@ -16817,7 +16781,6 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "laravel/pulse": 10,
-        "perscom/featureos": 20,
         "perscom/message-field": 20,
         "perscom/newsfeed": 20,
         "perscom/text-action-field": 20,
@@ -16831,5 +16794,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

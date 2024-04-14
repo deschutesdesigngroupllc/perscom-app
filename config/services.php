@@ -19,6 +19,7 @@ return [
     ],
 
     'featureos' => [
+        'url' => env('FEATUREOS_URL'),
         'sso_key' => env('FEATUREOS_SSO_KEY'),
     ],
 

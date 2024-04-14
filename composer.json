@@ -34,7 +34,6 @@
         "perscom/dashboard-quick-actions": "*",
         "perscom/dashboard-title": "*",
         "perscom/document-viewer-tool": "*",
-        "perscom/featureos": "@dev",
         "perscom/forms": "*",
         "perscom/html-field": "*",
         "perscom/message-field": "@dev",
