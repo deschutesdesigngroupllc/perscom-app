@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a6e6b71a5c3f027ff074feeddada2dd0",
+    "content-hash": "c620a566b3e212af8082b0bd543431fe",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6320,7 +6320,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6356,7 +6356,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6392,7 +6392,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6428,7 +6428,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6464,7 +6464,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6500,7 +6500,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6536,7 +6536,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6572,7 +6572,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6608,7 +6608,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6644,7 +6644,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -6680,7 +6680,7 @@
         },
         {
             "name": "perscom/text-action-field",
-            "version": "dev-feature/remove-feature-os",
+            "version": "dev-feature/document-parsing",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/TextActionField",
