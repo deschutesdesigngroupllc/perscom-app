@@ -60,10 +60,6 @@ export function Faqs() {
           <h2 className='text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>Frequently asked questions</h2>
           <p className='mt-4 text-base'>
             If you can’t find what you’re looking for, visit our{' '}
-            <a href='https://community.deschutesdesigngroup.com' target='_blank' rel='noreferrer' className='underline'>
-              community forums
-            </a>{' '}
-            or{' '}
             <a href='https://docs.perscom.io' target='_blank' rel='noreferrer' className='underline'>
               documentation
             </a>{' '}

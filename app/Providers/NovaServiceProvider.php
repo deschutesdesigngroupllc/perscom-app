@@ -58,7 +58,6 @@ use App\Nova\Unit;
 use App\Nova\User;
 use App\Nova\Webhook;
 use App\Rules\SubdomainRule;
-use App\Services\FeatureOsService;
 use Eminiarts\Tabs\Tab;
 use Eminiarts\Tabs\Tabs;
 use Illuminate\Http\Request;
@@ -311,11 +310,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     ])->icon('terminal')->collapsable()->collapsedByDefault(),
 
                     MenuSection::make('Support', [
-                        MenuItem::externalLink('Community Forums', 'https://community.deschutesdesigngroup.com')
-                            ->openInNewTab(),
-                        MenuItem::externalLink('Feature Requests', FeatureOsService::ssoRedirect('https://feedback.perscom.io/b/features-requests'))
-                            ->openInNewTab(),
-                        MenuItem::externalLink('Feedback', FeatureOsService::ssoRedirect('https://feedback.perscom.io/b/feedback'))
+                        MenuItem::externalLink('Feedback', config('services.featureos.url'))
                             ->openInNewTab(),
                         MenuItem::externalLink('Documentation', 'https://docs.perscom.io')
                             ->openInNewTab(),

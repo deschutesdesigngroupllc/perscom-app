@@ -65,30 +65,12 @@ export default function Error({ status, title = null, message = null, back = nul
       </main>
       <footer className='mx-auto w-full max-w-7xl flex-shrink-0 px-4 sm:px-6 lg:px-8'>
         <nav className='flex flex-col items-center justify-center space-x-4 sm:flex-row'>
-          <a
-            href='https://community.deschutesdesigngroup.com/'
-            className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
-            target='_blank'
-            rel='noreferrer'
-          >
-            Community Forums
-          </a>
-          <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
           <a href='https://docs.perscom.io' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200' target='_blank' rel='noreferrer'>
             Documentation
           </a>
           <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
           <a
-            href='https://support.deschutesdesigngroup.com/'
-            className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
-            target='_blank'
-            rel='noreferrer'
-          >
-            Help Desk
-          </a>
-          <span className='inline-block border-l border-gray-300' aria-hidden='true'></span>
-          <a
-            href='https://support.deschutesdesigngroup.com/hc/en-us/requests/new'
+            href='https://www.deschutesdesigngroup.com/support/new'
             className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200'
             target='_blank'
             rel='noreferrer'
