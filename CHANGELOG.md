@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.84...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.85...HEAD)
+
+## [v1.0.85](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.84...v1.0.85) - 2024-04-14
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.85 -->
+### What's Changed
+
+#### Added
+
+* Add parsed document to API by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/355
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.84...v1.0.85
 
 ## [v1.0.84](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.83...v1.0.84) - 2024-04-14
 
