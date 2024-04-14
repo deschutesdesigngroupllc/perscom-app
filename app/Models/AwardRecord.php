@@ -68,9 +68,9 @@ class AwardRecord extends Model
     protected static string $prompts = AwardRecordPrompts::class;
 
     /**
-     * @var string[]
+     * @var string
      */
-    protected static array $recordEvents = ['created'];
+    protected $table = 'records_awards';
 
     /**
      * @var string[]
@@ -83,9 +83,9 @@ class AwardRecord extends Model
     protected $with = ['award'];
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $table = 'records_awards';
+    protected static array $recordEvents = ['created'];
 
     protected static function booted(): void
     {

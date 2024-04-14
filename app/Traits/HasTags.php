@@ -3,10 +3,14 @@
 namespace App\Traits;
 
 use App\Models\Tag;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Arr;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasTags
 {
     public function tags(): BelongsToMany

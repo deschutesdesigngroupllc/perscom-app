@@ -68,9 +68,9 @@ class QualificationRecord extends Model
     protected static string $prompts = QualificationRecordPrompts::class;
 
     /**
-     * @var string[]
+     * @var string
      */
-    protected static array $recordEvents = ['created'];
+    protected $table = 'records_qualifications';
 
     /**
      * @var string[]
@@ -83,9 +83,9 @@ class QualificationRecord extends Model
     protected $with = ['qualification'];
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $table = 'records_qualifications';
+    protected static array $recordEvents = ['created'];
 
     protected static function booted(): void
     {

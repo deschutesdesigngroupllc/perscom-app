@@ -49,6 +49,7 @@
         "spatie/laravel-permission": "^5.8",
         "spatie/laravel-responsecache": "^7.4",
         "spatie/laravel-webhook-server": "^3.4",
+        "spatie/once": "^3.1",
         "spatie/url": "^2.2",
         "stancl/jobpipeline": "dev-master as v1.6.2",
         "stancl/tenancy": "^3.7",
@@ -122,10 +123,6 @@
         {
             "type": "path",
             "url": "./nova-components/Newsfeed"
-        },
-        {
-            "type": "path",
-            "url": "./nova-components/Featureos"
         },
         {
             "type": "path",

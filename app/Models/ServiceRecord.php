@@ -61,15 +61,12 @@ class ServiceRecord extends Model
     use HasUser;
     use LogsActivity;
 
+    public static string $prompts = ServiceRecordPrompts::class;
+
     /**
      * @var string
      */
-    public static $prompts = ServiceRecordPrompts::class;
-
-    /**
-     * @var string[]
-     */
-    protected static array $recordEvents = ['created'];
+    protected $table = 'records_service';
 
     /**
      * @var string[]
@@ -77,9 +74,9 @@ class ServiceRecord extends Model
     protected $fillable = ['user_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $table = 'records_service';
+    protected static array $recordEvents = ['created'];
 
     protected static function booted(): void
     {

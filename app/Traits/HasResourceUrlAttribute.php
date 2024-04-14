@@ -3,8 +3,12 @@
 namespace App\Traits;
 
 use App\Models\Domain;
+use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasResourceUrlAttribute
 {
     public function url(): Attribute

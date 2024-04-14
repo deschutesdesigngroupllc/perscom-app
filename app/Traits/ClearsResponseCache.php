@@ -2,8 +2,12 @@
 
 namespace App\Traits;
 
+use Eloquent;
 use Spatie\ResponseCache\Facades\ResponseCache;
 
+/**
+ * @mixin Eloquent
+ */
 trait ClearsResponseCache
 {
     public static function bootClearsResponseCache(): void

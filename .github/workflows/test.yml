@@ -76,7 +76,7 @@ jobs:
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
 
       - name: Execute Tests
-        run: php artisan test --parallel --recreate-databases
+        run: php artisan test --parallel
         env:
           DB_USERNAME: root
           DB_DATABASE: testing

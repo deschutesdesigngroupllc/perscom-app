@@ -64,9 +64,9 @@ class CombatRecord extends Model
     protected static string $prompts = CombatRecordPrompts::class;
 
     /**
-     * @var string[]
+     * @var string
      */
-    protected static array $recordEvents = ['created'];
+    protected $table = 'records_combat';
 
     /**
      * @var string[]
@@ -74,9 +74,9 @@ class CombatRecord extends Model
     protected $fillable = ['user_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 
     /**
-     * @var string
+     * @var string[]
      */
-    protected $table = 'records_combat';
+    protected static array $recordEvents = ['created'];
 
     protected static function booted(): void
     {

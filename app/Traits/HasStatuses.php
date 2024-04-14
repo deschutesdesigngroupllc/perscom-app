@@ -4,11 +4,15 @@ namespace App\Traits;
 
 use App\Models\Status;
 use App\Models\StatusRecord;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
+/**
+ * @mixin Eloquent
+ */
 trait HasStatuses
 {
     public function statuses(): MorphToMany
