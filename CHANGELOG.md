@@ -1,6 +1,19 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.83...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.84...HEAD)
+
+## [v1.0.84](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.83...v1.0.84) - 2024-04-14
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.84 -->
+### What's Changed
+
+#### Other
+
+* Bump eslint from 8.56.0 to 8.57.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/335
+* Bump laravel/pint from 1.13.10 to 1.14.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/340
+* Remove FeatureOS by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/370
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.83...v1.0.84
 
 ## [v1.0.83](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.82...v1.0.83) - 2024-02-25
 
