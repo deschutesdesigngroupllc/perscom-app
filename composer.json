@@ -57,7 +57,7 @@
         "staudenmeir/belongs-to-through": "^2.5",
         "staudenmeir/eloquent-has-many-deep": "^1.18",
         "tailflow/laravel-orion": "^2.19",
-        "tightenco/ziggy": "^1.4",
+        "tightenco/ziggy": "^2.1",
         "timokoerber/laravel-one-time-operations": "^1.3",
         "unisharp/laravel-filemanager": "^2.6"
     },
