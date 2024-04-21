@@ -56,7 +56,7 @@ class Subscription extends Resource
                 })
                 ->rules(['required']),
             Text::make('Plan', function () {
-                return $this->owner->sparkPlan()->name ?? null;
+                return optional($this->owner)->sparkPlan()->name ?? null;
             }),
             Badge::make('Status', 'stripe_status')
                 ->map([

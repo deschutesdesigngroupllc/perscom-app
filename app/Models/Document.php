@@ -99,7 +99,7 @@ class Document extends Model implements Htmlable
             $tag === '{user_email}' => $user->email ?? null,
             $tag === '{user_email_verified_at}' => optional($user)->email_verified_at ? Carbon::parse($user?->email_verified_at)->toDayDateTimeString() : null,
             $tag === '{user_status}' => $user->status->name ?? null,
-            $tag === '{user_online}' => $user->online ? 'True' : 'False',
+            $tag === '{user_online}' => optional($user)->online ? 'True' : 'False',
             $tag === '{user_assignment_position}' => $user->position->name ?? null,
             $tag === '{user_assignment_specialty}' => $user->specialty->name ?? null,
             $tag === '{user_assignment_unit}' => $user->unit->name ?? null,
