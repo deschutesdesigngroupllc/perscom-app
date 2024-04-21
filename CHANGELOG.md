@@ -1,6 +1,31 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.85...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.86...HEAD)
+
+## [v1.0.86](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.85...v1.0.86) - 2024-04-21
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.86 -->
+### What's Changed
+
+#### Fixed
+
+* Fix timeout error by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/377
+
+#### Other
+
+* Bump laravel/framework from 10.44.0 to 10.48.7 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/374
+* Bump sass from 1.71.0 to 1.75.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/373
+* Bump phpunit/phpunit from 10.2.7 to 10.5.18 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/371
+* Bump vite from 5.1.3 to 5.2.8 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/367
+* Bump laravel/pennant from 1.6.0 to 1.7.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/358
+* Bump @babel/preset-react from 7.23.3 to 7.24.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/357
+* Bump laravel/sail from 1.27.3 to 1.29.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/354
+* Bump eslint-plugin-react from 7.33.2 to 7.34.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/352
+* Bump phpunit/phpunit from 10.5.18 to 10.5.19 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/376
+* Bump swagger-ui-react from 5.11.2 to 5.16.2 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/375
+* Bump tightenco/ziggy from 1.8.1 to 2.1.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/364
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.85...v1.0.86
 
 ## [v1.0.85](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.84...v1.0.85) - 2024-04-14
 
