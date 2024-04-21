@@ -16,7 +16,7 @@ trait HasDocument
 {
     public function initializeHasDocument(): void
     {
-        if (! data_get($this->appends, 'document_parsed')) {
+        if (! is_null($this->document_id) && ! data_get($this->appends, 'document_parsed')) {
             $this->appends[] = 'document_parsed';
         }
     }
@@ -36,7 +36,7 @@ trait HasDocument
         return Attribute::make(
             get: function () {
                 if (! is_null($this->document_id)) {
-                    return once(fn () => $this->document->toHtml(User::find($this->user_id), call_user_func([get_class($this), 'find'], $this->id)));
+                    return $this->document->toHtml(User::find($this->user_id), call_user_func([get_class($this), 'find'], $this->id));
                 }
 
                 return null;
