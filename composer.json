@@ -46,7 +46,7 @@
         "sentry/sentry-laravel": "^4.2",
         "spatie/eloquent-sortable": "^4.0.2",
         "spatie/laravel-activitylog": "^4.7.3",
-        "spatie/laravel-permission": "^5.8",
+        "spatie/laravel-permission": "^6.7",
         "spatie/laravel-responsecache": "^7.4",
         "spatie/laravel-webhook-server": "^3.4",
         "spatie/once": "^3.1",
