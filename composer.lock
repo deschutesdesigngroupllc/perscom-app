@@ -9054,22 +9054,22 @@
         },
         {
             "name": "spatie/url",
-            "version": "2.3.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/url.git",
-                "reference": "ae324f5f77290827d66486fc88aa2c9373bc2170"
+                "reference": "93a51db743cdec22b081c64593e193887c9cd395"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/url/zipball/ae324f5f77290827d66486fc88aa2c9373bc2170",
-                "reference": "ae324f5f77290827d66486fc88aa2c9373bc2170",
+                "url": "https://api.github.com/repos/spatie/url/zipball/93a51db743cdec22b081c64593e193887c9cd395",
+                "reference": "93a51db743cdec22b081c64593e193887c9cd395",
                 "shasum": ""
             },
             "require": {
                 "php": "^8.0",
                 "psr/http-message": "^1.0 || ^2.0",
-                "spatie/macroable": "^2.0"
+                "spatie/macroable": "^1.0 || ^2.0"
             },
             "require-dev": {
                 "pestphp/pest": "^1.21"
@@ -9100,7 +9100,7 @@
             ],
             "support": {
                 "issues": "https://github.com/spatie/url/issues",
-                "source": "https://github.com/spatie/url/tree/2.3.0"
+                "source": "https://github.com/spatie/url/tree/2.4.0"
             },
             "funding": [
                 {
@@ -9112,7 +9112,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-01-05T10:09:13+00:00"
+            "time": "2024-03-08T11:35:19+00:00"
         },
         {
             "name": "stancl/jobpipeline",
