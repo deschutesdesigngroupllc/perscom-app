@@ -46,7 +46,7 @@ class Mail extends Model
     protected $table = 'mail';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['subject', 'content', 'links', 'send_at', 'sent_at'];
 

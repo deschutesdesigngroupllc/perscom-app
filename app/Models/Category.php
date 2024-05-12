@@ -46,7 +46,7 @@ class Category extends Model
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['name', 'description', 'resource', 'updated_at', 'created_at'];
 

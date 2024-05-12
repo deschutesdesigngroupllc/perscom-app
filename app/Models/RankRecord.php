@@ -76,7 +76,7 @@ class RankRecord extends Model
     protected $table = 'records_ranks';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text', 'type', 'updated_at', 'created_at'];
 

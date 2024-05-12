@@ -111,7 +111,7 @@ class Event extends Model
     use HasTags;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',

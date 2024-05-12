@@ -73,7 +73,7 @@ class AwardRecord extends Model
     protected $table = 'records_awards';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id', 'award_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 

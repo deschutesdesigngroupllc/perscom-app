@@ -47,7 +47,7 @@ class Announcement extends Model
     protected static array $recordEvents = ['created'];
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['title', 'content', 'color', 'expires_at', 'updated_at', 'created_at'];
 

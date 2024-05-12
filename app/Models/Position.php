@@ -50,7 +50,7 @@ class Position extends Model implements Sortable
     use SortableTrait;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
 

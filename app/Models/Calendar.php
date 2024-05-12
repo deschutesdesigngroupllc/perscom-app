@@ -43,7 +43,7 @@ class Calendar extends Model
     use HasTags;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['name', 'description', 'color', 'updated_at', 'created_at'];
 

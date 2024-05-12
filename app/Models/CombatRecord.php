@@ -69,7 +69,7 @@ class CombatRecord extends Model
     protected $table = 'records_combat';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 
