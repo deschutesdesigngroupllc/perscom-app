@@ -36,7 +36,7 @@
         "prettier": "^3.2.4",
         "prettier-plugin-tailwindcss": "^0.5.4",
         "sass": "^1.76.0",
-        "swagger-ui-react": "^5.16.2",
+        "swagger-ui-react": "^5.17.7",
         "tailwindcss": "^3.4.1",
         "vite": "^5.2.8"
     }
