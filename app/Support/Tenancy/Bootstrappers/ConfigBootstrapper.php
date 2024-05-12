@@ -4,7 +4,6 @@ namespace App\Support\Tenancy\Bootstrappers;
 
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Config;
-use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Contracts\TenancyBootstrapper;
 use Stancl\Tenancy\Contracts\Tenant;
 

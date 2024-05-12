@@ -3,7 +3,6 @@
 namespace Tests\Feature\Tenant\Bootstrappers;
 
 use App\Models\Tenant;
-use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Tests\Feature\Tenant\TenantTestCase;
 
