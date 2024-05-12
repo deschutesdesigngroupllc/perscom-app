@@ -23,7 +23,6 @@ class ConfigBootstrapper implements TenancyBootstrapper
 
         Config::set('mail.from.name', $tenant->getAttribute('name'));
         Config::set('app.timezone', setting('timezone', config('app.timezone')));
-        PermissionRegistrar::$cacheKey = "permissioncache-tenant{$tenant->getTenantKey()}";
     }
 
     public function revert(): void
@@ -32,6 +31,5 @@ class ConfigBootstrapper implements TenancyBootstrapper
 
         Config::set('mail.from.name', $this->mailFromName);
         Config::set('app.timezone', $this->timezone);
-        PermissionRegistrar::$cacheKey = 'permissioncache';
     }
 }
