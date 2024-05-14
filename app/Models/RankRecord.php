@@ -83,7 +83,7 @@ class RankRecord extends Model
     /**
      * @var string[]
      */
-    protected $with = ['rank'];
+    protected $with = ['document', 'rank'];
 
     /**
      * @var array<string, string>

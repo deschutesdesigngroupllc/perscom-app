@@ -212,7 +212,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     /**
      * @var string[]
      */
-    protected $with = ['position', 'specialty', 'rank', 'status', 'unit', 'tasks'];
+    protected $with = ['assignment_records', 'award_records', 'combat_records', 'position', 'qualification_records', 'rank', 'rank_records', 'service_records', 'specialty', 'status', 'tasks', 'unit'];
 
     /**
      * @var array<int, string>

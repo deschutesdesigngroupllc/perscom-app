@@ -92,7 +92,7 @@ class AssignmentRecord extends Model
     /**
      * @var string[]
      */
-    protected $with = ['position', 'specialty', 'unit'];
+    protected $with = ['document', 'position', 'specialty', 'status', 'unit'];
 
     /**
      * @var array<string, string>

@@ -171,7 +171,7 @@ class Event extends Model
     /**
      * @var string[]
      */
-    protected $with = ['calendar'];
+    protected $with = ['calendar', 'registrations', 'tags'];
 
     public static function boot(): void
     {

@@ -80,7 +80,7 @@ class QualificationRecord extends Model
     /**
      * @var string[]
      */
-    protected $with = ['qualification'];
+    protected $with = ['document', 'qualification'];
 
     /**
      * @var string[]

@@ -53,6 +53,11 @@ class Document extends Model implements Htmlable
     /**
      * @var string[]
      */
+    protected $with = ['tags'];
+
+    /**
+     * @var string[]
+     */
     public static array $availableTags = [
         '{user_name}' => 'The user\'s name.',
         '{user_email}' => 'The user\'s email.',

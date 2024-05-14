@@ -19,7 +19,7 @@ class CombatRecordsPolicy extends Policy
 
     public function viewAny(?User $user = null): bool
     {
-        return true;
+        return $this->hasPermissionTo($user, 'view:combatrecord') || optional($user)->tokenCan('view:combatrecord');
     }
 
     public function view(?User $user, CombatRecord $combat): bool

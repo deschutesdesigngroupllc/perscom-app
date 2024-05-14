@@ -76,6 +76,11 @@ class CombatRecord extends Model
     /**
      * @var string[]
      */
+    protected $with = ['document'];
+
+    /**
+     * @var string[]
+     */
     protected static array $recordEvents = ['created'];
 
     protected static function booted(): void

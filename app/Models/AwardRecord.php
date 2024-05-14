@@ -80,7 +80,7 @@ class AwardRecord extends Model
     /**
      * @var string[]
      */
-    protected $with = ['award'];
+    protected $with = ['award', 'document'];
 
     /**
      * @var string[]
