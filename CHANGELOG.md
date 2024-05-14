@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.87...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.88...HEAD)
+
+## [v1.0.88](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.87...v1.0.88) - 2024-05-14
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.88 -->
+### What's Changed
+
+#### Added
+
+* Refactor user fields attributes by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/402
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.87...v1.0.88
 
 ## [v1.0.87](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.86...v1.0.87) - 2024-05-14
 
