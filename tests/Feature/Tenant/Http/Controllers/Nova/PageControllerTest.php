@@ -4,6 +4,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Nova;
 
 use App\Http\Middleware\Subscribed;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class PageControllerTest extends TenantTestCase
@@ -12,10 +13,15 @@ class PageControllerTest extends TenantTestCase
     {
         $this->withoutMiddleware([Subscribed::class]);
 
-        $this->actingAs(User::factory()->create())
+        $response = $this->actingAs(User::factory()->create())
             ->get(route('nova.pages.dashboard.custom', [
                 'name' => 'main',
-            ]))
-            ->assertSuccessful();
+            ]));
+
+        Log::debug('Response', [
+            'response' => $response,
+        ]);
+
+        $response->assertSuccessful();
     }
 }
