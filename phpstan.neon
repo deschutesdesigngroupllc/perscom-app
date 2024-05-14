@@ -5,6 +5,7 @@ parameters:
         - app/
     level: 6
     ignoreErrors:
+        - '#Static access to instance property App\\Models\\User::\$fields#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::user\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::future\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::ordered\(\)#'
@@ -18,3 +19,4 @@ parameters:
         - app/Nova/*.php
     checkGenericClassInNonGenericObjectType: false
     noEnvCallsOutsideOfConfig: true
+    treatPhpDocTypesAsCertain: false

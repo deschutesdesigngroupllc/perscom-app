@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe783f0ac138e7d5c21fb9cafecbdfbe",
+    "content-hash": "8349674a0d0dead0c011946ada2eac04",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -6325,7 +6325,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6361,7 +6361,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6397,7 +6397,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6433,7 +6433,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6469,7 +6469,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6505,7 +6505,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6541,7 +6541,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6577,7 +6577,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6613,7 +6613,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6649,7 +6649,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -6685,7 +6685,7 @@
         },
         {
             "name": "perscom/text-action-field",
-            "version": "dev-hotfix/remove-parsed-document",
+            "version": "dev-feature/improve-api-response-times",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/TextActionField",
@@ -13350,6 +13350,81 @@
                 "source": "https://github.com/hamcrest/hamcrest-php/tree/v2.0.1"
             },
             "time": "2020-07-09T08:09:16+00:00"
+        },
+        {
+            "name": "itsgoingd/clockwork",
+            "version": "v5.2.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/itsgoingd/clockwork.git",
+                "reference": "29bc4cedfbe742b419544c30b7b6e15cd9da08ef"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/itsgoingd/clockwork/zipball/29bc4cedfbe742b419544c30b7b6e15cd9da08ef",
+                "reference": "29bc4cedfbe742b419544c30b7b6e15cd9da08ef",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=5.6"
+            },
+            "suggest": {
+                "ext-pdo": "Needed in order to use a SQL database for metadata storage",
+                "ext-pdo_mysql": "Needed in order to use MySQL for metadata storage",
+                "ext-pdo_postgres": "Needed in order to use Postgres for metadata storage",
+                "ext-pdo_sqlite": "Needed in order to use a SQLite for metadata storage",
+                "ext-redis": "Needed in order to use Redis for metadata storage"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Clockwork\\Support\\Laravel\\ClockworkServiceProvider"
+                    ],
+                    "aliases": {
+                        "Clockwork": "Clockwork\\Support\\Laravel\\Facade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Clockwork\\": "Clockwork/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "itsgoingd",
+                    "email": "itsgoingd@luzer.sk",
+                    "homepage": "https://twitter.com/itsgoingd"
+                }
+            ],
+            "description": "php dev tools in your browser",
+            "homepage": "https://underground.works/clockwork",
+            "keywords": [
+                "Devtools",
+                "debugging",
+                "laravel",
+                "logging",
+                "lumen",
+                "profiling",
+                "slim"
+            ],
+            "support": {
+                "issues": "https://github.com/itsgoingd/clockwork/issues",
+                "source": "https://github.com/itsgoingd/clockwork/tree/v5.2.2"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/itsgoingd",
+                    "type": "github"
+                }
+            ],
+            "time": "2024-04-14T10:49:22+00:00"
         },
         {
             "name": "larastan/larastan",

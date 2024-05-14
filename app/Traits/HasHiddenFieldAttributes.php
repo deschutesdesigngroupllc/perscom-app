@@ -4,6 +4,7 @@ namespace App\Traits;
 
 use App\Models\Field;
 use Eloquent;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Gate;
 
 /**
@@ -11,15 +12,19 @@ use Illuminate\Support\Facades\Gate;
  */
 trait HasHiddenFieldAttributes
 {
+    protected static ?Collection $fields = null;
+
     /**
      * @return array<int, mixed>
      */
     public function getAttributesToHide(): array
     {
-        $fields = Field::withoutGlobalScopes()->get();
+        if (is_null(self::$fields)) {
+            self::$fields = Field::withoutGlobalScopes()->get();
 
-        if ($fields->isNotEmpty() && ! Gate::check('update', $fields->first())) {
-            return $fields->filter->hidden->map->key->toArray();
+            if (self::$fields->isNotEmpty() && ! Gate::check('update', self::$fields->first())) {
+                return self::$fields->filter->hidden->map->key->toArray();
+            }
         }
 
         return [];

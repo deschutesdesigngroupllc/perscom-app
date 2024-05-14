@@ -11,8 +11,12 @@ class BaseFeature
 
     public function resolveTenant(?string $scope): Tenant|Optional|null
     {
-        return $this->tenant = optional($scope, static function ($scope) {
-            return Tenant::findOrFail($scope);
-        });
+        if (is_null($this->tenant)) {
+            return $this->tenant = optional($scope, static function ($scope) {
+                return Tenant::findOrFail($scope);
+            });
+        }
+
+        return $this->tenant;
     }
 }

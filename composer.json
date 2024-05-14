@@ -65,6 +65,7 @@
         "barryvdh/laravel-debugbar": "^3.7",
         "barryvdh/laravel-ide-helper": "^2.13",
         "brianium/paratest": "^7.0",
+        "itsgoingd/clockwork": "^5.2",
         "larastan/larastan": "^2.0",
         "laravel/pint": "^1.2",
         "laravel/sail": "^1.18",
