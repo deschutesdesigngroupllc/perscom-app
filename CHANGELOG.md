@@ -1,6 +1,36 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.86...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.87...HEAD)
+
+## [v1.0.87](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.86...v1.0.87) - 2024-05-14
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.87 -->
+### What's Changed
+
+#### Fixed
+
+* Remove parsed document attribute by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/394
+
+#### Other
+
+* Bump sass from 1.75.0 to 1.76.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/392
+* Bump react from 18.2.0 to 18.3.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/387
+* Bump laravel/spark-stripe from 5.0.1 to 5.2.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/380
+* Bump spatie/url from 2.3.0 to 2.4.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/382
+* Bump doctrine/dbal from 3.8.2 to 3.8.4 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/384
+* Bump brianium/paratest from 7.2.3 to 7.4.4 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/389
+* Bump spatie/laravel-permission from 5.11.1 to 6.7.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/379
+* Bump swagger-ui-react from 5.16.2 to 5.17.7 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/393
+* Bump react-dom from 18.2.0 to 18.3.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/385
+* Bump eslint from 8.57.0 to 9.2.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/391
+* Bump league/flysystem-aws-s3-v3 from 3.24.0 to 3.27.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/401
+* Bump laravel/socialite from 5.12.1 to 5.14.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/400
+* Bump unisharp/laravel-filemanager from 2.7.0 to 2.9.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/399
+* Bump spatie/laravel-activitylog from 4.7.3 to 4.8.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/398
+* Bump sass from 1.76.0 to 1.77.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/395
+* Bump @headlessui/react from 1.7.15 to 2.0.3 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/396
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.86...v1.0.87
 
 ## [v1.0.86](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.85...v1.0.86) - 2024-04-21
 
