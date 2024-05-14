@@ -11,19 +11,19 @@ class TenantTest extends TenantTestCase
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => 'foo',
+            'domain' => $domain = $this->faker->unique()->word,
             'is_custom_subdomain' => true,
         ]);
 
         $this->assertNotNull($tenant->custom_domain);
-        $this->assertEquals('foo', $tenant->custom_domain->domain);
+        $this->assertEquals($domain, $tenant->custom_domain->domain);
     }
 
     public function test_fallback_domain_attribute_is_returned()
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => $this->faker->word,
+            'domain' => $this->faker->unique()->word,
         ]);
 
         $this->assertNotNull($tenant->fallback_domain);
@@ -34,7 +34,7 @@ class TenantTest extends TenantTestCase
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => 'foo',
+            'domain' => $this->faker->unique()->word,
             'is_custom_subdomain' => true,
         ]);
 
@@ -45,7 +45,7 @@ class TenantTest extends TenantTestCase
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => $this->faker->word,
+            'domain' => $this->faker->unique()->word,
         ]);
 
         $scheme = config('app.scheme');
@@ -58,7 +58,7 @@ class TenantTest extends TenantTestCase
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => 'foo',
+            'domain' => $this->faker->unique()->word,
             'is_custom_subdomain' => true,
         ]);
 
@@ -72,7 +72,7 @@ class TenantTest extends TenantTestCase
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => $this->faker->word,
+            'domain' => $this->faker->unique()->word,
         ]);
 
         $scheme = config('app.scheme');
@@ -85,7 +85,7 @@ class TenantTest extends TenantTestCase
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
-            'domain' => 'foo',
+            'domain' => $this->faker->unique()->word,
             'is_custom_subdomain' => true,
         ]);
 
