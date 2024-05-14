@@ -11,6 +11,8 @@ class PageControllerTest extends TenantTestCase
 {
     public function test_dashboard_page_can_be_reached()
     {
+        config()->set('app.debug', true);
+
         $this->withoutMiddleware([Subscribed::class]);
 
         $response = $this->actingAs(User::factory()->create())
