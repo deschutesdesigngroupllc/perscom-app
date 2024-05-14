@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d57ced579556e08b7f3a5739bfd7db7b",
+    "content-hash": "fe783f0ac138e7d5c21fb9cafecbdfbe",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -16732,58 +16732,6 @@
                 }
             ],
             "time": "2024-03-03T12:36:25+00:00"
-        },
-        {
-            "name": "zalas/phpunit-globals",
-            "version": "v3.2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/jakzal/phpunit-globals.git",
-                "reference": "18d599f5d211b8eb26d6fc0172ba52bf8cf90e86"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/jakzal/phpunit-globals/zipball/18d599f5d211b8eb26d6fc0172ba52bf8cf90e86",
-                "reference": "18d599f5d211b8eb26d6fc0172ba52bf8cf90e86",
-                "shasum": ""
-            },
-            "require": {
-                "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
-                "phpunit/phpunit": "^10.0"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-main": "3.x-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Zalas\\PHPUnit\\Globals\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jakub Zalas",
-                    "email": "jakub@zalas.pl"
-                }
-            ],
-            "description": "Allows to use attributes to define global variables in PHPUnit test cases.",
-            "support": {
-                "issues": "https://github.com/jakzal/phpunit-globals/issues",
-                "source": "https://github.com/jakzal/phpunit-globals/tree/v3.2.0"
-            },
-            "funding": [
-                {
-                    "url": "https://github.com/jakzal",
-                    "type": "github"
-                }
-            ],
-            "time": "2023-11-27T22:23:38+00:00"
         }
     ],
     "aliases": [
