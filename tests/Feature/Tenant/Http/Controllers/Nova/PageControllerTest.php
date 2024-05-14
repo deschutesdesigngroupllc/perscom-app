@@ -4,26 +4,26 @@ namespace Tests\Feature\Tenant\Http\Controllers\Nova;
 
 use App\Http\Middleware\Subscribed;
 use App\Models\User;
-use Illuminate\Support\Facades\Log;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class PageControllerTest extends TenantTestCase
 {
-    public function test_dashboard_page_can_be_reached()
+    protected function setUp(): void
     {
-        config()->set('app.debug', true);
+        parent::setUp();
 
         $this->withoutMiddleware([Subscribed::class]);
+    }
 
-        $response = $this->actingAs(User::factory()->create())
+    public function test_dashboard_page_can_be_reached()
+    {
+        $user = User::factory()->create();
+        $user->assignRole('admin');
+
+        $this->actingAs($user)
             ->get(route('nova.pages.dashboard.custom', [
                 'name' => 'main',
-            ]));
-
-        Log::debug('Response', [
-            'response' => $response,
-        ]);
-
-        $response->assertSuccessful();
+            ]))
+            ->assertSuccessful();
     }
 }
