@@ -73,14 +73,14 @@ class QualificationRecord extends Model
     protected $table = 'records_qualifications';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id', 'qualification_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
 
     /**
      * @var string[]
      */
-    protected $with = ['qualification'];
+    protected $with = ['document', 'qualification'];
 
     /**
      * @var string[]

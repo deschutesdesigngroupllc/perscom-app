@@ -44,7 +44,7 @@ class LoginToken extends Model
     protected $primaryKey = 'token';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id'];
 

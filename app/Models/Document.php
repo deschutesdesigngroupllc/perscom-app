@@ -46,9 +46,14 @@ class Document extends Model implements Htmlable
     use HasTags;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['name', 'description', 'content', 'updated_at', 'created_at'];
+
+    /**
+     * @var string[]
+     */
+    protected $with = ['tags'];
 
     /**
      * @var string[]

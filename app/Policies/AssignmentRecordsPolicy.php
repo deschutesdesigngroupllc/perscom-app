@@ -19,7 +19,7 @@ class AssignmentRecordsPolicy extends Policy
 
     public function viewAny(?User $user = null): bool
     {
-        return true;
+        return $this->hasPermissionTo($user, 'view:assignmentrecord') || optional($user)->tokenCan('view:assignmentrecord');
     }
 
     public function view(?User $user, AssignmentRecord $assignment): bool

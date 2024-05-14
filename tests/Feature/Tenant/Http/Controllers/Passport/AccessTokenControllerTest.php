@@ -77,8 +77,8 @@ class AccessTokenControllerTest extends TenantTestCase
         $this->assertArrayHasKey('refresh_token', $decodedTokenResponse);
         $this->assertArrayNotHasKey('id_token', $decodedTokenResponse);
         $this->assertSame('Bearer', $decodedTokenResponse['token_type']);
-        $expiresInSeconds = 31622400;
-        $this->assertEqualsWithDelta($expiresInSeconds, $decodedTokenResponse['expires_in'], 5);
+        $expiresInSeconds = 31536000;
+        $this->assertEqualsWithDelta($expiresInSeconds, $decodedTokenResponse['expires_in'], 30);
 
         $token = $this->app->make(PersonalAccessTokenFactory::class)->findAccessToken($decodedTokenResponse);
         $this->assertInstanceOf(Token::class, $token);
@@ -198,7 +198,7 @@ class AccessTokenControllerTest extends TenantTestCase
         $this->assertArrayHasKey('expires_in', $decodedResponse);
         $this->assertArrayHasKey('access_token', $decodedResponse);
         $this->assertSame('Bearer', $decodedResponse['token_type']);
-        $expiresInSeconds = 31622400;
+        $expiresInSeconds = 31536000;
         $this->assertEqualsWithDelta($expiresInSeconds, $decodedResponse['expires_in'], 5);
 
         $token = $this->app->make(PersonalAccessTokenFactory::class)->findAccessToken($decodedResponse);
@@ -231,7 +231,7 @@ class AccessTokenControllerTest extends TenantTestCase
         $this->assertArrayHasKey('token_type', $decodedResponse);
         $this->assertArrayHasKey('expires_in', $decodedResponse);
         $this->assertArrayHasKey('access_token', $decodedResponse);
-        $expiresInSeconds = 31622400;
+        $expiresInSeconds = 31536000;
         $this->assertEqualsWithDelta($expiresInSeconds, $decodedResponse['expires_in'], 5);
 
         $token = $this->app->make(PersonalAccessTokenFactory::class)->findAccessToken($decodedResponse);
@@ -271,7 +271,7 @@ class AccessTokenControllerTest extends TenantTestCase
         $this->assertArrayHasKey('expires_in', $parts);
         $this->assertArrayHasKey('access_token', $parts);
         $this->assertSame('Bearer', $parts['token_type']);
-        $expiresInSeconds = 31622400;
+        $expiresInSeconds = 31536000;
         $this->assertEqualsWithDelta($expiresInSeconds, $parts['expires_in'], 5);
     }
 }

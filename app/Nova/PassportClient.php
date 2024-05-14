@@ -148,12 +148,12 @@ class PassportClient extends Resource
                     ->help('The URL PERSCOM will redirect the user back to after completing authentication.')
                     ->onlyOnForms()
                     ->dependsOn(['type'], function (URL $field, NovaRequest $request, FormData $formData) {
-                        if ($formData->type !== 'authorization_code' || $formData !== 'implicit') {
-                            $field->rules([])
-                                ->hide();
+                        if ($formData->type === 'password' || $formData->type === 'client_credentials') {
+                            $field->hide();
+                        } else {
+                            $field->show()->rules(['required']);
                         }
-                    })
-                    ->rules('required'),
+                    }),
                 Text::make('Redirect URL', function () {
                     return $this->redirect;
                 })
@@ -164,9 +164,8 @@ class PassportClient extends Resource
                     ->onlyOnDetail(),
                 URL::make('Logout URL', 'logout')
                     ->dependsOn(['type'], function (URL $field, NovaRequest $request, FormData $formData) {
-                        if ($formData->type !== 'authorization_code' || $formData !== 'implicit') {
-                            $field->rules([])
-                                ->hide();
+                        if ($formData->type !== 'authorization_code' || $formData->type !== 'implicit') {
+                            $field->hide();
                         }
                     })
                     ->onlyOnForms()

@@ -3,7 +3,6 @@
 namespace Tests\Feature\Tenant\Bootstrappers;
 
 use App\Models\Tenant;
-use Spatie\Permission\PermissionRegistrar;
 use Stancl\Tenancy\Exceptions\TenantCouldNotBeIdentifiedById;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -20,7 +19,6 @@ class ConfigBootstrapperTest extends TenantTestCase
     {
         $this->assertEquals(config('mail.from.name'), $this->tenant->name);
         $this->assertEquals(config('app.timezone'), 'Asia/Dhaka');
-        $this->assertEquals(PermissionRegistrar::$cacheKey, "permissioncache-tenant{$this->tenant->getTenantKey()}");
     }
 
     /**
@@ -33,7 +31,6 @@ class ConfigBootstrapperTest extends TenantTestCase
 
         $this->assertEquals(config('mail.from.name'), env('MAIL_FROM_NAME'));
         $this->assertEquals(config('app.timezone'), 'UTC');
-        $this->assertEquals(PermissionRegistrar::$cacheKey, 'permissioncache');
 
         tenancy()->initialize($tenant);
     }

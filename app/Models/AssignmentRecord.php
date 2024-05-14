@@ -85,14 +85,14 @@ class AssignmentRecord extends Model
     protected $table = 'records_assignments';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id', 'status_id', 'unit_id', 'position_id', 'specialty_id', 'document_id', 'author_id', 'type', 'text', 'updated_at', 'created_at'];
 
     /**
      * @var string[]
      */
-    protected $with = ['position', 'specialty', 'unit'];
+    protected $with = ['document', 'position', 'specialty', 'status', 'unit'];
 
     /**
      * @var array<string, string>

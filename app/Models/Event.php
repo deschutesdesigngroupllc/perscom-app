@@ -111,7 +111,7 @@ class Event extends Model
     use HasTags;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = [
         'name',
@@ -171,7 +171,7 @@ class Event extends Model
     /**
      * @var string[]
      */
-    protected $with = ['calendar'];
+    protected $with = ['calendar', 'registrations', 'tags'];
 
     public static function boot(): void
     {

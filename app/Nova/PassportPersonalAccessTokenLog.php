@@ -78,6 +78,13 @@ class PassportPersonalAccessTokenLog extends Resource
                 })
                     ->language('vim')
                     ->onlyOnDetail(),
+                Code::make('Body', function (Activity $log) {
+                    return optional($log->properties->get('body'), function ($data) {
+                        return json_encode($data, JSON_THROW_ON_ERROR | JSON_PRETTY_PRINT);
+                    });
+                })
+                    ->json()
+                    ->onlyOnDetail(),
             ]),
             new Panel('Response', [
                 Text::make('Status', function (Activity $log) {

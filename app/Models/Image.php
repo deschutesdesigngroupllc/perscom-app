@@ -46,7 +46,7 @@ class Image extends Model
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['name', 'description', 'filename', 'path'];
 

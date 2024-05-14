@@ -46,7 +46,7 @@ class Task extends Model
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['title', 'description', 'instructions', 'form_id', 'updated_at', 'created_at'];
 

@@ -69,9 +69,14 @@ class ServiceRecord extends Model
     protected $table = 'records_service';
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['user_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
+
+    /**
+     * @var string[]
+     */
+    protected $with = ['document'];
 
     /**
      * @var string[]

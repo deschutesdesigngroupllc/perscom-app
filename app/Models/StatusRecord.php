@@ -40,7 +40,7 @@ class StatusRecord extends MorphPivot
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = [
         'text',

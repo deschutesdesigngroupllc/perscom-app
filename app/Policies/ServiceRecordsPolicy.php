@@ -19,7 +19,7 @@ class ServiceRecordsPolicy extends Policy
 
     public function viewAny(?User $user = null): bool
     {
-        return true;
+        return $this->hasPermissionTo($user, 'view:servicerecord') || optional($user)->tokenCan('view:servicerecord');
     }
 
     public function view(?User $user, ServiceRecord $service): bool

@@ -19,7 +19,7 @@ class AwardRecordsPolicy extends Policy
 
     public function viewAny(?User $user = null): bool
     {
-        return true;
+        return $this->hasPermissionTo($user, 'view:awardrecord') || optional($user)->tokenCan('view:awardrecord');
     }
 
     public function view(?User $user, AwardRecord $award): bool

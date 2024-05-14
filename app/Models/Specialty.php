@@ -52,7 +52,7 @@ class Specialty extends Model implements Sortable
     use SortableTrait;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = ['name', 'abbreviation', 'description', 'order', 'updated_at', 'created_at'];
 
