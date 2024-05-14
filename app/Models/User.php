@@ -115,9 +115,9 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions, $without = false)
  * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null)
+ * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null, $without = false)
  * @method static \Illuminate\Database\Eloquent\Builder|User status(?mixed $statuses)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereApproved($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereCoverPhoto($value)
@@ -143,6 +143,8 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User withoutPermission($permissions)
+ * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
  *
  * @mixin \Eloquent
  */
@@ -218,15 +220,15 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      * @var array<int, string>
      */
     protected $appends = [
-        'online',
-        'url',
-        'relative_url',
-        'profile_photo_url',
-        'cover_photo_url',
-        'last_assignment_change_date',
-        'last_rank_change_date',
-        'time_in_assignment',
-        'time_in_grade',
+        //        'online',
+        //        'url',
+        //        'relative_url',
+        //        'profile_photo_url',
+        //        'cover_photo_url',
+        //        'last_assignment_change_date',
+        //        'last_rank_change_date',
+        //        'time_in_assignment',
+        //        'time_in_grade',
     ];
 
     /**
