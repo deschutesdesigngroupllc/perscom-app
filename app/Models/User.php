@@ -220,15 +220,11 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
      * @var array<int, string>
      */
     protected $appends = [
-        //        'online',
-        //        'url',
-        //        'relative_url',
-        //        'profile_photo_url',
-        //        'cover_photo_url',
-        //        'last_assignment_change_date',
-        //        'last_rank_change_date',
-        //        'time_in_assignment',
-        //        'time_in_grade',
+        'online',
+        'url',
+        'relative_url',
+        'profile_photo_url',
+        'cover_photo_url',
     ];
 
     /**
@@ -309,11 +305,13 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         return 'web';
     }
 
-    public function getTimeInAssignmentAttribute(): mixed
+    public function timeInAssignment(): Attribute
     {
-        return optional($this->primary_assignment_records->first()?->created_at, function ($date) {
-            return Carbon::now()->diff($date, true);
-        });
+        return Attribute::make(
+            get: fn () => optional($this->primary_assignment_records()->first()?->created_at, function ($date) {
+                return Carbon::now()->diff($date, true);
+            })
+        )->shouldCache();
     }
 
     public function getOnlineAttribute(): bool
@@ -335,11 +333,13 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         );
     }
 
-    public function getTimeInGradeAttribute(): mixed
+    public function timeInGrade(): Attribute
     {
-        return optional($this->rank_records->first()?->created_at, function ($date) {
-            return Carbon::now()->diff($date, true);
-        });
+        return Attribute::make(
+            get: fn () => optional($this->rank_records()->first()?->created_at, function ($date) {
+                return Carbon::now()->diff($date, true);
+            })
+        )->shouldCache();
     }
 
     public function lastAssignmentChangeDate(): Attribute
@@ -348,7 +348,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             get: fn () => optional($this->primary_assignment_records()->latest()->first(), function (?AssignmentRecord $record) {
                 return $record->created_at;
             })
-        );
+        )->shouldCache();
     }
 
     public function lastRankChangeDate(): Attribute
@@ -357,7 +357,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             get: fn () => optional($this->rank_records()->latest()->first(), function (?RankRecord $record) {
                 return $record->created_at;
             })
-        );
+        )->shouldCache();
     }
 
     public function assignment_records(): HasMany
