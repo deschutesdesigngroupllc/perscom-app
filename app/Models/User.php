@@ -308,7 +308,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function timeInAssignment(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->primary_assignment_records()->first()?->created_at, function ($date) {
+            get: fn () => optional($this->primary_assignment_records()->first()->created_at ?? null, function ($date) {
                 return Carbon::now()->diff($date, true);
             })
         )->shouldCache();
@@ -336,7 +336,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function timeInGrade(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->rank_records()->first()?->created_at, function ($date) {
+            get: fn () => optional($this->rank_records()->first()?->created_at ?? null, function ($date) {
                 return Carbon::now()->diff($date, true);
             })
         )->shouldCache();
