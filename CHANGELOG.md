@@ -1,6 +1,17 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.88...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.89...HEAD)
+
+## [v1.0.89](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.88...v1.0.89) - 2024-05-17
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.89 -->
+### What's Changed
+
+#### Fixed
+
+* Remove some attributes out of User object by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/403
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.88...v1.0.89
 
 ## [v1.0.88](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.87...v1.0.88) - 2024-05-14
 
