@@ -7,6 +7,7 @@ use App\Traits\HasTags;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Calendar
@@ -41,6 +42,7 @@ class Calendar extends Model
     use ClearsResponseCache;
     use HasFactory;
     use HasTags;
+    use SoftDeletes;
 
     /**
      * @var array<int, string>

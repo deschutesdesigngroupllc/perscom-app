@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -68,6 +69,7 @@ class Form extends Model
     use HasFields;
     use HasNotifications;
     use HasTags;
+    use SoftDeletes;
 
     /**
      * @var array<int, string>

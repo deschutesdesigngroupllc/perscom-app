@@ -7,16 +7,16 @@ use Illuminate\Support\Optional;
 
 class BaseFeature
 {
-    protected ?Tenant $tenant = null;
+    protected static ?Tenant $tenant = null;
 
     public function resolveTenant(?string $scope): Tenant|Optional|null
     {
-        if (is_null($this->tenant)) {
-            return $this->tenant = optional($scope, static function ($scope) {
+        if (is_null(self::$tenant)) {
+            return self::$tenant = optional($scope, static function ($scope) {
                 return Tenant::findOrFail($scope);
             });
         }
 
-        return $this->tenant;
+        return self::$tenant;
     }
 }

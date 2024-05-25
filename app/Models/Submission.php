@@ -10,6 +10,7 @@ use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Nova\Actions\Actionable;
 use Stancl\VirtualColumn\VirtualColumn;
@@ -53,6 +54,7 @@ class Submission extends Model implements Htmlable, Stringable
     use HasFactory;
     use HasStatuses;
     use HasUser;
+    use SoftDeletes;
     use VirtualColumn;
 
     /**

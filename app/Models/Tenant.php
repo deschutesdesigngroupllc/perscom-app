@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Events\NullDispatcher;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
@@ -105,6 +106,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureSc
     use HasFactory;
     use HasFeatures;
     use Notifiable;
+    use SoftDeletes;
 
     protected static ?Dispatcher $eventDispatcher = null;
 
