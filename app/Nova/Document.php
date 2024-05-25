@@ -6,8 +6,8 @@ use App\Features\ExportDataFeature;
 use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\DateTime;
-use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Tag;
 use Laravel\Nova\Fields\Text;
@@ -64,12 +64,16 @@ class Document extends Resource
                 ->hideFromIndex()
                 ->help('Use the document tags below to dynamically inject content into your document when the document is attached to certain records.')
                 ->rules(['required']),
-            Heading::make('Meta')
-                ->onlyOnDetail(),
-            DateTime::make('Created At')
-                ->onlyOnDetail(),
-            DateTime::make('Updated At')
-                ->onlyOnDetail(),
+            new Panel('History', [
+                BelongsTo::make('Author', 'author', User::class)
+                    ->hideFromIndex(),
+                DateTime::make('Created At')
+                    ->sortable()
+                    ->exceptOnForms(),
+                DateTime::make('Updated At')
+                    ->exceptOnForms()
+                    ->hideFromIndex(),
+            ]),
             new Panel('Document Tags', [
                 HtmlField::make('Document Tags')
                     ->view('fields.html.document-tags')

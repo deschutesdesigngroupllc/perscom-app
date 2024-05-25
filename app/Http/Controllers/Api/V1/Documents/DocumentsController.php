@@ -35,9 +35,19 @@ class DocumentsController extends Controller
     /**
      * @return string[]
      */
+    public function includes(): array
+    {
+        return [
+            'author',
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
     public function sortableBy(): array
     {
-        return ['id', 'name', 'description', 'content', 'created_at', 'updated_at'];
+        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at'];
     }
 
     /**
@@ -53,6 +63,6 @@ class DocumentsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'description', 'content', 'created_at', 'updated_at'];
+        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at'];
     }
 }
