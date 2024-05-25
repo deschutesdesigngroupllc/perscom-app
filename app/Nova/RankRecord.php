@@ -78,7 +78,7 @@ class RankRecord extends Resource
                 ->onlyOnForms(),
             new Panel('History', [
                 BelongsTo::make('Author', 'author', User::class)
-                    ->onlyOnDetail(),
+                    ->hideFromIndex(),
                 DateTime::make('Created At')
                     ->sortable()
                     ->exceptOnForms(),
@@ -87,7 +87,7 @@ class RankRecord extends Resource
                     ->hideFromIndex(),
             ]),
             (new DocumentViewerTool())->withTitle($this->document->name ?? null)
-                ->withContent($this->document?->toHtml($this->user, $this)),
+                ->withContent(optional(optional($this)->document)->toHtml(optional($this)->user, optional($this)->resource)),
             MorphMany::make('Attachments', 'attachments', Attachment::class),
         ];
     }

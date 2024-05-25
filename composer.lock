@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8349674a0d0dead0c011946ada2eac04",
+    "content-hash": "e959144f4bc2c620e6a501ff6c7d7968",
     "packages": [
         {
             "name": "aws/aws-crt-php",
@@ -2242,142 +2242,6 @@
                 }
             ],
             "time": "2023-10-27T10:59:02+00:00"
-        },
-        {
-            "name": "intervention/gif",
-            "version": "4.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Intervention/gif.git",
-                "reference": "3a2b5f8a8856e8877cdab5c47e51aab2d4cb23a3"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/gif/zipball/3a2b5f8a8856e8877cdab5c47e51aab2d4cb23a3",
-                "reference": "3a2b5f8a8856e8877cdab5c47e51aab2d4cb23a3",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^1",
-                "phpunit/phpunit": "^10.0",
-                "slevomat/coding-standard": "~8.0",
-                "squizlabs/php_codesniffer": "^3.8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Intervention\\Gif\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oliver Vogel",
-                    "email": "oliver@intervention.io",
-                    "homepage": "https://intervention.io/"
-                }
-            ],
-            "description": "Native PHP GIF Encoder/Decoder",
-            "homepage": "https://github.com/intervention/gif",
-            "keywords": [
-                "animation",
-                "gd",
-                "gif",
-                "image"
-            ],
-            "support": {
-                "issues": "https://github.com/Intervention/gif/issues",
-                "source": "https://github.com/Intervention/gif/tree/4.1.0"
-            },
-            "funding": [
-                {
-                    "url": "https://paypal.me/interventionio",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/Intervention",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-03-26T17:23:47+00:00"
-        },
-        {
-            "name": "intervention/image",
-            "version": "3.6.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Intervention/image.git",
-                "reference": "193324ec88bc5ad4039e57ce9b926ae28dfde813"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/193324ec88bc5ad4039e57ce9b926ae28dfde813",
-                "reference": "193324ec88bc5ad4039e57ce9b926ae28dfde813",
-                "shasum": ""
-            },
-            "require": {
-                "ext-mbstring": "*",
-                "intervention/gif": "^4.1",
-                "php": "^8.1"
-            },
-            "require-dev": {
-                "mockery/mockery": "^1.6",
-                "phpstan/phpstan": "^1",
-                "phpunit/phpunit": "^10.0",
-                "slevomat/coding-standard": "~8.0",
-                "squizlabs/php_codesniffer": "^3.8"
-            },
-            "suggest": {
-                "ext-exif": "Recommended to be able to read EXIF data properly."
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Intervention\\Image\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oliver Vogel",
-                    "email": "oliver@intervention.io",
-                    "homepage": "https://intervention.io/"
-                }
-            ],
-            "description": "PHP image manipulation",
-            "homepage": "https://image.intervention.io/",
-            "keywords": [
-                "gd",
-                "image",
-                "imagick",
-                "resize",
-                "thumbnail",
-                "watermark"
-            ],
-            "support": {
-                "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/3.6.4"
-            },
-            "funding": [
-                {
-                    "url": "https://paypal.me/interventionio",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/Intervention",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-05-08T13:53:15+00:00"
         },
         {
             "name": "jean85/pretty-package-versions",
@@ -6331,7 +6195,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6367,7 +6231,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6403,7 +6267,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6439,7 +6303,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6475,7 +6339,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6511,7 +6375,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6547,7 +6411,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6583,7 +6447,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6619,7 +6483,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6655,7 +6519,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -6691,7 +6555,7 @@
         },
         {
             "name": "perscom/text-action-field",
-            "version": "dev-main",
+            "version": "dev-feature/username-registration",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/TextActionField",
@@ -12409,86 +12273,6 @@
             "time": "2023-12-16T18:30:50+00:00"
         },
         {
-            "name": "unisharp/laravel-filemanager",
-            "version": "v2.9.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/UniSharp/laravel-filemanager.git",
-                "reference": "eecae14bc2d31e9d12472d4c4ec362da1387ba82"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/UniSharp/laravel-filemanager/zipball/eecae14bc2d31e9d12472d4c4ec362da1387ba82",
-                "reference": "eecae14bc2d31e9d12472d4c4ec362da1387ba82",
-                "shasum": ""
-            },
-            "require": {
-                "ext-exif": "*",
-                "ext-fileinfo": "*",
-                "illuminate/config": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "illuminate/container": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "illuminate/filesystem": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "illuminate/http": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "illuminate/support": "5.4.* || 5.5.* || 5.6.* || 5.7.* || 5.8.* || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0 || ^11.0",
-                "intervention/image": ">=2.0.0",
-                "league/flysystem": ">=2.0.0",
-                "php": ">=7.2.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~1.3.0",
-                "phpunit/phpunit": "~8.0",
-                "squizlabs/php_codesniffer": "^3.1"
-            },
-            "suggest": {
-                "ext-gd": "to use GD library based image processing.",
-                "ext-imagick": "to use Imagick based image processing."
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "UniSharp\\LaravelFilemanager\\LaravelFilemanagerServiceProvider"
-                    ],
-                    "aliases": []
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "UniSharp\\LaravelFilemanager\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Trevor Sawler",
-                    "email": "trevor.sawler@gmail.com"
-                },
-                {
-                    "name": "UniSharp Ltd.",
-                    "email": "opensource@unisharp.com"
-                }
-            ],
-            "description": "A file upload/editor intended for use with Laravel 5 to 10 and CKEditor / TinyMCE",
-            "keywords": [
-                "CKEditor",
-                "file",
-                "filemanager",
-                "image",
-                "laravel",
-                "manager",
-                "tinymce",
-                "upload"
-            ],
-            "support": {
-                "issues": "https://github.com/UniSharp/laravel-filemanager/issues",
-                "source": "https://github.com/UniSharp/laravel-filemanager/tree/v2.9.0"
-            },
-            "time": "2024-04-08T06:24:32+00:00"
-        },
-        {
             "name": "vlucas/phpdotenv",
             "version": "v5.6.0",
             "source": {
@@ -16831,6 +16615,7 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
+        "laravel/pulse": 10,
         "perscom/message-field": 20,
         "perscom/newsfeed": 20,
         "perscom/text-action-field": 20,
@@ -16844,5 +16629,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.6.0"
+    "plugin-api-version": "2.3.0"
 }

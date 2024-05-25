@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasAuthor;
 use App\Traits\HasTags;
 use Carbon\Carbon;
 use Illuminate\Contracts\Support\Htmlable;
@@ -15,21 +16,25 @@ use Illuminate\Support\Str;
  * App\Models\Document
  *
  * @property int $id
+ * @property int|null $author_id
  * @property string $name
  * @property string|null $description
  * @property string $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\User|null $author
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  *
+ * @method static \Illuminate\Database\Eloquent\Builder|Document author(\App\Models\User $user)
  * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
  * @method static \Illuminate\Database\Eloquent\Builder|Document tags(?mixed $tag)
+ * @method static \Illuminate\Database\Eloquent\Builder|Document whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereDescription($value)
@@ -42,6 +47,7 @@ use Illuminate\Support\Str;
 class Document extends Model implements Htmlable
 {
     use ClearsResponseCache;
+    use HasAuthor;
     use HasFactory;
     use HasTags;
 
@@ -88,6 +94,8 @@ class Document extends Model implements Htmlable
         '{rank_record_date}' => 'The date of the rank record.',
         '{service_record_text}' => 'The text of the service record.',
         '{service_record_date}' => 'The date of the service record.',
+        '{author_resource_name}' => 'The author\'s name if linked to a resource.',
+        '{author_document_name}' => 'The document author\'s name.',
     ];
 
     public function categories(): BelongsToMany
@@ -119,6 +127,8 @@ class Document extends Model implements Htmlable
             $tag === '{qualification_record_qualification}' => $attachedModel->qualification->name ?? null,
             $tag === '{rank_record_rank}' => $attachedModel->rank->name ?? null,
             $tag === '{rank_record_type}' => optional($attachedModel->type)->getLabel() ?? null,
+            $tag === '{author_resource_name}' => ! is_null($attachedModel) && in_array(HasAuthor::class, class_uses_recursive(get_class($attachedModel))) ? optional($attachedModel->author)->name : null,
+            $tag === '{author_document_name}' => optional($this->author)->name,
             default => null
         };
     }

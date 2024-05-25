@@ -22,7 +22,6 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  *
  * @property int $id
  * @property string $name
- * @property mixed|null $domain
  * @property string $email
  * @property string|null $website
  * @property string|null $stripe_id
@@ -50,6 +49,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property-read mixed|null $custom_domain
  * @property-read mixed|null $custom_url
  * @property-read string $database_status
+ * @property-read mixed|null $domain
  * @property-read mixed|null $fallback_domain
  * @property-read mixed|null $fallback_url
  * @property-read array $invoice_emails
@@ -78,7 +78,6 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereDomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereExtraBillingInformation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereId($value)

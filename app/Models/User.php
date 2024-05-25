@@ -71,8 +71,6 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
  * @property-read int|null $fields_count
  * @property-read bool $online
- * @property-read mixed|null $time_in_assignment
- * @property-read mixed|null $time_in_grade
  * @property-read mixed $last_assignment_change_date
  * @property-read mixed $last_rank_change_date
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
@@ -107,6 +105,8 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read int|null $tasks_count
+ * @property-read mixed $time_in_assignment
+ * @property-read mixed $time_in_grade
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read \App\Models\Unit|null $unit
