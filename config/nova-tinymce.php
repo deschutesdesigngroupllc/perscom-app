@@ -23,7 +23,7 @@ return [
         ],
         'toolbar' => 'undo redo | styleselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | image | bullist numlist outdent indent | link',
         'relative_urls' => false,
-        'use_lfm' => true,
+        'use_lfm' => false,
         'use_dark' => true,
         'lfm_url' => 'files',
     ],

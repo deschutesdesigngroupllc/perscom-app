@@ -155,7 +155,7 @@ class Event extends Resource
                     ->onlyOnForms()
                     ->dependsOn(['repeats'], function (Number $field, NovaRequest $request, FormData $formData) {
                         if ($formData->repeats) {
-                            $field->rules('required')
+                            $field->rules(['required', 'gte:1'])
                                 ->show();
                         }
                     }),

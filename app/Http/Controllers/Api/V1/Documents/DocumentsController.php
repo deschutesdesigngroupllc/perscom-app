@@ -55,7 +55,7 @@ class DocumentsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'name', 'description', 'content', 'created_at', 'updated_at'];
+        return ['id', 'author_id', 'name', 'description', 'content', 'created_at', 'updated_at'];
     }
 
     /**
