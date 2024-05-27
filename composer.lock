@@ -2456,16 +2456,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v10.48.10",
+            "version": "v10.48.11",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "91e2b9e218afa4e5c377510faa11957042831ba3"
+                "reference": "afdc2b03bd8d126446583da5414d659491aa4f54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/91e2b9e218afa4e5c377510faa11957042831ba3",
-                "reference": "91e2b9e218afa4e5c377510faa11957042831ba3",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/afdc2b03bd8d126446583da5414d659491aa4f54",
+                "reference": "afdc2b03bd8d126446583da5414d659491aa4f54",
                 "shasum": ""
             },
             "require": {
@@ -2659,7 +2659,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-04-30T12:52:59+00:00"
+            "time": "2024-05-21T17:53:51+00:00"
         },
         {
             "name": "laravel/horizon",
@@ -3022,16 +3022,16 @@
         },
         {
             "name": "laravel/prompts",
-            "version": "v0.1.21",
+            "version": "v0.1.22",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/prompts.git",
-                "reference": "23ea808e8a145653e0ab29e30d4385e49f40a920"
+                "reference": "37f94de71758dbfbccc9d299b0e5eb76e02a40f5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/prompts/zipball/23ea808e8a145653e0ab29e30d4385e49f40a920",
-                "reference": "23ea808e8a145653e0ab29e30d4385e49f40a920",
+                "url": "https://api.github.com/repos/laravel/prompts/zipball/37f94de71758dbfbccc9d299b0e5eb76e02a40f5",
+                "reference": "37f94de71758dbfbccc9d299b0e5eb76e02a40f5",
                 "shasum": ""
             },
             "require": {
@@ -3074,9 +3074,9 @@
             "description": "Add beautiful and user-friendly forms to your command-line applications.",
             "support": {
                 "issues": "https://github.com/laravel/prompts/issues",
-                "source": "https://github.com/laravel/prompts/tree/v0.1.21"
+                "source": "https://github.com/laravel/prompts/tree/v0.1.22"
             },
-            "time": "2024-04-30T12:46:16+00:00"
+            "time": "2024-05-10T19:22:18+00:00"
         },
         {
             "name": "laravel/pulse",
@@ -3951,16 +3951,16 @@
         },
         {
             "name": "league/flysystem",
-            "version": "3.27.0",
+            "version": "3.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem.git",
-                "reference": "4729745b1ab737908c7d055148c9a6b3e959832f"
+                "reference": "e611adab2b1ae2e3072fa72d62c62f52c2bf1f0c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/4729745b1ab737908c7d055148c9a6b3e959832f",
-                "reference": "4729745b1ab737908c7d055148c9a6b3e959832f",
+                "url": "https://api.github.com/repos/thephpleague/flysystem/zipball/e611adab2b1ae2e3072fa72d62c62f52c2bf1f0c",
+                "reference": "e611adab2b1ae2e3072fa72d62c62f52c2bf1f0c",
                 "shasum": ""
             },
             "require": {
@@ -3984,10 +3984,13 @@
                 "composer/semver": "^3.0",
                 "ext-fileinfo": "*",
                 "ext-ftp": "*",
+                "ext-mongodb": "^1.3",
                 "ext-zip": "*",
                 "friendsofphp/php-cs-fixer": "^3.5",
                 "google/cloud-storage": "^1.23",
+                "guzzlehttp/psr7": "^2.6",
                 "microsoft/azure-storage-blob": "^1.1",
+                "mongodb/mongodb": "^1.2",
                 "phpseclib/phpseclib": "^3.0.36",
                 "phpstan/phpstan": "^1.10",
                 "phpunit/phpunit": "^9.5.11|^10.0",
@@ -4025,19 +4028,9 @@
             ],
             "support": {
                 "issues": "https://github.com/thephpleague/flysystem/issues",
-                "source": "https://github.com/thephpleague/flysystem/tree/3.27.0"
+                "source": "https://github.com/thephpleague/flysystem/tree/3.28.0"
             },
-            "funding": [
-                {
-                    "url": "https://ecologi.com/frankdejonge",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/frankdejonge",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-04-07T19:17:50+00:00"
+            "time": "2024-05-22T10:09:12+00:00"
         },
         {
             "name": "league/flysystem-aws-s3-v3",
@@ -4106,16 +4099,16 @@
         },
         {
             "name": "league/flysystem-local",
-            "version": "3.25.1",
+            "version": "3.28.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/thephpleague/flysystem-local.git",
-                "reference": "61a6a90d6e999e4ddd9ce5adb356de0939060b92"
+                "reference": "13f22ea8be526ea58c2ddff9e158ef7c296e4f40"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/61a6a90d6e999e4ddd9ce5adb356de0939060b92",
-                "reference": "61a6a90d6e999e4ddd9ce5adb356de0939060b92",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-local/zipball/13f22ea8be526ea58c2ddff9e158ef7c296e4f40",
+                "reference": "13f22ea8be526ea58c2ddff9e158ef7c296e4f40",
                 "shasum": ""
             },
             "require": {
@@ -4149,19 +4142,9 @@
                 "local"
             ],
             "support": {
-                "source": "https://github.com/thephpleague/flysystem-local/tree/3.25.1"
+                "source": "https://github.com/thephpleague/flysystem-local/tree/3.28.0"
             },
-            "funding": [
-                {
-                    "url": "https://ecologi.com/frankdejonge",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/frankdejonge",
-                    "type": "github"
-                }
-            ],
-            "time": "2024-03-15T19:58:44+00:00"
+            "time": "2024-05-06T20:05:52+00:00"
         },
         {
             "name": "league/mime-type-detection",
@@ -6195,7 +6178,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6231,7 +6214,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6267,7 +6250,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6303,7 +6286,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6339,7 +6322,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6375,7 +6358,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6411,7 +6394,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6447,7 +6430,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6483,7 +6466,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6519,7 +6502,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -6555,7 +6538,7 @@
         },
         {
             "name": "perscom/text-action-field",
-            "version": "dev-feature/username-registration",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/TextActionField",
@@ -8666,34 +8649,33 @@
         },
         {
             "name": "spatie/laravel-responsecache",
-            "version": "7.4.10",
+            "version": "7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-responsecache.git",
-                "reference": "cf0305f73fcc49dacfadd0f2228887a92fa736ac"
+                "reference": "e69b3f3abc302a255e5b32c68303d41f09d38bd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/cf0305f73fcc49dacfadd0f2228887a92fa736ac",
-                "reference": "cf0305f73fcc49dacfadd0f2228887a92fa736ac",
+                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/e69b3f3abc302a255e5b32c68303d41f09d38bd3",
+                "reference": "e69b3f3abc302a255e5b32c68303d41f09d38bd3",
                 "shasum": ""
             },
             "require": {
-                "illuminate/cache": "^8.71|^9.0|^10.0",
-                "illuminate/console": "^8.71|^9.0|^10.0",
-                "illuminate/container": "^8.71|^9.0|^10.0",
-                "illuminate/http": "^8.71|^9.0|^10.0",
-                "illuminate/support": "^8.71|^9.0|^10.0",
-                "nesbot/carbon": "^2.63",
-                "php": "^8.0",
+                "illuminate/cache": "^10.0|^11.0",
+                "illuminate/console": "^10.0|^11.0",
+                "illuminate/container": "^10.0|^11.0",
+                "illuminate/http": "^10.0|^11.0",
+                "illuminate/support": "^10.0|^11.0",
+                "nesbot/carbon": "^2.63|^3.0",
+                "php": "^8.2",
                 "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
-                "laravel/framework": "^9.0|^10.0",
+                "laravel/framework": "^10.0|^11.0",
                 "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^6.23|^7.0|^8.0",
-                "pestphp/pest": "^1.22",
-                "phpunit/phpunit": "^9.4"
+                "orchestra/testbench": "^8.0|^9.0",
+                "pestphp/pest": "^2.22"
             },
             "type": "library",
             "extra": {
@@ -8734,7 +8716,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-responsecache/tree/7.4.10"
+                "source": "https://github.com/spatie/laravel-responsecache/tree/7.5.2"
             },
             "funding": [
                 {
@@ -8746,7 +8728,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-28T18:47:12+00:00"
+            "time": "2024-04-03T09:44:10+00:00"
         },
         {
             "name": "spatie/laravel-webhook-server",
@@ -8874,16 +8856,16 @@
         },
         {
             "name": "spatie/once",
-            "version": "3.1.0",
+            "version": "3.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/once.git",
-                "reference": "aab3fc8694e7caec98b2d330c4a8420391c7559d"
+                "reference": "25252b821765d72566be17c52ea05b35329f0f8f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/once/zipball/aab3fc8694e7caec98b2d330c4a8420391c7559d",
-                "reference": "aab3fc8694e7caec98b2d330c4a8420391c7559d",
+                "url": "https://api.github.com/repos/spatie/once/zipball/25252b821765d72566be17c52ea05b35329f0f8f",
+                "reference": "25252b821765d72566be17c52ea05b35329f0f8f",
                 "shasum": ""
             },
             "require": {
@@ -8924,7 +8906,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/once/tree/3.1.0"
+                "source": "https://github.com/spatie/once/tree/3.1.1"
             },
             "funding": [
                 {
@@ -8932,7 +8914,7 @@
                     "type": "custom"
                 }
             ],
-            "time": "2022-04-21T12:23:20+00:00"
+            "time": "2024-05-27T09:17:58+00:00"
         },
         {
             "name": "spatie/url",
@@ -16629,5 +16611,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
