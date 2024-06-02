@@ -187,8 +187,8 @@ class Field extends Model
         parent::boot();
 
         static::saving(function (Field $field) {
-            $field->nova_type = Field::$novaFieldTypes[$field->type];
-            $field->cast = Field::$fieldCasts[$field->type];
+            $field->nova_type = Field::$novaFieldTypes[$field->type] ?? Text::class;
+            $field->cast = Field::$fieldCasts[$field->type] ?? 'string';
         });
     }
 

@@ -55,21 +55,23 @@ class Group extends Model implements Sortable
         static::addGlobalScope(new GroupScope());
     }
 
-    public function scopeOrderForRoster(Builder $query): void
+    public function scopeOrderForRoster(Builder $query, ?string $groupId = null): void
     {
-        $query->with([
-            'units.users' => function (HasMany $query) {
-                $query
-                    ->select('users.*')
-                    ->leftJoin('ranks', 'ranks.id', '=', 'users.rank_id')
-                    ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
-                    ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id')
-                    ->orderBy('ranks.order')
-                    ->orderBy('positions.order')
-                    ->orderBy('specialties.order')
-                    ->orderBy('users.name');
-            },
-        ]);
+        $query
+            ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
+            ->with([
+                'units.users' => function (HasMany $query) {
+                    $query
+                        ->select('users.*')
+                        ->leftJoin('ranks', 'ranks.id', '=', 'users.rank_id')
+                        ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
+                        ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id')
+                        ->orderBy('ranks.order')
+                        ->orderBy('positions.order')
+                        ->orderBy('specialties.order')
+                        ->orderBy('users.name');
+                },
+            ]);
     }
 
     public function units(): BelongsToMany
