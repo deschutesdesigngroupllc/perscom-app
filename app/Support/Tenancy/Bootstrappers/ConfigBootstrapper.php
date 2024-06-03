@@ -22,7 +22,7 @@ class ConfigBootstrapper implements TenancyBootstrapper
 
         Config::set('mail.from.name', $tenant->getAttribute('name'));
         Config::set('app.timezone', setting('timezone', config('app.timezone')));
-        Config::set('responsecache.cache_tag', "tenant-$tenant->id");
+        Config::set('responsecache.cache_tag', "tenant.{$tenant->getKey()}");
     }
 
     public function revert(): void
