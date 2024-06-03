@@ -12,16 +12,12 @@ class OAuth2AccessFeatureTest extends TenantTestCase
     {
         $this->withoutSubscription();
 
-        OAuth2AccessFeature::resetTenant();
-
         $this->assertTrue(Feature::inactive(OAuth2AccessFeature::class));
     }
 
     public function test_feature_enabled_on_trial()
     {
         $this->onTrial();
-
-        OAuth2AccessFeature::resetTenant();
 
         $this->assertTrue(Feature::active(OAuth2AccessFeature::class));
     }
@@ -30,8 +26,6 @@ class OAuth2AccessFeatureTest extends TenantTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
 
-        OAuth2AccessFeature::resetTenant();
-
         $this->assertTrue(Feature::inactive(OAuth2AccessFeature::class));
     }
 
@@ -39,16 +33,12 @@ class OAuth2AccessFeatureTest extends TenantTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
 
-        OAuth2AccessFeature::resetTenant();
-
         $this->assertTrue(Feature::inactive(OAuth2AccessFeature::class));
     }
 
     public function test_feature_enabled_on_enterprise_plan()
     {
         $this->withSubscription(env('STRIPE_PRODUCT_ENTERPRISE_MONTH'));
-
-        OAuth2AccessFeature::resetTenant();
 
         $this->assertTrue(Feature::active(OAuth2AccessFeature::class));
     }

@@ -12,16 +12,12 @@ class SocialLoginFeatureTest extends TenantTestCase
     {
         $this->withoutSubscription();
 
-        SocialLoginFeature::resetTenant();
-
         $this->assertTrue(Feature::inactive(SocialLoginFeature::class));
     }
 
     public function test_feature_enabled_on_trial()
     {
         $this->onTrial();
-
-        SocialLoginFeature::resetTenant();
 
         $this->assertTrue(Feature::active(SocialLoginFeature::class));
     }
@@ -30,8 +26,6 @@ class SocialLoginFeatureTest extends TenantTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
 
-        SocialLoginFeature::resetTenant();
-
         $this->assertTrue(Feature::active(SocialLoginFeature::class));
     }
 
@@ -39,16 +33,12 @@ class SocialLoginFeatureTest extends TenantTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
 
-        SocialLoginFeature::resetTenant();
-
         $this->assertTrue(Feature::active(SocialLoginFeature::class));
     }
 
     public function test_feature_enabled_on_enterprise_plan()
     {
         $this->withSubscription(env('STRIPE_PRODUCT_ENTERPRISE_MONTH'));
-
-        SocialLoginFeature::resetTenant();
 
         $this->assertTrue(Feature::active(SocialLoginFeature::class));
     }

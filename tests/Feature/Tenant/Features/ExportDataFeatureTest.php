@@ -12,16 +12,12 @@ class ExportDataFeatureTest extends TenantTestCase
     {
         $this->withoutSubscription();
 
-        ExportDataFeature::resetTenant();
-
         $this->assertTrue(Feature::inactive(ExportDataFeature::class));
     }
 
     public function test_feature_enabled_on_trial()
     {
         $this->onTrial();
-
-        ExportDataFeature::resetTenant();
 
         $this->assertTrue(Feature::active(ExportDataFeature::class));
     }
@@ -30,8 +26,6 @@ class ExportDataFeatureTest extends TenantTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
 
-        ExportDataFeature::resetTenant();
-
         $this->assertTrue(Feature::inactive(ExportDataFeature::class));
     }
 
@@ -39,16 +33,12 @@ class ExportDataFeatureTest extends TenantTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
 
-        ExportDataFeature::resetTenant();
-
         $this->assertTrue(Feature::inactive(ExportDataFeature::class));
     }
 
     public function test_feature_enabled_on_enterprise_plan()
     {
         $this->withSubscription(env('STRIPE_PRODUCT_ENTERPRISE_MONTH'));
-
-        ExportDataFeature::resetTenant();
 
         $this->assertTrue(Feature::active(ExportDataFeature::class));
     }
