@@ -37,7 +37,7 @@ class TasksController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'title', 'description', 'instructions', 'form_id', 'form.*', 'created_at', 'updated_at'];
+        return ['id', 'title', 'description', 'instructions', 'form_id', 'form.*', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -45,7 +45,7 @@ class TasksController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'title', 'description', 'instructions', 'form_id', 'created_at', 'updated_at'];
+        return ['id', 'title', 'description', 'instructions', 'form_id', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -53,6 +53,6 @@ class TasksController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'title', 'description', 'instructions', 'form_id', 'form.*', 'created_at', 'updated_at'];
+        return ['id', 'title', 'description', 'instructions', 'form_id', 'form.*', 'created_at', 'updated_at', 'deleted_at'];
     }
 }

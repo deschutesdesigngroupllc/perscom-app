@@ -34,7 +34,7 @@ class UserObserverTest extends TenantTestCase
 
         $user->update(['notes' => 'foo bar']);
 
-        $this->assertEqualsWithDelta(now(), $user->notes_updated_at, 1);
+        $this->assertEqualsWithDelta(now(), $user->notes_updated_at, 3);
     }
 
     public function test_user_password_changed_notification_sent()

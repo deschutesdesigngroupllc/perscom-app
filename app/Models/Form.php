@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -27,6 +28,7 @@ use Laravel\Nova\Actions\Actionable;
  * @property string|null $instructions
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
@@ -45,9 +47,11 @@ use Laravel\Nova\Actions\Actionable;
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
  * @method static Builder|Form newModelQuery()
  * @method static Builder|Form newQuery()
+ * @method static Builder|Form onlyTrashed()
  * @method static Builder|Form query()
  * @method static Builder|Form tags(?mixed $tag)
  * @method static Builder|Form whereCreatedAt($value)
+ * @method static Builder|Form whereDeletedAt($value)
  * @method static Builder|Form whereDescription($value)
  * @method static Builder|Form whereId($value)
  * @method static Builder|Form whereInstructions($value)
@@ -57,6 +61,8 @@ use Laravel\Nova\Actions\Actionable;
  * @method static Builder|Form whereSubmissionStatusId($value)
  * @method static Builder|Form whereSuccessMessage($value)
  * @method static Builder|Form whereUpdatedAt($value)
+ * @method static Builder|Form withTrashed()
+ * @method static Builder|Form withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -68,6 +74,7 @@ class Form extends Model
     use HasFields;
     use HasNotifications;
     use HasTags;
+    use SoftDeletes;
 
     /**
      * @var array<int, string>

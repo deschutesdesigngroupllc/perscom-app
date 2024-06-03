@@ -86,6 +86,7 @@ class UsersController extends Controller
             'last_seen_at',
             'updated_at',
             'created_at',
+            'deleted_at',
         ];
     }
 
@@ -110,6 +111,7 @@ class UsersController extends Controller
             'last_seen_at',
             'updated_at',
             'created_at',
+            'deleted_at',
         ];
     }
 
@@ -139,6 +141,7 @@ class UsersController extends Controller
             'last_seen_at',
             'updated_at',
             'created_at',
+            'deleted_at',
         ];
     }
 

@@ -47,7 +47,7 @@ class DocumentsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at'];
+        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -55,7 +55,7 @@ class DocumentsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'author_id', 'name', 'description', 'content', 'created_at', 'updated_at'];
+        return ['id', 'author_id', 'name', 'description', 'content', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -63,6 +63,6 @@ class DocumentsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at'];
+        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at', 'deleted_at'];
     }
 }

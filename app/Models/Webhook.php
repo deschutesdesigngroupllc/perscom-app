@@ -6,6 +6,7 @@ use App\Models\Enums\WebhookMethod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Actions\Actionable;
 
 /**
@@ -19,6 +20,7 @@ use Laravel\Nova\Actions\Actionable;
  * @property string $secret
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
@@ -27,8 +29,10 @@ use Laravel\Nova\Actions\Actionable;
  * @method static \Database\Factories\WebhookFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook query()
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereEvents($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereId($value)
@@ -36,6 +40,8 @@ use Laravel\Nova\Actions\Actionable;
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereSecret($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Webhook withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -43,6 +49,7 @@ class Webhook extends Model
 {
     use Actionable;
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * @var array<int, string>

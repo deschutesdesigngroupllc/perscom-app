@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Code;
 use Laravel\Nova\Fields\Color;
@@ -45,6 +46,7 @@ use Laravel\Nova\Fields\Timezone;
  * @property \ArrayObject|null $options
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
  * @property-read int|null $forms_count
  * @property-read string|null $validation_rules
@@ -55,11 +57,13 @@ use Laravel\Nova\Fields\Timezone;
  * @method static \Illuminate\Database\Eloquent\Builder|Field hidden()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Field query()
  * @method static \Illuminate\Database\Eloquent\Builder|Field visible()
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereCast($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereDefault($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereHelp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereHidden($value)
@@ -74,6 +78,8 @@ use Laravel\Nova\Fields\Timezone;
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereRules($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Field withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Field withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -82,6 +88,7 @@ class Field extends Model
     use ClearsResponseCache;
     use HasFactory;
     use HasHiddenResults;
+    use SoftDeletes;
 
     /**
      * @var array<string, string>
@@ -187,8 +194,8 @@ class Field extends Model
         parent::boot();
 
         static::saving(function (Field $field) {
-            $field->nova_type = Field::$novaFieldTypes[$field->type];
-            $field->cast = Field::$fieldCasts[$field->type];
+            $field->nova_type = Field::$novaFieldTypes[$field->type] ?? Text::class;
+            $field->cast = Field::$fieldCasts[$field->type] ?? 'string';
         });
     }
 

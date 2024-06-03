@@ -56,7 +56,7 @@
         "stancl/virtualcolumn": "^1.3.1",
         "staudenmeir/belongs-to-through": "^2.5",
         "staudenmeir/eloquent-has-many-deep": "^1.18",
-        "tailflow/laravel-orion": "^2.19",
+        "tailflow/laravel-orion": "dev-main",
         "tightenco/ziggy": "^2.1",
         "timokoerber/laravel-one-time-operations": "^1.3"
     },
@@ -78,6 +78,10 @@
         {
             "type": "git",
             "url": "https://github.com/JonErickson/openid-connect"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/JonErickson/laravel-orion"
         },
         {
             "type": "composer",

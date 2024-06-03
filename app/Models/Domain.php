@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
@@ -16,6 +17,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property int $is_custom_subdomain
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read mixed|null $host
  * @property-read mixed|null $url
  * @property-read \App\Models\Tenant $tenant
@@ -23,13 +25,17 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Domain newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain query()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereDomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereIsCustomSubdomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Domain withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -37,6 +43,7 @@ class Domain extends \Stancl\Tenancy\Database\Models\Domain
 {
     use CentralConnection;
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * @var array<int, string>

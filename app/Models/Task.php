@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Task
@@ -19,6 +20,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int|null $form_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read \App\Models\Form|null $form
@@ -28,14 +30,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Task newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Task onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Task query()
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereFormId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereInstructions($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereTitle($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Task whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Task withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Task withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -44,6 +50,7 @@ class Task extends Model
     use ClearsResponseCache;
     use HasAttachments;
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * @var array<int, string>

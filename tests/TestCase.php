@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Features\BaseFeature;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -19,6 +20,7 @@ abstract class TestCase extends BaseTestCase
         parent::setUp();
 
         Http::preventStrayRequests();
+        BaseFeature::resetTenant();
 
         $this->withoutMiddleware(ThrottleRequestsWithRedis::class);
     }

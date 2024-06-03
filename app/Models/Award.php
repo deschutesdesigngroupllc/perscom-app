@@ -8,6 +8,7 @@ use App\Traits\HasImages;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 
@@ -20,6 +21,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
  * @property-read \App\Models\Image|null $image
@@ -29,14 +31,18 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Database\Factories\AwardFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Award newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Award newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Award onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Award ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Award query()
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Award whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Award withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Award withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -45,6 +51,7 @@ class Award extends Model implements Sortable
     use ClearsResponseCache;
     use HasFactory;
     use HasImages;
+    use SoftDeletes;
     use SortableTrait;
 
     /**
