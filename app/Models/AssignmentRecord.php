@@ -14,6 +14,7 @@ use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -32,6 +33,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string|null $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -49,10 +51,12 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Database\Factories\AssignmentRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord wherePositionId($value)
@@ -63,6 +67,8 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -76,6 +82,7 @@ class AssignmentRecord extends Model
     use HasFactory;
     use HasUser;
     use LogsActivity;
+    use SoftDeletes;
 
     protected static string $prompts = AssignmentRecordPrompts::class;
 

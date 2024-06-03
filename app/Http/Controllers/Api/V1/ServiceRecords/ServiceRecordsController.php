@@ -41,7 +41,7 @@ class ServiceRecordsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'user_id', 'user.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'user.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -49,7 +49,7 @@ class ServiceRecordsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'user_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'document_id', 'author_id', 'text', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -57,6 +57,6 @@ class ServiceRecordsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'user_id', 'user.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at'];
+        return ['id', 'user_id', 'user.*', 'document_id', 'document.*', 'author_id', 'author.*', 'text', 'created_at', 'updated_at', 'deleted_at'];
     }
 }

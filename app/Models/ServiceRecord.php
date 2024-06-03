@@ -12,6 +12,7 @@ use App\Traits\HasEventPrompts;
 use App\Traits\HasUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -25,6 +26,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property string $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -38,15 +40,19 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Database\Factories\ServiceRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -60,6 +66,7 @@ class ServiceRecord extends Model
     use HasFactory;
     use HasUser;
     use LogsActivity;
+    use SoftDeletes;
 
     public static string $prompts = ServiceRecordPrompts::class;
 

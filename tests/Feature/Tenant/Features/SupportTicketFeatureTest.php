@@ -12,12 +12,16 @@ class SupportTicketFeatureTest extends TenantTestCase
     {
         $this->withoutSubscription();
 
+        SupportTicketFeature::resetTenant();
+
         $this->assertTrue(Feature::inactive(SupportTicketFeature::class));
     }
 
     public function test_feature_enabled_on_trial()
     {
         $this->onTrial();
+
+        SupportTicketFeature::resetTenant();
 
         $this->assertTrue(Feature::active(SupportTicketFeature::class));
     }
@@ -26,6 +30,8 @@ class SupportTicketFeatureTest extends TenantTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
 
+        SupportTicketFeature::resetTenant();
+
         $this->assertTrue(Feature::inactive(SupportTicketFeature::class));
     }
 
@@ -33,12 +39,16 @@ class SupportTicketFeatureTest extends TenantTestCase
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
 
+        SupportTicketFeature::resetTenant();
+
         $this->assertTrue(Feature::active(SupportTicketFeature::class));
     }
 
     public function test_feature_enabled_on_enterprise_plan()
     {
         $this->withSubscription(env('STRIPE_PRODUCT_ENTERPRISE_MONTH'));
+
+        SupportTicketFeature::resetTenant();
 
         $this->assertTrue(Feature::active(SupportTicketFeature::class));
     }

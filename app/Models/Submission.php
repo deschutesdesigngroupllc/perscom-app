@@ -25,6 +25,7 @@ use Stringable;
  * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
  * @property-read \App\Models\Form $form
@@ -35,15 +36,19 @@ use Stringable;
  * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission query()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission status(?mixed $statuses)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereFormId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Submission withoutTrashed()
  *
  * @mixin \Eloquent
  */

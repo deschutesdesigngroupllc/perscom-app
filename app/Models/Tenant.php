@@ -43,6 +43,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property array|null $data
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
  * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
@@ -70,6 +71,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant onGenericTrial()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant query()
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingAddress($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingAddressLine2($value)
@@ -79,6 +81,7 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereBillingState($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereEmail($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereExtraBillingInformation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereId($value)
@@ -93,6 +96,8 @@ use Stancl\Tenancy\Database\Concerns\HasDomains;
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereVatId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Tenant whereWebsite($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Tenant withoutTrashed()
  *
  * @mixin \Eloquent
  */

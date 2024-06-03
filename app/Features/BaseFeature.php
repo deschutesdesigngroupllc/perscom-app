@@ -19,4 +19,9 @@ class BaseFeature
 
         return self::$tenant;
     }
+
+    public static function resetTenant(): void
+    {
+        self::$tenant = null;
+    }
 }

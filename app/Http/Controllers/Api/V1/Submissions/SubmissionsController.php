@@ -37,7 +37,7 @@ class SubmissionsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'data', 'created_at', 'updated_at'];
+        return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'data', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -45,7 +45,7 @@ class SubmissionsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'form_id', 'user_id', 'data', 'created_at', 'updated_at'];
+        return ['id', 'form_id', 'user_id', 'data', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -53,6 +53,6 @@ class SubmissionsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'created_at', 'updated_at'];
+        return ['id', 'form_id', 'form.*', 'user_id', 'user.*', 'created_at', 'updated_at', 'deleted_at'];
     }
 }

@@ -69,7 +69,7 @@ class RemoveInactiveAccountsTest extends CentralTestCase
 
         RemoveInactiveAccountsJob::dispatchSync();
 
-        $this->assertDatabaseMissing('tenants', [
+        $this->assertSoftDeleted('tenants', [
             'id' => $tenant->getKey(),
         ]);
     }

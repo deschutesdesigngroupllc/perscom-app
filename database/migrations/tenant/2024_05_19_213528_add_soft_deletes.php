@@ -27,6 +27,10 @@ return new class extends Migration
             $table->softDeletes();
         });
 
+        Schema::table('mail', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+
         Schema::table('announcements', function (Blueprint $table) {
             $table->softDeletes();
         });
@@ -100,6 +104,18 @@ return new class extends Migration
         });
 
         Schema::table('webhooks', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+
+        Schema::table('attachments', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+
+        Schema::table('fields', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+
+        Schema::table('images', function (Blueprint $table) {
             $table->softDeletes();
         });
     }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * App\Models\Status
@@ -18,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @property string|null $bg_color
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
@@ -32,13 +34,17 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  * @method static \Database\Factories\StatusFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Status newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Status onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Status query()
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereBgColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereTextColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Status withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -46,6 +52,7 @@ class Status extends Model
 {
     use ClearsResponseCache;
     use HasFactory;
+    use SoftDeletes;
 
     /**
      * @var array<int, string>

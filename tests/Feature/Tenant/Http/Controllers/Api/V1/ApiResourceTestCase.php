@@ -90,7 +90,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
-        $this->assertDatabaseMissing($this->getTable($this->model()), [
+        $this->assertSoftDeleted($this->getTable($this->model()), [
             'id' => $this->factory->getKey(),
         ]);
     }

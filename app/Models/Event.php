@@ -48,6 +48,7 @@ use RRule\RRule;
  * @property \Illuminate\Support\Carbon|null $registration_deadline
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read \App\Models\User|null $author
@@ -70,6 +71,7 @@ use RRule\RRule;
  * @method static Builder|Event future()
  * @method static Builder|Event newModelQuery()
  * @method static Builder|Event newQuery()
+ * @method static Builder|Event onlyTrashed()
  * @method static Builder|Event query()
  * @method static Builder|Event tags(?mixed $tag)
  * @method static Builder|Event whereAllDay($value)
@@ -83,6 +85,7 @@ use RRule\RRule;
  * @method static Builder|Event whereContent($value)
  * @method static Builder|Event whereCount($value)
  * @method static Builder|Event whereCreatedAt($value)
+ * @method static Builder|Event whereDeletedAt($value)
  * @method static Builder|Event whereDescription($value)
  * @method static Builder|Event whereEnd($value)
  * @method static Builder|Event whereEndType($value)
@@ -99,6 +102,8 @@ use RRule\RRule;
  * @method static Builder|Event whereUntil($value)
  * @method static Builder|Event whereUpdatedAt($value)
  * @method static Builder|Event whereUrl($value)
+ * @method static Builder|Event withTrashed()
+ * @method static Builder|Event withoutTrashed()
  *
  * @mixin \Eloquent
  */
