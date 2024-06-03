@@ -1149,16 +1149,16 @@
         },
         {
             "name": "dompdf/dompdf",
-            "version": "v2.0.7",
+            "version": "v2.0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/dompdf/dompdf.git",
-                "reference": "ab0123052b42ad0867348f25df8c228f1ece8f14"
+                "reference": "c20247574601700e1f7c8dab39310fca1964dc52"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/ab0123052b42ad0867348f25df8c228f1ece8f14",
-                "reference": "ab0123052b42ad0867348f25df8c228f1ece8f14",
+                "url": "https://api.github.com/repos/dompdf/dompdf/zipball/c20247574601700e1f7c8dab39310fca1964dc52",
+                "reference": "c20247574601700e1f7c8dab39310fca1964dc52",
                 "shasum": ""
             },
             "require": {
@@ -1205,9 +1205,9 @@
             "homepage": "https://github.com/dompdf/dompdf",
             "support": {
                 "issues": "https://github.com/dompdf/dompdf/issues",
-                "source": "https://github.com/dompdf/dompdf/tree/v2.0.7"
+                "source": "https://github.com/dompdf/dompdf/tree/v2.0.8"
             },
-            "time": "2024-04-15T12:40:33+00:00"
+            "time": "2024-04-29T13:06:17+00:00"
         },
         {
             "name": "dragonmantank/cron-expression",
@@ -6187,7 +6187,7 @@
         },
         {
             "name": "perscom/alert-card",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/AlertCard",
@@ -6223,7 +6223,7 @@
         },
         {
             "name": "perscom/calendar",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Calendar",
@@ -6259,7 +6259,7 @@
         },
         {
             "name": "perscom/dashboard-quick-actions",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardQuickActions",
@@ -6295,7 +6295,7 @@
         },
         {
             "name": "perscom/dashboard-title",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DashboardTitle",
@@ -6331,7 +6331,7 @@
         },
         {
             "name": "perscom/document-viewer-tool",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/DocumentViewerTool",
@@ -6367,7 +6367,7 @@
         },
         {
             "name": "perscom/forms",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Forms",
@@ -6403,7 +6403,7 @@
         },
         {
             "name": "perscom/html-field",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/HtmlField",
@@ -6439,7 +6439,7 @@
         },
         {
             "name": "perscom/message-field",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/MessageField",
@@ -6475,7 +6475,7 @@
         },
         {
             "name": "perscom/newsfeed",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Newsfeed",
@@ -6511,7 +6511,7 @@
         },
         {
             "name": "perscom/roster",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/Roster",
@@ -6547,7 +6547,7 @@
         },
         {
             "name": "perscom/text-action-field",
-            "version": "dev-feature/remove-group-query-scope",
+            "version": "dev-main",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/TextActionField",
@@ -16621,5 +16621,5 @@
         "php": "^8.2"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.6.0"
 }
