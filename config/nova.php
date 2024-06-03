@@ -6,6 +6,7 @@ use Laravel\Nova\Http\Middleware\Authorize;
 use Laravel\Nova\Http\Middleware\BootTools;
 use Laravel\Nova\Http\Middleware\DispatchServingNovaEvent;
 use Laravel\Nova\Http\Middleware\HandleInertiaRequests;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 
 return [
@@ -109,6 +110,7 @@ return [
         HandleInertiaRequests::class,
         DispatchServingNovaEvent::class,
         BootTools::class,
+        CacheResponse::class,
     ],
 
     'api_middleware' => [
@@ -116,6 +118,7 @@ return [
         'nova',
         Authenticate::class,
         Authorize::class,
+        CacheResponse::class,
     ],
 
     /*

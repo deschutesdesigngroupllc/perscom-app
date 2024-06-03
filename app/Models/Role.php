@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -37,6 +38,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Role extends \Spatie\Permission\Models\Role
 {
+    use ClearsResponseCache;
     use HasFactory;
 
     /**
