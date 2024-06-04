@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -106,6 +107,7 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureSc
     use Actionable;
     use Billable;
     use CentralConnection;
+    use ClearsResponseCache;
     use HasDatabase;
     use HasDomains;
     use HasFactory;

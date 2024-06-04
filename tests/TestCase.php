@@ -8,6 +8,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 use Illuminate\Support\Facades\Http;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -22,6 +23,6 @@ abstract class TestCase extends BaseTestCase
         Http::preventStrayRequests();
         BaseFeature::resetTenant();
 
-        $this->withoutMiddleware(ThrottleRequestsWithRedis::class);
+        $this->withoutMiddleware([ThrottleRequestsWithRedis::class, CacheResponse::class]);
     }
 }

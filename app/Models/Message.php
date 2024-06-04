@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\EloquentSortable\Sortable;
@@ -41,6 +42,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
 class Message extends Model implements Sortable
 {
     use CentralConnection;
+    use ClearsResponseCache;
     use SortableTrait;
 
     /**

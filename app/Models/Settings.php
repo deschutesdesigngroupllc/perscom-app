@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,7 @@ use Illuminate\Http\Request;
  */
 class Settings extends \Outl1ne\NovaSettings\Models\Settings
 {
+    use ClearsResponseCache;
     use HasFactory;
 
     // @phpstan-ignore-next-line

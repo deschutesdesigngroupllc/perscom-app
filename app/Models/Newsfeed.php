@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Models\Scopes\NewsfeedScope;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasLikes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -58,6 +59,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Newsfeed extends Activity
 {
+    use ClearsResponseCache;
     use HasFactory;
     use HasLikes;
 

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
@@ -42,6 +43,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
 class Domain extends \Stancl\Tenancy\Database\Models\Domain
 {
     use CentralConnection;
+    use ClearsResponseCache;
     use HasFactory;
     use SoftDeletes;
 

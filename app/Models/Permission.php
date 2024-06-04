@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ClearsResponseCache;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Collection;
@@ -43,6 +44,7 @@ use Illuminate\Support\Collection;
  */
 class Permission extends \Spatie\Permission\Models\Permission implements Arrayable
 {
+    use ClearsResponseCache;
     use HasFactory;
 
     /**
