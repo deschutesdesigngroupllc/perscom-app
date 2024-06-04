@@ -8642,34 +8642,33 @@
         },
         {
             "name": "spatie/laravel-responsecache",
-            "version": "7.4.10",
+            "version": "7.5.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/spatie/laravel-responsecache.git",
-                "reference": "cf0305f73fcc49dacfadd0f2228887a92fa736ac"
+                "reference": "e69b3f3abc302a255e5b32c68303d41f09d38bd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/cf0305f73fcc49dacfadd0f2228887a92fa736ac",
-                "reference": "cf0305f73fcc49dacfadd0f2228887a92fa736ac",
+                "url": "https://api.github.com/repos/spatie/laravel-responsecache/zipball/e69b3f3abc302a255e5b32c68303d41f09d38bd3",
+                "reference": "e69b3f3abc302a255e5b32c68303d41f09d38bd3",
                 "shasum": ""
             },
             "require": {
-                "illuminate/cache": "^8.71|^9.0|^10.0",
-                "illuminate/console": "^8.71|^9.0|^10.0",
-                "illuminate/container": "^8.71|^9.0|^10.0",
-                "illuminate/http": "^8.71|^9.0|^10.0",
-                "illuminate/support": "^8.71|^9.0|^10.0",
-                "nesbot/carbon": "^2.63",
-                "php": "^8.0",
+                "illuminate/cache": "^10.0|^11.0",
+                "illuminate/console": "^10.0|^11.0",
+                "illuminate/container": "^10.0|^11.0",
+                "illuminate/http": "^10.0|^11.0",
+                "illuminate/support": "^10.0|^11.0",
+                "nesbot/carbon": "^2.63|^3.0",
+                "php": "^8.2",
                 "spatie/laravel-package-tools": "^1.9"
             },
             "require-dev": {
-                "laravel/framework": "^9.0|^10.0",
+                "laravel/framework": "^10.0|^11.0",
                 "mockery/mockery": "^1.4",
-                "orchestra/testbench": "^6.23|^7.0|^8.0",
-                "pestphp/pest": "^1.22",
-                "phpunit/phpunit": "^9.4"
+                "orchestra/testbench": "^8.0|^9.0",
+                "pestphp/pest": "^2.22"
             },
             "type": "library",
             "extra": {
@@ -8710,7 +8709,7 @@
                 "spatie"
             ],
             "support": {
-                "source": "https://github.com/spatie/laravel-responsecache/tree/7.4.10"
+                "source": "https://github.com/spatie/laravel-responsecache/tree/7.5.2"
             },
             "funding": [
                 {
@@ -8722,7 +8721,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-10-28T18:47:12+00:00"
+            "time": "2024-04-03T09:44:10+00:00"
         },
         {
             "name": "spatie/laravel-webhook-server",
@@ -13491,16 +13490,16 @@
         },
         {
             "name": "mockery/mockery",
-            "version": "1.6.11",
+            "version": "1.6.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mockery/mockery.git",
-                "reference": "81a161d0b135df89951abd52296adf97deb0723d"
+                "reference": "1f4efdd7d3beafe9807b08156dfcb176d18f1699"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mockery/mockery/zipball/81a161d0b135df89951abd52296adf97deb0723d",
-                "reference": "81a161d0b135df89951abd52296adf97deb0723d",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/1f4efdd7d3beafe9807b08156dfcb176d18f1699",
+                "reference": "1f4efdd7d3beafe9807b08156dfcb176d18f1699",
                 "shasum": ""
             },
             "require": {
@@ -13570,7 +13569,7 @@
                 "security": "https://github.com/mockery/mockery/security/advisories",
                 "source": "https://github.com/mockery/mockery"
             },
-            "time": "2024-03-21T18:34:15+00:00"
+            "time": "2024-05-16T03:13:13+00:00"
         },
         {
             "name": "myclabs/deep-copy",
