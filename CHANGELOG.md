@@ -1,6 +1,35 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.90...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.91...HEAD)
+
+## [v1.0.91](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.90...v1.0.91) - 2024-06-03
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.91 -->
+### What's Changed
+
+#### Added
+
+* Add response cache by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/420
+
+#### Other
+
+* Bump laravel/telescope from 4.17.5 to 5.0.5 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/417
+* Bump aws/aws-sdk-php from 3.306.4 to 3.308.3 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/416
+* Bump spatie/laravel-responsecache from 7.4.10 to 7.5.2 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/415
+* Bump laravel/fortify from 1.20.0 to 1.21.3 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/414
+* Bump laravel/framework from 10.48.10 to 10.48.11 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/413
+* Bump @inertiajs/react from 1.0.9 to 1.1.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/412
+* Bump laravel/framework from 10.48.11 to 10.48.12 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/418
+* Bump @vitejs/plugin-react from 4.2.0 to 4.3.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/411
+* Remove group roster query scope by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/419
+* Bump laravel/fortify from 1.20.0 to 1.21.3 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/427
+* Bump spatie/laravel-responsecache from 7.4.10 to 7.5.2 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/426
+* Bump laravel/spark-stripe from 5.2.0 to 5.3.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/425
+* Bump prettier-plugin-tailwindcss from 0.5.4 to 0.6.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/423
+* Bump dompdf/dompdf from 2.0.7 to 2.0.8 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/424
+* Bump prettier from 3.2.4 to 3.3.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/421
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.90...v1.0.91
 
 ## [v1.0.90](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.89...v1.0.90) - 2024-05-25
 
