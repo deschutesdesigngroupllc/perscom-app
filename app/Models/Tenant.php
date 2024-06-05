@@ -3,14 +3,11 @@
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
-use Illuminate\Contracts\Events\Dispatcher;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Events\NullDispatcher;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Nova\Actions\Actionable;
-use Laravel\Nova\Nova;
 use Laravel\Pennant\Concerns\HasFeatures;
 use Laravel\Pennant\Contracts\FeatureScopeable;
 use Spark\Billable;
@@ -115,8 +112,6 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureSc
     use Notifiable;
     use SoftDeletes;
 
-    protected static ?Dispatcher $eventDispatcher = null;
-
     /**
      * @var array<string, string>
      */
@@ -134,24 +129,6 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureSc
      * @var string[]
      */
     protected $with = ['domains'];
-
-    protected static function booted(): void
-    {
-        static::creating(function ($tenant) {
-            Nova::whenServing(function () use ($tenant) {
-                self::$eventDispatcher = $tenant::getEventDispatcher();
-                $tenant::unsetEventDispatcher();
-            });
-        });
-
-        static::created(function ($tenant) {
-            Nova::whenServing(function () use ($tenant) {
-                if ($dispatcher = self::$eventDispatcher) {
-                    $tenant::setEventDispatcher(new NullDispatcher($dispatcher));
-                }
-            });
-        });
-    }
 
     /**
      * @return string[]

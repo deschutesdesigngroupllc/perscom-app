@@ -4,19 +4,18 @@ namespace App\Actions\Fortify;
 
 use App\Models\Domain;
 use App\Models\Tenant;
-use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
-use Stancl\Tenancy\Events\DomainCreated;
-use Stancl\Tenancy\Events\TenantCreated;
+use Throwable;
 
 class CreateNewTenant
 {
     /**
      * @param  array<string, mixed>  $input
      *
-     * @throws ValidationException
+     * @throws ValidationException|Throwable
      */
     public function create(array $input): Tenant
     {
@@ -28,26 +27,17 @@ class CreateNewTenant
             'privacy.required' => 'You must agree to the Privacy Policy.',
         ])->validate();
 
-        $tenant = Tenant::withoutEvents(function () use ($input) {
-            return Tenant::create([
+        return DB::transaction(function () use ($input) {
+            $tenant = Tenant::create([
                 'name' => $input['organization'],
                 'email' => $input['email'],
             ]);
+
+            return tap($tenant, function ($tenant) {
+                $tenant->domains()->create([
+                    'domain' => Domain::generateSubdomain(),
+                ]);
+            })->fresh();
         });
-
-        $domain = Domain::withoutEvents(function () use ($tenant) {
-            return $tenant->domains()->create([
-                'domain' => Domain::generateSubdomain(),
-            ]);
-        });
-
-        $tenant->load('domains');
-
-        Event::dispatch(new TenantCreated($tenant));
-        event('eloquent.created: '.Tenant::class, $tenant);
-        Event::dispatch(new DomainCreated($domain));
-        event('eloquent.created: '.Domain::class, $domain);
-
-        return $tenant;
     }
 }

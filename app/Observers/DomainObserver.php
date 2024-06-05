@@ -12,7 +12,9 @@ class DomainObserver
 {
     public function created(Domain $domain): void
     {
-        Notification::send($domain->tenant, new DomainCreated($domain));
+        if ($domain->tenant->domains()->count() > 1) {
+            Notification::send($domain->tenant, new DomainCreated($domain));
+        }
     }
 
     public function updated(Domain $domain): void

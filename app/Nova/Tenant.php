@@ -15,7 +15,6 @@ use Eminiarts\Tabs\Tabs;
 use Eminiarts\Tabs\Traits\HasActionsInTabs;
 use Eminiarts\Tabs\Traits\HasTabs;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Laravel\Nova\Fields\Badge;
@@ -31,8 +30,6 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Fields\URL;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Stancl\Tenancy\Events\DomainCreated;
-use Stancl\Tenancy\Events\TenantCreated;
 
 class Tenant extends Resource
 {
@@ -191,25 +188,13 @@ class Tenant extends Resource
         ];
     }
 
-    public static function afterCreate(NovaRequest $request, Model $model): void
+    public static function afterCreate(NovaRequest $request, Model|TenantModel $model): void
     {
         $values = $request->all();
-
-        $domain = Domain::withoutEvents(function () use ($model, $values) {
-            if ($model instanceof TenantModel) {
-                return $model->domains()
-                    ->create([
-                        'domain' => $values['domain'],
-                    ]);
-            }
-        });
-
-        $model->load('domains');
-
-        Event::dispatch(new TenantCreated($model));
-        event('eloquent.created: '.TenantModel::class, $model);
-        Event::dispatch(new DomainCreated($domain));
-        event('eloquent.created: '.Domain::class, $domain);
+        $model->domains()
+            ->create([
+                'domain' => data_get($values, 'domain'),
+            ]);
     }
 
     public function cards(NovaRequest $request): array
