@@ -323,7 +323,7 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
 
     public function getOnlineAttribute(): bool
     {
-        return Cache::tags('user.online')->has("user.online.$this->id");
+        return Cache::tags('users_online')->has("user_online_$this->id");
     }
 
     public function profilePhotoUrl(): Attribute

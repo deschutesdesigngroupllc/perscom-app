@@ -21,7 +21,7 @@ class CaptureUserOnlineStatus
             $expire = now()->addMinutes(2);
             $user = Auth::user();
             if ($user) {
-                Cache::tags('user.online')->put("user.online.{$user->getAuthIdentifier()}", true, $expire);
+                Cache::tags('users_online')->put("user_online_{$user->getAuthIdentifier()}", true, $expire);
                 $user->timestamps = false;
                 $user->updateQuietly([
                     'last_seen_at' => now(),

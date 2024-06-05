@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Str;
 
 class DomainUpdatedMail extends Mailable implements ShouldQueue
 {
@@ -22,8 +23,9 @@ class DomainUpdatedMail extends Mailable implements ShouldQueue
         return $this->markdown('emails.system.domain-updated')
             ->subject('Domain Successfully Updated')
             ->with([
-                'url' => $this->domain->url,
-                'fallback_url' => $this->domain->tenant->fallback_url,
+                'url' => $url = $this->domain->url,
+                'fallback_url' => $fallback = $this->domain->tenant->fallback_url,
+                'show_fallback' => ! Str::is($url, $fallback),
             ]);
     }
 }
