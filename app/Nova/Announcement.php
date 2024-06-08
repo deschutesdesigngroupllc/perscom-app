@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
@@ -52,7 +53,7 @@ class Announcement extends Resource
                 ->rules('required')
                 ->hideFromDetail()
                 ->showOnPreview(),
-            Trix::make('Content')
+            NovaTinyMCE::make('Content')
                 ->rules('required')
                 ->alwaysShow()
                 ->hideFromDetail()

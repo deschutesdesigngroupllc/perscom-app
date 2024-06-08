@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use App\Models\Scopes\VisibleScope;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsToMany;
@@ -10,7 +11,6 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Outl1ne\NovaSortable\Traits\HasSortableRows;
@@ -51,7 +51,7 @@ class Group extends Resource
             Text::make('Name')
                 ->sortable()
                 ->rules('required'),
-            Textarea::make('Description')
+            NovaTinyMCE::make('Description')
                 ->nullable(),
             Heading::make('Meta')
                 ->onlyOnDetail(),
