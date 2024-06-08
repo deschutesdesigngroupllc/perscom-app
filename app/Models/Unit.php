@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\UnitScope;
 use App\Traits\ClearsResponseCache;
+use App\Traits\Hideable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -20,6 +21,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property string $name
  * @property string|null $description
  * @property int $order
+ * @property int $hidden
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -35,14 +37,17 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\UnitFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit hidden()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Unit query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit visible()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Unit whereHidden($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereOrder($value)
@@ -56,13 +61,21 @@ class Unit extends Model implements Sortable
 {
     use ClearsResponseCache;
     use HasFactory;
+    use Hideable;
     use SoftDeletes;
     use SortableTrait;
 
     /**
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
+    protected $fillable = [
+        'name',
+        'description',
+        'order',
+        'hidden',
+        'updated_at',
+        'created_at',
+    ];
 
     protected static function booted(): void
     {

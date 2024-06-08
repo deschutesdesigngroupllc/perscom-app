@@ -27,6 +27,14 @@ class UnitsController extends Controller
     /**
      * @return string[]
      */
+    public function exposedScopes(): array
+    {
+        return ['hidden', 'visible'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function includes(): array
     {
         return ['assignment_records', 'assignment_records.*', 'groups', 'users'];

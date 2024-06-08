@@ -18,6 +18,7 @@ class UnitFactory extends Factory
         return [
             'name' => "Unit {$this->faker->unique()->randomNumber()}",
             'description' => $this->faker->paragraph,
+            'hidden' => false,
         ];
     }
 }

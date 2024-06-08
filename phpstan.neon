@@ -9,6 +9,8 @@ parameters:
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::user\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::future\(\)#'
         - '#Call to an undefined method [a-zA-Z0-9\\_]+::ordered\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::hidden\(\)#'
+        - '#Call to an undefined method [a-zA-Z0-9\\_]+::visible\(\)#'
         - '#Access to an undefined property Laravel\\Passport\\Client::\$[a-zA-Z0-9\\_]+#'
         - '#Access to an undefined property Laravel\\Socialite\\Contracts\\User::\$[a-zA-Z0-9\\_]+#'
         - '#Unable to resolve the template type TKey in call to function collect#'

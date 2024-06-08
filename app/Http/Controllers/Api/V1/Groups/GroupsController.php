@@ -29,7 +29,7 @@ class GroupsController extends Controller
      */
     public function exposedScopes(): array
     {
-        return ['orderForRoster'];
+        return ['orderForRoster', 'hidden', 'visible'];
     }
 
     /**
