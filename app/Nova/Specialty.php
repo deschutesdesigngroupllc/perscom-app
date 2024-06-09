@@ -3,13 +3,13 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Pennant\Feature;
 use Outl1ne\NovaSortable\Traits\HasSortableRows;
@@ -59,7 +59,7 @@ class Specialty extends Resource
             Text::make('Abbreviation')
                 ->sortable()
                 ->showOnPreview(),
-            Textarea::make('Description')
+            NovaTinyMCE::make('Description')
                 ->nullable()
                 ->alwaysShow()
                 ->showOnPreview(),

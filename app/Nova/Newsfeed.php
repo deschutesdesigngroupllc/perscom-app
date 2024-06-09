@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Features\OpenAiGeneratedContent;
 use App\Nova\Actions\RegenerateNewsfeedHeadline;
 use App\Nova\Actions\RegenerateNewsfeedText;
+use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,6 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Hidden;
 use Laravel\Nova\Fields\MorphTo;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Trix;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
@@ -72,7 +72,7 @@ class Newsfeed extends Resource
                         ->put('headline', $request->input($requestAttribute));
                 })
                 ->rules('required'),
-            Trix::make('Text')
+            NovaTinyMCE::make('Text')
                 ->fillUsing(function (NovaRequest $request, $activity, $attribute, $requestAttribute) {
                     $activity->properties = Collection::wrap($activity->properties)
                         ->put('text', $request->input($requestAttribute));
