@@ -20,6 +20,7 @@ class GroupFactory extends Factory
         return [
             'name' => $group,
             'description' => $this->faker->sentence,
+            'hidden' => false,
         ];
     }
 }

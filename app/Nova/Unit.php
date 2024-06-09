@@ -3,15 +3,19 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
+use App\Models\Scopes\VisibleScope;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\BelongsToMany;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Heading;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
+use Laravel\Nova\Panel;
 use Laravel\Pennant\Feature;
 use Outl1ne\NovaSortable\Traits\HasSortableManyToManyRows;
 use Outl1ne\NovaSortable\Traits\HasSortableRows;
@@ -45,6 +49,16 @@ class Unit extends Resource
         return Str::plural(Str::slug(setting('localization_units', 'units')));
     }
 
+    public static function indexQuery(NovaRequest $request, $query): Builder
+    {
+        return $query->withoutGlobalScope(VisibleScope::class);
+    }
+
+    public static function relatableQuery(NovaRequest $request, $query): Builder
+    {
+        return $query->withoutGlobalScope(VisibleScope::class);
+    }
+
     public function fields(NovaRequest $request): array
     {
         return [
@@ -64,6 +78,10 @@ class Unit extends Resource
                 ->onlyOnDetail(),
             DateTime::make('Updated At')
                 ->onlyOnDetail(),
+            new Panel('Roster', [
+                Boolean::make('Hidden')
+                    ->help('Hide this group from the roster.'),
+            ]),
             BelongsToMany::make('Groups')
                 ->showCreateRelationButton(),
         ];

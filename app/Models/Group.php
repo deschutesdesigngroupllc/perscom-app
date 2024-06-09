@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Models\Scopes\GroupScope;
 use App\Traits\ClearsResponseCache;
+use App\Traits\Hideable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property string $name
  * @property string|null $description
  * @property int $order
+ * @property int $hidden
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -27,15 +29,18 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property-read int|null $units_count
  *
  * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
+ * @method static Builder|Group hidden()
  * @method static Builder|Group newModelQuery()
  * @method static Builder|Group newQuery()
  * @method static Builder|Group onlyTrashed()
  * @method static Builder|Group orderForRoster(?string $groupId = null)
  * @method static Builder|Group ordered(string $direction = 'asc')
  * @method static Builder|Group query()
+ * @method static Builder|Group visible()
  * @method static Builder|Group whereCreatedAt($value)
  * @method static Builder|Group whereDeletedAt($value)
  * @method static Builder|Group whereDescription($value)
+ * @method static Builder|Group whereHidden($value)
  * @method static Builder|Group whereId($value)
  * @method static Builder|Group whereName($value)
  * @method static Builder|Group whereOrder($value)
@@ -49,13 +54,21 @@ class Group extends Model implements Sortable
 {
     use ClearsResponseCache;
     use HasFactory;
+    use Hideable;
     use SoftDeletes;
     use SortableTrait;
 
     /**
      * @var array<int, string>
      */
-    protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
+    protected $fillable = [
+        'name',
+        'description',
+        'order',
+        'hidden',
+        'updated_at',
+        'created_at',
+    ];
 
     protected static function booted(): void
     {

@@ -27,6 +27,14 @@ class UnitsController extends Controller
     /**
      * @return string[]
      */
+    public function exposedScopes(): array
+    {
+        return ['hidden', 'visible'];
+    }
+
+    /**
+     * @return string[]
+     */
     public function includes(): array
     {
         return ['assignment_records', 'assignment_records.*', 'groups', 'users'];
@@ -37,7 +45,7 @@ class UnitsController extends Controller
      */
     public function sortableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'order', 'hidden', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -45,7 +53,7 @@ class UnitsController extends Controller
      */
     public function searchableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'order', 'hidden', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     /**
@@ -53,6 +61,6 @@ class UnitsController extends Controller
      */
     public function filterableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'order', 'hidden', 'created_at', 'updated_at', 'deleted_at'];
     }
 }
