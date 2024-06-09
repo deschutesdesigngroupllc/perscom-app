@@ -51,9 +51,12 @@ class Unit extends Resource
 
     public static function indexQuery(NovaRequest $request, $query): Builder
     {
-        $query->withoutGlobalScope(VisibleScope::class);
+        return $query->withoutGlobalScope(VisibleScope::class);
+    }
 
-        return $query;
+    public static function relatableQuery(NovaRequest $request, $query): Builder
+    {
+        return $query->withoutGlobalScope(VisibleScope::class);
     }
 
     public function fields(NovaRequest $request): array
