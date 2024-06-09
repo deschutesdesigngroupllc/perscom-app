@@ -8,6 +8,7 @@ use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Actions\ActionResponse;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\MultiSelect;
@@ -44,29 +45,19 @@ class BatchCreateCombatRecord extends Action
      */
     public $modalSize = '5xl';
 
-    /**
-     * Perform the action on the given models.
-     *
-     * @return mixed
-     */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): ActionResponse
     {
-        foreach ($fields->users as $userId) {
+        foreach ($fields->users ?? [] as $userId) {
             $user = User::findOrFail($userId);
-
-            $user->combat_records()
-                ->create([
-                    'text' => $fields->text,
-                    'document_id' => $fields->document?->id,
-                ]);
+            $user->combat_records()->create([
+                'text' => $fields->text ?? null,
+                'document_id' => $fields->document->id ?? null,
+            ]);
         }
 
         return Action::message('You have successfully created the combat records.');
     }
 
-    /**
-     * Get the fields available on the action.
-     */
     public function fields(NovaRequest $request): array
     {
         return [
