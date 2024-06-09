@@ -2,8 +2,8 @@
 
 namespace App\Nova;
 
-use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use App\Models\Scopes\VisibleScope;
+use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Fields\Boolean;

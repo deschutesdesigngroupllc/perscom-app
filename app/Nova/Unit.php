@@ -3,8 +3,8 @@
 namespace App\Nova;
 
 use App\Features\ExportDataFeature;
-use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use App\Models\Scopes\VisibleScope;
+use Emilianotisato\NovaTinyMCE\NovaTinyMCE;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Str;
 use Laravel\Nova\Actions\ExportAsCsv;
