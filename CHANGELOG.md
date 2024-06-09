@@ -1,6 +1,22 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.93...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.94...HEAD)
+
+## [v1.0.94](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.93...v1.0.94) - 2024-06-09
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.94 -->
+### What's Changed
+
+#### Added
+
+* Hide groups and units by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/432
+
+#### Other
+
+* Fix batch record actions by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/434
+* Convert description fields to HTML by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/433
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.93...v1.0.94
 
 ## [v1.0.93](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.92...v1.0.93) - 2024-06-05
 
