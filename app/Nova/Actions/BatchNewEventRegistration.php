@@ -8,6 +8,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Laravel\Nova\Actions\Action;
+use Laravel\Nova\Actions\ActionResponse;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Fields\MultiSelect;
 use Laravel\Nova\Fields\Select;
@@ -38,28 +39,19 @@ class BatchNewEventRegistration extends Action
      */
     public $confirmButtonText = 'Register Users';
 
-    /**
-     * Perform the action on the given models.
-     *
-     * @return mixed
-     */
-    public function handle(ActionFields $fields, Collection $models)
+    public function handle(ActionFields $fields, Collection $models): ActionResponse
     {
         $event = Event::findOrFail($fields->event);
 
-        foreach ($fields->users as $userId) {
-            $event->registrations()
-                ->attach([
-                    'user_id' => $userId,
-                ]);
+        foreach ($fields->users ?? [] as $userId) {
+            $event->registrations()->attach([
+                'user_id' => $userId,
+            ]);
         }
 
         return Action::message('You have successfully registered the user(s).');
     }
 
-    /**
-     * Get the fields available on the action.
-     */
     public function fields(NovaRequest $request): array
     {
         return [
