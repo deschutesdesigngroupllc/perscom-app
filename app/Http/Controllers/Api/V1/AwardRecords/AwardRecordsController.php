@@ -31,10 +31,12 @@ class AwardRecordsController extends Controller
     {
         return [
             'author',
+            'author.*',
             'award',
             'award.image',
             'document',
             'user',
+            'user.*',
         ];
     }
 

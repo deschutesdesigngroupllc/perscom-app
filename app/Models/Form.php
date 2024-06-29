@@ -82,11 +82,6 @@ class Form extends Model
     protected $appends = ['url'];
 
     /**
-     * @var string[]
-     */
-    protected $with = ['fields'];
-
-    /**
      * @var array<int, string>
      */
     protected $fillable = ['name', 'slug', 'success_message', 'is_public', 'description', 'instructions', 'updated_at', 'created_at'];

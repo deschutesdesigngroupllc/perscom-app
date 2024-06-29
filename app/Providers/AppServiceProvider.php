@@ -11,8 +11,8 @@ use App\Models\Permission;
 use App\Models\Tenant;
 use App\Support\JwtAuth\Providers\CustomJwtProvider;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\ServiceProvider;
 use Inertia\Inertia;
@@ -77,10 +77,11 @@ class AppServiceProvider extends ServiceProvider
         });
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function boot(): void
     {
-        //Model::shouldBeStrict(app()->environment('local'));
-
         $socialite = $this->app->make(Factory::class);
         $socialite->extend('discord', function () use ($socialite) {
             $config = config('services.discord');

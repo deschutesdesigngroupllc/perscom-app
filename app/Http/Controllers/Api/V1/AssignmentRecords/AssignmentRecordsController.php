@@ -31,12 +31,14 @@ class AssignmentRecordsController extends Controller
     {
         return [
             'author',
+            'author.*',
             'document',
             'position',
             'specialty',
             'status',
             'unit',
             'user',
+            'user.*',
         ];
     }
 

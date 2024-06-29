@@ -36,6 +36,7 @@ class UsersAwardRecordsController extends RelationController
     {
         return [
             'author',
+            'author.*',
             'award',
             'award.image',
             'document',

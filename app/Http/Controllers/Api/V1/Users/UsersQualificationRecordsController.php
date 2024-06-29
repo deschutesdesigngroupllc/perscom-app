@@ -36,6 +36,7 @@ class UsersQualificationRecordsController extends RelationController
     {
         return [
             'author',
+            'author.*',
             'document',
             'qualification',
             'qualification.image',

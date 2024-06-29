@@ -66,11 +66,6 @@ class Document extends Model implements Htmlable
     /**
      * @var string[]
      */
-    protected $with = ['tags'];
-
-    /**
-     * @var string[]
-     */
     public static array $availableTags = [
         '{user_name}' => 'The user\'s name.',
         '{user_email}' => 'The user\'s email.',
@@ -133,7 +128,7 @@ class Document extends Model implements Htmlable
             $tag === '{award_record_award}' => $attachedModel->award->name ?? null,
             $tag === '{qualification_record_qualification}' => $attachedModel->qualification->name ?? null,
             $tag === '{rank_record_rank}' => $attachedModel->rank->name ?? null,
-            $tag === '{rank_record_type}' => optional($attachedModel->type)->getLabel() ?? null,
+            $tag === '{rank_record_type}' => optional($attachedModel->type ?? null)->getLabel() ?? null,
             $tag === '{author_resource_name}' => ! is_null($attachedModel) && in_array(HasAuthor::class, class_uses_recursive(get_class($attachedModel))) ? optional($attachedModel->author)->name : null,
             $tag === '{author_document_name}' => optional($this->author)->name,
             default => null

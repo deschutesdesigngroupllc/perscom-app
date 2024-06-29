@@ -35,6 +35,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $attachments_count
  * @property-read \App\Models\User|null $author
  * @property-read \App\Models\Document|null $document
+ * @property-read mixed $document_parsed
  * @property-read \App\Models\Qualification|null $qualification
  * @property-read \App\Models\User|null $user
  *
@@ -83,11 +84,6 @@ class QualificationRecord extends Model
      * @var array<int, string>
      */
     protected $fillable = ['user_id', 'qualification_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
-
-    /**
-     * @var string[]
-     */
-    protected $with = ['document', 'qualification'];
 
     /**
      * @var string[]

@@ -47,11 +47,6 @@ class StatusRecord extends MorphPivot
     ];
 
     /**
-     * @var string[]
-     */
-    protected $with = ['status'];
-
-    /**
      * @var string
      */
     protected $table = 'model_has_statuses';

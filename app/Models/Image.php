@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Storage;
  * @property string|null $description
  * @property string $filename
  * @property string $model_type
- * @property string $model_id
+ * @property string $model_id (DC2Type:guid)
  * @property string $path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at

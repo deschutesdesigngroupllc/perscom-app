@@ -36,6 +36,7 @@ class UsersRankRecordsController extends RelationController
     {
         return [
             'author',
+            'author.*',
             'document',
             'rank',
             'rank.image',

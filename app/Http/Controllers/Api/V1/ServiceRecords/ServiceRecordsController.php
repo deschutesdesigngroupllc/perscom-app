@@ -31,8 +31,10 @@ class ServiceRecordsController extends Controller
     {
         return [
             'author',
+            'author.*',
             'document',
             'user',
+            'user.*',
         ];
     }
 

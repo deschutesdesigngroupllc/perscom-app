@@ -40,9 +40,9 @@ use RRule\RRule;
  * @property \Illuminate\Support\Carbon|null $until
  * @property \Illuminate\Support\Collection|null $by_day
  * @property \Illuminate\Support\Collection|null $by_month
- * @property mixed|null $by_set_position
+ * @property string|null $by_set_position
  * @property \Illuminate\Support\Collection|null $by_month_day
- * @property mixed|null $by_year_day
+ * @property string|null $by_year_day
  * @property string|null $rrule
  * @property bool $registration_enabled
  * @property \Illuminate\Support\Carbon|null $registration_deadline
@@ -174,11 +174,6 @@ class Event extends Model
         'computed_end',
         'next_occurrence',
     ];
-
-    /**
-     * @var string[]
-     */
-    protected $with = ['calendar', 'registrations', 'tags'];
 
     public static function boot(): void
     {

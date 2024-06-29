@@ -36,6 +36,7 @@ class UsersServiceRecordsController extends RelationController
     {
         return [
             'author',
+            'author.*',
             'document',
         ];
     }

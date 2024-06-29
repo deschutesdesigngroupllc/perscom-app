@@ -37,6 +37,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $attachments_count
  * @property-read \App\Models\User|null $author
  * @property-read \App\Models\Document|null $document
+ * @property-read mixed $document_parsed
  * @property-read \App\Models\Rank|null $rank
  * @property-read \App\Models\User|null $user
  *
@@ -86,11 +87,6 @@ class RankRecord extends Model
      * @var array<int, string>
      */
     protected $fillable = ['user_id', 'rank_id', 'document_id', 'author_id', 'text', 'type', 'updated_at', 'created_at'];
-
-    /**
-     * @var string[]
-     */
-    protected $with = ['document', 'rank'];
 
     /**
      * @var array<string, string>

@@ -68,11 +68,6 @@ class Submission extends Model implements Htmlable, Stringable
     public $guarded = [];
 
     /**
-     * @var string[]
-     */
-    protected $with = ['form', 'user', 'statuses'];
-
-    /**
      * @var array<int, string>
      */
     protected $hidden = ['data'];
