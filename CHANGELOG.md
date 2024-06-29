@@ -1,6 +1,25 @@
 # Release Notes
 
-## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.94...HEAD)
+## [Unreleased](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.95...HEAD)
+
+## [v1.0.95](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.94...v1.0.95) - 2024-06-28
+
+<!-- Release notes generated using configuration in .github/release.yml at v1.0.95 -->
+### What's Changed
+
+#### Other
+
+* Bump laravel/horizon from 5.23.0 to 5.24.5 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/440
+* Bump laravel/pulse from 1.0.0-beta11 to 1.2.3 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/437
+* Bump barryvdh/laravel-ide-helper from 2.15.1 to 3.0.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/438
+* Bump tightenco/ziggy from 2.1.0 to 2.2.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/441
+* Bump @inertiajs/react from 1.1.0 to 1.2.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/443
+* Bump vite from 5.2.8 to 5.3.1 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/444
+* Bump aws/aws-sdk-php from 3.306.4 to 3.314.6 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/447
+* Bump @headlessui/react from 2.0.3 to 2.1.0 by @dependabot in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/446
+* Add document_parsed attribute by @JonErickson in https://github.com/DeschutesDesignGroupLLC/perscom-app/pull/448
+
+**Full Changelog**: https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.94...v1.0.95
 
 ## [v1.0.94](https://github.com/DeschutesDesignGroupLLC/perscom-app/compare/v1.0.93...v1.0.94) - 2024-06-09
 
