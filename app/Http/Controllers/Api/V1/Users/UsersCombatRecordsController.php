@@ -36,6 +36,7 @@ class UsersCombatRecordsController extends RelationController
     {
         return [
             'author',
+            'author.*',
             'document',
         ];
     }

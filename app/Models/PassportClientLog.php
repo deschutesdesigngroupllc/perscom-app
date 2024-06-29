@@ -16,7 +16,7 @@ use Spatie\Activitylog\Models\Activity;
  * @property string|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
- * @property string|null $causer_id
+ * @property string|null $causer_id (DC2Type:guid)
  * @property \Illuminate\Support\Collection|null $properties
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at

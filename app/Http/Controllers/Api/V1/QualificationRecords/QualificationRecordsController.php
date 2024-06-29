@@ -31,10 +31,12 @@ class QualificationRecordsController extends Controller
     {
         return [
             'author',
+            'author.*',
             'document',
             'qualification',
             'qualification.image',
             'user',
+            'user.*',
         ];
     }
 

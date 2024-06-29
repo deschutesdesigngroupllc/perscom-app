@@ -79,11 +79,6 @@ class TaskAssignment extends Pivot
     protected $appends = ['complete', 'expired', 'past_due', 'status'];
 
     /**
-     * @var string[]
-     */
-    protected $with = ['task', 'user'];
-
-    /**
      * @var array<string, string>
      */
     protected $casts = [

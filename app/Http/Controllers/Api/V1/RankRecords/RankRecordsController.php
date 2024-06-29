@@ -31,10 +31,12 @@ class RankRecordsController extends Controller
     {
         return [
             'author',
+            'author.*',
             'document',
             'rank',
             'rank.image',
             'user',
+            'user.*',
         ];
     }
 

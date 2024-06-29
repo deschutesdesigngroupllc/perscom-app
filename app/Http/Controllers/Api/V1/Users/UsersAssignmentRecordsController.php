@@ -36,6 +36,7 @@ class UsersAssignmentRecordsController extends RelationController
     {
         return [
             'author',
+            'author.*',
             'document',
             'position',
             'specialty',

@@ -63,11 +63,6 @@ class Rank extends Model implements Sortable
      */
     protected $fillable = ['name', 'description', 'abbreviation', 'paygrade', 'order', 'updated_at', 'created_at'];
 
-    /**
-     * @var string[]
-     */
-    protected $with = ['image'];
-
     protected static function booted(): void
     {
         static::addGlobalScope(new RankScope());

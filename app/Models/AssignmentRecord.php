@@ -40,6 +40,7 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $attachments_count
  * @property-read \App\Models\User|null $author
  * @property-read \App\Models\Document|null $document
+ * @property-read mixed $document_parsed
  * @property-read \App\Models\Position|null $position
  * @property-read \App\Models\Specialty|null $specialty
  * @property-read \App\Models\Status|null $status
@@ -95,11 +96,6 @@ class AssignmentRecord extends Model
      * @var array<int, string>
      */
     protected $fillable = ['user_id', 'status_id', 'unit_id', 'position_id', 'specialty_id', 'document_id', 'author_id', 'type', 'text', 'updated_at', 'created_at'];
-
-    /**
-     * @var string[]
-     */
-    protected $with = ['document', 'position', 'specialty', 'status', 'unit'];
 
     /**
      * @var array<string, string>

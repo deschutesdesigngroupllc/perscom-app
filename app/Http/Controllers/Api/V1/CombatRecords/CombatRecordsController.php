@@ -31,8 +31,10 @@ class CombatRecordsController extends Controller
     {
         return [
             'author',
+            'author.*',
             'document',
             'user',
+            'user.*',
         ];
     }
 

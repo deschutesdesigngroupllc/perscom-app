@@ -126,11 +126,6 @@ class Tenant extends \Stancl\Tenancy\Database\Models\Tenant implements FeatureSc
     protected $appends = ['database_status', 'url', 'custom_url', 'fallback_url'];
 
     /**
-     * @var string[]
-     */
-    protected $with = ['domains'];
-
-    /**
      * @return string[]
      */
     public static function getCustomColumns(): array
