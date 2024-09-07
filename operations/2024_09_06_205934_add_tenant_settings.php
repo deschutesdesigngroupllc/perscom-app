@@ -52,8 +52,8 @@ return new class extends OneTimeOperation
 
             /** @var PermissionSettings $permissionSettings */
             $permissionSettings = app(PermissionSettings::class);
-            $permissionSettings->default_permissions = json_decode(Settings::query()->where('name', 'default_permissions')->pluck('value')->first(default: '[]'), true) ?? [];
-            $permissionSettings->default_roles = json_decode(Settings::query()->where('name', 'default_roles')->pluck('value')->first(default: "['User']"), true) ?? ['User'];
+            $permissionSettings->default_permissions = json_decode(Settings::query()->where('name', 'default_permissions')->pluck('value')->first() ?? "[]", true) ?? [];
+            $permissionSettings->default_roles = json_decode(Settings::query()->where('name', 'default_roles')->pluck('value')->first() ?? '["User"]', true) ?? ['User'];
             $permissionSettings->save();
 
             /** @var RegistrationSettings $registrationSettings */
