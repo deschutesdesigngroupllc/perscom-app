@@ -16,7 +16,7 @@ class CreatePassportToken extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $action = new CreatePersonalAccessToken();
+        $action = new CreatePersonalAccessToken;
 
         $scopes = data_get($data, 'all_scopes')
             ? ['*']

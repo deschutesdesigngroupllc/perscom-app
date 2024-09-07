@@ -91,7 +91,7 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn () => view('components.logo'))
             ->plugins([
-                new MinimalTheme(),
+                new MinimalTheme,
             ]);
     }
 }

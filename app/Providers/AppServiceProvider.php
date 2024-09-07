@@ -66,7 +66,7 @@ class AppServiceProvider extends ServiceProvider
 
         //$this->app->extend('url', fn (UrlGenerator $generator) => new TenantUrlGenerator($this->app->make('router')->getRoutes(), $generator->getRequest(), $this->app->make('config')->get('app.asset_url')));
         $this->app->extend(BusDispatcher::class, fn ($dispatcher, $app) => new Dispatcher($app, $dispatcher));
-        $this->app->bind(KeyResolverContract::class, fn () => new KeyResolver());
+        $this->app->bind(KeyResolverContract::class, fn () => new KeyResolver);
         $this->app->bind(ComponentsResolverContract::class, fn ($app, $params) => new ComponentsResolver(resourceModelClass: data_get($params, 'resourceModelClass')));
     }
 

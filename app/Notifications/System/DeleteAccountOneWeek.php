@@ -20,6 +20,6 @@ class DeleteAccountOneWeek extends Notification implements ShouldQueue
 
     public function toMail(mixed $notifiable): DeleteAccountMail
     {
-        return (new DeleteAccountMail())->to($notifiable->email);
+        return (new DeleteAccountMail)->to($notifiable->email);
     }
 }

@@ -33,7 +33,7 @@ class AccessTokenTest extends TenantTestCase
             'create:user',
         ]);
 
-        $parser = new Parser(new JoseEncoder());
+        $parser = new Parser(new JoseEncoder);
 
         /** @var Plain $token */
         $token = $parser->parse($result->accessToken);

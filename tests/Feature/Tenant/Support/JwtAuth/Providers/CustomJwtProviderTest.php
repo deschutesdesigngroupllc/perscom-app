@@ -33,7 +33,7 @@ class CustomJwtProviderTest extends TenantTestCase
         /** @var string $token */
         $token = Auth::guard('jwt')->login($user);
 
-        $parser = new Parser(new JoseEncoder());
+        $parser = new Parser(new JoseEncoder);
         $token = $parser->parse($token);
 
         $this->assertTrue($provider->getConfig()->validator()->validate($token, ...$provider->getConfig()->validationConstraints()));
@@ -50,7 +50,7 @@ class CustomJwtProviderTest extends TenantTestCase
         /** @var CustomJwtProvider $provider */
         $provider = $this->app->make(CustomJwtProvider::class);
 
-        $parser = new Parser(new JoseEncoder());
+        $parser = new Parser(new JoseEncoder);
         $token = $parser->parse($token->accessToken);
 
         $this->assertTrue($provider->getConfig()->validator()->validate($token, ...$provider->getConfig()->validationConstraints()));
@@ -70,13 +70,13 @@ class CustomJwtProviderTest extends TenantTestCase
         $settings = $this->app->make(IntegrationSettings::class);
 
         $config = Configuration::forSymmetricSigner(
-            new Sha256(),
+            new Sha256,
             InMemory::plainText($settings->single_sign_on_key),
         );
 
         $token = $config->builder()
-            ->issuedAt(new DateTimeImmutable())
-            ->canOnlyBeUsedAfter(new DateTimeImmutable())
+            ->issuedAt(new DateTimeImmutable)
+            ->canOnlyBeUsedAfter(new DateTimeImmutable)
             ->expiresAt(now()->addHour()->toDateTimeImmutable())
             ->relatedTo((string) $user->getKey())
             ->withClaim('scopes', ['*'])
@@ -100,7 +100,7 @@ class CustomJwtProviderTest extends TenantTestCase
         /** @var string $token */
         $token = Auth::guard('jwt')->login($user);
 
-        $parser = new Parser(new JoseEncoder());
+        $parser = new Parser(new JoseEncoder);
         $token = $parser->parse($token);
 
         $this->assertFalse($provider->getConfig()->validator()->validate($token, ...$provider->getConfig()->validationConstraints()));
@@ -117,13 +117,13 @@ class CustomJwtProviderTest extends TenantTestCase
         $provider = $this->app->make(CustomJwtProvider::class);
 
         $config = Configuration::forSymmetricSigner(
-            new Sha256(),
+            new Sha256,
             InMemory::plainText(Str::password(symbols: false)),
         );
 
         $token = $config->builder()
-            ->issuedAt(new DateTimeImmutable())
-            ->canOnlyBeUsedAfter(new DateTimeImmutable())
+            ->issuedAt(new DateTimeImmutable)
+            ->canOnlyBeUsedAfter(new DateTimeImmutable)
             ->expiresAt(now()->addHour()->toDateTimeImmutable())
             ->relatedTo((string) $user->getKey())
             ->withClaim('scopes', ['*'])

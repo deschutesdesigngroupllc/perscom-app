@@ -38,7 +38,7 @@ class RemoveInactiveAccounts implements ShouldQueue
             };
 
             if ($dateToCompare?->isSameDay(now()->subMonths(5))) {
-                $tenant->notify(new DeleteAccountOneMonth());
+                $tenant->notify(new DeleteAccountOneMonth);
 
                 Log::debug('Inactive account one month deletion warning sent', ['tenant' => $tenant]);
 
@@ -46,7 +46,7 @@ class RemoveInactiveAccounts implements ShouldQueue
             }
 
             if ($dateToCompare?->isSameDay(now()->subMonths(6)->addWeek())) {
-                $tenant->notify(new DeleteAccountOneWeek());
+                $tenant->notify(new DeleteAccountOneWeek);
 
                 Log::debug('Inactive account one week deletion warning sent', ['tenant' => $tenant]);
 
@@ -54,7 +54,7 @@ class RemoveInactiveAccounts implements ShouldQueue
             }
 
             if ($dateToCompare?->isSameDay(now()->subMonths(6))) {
-                $tenant->notifyNow(new DeleteAccount());
+                $tenant->notifyNow(new DeleteAccount);
                 $tenant->delete();
 
                 Log::debug('Inactive account deleted', ['tenant' => $tenant]);

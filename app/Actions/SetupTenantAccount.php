@@ -110,7 +110,7 @@ class SetupTenantAccount
     {
         $password = Str::password(length: 16, symbols: false);
 
-        $action = new CreateNewUser();
+        $action = new CreateNewUser;
 
         $user = $action->create([
             'name' => 'Admin',

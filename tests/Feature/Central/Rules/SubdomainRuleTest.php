@@ -11,7 +11,7 @@ class SubdomainRuleTest extends CentralTestCase
 {
     public function test_protected_subdomains_do_not_pass_test()
     {
-        $rule = new SubdomainRule();
+        $rule = new SubdomainRule;
 
         foreach (SubdomainRule::$reservedSubdomains as $domain) {
             $passed = true;
@@ -28,7 +28,7 @@ class SubdomainRuleTest extends CentralTestCase
 
     public function test_random_subdomain_passes_test()
     {
-        $rule = new SubdomainRule();
+        $rule = new SubdomainRule;
 
         $passed = true;
 

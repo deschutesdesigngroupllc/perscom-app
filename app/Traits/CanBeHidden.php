@@ -25,7 +25,7 @@ trait CanBeHidden
 
     protected static function bootCanBeHidden(): void
     {
-        static::addGlobalScope(new VisibleScope());
+        static::addGlobalScope(new VisibleScope);
     }
 
     protected function initializeCanBeHidden(): void

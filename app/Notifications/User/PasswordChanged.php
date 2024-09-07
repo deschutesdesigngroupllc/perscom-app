@@ -20,6 +20,6 @@ class PasswordChanged extends Notification implements ShouldQueue
 
     public function toMail(mixed $notifiable): PasswordChangedMail
     {
-        return (new PasswordChangedMail())->to($notifiable->email);
+        return (new PasswordChangedMail)->to($notifiable->email);
     }
 }

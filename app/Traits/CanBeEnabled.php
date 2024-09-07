@@ -25,7 +25,7 @@ trait CanBeEnabled
 
     protected static function bootCanBeEnabled(): void
     {
-        static::addGlobalScope(new EnabledScope());
+        static::addGlobalScope(new EnabledScope);
     }
 
     protected function initializeCanBeEnabled(): void

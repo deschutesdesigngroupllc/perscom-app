@@ -106,7 +106,7 @@ class AppPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn () => view('components.logo'))
             ->plugins([
-                new MinimalTheme(),
+                new MinimalTheme,
                 FilamentShieldPlugin::make(),
                 QuickCreatePlugin::make()
                     ->renderUsingHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER)
@@ -163,7 +163,7 @@ class AppPanelProvider extends PanelProvider
             ->tenantMenu(false)
             ->tenant(Tenant::class, 'slug')
             ->tenantDomain('{tenant:slug}.perscom.test')
-            ->tenantBillingProvider(new BillingProvider())
+            ->tenantBillingProvider(new BillingProvider)
             ->requiresTenantSubscription();
     }
 }

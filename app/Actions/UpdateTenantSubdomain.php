@@ -22,7 +22,7 @@ class UpdateTenantSubdomain
         $validator = Validator::make([
             'subdomain' => $subdomain,
         ], [
-            'subdomain' => [Rule::unique('mysql.domains', 'domain')->ignore($tenant->custom_domain?->id), new SubdomainRule()],
+            'subdomain' => [Rule::unique('mysql.domains', 'domain')->ignore($tenant->custom_domain?->id), new SubdomainRule],
         ]);
 
         if ($validator->fails()) {
@@ -30,7 +30,7 @@ class UpdateTenantSubdomain
         }
 
         return DB::transaction(function () use ($tenant, $validator) {
-            $action = new ResetTenantSubdomain();
+            $action = new ResetTenantSubdomain;
             $action->handle($tenant);
 
             $tenant->domains()->create([

@@ -20,6 +20,6 @@ class ApprovalRequired extends Notification implements ShouldQueue
 
     public function toMail(mixed $notifiable): ApprovalRequiredMail
     {
-        return (new ApprovalRequiredMail())->to($notifiable->email);
+        return (new ApprovalRequiredMail)->to($notifiable->email);
     }
 }

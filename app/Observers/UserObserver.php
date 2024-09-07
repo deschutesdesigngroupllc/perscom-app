@@ -37,7 +37,7 @@ class UserObserver
                 'approved' => false,
             ]);
 
-            Notification::send($user, new ApprovalRequired());
+            Notification::send($user, new ApprovalRequired);
             Notification::send(User::role('Admin')->get(), new AdminApprovalRequired($user));
         }
     }
@@ -51,11 +51,11 @@ class UserObserver
         }
 
         if ($user->approved && $user->isDirty('approved')) {
-            Notification::send($user, new AccountApproved());
+            Notification::send($user, new AccountApproved);
         }
 
         if ($user->isDirty('password')) {
-            Notification::send($user, new PasswordChanged());
+            Notification::send($user, new PasswordChanged);
         }
 
         Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_UPDATED->value])->each(function (Webhook $webhook) use ($user) {

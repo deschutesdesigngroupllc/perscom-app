@@ -20,7 +20,11 @@ jobs:
           MYSQL_DATABASE: testing
         ports:
           - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
 
     steps:
       - name: Checkout Source Code
@@ -29,34 +33,22 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.2
+          php-version: 8.3
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, :psr
-          ini-values: error_reporting=E_ALL
+          ini-values: error_reporting=E_ALL, xdebug.mode="develop,coverage"
           tools: composer
           coverage: xdebug
         env:
           COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '18'
-          cache: 'npm'
-
-      - name: Install Javascript Dependencies
-        run: npm ci
-
-      - name: Build Project
-        run: npm run build
+      - name: Get Composer Cache Directory
+        id: composer-cache
+        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
 
       - name: Configure Composer Authentication
         run: |
           composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
-          composer config http-basic.nova.laravel.com ${{ secrets.NOVA_USERNAME }} ${{ secrets.NOVA_API_TOKEN }}
-
-      - name: Get Composer Cache Directory
-        id: composer-cache
-        run: echo "::set-output name=dir::$(composer config cache-files-dir)"
+          composer config http-basic.whizzy.dev ${{ secrets.FILAMENT_USERNAME }} ${{ secrets.FILAMENT_PASSWORD }}
 
       - name: Cache Composer Dependencies
         uses: actions/cache@v3
@@ -66,14 +58,31 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-composer-
 
-      - name: Install Dependencies
+      - name: Install PHP Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
+
+      - name: Setup Node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Javascript Dependencies
+        run: npm ci
+
+      - name: Build Project
+        run: |
+          npm run build
+          npm run build:landing
 
       - name: Install Passport Keys
         run: php artisan passport:keys --force
 
       - name: Make Environment File
         run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Clear Cache
+        run: php artisan optimize:clear
 
       - name: Execute Tests
         run: php artisan test --parallel

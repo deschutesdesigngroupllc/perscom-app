@@ -28,7 +28,7 @@ class EventRegistrationPolicy extends Policy
 
     public function view(?User $user, EventRegistration $registration): bool
     {
-        return Gate::check('view', $registration->event ?? new Event()) || optional($registration->user)->id === optional($user)->id;
+        return Gate::check('view', $registration->event ?? new Event) || optional($registration->user)->id === optional($user)->id;
     }
 
     public function create(?User $user = null): bool
@@ -38,21 +38,21 @@ class EventRegistrationPolicy extends Policy
 
     public function update(?User $user, EventRegistration $registration): bool
     {
-        return Gate::check('update', $registration->event ?? new Event());
+        return Gate::check('update', $registration->event ?? new Event);
     }
 
     public function delete(?User $user, EventRegistration $registration): bool
     {
-        return Gate::check('delete', $registration->event ?? new Event());
+        return Gate::check('delete', $registration->event ?? new Event);
     }
 
     public function restore(?User $user, EventRegistration $registration): bool
     {
-        return Gate::check('delete', $registration->event ?? new Event());
+        return Gate::check('delete', $registration->event ?? new Event);
     }
 
     public function forceDelete(?User $user, EventRegistration $registration): bool
     {
-        return Gate::check('delete', $registration->event ?? new Event());
+        return Gate::check('delete', $registration->event ?? new Event);
     }
 }

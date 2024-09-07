@@ -152,7 +152,7 @@ class AccessTokenControllerTest extends TenantTestCase
         $this->assertArrayHasKey('email_verified', $tokenPayload);
         $this->assertArrayHasKey('tenant', $tokenPayload);
 
-        $issuedAt = new DateTimeImmutable();
+        $issuedAt = new DateTimeImmutable;
 
         $this->assertSame($tokenPayload['aud'], $client->getKey());
         $this->assertSame($tokenPayload['iss'], 'https://'.$_SERVER['HTTP_HOST']);

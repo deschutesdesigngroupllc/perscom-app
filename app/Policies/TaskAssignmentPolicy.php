@@ -28,7 +28,7 @@ class TaskAssignmentPolicy extends Policy
 
     public function view(?User $user, TaskAssignment $taskAssignment): bool
     {
-        return Gate::check('view', $taskAssignment->task ?? new Task()) || optional($taskAssignment->user)->id === optional($user)->id;
+        return Gate::check('view', $taskAssignment->task ?? new Task) || optional($taskAssignment->user)->id === optional($user)->id;
     }
 
     public function create(?User $user = null): bool
@@ -38,21 +38,21 @@ class TaskAssignmentPolicy extends Policy
 
     public function update(?User $user, TaskAssignment $taskAssignment): bool
     {
-        return Gate::check('update', $taskAssignment->task ?? new Task());
+        return Gate::check('update', $taskAssignment->task ?? new Task);
     }
 
     public function delete(?User $user, TaskAssignment $taskAssignment): bool
     {
-        return Gate::check('delete', $taskAssignment->task ?? new Task());
+        return Gate::check('delete', $taskAssignment->task ?? new Task);
     }
 
     public function restore(?User $user, TaskAssignment $taskAssignment): bool
     {
-        return Gate::check('restore', $taskAssignment->task ?? new Task());
+        return Gate::check('restore', $taskAssignment->task ?? new Task);
     }
 
     public function forceDelete(?User $user, TaskAssignment $taskAssignment): bool
     {
-        return Gate::check('forceDelete', $taskAssignment->task ?? new Task());
+        return Gate::check('forceDelete', $taskAssignment->task ?? new Task);
     }
 }

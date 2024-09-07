@@ -49,7 +49,7 @@ class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\Initiali
             return null;
         }
 
-        $parser = new Parser(new JoseEncoder());
+        $parser = new Parser(new JoseEncoder);
 
         /** @var Plain|null $token */
         $token = rescue(fn () => $parser->parse($request->bearerToken()), report: false);

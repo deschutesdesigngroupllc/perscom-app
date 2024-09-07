@@ -184,8 +184,8 @@ class ApiControllerTest extends ApiTestCase
         /** @var IntegrationSettings $settings */
         $settings = $this->app->make(IntegrationSettings::class);
 
-        $tokenBuilder = (new Builder(new JoseEncoder(), ChainedFormatter::default()));
-        $algorithm = new Sha256();
+        $tokenBuilder = (new Builder(new JoseEncoder, ChainedFormatter::default()));
+        $algorithm = new Sha256;
         $signingKey = InMemory::plainText($settings->single_sign_on_key);
 
         $token = $tokenBuilder
@@ -248,8 +248,8 @@ class ApiControllerTest extends ApiTestCase
         /** @var IntegrationSettings $settings */
         $settings = $this->app->make(IntegrationSettings::class);
 
-        $tokenBuilder = (new Builder(new JoseEncoder(), ChainedFormatter::default()));
-        $algorithm = new Sha256();
+        $tokenBuilder = (new Builder(new JoseEncoder, ChainedFormatter::default()));
+        $algorithm = new Sha256;
         $signingKey = InMemory::plainText($settings->single_sign_on_key);
 
         $token = $tokenBuilder

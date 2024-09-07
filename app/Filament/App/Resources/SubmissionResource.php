@@ -53,7 +53,7 @@ class SubmissionResource extends BaseResource
                     ->helperText('The submission data.')
                     ->keyLabel('Field Slug')
                     ->visibleOn('edit')
-                    ->rule(new FieldDataRule()),
+                    ->rule(new FieldDataRule),
             ]);
     }
 

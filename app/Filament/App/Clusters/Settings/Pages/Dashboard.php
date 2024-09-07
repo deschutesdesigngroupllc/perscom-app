@@ -75,7 +75,7 @@ class Dashboard extends SettingsPage
                                         /** @var Tenant $tenant */
                                         $tenant = Filament::getTenant();
 
-                                        return [Rule::unique('mysql.domains', 'domain')->ignore($tenant->custom_domain->id ?? null), new SubdomainRule()];
+                                        return [Rule::unique('mysql.domains', 'domain')->ignore($tenant->custom_domain->id ?? null), new SubdomainRule];
                                     })
                                     ->visible(fn () => Feature::active(CustomSubDomainFeature::class))
                                     ->helperText('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
@@ -133,7 +133,7 @@ class Dashboard extends SettingsPage
         /** @var Tenant $tenant */
         $tenant = Filament::getTenant();
 
-        $action = new UpdateTenantSubdomain();
+        $action = new UpdateTenantSubdomain;
         $action->handle($tenant, $subdomain);
 
         Notification::make()
@@ -150,7 +150,7 @@ class Dashboard extends SettingsPage
         /** @var Tenant $tenant */
         $tenant = Filament::getTenant();
 
-        $action = new ResetTenantSubdomain();
+        $action = new ResetTenantSubdomain;
         $action->handle($tenant);
 
         Notification::make()
