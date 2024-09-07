@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e4309228450a392c3612de021e1e30c8",
+    "content-hash": "3873cd26bfcf4b92b151c42c413c0012",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -9659,16 +9659,16 @@
         },
         {
             "name": "stancl/jobpipeline",
-            "version": "v1.7.0",
+            "version": "v2.0.0-rc2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/archtechx/jobpipeline.git",
-                "reference": "36474ffd2180170856fd05f6003c946064959629"
+                "reference": "8b793e0cf235bce0b5260e7e24eec91427b6bcd3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/archtechx/jobpipeline/zipball/36474ffd2180170856fd05f6003c946064959629",
-                "reference": "36474ffd2180170856fd05f6003c946064959629",
+                "url": "https://api.github.com/repos/archtechx/jobpipeline/zipball/8b793e0cf235bce0b5260e7e24eec91427b6bcd3",
+                "reference": "8b793e0cf235bce0b5260e7e24eec91427b6bcd3",
                 "shasum": ""
             },
             "require": {
@@ -9699,9 +9699,9 @@
             "description": "Turn any series of jobs into Laravel listeners.",
             "support": {
                 "issues": "https://github.com/archtechx/jobpipeline/issues",
-                "source": "https://github.com/archtechx/jobpipeline/tree/v1.7.0"
+                "source": "https://github.com/archtechx/jobpipeline/tree/v2.0.0-rc2"
             },
-            "time": "2024-01-27T22:01:45+00:00"
+            "time": "2024-01-27T22:02:10+00:00"
         },
         {
             "name": "stancl/tenancy",
@@ -17838,15 +17838,23 @@
             "time": "2024-04-29T21:42:39+00:00"
         }
     ],
-    "aliases": [],
+    "aliases": [
+        {
+            "package": "stancl/jobpipeline",
+            "version": "2.0.0.0-RC2",
+            "alias": "v1.6.2",
+            "alias_normalized": "1.6.2.0"
+        }
+    ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "stancl/jobpipeline": 5,
         "tailflow/laravel-orion": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^8.2"
+        "php": "^8.3"
     },
     "platform-dev": [],
     "plugin-api-version": "2.6.0"

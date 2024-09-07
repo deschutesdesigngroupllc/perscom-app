@@ -46,6 +46,7 @@
     "spatie/laravel-settings": "^3.3.2",
     "spatie/laravel-webhook-server": "^3.8.1",
     "spatie/url": "^2.4",
+    "stancl/jobpipeline": "v2.0.0-rc2 as v1.6.2",
     "stancl/tenancy": "^3.8.4",
     "stancl/virtualcolumn": "^1.4.1",
     "tailflow/laravel-orion": "dev-feature/multiple-controller-arguments",
