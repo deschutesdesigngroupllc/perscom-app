@@ -29,35 +29,38 @@
   </coverage>
 
   <php>
-    <server name="API_URL" value="http://api.lvh.me"/>
-    <server name="API_VERSION" value="v1"/>
-    <server name="APP_ENV" value="testing"/>
-    <server name="APP_DEBUG" value="false" />
-    <server name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
-    <server name="APP_URL" value="http://lvh.me"/>
-    <server name="AUTH_URL" value="http://auth.lvh.me"/>
-    <server name="BASE_URL" value=".lvh.me"/>
-    <server name="BCRYPT_ROUNDS" value="4"/>
-    <server name="CACHE_DRIVER" value="array"/>
-    <server name="DB_DATABASE" value="testing"/>
-    <server name="DB_HOST" value="127.0.0.1"/>
-    <server name="ENVOYER_HEARTBEAT_URL" value="https://foo.bar" />
-    <server name='HTTP_HOST' value='http://lvh.me' />
-    <server name="JWT_ALGO" value="HS256"/>
-    <server name="JWT_SECRET" value="3juKTvPLQ2Vw7djDKazHaGQ0UXht2D3wUC94hroyzy6RLNaRbMWJnKdjo9YfCtHU"/>
-    <server name="LOG_CHANNEL" value="single"/>
-    <server name="LOG_LEVEL" value="debug"/>
-    <server name="MAIL_MAILER" value="array"/>
-    <server name="MAIL_FROM_NAME" value="Test"/>
-    <server name="PENNANT_STORE" value="array"/>
-    <server name="QUEUE_CONNECTION" value="sync"/>
-    <server name="RESPONSE_CACHE_ENABLED" value="false"/>
-    <server name="SESSION_DRIVER" value="array"/>
-    <server name="STRIPE_PRODUCT_BASIC_MONTH" value="price_1LGWsjGt8lrL0dgCSh82mHu3"/>
-    <server name="STRIPE_PRODUCT_ENTERPRISE_MONTH" value="price_1LGWuVGt8lrL0dgCA8GM8Bpw"/>
-    <server name="STRIPE_PRODUCT_PRO_MONTH" value="price_1LGWtYGt8lrL0dgCAfBx95kG"/>
-    <server name="TELESCOPE_ENABLED" value="false"/>
-    <server name="VIEW_CACHE" value="false"/>
+    <env name="API_URL" value="http://api.lvh.me"/>
+    <env name="API_VERSION" value="v1"/>
+    <env name="APP_ENV" value="testing"/>
+    <env name="APP_DEBUG" value="false" />
+    <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
+    <env name="APP_URL" value="http://lvh.me"/>
+    <env name="AUTH_URL" value="http://auth.lvh.me"/>
+    <env name="BASE_URL" value=".lvh.me"/>
+    <env name="BCRYPT_ROUNDS" value="4"/>
+    <env name="CACHE_DRIVER" value="array"/>
+    <env name="DB_CONNECTION" value="mysql"/>
+    <env name="DB_DATABASE" value="testing"/>
+    <env name="DB_HOST" value="127.0.0.1"/>
+    <env name="DB_USERNAME" value="root"/>
+    <env name="DB_PASSWORD" value=""/>
+    <env name="ENVOYER_HEARTBEAT_URL" value="https://foo.bar" />
+    <env name='HTTP_HOST' value='http://lvh.me' />
+    <env name="JWT_ALGO" value="HS256"/>
+    <env name="JWT_SECRET" value="3juKTvPLQ2Vw7djDKazHaGQ0UXht2D3wUC94hroyzy6RLNaRbMWJnKdjo9YfCtHU"/>
+    <env name="LOG_CHANNEL" value="single"/>
+    <env name="LOG_LEVEL" value="debug"/>
+    <env name="MAIL_MAILER" value="array"/>
+    <env name="MAIL_FROM_NAME" value="Test"/>
+    <env name="PENNANT_STORE" value="array"/>
+    <env name="QUEUE_CONNECTION" value="sync"/>
+    <env name="RESPONSE_CACHE_ENABLED" value="false"/>
+    <env name="SESSION_DRIVER" value="array"/>
+    <env name="STRIPE_PRODUCT_BASIC_MONTH" value="price_1LGWsjGt8lrL0dgCSh82mHu3"/>
+    <env name="STRIPE_PRODUCT_ENTERPRISE_MONTH" value="price_1LGWuVGt8lrL0dgCA8GM8Bpw"/>
+    <env name="STRIPE_PRODUCT_PRO_MONTH" value="price_1LGWtYGt8lrL0dgCAfBx95kG"/>
+    <env name="TELESCOPE_ENABLED" value="false"/>
+    <env name="VIEW_CACHE" value="false"/>
   </php>
 
   <source>
