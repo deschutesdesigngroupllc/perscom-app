@@ -24,6 +24,7 @@ use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -88,14 +89,17 @@ class AppServiceProvider extends ServiceProvider
             return Auth::guard('jwt')->user() ?? Auth::guard('passport')->user();
         });
 
-        Authenticate::redirectUsing(function () {
+        $authenticationRedirect = function () {
             return match (App::isAdmin()) {
                 true => route('filament.admin.pages.dashboard'),
                 default => route('filament.app.pages.dashboard', [
                     'tenant' => tenant(),
                 ])
             };
-        });
+        };
+
+        Authenticate::redirectUsing($authenticationRedirect);
+        AuthenticateSession::redirectUsing($authenticationRedirect);
 
         Feature::discover();
         Feature::resolveScopeUsing(static fn ($driver) => tenant());
