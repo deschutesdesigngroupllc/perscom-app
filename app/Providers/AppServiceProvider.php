@@ -21,6 +21,7 @@ use Filament\Infolists\Components\Entry;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
 use Filament\View\PanelsRenderHook;
+use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\App;
@@ -85,6 +86,15 @@ class AppServiceProvider extends ServiceProvider
 
         Auth::viaRequest('api', static function () {
             return Auth::guard('jwt')->user() ?? Auth::guard('passport')->user();
+        });
+
+        Authenticate::redirectUsing(function () {
+            return match (App::isAdmin()) {
+                true => route('filament.admin.pages.dashboard'),
+                default => route('filament.app.pages.dashboard', [
+                    'tenant' => tenant(),
+                ])
+            };
         });
 
         Feature::discover();
