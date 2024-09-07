@@ -21,6 +21,7 @@ return [
     'central_domains' => [
         '127.0.0.1',
         'localhost',
+        'staging.perscom.io',
         'perscom-app.test',
         'perscom.test',
         'perscom.io',
