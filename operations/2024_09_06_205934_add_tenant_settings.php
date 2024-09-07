@@ -19,10 +19,6 @@ return new class extends OneTimeOperation
     public function process(): void
     {
         tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant) {
-            if ($tenant->getKey() === 1) {
-                return;
-            }
-
             Artisan::call('tenants:migrate', [
                 '--tenants' => [$tenant->getTenantKey()],
                 '--path' => database_path('settings/tenant'),
@@ -52,7 +48,7 @@ return new class extends OneTimeOperation
 
             /** @var PermissionSettings $permissionSettings */
             $permissionSettings = app(PermissionSettings::class);
-            $permissionSettings->default_permissions = json_decode(Settings::query()->where('name', 'default_permissions')->pluck('value')->first() ?? "[]", true) ?? [];
+            $permissionSettings->default_permissions = json_decode(Settings::query()->where('name', 'default_permissions')->pluck('value')->first() ?? '[]', true) ?? [];
             $permissionSettings->default_roles = json_decode(Settings::query()->where('name', 'default_roles')->pluck('value')->first() ?? '["User"]', true) ?? ['User'];
             $permissionSettings->save();
 
