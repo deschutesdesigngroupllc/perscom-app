@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\AwardRecord;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
@@ -15,27 +16,17 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class AwardRecordObserverTest extends TenantTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Queue::fake([GenerateOpenAiNewsfeedContent::class]);
-    }
-
     public function test_create_award_record_notification_sent()
     {
         Notification::fake();
 
         $award = AwardRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewAwardRecord::class, function ($notification, $channels) use ($award) {
+        Notification::assertSentTo($user, NewAwardRecord::class, function (NewAwardRecord $notification, $channels) use ($award) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($award->user);
             $mail->assertTo($award->user->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame('A new award record has been added to your personnel file.', $nova->message);
 
             return true;
         });

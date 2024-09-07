@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\QualificationRecord;
 use App\Models\User;
@@ -15,27 +16,17 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class QualificationRecordObserverTest extends TenantTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Queue::fake([GenerateOpenAiNewsfeedContent::class]);
-    }
-
     public function test_create_qualification_record_notification_sent()
     {
         Notification::fake();
 
         $qualification = QualificationRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewQualificationRecord::class, function ($notification, $channels) use ($qualification) {
+        Notification::assertSentTo($user, NewQualificationRecord::class, function (NewQualificationRecord $notification, $channels) use ($qualification) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($qualification->user);
             $mail->assertTo($qualification->user->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame('A new qualification record has been added to your personnel file.', $nova->message);
 
             return true;
         });

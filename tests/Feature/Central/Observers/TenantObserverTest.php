@@ -1,28 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Central\Observers;
 
 use App\Models\Tenant;
 use App\Notifications\Admin\NewSubscription;
-use App\Notifications\Admin\NewTenant;
+use App\Notifications\Admin\TenantCreated;
 use App\Notifications\Admin\TenantDeleted;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
-use Stancl\Tenancy\Events\TenantCreated;
+use Stancl\Tenancy\Events\TenantCreated as BaseTenantCreated;
+use Stancl\Tenancy\Events\TenantDeleted as BaseTenantDeleted;
 use Tests\Feature\Central\CentralTestCase;
 
 class TenantObserverTest extends CentralTestCase
 {
     public function test_new_tenant_notification_sent()
     {
-        Event::fake([TenantCreated::class]);
+        Event::fake([BaseTenantCreated::class]);
         Notification::fake();
 
         Tenant::factory()->create();
 
-        Event::assertDispatched(TenantCreated::class);
-        Notification::assertSentTo($this->admin, NewTenant::class, function ($notification, $channels) {
+        Event::assertDispatched(BaseTenantCreated::class);
+        Notification::assertSentTo($this->admin, TenantCreated::class, function ($notification, $channels) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($this->admin);
@@ -59,19 +62,18 @@ class TenantObserverTest extends CentralTestCase
 
     public function test_tenant_deleted_notification_sent()
     {
+        Event::fake([BaseTenantDeleted::class]);
         Notification::fake();
 
         $tenant = Tenant::factory()->create();
         $tenant->delete();
 
+        Event::assertDispatched(BaseTenantDeleted::class);
         Notification::assertSentTo($this->admin, TenantDeleted::class, function ($notification, $channels) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($this->admin);
             $mail->assertTo($this->admin->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame('A tenant has been deleted.', $nova->message);
 
             return true;
         });

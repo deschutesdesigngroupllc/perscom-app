@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Document;
@@ -11,16 +13,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class DocumentFactory extends Factory
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
             'author_id' => User::factory(),
             'name' => "Document {$this->faker->unique()->randomNumber()}",
             'description' => $this->faker->paragraph,
-            'content' => $this->faker->randomHtml,
+            'content' => $this->faker->paragraph,
         ];
     }
 }

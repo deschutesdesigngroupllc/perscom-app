@@ -1,17 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Observers\CalendarObserver;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\Calendar
- *
  * @property int $id
  * @property string $name
  * @property string|null $description
@@ -21,15 +26,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Event> $events
  * @property-read int|null $events_count
+ * @property-read string $label
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
  * @method static \Database\Factories\CalendarFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar query()
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar tags(?mixed $tag)
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereDeletedAt($value)
@@ -42,17 +49,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @mixin \Eloquent
  */
-class Calendar extends Model
+#[ObservedBy(CalendarObserver::class)]
+class Calendar extends Model implements HasLabel
 {
     use ClearsResponseCache;
     use HasFactory;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use HasTags;
     use SoftDeletes;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['name', 'description', 'color', 'updated_at', 'created_at'];
+    protected $fillable = [
+        'name',
+        'description',
+        'color',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public function events(): HasMany
     {

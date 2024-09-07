@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail\Admin;
 
+use App\Models\Subscription;
+use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Str;
-use Laravel\Cashier\Subscription;
 
 class NewSubscriptionMail extends Mailable
 {
@@ -29,13 +32,16 @@ class NewSubscriptionMail extends Mailable
 
     public function content(): Content
     {
+        /** @var Tenant $owner */
+        $owner = $this->subscription->owner->fresh();
+
         return new Content(
             markdown: 'emails.admin.new-subscription',
             with: [
-                'tenant' => $this->subscription->owner->name, // @phpstan-ignore-line
-                'url' => $this->subscription->owner->url, // @phpstan-ignore-line
-                'plan' => $this->subscription->owner->sparkPlan()?->name, // @phpstan-ignore-line
-                'interval' => Str::ucfirst($this->subscription->owner->sparkPlan()?->interval), // @phpstan-ignore-line
+                'tenant' => $owner->name,
+                'url' => $owner->url,
+                'plan' => $owner->sparkPlan()?->name,
+                'interval' => Str::ucfirst($owner->sparkPlan()?->interval),
             ]
         );
     }

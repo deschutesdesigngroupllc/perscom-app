@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\User;
 
+use App\Filament\App\Resources\UserResource;
 use App\Mail\User\AdminApprovalRequired as AdminApprovalRequiredMail;
 use App\Models\User;
 use Illuminate\Bus\Queueable;
@@ -18,15 +21,11 @@ class AdminApprovalRequired extends Notification implements ShouldQueue
 
     public function __construct(protected User $user)
     {
-        $this->url = route('nova.pages.detail', [
-            'resource' => \App\Nova\User::uriKey(),
-            'resourceId' => $this->user->getKey(),
-        ]);
+        $this->url = UserResource::getUrl('edit', [
+            'record' => $this->user,
+        ], panel: 'app');
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

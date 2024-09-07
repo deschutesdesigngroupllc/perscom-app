@@ -1,4 +1,5 @@
 *
 !public/
 !specs/
+!images/
 !.gitignore

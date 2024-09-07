@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use App\Actions\SetupTenantAccount;
 use App\Models\Announcement;
 use App\Models\AssignmentRecord;
 use App\Models\Award;
@@ -9,12 +12,11 @@ use App\Models\AwardRecord;
 use App\Models\Calendar;
 use App\Models\CombatRecord;
 use App\Models\Document;
+use App\Models\Enums\FieldType;
 use App\Models\Event;
 use App\Models\Field;
 use App\Models\Form;
 use App\Models\Group;
-use App\Models\PassportClient;
-use App\Models\PassportToken;
 use App\Models\Position;
 use App\Models\Qualification;
 use App\Models\QualificationRecord;
@@ -36,6 +38,10 @@ class TenantDatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        /** @var SetupTenantAccount $action */
+        $action = app(SetupTenantAccount::class);
+        $action->shouldCreateUser(false)->handle(tenant());
+
         $user = User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@deschutesdesigngroup.com',
@@ -82,11 +88,11 @@ class TenantDatabaseSeeder extends Seeder
         $fields = Field::factory()
             ->count(5)
             ->sequence(
-                ['name' => 'Field 1', 'type' => Field::$fieldTypes[Field::FIELD_TEXT], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_TEXT], 'cast' => Field::$fieldCasts[Field::FIELD_TEXT]],
-                ['name' => 'Field 2', 'type' => Field::$fieldTypes[Field::FIELD_BOOLEAN], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_BOOLEAN], 'cast' => Field::$fieldCasts[Field::FIELD_BOOLEAN]],
-                ['name' => 'Field 3', 'type' => Field::$fieldTypes[Field::FIELD_DATE], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_DATE], 'cast' => Field::$fieldCasts[Field::FIELD_DATE]],
-                ['name' => 'Field 4', 'type' => Field::$fieldTypes[Field::FIELD_EMAIL], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_EMAIL], 'cast' => Field::$fieldCasts[Field::FIELD_EMAIL]],
-                ['name' => 'Field 5', 'type' => Field::$fieldTypes[Field::FIELD_TIMEZONE], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_TIMEZONE], 'cast' => Field::$fieldCasts[Field::FIELD_TIMEZONE]],
+                ['name' => 'Field 1 (Text)', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast()],
+                ['name' => 'Field 2 (Boolean)', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast()],
+                ['name' => 'Field 3 (Date)', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast()],
+                ['name' => 'Field 4 (Email)', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast()],
+                ['name' => 'Field 5 (Timezone)', 'type' => FieldType::FIELD_TIMEZONE, 'cast' => FieldType::FIELD_TIMEZONE->getCast()],
             )
             ->create();
 
@@ -143,7 +149,7 @@ class TenantDatabaseSeeder extends Seeder
             ->has(QualificationRecord::factory()
                 ->for($user, 'author')
                 ->recycle([$qualifications, $documents])
-                ->count(5), 'combat_records')
+                ->count(5), 'qualification_records')
             ->has(RankRecord::factory()
                 ->for($user, 'author')
                 ->recycle([$ranks, $documents])
@@ -163,12 +169,13 @@ class TenantDatabaseSeeder extends Seeder
             ->hasAttached($fields->random(3))
             ->create();
 
-        PassportToken::factory()
-            ->for($user, 'user')
-            ->for(PassportClient::query()->where('name', '=', 'Default Personal Access Client')->first(), 'client')
-            ->state([
-                'name' => 'Default API Key',
-            ])
-            ->create();
+        // TODO: Fix
+        //        PassportToken::factory()
+        //            ->for($user, 'user')
+        //            ->for(PassportClient::query()->where('name', '=', 'Default Personal Access Client')->first(), 'client')
+        //            ->state([
+        //                'name' => 'Default API Key',
+        //            ])
+        //            ->create();
     }
 }

@@ -1,0 +1,39 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Api\Comments;
+
+use App\Http\Requests\Api\CommentRequest;
+use App\Models\Comment;
+use App\Policies\CommentPolicy;
+use Orion\Http\Controllers\Controller;
+
+class CommentsController extends Controller
+{
+    protected $model = Comment::class;
+
+    protected $request = CommentRequest::class;
+
+    protected $policy = CommentPolicy::class;
+
+    public function includes(): array
+    {
+        return ['author', 'commentable'];
+    }
+
+    public function sortableBy(): array
+    {
+        return ['id', 'author_id', 'author.*', 'model_id', 'model_type', 'commentable.*', 'comment', 'created_at', 'updated_at', 'deleted_at'];
+    }
+
+    public function searchableBy(): array
+    {
+        return ['id', 'author_id', 'model_id', 'model_type', 'comment', 'created_at', 'updated_at', 'deleted_at'];
+    }
+
+    public function filterableBy(): array
+    {
+        return ['id', 'author_id', 'author.*', 'model_id', 'model_type', 'commentable.*', 'comment', 'created_at', 'updated_at', 'deleted_at'];
+    }
+}

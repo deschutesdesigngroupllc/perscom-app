@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Central\Exceptions;
 
-use App\Http\Middleware\Authenticate;
-use App\Http\Middleware\Subscribed;
+use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
 use Tests\Feature\Central\CentralTestCase;
 
@@ -13,7 +14,7 @@ class ErrorApiTest extends CentralTestCase
     {
         Route::get('/test-route', static function () {
             abort(499, 'foo bar');
-        });
+        })->name('api.test');
 
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'foo bar')
@@ -25,7 +26,7 @@ class ErrorApiTest extends CentralTestCase
     {
         Route::get('/test-route', static function () {
             return response()->json('test');
-        })->middleware(Authenticate::class);
+        })->name('api.test')->middleware('auth:api');
 
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'Unauthenticated.')
@@ -36,11 +37,11 @@ class ErrorApiTest extends CentralTestCase
     public function test_402_exception_is_thrown_and_error_is_returned()
     {
         Route::get('/test-route', static function () {
-            abort(402, 'Payment Required.');
-        })->middleware(Subscribed::class);
+            abort(402, 'foo bar.');
+        })->name('api.test')->middleware(CheckSubscription::class);
 
         $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'Payment Required.')
+            ->assertJsonPath('error.message', 'A valid subscription is required to make an API request.')
             ->assertJsonPath('error.type', 'HttpException')
             ->assertStatus(402);
     }
@@ -49,7 +50,7 @@ class ErrorApiTest extends CentralTestCase
     {
         Route::get('/test-route', static function () {
             abort(403, 'foo bar');
-        });
+        })->name('api.test');
 
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'foo bar')
@@ -69,7 +70,7 @@ class ErrorApiTest extends CentralTestCase
     {
         Route::get('/test-route', static function () {
             abort(419, 'foo bar');
-        });
+        })->name('api.test');
 
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'foo bar')
@@ -81,7 +82,7 @@ class ErrorApiTest extends CentralTestCase
     {
         Route::get('/test-route', static function () {
             abort(429, 'foo bar');
-        });
+        })->name('api.test');
 
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'foo bar')
@@ -93,7 +94,7 @@ class ErrorApiTest extends CentralTestCase
     {
         Route::get('/test-route', static function () {
             abort(599, 'foo bar');
-        });
+        })->name('api.test');
 
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'foo bar')
@@ -105,7 +106,7 @@ class ErrorApiTest extends CentralTestCase
     {
         Route::get('/test-route', static function () {
             abort(500, 'foo bar');
-        });
+        })->name('api.test');
 
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'foo bar')

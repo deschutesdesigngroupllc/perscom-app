@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Features;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\App;
 use Spark\Plan;
+
+use function in_array;
 
 class SupportTicketFeature extends BaseFeature
 {
@@ -12,12 +16,12 @@ class SupportTicketFeature extends BaseFeature
         $tenant = $this->resolveTenant($scope);
 
         return match (true) {
-            Request::isCentralRequest() => false,
-            Request::isDemoMode() => true,
-            $tenant->onTrial() => true,
+            App::isAdmin() => false,
+            App::isDemo() => true,
+            $tenant?->onTrial() => true,
             optional($tenant->sparkPlan(), static function (Plan $plan) {
-                return \in_array(__CLASS__, $plan->options, true);
-            }) => true,
+                return in_array(__CLASS__, $plan->options, true);
+            }) === true => true,
             default => false,
         };
     }

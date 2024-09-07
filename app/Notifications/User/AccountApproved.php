@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\User;
 
 use App\Mail\User\AccountApproved as AccountApprovedMail;
@@ -18,9 +20,6 @@ class AccountApproved extends Notification implements ShouldQueue
         $this->tenant = tenant();
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

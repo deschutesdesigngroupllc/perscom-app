@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\System;
 
 use App\Mail\System\DeleteAccountOneMonth as DeleteAccountMail;
@@ -11,9 +13,6 @@ class DeleteAccountOneMonth extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

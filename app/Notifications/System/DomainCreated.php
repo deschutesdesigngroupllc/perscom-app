@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\System;
 
 use App\Mail\System\DomainCreatedMail;
@@ -19,9 +21,6 @@ class DomainCreated extends Notification implements ShouldQueue
         //
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

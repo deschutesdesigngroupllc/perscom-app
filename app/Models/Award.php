@@ -1,20 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\AwardScope;
+use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasAwardRecords;
+use App\Traits\HasCategories;
 use App\Traits\HasImages;
+use App\Traits\HasLogs;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
 
 /**
- * App\Models\Award
- *
  * @property int $id
  * @property string $name
  * @property string|null $description
@@ -22,11 +28,20 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
+ * @property-read int|null $activities_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
+ * @property-read int|null $award_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\Image|null $image
+ * @property-read Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
+ * @property-read string $label
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
+ * @property-read int|null $logs_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
  * @method static \Database\Factories\AwardFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Award newModelQuery()
@@ -46,28 +61,26 @@ use Spatie\EloquentSortable\SortableTrait;
  *
  * @mixin \Eloquent
  */
-class Award extends Model implements Sortable
+#[ScopedBy(AwardScope::class)]
+class Award extends Model implements HasLabel, Sortable
 {
+    use CanBeOrdered;
     use ClearsResponseCache;
+    use HasAwardRecords;
+    use HasCategories;
     use HasFactory;
     use HasImages;
+    use HasLogs;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use SoftDeletes;
-    use SortableTrait;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new AwardScope());
-    }
-
-    public function categories(): BelongsToMany
-    {
-        return $this->belongsToMany(Category::class, 'awards_categories')
-            ->withPivot('order')
-            ->withTimestamps();
-    }
+    protected $fillable = [
+        'name',
+        'description',
+        'order',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 }

@@ -4,46 +4,34 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
-use App\Http\Middleware\CheckUniversalRouteForTenantOrAdmin;
-use App\Http\Middleware\InitializeTenancyByRequestData;
-use App\Jobs\Tenant\CreateDatabase;
-use App\Jobs\Tenant\CreateInitialTenantUser;
-use App\Jobs\Tenant\MigrateDatabase;
-use App\Jobs\Tenant\SeedDatabase;
-use App\Jobs\Tenant\SetupInitialTenantAccount;
-use App\Support\Stancl\JobPipeline;
+use App\Jobs\SetupTenantAccount;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
-use Spatie\Permission\PermissionRegistrar;
+use Stancl\JobPipeline\JobPipeline;
 use Stancl\Tenancy\Events;
 use Stancl\Tenancy\Jobs;
 use Stancl\Tenancy\Listeners;
 use Stancl\Tenancy\Middleware;
-use Stancl\Tenancy\Resolvers\DomainTenantResolver;
 
 class TenancyServiceProvider extends ServiceProvider
 {
     public static string $controllerNamespace = '';
 
-    /**
-     * @return array<string, mixed>
-     */
     public function events(): array
     {
         return [
             Events\CreatingTenant::class => [],
             Events\TenantCreated::class => [
                 JobPipeline::make([
-                    CreateDatabase::class,
-                    MigrateDatabase::class,
-                    SeedDatabase::class,
-                    CreateInitialTenantUser::class,
-                    SetupInitialTenantAccount::class,
+                    Jobs\CreateDatabase::class,
+                    Jobs\MigrateDatabase::class,
+                    Jobs\SeedDatabase::class,
+                    SetupTenantAccount::class,
                 ])->send(function (Events\TenantCreated $event) {
                     return $event->tenant;
-                })->shouldBeQueued(true, 'system'),
+                })->shouldBeQueued(),
             ],
             Events\SavingTenant::class => [],
             Events\TenantSaved::class => [],
@@ -55,9 +43,8 @@ class TenancyServiceProvider extends ServiceProvider
                     Jobs\DeleteDatabase::class,
                 ])->send(function (Events\TenantDeleted $event) {
                     return $event->tenant;
-                })->shouldBeQueued(true, 'system'),
+                })->shouldBeQueued(),
             ],
-
             Events\CreatingDomain::class => [],
             Events\DomainCreated::class => [],
             Events\SavingDomain::class => [],
@@ -66,46 +53,28 @@ class TenancyServiceProvider extends ServiceProvider
             Events\DomainUpdated::class => [],
             Events\DeletingDomain::class => [],
             Events\DomainDeleted::class => [],
-
             Events\DatabaseCreated::class => [],
             Events\DatabaseMigrated::class => [],
             Events\DatabaseSeeded::class => [],
             Events\DatabaseRolledBack::class => [],
             Events\DatabaseDeleted::class => [],
-
             Events\InitializingTenancy::class => [],
             Events\TenancyInitialized::class => [
                 Listeners\BootstrapTenancy::class,
             ],
-
             Events\EndingTenancy::class => [],
             Events\TenancyEnded::class => [
                 Listeners\RevertToCentralContext::class,
-                function (Events\TenancyEnded $event) {
-                    $permissionRegistrar = app(PermissionRegistrar::class);
-                    $permissionRegistrar->cacheKey = 'spatie.permission.cache';
-                },
             ],
-
             Events\BootstrappingTenancy::class => [],
-            Events\TenancyBootstrapped::class => [
-                function (Events\TenancyBootstrapped $event) {
-                    $permissionRegistrar = app(PermissionRegistrar::class);
-                    $permissionRegistrar->cacheKey = 'spatie.permission.cache.tenant'.$event->tenancy->tenant->getTenantKey();
-                },
-            ],
+            Events\TenancyBootstrapped::class => [],
             Events\RevertingToCentralContext::class => [],
             Events\RevertedToCentralContext::class => [],
-
-            Events\SyncedResourceSaved::class => [Listeners\UpdateSyncedResource::class],
-
+            Events\SyncedResourceSaved::class => [
+                Listeners\UpdateSyncedResource::class,
+            ],
             Events\SyncedResourceChangedInForeignDatabase::class => [],
         ];
-    }
-
-    public function register(): void
-    {
-        //
     }
 
     public function boot(): void
@@ -113,10 +82,6 @@ class TenancyServiceProvider extends ServiceProvider
         $this->bootEvents();
         $this->mapRoutes();
         $this->makeTenancyMiddlewareHighestPriority();
-
-        DomainTenantResolver::$shouldCache = true;
-        DomainTenantResolver::$cacheTTL = 3600;
-        DomainTenantResolver::$cacheStore = config('cache.default', 'redis');
     }
 
     protected function bootEvents(): void
@@ -134,9 +99,12 @@ class TenancyServiceProvider extends ServiceProvider
 
     protected function mapRoutes(): void
     {
-        if (file_exists(base_path('routes/tenant.php'))) {
-            Route::namespace(static::$controllerNamespace)->group(base_path('routes/tenant.php'));
-        }
+        $this->app->booted(function () {
+            if (file_exists(base_path('routes/tenant.php'))) {
+                Route::namespace(static::$controllerNamespace)
+                    ->group(base_path('routes/tenant.php'));
+            }
+        });
     }
 
     protected function makeTenancyMiddlewareHighestPriority(): void
@@ -148,8 +116,6 @@ class TenancyServiceProvider extends ServiceProvider
             Middleware\InitializeTenancyByDomainOrSubdomain::class,
             Middleware\InitializeTenancyByPath::class,
             Middleware\InitializeTenancyByRequestData::class,
-            InitializeTenancyByRequestData::class,
-            CheckUniversalRouteForTenantOrAdmin::class,
         ];
 
         foreach (array_reverse($tenancyMiddleware) as $middleware) {

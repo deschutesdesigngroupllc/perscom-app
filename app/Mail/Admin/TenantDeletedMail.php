@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Mail\Admin;
 
+use App\Filament\Admin\Resources\TenantResource;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -22,9 +25,7 @@ class TenantDeletedMail extends Mailable
             ->with([
                 'organization' => $this->tenant,
                 'email' => $this->email,
-                'url' => route('nova.pages.index', [
-                    'resource' => \App\Nova\Tenant::uriKey(),
-                ]),
+                'url' => TenantResource::getUrl(panel: 'admin'),
             ]);
     }
 }

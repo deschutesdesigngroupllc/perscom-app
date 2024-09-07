@@ -1,18 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Str;
 use Laravel\Horizon\HorizonApplicationServiceProvider;
 
 class HorizonServiceProvider extends HorizonApplicationServiceProvider
 {
     protected function gate(): void
     {
-        Gate::define('viewHorizon', function (Admin $admin) {
-            return Str::endsWith($admin->email, '@deschutesdesigngroup.com');
+        Gate::define('viewHorizon', function (Admin|User|null $user = null) {
+            return $user instanceof Admin;
         });
     }
 }

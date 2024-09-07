@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Models;
 
 use App\Models\Tenant;

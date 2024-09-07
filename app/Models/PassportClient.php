@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\HasImages;
 use Laravel\Passport\Client as BaseClientModel;
 
 /**
- * App\Models\PassportClient
- *
  * @property string $id
  * @property int|null $user_id
  * @property string $name
@@ -25,14 +25,13 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Passport\AuthCode> $authCodes
  * @property-read int|null $auth_codes_count
- * @property-read array|null $grant_types
  * @property-read string|null $plain_secret
- * @property-read \App\Models\Image|null $image
+ * @property-read Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
  * @property-read int|null $tokens_count
- * @property-read \App\Models\User|null $user
+ * @property-read User|null $user
  *
  * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|PassportClient newModelQuery()
@@ -60,9 +59,6 @@ class PassportClient extends BaseClientModel
 {
     use HasImages;
 
-    /**
-     * @var array<string, mixed>
-     */
     protected $attributes = [
         'personal_access_client' => false,
         'password_client' => false,

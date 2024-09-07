@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Enums\WebhookEvent;
@@ -20,13 +21,6 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class AssignmentRecordObserverTest extends TenantTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Queue::fake([GenerateOpenAiNewsfeedContent::class]);
-    }
-
     public function test_create_primary_assignment_record_assigns_user_properties(): void
     {
         $assignment = AssignmentRecord::factory()
@@ -106,14 +100,11 @@ class AssignmentRecordObserverTest extends TenantTestCase
 
         $assignment = AssignmentRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewAssignmentRecord::class, function ($notification, $channels) use ($assignment) {
+        Notification::assertSentTo($user, NewAssignmentRecord::class, function (NewAssignmentRecord $notification, $channels) use ($assignment) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($assignment->user);
             $mail->assertTo($assignment->user->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame('A new assignment record has been added to your personnel file.', $nova->message);
 
             return true;
         });

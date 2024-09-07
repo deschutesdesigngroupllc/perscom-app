@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'namespaces' => [
         'models' => 'App\\Models\\',
@@ -36,7 +38,7 @@ return [
         ],
     ],
     'transactions' => [
-        'enabled' => false,
+        'enabled' => true,
     ],
     'search' => [
         'case_sensitive' => true, // TODO: set to "false" by default in 3.0 release
@@ -56,5 +58,5 @@ return [
         'max_nested_depth' => 1,
     ],
 
-    'use_validated' => false,
+    'use_validated' => true,
 ];

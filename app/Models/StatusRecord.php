@@ -1,8 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Observers\StatusRecordObserver;
 use App\Traits\ClearsResponseCache;
+use Eloquent;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
@@ -17,8 +22,8 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @property string|null $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
- * @property-read \App\Models\Status $status
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $model
+ * @property-read Status $status
  *
  * @method static \Database\Factories\StatusRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord newModelQuery()
@@ -32,24 +37,19 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
+#[ObservedBy(StatusRecordObserver::class)]
 class StatusRecord extends MorphPivot
 {
     use ClearsResponseCache;
     use HasFactory;
 
-    /**
-     * @var array<int, string>
-     */
+    protected $table = 'model_has_statuses';
+
     protected $fillable = [
         'text',
     ];
-
-    /**
-     * @var string
-     */
-    protected $table = 'model_has_statuses';
 
     public function model(): BelongsTo
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Central\Observers;
 
 use App\Jobs\SendBulkMail;

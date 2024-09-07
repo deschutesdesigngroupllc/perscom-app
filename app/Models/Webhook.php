@@ -1,17 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Enums\WebhookMethod;
+use App\Traits\HasLogs;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Laravel\Nova\Actions\Actionable;
 
 /**
- * App\Models\Webhook
- *
  * @property int $id
  * @property string $url
  * @property string|null $description
@@ -21,8 +20,8 @@ use Laravel\Nova\Actions\Actionable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
- * @property-read int|null $actions_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
+ * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
  * @property-read int|null $logs_count
  *
@@ -47,25 +46,25 @@ use Laravel\Nova\Actions\Actionable;
  */
 class Webhook extends Model
 {
-    use Actionable;
     use HasFactory;
+    use HasLogs;
     use SoftDeletes;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['url', 'description', 'events', 'method'];
-
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'events' => 'array',
-        'method' => WebhookMethod::class,
+    protected $fillable = [
+        'url',
+        'description',
+        'events',
+        'method',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
-    public function logs(): MorphMany
+    protected function casts(): array
     {
-        return $this->morphMany(Activity::class, 'subject');
+        return [
+            'events' => 'array',
+            'method' => WebhookMethod::class,
+        ];
     }
 }

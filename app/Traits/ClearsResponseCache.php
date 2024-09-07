@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use Eloquent;
@@ -10,7 +12,7 @@ use Spatie\ResponseCache\Facades\ResponseCache;
  */
 trait ClearsResponseCache
 {
-    public static function bootClearsResponseCache(): void
+    protected static function bootClearsResponseCache(): void
     {
         if (config('responsecache.enabled')) {
             self::created(function () {

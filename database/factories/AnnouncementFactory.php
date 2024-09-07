@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Announcement;
@@ -10,15 +12,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AnnouncementFactory extends Factory
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [
             'title' => "Announcement {$this->faker->unique()->randomNumber()}",
             'content' => $this->faker->paragraph,
-            'color' => $this->faker->randomElement(['info', 'success', 'warning', 'danger']),
+            'color' => $this->faker->hexColor,
+            'global' => $this->faker->boolean,
             'expires_at' => $this->faker->dateTimeBetween('now', '21 days'),
         ];
     }

@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Attachment;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Request;
 
 class AttachmentPolicy extends Policy
 {
     public function before(): ?bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return false;
         }
 

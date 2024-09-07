@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\Tenant;
 
 use App\Mail\Tenant\NewTaskAssignmentMail;
 use App\Models\TaskAssignment;
-use App\Nova\Lenses\MyTasks;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Laravel\Nova\Notifications\NovaChannel;
-use Laravel\Nova\Notifications\NovaNotification;
-use Laravel\Nova\URL;
+use Illuminate\Support\Str;
 
 class NewTaskAssignment extends Notification implements ShouldQueue
 {
@@ -22,18 +24,13 @@ class NewTaskAssignment extends Notification implements ShouldQueue
 
     public function __construct(protected TaskAssignment $taskAssignment)
     {
-        $this->url = route('nova.pages.lens', [
-            'resource' => \App\Nova\TaskAssignment::uriKey(),
-            'lens' => (new MyTasks())->uriKey(),
-        ]);
+        // TODO: Fix
+        $this->url = 'test';
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
-        return ['mail', NovaChannel::class];
+        return ['mail', 'database', 'broadcast'];
     }
 
     public function toMail(mixed $notifiable): NewTaskAssignmentMail
@@ -41,11 +38,31 @@ class NewTaskAssignment extends Notification implements ShouldQueue
         return (new NewTaskAssignmentMail($this->taskAssignment, $this->url))->to($notifiable->email);
     }
 
-    public function toNova(): NovaNotification
+    public function toBroadcast($notifiable): BroadcastMessage
     {
-        return (new NovaNotification())->message('A new task has been assigned to you.')
-            ->action('View Tasks', URL::remote($this->url))
-            ->icon('document-text')
-            ->type('info');
+        return FilamentNotification::make()
+            ->title('New Task Assigned')
+            ->body(Str::markdown("A new task has been assigned to you.<br><br>**Task:** {$this->taskAssignment?->task?->title}"))
+            ->actions([
+                Action::make('Open task')
+                    ->button()
+                    ->url($this->url),
+            ])
+            ->info()
+            ->getBroadcastMessage();
+    }
+
+    public function toDatabase($notifiable): array
+    {
+        return FilamentNotification::make()
+            ->title('New Task Assigned')
+            ->body(Str::markdown("A new task has been assigned to you.<br><br>**Task:** {$this->taskAssignment?->task?->title}"))
+            ->actions([
+                Action::make('Open task')
+                    ->button()
+                    ->url($this->url),
+            ])
+            ->info()
+            ->getDatabaseMessage();
     }
 }

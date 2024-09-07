@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Admin;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\App;
 
 class AdminPolicy extends Policy
 {
     public function before(): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -18,7 +20,7 @@ class AdminPolicy extends Policy
 
     public function viewAny(Admin $admin): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -27,7 +29,7 @@ class AdminPolicy extends Policy
 
     public function view(Admin $admin, Admin $model): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -36,7 +38,7 @@ class AdminPolicy extends Policy
 
     public function create(Admin $admin): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -45,7 +47,7 @@ class AdminPolicy extends Policy
 
     public function update(Admin $admin, Admin $model): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -54,7 +56,7 @@ class AdminPolicy extends Policy
 
     public function delete(Admin $admin, Admin $model): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -63,7 +65,7 @@ class AdminPolicy extends Policy
 
     public function restore(Admin $admin, Admin $model): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -72,7 +74,7 @@ class AdminPolicy extends Policy
 
     public function forceDelete(Admin $admin, Admin $model): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 

@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Http\Controllers\Passport;
 
-use App\Http\Middleware\Subscribed;
+use App\Http\Middleware\CheckSubscription;
 use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -26,7 +28,7 @@ class AccessTokenControllerTest extends TenantTestCase
     {
         parent::setUp();
 
-        $this->withoutMiddleware(Subscribed::class);
+        $this->withoutMiddleware(CheckSubscription::class);
 
         $this->user = User::factory()->create();
     }
@@ -148,8 +150,7 @@ class AccessTokenControllerTest extends TenantTestCase
         $this->assertArrayHasKey('updated_at', $tokenPayload);
         $this->assertArrayHasKey('email', $tokenPayload);
         $this->assertArrayHasKey('email_verified', $tokenPayload);
-        $this->assertArrayHasKey('tenant_name', $tokenPayload);
-        $this->assertArrayHasKey('tenant_sub', $tokenPayload);
+        $this->assertArrayHasKey('tenant', $tokenPayload);
 
         $issuedAt = new DateTimeImmutable();
 
@@ -167,8 +168,7 @@ class AccessTokenControllerTest extends TenantTestCase
         $this->assertSame($tokenPayload['updated_at'], Carbon::parse($this->user->updated_at)->getTimestamp());
         $this->assertSame($tokenPayload['email'], $this->user->email);
         $this->assertSame($tokenPayload['email_verified'], $this->user->hasVerifiedEmail());
-        $this->assertSame($tokenPayload['tenant_name'], $this->tenant->name);
-        $this->assertSame($tokenPayload['tenant_sub'], $this->tenant->getKey());
+        $this->assertSame($tokenPayload['tenant'], $this->tenant->getKey());
     }
 
     public function test_access_token_with_password_grant_can_be_issued()

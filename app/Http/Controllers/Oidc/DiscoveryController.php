@@ -1,19 +1,22 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Oidc;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tenant;
 use Illuminate\Http\JsonResponse;
 
 class DiscoveryController extends Controller
 {
-    public function index(): JsonResponse
+    public function index(Tenant $tenant): JsonResponse
     {
         return response()->json([
-            'issuer' => tenant()->url,
-            'authorization_endpoint' => tenant()->route('passport.authorizations.authorize'),
-            'token_endpoint' => tenant()->route('passport.token'),
-            'userinfo_endpoint' => tenant()->route('oidc.userinfo'),
+            'issuer' => $tenant->url,
+            'authorization_endpoint' => $tenant->route('passport.authorizations.authorize'),
+            'token_endpoint' => $tenant->route('passport.token'),
+            'userinfo_endpoint' => $tenant->route('oidc.userinfo'),
             'grant_types_supported' => [
                 'authorization_code',
                 'implicit',
@@ -59,13 +62,12 @@ class DiscoveryController extends Controller
                 'email',
                 'email_verified',
                 'picture',
-                'tenant_name',
-                'tenant_sub',
+                'tenant',
                 'locale',
                 'zonefinfo',
                 'updated_at',
             ],
-            'end_session_endpoint' => tenant()->route('oidc.logout'),
+            'end_session_endpoint' => $tenant->route('oidc.logout'),
         ]);
     }
 }

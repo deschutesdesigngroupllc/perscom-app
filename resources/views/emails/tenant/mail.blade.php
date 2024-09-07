@@ -1,13 +1,12 @@
 @component('mail::message')
+  {{ $content }}
 
-{{ $content }}
+  @foreach ($links as $text => $url)
+    @component('mail::button', ['url' => $url])
+      {{ $text }}
+    @endcomponent
+  @endforeach
 
-@foreach($links as $text => $url)
-@component('mail::button', ['url' => $url])
-{{ $text }}
-@endcomponent
-@endforeach
-
-{{__('Thanks,')}}<br>
-{{ config('app.name') }}
+  {{ __('Thanks,') }}<br>
+  {{ config('app.name') }}
 @endcomponent

@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Support\JwtAuth\Providers\CustomJwtProvider;
+
 return [
     /*
     |--------------------------------------------------------------------------
@@ -273,7 +277,7 @@ return [
         |
         */
 
-        'jwt' => PHPOpenSourceSaver\JWTAuth\Providers\JWT\Lcobucci::class,
+        'jwt' => CustomJwtProvider::class,
 
         /*
         |--------------------------------------------------------------------------

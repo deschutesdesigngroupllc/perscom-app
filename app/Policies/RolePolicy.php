@@ -1,17 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Permission;
 use App\Models\Role;
 use App\Models\User;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\App;
 
 class RolePolicy extends Policy
 {
     public function before(): ?bool
     {
-        if (Request::isCentralRequest() || Request::isDemoMode()) {
+        if (App::isAdmin() || App::isDemo()) {
             return false;
         }
 

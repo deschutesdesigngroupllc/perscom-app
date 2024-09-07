@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\User;
 
 use App\Mail\User\PasswordChangedMail;
@@ -11,9 +13,6 @@ class PasswordChanged extends Notification implements ShouldQueue
 {
     use Queueable;
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

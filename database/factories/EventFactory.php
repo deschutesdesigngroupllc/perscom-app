@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Calendar;
@@ -7,15 +9,13 @@ use App\Models\Event;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends Factory<Event>
  */
 class EventFactory extends Factory
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         $start = Carbon::parse($this->faker->dateTimeBetween(now(), now()->endOfMonth()))->roundHour();
@@ -25,7 +25,7 @@ class EventFactory extends Factory
             'calendar_id' => Calendar::factory(),
             'description' => $this->faker->paragraph,
             'content' => $this->faker->paragraph,
-            'location' => $this->faker->address,
+            'location' => Str::squish($this->faker->address),
             'url' => $this->faker->url,
             'author_id' => User::factory(),
             'all_day' => $this->faker->boolean,
@@ -34,5 +34,22 @@ class EventFactory extends Factory
             'repeats' => false,
             'registration_enabled' => true,
         ];
+    }
+
+    public function recurring(): static
+    {
+        return $this->state(function () {
+            return [
+                'all_day' => false,
+                'start' => now(),
+                'end' => now()->addHour(),
+                'repeats' => true,
+                'frequency' => 'WEEKLY',
+                'interval' => 1,
+                'end_type' => 'after',
+                'count' => 10,
+                'by_day' => ['MO'],
+            ];
+        });
     }
 }

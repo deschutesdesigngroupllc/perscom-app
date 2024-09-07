@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Tenancy\Bootstrappers;
 
 use Illuminate\Support\Facades\App;
@@ -11,17 +13,13 @@ class ConfigBootstrapper implements TenancyBootstrapper
 {
     protected ?string $mailFromName = null;
 
-    protected ?string $timezone = null;
-
     public function bootstrap(Tenant $tenant): void
     {
         $this->mailFromName = config('mail.from.name', config('app.name'));
-        $this->timezone = config('app.timezone', 'UTC');
 
         App::forgetInstance('mail.manager');
 
         Config::set('mail.from.name', $tenant->getAttribute('name'));
-        Config::set('app.timezone', setting('timezone', config('app.timezone')));
         Config::set('responsecache.cache_tag', "tenant{$tenant->getKey()}");
     }
 
@@ -30,7 +28,6 @@ class ConfigBootstrapper implements TenancyBootstrapper
         App::forgetInstance('mail.manager');
 
         Config::set('mail.from.name', $this->mailFromName);
-        Config::set('app.timezone', $this->timezone);
         Config::set('responsecache.cache_tag', '');
     }
 }

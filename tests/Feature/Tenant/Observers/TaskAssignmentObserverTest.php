@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Observers;
 
 use App\Models\TaskAssignment;
@@ -16,14 +18,11 @@ class TaskAssignmentObserverTest extends TenantTestCase
 
         $assignment = TaskAssignment::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewTaskAssignment::class, function ($notification, $channels) use ($assignment) {
+        Notification::assertSentTo($user, NewTaskAssignment::class, function (NewTaskAssignment $notification, $channels) use ($assignment) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($assignment->user);
             $mail->assertTo($assignment->user->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame('A new task has been assigned to you.', $nova->message);
 
             return true;
         });

@@ -1,29 +1,40 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\Tag;
 use Eloquent;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 
 /**
  * @mixin Eloquent
  */
 trait HasTags
 {
+    private ?string $tagsAccessor = null;
+
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class, $this->getTable().'_tags');
+        $relationship = $this->belongsToMany(Tag::class, "{$this->getTable()}_tags")
+            ->withPivot('order')
+            ->withTimestamps();
+
+        if ($this->tagsAccessor) {
+            $relationship = $relationship->as($this->tagsAccessor);
+        }
+
+        return $relationship;
     }
 
-    public function scopeTags(Builder $query, mixed $tag): void
+    protected function initializeHasTags(): void
     {
-        $tags = Arr::wrap($tag);
+        $class = Str::singular(class_basename($this)).'Tag';
 
-        $query->whereHas('tags', function (Builder $query) use ($tags) {
-            $query->whereIn('name', $tags);
-        });
+        if (class_exists($class)) {
+            $this->tagsAccessor = $class;
+        }
     }
 }

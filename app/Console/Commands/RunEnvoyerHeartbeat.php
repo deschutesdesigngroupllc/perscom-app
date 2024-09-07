@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
-use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class RunEnvoyerHeartbeat extends Command
 {
@@ -18,16 +19,16 @@ class RunEnvoyerHeartbeat extends Command
             $response = Http::get($url);
 
             if ($response->ok()) {
-                return CommandAlias::SUCCESS;
+                return static::SUCCESS;
             }
 
             $this->error('There was an error when attempting the heartbeat.');
 
-            return CommandAlias::FAILURE;
+            return static::FAILURE;
         }
 
-        $this->info('No heartbeat URL found.');
+        $this->error('No heartbeat URL found.');
 
-        return CommandAlias::SUCCESS;
+        return static::SUCCESS;
     }
 }

@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\App;
 use Laravel\Cashier\Subscription;
 
 class SubscriptionPolicy extends Policy
 {
     public function before(): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -19,7 +21,7 @@ class SubscriptionPolicy extends Policy
 
     public function viewAny(?User $user = null): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -28,7 +30,7 @@ class SubscriptionPolicy extends Policy
 
     public function view(?User $user, Subscription $subscription): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -37,7 +39,7 @@ class SubscriptionPolicy extends Policy
 
     public function create(?User $user = null): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -46,7 +48,7 @@ class SubscriptionPolicy extends Policy
 
     public function update(?User $user, Subscription $subscription): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -55,7 +57,7 @@ class SubscriptionPolicy extends Policy
 
     public function delete(?User $user, Subscription $subscription): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -64,7 +66,7 @@ class SubscriptionPolicy extends Policy
 
     public function restore(?User $user, Subscription $subscription): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 
@@ -73,7 +75,7 @@ class SubscriptionPolicy extends Policy
 
     public function forceDelete(?User $user, Subscription $subscription): bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return true;
         }
 

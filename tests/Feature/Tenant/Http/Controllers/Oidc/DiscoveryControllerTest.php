@@ -1,22 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Http\Controllers\Oidc;
 
-use App\Http\Middleware\Subscribed;
-use App\Models\Domain;
-use Illuminate\Support\Facades\Log;
+use App\Http\Middleware\CheckSubscription;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class DiscoveryControllerTest extends TenantTestCase
 {
     public function test_discovery_page_can_be_reached()
     {
-        $this->withoutMiddleware(Subscribed::class);
-
-        Log::debug('Debug', [
-            'domains' => Domain::all(),
-            'tenant' => $this->tenant,
-        ]);
+        $this->withoutMiddleware(CheckSubscription::class);
 
         $this->get(route('oidc.discovery'))
             ->assertSuccessful()
@@ -70,8 +65,7 @@ class DiscoveryControllerTest extends TenantTestCase
                     'email',
                     'email_verified',
                     'picture',
-                    'tenant_name',
-                    'tenant_sub',
+                    'tenant',
                     'locale',
                     'zonefinfo',
                     'updated_at',

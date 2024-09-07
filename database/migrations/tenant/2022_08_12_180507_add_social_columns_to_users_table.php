@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -19,7 +21,7 @@ return new class extends Migration
                 $table->string('social_driver')->nullable();
                 $table->string('social_token')->nullable();
                 $table->string('social_refresh_token')->nullable();
-                $table->string('password')->nullable()->change();
+                //$table->string('password')->nullable()->change();
             });
         });
     }

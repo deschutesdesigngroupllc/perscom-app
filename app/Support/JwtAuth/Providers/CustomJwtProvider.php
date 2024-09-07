@@ -1,58 +1,35 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\JwtAuth\Providers;
 
-use DateTimeImmutable;
-use Exception;
+use App\Settings\IntegrationSettings;
+use App\Support\JwtAuth\Validation\SignedByPerscomOrTenantConstraint;
+use JetBrains\PhpStorm\NoReturn;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key\InMemory;
-use Lcobucci\JWT\Validation\Constraint\SignedWith;
-use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
-use PHPOpenSourceSaver\JWTAuth\Exceptions\TokenInvalidException;
 use PHPOpenSourceSaver\JWTAuth\Providers\JWT\Lcobucci;
 
 class CustomJwtProvider extends Lcobucci
 {
-    /**
-     * @throws JWTException
-     */
-    public function getPerscomSigner(): Signer
+    #[NoReturn]
+    public function __construct(protected ?string $secret = null)
     {
-        return $this->getSigner();
+        parent::__construct($secret ?? config('jwt.secret'), config('jwt.algo'), config('jwt.keys'));
+
+        /** @var IntegrationSettings $settings */
+        $settings = app(IntegrationSettings::class);
+
+        $this->config->setValidationConstraints(new SignedByPerscomOrTenantConstraint(
+            perscomSigner: $this->signer,
+            perscomKey: $this->getVerificationKey(),
+            passportSigner: new Signer\Rsa\Sha256(),
+            passportKey: InMemory::file(storage_path('oauth-public.key')),
+            tenantSigner: new Signer\Hmac\Sha256(),
+            tenantKey: InMemory::plainText($settings->single_sign_on_key)
+        ));
     }
 
-    /**
-     * @return array<string, mixed>
-     *
-     * @throws TokenInvalidException
-     */
-    public function decode($token): array
-    {
-        try {
-            $jwt = $this->config->parser()->parse($token);
-        } catch (Exception $e) {
-            throw new TokenInvalidException('Could not decode token: '.$e->getMessage(), $e->getCode(), $e);
-        }
-
-        $perscomSigningKeyConstraint = $this->config->validator()->validate($jwt, new SignedWith($this->signer, $this->getVerificationKey()));
-        $tenantSigningKeyConstraint = optional(setting('single_sign_on_key'), function (string $key) use ($jwt) {
-            return $this->config->validator()->validate($jwt, new SignedWith($this->signer, InMemory::plainText($key)));
-        }) ?? false;
-
-        if (! $perscomSigningKeyConstraint && ! $tenantSigningKeyConstraint) {
-            throw new TokenInvalidException('Token signature could not be verified.');
-        }
-
-        // @phpstan-ignore-next-line
-        return collect($jwt->claims()->all())->map(function ($claim) {
-            if (is_a($claim, DateTimeImmutable::class)) {
-                return $claim->getTimestamp();
-            }
-            if (is_object($claim) && method_exists($claim, 'getValue')) {
-                return $claim->getValue();
-            }
-
-            return $claim;
-        })->toArray();
-    }
+    public function generateConfig() {}
 }

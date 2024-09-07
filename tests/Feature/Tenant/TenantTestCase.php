@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant;
 
 use App\Models\Domain;
@@ -17,13 +19,13 @@ class TenantTestCase extends TestCase
 {
     use TenantHelpers;
 
-    protected ?Domain $domain = null;
-
-    protected ?Tenant $tenant = null;
-
     public array $connectionsToTransact = ['mysql'];
 
     public bool $tenantDatabaseMigrated = false;
+
+    protected ?Domain $domain = null;
+
+    protected ?Tenant $tenant = null;
 
     protected function setUp(): void
     {
@@ -32,21 +34,11 @@ class TenantTestCase extends TestCase
         parent::setUp();
     }
 
-    /**
-     * @throws Exception
-     * @throws Throwable
-     */
-    protected function afterRefreshingDatabase(): void
+    protected function tearDown(): void
     {
-        $this->setupTenantDatabase();
+        parent::tearDown();
 
-        $this->setupTenancy();
-
-        $this->setupTenantTransactions();
-
-        $this->beforeApplicationDestroyed(function () {
-            tenancy()->end();
-        });
+        putenv('TENANT_TESTING=false');
     }
 
     /**
@@ -76,6 +68,10 @@ class TenantTestCase extends TestCase
         if (! $this->tenantDatabaseMigrated) {
             $this->artisan('tenants:migrate', [
                 '--tenants' => $this->tenant->getKey(),
+            ]);
+            $this->artisan('tenants:migrate', [
+                '--tenants' => $this->tenant->getKey(),
+                '--path' => database_path('settings/tenant'),
             ]);
             $this->artisan('tenants:seed', [
                 '--tenants' => $this->tenant->getKey(),
@@ -129,10 +125,20 @@ class TenantTestCase extends TestCase
         });
     }
 
-    protected function tearDown(): void
+    /**
+     * @throws Exception
+     * @throws Throwable
+     */
+    protected function afterRefreshingDatabase(): void
     {
-        parent::tearDown();
+        $this->setupTenantDatabase();
 
-        putenv('TENANT_TESTING=false');
+        $this->setupTenancy();
+
+        $this->setupTenantTransactions();
+
+        $this->beforeApplicationDestroyed(function () {
+            tenancy()->end();
+        });
     }
 }

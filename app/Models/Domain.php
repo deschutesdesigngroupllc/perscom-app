@@ -1,17 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Observers\DomainObserver;
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
+use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
 
 /**
- * App\Models\Domain
- *
  * @property int $id
  * @property string $domain
  * @property int $tenant_id
@@ -19,9 +23,9 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read mixed|null $host
- * @property-read mixed|null $url
- * @property-read \App\Models\Tenant $tenant
+ * @property-read mixed $host
+ * @property-read Tenant $tenant
+ * @property-read mixed $url
  *
  * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Domain newModelQuery()
@@ -40,35 +44,50 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  *
  * @mixin \Eloquent
  */
-class Domain extends \Stancl\Tenancy\Database\Models\Domain
+#[ObservedBy(DomainObserver::class)]
+class Domain extends BaseDomain
 {
     use CentralConnection;
     use ClearsResponseCache;
     use HasFactory;
     use SoftDeletes;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $appends = ['host', 'url'];
+    protected $fillable = [
+        'domain',
+        'tenant_id',
+        'is_custom_domain',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    protected $appends = [
+        'host',
+        'url',
+    ];
 
     public static function generateSubdomain(): string
     {
         return Str::lower(Str::random(8));
     }
 
-    public function getUrlAttribute(): mixed
+    public function url(): Attribute
     {
-        return optional($this->host, static function ($host) {
-            return rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/');
-        });
+        return Attribute::make(
+            get: fn () => optional($this->host, static function ($host) {
+                return rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/');
+            }),
+        )->shouldCache();
     }
 
-    public function getHostAttribute(): mixed
+    public function host(): Attribute
     {
-        return optional($this->domain, static function ($domain) {
-            return Url::fromString(Str::endsWith($domain, config('tenancy.central_domains')) ? $domain
-                : $domain.config('app.base_url'))->__toString();
-        });
+        return Attribute::make(
+            get: fn () => optional($this->domain, static function ($domain) {
+                return Url::fromString(Str::endsWith($domain, config('tenancy.central_domains'))
+                    ? $domain
+                    : $domain.config('app.base_url'))->__toString();
+            })
+        )->shouldCache();
     }
 }

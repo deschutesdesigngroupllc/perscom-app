@@ -1,26 +1,33 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\AssignmentRecordScope;
-use App\Prompts\AssignmentRecordPrompts;
+use App\Observers\AssignmentRecordObserver;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
+use App\Traits\HasComments;
 use App\Traits\HasDocument;
-use App\Traits\HasEventPrompts;
+use App\Traits\HasLogs;
+use App\Traits\HasPosition;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use App\Traits\HasSpecialty;
+use App\Traits\HasStatus;
+use App\Traits\HasUnit;
 use App\Traits\HasUser;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * App\Models\AssignmentRecord
- *
  * @property int $id
  * @property int|null $user_id
  * @property int|null $status_id
@@ -38,14 +45,21 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read \App\Models\User|null $author
- * @property-read \App\Models\Document|null $document
+ * @property-read User|null $author
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read int|null $comments_count
+ * @property-read Document|null $document
  * @property-read mixed $document_parsed
- * @property-read \App\Models\Position|null $position
- * @property-read \App\Models\Specialty|null $specialty
- * @property-read \App\Models\Status|null $status
- * @property-read \App\Models\Unit|null $unit
- * @property-read \App\Models\User|null $user
+ * @property-read string $label
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
+ * @property-read int|null $logs_count
+ * @property-read Position|null $position
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read Specialty|null $specialty
+ * @property-read Status|null $status
+ * @property-read Unit|null $unit
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read User|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord author(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord document(\App\Models\Document $document)
@@ -53,7 +67,11 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord position(\App\Models\Position $position)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord specialty(\App\Models\Specialty $specialty)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord status(\App\Models\Status $status)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord unit(\App\Models\Unit $unit)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereCreatedAt($value)
@@ -73,92 +91,44 @@ use Spatie\Activitylog\Traits\LogsActivity;
  *
  * @mixin \Eloquent
  */
-class AssignmentRecord extends Model
+#[ObservedBy(AssignmentRecordObserver::class)]
+#[ScopedBy(AssignmentRecordScope::class)]
+class AssignmentRecord extends Model implements HasLabel
 {
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;
+    use HasComments;
     use HasDocument;
-    use HasEventPrompts;
     use HasFactory;
+    use HasLogs;
+    use HasPosition;
+    use HasResourceLabel;
+    use HasResourceUrl;
+    use HasSpecialty;
+    use HasStatus;
+    use HasUnit;
     use HasUser;
-    use LogsActivity;
     use SoftDeletes;
 
-    protected static string $prompts = AssignmentRecordPrompts::class;
-
-    /**
-     * @var string
-     */
     protected $table = 'records_assignments';
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['user_id', 'status_id', 'unit_id', 'position_id', 'specialty_id', 'document_id', 'author_id', 'type', 'text', 'updated_at', 'created_at'];
-
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'type' => AssignmentRecordType::class,
+    protected $fillable = [
+        'status_id',
+        'unit_id',
+        'position_id',
+        'specialty_id',
+        'type',
+        'text',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
-    /**
-     * @var string[]
-     */
-    protected static array $recordEvents = ['created'];
-
-    protected static function booted(): void
+    protected function casts(): array
     {
-        static::addGlobalScope(new AssignmentRecordScope);
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->useLogName('newsfeed')
-            ->setDescriptionForEvent(fn ($event) => "An assignment record has been $event");
-    }
-
-    public function tapActivity(Activity $activity, string $eventName): void
-    {
-        if ($eventName === 'created') {
-            $position = optional($this->position, function (Position $position) {
-                return $position->name;
-            }) ?? 'No Position Assigned';
-
-            $specialty = optional($this->specialty, function (Specialty $specialty) {
-                return $specialty->name;
-            }) ?? 'No Specialty Assigned';
-
-            $unit = optional($this->unit, function (Unit $unit) {
-                return $unit->name;
-            }) ?? 'No Unit Assigned';
-
-            $activity->properties = $activity->properties->put('headline', "An assignment record has been added for {$this->user->name}");
-            $activity->properties = $activity->properties->put('text', $this->text);
-            $activity->properties = $activity->properties->put('item', "Position: {$position}<br> Specialty: {$specialty}<br> Unit: {$unit}<br>");
-        }
-    }
-
-    public function position(): BelongsTo
-    {
-        return $this->belongsTo(Position::class);
-    }
-
-    public function specialty(): BelongsTo
-    {
-        return $this->belongsTo(Specialty::class);
-    }
-
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(Status::class);
-    }
-
-    public function unit(): BelongsTo
-    {
-        return $this->belongsTo(Unit::class);
+        return [
+            'type' => AssignmentRecordType::class,
+        ];
     }
 }

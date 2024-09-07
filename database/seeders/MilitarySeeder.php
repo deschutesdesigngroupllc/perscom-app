@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
+use App\Actions\SetupTenantAccount;
 use App\Models\Announcement;
 use App\Models\AssignmentRecord;
 use App\Models\Award;
@@ -9,11 +12,11 @@ use App\Models\AwardRecord;
 use App\Models\Calendar;
 use App\Models\CombatRecord;
 use App\Models\Document;
+use App\Models\Enums\FieldType;
 use App\Models\Event;
 use App\Models\Field;
 use App\Models\Form;
 use App\Models\Group;
-use App\Models\Newsfeed;
 use App\Models\Position;
 use App\Models\Qualification;
 use App\Models\QualificationRecord;
@@ -28,6 +31,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
 
 class MilitarySeeder extends Seeder
 {
@@ -35,6 +39,10 @@ class MilitarySeeder extends Seeder
 
     public function run(): void
     {
+        /** @var SetupTenantAccount $action */
+        $action = app(SetupTenantAccount::class);
+        $action->shouldCreateUser(false)->handle(tenant());
+
         $user = User::factory()->create([
             'name' => 'Demo User',
             'email' => 'demo@perscom.io',
@@ -44,8 +52,9 @@ class MilitarySeeder extends Seeder
         Announcement::factory()
             ->state([
                 'title' => 'Welcome to the PERSCOM Military Demo',
-                'content' => 'This is an example announcement that can be displayed to keep your entire organization up-to-date.',
-                'color' => 'info',
+                'content' => 'Take a look around and if you have any questions, please reach out to support@deschutesdesigngroup.com.',
+                'color' => '#2563eb',
+                'global' => true,
             ])
             ->create();
 
@@ -71,31 +80,29 @@ class MilitarySeeder extends Seeder
         Group::factory()
             ->state([
                 'name' => 'Operations',
+                'icon' => 'heroicon-o-fire',
             ])
             ->hasAttached($units)
             ->create();
 
         $awards = Award::factory()
-            ->count(10)
+            ->count(8)
             ->sequence(
                 [
-                    'name' => 'Army Distinguished Service Cross',
+                    'name' => 'Distinguished Service Cross',
                     'description' => 'The Army Distinguished Service Cross Medal (DSC) is a U.S. Army decoration given for extreme gallantry and risk of life in actual combat with an armed enemy force. Operations which merit the DSC need to be of such a high degree to be above those mandatory for all other U.S. combat decorations but not meeting the criteria for the Medal of Honor. The DSC is equivalent to the Navy Cross (Navy and Marine Corps) and the Air Force Cross (Air Force). The DSC was first established and awarded during World War I. In accession, a number of awards were delegated for actions preceding World War I. In many cases, these were to soldiers who had acquired a Certificate of merit for gallantry which, at the time, was the only other honor beyond the Medal of Honor the Army could give. Others were delayed acknowledgement of actions in the Philippines, on the Mexican Border and during the Boxer Rebellion. This decoration should not be mistaken for the Distinguished Service Medal, which distinguishes meritorious service to the government of the U.S. (as a senior military officer or government official) rather than individual acts of bravery (as a member of the U.S. Army).',
                 ], [
-                    'name' => 'Department of Defense Distinguished Service',
+                    'name' => 'Defense Distinguished Service Medal',
                     'description' => "The Defense Distinguished Service Medal (DDSM) is presented to any member of the U.S. Armed Forces, while serving with the Department of Defense, who distinguishes themselves with exceptional performance of duty contributing to national security or defense of the United States. Created on July 9th, 1970 by President Richard Nixon's Executive Order 11545, the medals is typically awarded to senior officers such as the Chairman and Vice Chairman of the Joint Chiefs of Staff, the Chief and Vice Chiefs of the military services and other personnel whose duties bring them in direct and frequent contact with the Secretary of Defense, Deputy Secretary of Defense or other senior government officials.",
-                ], [
-                    'name' => 'Army Distinguished Service',
-                    'description' => 'The Army Distinguished Service Medal (DSM) is granted to any soldier who, while serving in the U.S. Army, distinguishes themselves with exceptionally meritorious service to the U.S. in a duty of great responsibility. The achievement must be of a level as to merit acknowledgement for service that is positively "exceptional." Exceptional performance of ordinary duties does not alone justify the award. For service not associated with actual war, the term "duty of a great responsibility" applies to a restricted range of positions than in a time of war, and commands proof of conspicuously indicative achievement.',
                 ], [
                     'name' => 'Silver Star',
                     'description' => '',
                 ], [
-                    'name' => 'Defense Superior Service',
+                    'name' => 'Defense Superior Service Medal',
                     'description' => 'The Defense Superior Service Medal (DSSM) is the second highest award bestowed by the Department of Defense. Awarded in the name of the Secretary of Defense, the award is presented to members of the U.S. Armed Forces who perform "superior meritorious service in a position of significant responsibility."  Created on February 6th, 1976 by President Gerald R. Ford\'s Executive Order 11904, it is typically awarded only to senior officers of the Flag and General Officer grade.',
                 ], [
-                    'name' => 'Legion of Merit',
-                    'description' => 'The Legion of Merit Medal (LM, LOM) is a decoration presented by the United States Armed Forces to members of the United States Military, as well as foreign military members and political figures, who have displayed exceptionally meritorious conduct in the performance of outstanding services and achievements. The performance must be of significant importance and far exceed what is expected by normal standards. When the award is presented to foreign parties, it is divided into separate ranking degrees. The degrees are as follows: Chief Commander - issued to a head of state or government; Commander - issued to a chief of staff or higher position that is not head of state; Officer - issued to a general or flag officer that is below the chief of staff, colonel or equivalent rank; Legionnaire - issued to all other service members ranking lower than those previously mentioned. Awards presented to United State military members are not divided into degrees. Subsequent awards are denoted by Oak Leaf Clusters for U.S. Army and Air Force members and Award Stars for U.S. Navy, Marine Corps and Coast Guard members. The Valor device is also authorized to be worn by the U.S. Navy, Marine Corps and Coast Guard, but not by the U.S. Army or Air Force.',
+                    'name' => 'Good Conduct Medal',
+                    'description' => 'The Good Conduct Medal (GCM) is awarded to members of the United States military for exemplary behavior, efficiency, and fidelity during a specified period of active service. The medal is selective and is not automatically awarded. Recipients must also have excellent or higher character and efficiency ratings, and have not been convicted by court martial during the qualifying period.',
                 ], [
                     'name' => 'Bronze Star',
                     'description' => 'The Bronze Star Medal (BSM or BSV) is an award presented to United States Armed Forces personnel for bravery, acts of merit or meritorious service. When awarded for combat heroism it is awarded with a V device for Valor. It is the fourth highest combat award of the Armed Forces.',
@@ -103,14 +110,24 @@ class MilitarySeeder extends Seeder
                     'name' => 'Purple Heart',
                     'description' => 'The Purple Heart Medal (PH) is a decoration presented in the name of the President of the United States to recognize members of the U.S. military who have been wounded or killed in battle. It differs from other military decorations in that a "recommendation" from a superior is not required, but rather individuals are entitled based on meeting certain criteria found in AR 600-8-22. This criteria was expanded on March 28, 1973 to include injuries received as a result of an international terrorist attack against the U.S. and while serving outside the territory of the U.S. as part of a peacekeeping force. Personnel wounded or killed by friendly fire are also eligible for this award as long as the injuries were received in combat and with the intention of inflicting harm on the opposing forces. The Purple Heart is not awarded for non-combat injuries and commanders must take into account the extent of enemy involvement in the wound.',
                 ], [
-                    'name' => 'Defense Meritorious Service',
-                    'description' => 'The Defense Meritorious Service Medal (DMSM) is an award presented in the name of the Secretary of Defense to members of the Armed Forces. It is the third-highest award that the Department of Defense issues, and is awarded to those who distinguish themselves though non-combat meritorious service or achievement, in a joint capacity. Created on November 3rd, 1977 by President Jimmy Carter\'s Executive Order 12019, it was first awarded to Major Terrell G Covington of the United States Army.',
-                ], [
-                    'name' => 'Meritorious Service',
+                    'name' => 'Meritorious Service Medal',
                     'description' => 'The Meritorious Service Medal (MSM) is a decoration presented by the United States Armed Forces to recognize superior and exceptional non-combat service that does not meet the caliber of the Legion of Merit Medal. As of September 11, 2001, this award may also be issued for outstanding service in specific combat theater. The majority of recipients are field grade officers, senior warrant officers, senior non-commissioned officers and foreign military personnel in the ranks of O-6 and below. Subsequent awards are denoted by bronze oak leafs for Army and Air Force members, and gold stars for Navy, Marine Corps and Coast Guard members.',
                 ],
             )
-            ->create();
+            ->create()
+            ->each(function (Award $award) {
+                $path = "$award->name.png";
+
+                if (! Storage::disk('s3')->exists($path)) {
+                    Storage::disk('s3')->put($path, file_get_contents(storage_path("app/images/awards/$award->name.png")));
+                }
+
+                $award->image()->create([
+                    'path' => $path,
+                    'name' => $award->name,
+                    'filename' => "$award->name.png",
+                ]);
+            });
 
         $calendars = Calendar::factory()
             ->count(2)
@@ -130,11 +147,11 @@ class MilitarySeeder extends Seeder
         $fields = Field::factory()
             ->count(5)
             ->sequence(
-                ['name' => 'Field 1', 'type' => Field::$fieldTypes[Field::FIELD_TEXT], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_TEXT], 'cast' => Field::$fieldCasts[Field::FIELD_TEXT]],
-                ['name' => 'Field 2', 'type' => Field::$fieldTypes[Field::FIELD_BOOLEAN], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_BOOLEAN], 'cast' => Field::$fieldCasts[Field::FIELD_BOOLEAN]],
-                ['name' => 'Field 3', 'type' => Field::$fieldTypes[Field::FIELD_DATE], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_DATE], 'cast' => Field::$fieldCasts[Field::FIELD_DATE]],
-                ['name' => 'Field 4', 'type' => Field::$fieldTypes[Field::FIELD_EMAIL], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_EMAIL], 'cast' => Field::$fieldCasts[Field::FIELD_EMAIL]],
-                ['name' => 'Field 5', 'type' => Field::$fieldTypes[Field::FIELD_TIMEZONE], 'nova_type' => Field::$novaFieldTypes[Field::FIELD_TIMEZONE], 'cast' => Field::$fieldCasts[Field::FIELD_TIMEZONE]],
+                ['name' => 'Field 1', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast()],
+                ['name' => 'Field 2', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast()],
+                ['name' => 'Field 3', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast()],
+                ['name' => 'Field 4', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast()],
+                ['name' => 'Field 5', 'type' => FieldType::FIELD_TIMEZONE, 'cast' => FieldType::FIELD_TIMEZONE->getCast()],
             )
             ->create();
 
@@ -196,7 +213,20 @@ class MilitarySeeder extends Seeder
                     'paygrade' => 'E-9',
                 ],
             )
-            ->create();
+            ->create()
+            ->each(function (Rank $rank) {
+                $path = "$rank->abbreviation.svg";
+
+                if (! Storage::disk('s3')->exists($path)) {
+                    Storage::disk('s3')->put($path, file_get_contents(storage_path("app/images/ranks/military/army/$rank->abbreviation.svg")));
+                }
+
+                $rank->image()->create([
+                    'path' => $path,
+                    'name' => $rank->name,
+                    'filename' => "$rank->abbreviation.svg",
+                ]);
+            });
 
         $specialties = Specialty::factory()
             ->count(7)
@@ -238,16 +268,13 @@ class MilitarySeeder extends Seeder
             ->sequence(
                 [
                     'name' => 'Active',
-                    'text_color' => '#16a34a',
-                    'bg_color' => '#dcfce7',
+                    'color' => '#dcfce7',
                 ], [
                     'name' => 'Inactive',
-                    'text_color' => '#dc2626',
-                    'bg_color' => '#fee2e2',
+                    'color' => '#fee2e2',
                 ], [
                     'name' => 'On Leave',
-                    'text_color' => '#0284c7',
-                    'bg_color' => '#e0f2fe',
+                    'color' => '#e0f2fe',
                 ],
             )
             ->create();
@@ -310,19 +337,6 @@ class MilitarySeeder extends Seeder
             ->hasAttached($tasks->random(3), ['assigned_by_id' => $user->getKey(), 'assigned_at' => now()])
             ->hasAttached($events->random(3))
             ->hasAttached($fields->take(3))
-            ->create();
-
-        Newsfeed::factory()
-            ->state([
-                'event' => null,
-                'subject_type' => null,
-                'subject_id' => null,
-                'properties' => [
-                    'headline' => 'Backed by a powerful newsfeed',
-                    'text' => 'Keep your organization up-to-date with an interactive automated newsfeed that informs personnel of recent organizational events.',
-                ],
-            ])
-            ->for($user, 'causer')
             ->create();
 
         Form::factory()

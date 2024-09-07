@@ -1,25 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Enums\TaskAssignmentStatus;
 use App\Models\Scopes\TaskAssignmentScope;
+use App\Observers\TaskAssignmentObserver;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Support\Facades\DB;
-use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
- * App\Models\TaskAssignment
- *
  * @property int $id
  * @property int $task_id
  * @property int $user_id
@@ -30,15 +31,13 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property \Illuminate\Support\Carbon|null $expires_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User|null $assigned_by
+ * @property-read User|null $assigned_by
  * @property-read bool $complete
  * @property-read bool $expired
  * @property-read bool $past_due
  * @property-read TaskAssignmentStatus $status
- * @property-read \App\Models\Task|null $task
- * @property-read \App\Models\User $user
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attachment[] $attachments
- * @property-read int|null $attachments_count
+ * @property-read Task|null $task
+ * @property-read User $user
  *
  * @method static Builder|TaskAssignment assigned()
  * @method static Builder|TaskAssignment expired()
@@ -61,42 +60,33 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  *
  * @mixin \Eloquent
  */
+#[ObservedBy(TaskAssignmentObserver::class)]
+#[ScopedBy(TaskAssignmentScope::class)]
 class TaskAssignment extends Pivot
 {
     use ClearsResponseCache;
     use HasFactory;
-    use HasRelationships;
     use HasUser;
 
-    /**
-     * @var string
-     */
     protected $table = 'users_tasks';
 
-    /**
-     * @var array<int, string>
-     */
-    protected $appends = ['complete', 'expired', 'past_due', 'status'];
-
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
-        'completed_at' => 'datetime',
-        'assigned_at' => 'datetime',
-        'due_at' => 'datetime',
-        'expires_at' => 'datetime',
-        'expired' => 'boolean',
-        'past_due' => 'boolean',
-        'complete' => 'boolean',
+    protected $fillable = [
+        'task_id',
+        'assigned_by_id',
+        'assigned_at',
+        'due_at',
+        'completed_at',
+        'expires_at',
+        'created_at',
+        'updated_at',
     ];
 
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new TaskAssignmentScope());
-    }
+    protected $appends = [
+        'complete',
+        'expired',
+        'past_due',
+        'status',
+    ];
 
     public function scopeAssigned(Builder $query): void
     {
@@ -189,8 +179,18 @@ class TaskAssignment extends Pivot
         return $this->hasOne(Task::class, 'id', 'task_id');
     }
 
-    public function attachments(): HasManyDeep
+    protected function casts(): array
     {
-        return $this->hasManyDeep(Attachment::class, [Task::class], [null, ['model_type', 'model_id']]);
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+            'completed_at' => 'datetime',
+            'assigned_at' => 'datetime',
+            'due_at' => 'datetime',
+            'expires_at' => 'datetime',
+            'expired' => 'boolean',
+            'past_due' => 'boolean',
+            'complete' => 'boolean',
+        ];
     }
 }

@@ -1,18 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Tenant;
+use App\Settings\PermissionSettings;
 use TimoKoerber\LaravelOneTimeOperations\OneTimeOperation;
 
 return new class extends OneTimeOperation
 {
-    /**
-     * Process the operation.
-     */
     public function process(): void
     {
         tenancy()->runForMultiple(Tenant::all(), function ($tenant) {
-            nova_set_setting_value('default_permissions', []);
-            nova_set_setting_value('default_roles', ['User']);
+            /** @var PermissionSettings $settings */
+            $settings = app(PermissionSettings::class);
+            $settings->default_permissions = [];
+            $settings->default_roles = ['User'];
+            $settings->save();
         });
     }
 };

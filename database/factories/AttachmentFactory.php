@@ -1,8 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Attachment;
+use App\Models\ServiceRecord;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -10,14 +13,16 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AttachmentFactory extends Factory
 {
-    /**
-     * @return array<string, mixed>
-     */
+    public function configure(): static
+    {
+        return $this->afterMaking(fn (Attachment $attachment) => $attachment->model()->associate(ServiceRecord::factory()->create()));
+    }
+
     public function definition(): array
     {
         return [
             'name' => $this->faker->word,
-            'filename' => $this->faker->word.$this->faker->fileExtension(),
+            'filename' => $this->faker->word,
             'path' => $this->faker->filePath(),
         ];
     }

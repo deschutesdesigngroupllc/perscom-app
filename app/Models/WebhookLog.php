@@ -1,29 +1,32 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Models\Enums\WebhookEvent;
+use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Spatie\Activitylog\Models\Activity;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Optional;
 
 /**
- * App\Models\WebhookLog
- *
  * @property int $id
  * @property string|null $log_name
- * @property string $description
+ * @property array $description
  * @property string|null $subject_type
- * @property string|null $event
+ * @property-read Optional|WebhookEvent|null|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
- * @property string|null $causer_id (DC2Type:guid)
+ * @property string|null $causer_id
  * @property \Illuminate\Support\Collection|null $properties
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $causer
+ * @property-read mixed|null $data
  * @property-read \Illuminate\Support\Collection $changes
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $subject
  *
  * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder|Activity forBatch(string $batchUuid)
@@ -47,16 +50,28 @@ use Spatie\Activitylog\Models\Activity;
  * @method static Builder|WebhookLog whereSubjectType($value)
  * @method static Builder|WebhookLog whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class WebhookLog extends Activity
 {
-    use HasFactory;
+    public function data(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): mixed => $this->getExtraProperty('data')
+        )->shouldCache();
+    }
+
+    public function event(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): Optional|WebhookEvent|null => optional($this->getExtraProperty('event'), fn ($event) => WebhookEvent::from($event))
+        )->shouldCache();
+    }
 
     protected static function booted(): void
     {
-        static::addGlobalScope('api', function (Builder $builder) {
-            $builder->where('log_name', '=', 'webhook');
+        static::addGlobalScope('webhook', function (Builder $query) {
+            $query->where('log_name', 'webhook');
         });
     }
 }

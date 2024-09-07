@@ -1,21 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Traits;
 
+use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\LogApiRequests;
-use App\Http\Middleware\SentryContext;
-use App\Http\Middleware\Subscribed;
+use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
 trait MakesApiRequests
 {
+    use MakesHttpRequests;
+
     public function withoutApiMiddleware(): void
     {
         $this->withoutMiddleware([
-            SentryContext::class,
             LogApiRequests::class,
             ThrottleRequests::class,
-            Subscribed::class,
+            CheckSubscription::class,
         ]);
     }
 }

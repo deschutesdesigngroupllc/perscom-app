@@ -1,17 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api;
 
+use App\Models\User;
+use App\Services\FieldService;
 use Orion\Http\Requests\Request;
 
 class UserRequest extends Request
 {
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
-        return [
+        return array_merge([
             'name' => 'string',
             'email' => 'email|unique:users,email',
             'email_verified_at' => 'nullable|date',
@@ -28,17 +29,26 @@ class UserRequest extends Request
             'last_seen_at' => 'nullable|date',
             'updated_at' => 'date',
             'created_at' => 'date',
-        ];
+            'deleted_at' => 'date',
+        ], $this->getFieldRules());
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
-        return [
+        return array_merge([
             'name' => 'required|string',
             'email' => 'required|email|unique:users,email',
-        ];
+        ], $this->getFieldRules());
+    }
+
+    protected function getFieldRules(): array
+    {
+        $user = $this->route('user');
+
+        if (is_null($user)) {
+            return [];
+        }
+
+        return FieldService::getValidationRules(User::findOrFail($user)->fields)->toArray();
     }
 }

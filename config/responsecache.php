@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     /*
      * Determine if the response cache middleware should be enabled.
@@ -20,15 +22,15 @@ return [
      *  This can be useful to monitor the performance of your application.
      */
     'cache_bypass_header' => [
-        'name' => env('RESPONSE_CACHE_BYPASS_HEADER_NAME', null),
-        'value' => env('RESPONSE_CACHE_BYPASS_HEADER_VALUE', null),
+        'name' => env('CACHE_BYPASS_HEADER_NAME', null),
+        'value' => env('CACHE_BYPASS_HEADER_VALUE', null),
     ],
 
     /*
      * When using the default CacheRequestFilter this setting controls the
      * default number of seconds responses must be cached.
      */
-    'cache_lifetime_in_seconds' => env('RESPONSE_CACHE_LIFETIME', 60 * 60),
+    'cache_lifetime_in_seconds' => (int) env('RESPONSE_CACHE_LIFETIME', 60 * 60 * 24 * 7),
 
     /*
      * This setting determines if a http header named with the cache time
@@ -69,7 +71,7 @@ return [
      * Each replacer must implement the Replacer interface.
      */
     'replacers' => [
-        \Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
+        Spatie\ResponseCache\Replacers\CsrfTokenReplacer::class,
     ],
 
     /*
@@ -79,16 +81,16 @@ return [
      *
      * You may use a string or an array here.
      */
-    'cache_tag' => 'response_cache',
+    'cache_tag' => '',
 
     /*
      * This class is responsible for generating a hash for a request. This hash
      * is used to look up a cached response.
      */
-    'hasher' => \Spatie\ResponseCache\Hasher\DefaultHasher::class,
+    'hasher' => Spatie\ResponseCache\Hasher\DefaultHasher::class,
 
     /*
      * This class is responsible for serializing responses.
      */
-    'serializer' => \Spatie\ResponseCache\Serializers\DefaultSerializer::class,
+    'serializer' => Spatie\ResponseCache\Serializers\DefaultSerializer::class,
 ];

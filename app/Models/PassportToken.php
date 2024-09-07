@@ -1,25 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Laravel\Passport\Token as BaseTokenModel;
 
 /**
- * App\Models\PassportToken
- *
  * @property string $id
  * @property int|null $user_id
  * @property string $client_id
  * @property string|null $name
  * @property array|null $scopes
- * @property string|null $token
+ * @property mixed|null $token
  * @property bool $revoked
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $expires_at
- * @property-read \App\Models\PassportClient|null $client
- * @property-read \App\Models\User|null $user
+ * @property-read PassportClient|null $client
+ * @property-read \Laravel\Passport\RefreshToken|null $refreshToken
+ * @property-read User|null $user
  *
  * @method static \Database\Factories\PassportTokenFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newModelQuery()
@@ -42,21 +43,16 @@ class PassportToken extends BaseTokenModel
 {
     use HasFactory;
 
-    /**
-     * @var false[]
-     */
     protected $attributes = [
         'revoked' => false,
     ];
 
-    /**
-     * @var string[]
-     */
     protected $casts = [
         'created_at' => 'datetime',
         'updated_at' => 'datetime',
         'expires_at' => 'datetime',
         'scopes' => 'array',
+        'token' => 'encrypted',
         'revoked' => 'bool',
     ];
 }

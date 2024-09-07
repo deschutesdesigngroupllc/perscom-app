@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Http\Controllers\Oidc\DiscoveryController;
 use App\Http\Controllers\Oidc\LogoutController;
 use App\Http\Controllers\Oidc\UserInfoController;

@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api;
 
 use Orion\Http\Requests\Request;
 
 class RankRecordRequest extends Request
 {
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return [
@@ -20,12 +19,10 @@ class RankRecordRequest extends Request
             'type' => 'integer|in:0,1',
             'updated_at' => 'date',
             'created_at' => 'date',
+            'deleted_at' => 'date',
         ];
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         $rules = [];

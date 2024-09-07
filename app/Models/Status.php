@@ -1,33 +1,43 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use App\Models\Enums\AssignmentRecordType;
+use App\Models\Scopes\StatusScope;
+use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasAssignmentRecords;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use App\Traits\HasUsers;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\EloquentSortable\Sortable;
 
 /**
- * App\Models\Status
- *
  * @property int $id
  * @property string $name
- * @property string|null $text_color
- * @property string|null $bg_color
+ * @property string|null $color
+ * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
+ * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
@@ -35,49 +45,39 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Status newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Status onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Status ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Status query()
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereBgColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereTextColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Status whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Status withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Status withoutTrashed()
  *
  * @mixin \Eloquent
  */
-class Status extends Model
+#[ScopedBy(StatusScope::class)]
+class Status extends Model implements HasLabel, Sortable
 {
+    use CanBeOrdered;
     use ClearsResponseCache;
+    use HasAssignmentRecords;
     use HasFactory;
+    use HasResourceLabel;
+    use HasResourceUrl;
+    use HasUsers;
     use SoftDeletes;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['name', 'text_color', 'bg_color', 'updated_at', 'created_at'];
-
-    public function assignment_records(): HasMany
-    {
-        return $this->hasMany(AssignmentRecord::class);
-    }
-
-    public function primary_assignment_records(): HasMany
-    {
-        return $this->assignment_records()->where('type', AssignmentRecordType::PRIMARY);
-    }
-
-    public function secondary_assignment_records(): HasMany
-    {
-        return $this->assignment_records()->where('type', AssignmentRecordType::SECONDARY);
-    }
-
-    public function users(): MorphToMany
-    {
-        return $this->morphedByMany(User::class, 'model', 'model_has_statuses');
-    }
+    protected $fillable = [
+        'name',
+        'color',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public function submissions(): MorphToMany
     {

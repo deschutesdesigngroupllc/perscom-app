@@ -1,37 +1,44 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Observers\EventObserver;
+use App\Services\EventService;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
+use App\Traits\HasComments;
 use App\Traits\HasImages;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
 use Carbon\Carbon;
-use Carbon\CarbonPeriod;
-use DateTime;
-use Illuminate\Database\Eloquent\Builder;
+use Carbon\CarbonInterval;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Optional;
 use RRule\RRule;
 
 /**
- * App\Models\Event
- *
  * @property int $id
  * @property string $name
  * @property int|null $calendar_id
  * @property string|null $description
  * @property string|null $content
  * @property string|null $location
- * @property string|null $url
+ * @property-read Optional|string|null|null $url
  * @property int|null $author_id
  * @property bool $all_day
  * @property \Illuminate\Support\Carbon $start
- * @property \Illuminate\Support\Carbon|null $end
+ * @property-write mixed|null $end
  * @property bool $repeats
  * @property string|null $frequency
  * @property int $interval
@@ -51,75 +58,77 @@ use RRule\RRule;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read \App\Models\User|null $author
- * @property-read \App\Models\Calendar|null $calendar
- * @property-read mixed|null $computed_end
- * @property-read mixed|null $human_readable_pattern
- * @property-read mixed|null $is_past
- * @property-read mixed|null $next_occurrence
- * @property-read \App\Models\Image|null $image
+ * @property-read User|null $author
+ * @property-read Calendar|null $calendar
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read int|null $comments_count
+ * @property-read mixed $has_passed
+ * @property-read Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
+ * @property-read string $label
+ * @property-read mixed $last_occurrence
+ * @property-read CarbonInterval|Optional|null|null $length
+ * @property-read mixed $next_occurrence
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $registrations
  * @property-read int|null $registrations_count
+ * @property-read Optional|string|null|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  *
- * @method static Builder|Event author(\App\Models\User $user)
- * @method static Builder|Event datePeriod(?mixed $start, ?mixed $end)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event author(\App\Models\User $user)
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
- * @method static Builder|Event future()
- * @method static Builder|Event newModelQuery()
- * @method static Builder|Event newQuery()
- * @method static Builder|Event onlyTrashed()
- * @method static Builder|Event query()
- * @method static Builder|Event tags(?mixed $tag)
- * @method static Builder|Event whereAllDay($value)
- * @method static Builder|Event whereAuthorId($value)
- * @method static Builder|Event whereByDay($value)
- * @method static Builder|Event whereByMonth($value)
- * @method static Builder|Event whereByMonthDay($value)
- * @method static Builder|Event whereBySetPosition($value)
- * @method static Builder|Event whereByYearDay($value)
- * @method static Builder|Event whereCalendarId($value)
- * @method static Builder|Event whereContent($value)
- * @method static Builder|Event whereCount($value)
- * @method static Builder|Event whereCreatedAt($value)
- * @method static Builder|Event whereDeletedAt($value)
- * @method static Builder|Event whereDescription($value)
- * @method static Builder|Event whereEnd($value)
- * @method static Builder|Event whereEndType($value)
- * @method static Builder|Event whereFrequency($value)
- * @method static Builder|Event whereId($value)
- * @method static Builder|Event whereInterval($value)
- * @method static Builder|Event whereLocation($value)
- * @method static Builder|Event whereName($value)
- * @method static Builder|Event whereRegistrationDeadline($value)
- * @method static Builder|Event whereRegistrationEnabled($value)
- * @method static Builder|Event whereRepeats($value)
- * @method static Builder|Event whereRrule($value)
- * @method static Builder|Event whereStart($value)
- * @method static Builder|Event whereUntil($value)
- * @method static Builder|Event whereUpdatedAt($value)
- * @method static Builder|Event whereUrl($value)
- * @method static Builder|Event withTrashed()
- * @method static Builder|Event withoutTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereAllDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereByDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereByMonth($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereByMonthDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereBySetPosition($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereByYearDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereCalendarId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereEnd($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereEndType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereFrequency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereInterval($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereLocation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereRegistrationDeadline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereRegistrationEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereRepeats($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereRrule($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereStart($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereUntil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Event withoutTrashed()
  *
  * @mixin \Eloquent
  */
-class Event extends Model
+#[ObservedBy(EventObserver::class)]
+class Event extends Model implements HasLabel
 {
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;
+    use HasComments;
     use HasFactory;
     use HasImages;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use HasTags;
     use SoftDeletes;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'calendar_id',
@@ -127,7 +136,6 @@ class Event extends Model
         'content',
         'location',
         'url',
-        'author_id',
         'all_day',
         'start',
         'end',
@@ -141,192 +149,81 @@ class Event extends Model
         'by_month_day',
         'by_month',
         'rrule',
-        'updated_at',
         'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'all_day' => 'boolean',
-        'start' => 'datetime',
-        'end' => 'datetime',
-        'repeats' => 'boolean',
-        'interval' => 'integer',
-        'count' => 'integer',
-        'until' => 'datetime',
-        'by_day' => 'collection',
-        'by_month_day' => 'collection',
-        'by_month' => 'collection',
-        'is_past' => 'boolean',
-        'computed_end' => 'datetime',
-        'next_occurrence' => 'datetime',
-        'registration_enabled' => 'boolean',
-        'registration_deadline' => 'datetime',
-    ];
-
-    /**
-     * @var array<int, string>
-     */
     protected $appends = [
-        'is_past',
-        'computed_end',
+        'has_passed',
+        'last_occurrence',
         'next_occurrence',
+        //'length'
     ];
 
-    public static function boot(): void
+    public function lastOccurrence(): Attribute
     {
-        parent::boot();
-
-        static::saved(static function (Event $event) {
-            if ($event->repeats) {
-                $updates = [];
-                $updates['rrule'] = optional($event->generateRRule(), static function (RRule $rule) {
-                    return $rule->rfcString();
-                });
-
-                switch ($event->end_type) {
-                    case 'never':
-                        $updates = array_merge($updates, [
-                            'count' => null,
-                            'until' => null,
-                        ]);
-                        break;
-
-                    case 'after':
-                        $updates = array_merge($updates, [
-                            'until' => null,
-                        ]);
-                        break;
-
-                    case 'on':
-                        $updates = array_merge($updates, [
-                            'count' => null,
-                        ]);
-                        break;
-                }
-
-                switch ($event->frequency) {
-                    case 'DAILY':
-                        $updates = array_merge($updates, [
-                            'by_day' => null,
-                            'by_month_day' => null,
-                            'by_month' => null,
-                        ]);
-                        break;
-
-                    case 'WEEKLY':
-                        $updates = array_merge($updates, [
-                            'by_month_day' => null,
-                            'by_month' => null,
-                        ]);
-                        break;
-
-                    case 'MONTHLY':
-                        $updates = array_merge($updates, [
-                            'by_day' => null,
-                            'by_month' => null,
-                        ]);
-                        break;
-
-                    case 'YEARLY':
-                        $updates = array_merge($updates, [
-                            'by_day' => null,
-                            'by_month_day' => null,
-                        ]);
-                        break;
-                }
-
-                $event->updateQuietly($updates);
+        return Attribute::make(
+            get: fn () => match (true) {
+                ! $this->repeats && $this->end => $this->end,
+                $this->repeats && $this->end_type === 'on' && $this->until => $this->until,
+                $this->repeats && $this->end_type === 'after' && $this->count => optional(EventService::generateRecurringRule($this), function (RRule $rule) {
+                    return $rule->getNthOccurrenceAfter($this->start, $this->count)
+                        ? Carbon::parse($rule->getNthOccurrenceAfter($this->start, $this->count))
+                        : null;
+                }),
+                default => null
             }
-        });
-
-        static::deleted(static function (Event $event) {
-            $event->registrations()->detach();
-        });
+        )->shouldCache();
     }
 
-    public function scopeDatePeriod(Builder $query, mixed $start, mixed $end): void
+    public function end(): Attribute
     {
-        $period = CarbonPeriod::create(
-            Carbon::parse($start),
-            Carbon::parse($end)
+        return Attribute::make(
+            set: function (mixed $value, array $attributes) {
+                if (! data_get($attributes, 'all_day', false) && data_get($attributes, 'repeats', false)) {
+                    $start = Carbon::parse(data_get($attributes, 'start'));
+
+                    return Carbon::parse(data_get($attributes, 'end'))->set([
+                        'day' => $start->day,
+                        'month' => $start->month,
+                        'year' => $start->year,
+                    ]);
+                }
+
+                return Carbon::parse($value);
+            }
         );
-
-        $query->where(function (Builder $query) use ($period) {
-            $query->whereBetween('start', [$period->getStartDate(), $period->getEndDate()]);
-        })->orWhere(function (Builder $query) use ($period) {
-            $query->whereBetween('end', [$period->getStartDate(), $period->getEndDate()]);
-        })->orWhere(function (Builder $query) use ($period) {
-            $query->whereDate('start', '<=', $period->getStartDate())->whereDate(
-                'end',
-                '>=',
-                $period->getEndDate());
-        })->orWhere(function (Builder $query) use ($period) {
-            $query->where('repeats', '=', true)
-                ->where('end_type', '=', 'never')
-                ->whereDate('start', '<=', $period->getEndDate());
-        })->orWhere(function (Builder $query) use ($period) {
-            $query->where('repeats', '=', true)
-                ->where('end_type', '=', 'on')
-                ->whereDate('until', '>=', $period->getStartDate());
-        });
     }
 
-    public function scopeFuture(Builder $query): void
+    public function length(): Attribute
     {
-        $query->whereDate('start', '>', now())
-            ->orWhereDate('end', '>', now())
-            ->orWhere(function (Builder $query) {
-                $query->where('repeats', '=', true)
-                    ->where('end_type', '=', 'never');
-            })
-            ->orWhere(function (Builder $query) {
-                $query->where('repeats', '=', true)
-                    ->where('end_type', '=', 'on')
-                    ->whereDate('until', '>=', now());
-            })
-            ->orWhere(function (Builder $query) {
-                $query->where('repeats', '=', true)
-                    ->where('end_type', '=', 'after');
-            });
+        return Attribute::make(
+            get: fn (): CarbonInterval|Optional|null => optional($this->end, function () {
+                return $this->start->diff($this->end);
+            }) ?: null
+        )->shouldCache();
     }
 
-    public function getComputedEndAttribute(): mixed
+    public function hasPassed(): Attribute
     {
-        return match (true) {
-            ! $this->repeats && $this->end => $this->end,
-            $this->repeats && $this->end_type === 'on' && $this->until => $this->until,
-            $this->repeats && $this->end_type === 'after' && $this->count => optional($this->generateRRule(), function (RRule $rule) {
-                return Carbon::parse($rule->getNthOccurrenceAfter($this->start, $this->count));
-            }),
-            default => null
-        };
+        return Attribute::make(
+            get: fn () => optional($this->last_occurrence, static function (Carbon $end) {
+                return $end->isPast();
+            }) ?: false
+        )->shouldCache();
     }
 
-    public function getNextOccurrenceAttribute(): mixed
+    public function nextOccurrence(): Attribute
     {
-        return match (true) {
-            ! $this->repeats => $this->start,
-            $this->repeats => optional($this->generateRRule(), static function (RRule $rule) {
-                return Carbon::parse(collect($rule->getOccurrencesAfter(now(), false, 1))->first());
-            })
-        };
-    }
-
-    public function getIsPastAttribute(): mixed
-    {
-        return optional($this->computed_end, static function (Carbon $end) {
-            return $end->isPast();
-        }) ?: false;
-    }
-
-    public function getHumanReadablePatternAttribute(): mixed
-    {
-        return optional($this->generateRRule(), static function (RRule $rule) {
-            return $rule->humanReadable();
-        });
+        return Attribute::make(
+            get: fn () => match (true) {
+                ! $this->repeats => null,
+                $this->repeats => optional(EventService::generateRecurringRule($this), static function (RRule $rule) {
+                    return Carbon::parse(collect($rule->getOccurrencesAfter(now(), false, 1))->first());
+                })
+            }
+        )->shouldCache();
     }
 
     public function calendar(): BelongsTo
@@ -337,59 +234,37 @@ class Event extends Model
     public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')
-            ->withPivot(['id'])
+            ->withPivot(['id', 'user_id', 'event_id'])
             ->as('registration')
             ->using(EventRegistration::class)
             ->withTimestamps();
     }
 
-    /**
-     * @return RRule<DateTime>|null
-     */
-    public function generateRRule(): ?RRule
+    protected function casts(): array
     {
-        $payload = [
-            'DTSTART' => $this->start->toDateTimeString(),
-            'FREQ' => $this->frequency,
-            'INTERVAL' => $this->interval,
+        $casts = [
+            'all_day' => 'boolean',
+            'start' => 'datetime',
+            'end' => 'datetime',
+            'repeats' => 'boolean',
+            'interval' => 'integer',
+            'count' => 'integer',
+            'until' => 'datetime',
+            'by_day' => 'collection',
+            'by_month_day' => 'collection',
+            'by_month' => 'collection',
+            'has_passed' => 'boolean',
+            'last_occurrence' => 'datetime',
+            'next_occurrence' => 'datetime',
+            'registration_enabled' => 'boolean',
+            'registration_deadline' => 'datetime',
         ];
 
-        switch ($this->frequency) {
-            case 'WEEKLY':
-                if ($this->by_day?->isNotEmpty()) {
-                    $payload['BYDAY'] = $this->by_day->implode(',');
-                }
-                break;
-
-            case 'MONTHLY':
-                if ($this->by_day && $this->by_set_position) {
-                    $payload['BYDAY'] = $this->by_day;
-                    $payload['BYSETPOS'] = $this->by_set_position;
-                } elseif ($this->by_month_day?->isNotEmpty()) {
-                    $payload['BYMONTHDAY'] = $this->by_month_day->implode(',');
-                }
-                break;
-
-            case 'YEARLY':
-                if ($this->by_month?->isNotEmpty()) {
-                    $payload['BYMONTH'] = $this->by_month->implode(',');
-                }
-
-                if ($this->by_day && $this->by_set_position) {
-                    $payload['BYDAY'] = $this->by_day;
-                    $payload['BYSETPOS'] = $this->by_set_position;
-                }
-                break;
+        if ($this->all_day) {
+            $casts['start'] = 'date';
+            $casts['end'] = 'date';
         }
 
-        if ($this->count && $this->end_type === 'after') {
-            $payload['COUNT'] = $this->count;
-        }
-
-        if ($this->until && $this->end_type === 'on') {
-            $payload['UNTIL'] = $this->until->toDateString();
-        }
-
-        return $this->repeats ? new RRule($payload) : null;
+        return $casts;
     }
 }

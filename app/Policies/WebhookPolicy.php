@@ -1,19 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Features\WebhookFeature;
 use App\Models\User;
 use App\Models\Webhook;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Request;
 use Laravel\Pennant\Feature;
 
 class WebhookPolicy extends Policy
 {
     public function before(): ?bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return false;
         }
 

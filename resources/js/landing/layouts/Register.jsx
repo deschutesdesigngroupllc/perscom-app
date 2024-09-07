@@ -1,0 +1,47 @@
+import React, { useEffect, useState } from 'react'
+import PropTypes from 'prop-types'
+import clsx from 'clsx'
+import backgroundImage1 from '../../../images/landing/register1.jpeg'
+import backgroundImage2 from '../../../images/landing/register2.jpeg'
+import backgroundImage3 from '../../../images/landing/register3.jpeg'
+import backgroundImage4 from '../../../images/landing/register4.jpeg'
+
+export function RegisterLayout({ children, position = 'justify-center' }) {
+  const [backgroundImage, setBackgroundImage] = useState(null)
+
+  useEffect(() => {
+    const getBackgroundImage = () => {
+      const backgroundImages = Array(backgroundImage1, backgroundImage2, backgroundImage3, backgroundImage4)
+      const randomInt = Math.floor(Math.random() * backgroundImages.length)
+      return backgroundImages[randomInt]
+    }
+
+    setBackgroundImage(getBackgroundImage())
+  }, [])
+
+  return (
+    <div className={clsx('relative flex min-h-screen md:px-12 lg:px-0', position)}>
+      <div className={clsx('relative z-10 flex max-h-full flex-1 flex-col bg-white px-4 py-16 shadow-2xl md:flex-none md:px-28', position)}>
+        <div className='mx-auto w-full max-w-md sm:px-4 md:w-96 md:max-w-sm md:px-0'>{children}</div>
+      </div>
+      <div className='absolute inset-0 hidden w-full flex-1 sm:block lg:relative lg:w-0'>
+        <span className='absolute inset-0 m-0 box-border block overflow-hidden border-none p-0 opacity-100'>
+          {backgroundImage && (
+            <img
+              src={backgroundImage}
+              alt=''
+              className='w-100 absolute inset-0 m-auto box-border block h-0 max-h-full min-h-full w-0 min-w-full max-w-full border-none object-cover p-0'
+            />
+          )}
+        </span>
+      </div>
+    </div>
+  )
+}
+
+RegisterLayout.propTypes = {
+  children: PropTypes.array,
+  position: PropTypes.string
+}
+
+export default RegisterLayout

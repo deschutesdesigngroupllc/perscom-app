@@ -1,26 +1,21 @@
 <?php
-/*
- * Copyright (c) 2/11/23, 1:15 PM Deschutes Design Group LLC.year. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
- */
+
+declare(strict_types=1);
 
 namespace App\Policies;
 
 use App\Features\ApiAccessFeature;
 use App\Models\PassportToken;
 use App\Models\User;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Request;
 use Laravel\Pennant\Feature;
 
 class PassportTokenPolicy extends Policy
 {
     public function before(): ?bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return false;
         }
 

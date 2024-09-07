@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Http\Controllers\Passport;
 
-use App\Http\Middleware\Subscribed;
+use App\Http\Middleware\CheckSubscription;
 use App\Models\User;
 use Inertia\Testing\AssertableInertia;
 use Laravel\Passport\Database\Factories\ClientFactory;
@@ -12,7 +14,7 @@ class AuthorizationControllerTest extends TenantTestCase
 {
     public function test_authorization_page_can_be_reached()
     {
-        $this->withoutMiddleware(Subscribed::class);
+        $this->withoutMiddleware(CheckSubscription::class);
 
         $user = User::factory()->create();
 

@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Http\Middleware\InitializeTenancyBySubdomain;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 Route::group([
     'middleware' => [
-        InitializeTenancyByDomainOrSubdomain::class,
+        InitializeTenancyBySubdomain::class,
         PreventAccessFromCentralDomains::class,
         'subscribed',
         'approved',
@@ -21,7 +23,7 @@ Route::group([
     Route::get('/authorize', [
         'uses' => 'AuthorizationController@authorize',
         'as' => 'authorizations.authorize',
-        'middleware' => 'web',
+        'middleware' => ['web', 'landing'],
     ]);
 
     $guard = config('passport.guard', null);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Observers;
 
 use App\Models\Enums\WebhookEvent;
@@ -25,14 +27,11 @@ class SubmissionObserverTest extends TenantTestCase
 
         $submission = Submission::factory()->for($form)->create();
 
-        Notification::assertSentTo($user, NewSubmission::class, function ($notification, $channels) use ($submission) {
+        Notification::assertSentTo($user, NewSubmission::class, function (NewSubmission $notification, $channels) use ($submission) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($submission->user);
             $mail->assertTo($submission->user->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame("A new {$submission->form->name} has been submitted.", $nova->message);
 
             return true;
         });

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\AssignmentRecord;
@@ -17,9 +19,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class AssignmentRecordFactory extends Factory
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [

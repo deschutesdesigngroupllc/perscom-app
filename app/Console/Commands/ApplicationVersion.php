@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
-use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class ApplicationVersion extends Command
 {
@@ -23,7 +24,7 @@ class ApplicationVersion extends Command
             return $this->setApplicationVersion($newVersion);
         }
 
-        return CommandAlias::SUCCESS;
+        return static::SUCCESS;
     }
 
     public function setApplicationVersion(string $version): int
@@ -31,7 +32,7 @@ class ApplicationVersion extends Command
         if (! preg_match("/^(v+)(\d|[1-9]\d*)\.(\d|[1-9]\d*)\.(\d|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/", $version)) {
             $this->error('The supplied version is not a valid SemVer version.');
 
-            return CommandAlias::FAILURE;
+            return static::FAILURE;
         }
 
         $path = App::environmentFilePath();
@@ -46,7 +47,7 @@ class ApplicationVersion extends Command
             file_get_contents($path)
         ));
 
-        return CommandAlias::SUCCESS;
+        return static::SUCCESS;
     }
 
     public function getApplicationVersion(): mixed

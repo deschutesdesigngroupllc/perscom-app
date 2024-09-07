@@ -1,13 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\Admin;
 
+use App\Filament\Admin\Resources\TenantResource;
 use App\Mail\Admin\TenantDeletedMail;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Laravel\Nova\Notifications\NovaChannel;
-use Laravel\Nova\Notifications\NovaNotification;
 
 class TenantDeleted extends Notification implements ShouldQueue
 {
@@ -18,12 +22,9 @@ class TenantDeleted extends Notification implements ShouldQueue
         //
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
-        return ['mail', NovaChannel::class];
+        return ['mail', 'database', 'broadcast'];
     }
 
     public function toMail(mixed $notifiable): TenantDeletedMail
@@ -31,10 +32,35 @@ class TenantDeleted extends Notification implements ShouldQueue
         return (new TenantDeletedMail($this->tenant, $this->email))->to($notifiable->email);
     }
 
-    public function toNova(): NovaNotification
+    public function toBroadcast($notifiable): BroadcastMessage
     {
-        return (new NovaNotification())->message('A tenant has been deleted.')
-            ->icon('user-remove')
-            ->type('danger');
+        return FilamentNotification::make()
+            ->title('Tenant Deleted')
+            ->body('A tenant has been deleted.')
+            ->actions([
+                Action::make('View tenant')
+                    ->button()
+                    ->url(TenantResource::getUrl('edit', [
+                        'record' => $this->tenant,
+                    ], panel: 'admin')),
+            ])
+            ->info()
+            ->getBroadcastMessage();
+    }
+
+    public function toDatabase($notifiable): array
+    {
+        return FilamentNotification::make()
+            ->title('Tenant Deleted')
+            ->body('A tenant has been deleted.')
+            ->actions([
+                Action::make('View tenant')
+                    ->button()
+                    ->url(TenantResource::getUrl('edit', [
+                        'record' => $this->tenant,
+                    ], panel: 'admin')),
+            ])
+            ->info()
+            ->getDatabaseMessage();
     }
 }

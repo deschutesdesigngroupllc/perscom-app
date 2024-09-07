@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\User;
@@ -13,15 +15,6 @@ use Illuminate\Support\Facades\Auth;
  */
 trait HasAuthor
 {
-    public static function bootHasAuthor(): void
-    {
-        static::creating(function ($model) {
-            if ($user = Auth::user() && ! $model->author_id) {
-                $model->author()->associate($user);
-            }
-        });
-    }
-
     public function scopeAuthor(Builder $query, User $user): void
     {
         $query->whereBelongsTo($user);
@@ -30,5 +23,20 @@ trait HasAuthor
     public function author(): BelongsTo
     {
         return $this->belongsTo(User::class, 'author_id');
+    }
+
+    protected static function bootHasAuthor(): void
+    {
+        static::creating(function ($model) {
+            /** @var User $user */
+            if ($user = Auth::user() && ! $model->author_id) {
+                $model->author()->associate($user);
+            }
+        });
+    }
+
+    protected function initializeHasAuthor(): void
+    {
+        $this->mergeFillable(['author_id']);
     }
 }

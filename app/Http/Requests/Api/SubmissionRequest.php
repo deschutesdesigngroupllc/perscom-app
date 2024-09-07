@@ -1,36 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api;
 
-use App\Models\Field;
 use App\Models\Form;
 use App\Models\Submission;
+use App\Services\FieldService;
+use Illuminate\Support\Traits\Conditionable;
 use Orion\Http\Requests\Request;
 
 class SubmissionRequest extends Request
 {
-    protected function getDynamicRules(): mixed
-    {
-        $submissionId = $this->route('form') ?? optional($this->route('submission'), function ($submissionId) {
-            return optional(Submission::find($submissionId))->form_id;
-        });
+    use Conditionable;
 
-        $form = optional($submissionId, function ($submissionId) {
-            return Form::find($submissionId);
-        });
-
-        if ($form) {
-            return $form->fields->filter->validation_rules->mapWithKeys(function (Field $field) {
-                return [$field->key => $field->validation_rules];
-            })->toArray();
-        }
-
-        return [];
-    }
-
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return array_merge([
@@ -38,12 +21,10 @@ class SubmissionRequest extends Request
             'user_id' => 'integer|nullable|exists:users,id',
             'updated_at' => 'date',
             'created_at' => 'date',
-        ], $this->getDynamicRules());
+            'deleted_at' => 'date',
+        ], $this->getFieldRules());
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         $rules = [];
@@ -53,6 +34,24 @@ class SubmissionRequest extends Request
             ];
         }
 
-        return array_merge($rules, $this->getDynamicRules());
+        return array_merge($rules, $this->getFieldRules());
+    }
+
+    protected function getFieldRules(): array
+    {
+        $routeFormId = $this->route('form');
+        $routeSubmissionId = $this->route('submission');
+        $inputFormId = $this->input('form_id');
+
+        /** @var Form|null $form */
+        $form = $routeFormId ? Form::find($routeFormId) : null;
+        $form ??= $routeSubmissionId ? Submission::find($routeSubmissionId)->form : null;
+        $form ??= $inputFormId ? Form::find($inputFormId) : null;
+
+        if (blank($form)) {
+            return [];
+        }
+
+        return FieldService::getValidationRules($form->fields)->toArray();
     }
 }

@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\Tenant;
 
+use App\Filament\App\Resources\QualificationRecordResource;
 use App\Mail\Tenant\NewQualificationRecordMail;
 use App\Models\QualificationRecord;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Laravel\Nova\Notifications\NovaChannel;
-use Laravel\Nova\Notifications\NovaNotification;
-use Laravel\Nova\URL;
+use Illuminate\Support\Str;
 
 class NewQualificationRecord extends Notification implements ShouldQueue
 {
@@ -21,18 +25,14 @@ class NewQualificationRecord extends Notification implements ShouldQueue
 
     public function __construct(protected QualificationRecord $qualificationRecord)
     {
-        $this->url = route('nova.pages.detail', [
-            'resource' => \App\Nova\QualificationRecord::uriKey(),
-            'resourceId' => $this->qualificationRecord->id,
-        ]);
+        $this->url = QualificationRecordResource::getUrl('view', [
+            'record' => $this->qualificationRecord,
+        ], panel: 'app');
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
-        return ['mail', NovaChannel::class];
+        return ['mail', 'database', 'broadcast'];
     }
 
     public function toMail(mixed $notifiable): NewQualificationRecordMail
@@ -40,11 +40,31 @@ class NewQualificationRecord extends Notification implements ShouldQueue
         return (new NewQualificationRecordMail($this->qualificationRecord, $this->url))->to($notifiable->email);
     }
 
-    public function toNova(): NovaNotification
+    public function toBroadcast($notifiable): BroadcastMessage
     {
-        return (new NovaNotification())->message('A new qualification record has been added to your personnel file.')
-            ->action('View Record', URL::remote($this->url))
-            ->icon('document-text')
-            ->type('info');
+        return FilamentNotification::make()
+            ->title('New Qualification Record')
+            ->body(Str::markdown("A new qualification record has been added to your account.<br><br>**Qualification:** {$this->qualificationRecord?->qualification?->name}"))
+            ->actions([
+                Action::make('Open qualification record')
+                    ->button()
+                    ->url($this->url),
+            ])
+            ->info()
+            ->getBroadcastMessage();
+    }
+
+    public function toDatabase($notifiable): array
+    {
+        return FilamentNotification::make()
+            ->title('New Qualification Record')
+            ->body(Str::markdown("A new qualification record has been added to your account.<br><br>**Qualification:** {$this->qualificationRecord?->qualification?->name}"))
+            ->actions([
+                Action::make('Open qualification record')
+                    ->button()
+                    ->url($this->url),
+            ])
+            ->info()
+            ->getDatabaseMessage();
     }
 }

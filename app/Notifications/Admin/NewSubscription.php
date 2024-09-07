@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\Admin;
 
 use App\Mail\Admin\NewSubscriptionMail;
+use App\Models\Subscription;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
-use Laravel\Cashier\Subscription;
 
 class NewSubscription extends Notification implements ShouldQueue
 {
@@ -19,9 +21,6 @@ class NewSubscription extends Notification implements ShouldQueue
         //
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

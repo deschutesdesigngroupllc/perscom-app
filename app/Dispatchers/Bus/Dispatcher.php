@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Dispatchers\Bus;
 
 use Illuminate\Bus\Dispatcher as BaseDispatcher;

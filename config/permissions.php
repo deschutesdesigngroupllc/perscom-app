@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     'roles' => [
         'Admin' => 'Has permission to perform any action on the platform.',
@@ -129,6 +131,7 @@ return [
         'update:task' => 'Can update a task',
         'delete:task' => 'Can delete a task',
         'view:log' => 'Can view application logs',
+        'create:comment' => 'Can create a comment',
         'create:attachment' => 'Can create an attachment',
         'create:image' => 'Can create an image',
         'manage:billing' => 'Can manage billing and subscription',

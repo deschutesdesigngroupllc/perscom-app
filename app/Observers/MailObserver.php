@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Jobs\SendBulkMail;
@@ -7,16 +9,16 @@ use App\Models\Mail;
 use App\Models\Tenant;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 
 class MailObserver
 {
     public function created(Mail $mail): void
     {
-        $connection = Request::isCentralRequest() ? 'central' : config('queue.default');
+        $connection = App::isAdmin() || App::runningInConsole() ? 'central' : config('queue.default');
 
         $recipients = match (true) {
-            Request::isCentralRequest() => Tenant::findMany($mail->recipients),
+            App::isAdmin() || App::runningInConsole() => Tenant::findMany($mail->recipients),
             default => User::findMany($mail->recipients)
         };
 

@@ -1,20 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\PositionScope;
+use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasAssignmentRecords;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use App\Traits\HasUsers;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
 
 /**
- * App\Models\Position
- *
  * @property int $id
  * @property string $name
  * @property string|null $description
@@ -24,10 +28,13 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
+ * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
@@ -49,40 +56,24 @@ use Spatie\EloquentSortable\SortableTrait;
  *
  * @mixin \Eloquent
  */
-class Position extends Model implements Sortable
+#[ScopedBy(PositionScope::class)]
+class Position extends Model implements HasLabel, Sortable
 {
+    use CanBeOrdered;
     use ClearsResponseCache;
+    use HasAssignmentRecords;
     use HasFactory;
+    use HasResourceLabel;
+    use HasResourceUrl;
+    use HasUsers;
     use SoftDeletes;
-    use SortableTrait;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['name', 'description', 'order', 'updated_at', 'created_at'];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new PositionScope());
-    }
-
-    public function assignment_records(): HasMany
-    {
-        return $this->hasMany(AssignmentRecord::class);
-    }
-
-    public function primary_assignment_records(): HasMany
-    {
-        return $this->assignment_records()->where('type', AssignmentRecordType::PRIMARY);
-    }
-
-    public function secondary_assignment_records(): HasMany
-    {
-        return $this->assignment_records()->where('type', AssignmentRecordType::SECONDARY);
-    }
-
-    public function users(): HasMany
-    {
-        return $this->hasMany(User::class);
-    }
+    protected $fillable = [
+        'name',
+        'description',
+        'order',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 }

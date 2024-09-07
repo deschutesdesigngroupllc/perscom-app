@@ -1,15 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\App;
 
 class UserPolicy extends Policy
 {
     public function before(): ?bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return false;
         }
 
@@ -35,7 +37,7 @@ class UserPolicy extends Policy
 
     public function update(?User $user, User $model): bool
     {
-        if (Request::isDemoMode() && $model->email === config('demo.email')) {
+        if (App::isDemo() && $model->email === config('demo.email')) {
             return false;
         }
 
@@ -46,7 +48,7 @@ class UserPolicy extends Policy
 
     public function delete(?User $user, User $model): bool
     {
-        if (Request::isDemoMode() && $model->email === config('demo.email')) {
+        if (App::isDemo() && $model->email === config('demo.email')) {
             return false;
         }
 

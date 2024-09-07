@@ -1,16 +1,37 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
-use App\Models\Enums\AssignmentRecordType;
+use App\Contracts\HasFields;
+use App\Observers\UserObserver;
 use App\Traits\ClearsResponseCache;
-use App\Traits\HasFields;
-use App\Traits\HasHiddenFieldAttributes;
-use App\Traits\HasResourceUrlAttribute;
+use App\Traits\HasAssignmentRecords;
+use App\Traits\HasAwardRecords;
+use App\Traits\HasCombatRecords;
+use App\Traits\HasCustomFields;
+use App\Traits\HasProfilePhoto;
+use App\Traits\HasQualificationRecords;
+use App\Traits\HasRankRecords;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use App\Traits\HasServiceRecords;
 use App\Traits\HasStatuses;
+use App\Traits\JwtClaims;
+use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasAvatar;
+use Filament\Models\Contracts\HasName;
+use Filament\Models\Contracts\HasTenants;
+use Filament\Panel;
+use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -18,11 +39,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Storage;
-use Laravel\Nova\Actions\Actionable;
-use Laravel\Nova\Auth\Impersonatable;
 use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasPermissions;
@@ -30,8 +49,6 @@ use Spatie\Permission\Traits\HasRoles;
 use Stancl\VirtualColumn\VirtualColumn;
 
 /**
- * App\Models\User
- *
  * @property int $id
  * @property string $name
  * @property string $email
@@ -42,23 +59,17 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property int|null $status_id
  * @property int|null $unit_id
  * @property bool $approved
- * @property string|null $password
+ * @property mixed $password
  * @property string|null $remember_token
  * @property string|null $notes
  * @property Carbon|null $notes_updated_at
  * @property string|null $profile_photo
  * @property string|null $cover_photo
- * @property string|null $social_id
- * @property string|null $social_driver
- * @property string|null $social_token
- * @property string|null $social_refresh_token
  * @property Carbon|null $last_seen_at
  * @property array|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Action> $actions
- * @property-read int|null $actions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
@@ -72,35 +83,32 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read int|null $events_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
  * @property-read int|null $fields_count
- * @property-read bool $online
+ * @property-read string $label
  * @property-read mixed $last_assignment_change_date
  * @property-read mixed $last_rank_change_date
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read mixed $online
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
  * @property-read int|null $permissions_count
- * @property-read \App\Models\Position|null $position
+ * @property-read Position|null $position
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
- * @property-read string|null $profile_photo_url
+ * @property-read string $profile_photo_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Qualification> $qualifications
- * @property-read int|null $qualifications_count
- * @property-read \App\Models\Rank|null $rank
+ * @property-read Rank|null $rank
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
  * @property-read int|null $rank_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank> $ranks
- * @property-read int|null $ranks_count
- * @property-read string|null $relative_url
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord> $service_records
  * @property-read int|null $service_records_count
- * @property-read \App\Models\Specialty|null $specialty
- * @property-read \App\Models\Status|null $status
+ * @property-read Specialty|null $specialty
+ * @property-read Status|null $status
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
@@ -109,76 +117,76 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read int|null $tasks_count
  * @property-read mixed $time_in_assignment
  * @property-read mixed $time_in_grade
+ * @property-read mixed $time_in_service
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
  * @property-read int|null $tokens_count
- * @property-read \App\Models\Unit|null $unit
- * @property-read string|null $url
+ * @property-read Unit|null $unit
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|User onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|User permission($permissions, $without = false)
- * @method static \Illuminate\Database\Eloquent\Builder|User query()
- * @method static \Illuminate\Database\Eloquent\Builder|User role($roles, $guard = null, $without = false)
- * @method static \Illuminate\Database\Eloquent\Builder|User status(?mixed $statuses)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereApproved($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCoverPhoto($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereLastSeenAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereNotes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereNotesUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User wherePositionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereProfilePhoto($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRankId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialDriver($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialRefreshToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSocialToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereSpecialtyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|User withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|User withoutPermission($permissions)
- * @method static \Illuminate\Database\Eloquent\Builder|User withoutRole($roles, $guard = null)
- * @method static \Illuminate\Database\Eloquent\Builder|User withoutTrashed()
+ * @method static Builder|User newModelQuery()
+ * @method static Builder|User newQuery()
+ * @method static Builder|User onlyTrashed()
+ * @method static Builder|User orderForRoster()
+ * @method static Builder|User permission($permissions, $without = false)
+ * @method static Builder|User query()
+ * @method static Builder|User role($roles, $guard = null, $without = false)
+ * @method static Builder|User status(?mixed $statuses)
+ * @method static Builder|User whereApproved($value)
+ * @method static Builder|User whereCoverPhoto($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereData($value)
+ * @method static Builder|User whereDeletedAt($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereLastSeenAt($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User whereNotes($value)
+ * @method static Builder|User whereNotesUpdatedAt($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User wherePositionId($value)
+ * @method static Builder|User whereProfilePhoto($value)
+ * @method static Builder|User whereRankId($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereSpecialtyId($value)
+ * @method static Builder|User whereStatusId($value)
+ * @method static Builder|User whereUnitId($value)
+ * @method static Builder|User whereUpdatedAt($value)
+ * @method static Builder|User withTrashed()
+ * @method static Builder|User withoutPermission($permissions)
+ * @method static Builder|User withoutRole($roles, $guard = null)
+ * @method static Builder|User withoutTrashed()
  *
  * @mixin \Eloquent
  */
-class User extends Authenticatable implements JWTSubject, MustVerifyEmail
+#[ObservedBy(UserObserver::class)]
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail
 {
-    use Actionable;
     use ClearsResponseCache;
     use HasApiTokens;
+    use HasAssignmentRecords;
+    use HasAwardRecords;
+    use HasCombatRecords;
+    use HasCustomFields;
     use HasFactory;
-    use HasFields;
-    use HasHiddenFieldAttributes;
+    use HasPanelShield;
     use HasPermissions;
-    use HasResourceUrlAttribute;
+    use HasProfilePhoto;
+    use HasQualificationRecords;
+    use HasRankRecords;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use HasRoles;
+    use HasServiceRecords;
     use HasStatuses;
-    use Impersonatable;
+    use JwtClaims;
     use Notifiable;
     use SoftDeletes;
     use VirtualColumn;
 
-    /**
-     * @var string[]
-     */
     public $guarded = [];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -194,55 +202,23 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         'notes_updated_at',
         'profile_photo',
         'cover_photo',
-        'social_id',
-        'social_driver',
-        'social_token',
-        'social_refresh_token',
         'last_seen_at',
-        'updated_at',
         'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $hidden = [
-        'notes',
-        'notes_updated_at',
         'password',
         'remember_token',
-        'social_token',
-        'social_refresh_token',
-        'social_id',
-        'social_driver',
-        'data',
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $appends = [
         'online',
-        'url',
-        'relative_url',
         'profile_photo_url',
         'cover_photo_url',
     ];
 
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'last_seen_at' => 'datetime',
-        'notes_updated_at' => 'datetime',
-        'online' => 'boolean',
-        'approved' => 'boolean',
-    ];
-
-    /**
-     * @return string[]
-     */
     public static function getCustomColumns(): array
     {
         return [
@@ -262,49 +238,58 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             'notes_updated_at',
             'profile_photo',
             'cover_photo',
-            'social_id',
-            'social_driver',
-            'social_token',
-            'social_refresh_token',
             'last_seen_at',
             'created_at',
             'updated_at',
+            'deleted_at',
         ];
     }
 
-    public function getJWTIdentifier(): mixed
+    public function getTenants(Panel $panel): array|Collection
     {
-        return $this->getKey();
+        return Collection::wrap(tenant());
     }
 
-    /**
-     * @return array<string, mixed>
-     */
-    public function getJWTCustomClaims(): array
+    public function canAccessTenant(Model $tenant): bool
     {
-        return [
-            'name' => $this->name,
-            'preferred_username' => $this->email,
-            'profile' => $this->url,
-            'email' => $this->email,
-            'email_verified' => $this->hasVerifiedEmail(),
-            'picture' => $this->profile_photo_url,
-            'tenant_name' => tenant('name'),
-            'tenant_sub' => tenant()->getTenantKey(),
-            'locale' => config('app.locale'),
-            'zoneinfo' => setting('timezone', config('app.timezone')),
-            'updated_at' => Carbon::parse($this->updated_at)->getTimestamp(),
-        ];
+        return true;
     }
 
-    public function canImpersonate(): bool
+    public function getFilamentAvatarUrl(): ?string
     {
-        return Gate::check('impersonate', $this);
+        return $this->profile_photo_url;
     }
 
-    protected function getDefaultGuardName(): string
+    public function getFilamentName(): string
     {
-        return 'web';
+        return $this->name;
+    }
+
+    public function scopeOrderForRoster(Builder $query): void
+    {
+        $query
+            ->select('users.*')
+            ->leftJoin('ranks', 'ranks.id', '=', 'users.rank_id')
+            ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
+            ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id')
+            ->orderBy('ranks.order')
+            ->orderBy('positions.order')
+            ->orderBy('specialties.order')
+            ->orderBy('users.name');
+    }
+
+    public function online(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Cache::tags('users_online')->has("user_online_$this->id")
+        )->shouldCache();
+    }
+
+    public function coverPhotoUrl(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->cover_photo ? Storage::disk('s3')->url($this->cover_photo) : null
+        )->shouldCache();
     }
 
     public function timeInAssignment(): Attribute
@@ -316,31 +301,19 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         )->shouldCache();
     }
 
-    public function getOnlineAttribute(): bool
-    {
-        return Cache::tags('users_online')->has("user_online_$this->id");
-    }
-
-    public function profilePhotoUrl(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->profile_photo ? Storage::url($this->profile_photo) : null
-        );
-    }
-
-    public function coverPhotoUrl(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): ?string => $this->cover_photo ? Storage::url($this->cover_photo) : null
-        );
-    }
-
     public function timeInGrade(): Attribute
     {
         return Attribute::make(
             get: fn () => optional($this->rank_records()->first()?->created_at ?? null, function ($date) {
                 return Carbon::now()->diff($date, true);
             })
+        )->shouldCache();
+    }
+
+    public function timeInService(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => Carbon::now()->diff($this->created_at, true)
         )->shouldCache();
     }
 
@@ -362,31 +335,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
         )->shouldCache();
     }
 
-    public function assignment_records(): HasMany
-    {
-        return $this->hasMany(AssignmentRecord::class);
-    }
-
-    public function primary_assignment_records(): HasMany
-    {
-        return $this->assignment_records()->where('type', AssignmentRecordType::PRIMARY);
-    }
-
-    public function secondary_assignment_records(): HasMany
-    {
-        return $this->assignment_records()->where('type', AssignmentRecordType::SECONDARY);
-    }
-
-    public function award_records(): HasMany
-    {
-        return $this->hasMany(AwardRecord::class);
-    }
-
-    public function combat_records(): HasMany
-    {
-        return $this->hasMany(CombatRecord::class);
-    }
-
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'events_registrations')
@@ -396,42 +344,19 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
             ->using(EventRegistration::class);
     }
 
+    public function submissions(): HasMany
+    {
+        return $this->hasMany(Submission::class);
+    }
+
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
     }
 
-    public function qualifications(): BelongsToMany
-    {
-        return $this->belongsToMany(Qualification::class, 'records_qualifications')->withPivot(['text'])->as('record');
-    }
-
-    public function qualification_records(): HasMany
-    {
-        return $this->hasMany(QualificationRecord::class);
-    }
-
     public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
-    }
-
-    public function ranks(): BelongsToMany
-    {
-        return $this->belongsToMany(Rank::class, 'records_ranks')
-            ->withTimestamps()
-            ->withPivot(['text', 'type'])
-            ->as('record');
-    }
-
-    public function rank_records(): HasMany
-    {
-        return $this->hasMany(RankRecord::class);
-    }
-
-    public function service_records(): HasMany
-    {
-        return $this->hasMany(ServiceRecord::class);
     }
 
     public function specialty(): BelongsTo
@@ -442,11 +367,6 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
-    }
-
-    public function submissions(): HasMany
-    {
-        return $this->hasMany(Submission::class);
     }
 
     public function tasks(): BelongsToMany
@@ -461,5 +381,16 @@ class User extends Authenticatable implements JWTSubject, MustVerifyEmail
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'approved' => 'boolean',
+            'email_verified_at' => 'datetime',
+            'last_seen_at' => 'datetime',
+            'notes_updated_at' => 'datetime',
+            'password' => 'hashed',
+        ];
     }
 }

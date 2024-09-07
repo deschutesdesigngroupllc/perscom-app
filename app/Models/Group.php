@@ -1,10 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\GroupScope;
+use App\Traits\CanBeHidden;
+use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
-use App\Traits\Hideable;
+use App\Traits\HasIcon;
+use App\Traits\HasImages;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -12,21 +21,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
 
 /**
- * App\Models\Group
- *
  * @property int $id
  * @property string $name
  * @property string|null $description
  * @property int $order
- * @property int $hidden
+ * @property bool $hidden
+ * @property string|null $icon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read Image|null $image
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read int|null $images_count
+ * @property-read string $label
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $units
  * @property-read int|null $units_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
  * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
  * @method static Builder|Group hidden()
@@ -41,6 +54,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static Builder|Group whereDeletedAt($value)
  * @method static Builder|Group whereDescription($value)
  * @method static Builder|Group whereHidden($value)
+ * @method static Builder|Group whereIcon($value)
  * @method static Builder|Group whereId($value)
  * @method static Builder|Group whereName($value)
  * @method static Builder|Group whereOrder($value)
@@ -50,30 +64,28 @@ use Spatie\EloquentSortable\SortableTrait;
  *
  * @mixin \Eloquent
  */
-class Group extends Model implements Sortable
+#[ScopedBy(GroupScope::class)]
+class Group extends Model implements HasLabel, Sortable
 {
+    use CanBeHidden;
+    use CanBeOrdered;
     use ClearsResponseCache;
     use HasFactory;
-    use Hideable;
+    use HasIcon;
+    use HasImages;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use SoftDeletes;
-    use SortableTrait;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',
         'order',
-        'hidden',
-        'updated_at',
+        'icon',
         'created_at',
+        'updated_at',
+        'deleted_at',
     ];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new GroupScope());
-    }
 
     public function scopeOrderForRoster(Builder $query, ?string $groupId = null): void
     {
@@ -81,15 +93,8 @@ class Group extends Model implements Sortable
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
                 'units.users' => function (HasMany $query) {
-                    $query
-                        ->select('users.*')
-                        ->leftJoin('ranks', 'ranks.id', '=', 'users.rank_id')
-                        ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
-                        ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id')
-                        ->orderBy('ranks.order')
-                        ->orderBy('positions.order')
-                        ->orderBy('specialties.order')
-                        ->orderBy('users.name');
+                    /** @var User $query */
+                    $query->orderForRoster();
                 },
             ]);
     }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Form;
@@ -11,9 +13,6 @@ use Illuminate\Support\Str;
  */
 class FormFactory extends Factory
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         $form = "Form  {$this->faker->unique()->randomNumber()}";

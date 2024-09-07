@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Enums;
 
-enum WebhookEvent: string
+use Filament\Support\Contracts\HasLabel;
+
+enum WebhookEvent: string implements HasLabel
 {
     case ASSIGNMENT_RECORD_CREATED = 'assignmentrecord.created';
     case ASSIGNMENT_RECORD_UPDATED = 'assignmentrecord.updated';
@@ -34,4 +38,9 @@ enum WebhookEvent: string
     case USER_CREATED = 'user.created';
     case USER_UPDATED = 'user.updated';
     case USER_DELETED = 'user.deleted';
+
+    public function getLabel(): ?string
+    {
+        return $this->value;
+    }
 }

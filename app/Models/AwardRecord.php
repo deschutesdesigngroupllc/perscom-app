@@ -1,25 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\AwardRecordScope;
-use App\Prompts\AwardRecordPrompts;
+use App\Observers\AwardRecordObserver;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
+use App\Traits\HasComments;
 use App\Traits\HasDocument;
-use App\Traits\HasEventPrompts;
+use App\Traits\HasLogs;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
 
 /**
- * App\Models\AwardRecord
- *
  * @property int $id
  * @property int|null $user_id
  * @property int|null $award_id
@@ -33,11 +37,18 @@ use Spatie\Activitylog\Traits\LogsActivity;
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read \App\Models\User|null $author
- * @property-read \App\Models\Award|null $award
- * @property-read \App\Models\Document|null $document
+ * @property-read User|null $author
+ * @property-read Award|null $award
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read int|null $comments_count
+ * @property-read Document|null $document
  * @property-read mixed $document_parsed
- * @property-read \App\Models\User|null $user
+ * @property-read string $label
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
+ * @property-read int|null $logs_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read User|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord author(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord document(\App\Models\Document $document)
@@ -61,55 +72,31 @@ use Spatie\Activitylog\Traits\LogsActivity;
  *
  * @mixin \Eloquent
  */
-class AwardRecord extends Model
+#[ObservedBy(AwardRecordObserver::class)]
+#[ScopedBy(AwardRecordScope::class)]
+class AwardRecord extends Model implements HasLabel
 {
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;
+    use HasComments;
     use HasDocument;
-    use HasEventPrompts;
     use HasFactory;
+    use HasLogs;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use HasUser;
-    use LogsActivity;
     use SoftDeletes;
 
-    protected static string $prompts = AwardRecordPrompts::class;
-
-    /**
-     * @var string
-     */
     protected $table = 'records_awards';
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['user_id', 'award_id', 'document_id', 'author_id', 'text', 'updated_at', 'created_at'];
-
-    /**
-     * @var string[]
-     */
-    protected static array $recordEvents = ['created'];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new AwardRecordScope());
-    }
-
-    public function getActivitylogOptions(): LogOptions
-    {
-        return LogOptions::defaults()
-            ->useLogName('newsfeed')
-            ->setDescriptionForEvent(fn ($event) => "An award record has been $event");
-    }
-
-    public function tapActivity(Activity $activity, string $eventName): void
-    {
-        if ($eventName === 'created') {
-            $activity->properties = $activity->properties->put('headline', "An award record has been added for {$this->user->name}");
-            $activity->properties = $activity->properties->put('text', $this->text);
-            $activity->properties = $activity->properties->put('item', "Award: {$this->award->name}");
-        }
-    }
+    protected $fillable = [
+        'award_id',
+        'text',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public function award(): BelongsTo
     {

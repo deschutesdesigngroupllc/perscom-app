@@ -1,0 +1,11 @@
+@import '/vendor/filament/minimal-theme/resources/css/index.css';
+
+@config 'tailwind.config.js';
+
+.user-cover-photo {
+    @apply flex-1 items-center justify-center
+}
+
+.user-cover-photo.div, .user-cover-photo.img {
+    @apply flex-1 !object-contain !max-w-5xl
+}

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
 use App\Features\BaseFeature;
@@ -12,7 +14,6 @@ use Spatie\ResponseCache\Middlewares\CacheResponse;
 
 abstract class TestCase extends BaseTestCase
 {
-    use CreatesApplication;
     use RefreshDatabase;
     use WithFaker;
 

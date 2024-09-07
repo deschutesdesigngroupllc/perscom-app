@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\RankRecord;
 use App\Models\User;
@@ -15,13 +16,6 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class RankRecordObserverTest extends TenantTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Queue::fake([GenerateOpenAiNewsfeedContent::class]);
-    }
-
     public function test_create_rank_record_assigns_user_rank(): void
     {
         $rank = RankRecord::factory()->for($user = User::factory()->create())->create();
@@ -35,14 +29,11 @@ class RankRecordObserverTest extends TenantTestCase
 
         $rank = RankRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewRankRecord::class, function ($notification, $channels) use ($rank) {
+        Notification::assertSentTo($user, NewRankRecord::class, function (NewRankRecord $notification, $channels) use ($rank) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($rank->user);
             $mail->assertTo($rank->user->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame('A new rank record has been added to your personnel file.', $nova->message);
 
             return true;
         });

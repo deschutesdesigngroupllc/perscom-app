@@ -1,20 +1,26 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\RankScope;
+use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasCategories;
 use App\Traits\HasImages;
+use App\Traits\HasRankRecords;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use App\Traits\HasUsers;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
 
 /**
- * App\Models\Rank
- *
  * @property int $id
  * @property string $name
  * @property string|null $description
@@ -26,9 +32,16 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
- * @property-read \App\Models\Image|null $image
+ * @property-read Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
+ * @property-read string $label
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
+ * @property-read int|null $rank_records_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
  *
  * @method static \Database\Factories\RankFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Rank newModelQuery()
@@ -50,28 +63,28 @@ use Spatie\EloquentSortable\SortableTrait;
  *
  * @mixin \Eloquent
  */
-class Rank extends Model implements Sortable
+#[ScopedBy(RankScope::class)]
+class Rank extends Model implements HasLabel, Sortable
 {
+    use CanBeOrdered;
     use ClearsResponseCache;
+    use HasCategories;
     use HasFactory;
     use HasImages;
+    use HasRankRecords;
+    use HasResourceLabel;
+    use HasResourceUrl;
+    use HasUsers;
     use SoftDeletes;
-    use SortableTrait;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['name', 'description', 'abbreviation', 'paygrade', 'order', 'updated_at', 'created_at'];
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new RankScope());
-    }
-
-    public function categories(): BelongsToMany
-    {
-        return $this->belongsToMany(Category::class, 'ranks_categories')
-            ->withPivot('order')
-            ->withTimestamps();
-    }
+    protected $fillable = [
+        'name',
+        'description',
+        'abbreviation',
+        'paygrade',
+        'order',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 }

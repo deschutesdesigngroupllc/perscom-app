@@ -1,18 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
-use Laravel\Nova\Nova;
 use Orion\Http\Resources\Resource;
 
 class NewsfeedResource extends Resource
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function toArray(Request $request): array
     {
         $author = optional($this->resource?->causer?->name, function ($name) {
@@ -27,9 +24,7 @@ class NewsfeedResource extends Resource
             return Str::replace('_', ' ', Str::snake(class_basename($type)));
         });
 
-        Nova::resourcesIn(app_path('Nova'));
-
-        $payload = [
+        return [
             'id' => $this->resource->id,
             'author' => $author ?? null,
             'author_profile_photo' => $authorProfilePhotoUrl ?? null,
@@ -45,14 +40,5 @@ class NewsfeedResource extends Resource
             'likes' => $this->resource->likes,
             'created_at' => $this->resource->created_at,
         ];
-
-        if ($this->resource->subject && Gate::check('view', $this->resource->subject)) {
-            $payload['url'] = tenant()->route('nova.pages.detail', [
-                'resource' => Nova::resourceForModel($this->resource->subject)::uriKey(),
-                'resourceId' => $this->resource->subject->id,
-            ]);
-        }
-
-        return $payload;
     }
 }

@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\CombatRecord;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
@@ -15,27 +16,17 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class CombatRecordObserverTest extends TenantTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Queue::fake([GenerateOpenAiNewsfeedContent::class]);
-    }
-
     public function test_create_combat_record_notification_sent()
     {
         Notification::fake();
 
         $combat = CombatRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewCombatRecord::class, function ($notification, $channels) use ($combat) {
+        Notification::assertSentTo($user, NewCombatRecord::class, function (NewCombatRecord $notification, $channels) use ($combat) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($combat->user);
             $mail->assertTo($combat->user->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame('A new combat record has been added to your personnel file.', $nova->message);
 
             return true;
         });

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -15,6 +17,7 @@ return [
 
     'private_key' => env('PASSPORT_PRIVATE_KEY'),
     'public_key' => env('PASSPORT_PUBLIC_KEY'),
+    'key_path' => env('OAUTH_KEY_PATH', 'storage'),
 
     /*
     |--------------------------------------------------------------------------
@@ -61,5 +64,4 @@ return [
             'connection' => null,
         ],
     ],
-    'key_path' => env('OAUTH_KEY_PATH', 'storage'),
 ];

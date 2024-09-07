@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Schema\Builder;
 use Illuminate\Support\Facades\Schema;
-use Laravel\Nova\Util;
 
 class CreateActionEventsTable extends Migration
 {
@@ -18,7 +20,7 @@ class CreateActionEventsTable extends Migration
         Schema::create('action_events', function (Blueprint $table) {
             $table->id();
             $table->char('batch_id', 36);
-            $table->foreignIdFor(Util::userModel(), 'user_id')->index();
+            $table->foreignIdFor(User::class, 'user_id')->index();
             $table->string('name');
             $table->morphs('actionable');
             $table->morphs('target');

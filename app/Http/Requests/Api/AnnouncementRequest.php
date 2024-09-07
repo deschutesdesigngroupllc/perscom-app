@@ -1,14 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api;
 
 use Orion\Http\Requests\Request;
 
 class AnnouncementRequest extends Request
 {
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return [
@@ -18,12 +17,10 @@ class AnnouncementRequest extends Request
             'expires_at' => 'nullable|date',
             'updated_at' => 'date',
             'created_at' => 'date',
+            'deleted_at' => 'date',
         ];
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         return [

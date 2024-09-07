@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Traits\CanBeOrdered;
+use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
 use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
 
 /**
  * App\Models\Element
@@ -17,7 +20,7 @@ use Spatie\EloquentSortable\SortableTrait;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $model
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $model
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Element newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Element newQuery()
@@ -31,15 +34,12 @@ use Spatie\EloquentSortable\SortableTrait;
  * @method static \Illuminate\Database\Eloquent\Builder|Element whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Element whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
 class Element extends MorphPivot implements Sortable
 {
-    use SortableTrait;
+    use CanBeOrdered;
 
-    /**
-     * @var string
-     */
     protected $table = 'model_has_fields';
 
     public function model(): MorphTo

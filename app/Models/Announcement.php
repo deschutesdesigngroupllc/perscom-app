@@ -1,83 +1,104 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use App\Traits\CanBeEnabled;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\Activitylog\LogOptions;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Illuminate\Support\Str;
 
 /**
- * App\Models\Announcement
- *
  * @property int $id
  * @property string $title
  * @property string $content
- * @property string $color
+ * @property-read string $color
+ * @property bool $global
+ * @property bool $enabled
  * @property \Illuminate\Support\Carbon|null $expires_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
- * @property-read int|null $activities_count
+ * @property-read string $label
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
+ * @method static Builder|Announcement disabled()
+ * @method static Builder|Announcement enabled()
  * @method static \Database\Factories\AnnouncementFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement onlyTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement query()
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereDeletedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Announcement withoutTrashed()
+ * @method static Builder|Announcement global()
+ * @method static Builder|Announcement newModelQuery()
+ * @method static Builder|Announcement newQuery()
+ * @method static Builder|Announcement onlyTrashed()
+ * @method static Builder|Announcement query()
+ * @method static Builder|Announcement whereColor($value)
+ * @method static Builder|Announcement whereContent($value)
+ * @method static Builder|Announcement whereCreatedAt($value)
+ * @method static Builder|Announcement whereDeletedAt($value)
+ * @method static Builder|Announcement whereEnabled($value)
+ * @method static Builder|Announcement whereExpiresAt($value)
+ * @method static Builder|Announcement whereGlobal($value)
+ * @method static Builder|Announcement whereId($value)
+ * @method static Builder|Announcement whereTitle($value)
+ * @method static Builder|Announcement whereUpdatedAt($value)
+ * @method static Builder|Announcement withTrashed()
+ * @method static Builder|Announcement withoutTrashed()
  *
  * @mixin \Eloquent
  */
-class Announcement extends Model
+class Announcement extends Model implements HasLabel
 {
+    use CanBeEnabled;
     use ClearsResponseCache;
     use HasFactory;
-    use LogsActivity;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use SoftDeletes;
 
-    /**
-     * @var string[]
-     */
-    protected static array $recordEvents = ['created'];
-
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['title', 'content', 'color', 'expires_at', 'updated_at', 'created_at'];
-
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'expires_at' => 'datetime',
+    protected $fillable = [
+        'title',
+        'content',
+        'color',
+        'global',
+        'expires_at',
+        'created_at',
+        'updated_at',
+        'deleted_at',
     ];
 
-    public function getActivitylogOptions(): LogOptions
+    public function scopeGlobal(Builder $query): void
     {
-        return LogOptions::defaults()
-            ->useLogName('newsfeed')
-            ->setDescriptionForEvent(fn ($event) => "An announcement has been $event");
+        $query->where('global', true);
     }
 
-    public function tapActivity(Activity $activity, string $eventName): void
+    public function color(): Attribute
     {
-        if ($eventName === 'created') {
-            $activity->properties = $activity->properties->put('headline', $this->title);
-            $activity->properties = $activity->properties->put('text', $this->content);
-            $activity->properties = $activity->properties->put('color', $this->color);
-        }
+        return Attribute::make(
+            get: fn ($value) => match (Str::startsWith($value, '#')) {
+                true => $value,
+                default => match ($value) {
+                    'info' => '#2563eb',
+                    'success' => '#16a34a',
+                    'danger' => '#dc2626',
+                    'warning' => '#ca8a04'
+                },
+            },
+        );
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'global' => 'boolean',
+            'expires_at' => 'datetime',
+        ];
     }
 }

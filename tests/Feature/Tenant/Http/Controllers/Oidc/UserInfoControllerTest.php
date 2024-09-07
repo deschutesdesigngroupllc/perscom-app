@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Http\Controllers\Oidc;
 
 use App\Models\User;

@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\Tenant;
 
+use App\Filament\App\Resources\AwardRecordResource;
 use App\Mail\Tenant\NewAwardRecordMail;
 use App\Models\AwardRecord;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Laravel\Nova\Notifications\NovaChannel;
-use Laravel\Nova\Notifications\NovaNotification;
-use Laravel\Nova\URL;
+use Illuminate\Support\Str;
 
 class NewAwardRecord extends Notification implements ShouldQueue
 {
@@ -21,18 +25,14 @@ class NewAwardRecord extends Notification implements ShouldQueue
 
     public function __construct(protected AwardRecord $awardRecord)
     {
-        $this->url = route('nova.pages.detail', [
-            'resource' => \App\Nova\AwardRecord::uriKey(),
-            'resourceId' => $this->awardRecord->id,
-        ]);
+        $this->url = AwardRecordResource::getUrl('view', [
+            'record' => $this->awardRecord,
+        ], panel: 'app');
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
-        return ['mail', NovaChannel::class];
+        return ['mail', 'database', 'broadcast'];
     }
 
     public function toMail(mixed $notifiable): NewAwardRecordMail
@@ -40,11 +40,31 @@ class NewAwardRecord extends Notification implements ShouldQueue
         return (new NewAwardRecordMail($this->awardRecord, $this->url))->to($notifiable->email);
     }
 
-    public function toNova(): NovaNotification
+    public function toBroadcast($notifiable): BroadcastMessage
     {
-        return (new NovaNotification())->message('A new award record has been added to your personnel file.')
-            ->action('View Record', URL::remote($this->url))
-            ->icon('document-text')
-            ->type('info');
+        return FilamentNotification::make()
+            ->title('New Award Record')
+            ->body(Str::markdown("A new award record has been added to your account.<br><br>**Award:** {$this->awardRecord?->award?->name}"))
+            ->actions([
+                Action::make('Open award record')
+                    ->button()
+                    ->url($this->url),
+            ])
+            ->info()
+            ->getBroadcastMessage();
+    }
+
+    public function toDatabase($notifiable): array
+    {
+        return FilamentNotification::make()
+            ->title('New Award Record')
+            ->body(Str::markdown("A new award record has been added to your account.<br><br>**Award:** {$this->awardRecord?->award?->name}"))
+            ->actions([
+                Action::make('Open award record')
+                    ->button()
+                    ->url($this->url),
+            ])
+            ->info()
+            ->getDatabaseMessage();
     }
 }

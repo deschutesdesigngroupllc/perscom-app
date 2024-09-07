@@ -1,0 +1,1 @@
+@livewire('app.document-tags')

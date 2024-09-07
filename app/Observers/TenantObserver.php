@@ -1,10 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Models\Admin;
 use App\Models\Tenant;
-use App\Notifications\Admin\NewTenant;
+use App\Notifications\Admin\TenantCreated;
 use App\Notifications\Admin\TenantDeleted;
 use Illuminate\Support\Facades\Notification;
 
@@ -12,7 +14,7 @@ class TenantObserver
 {
     public function created(Tenant $tenant): void
     {
-        Notification::send(Admin::all(), new NewTenant($tenant));
+        Notification::send(Admin::all(), new TenantCreated($tenant));
     }
 
     public function deleted(Tenant $tenant): void

@@ -1,8 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use Eloquent;
+use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -11,20 +17,21 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
 /**
- * App\Models\Image
- *
  * @property int $id
- * @property string $name
+ * @property string|null $name
  * @property string|null $description
  * @property string $filename
  * @property string $model_type
- * @property string $model_id (DC2Type:guid)
+ * @property string $model_id
  * @property string $path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read string|null $image_url
- * @property-read Model|\Eloquent $model
+ * @property-read string $label
+ * @property-read Model|Eloquent $model
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
  * @method static \Database\Factories\ImageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Image newModelQuery()
@@ -44,28 +51,32 @@ use Illuminate\Support\Facades\Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|Image withTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Image withoutTrashed()
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
-class Image extends Model
+class Image extends Model implements HasLabel
 {
     use ClearsResponseCache;
     use HasFactory;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use SoftDeletes;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['name', 'description', 'filename', 'path'];
+    protected $fillable = [
+        'name',
+        'description',
+        'filename',
+        'path',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $appends = ['image_url'];
 
     public function imageUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->path ? Storage::url($this->path) : null
+            get: fn (): ?string => $this->path ? Storage::disk('s3')->url($this->path) : null
         );
     }
 

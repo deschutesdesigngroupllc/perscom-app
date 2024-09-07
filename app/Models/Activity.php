@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
+use Eloquent;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Spatie\Activitylog\Models\Activity as BaseActivity;
 
 /**
- * App\Models\Activity
- *
  * @property int $id
  * @property string|null $log_name
  * @property array $description
@@ -14,14 +16,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
- * @property string|null $causer_id (DC2Type:guid)
+ * @property string|null $causer_id
  * @property \Illuminate\Support\Collection|null $properties
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $causer
  * @property-read \Illuminate\Support\Collection $changes
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $subject
  *
  * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static \Database\Factories\ActivityFactory factory($count = null, $state = [])
@@ -46,17 +48,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereSubjectType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Activity whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
-class Activity extends \Spatie\Activitylog\Models\Activity
+class Activity extends BaseActivity
 {
     use HasFactory;
 
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'properties' => 'collection',
-        'description' => 'array',
-    ];
+    protected function casts(): array
+    {
+        return array_merge(parent::casts(), parent::getCasts(), [
+            'description' => 'array',
+        ]);
+    }
 }

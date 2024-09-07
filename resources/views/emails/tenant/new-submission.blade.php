@@ -1,14 +1,14 @@
 @component('mail::message')
-# Hello,
+  # Hello,
 
-{{__("A new {$submission->form?->name} has been submitted.")}}
+  {{ __("A new {$submission->form?->name} has been submitted.") }}
 
-{!! $submission->toHtml() !!}
+  {!! $submission->toHtml() !!}
 
-@component('mail::button', ['url' => $url])
-View Submission
-@endcomponent
+  @component('mail::button', ['url' => $url])
+    View Submission
+  @endcomponent
 
-{{__('Thanks,')}}<br>
-{{ config('app.name') }}
+  {{ __('Thanks,') }}<br>
+  {{ config('app.name') }}
 @endcomponent

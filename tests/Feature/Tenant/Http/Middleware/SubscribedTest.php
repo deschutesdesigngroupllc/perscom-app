@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Http\Middleware;
 
 use App\Models\User;
@@ -17,41 +19,13 @@ class SubscribedTest extends TenantTestCase
         $user->assignRole('admin');
 
         $this->actingAs($user)
-            ->get(route('nova.pages.dashboard.custom', [
-                'name' => 'main',
+            ->get(route('filament.app.pages.dashboard', [
+                'tenant' => $this->tenant,
             ]))
             ->assertStatus(302)
-            ->assertRedirectToRoute('spark.portal', [
-                'type' => 'tenant',
+            ->assertRedirectToRoute('filament.app.tenant.billing', [
+                'tenant' => $this->tenant,
             ]);
-    }
-
-    public function test_no_subscription_causes_error_for_user()
-    {
-        $user = User::factory()->create();
-
-        $this->actingAs($user)
-            ->get(route('nova.pages.dashboard.custom', [
-                'name' => 'main',
-            ]))
-            ->assertPaymentRequired();
-    }
-
-    public function test_demo_mode_does_not_require_subscription()
-    {
-        $this->markTestSkipped('TODO: Fix failing test in CI.');
-
-        config()->set('demo.host', $this->domain->host);
-        config()->set('demo.tenant_id', $this->tenant->getTenantKey());
-
-        $user = User::factory()->create();
-        $user->assignRole('admin');
-
-        $this->actingAs($user)
-            ->get(route('nova.pages.dashboard.custom', [
-                'name' => 'main',
-            ]))
-            ->assertSuccessful();
     }
 
     public function test_no_subscription_causes_api_error()
@@ -60,7 +34,7 @@ class SubscribedTest extends TenantTestCase
             'view:user',
         ]);
 
-        URL::forceRootUrl(config('app.api_url').'/'.config('app.api_version'));
+        URL::forceRootUrl(config('api.url').'/'.config('api.version'));
 
         $this->withHeader('X-Perscom-Id', $this->tenant->getTenantKey());
 

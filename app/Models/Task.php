@@ -1,9 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,11 +16,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\Task
- *
  * @property int $id
  * @property string $title
- * @property string|null $description
+ * @property string $description
  * @property string|null $instructions
  * @property int|null $form_id
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -23,7 +26,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read \App\Models\Form|null $form
+ * @property-read Form|null $form
+ * @property-read string $label
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
@@ -45,26 +51,24 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @mixin \Eloquent
  */
-class Task extends Model
+class Task extends Model implements HasLabel
 {
     use ClearsResponseCache;
     use HasAttachments;
     use HasFactory;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use SoftDeletes;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['title', 'description', 'instructions', 'form_id', 'updated_at', 'created_at'];
-
-    public static function boot(): void
-    {
-        parent::boot();
-
-        static::deleted(function (Task $task) {
-            $task->users()->detach();
-        });
-    }
+    protected $fillable = [
+        'title',
+        'description',
+        'instructions',
+        'form_id',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
 
     public function form(): BelongsTo
     {

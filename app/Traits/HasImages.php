@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\Image;
@@ -14,7 +16,7 @@ trait HasImages
 {
     public function image(): MorphOne
     {
-        return $this->morphOne(Image::class, 'model');
+        return $this->morphOne(Image::class, 'model')->latest();
     }
 
     public function images(): MorphMany

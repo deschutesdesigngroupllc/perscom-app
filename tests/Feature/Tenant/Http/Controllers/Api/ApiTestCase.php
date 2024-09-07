@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use Illuminate\Support\Facades\URL;
@@ -14,9 +16,9 @@ class ApiTestCase extends TenantTestCase
     {
         parent::setUp();
 
-        URL::forceRootUrl(config('app.api_url').'/'.config('app.api_version'));
+        URL::forceRootUrl(config('api.url').'/'.config('api.version'));
 
-        $this->withHeader('X-Perscom-Id', $this->tenant->getTenantKey());
+        $this->withHeader('X-Perscom-Id', (string) $this->tenant->getTenantKey());
 
         $this->withoutApiMiddleware();
     }

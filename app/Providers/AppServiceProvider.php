@@ -1,55 +1,53 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Providers;
 
-use App\Actions\Passport\CreatePersonalAccessToken;
-use App\Contracts\Passport\CreatesPersonalAccessToken;
 use App\Dispatchers\Bus\Dispatcher;
+use App\Models\Admin;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
 use App\Models\Permission;
+use App\Models\Subscription;
 use App\Models\Tenant;
-use App\Support\JwtAuth\Providers\CustomJwtProvider;
+use App\Models\User;
+use App\Support\Orion\ComponentsResolver;
+use App\Support\Orion\KeyResolver;
+use App\Support\Passport\AccessToken;
+use BezhanSalleh\FilamentShield\Facades\FilamentShield;
+use Filament\Forms\Components\Field;
+use Filament\Infolists\Components\Entry;
+use Filament\Support\Facades\FilamentView;
+use Filament\Tables\Columns\Column;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
 use Laravel\Pennant\Feature;
-use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
-use Laravel\Socialite\Contracts\Factory;
+use Orion\Contracts\KeyResolver as KeyResolverContract;
+use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
+
+use function tenant;
 
 class AppServiceProvider extends ServiceProvider
 {
     public function register(): void
     {
-        Request::macro('isCentralRequest', function () {
-            // @phpstan-ignore-next-line`
-            if (env('TENANT_TESTING', false)) {
-                return false;
-            }
-
-            return collect(config('tenancy.central_domains'))->contains(\request()->getHost());
-        });
-
-        Request::macro('isDemoMode', function () {
-            return \request()->getHost() === \config('demo.host') ||
-                    (\request()->expectsJson() &&
-                     ((\request()->headers->has('X-Perscom-Id') &&
-                       \request()->header('X-Perscom-Id') == \config('demo.tenant_id')) ||
-                      (\request()->get('perscom_id') != null &&
-                       \request()->get('perscom_id') == \config('demo.tenant_id'))));
-        });
-
         Cashier::useCustomerModel(Tenant::class);
+        Cashier::useSubscriptionModel(Subscription::class);
 
         Passport::enableImplicitGrant();
         Passport::ignoreRoutes();
-        Passport::ignoreMigrations();
         Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
+        Passport::useAccessTokenEntity(AccessToken::class);
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
         Passport::authorizationView(function ($parameters) {
@@ -62,40 +60,90 @@ class AppServiceProvider extends ServiceProvider
                 'state' => $parameters['request']->state,
                 'authToken' => $parameters['authToken'],
                 'csrfToken' => csrf_token(),
+                'tenant' => tenant('slug'),
             ]);
         });
 
+        //$this->app->extend('url', fn (UrlGenerator $generator) => new TenantUrlGenerator($this->app->make('router')->getRoutes(), $generator->getRequest(), $this->app->make('config')->get('app.asset_url')));
         $this->app->extend(BusDispatcher::class, fn ($dispatcher, $app) => new Dispatcher($app, $dispatcher));
-        $this->app->bind(CreatesPersonalAccessToken::class, CreatePersonalAccessToken::class);
-
-        $this->app->singleton('tymon.jwt.provider.jwt.lcobucci', function (Application $app) {
-            return new CustomJwtProvider(
-                $app->make('config')->get('jwt.secret'),
-                $app->make('config')->get('jwt.algo'),
-                $app->make('config')->get('jwt.keys')
-            );
-        });
+        $this->app->bind(KeyResolverContract::class, fn () => new KeyResolver());
+        $this->app->bind(ComponentsResolverContract::class, fn ($app, $params) => new ComponentsResolver(resourceModelClass: data_get($params, 'resourceModelClass')));
     }
 
-    /**
-     * @throws BindingResolutionException
-     */
     public function boot(): void
     {
-        $socialite = $this->app->make(Factory::class);
-        $socialite->extend('discord', function () use ($socialite) {
-            $config = config('services.discord');
+        App::macro('isAdmin', fn () => collect(config('tenancy.central_domains'))->contains(request()->getHost()));
+        App::macro('isDemo', fn () => $this->app->environment('demo'));
 
-            return $socialite->buildProvider(DiscordSocialiteProvider::class, $config);
+        Auth::viaRequest('api', static function () {
+            return Auth::guard('jwt')->user() ?? Auth::guard('passport')->user();
         });
 
         Feature::discover();
-        Feature::resolveScopeUsing(static fn ($driver) => \tenant());
+        Feature::resolveScopeUsing(static fn ($driver) => tenant());
 
-        EnsureFeaturesAreActive::whenInactive(
-            static function ($request, array $features) {
-                abort(403, 'The feature you are trying to access is not currently enabled for your account.');
-            }
-        );
+        FilamentShield::configurePermissionIdentifierUsing(function ($resource) {
+            return Str::of($resource)
+                ->afterLast('Resources\\')
+                ->before('Resource')
+                ->replace('\\', '')
+                ->lower()
+                ->replace('_', '')
+                ->toString();
+        });
+
+        Field::configureUsing(function (Field $field) {
+            match ($field->getName()) {
+                'created_at' => $field->label('Created'),
+                'updated_at' => $field->label('Updated'),
+                'deleted_at' => $field->label('Deleted'),
+                default => null,
+            };
+        });
+
+        Entry::configureUsing(function (Entry $field) {
+            match ($field->getName()) {
+                'created_at' => $field->label('Created'),
+                'updated_at' => $field->label('Updated'),
+                'deleted_at' => $field->label('Deleted'),
+                default => null,
+            };
+        });
+
+        Column::configureUsing(function (Column $field) {
+            match ($field->getName()) {
+                'created_at' => $field->label('Created'),
+                'updated_at' => $field->label('Updated'),
+                'deleted_at' => $field->label('Deleted'),
+                default => null,
+            };
+        });
+
+        if (App::isDemo()) {
+            FilamentView::registerRenderHook(
+                PanelsRenderHook::BODY_START,
+                fn () => view('filament.render-hooks.body-start.demo-banner')
+            );
+        }
+
+        if (! App::isAdmin() && ! App::isDemo()) {
+            FilamentView::registerRenderHook(
+                PanelsRenderHook::BODY_START,
+                fn () => view('filament.render-hooks.body-start.subscription-banner')
+            );
+        }
+
+        if (! App::isAdmin()) {
+            FilamentView::registerRenderHook(
+                PanelsRenderHook::BODY_START,
+                fn () => view('filament.render-hooks.body-start.announcement-banner')
+            );
+        }
+
+        Gate::define('viewPulse', function (Admin|User|null $user = null) {
+            return $user instanceof Admin;
+        });
+
+        Model::unguard();
     }
 }

@@ -1,28 +1,34 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
+use Filament\Facades\Filament;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Sentry;
 use Sentry\State\Scope;
+use Symfony\Component\HttpFoundation\Response;
 
 class SentryContext
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         if (app()->bound('sentry')) {
-            if (Auth::check()) {
+            $guard = match (Filament::getCurrentPanel()?->getId()) {
+                'app' => 'web',
+                'admin' => 'admin',
+                default => null,
+            };
+
+            if (Auth::guard($guard)->check()) {
                 Sentry\configureScope(function (Scope $scope): void {
+                    global $guard;
+
                     $scope->setUser([
-                        'id' => Auth::user()->getAuthIdentifier(),
+                        'id' => Auth::guard($guard)->user()->getAuthIdentifier(),
                         'username' => Auth::user()->name,
                         'email' => Auth::user()->email,
                     ]);

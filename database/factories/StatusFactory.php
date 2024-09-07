@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Status;
@@ -10,17 +12,13 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class StatusFactory extends Factory
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         $status = "Status  {$this->faker->unique()->randomNumber()}";
 
         return [
             'name' => $status,
-            'text_color' => $this->faker->hexColor,
-            'bg_color' => $this->faker->hexColor,
+            'color' => $this->faker->randomElement(['#facc15', '#16a34a', '#2563eb', '#dc2626', '#4b5563']),
         ];
     }
 }

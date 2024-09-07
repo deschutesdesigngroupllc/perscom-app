@@ -1,9 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Jobs;
 
-use App\Models\Tenant;
-use Database\Seeders\TenantSeeder;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
@@ -20,28 +20,17 @@ class ResetDemoAccount implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(protected string $seederClass)
+    public function __construct(protected string $seeder = 'military')
     {
         $this->onQueue('system');
     }
 
     public function handle(): void
     {
-        if ($tenant = Tenant::find(config('demo.tenant_id'))) {
-            Artisan::call('tenants:migrate-fresh', [
-                '--tenants' => $tenant->getTenantKey(),
-            ]);
-
-            Artisan::call('tenants:seed', [
-                '--tenants' => $tenant->getTenantKey(),
-                '--class' => TenantSeeder::class,
-            ]);
-
-            Artisan::call('tenants:seed', [
-                '--tenants' => $tenant->getTenantKey(),
-                '--class' => $this->seederClass,
-            ]);
-        }
+        Artisan::call('perscom:reset', [
+            '--env' => 'demo',
+            '--seeder' => $this->seeder,
+        ]);
     }
 
     /**

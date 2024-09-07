@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\Status;
 use App\Models\StatusRecord;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -15,6 +18,13 @@ use Illuminate\Support\Collection;
  */
 trait HasStatuses
 {
+    public function status(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?Status => $this->statuses()->first()
+        );
+    }
+
     public function statuses(): MorphToMany
     {
         return $this->morphToMany(Status::class, 'model', 'model_has_statuses')

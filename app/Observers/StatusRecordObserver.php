@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Observers;
 
 use App\Models\StatusRecord;
@@ -13,25 +15,5 @@ class StatusRecordObserver
             $statusRecord->model->status_id = optional($statusRecord->status)->id;
             $statusRecord->model->save();
         }
-    }
-
-    public function updated(StatusRecord $statusRecord): void
-    {
-        //
-    }
-
-    public function deleted(StatusRecord $statusRecord): void
-    {
-        //
-    }
-
-    public function restored(StatusRecord $statusRecord): void
-    {
-        //
-    }
-
-    public function forceDeleted(StatusRecord $statusRecord): void
-    {
-        //
     }
 }

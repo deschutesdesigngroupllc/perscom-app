@@ -1,0 +1,48 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Middleware;
+
+use App\Features\ApiAccessFeature;
+use App\Features\OAuth2AccessFeature;
+use Filament\Billing\Providers\Http\Middleware\VerifySparkBillableIsSubscribed;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
+use Laravel\Pennant\Feature;
+use Symfony\Component\HttpFoundation\Response;
+
+class CheckSubscription extends VerifySparkBillableIsSubscribed
+{
+    private Request $request;
+
+    public function handle($request, $next, $billableType = null, $plan = null): Response
+    {
+        $this->request = $request;
+
+        if (App::isDemo() || App::isAdmin()) {
+            return $next($request);
+        }
+
+        abort_if((Feature::inactive(ApiAccessFeature::class)) && $this->request->routeIs('api.*'),
+            402,
+            'A valid subscription is required to make an API request.'
+        );
+
+        abort_if((Feature::inactive(OAuth2AccessFeature::class)) && ($this->request->routeIs('passport.*') || $this->request->routeIs('oidc.*')),
+            402,
+            'A valid subscription is required to use Single Sign-On (SSO).'
+        );
+
+        return parent::handle($request, $next, $billableType, $plan);
+    }
+
+    protected function redirect(string $billableType): string
+    {
+        if ($this->request->expectsJson()) {
+            abort(402, 'A valid subscription is required.');
+        }
+
+        return parent::redirect($billableType);
+    }
+}

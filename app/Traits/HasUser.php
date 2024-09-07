@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\User;
@@ -20,5 +22,10 @@ trait HasUser
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    protected function initializeHasUser(): void
+    {
+        $this->mergeFillable(['user_id']);
     }
 }

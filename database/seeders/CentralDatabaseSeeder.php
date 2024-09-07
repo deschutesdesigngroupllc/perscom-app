@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\Admin;
@@ -23,7 +25,7 @@ class CentralDatabaseSeeder extends Seeder
             'id' => 1,
             'name' => 'Test Tenant',
             'email' => 'test@deschutesdesigngroup.com',
-            'tenancy_db_name' => 'tenant_local',
+            'tenancy_db_name' => 'tenant1_local',
         ]);
 
         Domain::factory()->create([

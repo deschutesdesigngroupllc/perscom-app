@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Traits;
 
 use App\Models\Document;
@@ -13,11 +15,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 trait HasDocument
 {
-    public static function bootHasDocument(): void
-    {
-        static::retrieved(fn ($model) => $model->append('document_parsed'));
-    }
-
     public function scopeDocument(Builder $query, Document $document): void
     {
         $query->whereBelongsTo($document);
@@ -40,5 +37,16 @@ trait HasDocument
                 return optional($this->document, fn (Document $document) => $document->toHtml($user, $resource)) ?? null;
             }
         )->shouldCache();
+    }
+
+    protected static function initializeHasD(): void
+    {
+        static::retrieved(fn ($model) => $model->append('document_parsed'));
+    }
+
+    protected function initializeHasDocument(): void
+    {
+        $this->append('document_parsed');
+        $this->mergeFillable(['document_id']);
     }
 }

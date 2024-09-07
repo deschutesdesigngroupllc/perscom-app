@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\NewsfeedScope;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasLikes;
+use Eloquent;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -17,20 +22,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
- * @property string|null $causer_id (DC2Type:guid)
+ * @property string|null $causer_id
  * @property \Illuminate\Support\Collection|null $properties
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $causer
+ * @property-read mixed $color
  * @property-read \Illuminate\Support\Collection $changes
- * @property-read mixed|null $color
- * @property-read mixed|null $headline
- * @property-read mixed|null $item
- * @property-read mixed|null $text
+ * @property-read mixed $headline
+ * @property-read mixed $item
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $likes
  * @property-read int|null $likes_count
- * @property-read \Illuminate\Database\Eloquent\Model|\Eloquent $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $subject
+ * @property-read mixed $text
  *
  * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static \Database\Factories\NewsfeedFactory factory($count = null, $state = [])
@@ -55,49 +60,55 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereSubjectType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed whereUpdatedAt($value)
  *
- * @mixin \Eloquent
+ * @mixin Eloquent
  */
+#[ScopedBy(NewsfeedScope::class)]
 class Newsfeed extends Activity
 {
     use ClearsResponseCache;
     use HasFactory;
     use HasLikes;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $appends = ['headline', 'text', 'color', 'item'];
+    protected $appends = [
+        'headline',
+        'text',
+        'color',
+        'item',
+    ];
 
-    protected static function booted(): void
+    public function headline(): Attribute
     {
-        static::addGlobalScope(new NewsfeedScope());
+        return Attribute::make(
+            get: fn () => optional($this->properties, function () {
+                return $this->getExtraProperty('headline');
+            })
+        )->shouldCache();
     }
 
-    public function getHeadlineAttribute(): mixed
+    public function text(): Attribute
     {
-        return optional($this->properties, function () {
-            return $this->getExtraProperty('headline');
-        });
+        return Attribute::make(
+            get: fn () => optional($this->properties, function () {
+                return $this->getExtraProperty('text');
+            })
+        )->shouldCache();
     }
 
-    public function getTextAttribute(): mixed
+    public function color(): Attribute
     {
-        return optional($this->properties, function () {
-            return $this->getExtraProperty('text');
-        });
+        return Attribute::make(
+            get: fn () => optional($this->properties, function () {
+                return $this->getExtraProperty('color');
+            })
+        )->shouldCache();
     }
 
-    public function getColorAttribute(): mixed
+    public function item(): Attribute
     {
-        return optional($this->properties, function () {
-            return $this->getExtraProperty('color');
-        });
-    }
-
-    public function getItemAttribute(): mixed
-    {
-        return optional($this->properties, function () {
-            return $this->getExtraProperty('item');
-        });
+        return Attribute::make(
+            get: optional($this->properties, function () {
+                return $this->getExtraProperty('item');
+            })
+        )->shouldCache();
     }
 }

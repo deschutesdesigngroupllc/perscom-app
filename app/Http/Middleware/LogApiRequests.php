@@ -1,21 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Symfony\Component\HttpFoundation\Response;
 
 class LogApiRequests
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
 
@@ -41,8 +38,8 @@ class LogApiRequests
                 'method' => $request->getMethod(),
                 'status' => $response->getStatusCode(),
                 'ip' => $request->getClientIp(),
-                'request_headers' => (string) $request->headers,
-                'response_headers' => (string) $response->headers,
+                'request_headers' => iterator_to_array($request->headers->getIterator()),
+                'response_headers' => iterator_to_array($response->headers->getIterator()),
                 'body' => optional($request->getContent(), static function ($content) {
                     if (Str::isJson($content)) {
                         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);

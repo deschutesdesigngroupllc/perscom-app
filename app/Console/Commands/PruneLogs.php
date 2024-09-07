@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Arr;
-use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class PruneLogs extends Command
 {
@@ -36,6 +37,6 @@ class PruneLogs extends Command
             ]);
         });
 
-        return CommandAlias::SUCCESS;
+        return static::SUCCESS;
     }
 }

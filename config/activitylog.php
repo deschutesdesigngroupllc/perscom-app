@@ -1,5 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
+use App\Models\Activity;
+
 return [
 
     /*
@@ -32,20 +36,20 @@ return [
 
     /*
      * This model will be used to log activity.
-     * It should implement the Spatie\Activitylog\Contracts\Newsfeed interface
+     * It should implement the Spatie\Activitylog\Contracts\Activity interface
      * and extend Illuminate\Database\Eloquent\Model.
      */
-    'activity_model' => \App\Models\Activity::class,
+    'activity_model' => Activity::class,
 
     /*
      * This is the name of the table that will be created by the migration and
-     * used by the Newsfeed model shipped with this package.
+     * used by the Activity model shipped with this package.
      */
     'table_name' => 'activity_log',
 
     /*
      * This is the database connection that will be used by the migration and
-     * the Newsfeed model shipped with this package. In case it's not set
+     * the Activity model shipped with this package. In case it's not set
      * Laravel's database.default will be used instead.
      */
     'database_connection' => env('ACTIVITY_LOGGER_DB_CONNECTION'),

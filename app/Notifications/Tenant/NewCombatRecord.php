@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\Tenant;
 
+use App\Filament\App\Resources\CombatRecordResource;
 use App\Mail\Tenant\NewCombatRecordMail;
 use App\Models\CombatRecord;
+use Filament\Notifications\Actions\Action;
+use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
-use Laravel\Nova\Notifications\NovaChannel;
-use Laravel\Nova\Notifications\NovaNotification;
-use Laravel\Nova\URL;
+use Illuminate\Support\Str;
 
 class NewCombatRecord extends Notification implements ShouldQueue
 {
@@ -21,18 +25,14 @@ class NewCombatRecord extends Notification implements ShouldQueue
 
     public function __construct(protected CombatRecord $combatRecord)
     {
-        $this->url = route('nova.pages.detail', [
-            'resource' => \App\Nova\CombatRecord::uriKey(),
-            'resourceId' => $this->combatRecord->id,
-        ]);
+        $this->url = CombatRecordResource::getUrl('view', [
+            'record' => $this->combatRecord,
+        ], panel: 'app');
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
-        return ['mail', NovaChannel::class];
+        return ['mail', 'database', 'broadcast'];
     }
 
     public function toMail(mixed $notifiable): NewCombatRecordMail
@@ -40,11 +40,33 @@ class NewCombatRecord extends Notification implements ShouldQueue
         return (new NewCombatRecordMail($this->combatRecord, $this->url))->to($notifiable->email);
     }
 
-    public function toNova(): NovaNotification
+    public function toBroadcast($notifiable): BroadcastMessage
     {
-        return (new NovaNotification())->message('A new combat record has been added to your personnel file.')
-            ->action('View Record', URL::remote($this->url))
-            ->icon('document-text')
-            ->type('info');
+        return FilamentNotification::make()
+            ->title('New Combat Record')
+            ->body(Str::markdown("A new combat record has been added to your account.<br><br>**Text:** $text"))
+            ->actions([
+                Action::make('Open combat record')
+                    ->button()
+                    ->url($this->url),
+            ])
+            ->info()
+            ->getBroadcastMessage();
+    }
+
+    public function toDatabase($notifiable): array
+    {
+        $text = Str::limit($this->combatRecord->text);
+
+        return FilamentNotification::make()
+            ->title('New Combat Record')
+            ->body(Str::markdown("A new combat record has been added to your account.<br><br>**Text:** $text"))
+            ->actions([
+                Action::make('Open combat record')
+                    ->button()
+                    ->url($this->url),
+            ])
+            ->info()
+            ->getDatabaseMessage();
     }
 }

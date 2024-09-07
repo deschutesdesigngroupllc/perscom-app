@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     // Directory name - the directory in which your operation files are being saved (based on root directory)

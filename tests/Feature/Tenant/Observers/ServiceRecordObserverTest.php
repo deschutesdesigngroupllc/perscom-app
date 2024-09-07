@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests\Feature\Tenant\Observers;
 
-use App\Jobs\GenerateOpenAiNewsfeedContent;
 use App\Models\Enums\WebhookEvent;
 use App\Models\ServiceRecord;
 use App\Models\User;
@@ -15,27 +16,17 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class ServiceRecordObserverTest extends TenantTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        Queue::fake([GenerateOpenAiNewsfeedContent::class]);
-    }
-
     public function test_create_service_record_notification_sent()
     {
         Notification::fake();
 
         $service = ServiceRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewServiceRecord::class, function ($notification, $channels) use ($service) {
+        Notification::assertSentTo($user, NewServiceRecord::class, function (NewServiceRecord $notification, $channels) use ($service) {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($service->user);
             $mail->assertTo($service->user->email);
-
-            $nova = $notification->toNova();
-            $this->assertSame('A new service record has been added to your personnel file.', $nova->message);
 
             return true;
         });

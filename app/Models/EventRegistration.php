@@ -1,19 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Models\Scopes\EventRegistrationScope;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\Pivot;
-use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
-use Staudenmeir\EloquentHasManyDeep\HasRelationships;
-use Znck\Eloquent\Relations\BelongsToThrough as BelongsToThroughRelation;
-use Znck\Eloquent\Traits\BelongsToThrough;
 
 /**
  * App\Models\EventRegistration
@@ -23,12 +23,8 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  * @property int $event_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Event $event
- * @property-read \App\Models\User $user
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Attachment[] $attachments
- * @property-read int|null $attachments_count
- * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Image[] $images
- * @property-read int|null $images_count
+ * @property-read Event $event
+ * @property-read User $user
  *
  * @method static Builder|EventRegistration future()
  * @method static Builder|EventRegistration newModelQuery()
@@ -43,25 +39,17 @@ use Znck\Eloquent\Traits\BelongsToThrough;
  *
  * @mixin \Eloquent
  */
+#[ScopedBy(EventRegistrationScope::class)]
 class EventRegistration extends Pivot
 {
-    use BelongsToThrough;
     use ClearsResponseCache;
     use HasFactory;
-    use HasRelationships;
     use HasUser;
 
-    /**
-     * @var string
-     */
     protected $table = 'events_registrations';
 
-    /**
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'created_at' => 'datetime',
-        'updated_at' => 'datetime',
+    protected $fillable = [
+        'event_id',
     ];
 
     public static function boot(): void
@@ -70,20 +58,15 @@ class EventRegistration extends Pivot
 
         static::creating(function (EventRegistration $eventRegistration) {
             throw_if(! $eventRegistration->event->registration_enabled,
-                \Exception::class,
+                Exception::class,
                 "Registrations for {$eventRegistration->event->name} are disabled.");
 
             throw_if(
                 $eventRegistration->event->registration_deadline &&
                 Carbon::parse($eventRegistration->event->registration_deadline)->isPast(),
-                \Exception::class,
+                Exception::class,
                 "The registration deadline for {$eventRegistration->event->name} has passed.");
         });
-    }
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope(new EventRegistrationScope());
     }
 
     public function scopeFuture(Builder $query): void
@@ -93,28 +76,16 @@ class EventRegistration extends Pivot
         });
     }
 
-    public function calendar(): BelongsToThroughRelation
-    {
-        return $this->belongsToThrough(Calendar::class, Event::class);
-    }
-
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
-    public function organizer(): BelongsToThroughRelation
+    protected function casts(): array
     {
-        return $this->belongsToThrough(User::class, Event::class, null, '', [User::class => 'author_id']);
-    }
-
-    public function attachments(): HasManyDeep
-    {
-        return $this->hasManyDeep(Attachment::class, [Event::class], [null, ['model_type', 'model_id']]);
-    }
-
-    public function images(): HasManyDeep
-    {
-        return $this->hasManyDeep(Image::class, [Event::class], [null, ['model_type', 'model_id']]);
+        return [
+            'created_at' => 'datetime',
+            'updated_at' => 'datetime',
+        ];
     }
 }

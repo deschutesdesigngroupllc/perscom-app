@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Console\Commands;
 
 use App\Models\Tenant;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
-use Symfony\Component\Console\Command\Command as CommandAlias;
 
 class GenerateApiSpecs extends Command
 {
@@ -30,6 +31,6 @@ class GenerateApiSpecs extends Command
             $this->info(Artisan::output());
         });
 
-        return CommandAlias::SUCCESS;
+        return static::SUCCESS;
     }
 }

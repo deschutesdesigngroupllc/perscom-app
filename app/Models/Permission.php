@@ -1,15 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Collection;
+use Spatie\Permission\Models\Permission as BasePermission;
 
 /**
- * App\Models\Permission
- *
  * @property int $id
  * @property string $name
  * @property string|null $description
@@ -25,7 +26,6 @@ use Illuminate\Support\Collection;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
- * @method static \Database\Factories\PermissionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Permission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Permission newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Permission permission($permissions, $without = false)
@@ -42,23 +42,25 @@ use Illuminate\Support\Collection;
  *
  * @mixin \Eloquent
  */
-class Permission extends \Spatie\Permission\Models\Permission implements Arrayable
+class Permission extends BasePermission implements Arrayable
 {
     use ClearsResponseCache;
     use HasFactory;
 
-    /**
-     * @var array<string, string>
-     */
     protected $casts = [
         'is_custom_permission' => 'boolean',
         'is_application_permission' => 'boolean',
     ];
 
-    /**
-     * @var array<int, string>
-     */
-    protected $appends = ['is_custom_permission', 'is_application_permission'];
+    protected $appends = [
+        'is_custom_permission',
+        'is_application_permission',
+    ];
+
+    public static function getPermissionsFromConfig(): Collection
+    {
+        return collect(config('permissions.permissions'));
+    }
 
     public function getIsCustomPermissionAttribute(): bool
     {
@@ -68,10 +70,5 @@ class Permission extends \Spatie\Permission\Models\Permission implements Arrayab
     public function getIsApplicationPermissionAttribute(): bool
     {
         return self::getPermissionsFromConfig()->has($this->name);
-    }
-
-    public static function getPermissionsFromConfig(): Collection
-    {
-        return collect(config('permissions.permissions'));
     }
 }

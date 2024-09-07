@@ -1,21 +1,31 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasAssignmentRecords;
 use App\Traits\HasAuthor;
+use App\Traits\HasAwardRecords;
+use App\Traits\HasCategories;
+use App\Traits\HasCombatRecords;
+use App\Traits\HasQualificationRecords;
+use App\Traits\HasRankRecords;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use App\Traits\HasServiceRecords;
 use App\Traits\HasTags;
 use Carbon\Carbon;
+use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
 /**
- * App\Models\Document
- *
  * @property int $id
  * @property int|null $author_id
  * @property string $name
@@ -24,11 +34,30 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
- * @property-read \App\Models\User|null $author
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
+ * @property-read int|null $assignment_records_count
+ * @property-read User|null $author
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
+ * @property-read int|null $award_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CombatRecord> $combat_records
+ * @property-read int|null $combat_records_count
+ * @property-read string $label
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
+ * @property-read int|null $primary_assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord> $qualification_records
+ * @property-read int|null $qualification_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
+ * @property-read int|null $rank_records_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
+ * @property-read int|null $secondary_assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord> $service_records
+ * @property-read int|null $service_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Document author(\App\Models\User $user)
  * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
@@ -36,7 +65,6 @@ use Illuminate\Support\Str;
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
- * @method static \Illuminate\Database\Eloquent\Builder|Document tags(?mixed $tag)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereCreatedAt($value)
@@ -50,22 +78,23 @@ use Illuminate\Support\Str;
  *
  * @mixin \Eloquent
  */
-class Document extends Model implements Htmlable
+class Document extends Model implements HasLabel, Htmlable
 {
     use ClearsResponseCache;
+    use HasAssignmentRecords;
     use HasAuthor;
+    use HasAwardRecords;
+    use HasCategories;
+    use HasCombatRecords;
     use HasFactory;
+    use HasQualificationRecords;
+    use HasRankRecords;
+    use HasResourceLabel;
+    use HasResourceUrl;
+    use HasServiceRecords;
     use HasTags;
     use SoftDeletes;
 
-    /**
-     * @var array<int, string>
-     */
-    protected $fillable = ['name', 'description', 'content', 'updated_at', 'created_at'];
-
-    /**
-     * @var string[]
-     */
     public static array $availableTags = [
         '{user_name}' => 'The user\'s name.',
         '{user_email}' => 'The user\'s email.',
@@ -83,14 +112,17 @@ class Document extends Model implements Htmlable
         '{assignment_record_text}' => 'The text of the assignment record.',
         '{assignment_record_date}' => 'The date of the assignment record.',
         '{award_record_award}' => 'The award of the award record.',
+        '{award_record_award_image}' => 'The award image of the award record.',
         '{award_record_text}' => 'The text of the award record.',
         '{award_record_date}' => 'The date of the award record.',
         '{combat_record_text}' => 'The text of the combat record.',
         '{combat_record_date}' => 'The date of the combat record.',
         '{qualification_record_qualification}' => 'The qualification of the qualification record.',
+        '{qualification_record_qualification_image}' => 'The qualification image of the qualification record.',
         '{qualification_record_text}' => 'The text of the qualification record.',
         '{qualification_record_date}' => 'The date of the qualification record.',
-        '{rank_record_rank}' => 'The qualification of the rank record.',
+        '{rank_record_rank}' => 'The rank of the rank record.',
+        '{rank_record_rank_image}' => 'The rank image of the rank record.',
         '{rank_record_type}' => 'The type of rank record, either Promotion or Demotion.',
         '{rank_record_text}' => 'The text of the rank record.',
         '{rank_record_date}' => 'The date of the rank record.',
@@ -100,11 +132,25 @@ class Document extends Model implements Htmlable
         '{author_document_name}' => 'The document author\'s name.',
     ];
 
-    public function categories(): BelongsToMany
+    protected $fillable = [
+        'name',
+        'description',
+        'content',
+        'created_at',
+        'updated_at',
+        'deleted_at',
+    ];
+
+    public function toHtml(?User $user = null, mixed $attachedModel = null): string
     {
-        return $this->belongsToMany(Category::class, 'documents_categories')
-            ->withPivot('order')
-            ->withTimestamps();
+        $content = $this->content;
+        foreach (self::$availableTags as $tag => $description) {
+            if ($replacement = $this->resolveTag($tag, $user, $attachedModel)) {
+                $content = Str::replace((string) $tag, $replacement, $content);
+            }
+        }
+
+        return $content;
     }
 
     protected function resolveTag(string $tag, ?User $user = null, mixed $attachedModel = null): mixed
@@ -126,24 +172,15 @@ class Document extends Model implements Htmlable
             $tag === '{assignment_record_text}', $tag === '{award_record_text}', $tag === '{combat_record_text}', $tag === '{qualification_record_text}', $tag === '{service_record_text}', $tag === '{rank_record_text}' => $attachedModel->text ?? null,
             $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{service_record_date}', $tag === '{rank_record_date}' => optional($attachedModel)->created_at ? Carbon::parse($attachedModel->created_at)->toDayDateTimeString() : null,
             $tag === '{award_record_award}' => $attachedModel->award->name ?? null,
+            $tag === '{award_record_award_image}' => optional($attachedModel->award->image->image_url ?? null, fn ($url) => new HtmlString("<img src='$url' alt='Image' style='height: 40px;' />")) ?? null,
             $tag === '{qualification_record_qualification}' => $attachedModel->qualification->name ?? null,
+            $tag === '{qualification_record_qualification_image}' => optional($attachedModel->qualification->image->image_url ?? null, fn ($url) => new HtmlString("<img src='$url' alt='Image' style='height: 40px;' />")) ?? null,
             $tag === '{rank_record_rank}' => $attachedModel->rank->name ?? null,
+            $tag === '{rank_record_rank_image}' => optional($attachedModel->rank->image->image_url ?? null, fn ($url) => new HtmlString("<img src='$url' alt='Image' style='height: 40px;' />")) ?? null,
             $tag === '{rank_record_type}' => optional($attachedModel->type ?? null)->getLabel() ?? null,
             $tag === '{author_resource_name}' => ! is_null($attachedModel) && in_array(HasAuthor::class, class_uses_recursive(get_class($attachedModel))) ? optional($attachedModel->author)->name : null,
             $tag === '{author_document_name}' => optional($this->author)->name,
             default => null
         };
-    }
-
-    public function toHtml(?User $user = null, mixed $attachedModel = null): string
-    {
-        $content = $this->content;
-        foreach (self::$availableTags as $tag => $description) {
-            if ($replacement = $this->resolveTag($tag, $user, $attachedModel)) {
-                $content = Str::replace((string) $tag, $replacement, $content);
-            }
-        }
-
-        return $content;
     }
 }

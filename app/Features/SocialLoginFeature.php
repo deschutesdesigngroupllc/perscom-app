@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Features;
 
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\App;
 use Spark\Plan;
+
+use function in_array;
 
 class SocialLoginFeature extends BaseFeature
 {
@@ -12,13 +16,12 @@ class SocialLoginFeature extends BaseFeature
         $tenant = $this->resolveTenant($scope);
 
         return match (true) {
-            Request::isCentralRequest() => false,
-            Request::isDemoMode() => false,
-            \request()->routeIs('auth.*') => true,
-            $tenant->onTrial() => true,
+            App::isAdmin() => false,
+            App::isDemo() => false,
+            $tenant?->onTrial() => true,
             optional($tenant->sparkPlan(), static function (Plan $plan) {
-                return \in_array(__CLASS__, $plan->options, true);
-            }) => true,
+                return in_array(__CLASS__, $plan->options, true);
+            }) === true => true,
             default => false,
         };
     }

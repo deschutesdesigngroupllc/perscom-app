@@ -2,10 +2,16 @@
 
 declare(strict_types=1);
 
+use App\Models\Domain;
+use App\Models\Tenant;
+use App\Support\Tenancy\Bootstrappers\ConfigBootstrapper;
+use App\Support\Tenancy\Bootstrappers\FilamentBootstrapper;
+use App\Support\Tenancy\Bootstrappers\PermissionsBootstrapper;
+
 return [
-    'tenant_model' => \App\Models\Tenant::class,
+    'tenant_model' => Tenant::class,
     'id_generator' => null,
-    'domain_model' => \App\Models\Domain::class,
+    'domain_model' => Domain::class,
 
     /**
      * The list of domains hosting your central app.
@@ -13,10 +19,11 @@ return [
      * Only relevant if you're using the domain or subdomain identification middleware.
      */
     'central_domains' => [
+        '127.0.0.1',
+        'localhost',
         'perscom-app.test',
-        'lvh.me',
+        'perscom.test',
         'perscom.io',
-        'staging.perscom.io',
     ],
 
     /**
@@ -31,14 +38,16 @@ return [
         Stancl\Tenancy\Bootstrappers\FilesystemTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\QueueTenancyBootstrapper::class,
         Stancl\Tenancy\Bootstrappers\RedisTenancyBootstrapper::class,
-        \App\Support\Tenancy\Bootstrappers\ConfigBootstrapper::class,
+        ConfigBootstrapper::class,
+        PermissionsBootstrapper::class,
+        FilamentBootstrapper::class,
     ],
 
     /**
      * Database tenancy config. Used by DatabaseTenancyBootstrapper.
      */
     'database' => [
-        'central_connection' => env('DB_CONNECTION', 'mysql'),
+        'central_connection' => env('DB_CONNECTION', 'central'),
 
         /**
          * Connection used as a "template" for the dynamically created tenant database connection.
@@ -103,7 +112,6 @@ return [
             'local',
             'public',
             's3',
-            's3_public',
         ],
 
         /**
@@ -112,7 +120,7 @@ return [
          * See https://tenancyforlaravel.com/docs/v3/tenancy-bootstrappers/#filesystem-tenancy-boostrapper
          */
         'root_override' => [
-            // Disks whose roots should be overriden after storage_path() is suffixed.
+            // Disks whose roots should be overridden after storage_path() is suffixed.
             'local' => '%storage_path%/app/',
             'public' => '%storage_path%/app/public/',
         ],
@@ -123,7 +131,7 @@ return [
          * Note: Disabling this will likely break local disk tenancy. Only disable this if you're using an external file storage service like S3.
          *
          * For the vast majority of applications, this feature should be enabled. But in some
-         * edge cases, it can cause issxues (like using Passport with Vapor - see #196), so
+         * edge cases, it can cause issues (like using Passport with Vapor - see #196), so
          * you may want to disable this if you are experiencing these edge case issues.
          */
         'suffix_storage_path' => false,
@@ -139,7 +147,7 @@ return [
     ],
 
     /**
-     * Redis tenancy config. Used by RedisTenancyBoostrapper.
+     * Redis tenancy config. Used by RedisTenancyBootstrapper.
      *
      * Note: You need phpredis to use Redis tenancy.
      *
@@ -166,9 +174,9 @@ return [
         Stancl\Tenancy\Features\UserImpersonation::class,
         Stancl\Tenancy\Features\TelescopeTags::class,
         Stancl\Tenancy\Features\UniversalRoutes::class,
-        Stancl\Tenancy\Features\ViteBundler::class,
         // Stancl\Tenancy\Features\TenantConfig::class, // https://tenancyforlaravel.com/docs/v3/features/tenant-config
         // Stancl\Tenancy\Features\CrossDomainRedirect::class, // https://tenancyforlaravel.com/docs/v3/features/cross-domain-redirect
+        Stancl\Tenancy\Features\ViteBundler::class,
     ],
 
     /**

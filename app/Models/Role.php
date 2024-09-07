@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\Role
- *
  * @property int $id
  * @property string $name
  * @property string|null $description
@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
- * @method static \Database\Factories\RoleFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role permission($permissions, $without = false)
@@ -41,18 +40,15 @@ class Role extends \Spatie\Permission\Models\Role
     use ClearsResponseCache;
     use HasFactory;
 
-    /**
-     * @var array<string, string>
-     */
     protected $casts = [
         'is_custom_role' => 'boolean',
         'is_application_role' => 'boolean',
     ];
 
-    /**
-     * @var array<int, string>
-     */
-    protected $appends = ['is_custom_role', 'is_application_role'];
+    protected $appends = [
+        'is_custom_role',
+        'is_application_role',
+    ];
 
     public function getIsCustomRoleAttribute(): bool
     {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Notifications\Tenant;
 
 use App\Mail\Tenant\NewMail as NewMailMailable;
@@ -19,9 +21,6 @@ class NewMail extends Notification implements ShouldQueue
         //
     }
 
-    /**
-     * @return string[]
-     */
     public function via(mixed $notifiable): array
     {
         return ['mail'];

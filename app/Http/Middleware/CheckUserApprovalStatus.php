@@ -1,23 +1,30 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Middleware;
 
+use App\Models\User;
+use App\Settings\RegistrationSettings;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckUserApprovalStatus
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->user() && ! $request->user()->approved && setting('registration_admin_approval_required', false)) {
-            abort(401, 'Your account is awaiting approval by an administrator. Please try again later.');
-        }
+        /** @var RegistrationSettings $settings */
+        $settings = app(RegistrationSettings::class);
+
+        /** @var User|null $user */
+        $user = $request->user();
+
+        abort_if(
+            $user && ! $user->approved && $settings->admin_approval_required,
+            401,
+            'Your account is awaiting approval by an administrator. Please try again later.'
+        );
 
         return $next($request);
     }

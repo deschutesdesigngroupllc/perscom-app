@@ -1,16 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Policies;
 
 use App\Models\Submission;
 use App\Models\User;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Support\Facades\App;
 
 class SubmissionPolicy extends Policy
 {
     public function before(): ?bool
     {
-        if (Request::isCentralRequest()) {
+        if (App::isAdmin()) {
             return false;
         }
 

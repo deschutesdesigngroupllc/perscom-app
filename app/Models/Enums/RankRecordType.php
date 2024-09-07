@@ -1,10 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Enums;
 
+use Filament\Support\Contracts\HasColor;
+use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Str;
 
-enum RankRecordType: int
+enum RankRecordType: int implements HasColor, HasLabel
 {
     case PROMOTION = 0;
     case DEMOTION = 1;
@@ -18,9 +22,9 @@ enum RankRecordType: int
     public function getColor(): string
     {
         return match ($this) {
-            RankRecordType::PROMOTION => '#16A34A',
-            RankRecordType::DEMOTION => '#DC2626',
-            RankRecordType::LATERAL => '#334155'
+            RankRecordType::PROMOTION => 'success',
+            RankRecordType::DEMOTION => 'danger',
+            RankRecordType::LATERAL => 'info'
         };
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 return [
 
     /*
@@ -36,7 +38,7 @@ return [
 
         'database' => [
             'driver' => 'database',
-            'connection' => 'mysql',
+            'connection' => null,
             'table' => 'features',
         ],
 
