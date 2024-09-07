@@ -161,7 +161,7 @@ class AppPanelProvider extends PanelProvider
             ])
             ->tenantMenu(false)
             ->tenant(Tenant::class, 'slug')
-            ->tenantDomain('{tenant:slug}.perscom.test')
+            ->tenantDomain('{tenant:slug}'.config('app.base_url'))
             ->tenantBillingProvider(new BillingProvider)
             ->requiresTenantSubscription();
     }

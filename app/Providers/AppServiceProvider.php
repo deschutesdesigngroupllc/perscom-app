@@ -76,7 +76,7 @@ class AppServiceProvider extends ServiceProvider
         // create the role before the table exists
         if (App::runningInConsole()) {
             config()->set([
-                'filament-shield.panel_user.enabled' => false
+                'filament-shield.panel_user.enabled' => false,
             ]);
         }
 
