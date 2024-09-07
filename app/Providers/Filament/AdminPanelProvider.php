@@ -33,7 +33,6 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->domain(config('app.url'))
-            ->spa()
             ->login()
             ->emailVerification()
             ->colors([
