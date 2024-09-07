@@ -72,6 +72,14 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
+        // We have to disable this during the seeder because it will try to
+        // create the role before the table exists
+        if (App::runningInConsole()) {
+            config()->set([
+                'filament-shield.panel_user.enabled' => false
+            ]);
+        }
+
         App::macro('isAdmin', fn () => collect(config('tenancy.central_domains'))->contains(request()->getHost()));
         App::macro('isDemo', fn () => $this->app->environment('demo'));
 
