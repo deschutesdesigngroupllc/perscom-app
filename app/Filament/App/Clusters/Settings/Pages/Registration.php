@@ -6,10 +6,12 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Filament\App\Clusters\Settings;
 use App\Settings\RegistrationSettings as RegistrationSettingsClass;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Facades\Auth;
 
 class Registration extends SettingsPage
 {
@@ -20,6 +22,11 @@ class Registration extends SettingsPage
     protected static ?string $navigationLabel = 'Registration';
 
     protected static string $settings = RegistrationSettingsClass::class;
+
+    public static function canAccess(): bool
+    {
+        return Auth::user()->hasRole(Utils::getSuperAdminName());
+    }
 
     public function form(Form $form): Form
     {

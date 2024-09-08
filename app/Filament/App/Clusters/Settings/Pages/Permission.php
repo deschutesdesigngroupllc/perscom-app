@@ -8,10 +8,12 @@ use App\Filament\App\Clusters\Settings;
 use App\Models\Permission as PermissionModel;
 use App\Models\Role;
 use App\Settings\PermissionSettings as PermissionSettingsClass;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Facades\Auth;
 
 class Permission extends SettingsPage
 {
@@ -22,6 +24,11 @@ class Permission extends SettingsPage
     protected static ?string $navigationLabel = 'Permissions';
 
     protected static string $settings = PermissionSettingsClass::class;
+
+    public static function canAccess(): bool
+    {
+        return Auth::user()->hasRole(Utils::getSuperAdminName());
+    }
 
     public function form(Form $form): Form
     {

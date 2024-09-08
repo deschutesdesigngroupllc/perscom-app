@@ -11,6 +11,7 @@ use App\Filament\App\Clusters\Settings;
 use App\Models\Tenant;
 use App\Rules\SubdomainRule;
 use App\Settings\DashboardSettings as DashboardSettingsClass;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Placeholder;
@@ -19,6 +20,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rule;
 use Laravel\Pennant\Feature;
@@ -35,6 +37,11 @@ class Dashboard extends SettingsPage
     protected static string $settings = DashboardSettingsClass::class;
 
     protected static ?string $title = 'Dashboard Settings';
+
+    public static function canAccess(): bool
+    {
+        return Auth::user()->hasRole(Utils::getSuperAdminName());
+    }
 
     public function form(Form $form): Form
     {

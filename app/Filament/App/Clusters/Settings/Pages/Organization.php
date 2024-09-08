@@ -6,12 +6,14 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Filament\App\Clusters\Settings;
 use App\Settings\OrganizationSettings as OrganizationSettingsClass;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use DateTimeZone;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Facades\Auth;
 
 class Organization extends SettingsPage
 {
@@ -22,6 +24,11 @@ class Organization extends SettingsPage
     protected static ?string $navigationLabel = 'Organization';
 
     protected static string $settings = OrganizationSettingsClass::class;
+
+    public static function canAccess(): bool
+    {
+        return Auth::user()->hasRole(Utils::getSuperAdminName());
+    }
 
     public function form(Form $form): Form
     {

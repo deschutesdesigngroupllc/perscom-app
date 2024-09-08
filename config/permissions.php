@@ -13,6 +13,7 @@ return [
     'default' => [
         'User' => [
             'view:user',
+            'create:submission',
         ],
     ],
     'permissions' => [

@@ -19,6 +19,7 @@ use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Filament\Resources\Pages\Page;
+use Illuminate\Support\Facades\Gate;
 
 /**
  * @property Form $form
@@ -44,6 +45,11 @@ class SubmitForm extends Page implements HasForms
     protected static bool $shouldRegisterNavigation = false;
 
     protected static ?string $title = 'Forms';
+
+    public static function authorizeResourceAccess(): void
+    {
+        abort_unless(Gate::check('create', Submission::class), 403);
+    }
 
     public function getBreadcrumb(): string
     {

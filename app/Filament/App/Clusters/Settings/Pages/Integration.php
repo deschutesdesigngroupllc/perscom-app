@@ -7,11 +7,13 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 use App\Features\SingleSignOnFeature;
 use App\Filament\App\Clusters\Settings;
 use App\Settings\IntegrationSettings as IntegrationSettingsClass;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -27,7 +29,7 @@ class Integration extends SettingsPage
 
     public static function canAccess(): bool
     {
-        return parent::canAccess() && Feature::active(SingleSignOnFeature::class);
+        return parent::canAccess() && Feature::active(SingleSignOnFeature::class) && Auth::user()->hasRole(Utils::getSuperAdminName());
     }
 
     public function form(Form $form): Form
