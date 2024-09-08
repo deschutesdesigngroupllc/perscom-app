@@ -103,7 +103,7 @@ class MessageResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('order', 'desc')
+            ->defaultSort('order')
             ->reorderable('order');
     }
 

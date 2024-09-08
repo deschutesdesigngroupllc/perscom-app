@@ -109,6 +109,7 @@ class QualificationResource extends BaseResource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
+            ->defaultSort('order')
             ->reorderable('order');
     }
 

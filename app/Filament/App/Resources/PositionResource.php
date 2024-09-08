@@ -92,6 +92,7 @@ class PositionResource extends BaseResource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
+            ->defaultSort('order')
             ->reorderable('order');
     }
 

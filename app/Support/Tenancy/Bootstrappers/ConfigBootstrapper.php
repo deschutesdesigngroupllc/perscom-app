@@ -19,7 +19,7 @@ class ConfigBootstrapper implements TenancyBootstrapper
 
         App::forgetInstance('mail.manager');
 
-        Config::set('mail.from.name', $tenant->getAttribute('name'));
+        Config::set('mail.from.name', "PERSCOM - {$tenant->getAttribute('name')}");
         Config::set('responsecache.cache_tag', "tenant{$tenant->getKey()}");
     }
 

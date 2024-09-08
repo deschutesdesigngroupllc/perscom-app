@@ -87,6 +87,9 @@ class WebhookResource extends BaseResource
                                 ->badge()
                                 ->color('gray'),
                             TextEntry::make('events')
+                                ->listWithLineBreaks()
+                                ->limitList()
+                                ->expandableLimitedList()
                                 ->badge(),
                             TextEntry::make('secret')
                                 ->copyable(),
@@ -114,6 +117,9 @@ class WebhookResource extends BaseResource
                     ->color('gray')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('events')
+                    ->listWithLineBreaks()
+                    ->expandableLimitedList()
+                    ->limitList()
                     ->sortable()
                     ->badge()
                     ->searchable(),

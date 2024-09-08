@@ -73,8 +73,7 @@ class ApiLogResource extends BaseResource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
-            ])
-            ->defaultSort('created_at', 'desc');
+            ]);
     }
 
     public static function infolist(Infolist $infolist): Infolist

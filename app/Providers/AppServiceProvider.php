@@ -21,6 +21,7 @@ use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
+use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
@@ -165,6 +166,10 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('viewPulse', function (Admin|User|null $user = null) {
             return $user instanceof Admin;
+        });
+
+        Table::configureUsing(function (Table $table) {
+            $table->defaultSort('created_at', 'desc');
         });
 
         Model::unguard();
