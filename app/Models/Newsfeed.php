@@ -27,23 +27,23 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
  * @property-read mixed $color
  * @property-read \Illuminate\Support\Collection $changes
  * @property-read mixed $headline
  * @property-read mixed $item
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $likes
  * @property-read int|null $likes_count
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
  * @property-read mixed $text
  *
- * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static Builder|Newsfeed causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static \Database\Factories\NewsfeedFactory factory($count = null, $state = [])
- * @method static Builder|Activity forBatch(string $batchUuid)
- * @method static Builder|Activity forEvent(string $event)
- * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
- * @method static Builder|Activity hasBatch()
- * @method static Builder|Activity inLog(...$logNames)
+ * @method static Builder|Newsfeed forBatch(string $batchUuid)
+ * @method static Builder|Newsfeed forEvent(string $event)
+ * @method static Builder|Newsfeed forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder|Newsfeed hasBatch()
+ * @method static Builder|Newsfeed inLog(...$logNames)
  * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Newsfeed query()

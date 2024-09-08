@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\Hideable;
 use App\Models\Scopes\UnitScope;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
@@ -68,7 +69,7 @@ use Spatie\EloquentSortable\Sortable;
  * @mixin \Eloquent
  */
 #[ScopedBy(UnitScope::class)]
-class Unit extends Model implements HasLabel, Sortable
+class Unit extends Model implements HasLabel, Hideable, Sortable
 {
     use CanBeHidden;
     use CanBeOrdered;

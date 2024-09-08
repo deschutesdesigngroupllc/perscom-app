@@ -37,6 +37,7 @@ use Stringable;
  * @property-read string $label
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read Status|null $status
+ * @property-read StatusRecord $record
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read \Illuminate\Support\Optional|string|null|null $url

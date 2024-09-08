@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Dispatchers\Bus\Dispatcher;
+use App\Filament\App\Pages\Dashboard;
 use App\Models\Admin;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
@@ -161,6 +162,12 @@ class AppServiceProvider extends ServiceProvider
                 fn () => view('filament.render-hooks.body-start.announcement-banner')
             );
         }
+
+        FilamentView::registerRenderHook(
+            name: PanelsRenderHook::PAGE_START,
+            hook: fn () => view('filament.render-hooks.page-start.message-banner'),
+            scopes: Dashboard::class,
+        );
 
         Gate::define('viewPulse', function (Admin|User|null $user = null) {
             return $user instanceof Admin;

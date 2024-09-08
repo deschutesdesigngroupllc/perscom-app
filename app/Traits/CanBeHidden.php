@@ -5,12 +5,8 @@ declare(strict_types=1);
 namespace App\Traits;
 
 use App\Models\Scopes\VisibleScope;
-use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 
-/**
- * @mixin Eloquent
- */
 trait CanBeHidden
 {
     public function scopeHidden(Builder $query): void

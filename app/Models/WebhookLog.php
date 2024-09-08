@@ -15,7 +15,7 @@ use Illuminate\Support\Optional;
  * @property string|null $log_name
  * @property array $description
  * @property string|null $subject_type
- * @property-read Optional|WebhookEvent|null|null $event
+ * @property Optional|WebhookEvent|null|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
  * @property string|null $causer_id
@@ -23,17 +23,17 @@ use Illuminate\Support\Optional;
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
  * @property-read mixed|null $data
  * @property-read \Illuminate\Support\Collection $changes
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
  *
- * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
- * @method static Builder|Activity forBatch(string $batchUuid)
- * @method static Builder|Activity forEvent(string $event)
- * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
- * @method static Builder|Activity hasBatch()
- * @method static Builder|Activity inLog(...$logNames)
+ * @method static Builder|WebhookLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static Builder|WebhookLog forBatch(string $batchUuid)
+ * @method static Builder|WebhookLog forEvent(string $event)
+ * @method static Builder|WebhookLog forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder|WebhookLog hasBatch()
+ * @method static Builder|WebhookLog inLog(...$logNames)
  * @method static Builder|WebhookLog newModelQuery()
  * @method static Builder|WebhookLog newQuery()
  * @method static Builder|WebhookLog query()

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\MailResource\Pages;
-use App\Models\Mail;
-use App\Models\Tenant;
+use App\Filament\Admin\Resources\MessageResource\Pages;
+use App\Models\Message;
+use App\Models\Scopes\EnabledScope;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -15,15 +15,11 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class MailResource extends Resource
+class MessageResource extends Resource
 {
-    protected static ?string $model = Mail::class;
+    protected static ?string $model = Message::class;
 
-    protected static ?string $pluralLabel = 'Mail';
-
-    protected static ?string $label = 'Message';
-
-    protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
     protected static ?string $navigationGroup = 'Communications';
 
@@ -36,30 +32,27 @@ class MailResource extends Resource
                 Forms\Components\Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Email')
-                            ->icon('heroicon-o-envelope-open')
+                        Forms\Components\Tabs\Tab::make('Message')
+                            ->icon('heroicon-o-chat-bubble-left-right')
                             ->schema([
-                                Forms\Components\TextInput::make('subject')
+                                Forms\Components\TextInput::make('title')
+                                    ->columnSpanFull()
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('content')
+                                Forms\Components\RichEditor::make('message')
                                     ->required()
-                                    ->maxLength(65535),
-                                Forms\Components\Select::make('recipients')
-                                    ->required()
-                                    ->options(Tenant::query()->orderBy('name')->pluck('name', 'id'))
-                                    ->multiple()
-                                    ->searchable()
-                                    ->preload(),
+                                    ->columnSpanFull(),
+                                Forms\Components\Toggle::make('enabled')
+                                    ->default(true)
+                                    ->required(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Links')
+                        Forms\Components\Tabs\Tab::make('Link')
                             ->icon('heroicon-o-link')
                             ->schema([
-                                Forms\Components\KeyValue::make('links')
-                                    ->hiddenLabel()
-                                    ->keyLabel('Text')
-                                    ->valueLabel('URL')
-                                    ->addActionLabel('Add link'),
+                                Forms\Components\TextInput::make('link_text')
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('url')
+                                    ->maxLength(255),
                             ]),
                     ]),
             ]);
@@ -69,13 +62,16 @@ class MailResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('subject')
+                Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('sent_at')
-                    ->dateTime()
+                Tables\Columns\TextColumn::make('message')
+                    ->html()
+                    ->wrap()
                     ->sortable()
-                    ->toggleable(),
+                    ->searchable(),
+                Tables\Columns\ToggleColumn::make('enabled')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -89,8 +85,10 @@ class MailResource extends Resource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
+            ->groups(['enabled'])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
+                Tables\Filters\TernaryFilter::make('enabled'),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -104,23 +102,26 @@ class MailResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('order', 'desc')
+            ->reorderable('order');
+    }
+
+    public static function getPages(): array
+    {
+        return [
+            'index' => Pages\ListMessages::route('/'),
+            'create' => Pages\CreateMessage::route('/create'),
+            'edit' => Pages\EditMessage::route('/{record}/edit'),
+        ];
     }
 
     public static function getEloquentQuery(): Builder
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
+                EnabledScope::class,
                 SoftDeletingScope::class,
             ]);
-    }
-
-    public static function getPages(): array
-    {
-        return [
-            'index' => Pages\ListMails::route('/'),
-            'create' => Pages\CreateMail::route('/create'),
-            'edit' => Pages\EditMail::route('/{record}/edit'),
-        ];
     }
 }

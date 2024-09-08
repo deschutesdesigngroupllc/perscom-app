@@ -34,11 +34,11 @@ use RRule\RRule;
  * @property string|null $description
  * @property string|null $content
  * @property string|null $location
- * @property-read Optional|string|null|null $url
+ * @property Optional|string|null|null $url
  * @property int|null $author_id
  * @property bool $all_day
  * @property \Illuminate\Support\Carbon $start
- * @property-write mixed|null $end
+ * @property mixed|null $end
  * @property bool $repeats
  * @property string|null $frequency
  * @property int $interval
@@ -70,6 +70,7 @@ use RRule\RRule;
  * @property-read mixed $last_occurrence
  * @property-read CarbonInterval|Optional|null|null $length
  * @property-read mixed $next_occurrence
+ * @property-read EventRegistration $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $registrations
  * @property-read int|null $registrations_count
  * @property-read Optional|string|null|null $relative_url

@@ -79,6 +79,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CombatRecord> $combat_records
  * @property-read int|null $combat_records_count
  * @property-read string|null $cover_photo_url
+ * @property-read EventRegistration $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Event> $events
  * @property-read int|null $events_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
@@ -109,10 +110,12 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property-read int|null $service_records_count
  * @property-read Specialty|null $specialty
  * @property-read Status|null $status
+ * @property-read StatusRecord $record
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
+ * @property-read TaskAssignment $assignment
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read int|null $tasks_count
  * @property-read mixed $time_in_assignment

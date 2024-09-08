@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\Enableable;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
@@ -20,7 +21,7 @@ use Illuminate\Support\Str;
  * @property int $id
  * @property string $title
  * @property string $content
- * @property-read string $color
+ * @property string $color
  * @property bool $global
  * @property bool $enabled
  * @property \Illuminate\Support\Carbon|null $expires_at
@@ -54,7 +55,7 @@ use Illuminate\Support\Str;
  *
  * @mixin \Eloquent
  */
-class Announcement extends Model implements HasLabel
+class Announcement extends Model implements Enableable, HasLabel
 {
     use CanBeEnabled;
     use ClearsResponseCache;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\Hideable;
 use App\Models\Enums\FieldType;
 use App\Models\Scopes\FieldScope;
 use App\Traits\CanBeHidden;
@@ -81,7 +82,7 @@ use function in_array;
  * @mixin \Eloquent
  */
 #[ScopedBy(FieldScope::class)]
-class Field extends Model implements HasLabel
+class Field extends Model implements HasLabel, Hideable
 {
     use CanBeHidden;
     use ClearsResponseCache;

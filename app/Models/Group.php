@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\Hideable;
 use App\Models\Scopes\GroupScope;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
@@ -65,7 +66,7 @@ use Spatie\EloquentSortable\Sortable;
  * @mixin \Eloquent
  */
 #[ScopedBy(GroupScope::class)]
-class Group extends Model implements HasLabel, Sortable
+class Group extends Model implements HasLabel, Hideable, Sortable
 {
     use CanBeHidden;
     use CanBeOrdered;

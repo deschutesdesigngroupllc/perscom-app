@@ -22,7 +22,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed|null $body
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
  * @property-read mixed|null $content
  * @property-read string|null $endpoint
  * @property-read \Illuminate\Support\Collection $changes
@@ -31,14 +31,14 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property-read mixed|null $request_headers
  * @property-read mixed|null $response_headers
  * @property-read string|int|null|null $status
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
  *
- * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
- * @method static Builder|Activity forBatch(string $batchUuid)
- * @method static Builder|Activity forEvent(string $event)
- * @method static Builder|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
- * @method static Builder|Activity hasBatch()
- * @method static Builder|Activity inLog(...$logNames)
+ * @method static Builder|ApiLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static Builder|ApiLog forBatch(string $batchUuid)
+ * @method static Builder|ApiLog forEvent(string $event)
+ * @method static Builder|ApiLog forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder|ApiLog hasBatch()
+ * @method static Builder|ApiLog inLog(...$logNames)
  * @method static Builder|ApiLog newModelQuery()
  * @method static Builder|ApiLog newQuery()
  * @method static Builder|ApiLog query()

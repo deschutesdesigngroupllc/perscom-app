@@ -21,9 +21,9 @@ use Spatie\Activitylog\Models\Activity as BaseActivity;
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
  * @property-read \Illuminate\Support\Collection $changes
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
  *
  * @method static Builder|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static \Database\Factories\ActivityFactory factory($count = null, $state = [])

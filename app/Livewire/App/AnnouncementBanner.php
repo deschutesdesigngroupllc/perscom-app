@@ -10,11 +10,11 @@ use Livewire\Component;
 
 class AnnouncementBanner extends Component
 {
-    public ?array $annoucenements;
+    public ?array $announcements;
 
     public function mount(): void
     {
-        $this->annoucenements = Announcement::global()->get()->map(function (Announcement $announcement) {
+        $this->announcements = Announcement::global()->get()->map(function (Announcement $announcement) {
             return [
                 'title' => $announcement->title,
                 'content' => $announcement->content,

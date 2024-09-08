@@ -27,15 +27,16 @@
             @forelse($unit->users as $user)
               <a class="flex flex-row items-center space-x-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"
                 href="{{ \App\Filament\App\Resources\UserResource::getUrl('view', ['record' => $user]) }}" target="_blank">
-                  <div class="w-10 overflow-hidden">
-                      @if ($user->rank->image ?? null)
-                          <img src="{{ Storage::disk('s3')->url($user->rank->image->path) }}" alt="{{ $user->rank->name }}" class="h-8 w-auto flex-grow-0">
-                      @else
-                          <div class="align-middle">
-                              {{ $user->rank->abbreviation ?? 'RNK' }}
-                          </div>
-                      @endif
-                  </div>
+                <div class="w-10 overflow-hidden">
+                  @if ($user->rank->image ?? null)
+                    <img src="{{ Storage::disk('s3')->url($user->rank->image->path) }}" alt="{{ $user->rank->name }}"
+                      class="h-8 w-auto flex-grow-0">
+                  @else
+                    <div class="align-middle">
+                      {{ $user->rank->abbreviation ?? 'RNK' }}
+                    </div>
+                  @endif
+                </div>
                 <div class="flex-1">
                   <div class="dark:text-white font-bold">{{ $user->name }}</div>
                   <div class="flex flex-col md:flex-row md:items-center md:space-x-2">

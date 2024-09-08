@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read User|null $author
- * @property-read Model|Eloquent $commentable
+ * @property-read Model|Eloquent|null $commentable
  * @property-read string $label
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Comment author(\App\Models\User $user)
