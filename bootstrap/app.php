@@ -71,7 +71,6 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->appendToGroup('web', [
             CaptureUserOnlineStatus::class,
-            CacheResponse::class,
         ]);
 
         $middleware->group('universal', []);
