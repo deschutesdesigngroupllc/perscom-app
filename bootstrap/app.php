@@ -28,6 +28,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Sentry\Laravel\Integration;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -65,10 +66,12 @@ return Application::configure(basePath: dirname(__DIR__))
             'throttle:api',
             SentryContext::class,
             CheckApiVersion::class,
+            CacheResponse::class,
         ]);
 
         $middleware->appendToGroup('web', [
             CaptureUserOnlineStatus::class,
+            CacheResponse::class,
         ]);
 
         $middleware->group('universal', []);
