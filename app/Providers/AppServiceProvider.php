@@ -142,26 +142,20 @@ class AppServiceProvider extends ServiceProvider
             };
         });
 
-        if (App::isDemo()) {
-            FilamentView::registerRenderHook(
-                PanelsRenderHook::BODY_START,
-                fn () => view('filament.render-hooks.body-start.demo-banner')
-            );
-        }
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_START,
+            fn () => view('filament.render-hooks.body-start.demo-banner')
+        );
 
-        if (! App::isAdmin() && ! App::isDemo()) {
-            FilamentView::registerRenderHook(
-                PanelsRenderHook::BODY_START,
-                fn () => view('filament.render-hooks.body-start.subscription-banner')
-            );
-        }
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_START,
+            fn () => view('filament.render-hooks.body-start.subscription-banner')
+        );
 
-        if (! App::isAdmin()) {
-            FilamentView::registerRenderHook(
-                PanelsRenderHook::BODY_START,
-                fn () => view('filament.render-hooks.body-start.announcement-banner')
-            );
-        }
+        FilamentView::registerRenderHook(
+            PanelsRenderHook::BODY_START,
+            fn () => view('filament.render-hooks.body-start.announcement-banner')
+        );
 
         FilamentView::registerRenderHook(
             name: PanelsRenderHook::PAGE_START,

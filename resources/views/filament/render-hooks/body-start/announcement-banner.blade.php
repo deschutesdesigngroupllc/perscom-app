@@ -1,1 +1,3 @@
-@livewire('app.announcement-banner')
+@if (!App::isAdmin())
+  @livewire('app.announcement-banner')
+@endif
