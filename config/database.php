@@ -154,7 +154,7 @@ return [
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_DB', '0'),
-            'prefix' => 'perscom_',
+            'prefix' => 'perscom_'.env('APP_ENV', 'production').'_',
         ],
 
         'cache' => [
@@ -164,7 +164,7 @@ return [
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_CACHE_DB', '1'),
-            'prefix' => 'perscom_cache_',
+            'prefix' => 'perscom_'.env('APP_ENV', 'production').'_cache_',
         ],
 
         'session' => [
@@ -173,7 +173,7 @@ return [
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_SESSION_DB', '2'),
-            'prefix' => 'perscom_session_',
+            'prefix' => 'perscom_'.env('APP_ENV', 'production').'_session_',
         ],
 
         'queue' => [
@@ -182,7 +182,7 @@ return [
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_QUEUE_DB', '3'),
-            'prefix' => 'perscom_queue_',
+            'prefix' => 'perscom_'.env('APP_ENV', 'production').'_queue',
         ],
     ],
 ];
