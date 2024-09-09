@@ -19,7 +19,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property int $id
  * @property string $domain
  * @property int $tenant_id
- * @property int $is_custom_subdomain
+ * @property bool $is_custom_subdomain
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -89,5 +89,12 @@ class Domain extends BaseDomain
                     : $domain.config('app.base_url'))->__toString();
             })
         )->shouldCache();
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'is_custom_subdomain' => 'boolean',
+        ];
     }
 }

@@ -8,6 +8,7 @@ use App\Filament\Admin\Resources\TenantResource\Pages;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\DomainsRelationManager;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\SubscriptionsRelationManager;
 use App\Models\Tenant;
+use App\Rules\SubdomainRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -37,13 +38,22 @@ class TenantResource extends Resource
                             ->icon('heroicon-o-user-group')
                             ->schema([
                                 Forms\Components\TextInput::make('name')
+                                    ->helperText('The tenant\'s name.')
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('email')
+                                    ->helperText('The tenant\'s email.')
                                     ->email()
                                     ->required()
                                     ->maxLength(255),
+                                Forms\Components\TextInput::make('domain')
+                                    ->helperText('The tenant\'s initial fallback subdomain.')
+                                    ->required()
+                                    ->visibleOn('create')
+                                    ->rule(new SubdomainRule)
+                                    ->maxLength(255),
                                 Forms\Components\TextInput::make('website')
+                                    ->helperText('The tenant\'s website.')
                                     ->url()
                                     ->maxLength(255),
                             ]),

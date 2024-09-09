@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\TenantResource\RelationManagers;
 
+use App\Models\Domain;
+use App\Rules\SubdomainRule;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -21,10 +23,16 @@ class DomainsRelationManager extends RelationManager
         return $form
             ->schema([
                 Forms\Components\TextInput::make('domain')
+                    ->helperText('The tenant\'s subdomain.')
                     ->columnSpanFull()
-                    ->unique('domains', 'domain')
+                    ->rule(new SubdomainRule)
+                    ->unique('domains', 'domain', ignoreRecord: true)
                     ->required()
                     ->maxLength(255),
+                Forms\Components\Toggle::make('is_custom_subdomain')
+                    ->helperText('Is the domain a custom domain.')
+                    ->label('Custom subdomain')
+                    ->required(),
             ]);
     }
 
@@ -35,9 +43,16 @@ class DomainsRelationManager extends RelationManager
             ->columns([
                 Tables\Columns\TextColumn::make('domain')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('is_custom_subdomain')
-                    ->label('Custom subdomain')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('type')
+                    ->badge()
+                    ->color(fn ($state) => match ($state) {
+                        'Custom Domain' => 'success',
+                        default => 'info'
+                    })
+                    ->getStateUsing(fn (?Domain $record) => match ($record->is_custom_subdomain) {
+                        true => 'Custom Domain',
+                        false => 'Fallback Domain'
+                    }),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
