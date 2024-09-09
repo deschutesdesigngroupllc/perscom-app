@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Events;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\EventRequest;
 use App\Models\Event;
-use App\Policies\EventPolicy;
 use Orion\Http\Controllers\Controller;
 
 class EventsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Event::class;
 
     protected $request = EventRequest::class;
-
-    protected $policy = EventPolicy::class;
 
     public function exposedScopes(): array
     {

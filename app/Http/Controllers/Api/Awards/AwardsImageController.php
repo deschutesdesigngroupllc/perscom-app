@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Awards;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\ImageRequest;
 use App\Models\Award;
-use App\Policies\ImagePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Orion\Http\Controllers\RelationController;
 use Orion\Http\Requests\Request;
 
 class AwardsImageController extends RelationController
 {
+    use AuthorizesRequests;
+
     protected $model = Award::class;
 
     protected $request = ImageRequest::class;
-
-    protected $policy = ImagePolicy::class;
 
     protected $relation = 'image';
 

@@ -42,7 +42,6 @@ class ApiLogResource extends BaseResource
                     ->label('Log')
                     ->formatStateUsing(fn ($state) => match ($state) {
                         'api' => 'API',
-                        'jwt' => 'JWT',
                         'oauth' => 'OAuth',
                         default => Str::title($state)
                     })

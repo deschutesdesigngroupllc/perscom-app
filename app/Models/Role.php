@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\ClearsResponseCache;
+use BezhanSalleh\FilamentShield\Support\Utils;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
@@ -14,8 +16,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $guard_name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read bool $is_application_role
- * @property-read bool $is_custom_role
+ * @property-read mixed $is_application_role
+ * @property-read mixed $is_custom_role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
  * @property-read int|null $permissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
@@ -40,23 +42,26 @@ class Role extends \Spatie\Permission\Models\Role
     use ClearsResponseCache;
     use HasFactory;
 
-    protected $casts = [
-        'is_custom_role' => 'boolean',
-        'is_application_role' => 'boolean',
-    ];
-
     protected $appends = [
         'is_custom_role',
         'is_application_role',
     ];
 
-    public function getIsCustomRoleAttribute(): bool
+    public function isCustomRole(): Attribute
     {
-        return ! collect(config('permissions.roles'))->has($this->name);
+        return Attribute::get(fn () => ! $this->is_application_role)->shouldCache();
     }
 
-    public function getIsApplicationRoleAttribute(): bool
+    public function isApplicationRole(): Attribute
     {
-        return collect(config('permissions.roles'))->has($this->name);
+        return Attribute::get(fn ($value, $attributes) => data_get($attributes, 'name') === Utils::getSuperAdminName())->shouldCache();
+    }
+
+    protected function casts(): array
+    {
+        return [
+            'is_custom_role' => 'boolean',
+            'is_application_role' => 'boolean',
+        ];
     }
 }

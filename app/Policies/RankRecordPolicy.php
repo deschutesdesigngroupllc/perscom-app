@@ -6,53 +6,105 @@ namespace App\Policies;
 
 use App\Models\RankRecord;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RankRecordPolicy extends Policy
+class RankRecordPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_rankrecord');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, RankRecord $rankRecord): bool
     {
-        return $this->hasPermissionTo($user, 'view:rankrecord') || optional($user)->tokenCan('view:rankrecord');
+        return $user->can('view_rankrecord');
     }
 
-    public function view(?User $user, RankRecord $rank): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:rankrecord')
-            || $rank->user?->id === optional($user)->id
-            || optional($user)->tokenCan('view:rankrecord');
+        return $user->can('create_rankrecord');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, RankRecord $rankRecord): bool
     {
-        return $this->hasPermissionTo($user, 'create:rankrecord') || optional($user)->tokenCan('create:rankrecord');
+        return $user->can('update_rankrecord');
     }
 
-    public function update(?User $user, RankRecord $rank): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, RankRecord $rankRecord): bool
     {
-        return $this->hasPermissionTo($user, 'update:rankrecord') || optional($user)->tokenCan('update:rankrecord');
+        return $user->can('delete_rankrecord');
     }
 
-    public function delete(?User $user, RankRecord $rank): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rankrecord') || optional($user)->tokenCan('delete:rankrecord');
+        return $user->can('delete_any_rankrecord');
     }
 
-    public function restore(?User $user, RankRecord $rank): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, RankRecord $rankRecord): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rankrecord') || optional($user)->tokenCan('delete:rankrecord');
+        return $user->can('force_delete_rankrecord');
     }
 
-    public function forceDelete(?User $user, RankRecord $rank): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rankrecord') || optional($user)->tokenCan('delete:rankrecord');
+        return $user->can('force_delete_any_rankrecord');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, RankRecord $rankRecord): bool
+    {
+        return $user->can('restore_rankrecord');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_rankrecord');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, RankRecord $rankRecord): bool
+    {
+        return $user->can('replicate_rankrecord');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_rankrecord');
     }
 }

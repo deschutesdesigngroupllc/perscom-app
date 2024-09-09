@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Images;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\ImageRequest;
 use App\Models\Image;
-use App\Policies\ImagePolicy;
 use Illuminate\Database\Eloquent\Model;
 use Orion\Http\Controllers\Controller;
 use Orion\Http\Requests\Request;
 
 class ImagesController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Image::class;
 
     protected $request = ImageRequest::class;
-
-    protected $policy = ImagePolicy::class;
 
     public function includes(): array
     {

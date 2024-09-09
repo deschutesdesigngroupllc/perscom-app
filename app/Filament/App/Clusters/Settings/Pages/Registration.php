@@ -11,6 +11,7 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class Registration extends SettingsPage
@@ -25,7 +26,9 @@ class Registration extends SettingsPage
 
     public static function canAccess(): bool
     {
-        return Auth::user()->hasRole(Utils::getSuperAdminName());
+        return parent::canAccess()
+            && Auth::user()->hasRole(Utils::getSuperAdminName())
+            && ! App::isDemo();
     }
 
     public function form(Form $form): Form

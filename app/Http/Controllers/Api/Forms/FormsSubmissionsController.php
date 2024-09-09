@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Forms;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\SubmissionRequest;
 use App\Models\Form;
-use App\Policies\SubmissionPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class FormsSubmissionsController extends RelationController
 {
+    use AuthorizesRequests;
+
     protected $model = Form::class;
 
     protected $request = SubmissionRequest::class;
-
-    protected $policy = SubmissionPolicy::class;
 
     protected $relation = 'submissions';
 

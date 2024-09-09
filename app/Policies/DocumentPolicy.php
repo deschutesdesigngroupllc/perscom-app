@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Document;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class DocumentPolicy extends Policy
+class DocumentPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_document');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'view:document') || optional($user)->tokenCan('view:document');
+        return $user->can('view_document');
     }
 
-    public function view(?User $user, Document $document): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:document') || optional($user)->tokenCan('view:document');
+        return $user->can('create_document');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'create:document') || optional($user)->tokenCan('create:document');
+        return $user->can('update_document');
     }
 
-    public function update(?User $user, Document $document): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'update:document') || optional($user)->tokenCan('update:document');
+        return $user->can('delete_document');
     }
 
-    public function delete(?User $user, Document $document): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:document') || optional($user)->tokenCan('delete:document');
+        return $user->can('delete_any_document');
     }
 
-    public function restore(?User $user, Document $document): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Document $document): bool
     {
-        return $this->hasPermissionTo($user, 'delete:document') || optional($user)->tokenCan('delete:document');
+        return $user->can('force_delete_document');
     }
 
-    public function forceDelete(?User $user, Document $document): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:document') || optional($user)->tokenCan('delete:document');
+        return $user->can('force_delete_any_document');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Document $document): bool
+    {
+        return $user->can('restore_document');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_document');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Document $document): bool
+    {
+        return $user->can('replicate_document');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_document');
     }
 }

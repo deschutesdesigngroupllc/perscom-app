@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Specialty;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class SpecialtyPolicy extends Policy
+class SpecialtyPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_specialty');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Specialty $specialty): bool
     {
-        return $this->hasPermissionTo($user, 'view:specialty') || optional($user)->tokenCan('view:specialty');
+        return $user->can('view_specialty');
     }
 
-    public function view(?User $user, Specialty $mos): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:specialty') || optional($user)->tokenCan('view:specialty');
+        return $user->can('create_specialty');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Specialty $specialty): bool
     {
-        return $this->hasPermissionTo($user, 'create:specialty') || optional($user)->tokenCan('create:specialty');
+        return $user->can('update_specialty');
     }
 
-    public function update(?User $user, Specialty $mos): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Specialty $specialty): bool
     {
-        return $this->hasPermissionTo($user, 'update:specialty') || optional($user)->tokenCan('update:specialty');
+        return $user->can('delete_specialty');
     }
 
-    public function delete(?User $user, Specialty $mos): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:specialty') || optional($user)->tokenCan('delete:specialty');
+        return $user->can('delete_any_specialty');
     }
 
-    public function restore(?User $user, Specialty $mos): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Specialty $specialty): bool
     {
-        return $this->hasPermissionTo($user, 'delete:specialty') || optional($user)->tokenCan('delete:specialty');
+        return $user->can('force_delete_specialty');
     }
 
-    public function forceDelete(?User $user, Specialty $mos): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:specialty') || optional($user)->tokenCan('delete:specialty');
+        return $user->can('force_delete_any_specialty');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Specialty $specialty): bool
+    {
+        return $user->can('restore_specialty');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_specialty');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Specialty $specialty): bool
+    {
+        return $user->can('replicate_specialty');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_specialty');
     }
 }

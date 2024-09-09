@@ -118,7 +118,7 @@ class ApiLog extends Activity
     protected static function booted(): void
     {
         static::addGlobalScope('api', function (Builder $query) {
-            $query->whereIn('log_name', ['api', 'jwt', 'oauth']);
+            $query->whereIn('log_name', ['api', 'oauth']);
         });
     }
 

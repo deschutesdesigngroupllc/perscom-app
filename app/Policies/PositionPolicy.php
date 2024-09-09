@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Position;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PositionPolicy extends Policy
+class PositionPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_position');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Position $position): bool
     {
-        return $this->hasPermissionTo($user, 'view:position') || optional($user)->tokenCan('view:position');
+        return $user->can('view_position');
     }
 
-    public function view(?User $user, Position $position): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:position') || optional($user)->tokenCan('view:position');
+        return $user->can('create_position');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Position $position): bool
     {
-        return $this->hasPermissionTo($user, 'create:position') || optional($user)->tokenCan('create:position');
+        return $user->can('update_position');
     }
 
-    public function update(?User $user, Position $position): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Position $position): bool
     {
-        return $this->hasPermissionTo($user, 'update:position') || optional($user)->tokenCan('update:position');
+        return $user->can('delete_position');
     }
 
-    public function delete(?User $user, Position $position): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:position') || optional($user)->tokenCan('delete:position');
+        return $user->can('delete_any_position');
     }
 
-    public function restore(?User $user, Position $position): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Position $position): bool
     {
-        return $this->hasPermissionTo($user, 'delete:position') || optional($user)->tokenCan('delete:position');
+        return $user->can('force_delete_position');
     }
 
-    public function forceDelete(?User $user, Position $position): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:position') || optional($user)->tokenCan('delete:position');
+        return $user->can('force_delete_any_position');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Position $position): bool
+    {
+        return $user->can('restore_position');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_position');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Position $position): bool
+    {
+        return $user->can('replicate_position');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_position');
     }
 }

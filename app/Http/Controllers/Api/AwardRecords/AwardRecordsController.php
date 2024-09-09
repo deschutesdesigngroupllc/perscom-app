@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\AwardRecords;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\AwardRecordRequest;
 use App\Models\AwardRecord;
-use App\Policies\AwardRecordsPolicy;
 use Orion\Http\Controllers\Controller;
 
 class AwardRecordsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = AwardRecord::class;
 
     protected $request = AwardRecordRequest::class;
-
-    protected $policy = AwardRecordsPolicy::class;
 
     public function includes(): array
     {

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Specialties;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\SpecialtyRequest;
 use App\Models\Specialty;
-use App\Policies\SpecialtyPolicy;
 use Orion\Http\Controllers\Controller;
 
 class SpecialtiesController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Specialty::class;
 
     protected $request = SpecialtyRequest::class;
-
-    protected $policy = SpecialtyPolicy::class;
 
     public function includes(): array
     {

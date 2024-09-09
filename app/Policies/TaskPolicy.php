@@ -6,68 +6,105 @@ namespace App\Policies;
 
 use App\Models\Task;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class TaskPolicy extends Policy
+class TaskPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_task');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Task $task): bool
     {
-        return $this->hasPermissionTo($user, 'view:task') || optional($user)->tokenCan('view:task');
+        return $user->can('view_task');
     }
 
-    public function view(?User $user, Task $task): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:task') ||
-               optional($user)->tokenCan('view:task') ||
-               $task->users->contains($user);
+        return $user->can('create_task');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Task $task): bool
     {
-        return $this->hasPermissionTo($user, 'create:task') || optional($user)->tokenCan('create:task');
+        return $user->can('update_task');
     }
 
-    public function update(?User $user, Task $task): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Task $task): bool
     {
-        return $this->hasPermissionTo($user, 'update:task') || optional($user)->tokenCan('update:task');
+        return $user->can('delete_task');
     }
 
-    public function delete(?User $user, Task $task): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
+        return $user->can('delete_any_task');
     }
 
-    public function restore(?User $user, Task $task): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Task $task): bool
     {
-        return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
+        return $user->can('force_delete_task');
     }
 
-    public function forceDelete(?User $user, Task $task): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:task') || optional($user)->tokenCan('delete:task');
+        return $user->can('force_delete_any_task');
     }
 
-    public function attachAnyUser(?User $user, Task $task): bool
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Task $task): bool
     {
-        return $this->update($user, $task);
+        return $user->can('restore_task');
     }
 
-    public function attachUser(?User $user, Task $task): bool
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
     {
-        return $this->update($user, $task);
+        return $user->can('restore_any_task');
     }
 
-    public function detachUser(?User $user, Task $task): bool
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Task $task): bool
     {
-        return $this->update($user, $task);
+        return $user->can('replicate_task');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_task');
     }
 }

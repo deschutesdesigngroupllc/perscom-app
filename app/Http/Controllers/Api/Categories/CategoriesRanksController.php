@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Categories;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\RankRequest;
 use App\Models\Category;
-use App\Policies\RankPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class CategoriesRanksController extends RelationController
 {
+    use AuthorizesRequests;
+
     protected $model = Category::class;
 
     protected $request = RankRequest::class;
 
-    protected $policy = RankPolicy::class;
-
     protected $relation = 'ranks';
 
-    /**
-     * @var string[]
-     */
     protected $pivotFillable = ['order'];
 
     public function includes(): array

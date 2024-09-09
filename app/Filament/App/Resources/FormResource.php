@@ -170,8 +170,6 @@ class FormResource extends BaseResource
             'index' => Pages\ListForms::route('/'),
             'create' => Pages\CreateForm::route('/create'),
             'edit' => Pages\EditForm::route('/{record}/edit'),
-            'submit' => Pages\SubmitForm::route('/{record}/submit'),
-            'list' => Pages\PublicListForms::route('/list'),
         ];
     }
 

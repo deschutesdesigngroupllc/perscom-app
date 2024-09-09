@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Calendar;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CalendarPolicy extends Policy
+class CalendarPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_calendar');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'view:calendar') || optional($user)->tokenCan('view:calendar');
+        return $user->can('view_calendar');
     }
 
-    public function view(?User $user, Calendar $calendar): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:calendar') || optional($user)->tokenCan('view:calendar');
+        return $user->can('create_calendar');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'create:calendar') || optional($user)->tokenCan('create:calendar');
+        return $user->can('update_calendar');
     }
 
-    public function update(?User $user, Calendar $calendar): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'update:calendar') || optional($user)->tokenCan('update:calendar');
+        return $user->can('delete_calendar');
     }
 
-    public function delete(?User $user, Calendar $calendar): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
+        return $user->can('delete_any_calendar');
     }
 
-    public function restore(?User $user, Calendar $calendar): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Calendar $calendar): bool
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
+        return $user->can('force_delete_calendar');
     }
 
-    public function forceDelete(?User $user, Calendar $calendar): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:calendar') || optional($user)->tokenCan('delete:calendar');
+        return $user->can('force_delete_any_calendar');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Calendar $calendar): bool
+    {
+        return $user->can('restore_calendar');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_calendar');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Calendar $calendar): bool
+    {
+        return $user->can('replicate_calendar');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_calendar');
     }
 }

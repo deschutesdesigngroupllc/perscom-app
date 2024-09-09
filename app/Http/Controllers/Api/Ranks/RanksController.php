@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Ranks;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\RankRequest;
 use App\Models\Rank;
-use App\Policies\RankPolicy;
 use Orion\Http\Controllers\Controller;
 
 class RanksController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Rank::class;
 
     protected $request = RankRequest::class;
-
-    protected $policy = RankPolicy::class;
 
     public function includes(): array
     {

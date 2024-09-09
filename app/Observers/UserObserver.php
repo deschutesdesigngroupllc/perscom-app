@@ -14,6 +14,7 @@ use App\Notifications\User\PasswordChanged;
 use App\Services\WebhookService;
 use App\Settings\PermissionSettings;
 use App\Settings\RegistrationSettings;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Notification;
 
 class UserObserver
@@ -38,7 +39,7 @@ class UserObserver
             ]);
 
             Notification::send($user, new ApprovalRequired);
-            Notification::send(User::role('Admin')->get(), new AdminApprovalRequired($user));
+            Notification::send(User::role(Utils::getSuperAdminName())->get(), new AdminApprovalRequired($user));
         }
     }
 

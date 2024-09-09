@@ -2,17 +2,19 @@
 
 declare(strict_types=1);
 
+use App\Filament\App\Clusters\Settings;
+
 return [
     'shield_resource' => [
         'should_register_navigation' => true,
         'slug' => 'roles',
         'navigation_sort' => 8,
-        'navigation_badge' => true,
-        'navigation_group' => true,
+        'navigation_badge' => false,
+        'navigation_group' => false,
         'is_globally_searchable' => false,
-        'show_model_path' => true,
+        'show_model_path' => false,
         'is_scoped_to_tenant' => false,
-        'cluster' => null,
+        'cluster' => Settings::class,
     ],
 
     'auth_provider_model' => [
@@ -27,7 +29,7 @@ return [
     ],
 
     'panel_user' => [
-        'enabled' => true,
+        'enabled' => false,
         'name' => 'User',
     ],
 
@@ -53,7 +55,7 @@ return [
 
     'entities' => [
         'pages' => true,
-        'widgets' => true,
+        'widgets' => false,
         'resources' => true,
         'custom_permissions' => false,
     ],
@@ -69,6 +71,11 @@ return [
 
         'pages' => [
             'Dashboard',
+            'Integration',
+            'Logs',
+            'Organization',
+            'Permission',
+            'Registration',
         ],
 
         'widgets' => [

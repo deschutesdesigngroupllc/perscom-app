@@ -6,53 +6,105 @@ namespace App\Policies;
 
 use App\Models\AwardRecord;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AwardRecordPolicy extends Policy
+class AwardRecordPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_awardrecord');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, AwardRecord $awardRecord): bool
     {
-        return $this->hasPermissionTo($user, 'view:awardrecord') || optional($user)->tokenCan('view:awardrecord');
+        return $user->can('view_awardrecord');
     }
 
-    public function view(?User $user, AwardRecord $award): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:awardrecord')
-            || $award->user?->id === optional($user)->id
-            || optional($user)->tokenCan('view:awardrecord');
+        return $user->can('create_awardrecord');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, AwardRecord $awardRecord): bool
     {
-        return $this->hasPermissionTo($user, 'create:awardrecord') || optional($user)->tokenCan('create:awardrecord');
+        return $user->can('update_awardrecord');
     }
 
-    public function update(?User $user, AwardRecord $award): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, AwardRecord $awardRecord): bool
     {
-        return $this->hasPermissionTo($user, 'update:awardrecord') || optional($user)->tokenCan('update:awardrecord');
+        return $user->can('delete_awardrecord');
     }
 
-    public function delete(?User $user, AwardRecord $award): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || optional($user)->tokenCan('delete:awardrecord');
+        return $user->can('delete_any_awardrecord');
     }
 
-    public function restore(?User $user, AwardRecord $award): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, AwardRecord $awardRecord): bool
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || optional($user)->tokenCan('delete:awardrecord');
+        return $user->can('force_delete_awardrecord');
     }
 
-    public function forceDelete(?User $user, AwardRecord $award): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:awardrecord') || optional($user)->tokenCan('delete:awardrecord');
+        return $user->can('force_delete_any_awardrecord');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, AwardRecord $awardRecord): bool
+    {
+        return $user->can('restore_awardrecord');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_awardrecord');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, AwardRecord $awardRecord): bool
+    {
+        return $user->can('replicate_awardrecord');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_awardrecord');
     }
 }

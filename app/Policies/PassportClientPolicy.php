@@ -4,80 +4,107 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Features\OAuth2AccessFeature;
+use App\Models\PassportClient;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Gate;
-use Laravel\Passport\Client;
-use Laravel\Pennant\Feature;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PassportClientPolicy extends Policy
+class PassportClientPolicy
 {
-    public function before(): ?bool
+    use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
     {
-        if (App::isAdmin()) {
-            return false;
-        }
-
-        if (Feature::inactive(OAuth2AccessFeature::class)) {
-            return false;
-        }
-
-        return null;
+        return $user->can('view_any_passportclient');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, PassportClient $passportClient): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('view_passportclient');
     }
 
-    public function view(?User $user, Client $client): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
-
-        return Gate::check('api', $user);
+        return $user->can('create_passportclient');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, PassportClient $passportClient): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('update_passportclient');
     }
 
-    public function update(?User $user, Client $client): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, PassportClient $passportClient): bool
     {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
-
-        return Gate::check('api', $user);
+        return $user->can('delete_passportclient');
     }
 
-    public function delete(?User $user, Client $client): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
-
-        return Gate::check('api', $user);
+        return $user->can('delete_any_passportclient');
     }
 
-    public function restore(?User $user, Client $client): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, PassportClient $passportClient): bool
     {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
-
-        return Gate::check('api', $user);
+        return $user->can('force_delete_passportclient');
     }
 
-    public function forceDelete(?User $user, Client $client): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        if ($client->name === 'Default Personal Access Client' || $client->name === 'Default Password Grant Client') {
-            return false;
-        }
+        return $user->can('force_delete_any_passportclient');
+    }
 
-        return Gate::check('api', $user);
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, PassportClient $passportClient): bool
+    {
+        return $user->can('restore_passportclient');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_passportclient');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, PassportClient $passportClient): bool
+    {
+        return $user->can('replicate_passportclient');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_passportclient');
     }
 }

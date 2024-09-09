@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Tasks;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\TaskRequest;
 use App\Models\Task;
-use App\Policies\TaskPolicy;
 use Orion\Http\Controllers\Controller;
 
 class TasksController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Task::class;
 
     protected $request = TaskRequest::class;
-
-    protected $policy = TaskPolicy::class;
 
     public function includes(): array
     {

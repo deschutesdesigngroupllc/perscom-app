@@ -12,8 +12,7 @@ class TenantSeeder extends Seeder
     {
         $this->call([
             PassportSeeder::class,
-            PermissionSeeder::class,
-            RoleSeeder::class,
+            ShieldSeeder::class,
         ]);
     }
 }

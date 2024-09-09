@@ -13,6 +13,7 @@ use App\Notifications\User\ApprovalRequired;
 use App\Notifications\User\PasswordChanged;
 use App\Settings\PermissionSettings;
 use App\Settings\RegistrationSettings;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Illuminate\Support\Str;
@@ -95,7 +96,7 @@ class UserObserverTest extends TenantTestCase
         ]);
 
         $user = User::factory()->create();
-        $user->assignRole('Admin');
+        $user->assignRole(Utils::getSuperAdminName());
 
         User::factory()->create();
 

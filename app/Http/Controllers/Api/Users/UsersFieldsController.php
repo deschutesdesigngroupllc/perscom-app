@@ -4,20 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Users;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Models\User;
-use App\Policies\FieldPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class UsersFieldsController extends RelationController
 {
-    protected $model = User::class;
+    use AuthorizesRequests;
 
-    protected $policy = FieldPolicy::class;
+    protected $model = User::class;
 
     protected $relation = 'fields';
 
-    /**
-     * @var string[]
-     */
     protected $pivotFillable = ['order'];
 }

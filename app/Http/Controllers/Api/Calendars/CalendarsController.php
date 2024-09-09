@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Calendars;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\CalendarRequest;
 use App\Models\Calendar;
-use App\Policies\CalendarPolicy;
 use Orion\Http\Controllers\Controller;
 
 class CalendarsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Calendar::class;
 
     protected $request = CalendarRequest::class;
-
-    protected $policy = CalendarPolicy::class;
 
     public function exposedScopes(): array
     {

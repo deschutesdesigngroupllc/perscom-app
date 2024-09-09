@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Positions;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\PositionRequest;
 use App\Models\Position;
-use App\Policies\PositionPolicy;
 use Orion\Http\Controllers\Controller;
 
 class PositionsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Position::class;
 
     protected $request = PositionRequest::class;
-
-    protected $policy = PositionPolicy::class;
 
     public function includes(): array
     {

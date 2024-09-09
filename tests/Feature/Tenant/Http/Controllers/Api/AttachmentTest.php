@@ -7,6 +7,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 use App\Http\Controllers\Api\Attachments\AttachmentsController;
 use App\Models\Attachment;
 use App\Models\ServiceRecord;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 
@@ -14,7 +15,7 @@ class AttachmentTest extends ApiResourceTestCase
 {
     public function beforeTestCanReachIndexEndpoint(): void
     {
-        $this->user->assignRole('Admin');
+        $this->user->assignRole(Utils::getSuperAdminName());
     }
 
     public function endpoint(): string

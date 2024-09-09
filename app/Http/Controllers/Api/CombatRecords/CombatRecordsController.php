@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\CombatRecords;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\CombatRecordRequest;
 use App\Models\CombatRecord;
-use App\Policies\CombatRecordPolicy;
 use Orion\Http\Controllers\Controller;
 
 class CombatRecordsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = CombatRecord::class;
 
     protected $request = CombatRecordRequest::class;
-
-    protected $policy = CombatRecordPolicy::class;
 
     public function includes(): array
     {

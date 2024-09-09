@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\TaskAssignmentStatus;
-use App\Models\Scopes\TaskAssignmentScope;
 use App\Observers\TaskAssignmentObserver;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\Carbon;
 use Carbon\CarbonInterface;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -61,7 +59,6 @@ use Illuminate\Support\Facades\DB;
  * @mixin \Eloquent
  */
 #[ObservedBy(TaskAssignmentObserver::class)]
-#[ScopedBy(TaskAssignmentScope::class)]
 class TaskAssignment extends Pivot
 {
     use ClearsResponseCache;

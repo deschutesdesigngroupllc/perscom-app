@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Units;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\UnitRequest;
 use App\Models\Unit;
-use App\Policies\UnitPolicy;
 use Orion\Http\Controllers\Controller;
 
 class UnitsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Unit::class;
 
     protected $request = UnitRequest::class;
-
-    protected $policy = UnitPolicy::class;
 
     public function exposedScopes(): array
     {

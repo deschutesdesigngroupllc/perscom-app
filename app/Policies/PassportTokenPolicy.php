@@ -4,60 +4,107 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Features\ApiAccessFeature;
 use App\Models\PassportToken;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Gate;
-use Laravel\Pennant\Feature;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PassportTokenPolicy extends Policy
+class PassportTokenPolicy
 {
-    public function before(): ?bool
+    use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
     {
-        if (App::isAdmin()) {
-            return false;
-        }
-
-        if (Feature::inactive(ApiAccessFeature::class)) {
-            return false;
-        }
-
-        return null;
+        return $user->can('view_any_passporttoken');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, PassportToken $passportToken): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('view_passporttoken');
     }
 
-    public function view(?User $user, PassportToken $token): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('create_passporttoken');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, PassportToken $passportToken): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('update_passporttoken');
     }
 
-    public function update(?User $user, PassportToken $token): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, PassportToken $passportToken): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('delete_passporttoken');
     }
 
-    public function delete(?User $user, PassportToken $token): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('delete_any_passporttoken');
     }
 
-    public function restore(?User $user, PassportToken $token): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, PassportToken $passportToken): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('force_delete_passporttoken');
     }
 
-    public function forceDelete(?User $user, PassportToken $token): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return Gate::check('api', $user);
+        return $user->can('force_delete_any_passporttoken');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, PassportToken $passportToken): bool
+    {
+        return $user->can('restore_passporttoken');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_passporttoken');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, PassportToken $passportToken): bool
+    {
+        return $user->can('replicate_passporttoken');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_passporttoken');
     }
 }

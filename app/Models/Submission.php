@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Models\Scopes\SubmissionScope;
 use App\Observers\SubmissionObserver;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasComments;
@@ -14,7 +13,6 @@ use App\Traits\HasStatuses;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -62,7 +60,6 @@ use Stringable;
  * @mixin \Eloquent
  */
 #[ObservedBy(SubmissionObserver::class)]
-#[ScopedBy(SubmissionScope::class)]
 class Submission extends Model implements HasLabel, Htmlable, Stringable
 {
     use ClearsResponseCache;
@@ -91,7 +88,7 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
             $user = match (true) {
                 isset($model->user) => $model->user,
                 Auth::guard('web')->check() => Auth::guard('web')->user(),
-                Auth::guard('jwt')->check() => Auth::guard('jwt')->user(),
+                Auth::guard('api')->check() => Auth::guard('api')->user(),
                 default => null
             };
 

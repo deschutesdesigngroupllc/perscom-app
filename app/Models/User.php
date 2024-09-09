@@ -19,7 +19,7 @@ use App\Traits\HasResourceUrl;
 use App\Traits\HasServiceRecords;
 use App\Traits\HasStatuses;
 use App\Traits\JwtClaims;
-use BezhanSalleh\FilamentShield\Traits\HasPanelShield;
+use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Models\Contracts\HasName;
@@ -173,7 +173,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     use HasCombatRecords;
     use HasCustomFields;
     use HasFactory;
-    use HasPanelShield;
     use HasPermissions;
     use HasProfilePhoto;
     use HasQualificationRecords;
@@ -254,6 +253,19 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     }
 
     public function canAccessTenant(Model $tenant): bool
+    {
+        return true;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return $panel->getId() === 'app';
+    }
+
+    public function canImpersonate(): bool
     {
         return true;
     }

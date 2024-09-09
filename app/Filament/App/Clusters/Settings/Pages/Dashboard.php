@@ -20,6 +20,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rule;
@@ -40,7 +41,9 @@ class Dashboard extends SettingsPage
 
     public static function canAccess(): bool
     {
-        return Auth::user()->hasRole(Utils::getSuperAdminName());
+        return parent::canAccess()
+            && Auth::user()->hasRole(Utils::getSuperAdminName())
+            && ! App::isDemo();
     }
 
     public function form(Form $form): Form

@@ -13,6 +13,7 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
 class Organization extends SettingsPage
@@ -27,7 +28,9 @@ class Organization extends SettingsPage
 
     public static function canAccess(): bool
     {
-        return Auth::user()->hasRole(Utils::getSuperAdminName());
+        return parent::canAccess()
+            && Auth::user()->hasRole(Utils::getSuperAdminName())
+            && ! App::isDemo();
     }
 
     public function form(Form $form): Form

@@ -2,39 +2,38 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Resources\FormResource\Pages;
+namespace App\Filament\App\Pages\Forms;
 
-use App\Contracts\HasFields;
-use App\Filament\App\Resources\FormResource;
 use App\Models\Form as FormModel;
 use App\Models\Submission;
 use App\Traits\Filament\InteractsWithFields;
+use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Pages\Concerns\InteractsWithFormActions;
-use Filament\Resources\Pages\Concerns\InteractsWithRecord;
-use Filament\Resources\Pages\Page;
-use Illuminate\Support\Facades\Gate;
+use Filament\Pages\Page;
+use Illuminate\Contracts\Support\Htmlable;
 
 /**
  * @property Form $form
  */
-class SubmitForm extends Page implements HasForms
+class Submit extends Page implements HasForms
 {
+    use HasPageShield;
     use HasUnsavedDataChangesAlert;
     use InteractsWithFields;
     use InteractsWithFormActions;
     use InteractsWithForms;
-    use InteractsWithRecord;
+
+    public ?FormModel $submissionForm = null;
 
     public ?array $data;
 
-    protected static string $resource = FormResource::class;
+    protected static ?string $slug = '/forms/submit/{record}';
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
@@ -44,53 +43,36 @@ class SubmitForm extends Page implements HasForms
 
     protected static bool $shouldRegisterNavigation = false;
 
-    protected static ?string $title = 'Forms';
-
-    public static function authorizeResourceAccess(): void
-    {
-        abort_unless(Gate::check('create', Submission::class), 403);
-    }
-
-    public function getBreadcrumb(): string
-    {
-        /** @var FormModel $formModel */
-        $formModel = $this->getRecord();
-
-        return $formModel->name;
-    }
+    protected static ?string $title = 'Submit Form';
 
     public function mount(int|string $record): void
     {
-        $this->record = $this->resolveRecord($record);
+        $this->submissionForm = FormModel::findOrFail($record);
+    }
+
+    public function getTitle(): string|Htmlable
+    {
+        return $this->submissionForm->name ?? 'Submit Form';
     }
 
     public function form(Form $form): Form
     {
-        /** @var HasFields $record */
-        $record = $this->getRecord();
-
         return $form
             ->statePath('data')
-            ->schema([
-                Section::make($record->name)
-                    ->schema(SubmitForm::getFormSchemaFromFields($record)),
-            ]);
+            ->schema(Submit::getFormSchemaFromFields($this->submissionForm));
     }
 
-    public function save(bool $shouldRedirect = true, bool $shouldSendSavedNotification = true): void
+    public function submit(): void
     {
         $data = $this->form->getState();
 
-        /** @var FormModel $formModel */
-        $formModel = $this->getRecord();
-
         Submission::create(array_merge([
-            'form_id' => $formModel->getKey(),
+            'form_id' => $this->submissionForm->getKey(),
         ], data_get($data, 'data')));
 
         $this->getSavedNotification()->send();
 
-        $this->redirect(FormResource::getUrl('list'));
+        $this->redirect(Forms::getUrl());
     }
 
     protected function getSavedNotification(): Notification

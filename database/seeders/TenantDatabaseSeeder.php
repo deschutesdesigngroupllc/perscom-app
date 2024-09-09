@@ -28,6 +28,7 @@ use App\Models\Status;
 use App\Models\Task;
 use App\Models\Unit;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
@@ -46,7 +47,7 @@ class TenantDatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@deschutesdesigngroup.com',
         ]);
-        $user->assignRole('Admin');
+        $user->assignRole(Utils::getSuperAdminName());
 
         Announcement::factory()
             ->count(2)

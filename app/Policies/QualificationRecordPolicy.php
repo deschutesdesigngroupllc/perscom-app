@@ -6,58 +6,105 @@ namespace App\Policies;
 
 use App\Models\QualificationRecord;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class QualificationRecordPolicy extends Policy
+class QualificationRecordPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_qualificationrecord');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, QualificationRecord $qualificationRecord): bool
     {
-        return $this->hasPermissionTo($user, 'view:qualificationrecord') || optional($user)->tokenCan('view:qualificationrecord');
+        return $user->can('view_qualificationrecord');
     }
 
-    public function view(?User $user, QualificationRecord $qualification): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:qualificationrecord')
-            || $qualification->user?->id === optional($user)->id
-            || optional($user)->tokenCan('view:qualificationrecord');
+        return $user->can('create_qualificationrecord');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, QualificationRecord $qualificationRecord): bool
     {
-        return $this->hasPermissionTo($user, 'create:qualificationrecord') ||
-               optional($user)->tokenCan('create:qualificationrecord');
+        return $user->can('update_qualificationrecord');
     }
 
-    public function update(?User $user, QualificationRecord $qualification): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, QualificationRecord $qualificationRecord): bool
     {
-        return $this->hasPermissionTo($user, 'update:qualificationrecord') ||
-               optional($user)->tokenCan('update:qualificationrecord');
+        return $user->can('delete_qualificationrecord');
     }
 
-    public function delete(?User $user, QualificationRecord $qualification): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
-               optional($user)->tokenCan('delete:qualificationrecord');
+        return $user->can('delete_any_qualificationrecord');
     }
 
-    public function restore(?User $user, QualificationRecord $qualification): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, QualificationRecord $qualificationRecord): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
-               optional($user)->tokenCan('delete:qualificationrecord');
+        return $user->can('force_delete_qualificationrecord');
     }
 
-    public function forceDelete(?User $user, QualificationRecord $qualification): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualificationrecord') ||
-               optional($user)->tokenCan('delete:qualificationrecord');
+        return $user->can('force_delete_any_qualificationrecord');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, QualificationRecord $qualificationRecord): bool
+    {
+        return $user->can('restore_qualificationrecord');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_qualificationrecord');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, QualificationRecord $qualificationRecord): bool
+    {
+        return $user->can('replicate_qualificationrecord');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_qualificationrecord');
     }
 }

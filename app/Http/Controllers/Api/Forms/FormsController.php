@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Forms;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\FormRequest;
 use App\Models\Form;
-use App\Policies\FormPolicy;
 use Orion\Http\Controllers\Controller;
 
 class FormsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Form::class;
 
     protected $request = FormRequest::class;
-
-    protected $policy = FormPolicy::class;
 
     public function exposedScopes(): array
     {

@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Group;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class GroupPolicy extends Policy
+class GroupPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_group');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Group $group): bool
     {
-        return $this->hasPermissionTo($user, 'view:group') || optional($user)->tokenCan('view:group');
+        return $user->can('view_group');
     }
 
-    public function view(?User $user, Group $group): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:group') || optional($user)->tokenCan('view:group');
+        return $user->can('create_group');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Group $group): bool
     {
-        return $this->hasPermissionTo($user, 'create:group') || optional($user)->tokenCan('create:group');
+        return $user->can('update_group');
     }
 
-    public function update(?User $user, Group $group): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Group $group): bool
     {
-        return $this->hasPermissionTo($user, 'update:group') || optional($user)->tokenCan('update:group');
+        return $user->can('delete_group');
     }
 
-    public function delete(?User $user, Group $group): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:group');
+        return $user->can('delete_any_group');
     }
 
-    public function restore(?User $user, Group $group): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Group $group): bool
     {
-        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:group');
+        return $user->can('force_delete_group');
     }
 
-    public function forceDelete(?User $user, Group $group): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:group') || optional($user)->tokenCan('delete:group');
+        return $user->can('force_delete_any_group');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Group $group): bool
+    {
+        return $user->can('restore_group');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_group');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Group $group): bool
+    {
+        return $user->can('replicate_group');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_group');
     }
 }

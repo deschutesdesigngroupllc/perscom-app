@@ -5,97 +5,105 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class UserPolicy extends Policy
+class UserPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_user');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:user') || optional($user)->tokenCan('view:user');
+        return $user->can('view_user');
     }
 
-    public function view(?User $user, User $model): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:user')
-            || optional($user)->id === $model->id
-            || optional($user)->tokenCan('view:user');
+        return $user->can('create_user');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'create:user') || optional($user)->tokenCan('create:user');
+        return $user->can('update_user');
     }
 
-    public function update(?User $user, User $model): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user): bool
     {
-        if (App::isDemo() && $model->email === config('demo.email')) {
-            return false;
-        }
-
-        return $this->hasPermissionTo($user, 'update:user')
-            || optional($user)->id === $model->id
-            || optional($user)->tokenCan('update:user');
+        return $user->can('delete_user');
     }
 
-    public function delete(?User $user, User $model): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        if (App::isDemo() && $model->email === config('demo.email')) {
-            return false;
-        }
-
-        if ($model->email === tenant('email')) {
-            return false;
-        }
-
-        return $this->hasPermissionTo($user, 'delete:user') || optional($user)->tokenCan('delete:user');
+        return $user->can('delete_any_user');
     }
 
-    public function restore(?User $user, User $model): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:user') || optional($user)->tokenCan('delete:user');
+        return $user->can('force_delete_user');
     }
 
-    public function forceDelete(?User $user, User $model): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:user') || optional($user)->tokenCan('delete:user');
+        return $user->can('force_delete_any_user');
     }
 
-    public function impersonate(?User $user, User $model): bool
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'impersonate:user') || optional($user)->tokenCan('impersonate:user');
+        return $user->can('restore_user');
     }
 
-    public function note(?User $user = null): bool
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'note:user') || optional($user)->tokenCan('note:user');
+        return $user->can('restore_any_user');
     }
 
-    public function newsfeed(?User $user = null): bool
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function replicate(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'manage:newsfeed') || optional($user)->tokenCan('manage:newsfeed');
+        return $user->can('replicate_user');
     }
 
-    public function billing(?User $user = null): bool
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'manage:billing') || optional($user)->tokenCan('manage:billing');
-    }
-
-    public function api(?User $user = null): bool
-    {
-        return $this->hasPermissionTo($user, 'manage:api') || optional($user)->tokenCan('manage:api');
-    }
-
-    public function webhook(?User $user = null): bool
-    {
-        return $this->hasPermissionTo($user, 'manage:webhook') || optional($user)->tokenCan('manage:webhook');
+        return $user->can('reorder_user');
     }
 }

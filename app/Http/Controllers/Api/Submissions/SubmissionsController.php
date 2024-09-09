@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Submissions;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\SubmissionRequest;
 use App\Models\Submission;
-use App\Policies\SubmissionPolicy;
 use Orion\Http\Controllers\Controller;
 
 class SubmissionsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Submission::class;
 
     protected $request = SubmissionRequest::class;
-
-    protected $policy = SubmissionPolicy::class;
 
     public function includes(): array
     {

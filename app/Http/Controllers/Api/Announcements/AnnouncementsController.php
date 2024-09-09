@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Announcements;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\AnnouncementRequest;
 use App\Models\Announcement;
-use App\Policies\AnnouncementPolicy;
 use Orion\Http\Controllers\Controller;
 
 class AnnouncementsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Announcement::class;
 
     protected $request = AnnouncementRequest::class;
-
-    protected $policy = AnnouncementPolicy::class;
 
     public function exposedScopes(): array
     {

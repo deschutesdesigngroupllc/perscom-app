@@ -10,6 +10,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Settings\DashboardSettings;
 use App\Settings\OrganizationSettings;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -118,7 +119,7 @@ class SetupTenantAccount
             'password' => $password,
             'password_confirmation' => $password,
         ]);
-        $user->assignRole('Admin');
+        $user->assignRole(Utils::getSuperAdminName());
 
         Mail::to($user)->send(new NewTenantMail($this->tenant, $user, $password));
     }

@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Support\Collection;
 use Spatie\Permission\Models\Permission as BasePermission;
 
 /**
@@ -17,8 +16,6 @@ use Spatie\Permission\Models\Permission as BasePermission;
  * @property string $guard_name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read bool $is_application_permission
- * @property-read bool $is_custom_permission
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
@@ -46,29 +43,4 @@ class Permission extends BasePermission implements Arrayable
 {
     use ClearsResponseCache;
     use HasFactory;
-
-    protected $casts = [
-        'is_custom_permission' => 'boolean',
-        'is_application_permission' => 'boolean',
-    ];
-
-    protected $appends = [
-        'is_custom_permission',
-        'is_application_permission',
-    ];
-
-    public static function getPermissionsFromConfig(): Collection
-    {
-        return collect(config('permissions.permissions'));
-    }
-
-    public function getIsCustomPermissionAttribute(): bool
-    {
-        return ! self::getPermissionsFromConfig()->has($this->name);
-    }
-
-    public function getIsApplicationPermissionAttribute(): bool
-    {
-        return self::getPermissionsFromConfig()->has($this->name);
-    }
 }

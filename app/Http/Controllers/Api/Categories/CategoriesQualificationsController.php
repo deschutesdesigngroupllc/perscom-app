@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Categories;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\QualificationRequest;
 use App\Models\Category;
-use App\Policies\QualificationPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class CategoriesQualificationsController extends RelationController
 {
+    use AuthorizesRequests;
+
     protected $model = Category::class;
 
     protected $request = QualificationRequest::class;
 
-    protected $policy = QualificationPolicy::class;
-
     protected $relation = 'qualifications';
 
-    /**
-     * @var string[]
-     */
     protected $pivotFillable = ['order'];
 
     public function includes(): array

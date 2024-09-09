@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Groups;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\GroupRequest;
 use App\Models\Group;
-use App\Policies\GroupPolicy;
 use Orion\Http\Controllers\Controller;
 
 class GroupsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Group::class;
 
     protected $request = GroupRequest::class;
-
-    protected $policy = GroupPolicy::class;
 
     public function exposedScopes(): array
     {

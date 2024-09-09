@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Users;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\UserRequest;
 use App\Models\User;
-use App\Policies\UserPolicy;
 use Illuminate\Database\Eloquent\Model;
 use Orion\Http\Controllers\Controller;
 use Orion\Http\Requests\Request;
 
 class UsersController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = User::class;
 
     protected $request = UserRequest::class;
-
-    protected $policy = UserPolicy::class;
 
     public function includes(): array
     {

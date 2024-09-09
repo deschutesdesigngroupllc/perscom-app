@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Users;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\AssignmentRecordRequest;
 use App\Models\User;
-use App\Policies\AssignmentRecordsPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class UsersAssignmentRecordsController extends RelationController
 {
+    use AuthorizesRequests;
+
     protected $model = User::class;
 
     protected $request = AssignmentRecordRequest::class;
-
-    protected $policy = AssignmentRecordsPolicy::class;
 
     protected $relation = 'assignment_records';
 

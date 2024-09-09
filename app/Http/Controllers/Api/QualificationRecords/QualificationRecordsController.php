@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\QualificationRecords;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\QualificationRecordRequest;
 use App\Models\QualificationRecord;
-use App\Policies\QualificationRecordPolicy;
 use Orion\Http\Controllers\Controller;
 
 class QualificationRecordsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = QualificationRecord::class;
 
     protected $request = QualificationRecordRequest::class;
-
-    protected $policy = QualificationRecordPolicy::class;
 
     public function includes(): array
     {

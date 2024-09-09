@@ -4,60 +4,107 @@ declare(strict_types=1);
 
 namespace App\Policies;
 
-use App\Features\WebhookFeature;
 use App\Models\User;
 use App\Models\Webhook;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Gate;
-use Laravel\Pennant\Feature;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class WebhookPolicy extends Policy
+class WebhookPolicy
 {
-    public function before(): ?bool
+    use HandlesAuthorization;
+
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
     {
-        if (App::isAdmin()) {
-            return false;
-        }
-
-        if (Feature::inactive(WebhookFeature::class)) {
-            return false;
-        }
-
-        return null;
+        return $user->can('view_any_webhook');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Webhook $webhook): bool
     {
-        return Gate::check('webhook', $user);
+        return $user->can('view_webhook');
     }
 
-    public function view(?User $user, Webhook $webhook): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return Gate::check('webhook', $user);
+        return $user->can('create_webhook');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Webhook $webhook): bool
     {
-        return Gate::check('webhook', $user);
+        return $user->can('update_webhook');
     }
 
-    public function update(?User $user, Webhook $webhook): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Webhook $webhook): bool
     {
-        return Gate::check('webhook', $user);
+        return $user->can('delete_webhook');
     }
 
-    public function delete(?User $user, Webhook $webhook): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return Gate::check('webhook', $user);
+        return $user->can('delete_any_webhook');
     }
 
-    public function restore(?User $user, Webhook $webhook): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Webhook $webhook): bool
     {
-        return Gate::check('webhook', $user);
+        return $user->can('force_delete_webhook');
     }
 
-    public function forceDelete(?User $user, Webhook $webhook): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return Gate::check('webhook', $user);
+        return $user->can('force_delete_any_webhook');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Webhook $webhook): bool
+    {
+        return $user->can('restore_webhook');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_webhook');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Webhook $webhook): bool
+    {
+        return $user->can('replicate_webhook');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_webhook');
     }
 }

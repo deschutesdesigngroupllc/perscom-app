@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Rank;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class RankPolicy extends Policy
+class RankPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_rank');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Rank $rank): bool
     {
-        return $this->hasPermissionTo($user, 'view:rank') || optional($user)->tokenCan('view:rank');
+        return $user->can('view_rank');
     }
 
-    public function view(?User $user, Rank $rank): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:rank') || optional($user)->tokenCan('view:rank');
+        return $user->can('create_rank');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Rank $rank): bool
     {
-        return $this->hasPermissionTo($user, 'create:rank') || optional($user)->tokenCan('create:rank');
+        return $user->can('update_rank');
     }
 
-    public function update(?User $user, Rank $rank): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Rank $rank): bool
     {
-        return $this->hasPermissionTo($user, 'update:rank') || optional($user)->tokenCan('update:rank');
+        return $user->can('delete_rank');
     }
 
-    public function delete(?User $user, Rank $rank): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rank') || optional($user)->tokenCan('delete:rank');
+        return $user->can('delete_any_rank');
     }
 
-    public function restore(?User $user, Rank $rank): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Rank $rank): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rank') || optional($user)->tokenCan('delete:rank');
+        return $user->can('force_delete_rank');
     }
 
-    public function forceDelete(?User $user, Rank $rank): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:rank') || optional($user)->tokenCan('delete:rank');
+        return $user->can('force_delete_any_rank');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Rank $rank): bool
+    {
+        return $user->can('restore_rank');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_rank');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Rank $rank): bool
+    {
+        return $user->can('replicate_rank');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_rank');
     }
 }

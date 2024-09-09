@@ -10,6 +10,7 @@ use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
@@ -19,6 +20,11 @@ use Illuminate\Support\Str;
  */
 class UserFactory extends Factory
 {
+    public function configure(): static
+    {
+        return $this->afterCreating(fn (User $user) => $user->assignRole(Utils::getPanelUserRoleName()));
+    }
+
     public function definition(): array
     {
         return [

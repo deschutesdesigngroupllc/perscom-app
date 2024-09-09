@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Announcement;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AnnouncementPolicy extends Policy
+class AnnouncementPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_announcement');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Announcement $announcement): bool
     {
-        return $this->hasPermissionTo($user, 'view:announcement') || optional($user)->tokenCan('view:announcement');
+        return $user->can('view_announcement');
     }
 
-    public function view(?User $user, Announcement $announcement): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:announcement') || optional($user)->tokenCan('view:announcement');
+        return $user->can('create_announcement');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Announcement $announcement): bool
     {
-        return $this->hasPermissionTo($user, 'create:announcement') || optional($user)->tokenCan('create:announcement');
+        return $user->can('update_announcement');
     }
 
-    public function update(?User $user, Announcement $announcement): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Announcement $announcement): bool
     {
-        return $this->hasPermissionTo($user, 'update:announcement') || optional($user)->tokenCan('update:announcement');
+        return $user->can('delete_announcement');
     }
 
-    public function delete(?User $user, Announcement $announcement): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:announcement') || optional($user)->tokenCan('delete:announcement');
+        return $user->can('delete_any_announcement');
     }
 
-    public function restore(?User $user, Announcement $announcement): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Announcement $announcement): bool
     {
-        return $this->hasPermissionTo($user, 'delete:announcement') || optional($user)->tokenCan('delete:announcement');
+        return $user->can('force_delete_announcement');
     }
 
-    public function forceDelete(?User $user, Announcement $announcement): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:announcement') || optional($user)->tokenCan('delete:announcement');
+        return $user->can('force_delete_any_announcement');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Announcement $announcement): bool
+    {
+        return $user->can('restore_announcement');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_announcement');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Announcement $announcement): bool
+    {
+        return $user->can('replicate_announcement');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_announcement');
     }
 }

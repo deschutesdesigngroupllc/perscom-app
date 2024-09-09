@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Features;
 
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Gate;
 
 class BillingFeature extends BaseFeature
 {
@@ -25,8 +25,7 @@ class BillingFeature extends BaseFeature
         $user = request()->user();
 
         return match (true) {
-            $user->hasRole('Admin') => true,
-            Gate::check('billing', $user) => true,
+            $user->hasRole(Utils::getSuperAdminName()) => true,
             default => false,
         };
     }

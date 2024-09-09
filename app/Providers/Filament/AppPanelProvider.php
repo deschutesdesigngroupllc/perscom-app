@@ -11,7 +11,6 @@ use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Filament\App\Resources\AwardRecordResource;
 use App\Filament\App\Resources\CombatRecordResource;
 use App\Filament\App\Resources\EventResource;
-use App\Filament\App\Resources\FormResource\Pages\PublicListForms;
 use App\Filament\App\Resources\QualificationRecordResource;
 use App\Filament\App\Resources\RankRecordResource;
 use App\Filament\App\Resources\ServiceRecordResource;
@@ -66,10 +65,10 @@ class AppPanelProvider extends PanelProvider
             ])
             ->font('Inter', provider: SpatieGoogleFontProvider::class)
             ->discoverResources(in: app_path('Filament/App/Resources'), for: 'App\\Filament\\App\\Resources')
+            ->discoverResources(in: app_path('Filament/Resources'), for: 'App\\Filament\\Resources')
             ->discoverPages(in: app_path('Filament/App/Pages'), for: 'App\\Filament\\App\\Pages')
             ->pages([
                 Dashboard::class,
-                PublicListForms::class,
             ])
             ->discoverWidgets(in: app_path('Filament/App/Widgets'), for: 'App\\Filament\\App\\Widgets')
             ->discoverClusters(in: app_path('Filament/App/Clusters'), for: 'App\\Filament\\App\\Clusters')

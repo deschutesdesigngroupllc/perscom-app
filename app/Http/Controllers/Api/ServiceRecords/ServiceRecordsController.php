@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\ServiceRecords;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\ServiceRecordRequest;
 use App\Models\ServiceRecord;
-use App\Policies\ServiceRecordPolicy;
 use Orion\Http\Controllers\Controller;
 
 class ServiceRecordsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = ServiceRecord::class;
 
     protected $request = ServiceRecordRequest::class;
-
-    protected $policy = ServiceRecordPolicy::class;
 
     public function includes(): array
     {

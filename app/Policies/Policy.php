@@ -26,8 +26,8 @@ abstract class Policy
                 }
             }
 
-            if (Auth::guard('jwt')->check()) {
-                if ($payload = Auth::guard('jwt')->payload()) { // @phpstan-ignore-line
+            if (Auth::guard('api')->check()) {
+                if ($payload = Auth::guard('api')->payload()) {
                     $scopes = Arr::wrap($payload->get('scopes'));
 
                     return in_array('*', $scopes) || in_array($permission, $scopes);

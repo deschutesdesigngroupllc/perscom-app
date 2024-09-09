@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Laravel\Passport\Client;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogApiRequests
@@ -17,10 +18,10 @@ class LogApiRequests
         $response = $next($request);
 
         if (tenant()) {
+            /** @var Client $client */
             $client = Auth::guard('passport')->client(); // @phpstan-ignore-line
 
             $name = match (true) {
-                Auth::guard('jwt')->check() => 'jwt',
                 optional($client)->firstParty() => 'api',
                 ! optional($client)->firstParty() => 'oauth',
                 default => 'api'

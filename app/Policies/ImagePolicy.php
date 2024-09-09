@@ -6,52 +6,105 @@ namespace App\Policies;
 
 use App\Models\Image;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class ImagePolicy extends Policy
+class ImagePolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_image');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Image $image): bool
     {
-        return optional($user)->hasRole('Admin');
+        return $user->can('view_image');
     }
 
-    public function view(?User $user, Image $image): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return Gate::check('view', $image->model);
+        return $user->can('create_image');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Image $image): bool
     {
-        return $this->hasPermissionTo($user, 'create:image') || optional($user)->tokenCan('create:image');
+        return $user->can('update_image');
     }
 
-    public function update(?User $user, Image $image): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Image $image): bool
     {
-        return Gate::check('update', $image->model);
+        return $user->can('delete_image');
     }
 
-    public function delete(?User $user, Image $image): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return Gate::check('delete', $image->model);
+        return $user->can('delete_any_image');
     }
 
-    public function restore(?User $user, Image $image): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Image $image): bool
     {
-        return Gate::check('restore', $image->model);
+        return $user->can('force_delete_image');
     }
 
-    public function forceDelete(?User $user, Image $image): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return Gate::check('forceDelete', $image->model);
+        return $user->can('force_delete_any_image');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Image $image): bool
+    {
+        return $user->can('restore_image');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_image');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Image $image): bool
+    {
+        return $user->can('replicate_image');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_image');
     }
 }

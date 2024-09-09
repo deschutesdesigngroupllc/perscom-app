@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Documents;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\DocumentRequest;
 use App\Models\Document;
-use App\Policies\DocumentPolicy;
 use Orion\Http\Controllers\Controller;
 
 class DocumentsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Document::class;
 
     protected $request = DocumentRequest::class;
-
-    protected $policy = DocumentPolicy::class;
 
     public function exposedScopes(): array
     {

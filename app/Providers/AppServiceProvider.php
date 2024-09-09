@@ -9,14 +9,15 @@ use App\Filament\App\Pages\Dashboard;
 use App\Models\Admin;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
-use App\Models\Permission;
 use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
+use App\Services\ApiPermissionService;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
 use Filament\Support\Facades\FilamentView;
@@ -50,7 +51,7 @@ class AppServiceProvider extends ServiceProvider
 
         Passport::enableImplicitGrant();
         Passport::ignoreRoutes();
-        Passport::tokensCan(Permission::getPermissionsFromConfig()->toArray());
+        Passport::tokensCan(ApiPermissionService::scopes());
         Passport::useAccessTokenEntity(AccessToken::class);
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
@@ -68,7 +69,6 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        //$this->app->extend('url', fn (UrlGenerator $generator) => new TenantUrlGenerator($this->app->make('router')->getRoutes(), $generator->getRequest(), $this->app->make('config')->get('app.asset_url')));
         $this->app->extend(BusDispatcher::class, fn ($dispatcher, $app) => new Dispatcher($app, $dispatcher));
         $this->app->bind(KeyResolverContract::class, fn () => new KeyResolver);
         $this->app->bind(ComponentsResolverContract::class, fn ($app, $params) => new ComponentsResolver(resourceModelClass: data_get($params, 'resourceModelClass')));
@@ -76,14 +76,6 @@ class AppServiceProvider extends ServiceProvider
 
     public function boot(): void
     {
-        // We have to disable this during the seeder because it will try to
-        // create the role before the table exists
-        if (App::runningInConsole()) {
-            config()->set([
-                'filament-shield.panel_user.enabled' => false,
-            ]);
-        }
-
         App::macro('isAdmin', fn () => collect(config('tenancy.central_domains'))->contains(request()->getHost()));
         App::macro('isDemo', fn () => $this->app->environment('demo'));
 
@@ -103,20 +95,7 @@ class AppServiceProvider extends ServiceProvider
         Authenticate::redirectUsing($authenticationRedirect);
         AuthenticateSession::redirectUsing($authenticationRedirect);
 
-        Feature::discover();
-        Feature::resolveScopeUsing(static fn ($driver) => tenant());
-
-        FilamentShield::configurePermissionIdentifierUsing(function ($resource) {
-            return Str::of($resource)
-                ->afterLast('Resources\\')
-                ->before('Resource')
-                ->replace('\\', '')
-                ->lower()
-                ->replace('_', '')
-                ->toString();
-        });
-
-        Field::configureUsing(function (Field $field) {
+        Column::configureUsing(function (Column $field) {
             match ($field->getName()) {
                 'created_at' => $field->label('Created'),
                 'updated_at' => $field->label('Updated'),
@@ -134,7 +113,20 @@ class AppServiceProvider extends ServiceProvider
             };
         });
 
-        Column::configureUsing(function (Column $field) {
+        Feature::discover();
+        Feature::resolveScopeUsing(static fn ($driver) => tenant());
+
+        FilamentShield::configurePermissionIdentifierUsing(function ($resource) {
+            return Str::of($resource)
+                ->afterLast('Resources\\')
+                ->before('Resource')
+                ->replace('\\', '')
+                ->lower()
+                ->replace('_', '')
+                ->toString();
+        });
+
+        Field::configureUsing(function (Field $field) {
             match ($field->getName()) {
                 'created_at' => $field->label('Created'),
                 'updated_at' => $field->label('Updated'),
@@ -166,6 +158,12 @@ class AppServiceProvider extends ServiceProvider
 
         Gate::define('viewPulse', function (Admin|User|null $user = null) {
             return $user instanceof Admin;
+        });
+
+        Gate::before(function (?User $user, string $ability, $model) {
+            if ($user?->hasRole(Utils::getSuperAdminName()) && ! request()->routeIs('api.*')) {
+                return true;
+            }
         });
 
         Table::configureUsing(function (Table $table) {

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Users;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\RankRecordRequest;
 use App\Models\User;
-use App\Policies\RankRecordPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class UsersRankRecordsController extends RelationController
 {
+    use AuthorizesRequests;
+
     protected $model = User::class;
 
     protected $request = RankRecordRequest::class;
-
-    protected $policy = RankRecordPolicy::class;
 
     protected $relation = 'rank_records';
 

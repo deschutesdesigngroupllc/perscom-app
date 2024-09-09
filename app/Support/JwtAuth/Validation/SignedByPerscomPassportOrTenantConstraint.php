@@ -9,7 +9,7 @@ use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Validation\Constraint;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 
-readonly class SignedByPerscomOrTenantConstraint implements Constraint
+readonly class SignedByPerscomPassportOrTenantConstraint implements Constraint
 {
     public function __construct(
         private Signer $perscomSigner,

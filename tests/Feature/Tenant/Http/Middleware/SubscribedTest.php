@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Http\Middleware;
 
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\URL;
 use Laravel\Passport\Database\Factories\ClientFactory;
 use Laravel\Passport\Passport;
@@ -16,7 +17,7 @@ class SubscribedTest extends TenantTestCase
     public function test_no_subscription_causes_redirect_for_admin()
     {
         $user = User::factory()->create();
-        $user->assignRole('admin');
+        $user->assignRole(Utils::getSuperAdminName());
 
         $this->actingAs($user)
             ->get(route('filament.app.pages.dashboard', [

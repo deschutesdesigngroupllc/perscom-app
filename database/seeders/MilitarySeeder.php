@@ -28,6 +28,7 @@ use App\Models\Status;
 use App\Models\Task;
 use App\Models\Unit;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
@@ -47,7 +48,7 @@ class MilitarySeeder extends Seeder
             'name' => 'Demo User',
             'email' => 'demo@perscom.io',
         ]);
-        $user->assignRole('Admin');
+        $user->assignRole(Utils::getSuperAdminName());
 
         Announcement::factory()
             ->state([

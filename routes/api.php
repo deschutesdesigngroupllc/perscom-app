@@ -25,8 +25,6 @@ use App\Http\Controllers\Api\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\Groups\GroupsController;
 use App\Http\Controllers\Api\Images\ImagesController;
 use App\Http\Controllers\Api\MeController;
-use App\Http\Controllers\Api\Newsfeed\NewsfeedController;
-use App\Http\Controllers\Api\Newsfeed\NewsfeedLikesController;
 use App\Http\Controllers\Api\Positions\PositionsController;
 use App\Http\Controllers\Api\QualificationRecords\QualificationRecordsController;
 use App\Http\Controllers\Api\Qualifications\QualificationsController;
@@ -114,10 +112,6 @@ Route::group([
     Orion::resource('groups', GroupsController::class);
 
     Orion::resource('images', ImagesController::class);
-
-    Orion::resource('newsfeed', NewsfeedController::class);
-    Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)
-        ->only(['index', 'attach', 'detach', 'sync']);
 
     Orion::resource('positions', PositionsController::class);
 

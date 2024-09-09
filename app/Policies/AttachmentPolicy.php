@@ -6,52 +6,105 @@ namespace App\Policies;
 
 use App\Models\Attachment;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AttachmentPolicy extends Policy
+class AttachmentPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_attachment');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Attachment $attachment): bool
     {
-        return optional($user)->hasRole('Admin');
+        return $user->can('view_attachment');
     }
 
-    public function view(?User $user, Attachment $attachment): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return Gate::check('view', $attachment->model);
+        return $user->can('create_attachment');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Attachment $attachment): bool
     {
-        return $this->hasPermissionTo($user, 'create:attachment') || optional($user)->tokenCan('create:attachment');
+        return $user->can('update_attachment');
     }
 
-    public function update(?User $user, Attachment $attachment): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Attachment $attachment): bool
     {
-        return Gate::check('update', $attachment->model);
+        return $user->can('delete_attachment');
     }
 
-    public function delete(?User $user, Attachment $attachment): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return Gate::check('delete', $attachment->model);
+        return $user->can('delete_any_attachment');
     }
 
-    public function restore(?User $user, Attachment $attachment): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Attachment $attachment): bool
     {
-        return Gate::check('restore', $attachment->model);
+        return $user->can('force_delete_attachment');
     }
 
-    public function forceDelete(?User $user, Attachment $attachment): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return Gate::check('forceDelete', $attachment->model);
+        return $user->can('force_delete_any_attachment');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Attachment $attachment): bool
+    {
+        return $user->can('restore_attachment');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_attachment');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Attachment $attachment): bool
+    {
+        return $user->can('replicate_attachment');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_attachment');
     }
 }

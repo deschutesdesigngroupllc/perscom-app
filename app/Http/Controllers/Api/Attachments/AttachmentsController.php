@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Attachments;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\AttachmentRequest;
 use App\Models\Attachment;
-use App\Policies\AttachmentPolicy;
 use Illuminate\Database\Eloquent\Model;
 use Orion\Http\Controllers\Controller;
 use Orion\Http\Requests\Request;
 
 class AttachmentsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Attachment::class;
 
     protected $request = AttachmentRequest::class;
-
-    protected $policy = AttachmentPolicy::class;
 
     public function includes(): array
     {

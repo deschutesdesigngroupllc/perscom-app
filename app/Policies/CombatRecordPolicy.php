@@ -6,53 +6,105 @@ namespace App\Policies;
 
 use App\Models\CombatRecord;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CombatRecordPolicy extends Policy
+class CombatRecordPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_combatrecord');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, CombatRecord $combatRecord): bool
     {
-        return $this->hasPermissionTo($user, 'view:combatrecord') || optional($user)->tokenCan('view:combatrecord');
+        return $user->can('view_combatrecord');
     }
 
-    public function view(?User $user, CombatRecord $combat): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:combatrecord')
-            || $combat->user?->id === optional($user)->id
-            || optional($user)->tokenCan('view:combatrecord');
+        return $user->can('create_combatrecord');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, CombatRecord $combatRecord): bool
     {
-        return $this->hasPermissionTo($user, 'create:combatrecord') || optional($user)->tokenCan('create:combatrecord');
+        return $user->can('update_combatrecord');
     }
 
-    public function update(?User $user, CombatRecord $combat): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, CombatRecord $combatRecord): bool
     {
-        return $this->hasPermissionTo($user, 'update:combatrecord') || optional($user)->tokenCan('update:combatrecord');
+        return $user->can('delete_combatrecord');
     }
 
-    public function delete(?User $user, CombatRecord $combat): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:combatrecord') || optional($user)->tokenCan('delete:combatrecord');
+        return $user->can('delete_any_combatrecord');
     }
 
-    public function restore(?User $user, CombatRecord $combat): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, CombatRecord $combatRecord): bool
     {
-        return $this->hasPermissionTo($user, 'delete:combatrecord') || optional($user)->tokenCan('delete:combatrecord');
+        return $user->can('force_delete_combatrecord');
     }
 
-    public function forceDelete(?User $user, CombatRecord $combat): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:combatrecord') || optional($user)->tokenCan('delete:combatrecord');
+        return $user->can('force_delete_any_combatrecord');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, CombatRecord $combatRecord): bool
+    {
+        return $user->can('restore_combatrecord');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_combatrecord');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, CombatRecord $combatRecord): bool
+    {
+        return $user->can('replicate_combatrecord');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_combatrecord');
     }
 }

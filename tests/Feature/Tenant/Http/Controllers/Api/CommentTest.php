@@ -8,13 +8,14 @@ use App\Http\Controllers\Api\Comments\CommentsController;
 use App\Models\Comment;
 use App\Models\ServiceRecord;
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class CommentTest extends ApiResourceTestCase
 {
     public function beforeTestCanReachIndexEndpoint(): void
     {
-        $this->user->assignRole('Admin');
+        $this->user->assignRole(Utils::getSuperAdminName());
     }
 
     public function endpoint(): string

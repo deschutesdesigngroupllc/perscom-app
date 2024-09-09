@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Form;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class FormPolicy extends Policy
+class FormPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_form');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Form $form): bool
     {
-        return $this->hasPermissionTo($user, 'view:form') || optional($user)->tokenCan('view:form');
+        return $user->can('view_form');
     }
 
-    public function view(?User $user, Form $form): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:form') || optional($user)->tokenCan('view:form');
+        return $user->can('create_form');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Form $form): bool
     {
-        return $this->hasPermissionTo($user, 'create:form') || optional($user)->tokenCan('create:form');
+        return $user->can('update_form');
     }
 
-    public function update(?User $user, Form $form): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Form $form): bool
     {
-        return $this->hasPermissionTo($user, 'update:form') || optional($user)->tokenCan('update:form');
+        return $user->can('delete_form');
     }
 
-    public function delete(?User $user, Form $form): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:form') || optional($user)->tokenCan('delete:form');
+        return $user->can('delete_any_form');
     }
 
-    public function restore(?User $user, Form $form): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Form $form): bool
     {
-        return $this->hasPermissionTo($user, 'delete:form') || optional($user)->tokenCan('delete:form');
+        return $user->can('force_delete_form');
     }
 
-    public function forceDelete(?User $user, Form $form): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:form') || optional($user)->tokenCan('delete:form');
+        return $user->can('force_delete_any_form');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Form $form): bool
+    {
+        return $user->can('restore_form');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_form');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Form $form): bool
+    {
+        return $user->can('replicate_form');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_form');
     }
 }

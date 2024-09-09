@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Statuses;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\StatusRequest;
 use App\Models\Status;
-use App\Policies\StatusPolicy;
 use Orion\Http\Controllers\Controller;
 
 class StatusesController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Status::class;
 
     protected $request = StatusRequest::class;
-
-    protected $policy = StatusPolicy::class;
 
     public function includes(): array
     {

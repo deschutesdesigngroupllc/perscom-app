@@ -6,51 +6,105 @@ namespace App\Policies;
 
 use App\Models\Qualification;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class QualificationPolicy extends Policy
+class QualificationPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_qualification');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'view:qualification') || optional($user)->tokenCan('view:qualification');
+        return $user->can('view_qualification');
     }
 
-    public function view(?User $user, Qualification $qualification): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:qualification') || optional($user)->tokenCan('view:qualification');
+        return $user->can('create_qualification');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'create:qualification') || optional($user)->tokenCan('create:qualification');
+        return $user->can('update_qualification');
     }
 
-    public function update(?User $user, Qualification $qualification): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'update:qualification') || optional($user)->tokenCan('update:qualification');
+        return $user->can('delete_qualification');
     }
 
-    public function delete(?User $user, Qualification $qualification): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || optional($user)->tokenCan('delete:qualification');
+        return $user->can('delete_any_qualification');
     }
 
-    public function restore(?User $user, Qualification $qualification): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Qualification $qualification): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || optional($user)->tokenCan('delete:qualification');
+        return $user->can('force_delete_qualification');
     }
 
-    public function forceDelete(?User $user, Qualification $qualification): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:qualification') || optional($user)->tokenCan('delete:qualification');
+        return $user->can('force_delete_any_qualification');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Qualification $qualification): bool
+    {
+        return $user->can('restore_qualification');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_qualification');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Qualification $qualification): bool
+    {
+        return $user->can('replicate_qualification');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_qualification');
     }
 }

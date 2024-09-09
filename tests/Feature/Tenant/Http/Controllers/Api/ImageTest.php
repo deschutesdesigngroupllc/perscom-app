@@ -7,6 +7,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 use App\Http\Controllers\Api\Images\ImagesController;
 use App\Models\Award;
 use App\Models\Image;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Http\UploadedFile;
 
@@ -14,7 +15,7 @@ class ImageTest extends ApiResourceTestCase
 {
     public function beforeTestCanReachIndexEndpoint(): void
     {
-        $this->user->assignRole('Admin');
+        $this->user->assignRole(Utils::getSuperAdminName());
     }
 
     public function endpoint(): string

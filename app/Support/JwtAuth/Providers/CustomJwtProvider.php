@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Support\JwtAuth\Providers;
 
 use App\Settings\IntegrationSettings;
-use App\Support\JwtAuth\Validation\SignedByPerscomOrTenantConstraint;
+use App\Support\JwtAuth\Validation\SignedByPerscomPassportOrTenantConstraint;
 use JetBrains\PhpStorm\NoReturn;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key\InMemory;
@@ -21,7 +21,7 @@ class CustomJwtProvider extends Lcobucci
         /** @var IntegrationSettings $settings */
         $settings = app(IntegrationSettings::class);
 
-        $this->config->setValidationConstraints(new SignedByPerscomOrTenantConstraint(
+        $this->config->setValidationConstraints(new SignedByPerscomPassportOrTenantConstraint(
             perscomSigner: $this->signer,
             perscomKey: $this->getVerificationKey(),
             passportSigner: new Signer\Rsa\Sha256,

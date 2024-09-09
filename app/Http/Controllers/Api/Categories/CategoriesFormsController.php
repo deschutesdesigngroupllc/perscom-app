@@ -4,24 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Categories;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\FormRequest;
 use App\Models\Category;
-use App\Policies\FormPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class CategoriesFormsController extends RelationController
 {
+    use AuthorizesRequests;
+
     protected $model = Category::class;
 
     protected $request = FormRequest::class;
 
-    protected $policy = FormPolicy::class;
-
     protected $relation = 'forms';
 
-    /**
-     * @var string[]
-     */
     protected $pivotFillable = ['order'];
 
     public function exposedScopes(): array

@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Comments;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\CommentRequest;
 use App\Models\Comment;
-use App\Policies\CommentPolicy;
 use Orion\Http\Controllers\Controller;
 
 class CommentsController extends Controller
 {
+    use AuthorizesRequests;
+
     protected $model = Comment::class;
 
     protected $request = CommentRequest::class;
-
-    protected $policy = CommentPolicy::class;
 
     public function includes(): array
     {

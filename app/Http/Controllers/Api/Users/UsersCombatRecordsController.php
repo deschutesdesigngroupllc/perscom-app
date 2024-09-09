@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Users;
 
+use App\Http\Controllers\Api\AuthorizesRequests;
 use App\Http\Requests\Api\CombatRecordRequest;
 use App\Models\User;
-use App\Policies\CombatRecordPolicy;
 use Orion\Http\Controllers\RelationController;
 
 class UsersCombatRecordsController extends RelationController
 {
+    use AuthorizesRequests;
+
     protected $model = User::class;
 
     protected $request = CombatRecordRequest::class;
-
-    protected $policy = CombatRecordPolicy::class;
 
     protected $relation = 'combat_records';
 

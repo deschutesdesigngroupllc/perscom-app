@@ -6,52 +6,105 @@ namespace App\Policies;
 
 use App\Models\Comment;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
-use Illuminate\Support\Facades\Gate;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class CommentPolicy extends Policy
+class CommentPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_comment');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, Comment $comment): bool
     {
-        return optional($user)->hasRole('Admin');
+        return $user->can('view_comment');
     }
 
-    public function view(?User $user, Comment $comment): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return Gate::check('view', $comment->commentable);
+        return $user->can('create_comment');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, Comment $comment): bool
     {
-        return $this->hasPermissionTo($user, 'create:comment') || optional($user)->tokenCan('create:comment');
+        return $user->can('update_comment');
     }
 
-    public function update(?User $user, Comment $comment): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, Comment $comment): bool
     {
-        return Gate::check('update', $comment->commentable);
+        return $user->can('delete_comment');
     }
 
-    public function delete(?User $user, Comment $comment): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return Gate::check('delete', $comment->commentable);
+        return $user->can('delete_any_comment');
     }
 
-    public function restore(?User $user, Comment $comment): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, Comment $comment): bool
     {
-        return Gate::check('restore', $comment->commentable);
+        return $user->can('force_delete_comment');
     }
 
-    public function forceDelete(?User $user, Comment $comment): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return Gate::check('forceDelete', $comment->commentable);
+        return $user->can('force_delete_any_comment');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, Comment $comment): bool
+    {
+        return $user->can('restore_comment');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_comment');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, Comment $comment): bool
+    {
+        return $user->can('replicate_comment');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_comment');
     }
 }

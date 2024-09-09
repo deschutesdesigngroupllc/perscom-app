@@ -6,14 +6,12 @@ namespace App\Models;
 
 use App\Contracts\Hideable;
 use App\Models\Enums\FieldType;
-use App\Models\Scopes\FieldScope;
 use App\Traits\CanBeHidden;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use ArrayObject;
 use Filament\Support\Contracts\HasLabel;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -81,7 +79,6 @@ use function in_array;
  *
  * @mixin \Eloquent
  */
-#[ScopedBy(FieldScope::class)]
 class Field extends Model implements HasLabel, Hideable
 {
     use CanBeHidden;

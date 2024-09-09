@@ -6,53 +6,105 @@ namespace App\Policies;
 
 use App\Models\AssignmentRecord;
 use App\Models\User;
-use Illuminate\Support\Facades\App;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AssignmentRecordPolicy extends Policy
+class AssignmentRecordPolicy
 {
-    public function before(): ?bool
-    {
-        if (App::isAdmin()) {
-            return false;
-        }
+    use HandlesAuthorization;
 
-        return null;
+    /**
+     * Determine whether the user can view any models.
+     */
+    public function viewAny(User $user): bool
+    {
+        return $user->can('view_any_assignmentrecord');
     }
 
-    public function viewAny(?User $user = null): bool
+    /**
+     * Determine whether the user can view the model.
+     */
+    public function view(User $user, AssignmentRecord $assignmentRecord): bool
     {
-        return $this->hasPermissionTo($user, 'view:assignmentrecord') || optional($user)->tokenCan('view:assignmentrecord');
+        return $user->can('view_assignmentrecord');
     }
 
-    public function view(?User $user, AssignmentRecord $assignment): bool
+    /**
+     * Determine whether the user can create models.
+     */
+    public function create(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'view:assignmentrecord')
-            || $assignment->user?->id === optional($user)->id
-            || optional($user)->tokenCan('view:assignmentrecord');
+        return $user->can('create_assignmentrecord');
     }
 
-    public function create(?User $user = null): bool
+    /**
+     * Determine whether the user can update the model.
+     */
+    public function update(User $user, AssignmentRecord $assignmentRecord): bool
     {
-        return $this->hasPermissionTo($user, 'create:assignmentrecord') || optional($user)->tokenCan('create:assignmentrecord');
+        return $user->can('update_assignmentrecord');
     }
 
-    public function update(?User $user, AssignmentRecord $assignment): bool
+    /**
+     * Determine whether the user can delete the model.
+     */
+    public function delete(User $user, AssignmentRecord $assignmentRecord): bool
     {
-        return $this->hasPermissionTo($user, 'update:assignmentrecord') || optional($user)->tokenCan('update:assignmentrecord');
+        return $user->can('delete_assignmentrecord');
     }
 
-    public function delete(?User $user, AssignmentRecord $assignment): bool
+    /**
+     * Determine whether the user can bulk delete.
+     */
+    public function deleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || optional($user)->tokenCan('delete:assignmentrecord');
+        return $user->can('delete_any_assignmentrecord');
     }
 
-    public function restore(?User $user, AssignmentRecord $assignment): bool
+    /**
+     * Determine whether the user can permanently delete.
+     */
+    public function forceDelete(User $user, AssignmentRecord $assignmentRecord): bool
     {
-        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || optional($user)->tokenCan('delete:assignmentrecord');
+        return $user->can('force_delete_assignmentrecord');
     }
 
-    public function forceDelete(?User $user, AssignmentRecord $assignment): bool
+    /**
+     * Determine whether the user can permanently bulk delete.
+     */
+    public function forceDeleteAny(User $user): bool
     {
-        return $this->hasPermissionTo($user, 'delete:assignmentrecord') || optional($user)->tokenCan('delete:assignmentrecord');
+        return $user->can('force_delete_any_assignmentrecord');
+    }
+
+    /**
+     * Determine whether the user can restore.
+     */
+    public function restore(User $user, AssignmentRecord $assignmentRecord): bool
+    {
+        return $user->can('restore_assignmentrecord');
+    }
+
+    /**
+     * Determine whether the user can bulk restore.
+     */
+    public function restoreAny(User $user): bool
+    {
+        return $user->can('restore_any_assignmentrecord');
+    }
+
+    /**
+     * Determine whether the user can replicate.
+     */
+    public function replicate(User $user, AssignmentRecord $assignmentRecord): bool
+    {
+        return $user->can('replicate_assignmentrecord');
+    }
+
+    /**
+     * Determine whether the user can reorder.
+     */
+    public function reorder(User $user): bool
+    {
+        return $user->can('reorder_assignmentrecord');
     }
 }
