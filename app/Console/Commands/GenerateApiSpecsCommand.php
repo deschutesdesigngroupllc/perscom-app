@@ -8,7 +8,7 @@ use App\Models\Tenant;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Artisan;
 
-class GenerateApiSpecs extends Command
+class GenerateApiSpecsCommand extends Command
 {
     protected $signature = 'perscom:specs
                             {--format=yaml}

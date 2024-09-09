@@ -120,7 +120,6 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withSchedule(function (Illuminate\Console\Scheduling\Schedule $schedule) {
         $schedule->command('telescope:prune --hours=96')->dailyAt('03:00');
         $schedule->command('queue:prune-failed --hours=96')->dailyAt('04:00');
-        $schedule->command('perscom:heartbeat')->environments(['staging', 'production'])->everyTenMinutes();
         $schedule->command('horizon:snapshot')->environments(['staging', 'production'])->everyFiveMinutes();
         $schedule->command('cache:prune-stale-tags')->environments(['staging', 'production'])->hourly();
         $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->daily();

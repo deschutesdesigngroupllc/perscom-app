@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\App;
 
-class ApplicationVersion extends Command
+class ApplicationVersionCommand extends Command
 {
     protected $signature = 'perscom:version
                             {--set= : Set the current application version}';

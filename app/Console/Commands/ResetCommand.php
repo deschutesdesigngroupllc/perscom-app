@@ -14,7 +14,7 @@ use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
-class Reset extends Command implements Isolatable
+class ResetCommand extends Command implements Isolatable
 {
     protected $signature = 'perscom:reset 
                             {--seeder=military : The seeder to use. Default: military}';

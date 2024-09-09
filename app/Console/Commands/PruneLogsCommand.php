@@ -8,7 +8,7 @@ use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Illuminate\Support\Arr;
 
-class PruneLogs extends Command
+class PruneLogsCommand extends Command
 {
     use ConfirmableTrait;
 

@@ -7,7 +7,7 @@ namespace App\Console\Commands;
 use App\Jobs\RemoveInactiveAccounts as RemoveInactiveAccountsJob;
 use Illuminate\Console\Command;
 
-class RemoveInactiveAccounts extends Command
+class RemoveInactiveAccountsCommand extends Command
 {
     protected $signature = 'perscom:inactive-accounts';
 
