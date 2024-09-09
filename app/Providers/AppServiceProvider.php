@@ -160,7 +160,11 @@ class AppServiceProvider extends ServiceProvider
             return $user instanceof Admin;
         });
 
-        Gate::before(function (?User $user, string $ability, $model) {
+        Gate::before(function (Admin|User|null $user, string $ability, $model) {
+            if ($user instanceof Admin) {
+                return true;
+            }
+
             if ($user?->hasRole(Utils::getSuperAdminName()) && ! request()->routeIs('api.*')) {
                 return true;
             }
