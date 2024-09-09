@@ -94,7 +94,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
             'password' => Hash::make($password),
         ])->save();
 
-        info('The admin\'s password been successfully update.');
+        info('The admin\'s password been successfully updated.');
 
         return static::SUCCESS;
     }
