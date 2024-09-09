@@ -10,6 +10,7 @@ use Illuminate\Contracts\Console\PromptsForMissingInput;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\info;
 use function Laravel\Prompts\password;
 use function Laravel\Prompts\search;
@@ -29,12 +30,14 @@ class AdminCommand extends Command implements PromptsForMissingInput
             options: [
                 'create' => 'Create a new admin',
                 'password' => 'Update an admin\'s password',
+                'delete' => 'Delete an admin',
             ]
         );
 
         return match ($operation) {
             'create' => $this->createAdmin(),
             'password' => $this->updatePassword(),
+            'delete' => $this->deleteAdmin(),
         };
     }
 
@@ -56,14 +59,14 @@ class AdminCommand extends Command implements PromptsForMissingInput
             ]
         );
 
-        $password = password(
+        $password = Hash::make(password(
             label: 'Please provide the admin\'s password:',
             required: true,
             validate: [
                 'password' => new Password(8),
             ],
             hint: 'Minimum characters required: 8'
-        );
+        ));
 
         Admin::create(compact('name', 'email', 'password'));
 
@@ -95,6 +98,31 @@ class AdminCommand extends Command implements PromptsForMissingInput
         ])->save();
 
         info('The admin\'s password been successfully updated.');
+
+        return static::SUCCESS;
+    }
+
+    protected function deleteAdmin(): int
+    {
+        $id = search(
+            label: 'Please select the admin:',
+            options: fn ($value) => strlen($value) > 0
+                ? Admin::where('name', 'like', "%$value%")->pluck('name', 'id')->all()
+                : []
+        );
+
+        $confirmed = confirm(
+            label: 'Are you sure you want to delete the admin?',
+            default: false,
+            yes: 'Yes, delete the admin',
+            no: 'No, do not delete the admin',
+        );
+
+        if ($confirmed) {
+            Admin::where('id', '=', $id)->forceDelete();
+
+            info('The admin has been successfully deleted.');
+        }
 
         return static::SUCCESS;
     }
