@@ -1,6 +1,7 @@
 <div>
   @if ($show)
-    <div class="flex items-center justify-center gap-x-6 dark:bg-gray-800 bg-gray-900 px-4 py-2.5 sm:px-3.5 sm:before:flex-1">
+    <div
+      class="flex items-center justify-center text-center gap-x-6 dark:bg-gray-800 bg-gray-900 py-2.5 px-4 md:px-6 lg:px-8 sm:before:flex-1">
       <div class="text-sm leading-6 text-white">
         <a href="{{ route('spark.portal') }}">
           <strong class="font-semibold">Subscription</strong><svg viewBox="0 0 2 2" class="mx-2 inline h-0.5 w-0.5 fill-current"
