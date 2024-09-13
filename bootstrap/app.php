@@ -108,12 +108,26 @@ return Application::configure(basePath: dirname(__DIR__))
             $status = $statusCode ?? $statusProperty ?? $statusUnauthenticated ?? Response::HTTP_INTERNAL_SERVER_ERROR;
 
             if ($request->routeIs('api.*') || $request->expectsJson()) {
-                return response()->json([
+                $debug = config('app.debug');
+
+                $response = [
                     'error' => [
-                        'message' => $e->getMessage(),
+                        'message' => $debug
+                            ? $e->getMessage()
+                            : ($status === Response::HTTP_INTERNAL_SERVER_ERROR
+                                ? 'There was a server error with your last request. Please try again.'
+                                : $e->getMessage()
+                            ),
                         'type' => class_basename($e),
                     ],
-                ], $status);
+                ];
+
+                if ($debug) {
+                    $response['error']['file'] = $e->getFile();
+                    $response['error']['line'] = $e->getLine();
+                }
+
+                return response()->json($response, $status);
             }
         });
     })

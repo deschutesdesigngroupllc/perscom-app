@@ -40,6 +40,7 @@ class MessageResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\RichEditor::make('message')
+                                    ->maxLength(65535)
                                     ->required()
                                     ->columnSpanFull(),
                                 Forms\Components\Toggle::make('enabled')

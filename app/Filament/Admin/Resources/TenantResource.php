@@ -63,24 +63,31 @@ class TenantResource extends Resource
                             ->columns(2)
                             ->schema([
                                 Forms\Components\TextInput::make('billing_address')
+                                    ->maxLength(255)
                                     ->label('Address')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('billing_address_line_2')
+                                    ->maxLength(255)
                                     ->label('Address Line 2')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('billing_city')
+                                    ->maxLength(255)
                                     ->label('City')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('billing_state')
+                                    ->maxLength(255)
                                     ->label('State')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('billing_postal_code')
+                                    ->maxLength(255)
                                     ->label('Postal Code')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('billing_country')
+                                    ->maxLength(255)
                                     ->label('Country')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('vat_id')
+                                    ->maxLength(255)
                                     ->label('VAT ID')
                                     ->disabled()
                                     ->columnSpanFull(),
@@ -93,6 +100,7 @@ class TenantResource extends Resource
                             ->icon('heroicon-o-circle-stack')
                             ->schema([
                                 Forms\Components\TextInput::make('tenancy_db_name')
+                                    ->maxLength(255)
                                     ->label('Database Name')
                                     ->disabled(),
                             ]),
@@ -101,15 +109,19 @@ class TenantResource extends Resource
                             ->icon('heroicon-o-currency-dollar')
                             ->schema([
                                 Forms\Components\TextInput::make('stripe_id')
+                                    ->maxLength(255)
                                     ->label('Stripe ID')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('pm_type')
+                                    ->maxLength(255)
                                     ->label('Payment Method Type')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('pm_last_four')
+                                    ->maxLength(255)
                                     ->label('Payment Method Last Four')
                                     ->disabled(),
                                 Forms\Components\TextInput::make('pm_expiration')
+                                    ->maxLength(255)
                                     ->label('Payment Method Expiration')
                                     ->disabled(),
                             ]),

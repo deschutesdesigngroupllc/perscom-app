@@ -54,6 +54,7 @@ class PassportClientResource extends BaseResource
                                     ->options(PassportClientType::class)
                                     ->required(),
                                 Forms\Components\TextInput::make('redirect')
+                                    ->maxLength(255)
                                     ->label('Redirect URL')
                                     ->url()
                                     ->helperText('The URL to redirect to after authorization.')

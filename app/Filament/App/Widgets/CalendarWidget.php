@@ -8,9 +8,6 @@ use App\Filament\App\Resources\EventResource;
 use App\Models\Event;
 use Closure;
 use Filament\Actions\Action;
-use Filament\Actions\CreateAction;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\TextInput;
 use Guava\Calendar\ValueObjects\Event as EventObject;
 use Guava\Calendar\Widgets\CalendarWidget as BaseCalendarWidget;
 use Illuminate\Support\Collection;
@@ -59,22 +56,5 @@ class CalendarWidget extends BaseCalendarWidget
                 ->allDay($event->all_day)
                 ->backgroundColor($event->calendar->color);
         });
-    }
-
-    public function getDateClickContextMenuActions(): array
-    {
-        return [
-            CreateAction::make('foo')
-                ->model(Event::class)
-                ->form([
-                    TextInput::make('name'),
-                    DatePicker::make('starts'),
-                    DatePicker::make('ends'),
-                ])
-                ->mountUsing(fn ($arguments, $form) => $form->fill([
-                    'starts' => data_get($arguments, 'dateStr'),
-                    'ends' => data_get($arguments, 'dateStr'),
-                ])),
-        ];
     }
 }

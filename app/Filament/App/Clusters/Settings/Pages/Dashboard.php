@@ -57,9 +57,11 @@ class Dashboard extends SettingsPage
                             ->icon('heroicon-o-home')
                             ->schema([
                                 TextInput::make('title')
+                                    ->maxLength(255)
                                     ->required()
                                     ->helperText('This is the main heading that will be displayed on the main dashboard home page.'),
                                 TextInput::make('subtitle')
+                                    ->maxLength(255)
                                     ->helperText('This is the sub text that will be displayed under the main heading on the main dashboard home page.'),
                             ]),
                         Tabs\Tab::make('Domain')
@@ -81,6 +83,7 @@ class Dashboard extends SettingsPage
                                     })
                                     ->helperText('The default URL for your account. You can always access your dashboard from this domain.'),
                                 TextInput::make('subdomain')
+                                    ->maxLength(255)
                                     ->rules(function () {
                                         /** @var Tenant $tenant */
                                         $tenant = Filament::getTenant();

@@ -21,6 +21,10 @@ class RecentAnnouncements extends BaseWidget
     public function table(Table $table): Table
     {
         return $table
+            ->recordClasses([
+                'sm:-mx-6' => true,
+                '-mx-4' => true,
+            ])
             ->query(
                 Announcement::query()->where('global', false)->latest()->take(10)
             )
@@ -37,6 +41,7 @@ class RecentAnnouncements extends BaseWidget
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
+                    ->icon(null)
                     ->hiddenLabel()
                     ->infolist([
                         TextEntry::make('title')

@@ -44,9 +44,11 @@ class Organization extends SettingsPage
                             ->icon('heroicon-o-building-office')
                             ->schema([
                                 TextInput::make('name')
+                                    ->maxLength(255)
                                     ->required()
                                     ->helperText('The name of the organization.'),
                                 TextInput::make('email')
+                                    ->maxLength(255)
                                     ->email()
                                     ->required()
                                     ->helperText('The organization email that will receive all account-related emails.'),
