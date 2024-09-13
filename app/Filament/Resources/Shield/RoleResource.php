@@ -58,8 +58,6 @@ class RoleResource extends Resource implements HasShieldPermissions
                                     ->nullable()
                                     ->maxLength(255),
                                 ShieldSelectAllToggle::make('select_all')
-                                    ->onIcon('heroicon-s-shield-check')
-                                    ->offIcon('heroicon-s-shield-exclamation')
                                     ->label(__('filament-shield::filament-shield.field.select_all.name'))
                                     ->helperText(fn (): HtmlString => new HtmlString(__('filament-shield::filament-shield.field.select_all.message')))
                                     ->dehydrated(fn ($state): bool => $state),
