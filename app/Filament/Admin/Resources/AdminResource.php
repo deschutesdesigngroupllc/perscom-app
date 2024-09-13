@@ -13,6 +13,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Hash;
 
 class AdminResource extends Resource
 {
@@ -29,7 +30,6 @@ class AdminResource extends Resource
         return $form
             ->schema([
                 Forms\Components\Section::make('Admin Information')
-                    ->columns(2)
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
@@ -39,13 +39,19 @@ class AdminResource extends Resource
                             ->password()
                             ->revealable()
                             ->confirmed()
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->dehydrateStateUsing(fn ($state) => Hash::make($state))
+                            ->dehydrated(fn ($state) => filled($state))
+                            ->required(fn (string $context): bool => $context === 'create')
+                            ->live(),
                         Forms\Components\TextInput::make('password_confirmation')
                             ->password()
                             ->revealable()
                             ->dehydrated(false)
                             ->requiredWith('password')
-                            ->maxLength(255),
+                            ->maxLength(255)
+                            ->visible(fn (Forms\Get $get, $operation) => filled($get('password')) || $operation === 'create')
+                            ->required(fn (Forms\Get $get, string $context): bool => filled($get('password')) || $context === 'create'),
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->required()
