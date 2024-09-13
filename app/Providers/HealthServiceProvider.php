@@ -25,18 +25,18 @@ class HealthServiceProvider extends ServiceProvider
             CacheCheck::new()
                 ->driver('redis'),
             CpuLoadCheck::new()
-                ->failWhenLoadIsHigherInTheLast5Minutes(80.0)
+                ->failWhenLoadIsHigherInTheLast5Minutes(80)
                 ->failWhenLoadIsHigherInTheLast15Minutes(50),
             DatabaseCheck::new(),
-            HorizonCheck::new()
-                ->if(fn () => app()->environment('local')),
+            HorizonCheck::new(),
             QueueCheck::new()
                 ->onQueue(['default', 'central']),
             OptimizedAppCheck::new(),
             RedisCheck::new(),
             RedisMemoryUsageCheck::new()
                 ->failWhenAboveMb(1000),
-            ScheduleCheck::new(),
+            ScheduleCheck::new()
+                ->heartbeatMaxAgeInMinutes(5),
             UsedDiskSpaceCheck::new(),
         ]);
     }
