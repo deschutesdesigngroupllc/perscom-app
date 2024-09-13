@@ -16,10 +16,10 @@ class NewsfeedResource extends Resource
             return Str::title($name);
         });
         $authorProfilePhotoUrl = optional($this->resource?->causer)->profile_photo_url;
-        $recipient = optional($this->resource?->subject?->user?->name, function ($name) {
+        $recipient = optional($this->resource?->subject?->name, function ($name) {
             return Str::title($name);
         });
-        $recipientProfilePhotoUrl = optional($this->resource?->subject?->user)->profile_photo_url;
+        $recipientProfilePhotoUrl = optional($this->resource?->subject)->profile_photo_url;
         $model = optional($this->resource?->subject_type, function ($type) {
             return Str::replace('_', ' ', Str::snake(class_basename($type)));
         });

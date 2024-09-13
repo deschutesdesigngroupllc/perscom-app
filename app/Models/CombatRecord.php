@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\CombatRecordScope;
 use App\Observers\CombatRecordObserver;
 use App\Traits\ClearsResponseCache;
@@ -70,7 +71,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(CombatRecordObserver::class)]
 #[ScopedBy(CombatRecordScope::class)]
-class CombatRecord extends Model implements HasLabel
+class CombatRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsResponseCache;
     use HasAttachments;
@@ -92,4 +93,24 @@ class CombatRecord extends Model implements HasLabel
         'updated_at',
         'deleted_at',
     ];
+
+    public function headlineForNewsfeedItem(): string
+    {
+        return "A combat record has been added for {$this->user->name}";
+    }
+
+    public function textForNewsfeedItem(): string
+    {
+        return $this->text;
+    }
+
+    public function itemForNewsfeedItem(): ?string
+    {
+        return null;
+    }
+
+    public function recipientForNewsfeedItem(): ?User
+    {
+        return $this->user;
+    }
 }

@@ -170,6 +170,14 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
+        Str::macro('camelToLower', function ($value) {
+            return Str::lower(preg_replace_callback(
+                '/([a-z])([A-Z])/',
+                function ($matches) {
+                    return $matches[1].' '.$matches[2];
+                }, $value));
+        });
+
         Table::configureUsing(function (Table $table) {
             $table->defaultSort('created_at', 'desc');
         });

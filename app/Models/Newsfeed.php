@@ -28,14 +28,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
- * @property-read mixed $color
+ * @property-read string|null $color
  * @property-read \Illuminate\Support\Collection $changes
- * @property-read mixed $headline
- * @property-read mixed $item
+ * @property-read string|null $headline
+ * @property-read string|null $item
+ * @property-read Like $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $likes
  * @property-read int|null $likes_count
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
- * @property-read mixed $text
+ * @property-read string|null $text
  *
  * @method static Builder|Newsfeed causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static \Database\Factories\NewsfeedFactory factory($count = null, $state = [])
@@ -79,7 +80,7 @@ class Newsfeed extends Activity
     public function headline(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->properties, function () {
+            get: fn (): ?string => optional($this->properties, function () {
                 return $this->getExtraProperty('headline');
             })
         )->shouldCache();
@@ -88,7 +89,7 @@ class Newsfeed extends Activity
     public function text(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->properties, function () {
+            get: fn (): ?string => optional($this->properties, function () {
                 return $this->getExtraProperty('text');
             })
         )->shouldCache();
@@ -97,7 +98,7 @@ class Newsfeed extends Activity
     public function color(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->properties, function () {
+            get: fn (): ?string => optional($this->properties, function () {
                 return $this->getExtraProperty('color');
             })
         )->shouldCache();
@@ -106,7 +107,7 @@ class Newsfeed extends Activity
     public function item(): Attribute
     {
         return Attribute::make(
-            get: optional($this->properties, function () {
+            get: fn (): ?string => optional($this->properties, function () {
                 return $this->getExtraProperty('item');
             })
         )->shouldCache();

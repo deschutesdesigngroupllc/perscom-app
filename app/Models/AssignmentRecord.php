@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\AssignmentRecordScope;
 use App\Observers\AssignmentRecordObserver;
@@ -93,7 +94,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(AssignmentRecordObserver::class)]
 #[ScopedBy(AssignmentRecordScope::class)]
-class AssignmentRecord extends Model implements HasLabel
+class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsResponseCache;
     use HasAttachments;
@@ -124,6 +125,42 @@ class AssignmentRecord extends Model implements HasLabel
         'updated_at',
         'deleted_at',
     ];
+
+    public function headlineForNewsfeedItem(): string
+    {
+        return "An assignment record has been added for {$this->user->name}";
+    }
+
+    public function textForNewsfeedItem(): string
+    {
+        return $this->text;
+    }
+
+    public function itemForNewsfeedItem(): ?string
+    {
+        $position = optional($this->position, function (Position $position) {
+            return $position->name;
+        }) ?? 'No Position Assigned';
+
+        $specialty = optional($this->specialty, function (Specialty $specialty) {
+            return $specialty->name;
+        }) ?? 'No Specialty Assigned';
+
+        $unit = optional($this->unit, function (Unit $unit) {
+            return $unit->name;
+        }) ?? 'No Unit Assigned';
+
+        $status = optional($this->status, function (Status $status) {
+            return $status->name;
+        }) ?? 'No Status Assigned';
+
+        return "Position: $position<br> Specialty: $specialty<br> Unit: $unit<br>Status: $status<br>";
+    }
+
+    public function recipientForNewsfeedItem(): ?User
+    {
+        return $this->user;
+    }
 
     protected function casts(): array
     {

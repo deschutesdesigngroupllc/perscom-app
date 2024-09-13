@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\RankRecordType;
 use App\Models\Scopes\RankRecordScope;
 use App\Observers\RankRecordObserver;
@@ -77,7 +78,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(RankRecordObserver::class)]
 #[ScopedBy(RankRecordScope::class)]
-class RankRecord extends Model implements HasLabel
+class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsResponseCache;
     use HasAttachments;
@@ -105,6 +106,26 @@ class RankRecord extends Model implements HasLabel
     public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
+    }
+
+    public function headlineForNewsfeedItem(): string
+    {
+        return "A rank record has been added for {$this->user->name}";
+    }
+
+    public function textForNewsfeedItem(): string
+    {
+        return $this->text;
+    }
+
+    public function itemForNewsfeedItem(): ?string
+    {
+        return "Rank: {$this->rank->name}";
+    }
+
+    public function recipientForNewsfeedItem(): ?User
+    {
+        return $this->user;
     }
 
     protected function casts(): array

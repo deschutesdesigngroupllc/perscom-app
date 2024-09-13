@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\WebhookEvent;
+use App\Models\Scopes\WebhookLogScope;
 use Eloquent;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Optional;
@@ -52,6 +54,7 @@ use Illuminate\Support\Optional;
  *
  * @mixin Eloquent
  */
+#[ScopedBy(WebhookLogScope::class)]
 class WebhookLog extends Activity
 {
     public function data(): Attribute
@@ -66,12 +69,5 @@ class WebhookLog extends Activity
         return Attribute::make(
             get: fn (): Optional|WebhookEvent|null => optional($this->getExtraProperty('event'), fn ($event) => WebhookEvent::from($event))
         )->shouldCache();
-    }
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope('webhook', function (Builder $query) {
-            $query->where('log_name', 'webhook');
-        });
     }
 }

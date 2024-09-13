@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Scopes\ApiLogScope;
 use Eloquent;
+use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 
@@ -57,6 +59,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  *
  * @mixin Eloquent
  */
+#[ScopedBy(ApiLogScope::class)]
 class ApiLog extends Activity
 {
     public function ipAddress(): Attribute
@@ -113,13 +116,6 @@ class ApiLog extends Activity
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('response_headers')
         )->shouldCache();
-    }
-
-    protected static function booted(): void
-    {
-        static::addGlobalScope('api', function (Builder $query) {
-            $query->whereIn('log_name', ['api', 'oauth']);
-        });
     }
 
     protected function casts(): array

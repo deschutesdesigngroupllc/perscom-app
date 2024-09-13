@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\QualificationRecordScope;
 use App\Observers\QualificationRecordObserver;
 use App\Traits\ClearsResponseCache;
@@ -74,7 +75,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(QualificationRecordObserver::class)]
 #[ScopedBy(QualificationRecordScope::class)]
-class QualificationRecord extends Model implements HasLabel
+class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsResponseCache;
     use HasAttachments;
@@ -101,5 +102,25 @@ class QualificationRecord extends Model implements HasLabel
     public function qualification(): BelongsTo
     {
         return $this->belongsTo(Qualification::class);
+    }
+
+    public function headlineForNewsfeedItem(): string
+    {
+        return "A qualification record has been added for {$this->user->name}";
+    }
+
+    public function textForNewsfeedItem(): string
+    {
+        return $this->text;
+    }
+
+    public function itemForNewsfeedItem(): ?string
+    {
+        return "Qualification: {$this->qualification->name}";
+    }
+
+    public function recipientForNewsfeedItem(): ?User
+    {
+        return $this->user;
     }
 }

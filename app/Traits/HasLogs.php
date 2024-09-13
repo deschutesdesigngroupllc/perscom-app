@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
+use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Activity;
 use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
+use Illuminate\Support\Str;
+use Spatie\Activitylog\Contracts\Activity as ActivityContract;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
+
+use function activity;
 
 /**
  * @mixin Eloquent
@@ -27,5 +32,41 @@ trait HasLogs
         return LogOptions::defaults()
             ->dontSubmitEmptyLogs()
             ->logFillable();
+    }
+
+    protected static function bootHasLogs(): void
+    {
+        static::created(function ($model) {
+            if ($model instanceof ShouldGenerateNewsfeedItems) {
+                $model->generateCreatedNewsfeedItem($model);
+            }
+        });
+    }
+
+    protected function generateCreatedNewsfeedItem(ShouldGenerateNewsfeedItems $model): ?ActivityContract
+    {
+        $resource = Str::camelToLower(class_basename($model));
+
+        $properties = [
+            'headline' => $model->headlineForNewsfeedItem(),
+            'text' => $model->textForNewsfeedItem(),
+        ];
+
+        if ($item = $model->itemForNewsfeedItem()) {
+            $properties['item'] = $item;
+        }
+
+        $activity = activity('newsfeed')
+            ->withProperties($properties);
+
+        if ($recipient = $model->recipientForNewsfeedItem()) {
+            $activity = $activity->performedOn($recipient);
+        }
+
+        $starter = Str::startsWith($resource, ['a', 'e', 'i', 'o', 'u'])
+            ? 'An'
+            : 'A';
+
+        return $activity->log("$starter $resource has been created.");
     }
 }

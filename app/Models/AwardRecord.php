@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\AwardRecordScope;
 use App\Observers\AwardRecordObserver;
 use App\Traits\ClearsResponseCache;
@@ -74,7 +75,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(AwardRecordObserver::class)]
 #[ScopedBy(AwardRecordScope::class)]
-class AwardRecord extends Model implements HasLabel
+class AwardRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
     use ClearsResponseCache;
     use HasAttachments;
@@ -101,5 +102,25 @@ class AwardRecord extends Model implements HasLabel
     public function award(): BelongsTo
     {
         return $this->belongsTo(Award::class);
+    }
+
+    public function headlineForNewsfeedItem(): string
+    {
+        return "An award record has been added for {$this->user->name}";
+    }
+
+    public function textForNewsfeedItem(): string
+    {
+        return $this->text;
+    }
+
+    public function itemForNewsfeedItem(): ?string
+    {
+        return "Award: {$this->award->name}";
+    }
+
+    public function recipientForNewsfeedItem(): ?User
+    {
+        return $this->user;
     }
 }
