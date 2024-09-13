@@ -8,6 +8,7 @@ use App\Http\Controllers\Landing\PrivacyPolicyController;
 use App\Http\Controllers\Landing\RegisterController;
 use App\Http\Controllers\Swagger\HomeController as SwaggerController;
 use Illuminate\Support\Facades\Route;
+use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 
 Route::group(['middleware' => 'landing'], static function () {
     Route::get('/', [HomeController::class, 'index'])
@@ -40,4 +41,9 @@ Route::group(['middleware' => 'landing'], static function () {
 
     Route::get('documentation/api', [SwaggerController::class, 'index'])
         ->name('api.documentation');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin', 'as' => 'admin.'], function () {
+    Route::get('health', HealthCheckResultsController::class)
+        ->name('health');
 });

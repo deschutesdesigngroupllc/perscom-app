@@ -46,6 +46,11 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->databaseNotifications()
             ->navigationItems([
+                NavigationItem::make('Health')
+                    ->icon('heroicon-o-heart')
+                    ->group('Tools')
+                    ->sort(3)
+                    ->url(config('app.admin_url').'/admin/health', shouldOpenInNewTab: true),
                 NavigationItem::make('Horizon')
                     ->icon('heroicon-o-queue-list')
                     ->group('Tools')

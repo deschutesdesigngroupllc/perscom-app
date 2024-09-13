@@ -28,6 +28,9 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Sentry\Laravel\Integration;
+use Spatie\Health\Commands\DispatchQueueCheckJobsCommand;
+use Spatie\Health\Commands\RunHealthChecksCommand;
+use Spatie\Health\Commands\ScheduleCheckHeartbeatCommand;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -137,6 +140,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('horizon:snapshot')->environments(['staging', 'production'])->everyFiveMinutes();
         $schedule->command('cache:prune-stale-tags')->environments(['staging', 'production'])->hourly();
         $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->daily();
+
+        $schedule->command(RunHealthChecksCommand::class)->everyMinute();
+        $schedule->command(DispatchQueueCheckJobsCommand::class)->everyMinute();
+        $schedule->command(ScheduleCheckHeartbeatCommand::class)->everyMinute();
 
         $schedule->job(new ResetDemoAccount)->environments(['production'])->dailyAt('01:00');
         $schedule->job(new RemoveInactiveAccounts)->environments(['production'])->dailyAt('02:00');

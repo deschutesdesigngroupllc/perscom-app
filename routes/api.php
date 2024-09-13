@@ -23,6 +23,7 @@ use App\Http\Controllers\Api\Events\EventsImagesController;
 use App\Http\Controllers\Api\Forms\FormsController;
 use App\Http\Controllers\Api\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\Groups\GroupsController;
+use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\Newsfeed\NewsfeedController;
 use App\Http\Controllers\Api\Newsfeed\NewsfeedLikesController;
@@ -61,6 +62,8 @@ use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+Route::get('health', HealthController::class);
 
 Route::get('spec.yaml', [SpecController::class, 'index'])
     ->name('spec');
