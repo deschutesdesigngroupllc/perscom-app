@@ -128,14 +128,17 @@ class AppPanelProvider extends PanelProvider
                         Provider::make('google')
                             ->label('Google')
                             ->icon('fab-google')
+                            ->stateless()
                             ->outlined(false),
                         Provider::make('discord')
                             ->label('Discord')
                             ->icon('fab-discord')
+                            ->stateless()
                             ->outlined(false),
                         Provider::make('github')
                             ->label('GitHub')
                             ->icon('fab-github')
+                            ->stateless()
                             ->outlined(false),
                     ]),
             ])
