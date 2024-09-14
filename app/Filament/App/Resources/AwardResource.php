@@ -32,33 +32,44 @@ class AwardResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Award Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->helperText('The name of the award.')
-                            ->required()
-                            ->maxLength(255)
-                            ->columnSpanFull(),
-                        Forms\Components\RichEditor::make('description')
-                            ->helperText('A brief description of the award.')
-                            ->required()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                    ]),
-                Forms\Components\Section::make('Image')
-                    ->relationship('image')
-                    ->schema([
-                        Forms\Components\FileUpload::make('path')
-                            ->hiddenLabel()
-                            ->image()
-                            ->imageEditor()
-                            ->previewable()
-                            ->openable()
-                            ->downloadable()
-                            ->visibility('public')
-                            ->storeFileNamesIn('filename')
-                            ->disk('s3')
-                            ->helperText('Add an optional image for the award.'),
+                Forms\Components\Tabs::make()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Award')
+                            ->icon('heroicon-o-trophy')
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->helperText('The name of the award.')
+                                    ->required()
+                                    ->maxLength(255)
+                                    ->columnSpanFull(),
+                                Forms\Components\RichEditor::make('description')
+                                    ->helperText('A brief description of the award.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Image')
+                            ->visibleOn('edit')
+                            ->icon('heroicon-o-photo')
+                            ->schema([
+                                Forms\Components\Section::make()
+                                    ->hiddenLabel()
+                                    ->relationship('image')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('path')
+                                            ->hiddenLabel()
+                                            ->image()
+                                            ->imageEditor()
+                                            ->previewable()
+                                            ->openable()
+                                            ->downloadable()
+                                            ->visibility('public')
+                                            ->storeFileNamesIn('filename')
+                                            ->disk('s3')
+                                            ->helperText('Add an optional image for the award.'),
+                                    ]),
+                            ]),
                     ]),
             ]);
     }

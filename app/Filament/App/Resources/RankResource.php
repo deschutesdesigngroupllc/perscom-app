@@ -32,42 +32,52 @@ class RankResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Rank Information')
-                    ->columns()
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->helperText('The name of the rank.')
-                            ->columnSpanFull()
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('abbreviation')
-                            ->helperText('The abbreviation of the rank.')
-                            ->nullable()
-                            ->maxLength(255),
-                        Forms\Components\TextInput::make('paygrade')
-                            ->helperText('The paygrade of the rank.')
-                            ->nullable()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('description')
-                            ->helperText('A brief description of the rank.')
-                            ->nullable()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                    ]),
-                Forms\Components\Section::make('Image')
-                    ->relationship('image')
-                    ->schema([
-                        Forms\Components\FileUpload::make('path')
-                            ->hiddenLabel()
-                            ->image()
-                            ->imageEditor()
-                            ->previewable()
-                            ->openable()
-                            ->downloadable()
-                            ->visibility('public')
-                            ->storeFileNamesIn('filename')
-                            ->disk('s3')
-                            ->helperText('Add an optional image for the rank.'),
+                Forms\Components\Tabs::make()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Rank')
+                            ->icon('heroicon-o-chevron-double-up')
+                            ->schema([
+                                Forms\Components\TextInput::make('name')
+                                    ->helperText('The name of the rank.')
+                                    ->columnSpanFull()
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('abbreviation')
+                                    ->helperText('The abbreviation of the rank.')
+                                    ->nullable()
+                                    ->maxLength(255),
+                                Forms\Components\TextInput::make('paygrade')
+                                    ->helperText('The paygrade of the rank.')
+                                    ->nullable()
+                                    ->maxLength(255),
+                                Forms\Components\RichEditor::make('description')
+                                    ->helperText('A brief description of the rank.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Image')
+                            ->visibleOn('edit')
+                            ->icon('heroicon-o-photo')
+                            ->schema([
+                                Forms\Components\Section::make()
+                                    ->hiddenLabel()
+                                    ->relationship('image')
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('path')
+                                            ->hiddenLabel()
+                                            ->image()
+                                            ->imageEditor()
+                                            ->previewable()
+                                            ->openable()
+                                            ->downloadable()
+                                            ->visibility('public')
+                                            ->storeFileNamesIn('filename')
+                                            ->disk('s3')
+                                            ->helperText('Add an optional image for the rank.'),
+                                    ]),
+                            ]),
                     ]),
             ]);
     }

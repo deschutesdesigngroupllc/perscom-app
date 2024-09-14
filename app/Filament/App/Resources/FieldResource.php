@@ -66,7 +66,7 @@ class FieldResource extends BaseResource
                                     ->requiredIf('type', 'select'),
                                 Forms\Components\RichEditor::make('description')
                                     ->helperText('A optional brief description of the field.')
-                                    ->required()
+                                    ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
 

@@ -49,8 +49,8 @@ class GroupResource extends BaseResource
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\RichEditor::make('description')
-                                    ->nullable()
                                     ->helperText('A brief description of the group.')
+                                    ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
