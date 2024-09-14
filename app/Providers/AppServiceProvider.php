@@ -26,6 +26,7 @@ use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\App;
@@ -37,6 +38,7 @@ use Inertia\Inertia;
 use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
 use Laravel\Pennant\Feature;
+use Laravel\Socialite\Contracts\Factory;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
 use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
 
@@ -74,6 +76,9 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(ComponentsResolverContract::class, fn ($app, $params) => new ComponentsResolver(resourceModelClass: data_get($params, 'resourceModelClass')));
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function boot(): void
     {
         App::macro('isAdmin', fn () => collect(config('tenancy.central_domains'))->contains(request()->getHost()));
@@ -168,6 +173,11 @@ class AppServiceProvider extends ServiceProvider
             if ($user?->hasRole(Utils::getSuperAdminName()) && ! request()->routeIs('api.*')) {
                 return true;
             }
+        });
+
+        $socialite = $this->app->make(Factory::class);
+        $socialite->extend('discord', function () use ($socialite) {
+            return $socialite->buildProvider(DiscordSocialiteProvider::class, config('services.discord'));
         });
 
         Str::macro('camelToLower', function ($value) {
