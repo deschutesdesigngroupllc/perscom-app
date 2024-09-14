@@ -31,7 +31,7 @@ class RankRecordStatsOverview extends BaseWidget
                 ->descriptionIcon(match ($currentMtd <=> $lastMtd) {
                     1 => 'heroicon-m-arrow-trending-up',
                     -1 => 'heroicon-m-arrow-trending-down',
-                    default => 'heroicon-m-selector',
+                    default => 'heroicon-m-arrows-right-left',
                 })
                 ->color(match ($currentMtd <=> $lastMtd) {
                     1 => 'success',
@@ -43,7 +43,7 @@ class RankRecordStatsOverview extends BaseWidget
                 ->descriptionIcon(match ($currentQtd <=> $lastQtd) {
                     1 => 'heroicon-m-arrow-trending-up',
                     -1 => 'heroicon-m-arrow-trending-down',
-                    default => 'heroicon-m-selector',
+                    default => 'heroicon-m-arrows-right-left',
                 })
                 ->color(match ($currentQtd <=> $lastQtd) {
                     1 => 'success',
@@ -55,7 +55,7 @@ class RankRecordStatsOverview extends BaseWidget
                 ->descriptionIcon(match ($currentYtd <=> $lastYtd) {
                     1 => 'heroicon-m-arrow-trending-up',
                     -1 => 'heroicon-m-arrow-trending-down',
-                    default => 'heroicon-m-selector',
+                    default => 'heroicon-m-arrows-right-left',
                 })
                 ->color(match ($currentYtd <=> $lastYtd) {
                     1 => 'success',
