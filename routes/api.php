@@ -35,6 +35,7 @@ use App\Http\Controllers\Api\RankRecords\RankRecordsController;
 use App\Http\Controllers\Api\Ranks\RanksController;
 use App\Http\Controllers\Api\Ranks\RanksImageController;
 use App\Http\Controllers\Api\ServiceRecords\ServiceRecordsController;
+use App\Http\Controllers\Api\SettingsController;
 use App\Http\Controllers\Api\SpecController;
 use App\Http\Controllers\Api\Specialties\SpecialtiesController;
 use App\Http\Controllers\Api\Statuses\StatusesController;
@@ -132,6 +133,9 @@ Route::group([
     Orion::resource('rank-records', RankRecordsController::class);
 
     Orion::resource('service-records', ServiceRecordsController::class);
+
+    Orion::resource('settings', SettingsController::class)
+        ->only('index');
 
     Orion::resource('specialties', SpecialtiesController::class);
 

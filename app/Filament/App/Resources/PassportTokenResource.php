@@ -42,21 +42,22 @@ class PassportTokenResource extends BaseResource
                             ->required()
                             ->maxLength(255),
                         Forms\Components\Select::make('scopes')
-                            ->helperText('The scopes that the API key will have access to.')
+                            ->helperText(fn ($operation) => match ($operation) {
+                                'edit' => 'Please create a new API key to change the scopes.',
+                                default => 'The scopes that the API key will have access to.'
+                            })
                             ->searchable()
                             ->multiple()
                             ->live()
+                            ->disabled(fn ($operation) => $operation !== 'create')
                             ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
                             ->hidden(fn (Forms\Get $get) => $get('all_scopes')),
                         Forms\Components\Checkbox::make('all_scopes')
+                            ->visibleOn('create')
                             ->default(true)
                             ->live()
                             ->inline()
                             ->helperText('Select to allow access to all scopes.'),
-                        Forms\Components\DateTimePicker::make('expires_at')
-                            ->label('Expires')
-                            ->nullable()
-                            ->helperText('An optional date and time the API key will expire at.'),
                     ]),
             ]);
     }
@@ -64,24 +65,12 @@ class PassportTokenResource extends BaseResource
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
-            ->columns(3)
             ->schema([
                 TextEntry::make('name'),
                 TextEntry::make('expires_at')
                     ->dateTime(),
-                TextEntry::make('revoked')
-                    ->label('Status')
-                    ->columnSpanFull()
-                    ->badge()
-                    ->color(fn ($state) => match ($state) {
-                        '1', 1, true => 'danger',
-                        default => 'success'
-                    })
-                    ->formatStateUsing(fn ($state) => match ($state) {
-                        '1', 1, true => 'Revoked',
-                        default => 'In Use'
-                    }),
                 TextEntry::make('token')
+                    ->label('API key')
                     ->badge()
                     ->color('gray')
                     ->helperText('Click to copy the API key to your clipboard.')
@@ -109,8 +98,6 @@ class PassportTokenResource extends BaseResource
                     ->limitList()
                     ->expandableLimitedList()
                     ->searchable()
-                    ->sortable(),
-                Tables\Columns\ToggleColumn::make('revoked')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('expires_at')
                     ->dateTime()

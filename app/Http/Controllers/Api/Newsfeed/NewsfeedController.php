@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\Newsfeed;
 
 use App\Http\Controllers\Api\AuthorizesRequests;
-use App\Http\Resources\NewsfeedResource;
+use App\Http\Resources\Api\NewsfeedResource;
 use App\Models\Newsfeed;
 use Orion\Http\Controllers\Controller;
 
