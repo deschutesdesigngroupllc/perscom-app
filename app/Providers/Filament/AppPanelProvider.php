@@ -21,6 +21,7 @@ use App\Filament\App\Widgets\OrganizationInfoWidget;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
+use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\Tenant;
 use Awcodes\FilamentQuickCreate\QuickCreatePlugin;
@@ -95,6 +96,7 @@ class AppPanelProvider extends PanelProvider
                 CaptureUserOnlineStatus::class,
                 CheckUserApprovalStatus::class,
                 PreventAccessFromCentralDomains::class,
+                RedirectSocialProvider::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

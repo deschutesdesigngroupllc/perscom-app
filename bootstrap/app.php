@@ -28,6 +28,7 @@ use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 use Sentry\Laravel\Integration;
 use Spatie\Health\Commands\DispatchQueueCheckJobsCommand;
 use Spatie\Health\Commands\RunHealthChecksCommand;
@@ -44,6 +45,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->name('api.')
                 ->domain(config('api.url'))
                 ->group(base_path('routes/api.php'));
+
+            Route::domain(config('app.auth_url'))
+                ->as('auth.')
+                ->middleware('web')
+                ->group(base_path('routes/auth.php'));
 
             Route::as('oidc.')
                 ->domain('{tenant}'.config('app.base_url'))
@@ -81,6 +87,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->alias([
             'approved' => CheckUserApprovalStatus::class,
+            'feature' => EnsureFeaturesAreActive::class,
             'subscribed' => CheckSubscription::class,
         ]);
 
