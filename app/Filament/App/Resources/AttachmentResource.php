@@ -5,7 +5,15 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\AttachmentResource\Pages;
+use App\Models\AssignmentRecord;
 use App\Models\Attachment;
+use App\Models\AwardRecord;
+use App\Models\CombatRecord;
+use App\Models\Event;
+use App\Models\QualificationRecord;
+use App\Models\RankRecord;
+use App\Models\ServiceRecord;
+use App\Models\Task;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -48,6 +56,38 @@ class AttachmentResource extends BaseResource
                                     ->visibility('public')
                                     ->storeFileNamesIn('filename')
                                     ->disk('s3'),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Resource')
+                            ->icon('heroicon-o-document')
+                            ->schema([
+                                Forms\Components\MorphToSelect::make('model')
+                                    ->preload()
+                                    ->hiddenLabel()
+                                    ->required()
+                                    ->types([
+                                        Forms\Components\MorphToSelect\Type::make(Task::class)
+                                            ->titleAttribute('title'),
+                                        Forms\Components\MorphToSelect\Type::make(Event::class)
+                                            ->titleAttribute('name'),
+                                        Forms\Components\MorphToSelect\Type::make(AssignmentRecord::class)
+                                            ->titleAttribute('id')
+                                            ->getOptionLabelFromRecordUsing(fn (AssignmentRecord $record) => $record->getLabel()),
+                                        Forms\Components\MorphToSelect\Type::make(AwardRecord::class)
+                                            ->titleAttribute('id')
+                                            ->getOptionLabelFromRecordUsing(fn (AwardRecord $record) => $record->getLabel()),
+                                        Forms\Components\MorphToSelect\Type::make(CombatRecord::class)
+                                            ->titleAttribute('id')
+                                            ->getOptionLabelFromRecordUsing(fn (CombatRecord $record) => $record->getLabel()),
+                                        Forms\Components\MorphToSelect\Type::make(QualificationRecord::class)
+                                            ->titleAttribute('id')
+                                            ->getOptionLabelFromRecordUsing(fn (QualificationRecord $record) => $record->getLabel()),
+                                        Forms\Components\MorphToSelect\Type::make(RankRecord::class)
+                                            ->titleAttribute('id')
+                                            ->getOptionLabelFromRecordUsing(fn (RankRecord $record) => $record->getLabel()),
+                                        Forms\Components\MorphToSelect\Type::make(ServiceRecord::class)
+                                            ->titleAttribute('id')
+                                            ->getOptionLabelFromRecordUsing(fn (ServiceRecord $record) => $record->getLabel()),
+                                    ]),
                             ]),
                     ]),
             ]);

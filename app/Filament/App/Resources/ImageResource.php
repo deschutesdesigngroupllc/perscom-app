@@ -54,7 +54,7 @@ class ImageResource extends BaseResource
                                     ->columnSpanFull(),
                                 Forms\Components\FileUpload::make('path')
                                     ->required()
-                                    ->label('File')
+                                    ->label('Image')
                                     ->image()
                                     ->imageEditor()
                                     ->previewable()

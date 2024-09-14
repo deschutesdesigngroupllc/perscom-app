@@ -84,4 +84,9 @@ class Image extends Model implements HasLabel
     {
         return $this->morphTo('model');
     }
+
+    protected static function booted(): void
+    {
+        static::deleting(fn (Image $model) => Storage::disk('s3')->delete($model->path));
+    }
 }

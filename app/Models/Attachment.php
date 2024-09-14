@@ -83,4 +83,9 @@ class Attachment extends Model implements HasLabel
     {
         return $this->morphTo('model');
     }
+
+    protected static function booted(): void
+    {
+        static::deleting(fn (Attachment $model) => Storage::disk('s3')->delete($model->path));
+    }
 }

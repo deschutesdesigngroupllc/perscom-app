@@ -54,7 +54,7 @@ class QualificationResource extends BaseResource
                             ->schema([
                                 Forms\Components\Section::make()
                                     ->hiddenLabel()
-                                    ->relationship('image')
+                                    ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
                                     ->schema([
                                         Forms\Components\FileUpload::make('path')
                                             ->hiddenLabel()
