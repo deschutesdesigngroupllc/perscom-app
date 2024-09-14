@@ -21,9 +21,9 @@ class RedirectSocialProvider
     {
         if ($request->routeIs('socialite.filament.app.oauth.redirect')) {
             return response()->redirectToRoute('auth.social.redirect', [
-                'provider' => $request->route('provider'),
                 'panel' => Filament::getPanel()->getId(),
-                'tenant' => tenant()->getKey(),
+                'provider' => $request->route('provider'),
+                'tenant' => tenant('slug'),
             ]);
         }
 

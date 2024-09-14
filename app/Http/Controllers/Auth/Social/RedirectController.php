@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RedirectController
 {
-    public function __invoke(Request $request, string $provider, string $panel, Tenant $tenant): Response
+    public function __invoke(Request $request, string $panel, string $provider, Tenant $tenant): Response
     {
         $request->session()->put('auth.social.login.tenant', [
             'tenant' => $tenant->getTenantKey(),
