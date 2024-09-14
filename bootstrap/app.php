@@ -7,6 +7,7 @@ use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\LogApiRequests;
 use App\Http\Middleware\SentryContext;
 use App\Jobs\RemoveInactiveAccounts;
@@ -148,4 +149,9 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->job(new ResetDemoAccount)->environments(['production'])->dailyAt('01:00');
         $schedule->job(new RemoveInactiveAccounts)->environments(['production'])->dailyAt('02:00');
     })
+    ->withBroadcasting(__DIR__.'/../routes/channels.php', [
+        'middleware' => [
+            'web', InitializeTenancyBySubdomain::class,
+        ],
+    ])
     ->create();

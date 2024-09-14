@@ -35,6 +35,7 @@
     "owenvoke/blade-fontawesome": "^2.6",
     "parallax/filament-syntax-entry": "^2.0.1",
     "php-open-source-saver/jwt-auth": "^2.7.1",
+    "pusher/pusher-php-server": "^7.2",
     "rlanvin/php-rrule": "^2.5.1",
     "saade/filament-fullcalendar": "^3.2.2",
     "sentry/sentry-laravel": "^4.7.1",
