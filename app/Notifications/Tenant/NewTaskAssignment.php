@@ -9,12 +9,13 @@ use App\Models\TaskAssignment;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
 
-class NewTaskAssignment extends Notification implements ShouldQueue
+class NewTaskAssignment extends Notification implements ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 

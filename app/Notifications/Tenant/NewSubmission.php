@@ -10,11 +10,12 @@ use App\Models\Submission;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class NewSubmission extends Notification implements ShouldQueue
+class NewSubmission extends Notification implements ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 

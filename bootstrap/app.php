@@ -151,7 +151,7 @@ return Application::configure(basePath: dirname(__DIR__))
     })
     ->withBroadcasting(__DIR__.'/../routes/channels.php', [
         'middleware' => [
-            'web', InitializeTenancyBySubdomain::class,
+            'web', InitializeTenancyBySubdomain::class, 'universal',
         ],
     ])
     ->create();

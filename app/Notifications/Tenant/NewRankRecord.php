@@ -10,12 +10,13 @@ use App\Models\RankRecord;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
 
-class NewRankRecord extends Notification implements ShouldQueue
+class NewRankRecord extends Notification implements ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 

@@ -9,11 +9,12 @@ use App\Mail\Admin\TenantDeletedMail;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 
-class TenantDeleted extends Notification implements ShouldQueue
+class TenantDeleted extends Notification implements ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
