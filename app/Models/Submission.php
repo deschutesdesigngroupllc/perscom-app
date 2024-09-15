@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Observers\SubmissionObserver;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasComments;
+use App\Traits\HasCustomFieldData;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasStatuses;
@@ -18,7 +19,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use Stancl\VirtualColumn\VirtualColumn;
 use Stringable;
 
 /**
@@ -64,16 +64,12 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
 {
     use ClearsResponseCache;
     use HasComments;
+    use HasCustomFieldData;
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasStatuses;
     use SoftDeletes;
-    use VirtualColumn;
-
-    public $guarded = [];
-
-    protected $hidden = ['data'];
 
     public function __toString(): string
     {

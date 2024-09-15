@@ -10,6 +10,7 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
 use App\Traits\HasAwardRecords;
 use App\Traits\HasCombatRecords;
+use App\Traits\HasCustomFieldData;
 use App\Traits\HasCustomFields;
 use App\Traits\HasProfilePhoto;
 use App\Traits\HasQualificationRecords;
@@ -46,7 +47,6 @@ use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasPermissions;
 use Spatie\Permission\Traits\HasRoles;
-use Stancl\VirtualColumn\VirtualColumn;
 
 /**
  * @property int $id
@@ -171,6 +171,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     use HasAssignmentRecords;
     use HasAwardRecords;
     use HasCombatRecords;
+    use HasCustomFieldData;
     use HasCustomFields;
     use HasFactory;
     use HasPermissions;
@@ -185,9 +186,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     use JwtClaims;
     use Notifiable;
     use SoftDeletes;
-    use VirtualColumn;
-
-    public $guarded = [];
 
     protected $fillable = [
         'name',
