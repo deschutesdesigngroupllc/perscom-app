@@ -99,7 +99,7 @@ class ServiceRecord extends Model implements HasLabel, ShouldGenerateNewsfeedIte
         return "A service record has been added for {$this->user->name}";
     }
 
-    public function textForNewsfeedItem(): string
+    public function textForNewsfeedItem(): ?string
     {
         return $this->text;
     }

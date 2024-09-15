@@ -99,7 +99,7 @@ class CombatRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItem
         return "A combat record has been added for {$this->user->name}";
     }
 
-    public function textForNewsfeedItem(): string
+    public function textForNewsfeedItem(): ?string
     {
         return $this->text;
     }

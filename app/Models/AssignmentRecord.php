@@ -131,7 +131,7 @@ class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeed
         return "An assignment record has been added for {$this->user->name}";
     }
 
-    public function textForNewsfeedItem(): string
+    public function textForNewsfeedItem(): ?string
     {
         return $this->text;
     }

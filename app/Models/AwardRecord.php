@@ -109,7 +109,7 @@ class AwardRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
         return "An award record has been added for {$this->user->name}";
     }
 
-    public function textForNewsfeedItem(): string
+    public function textForNewsfeedItem(): ?string
     {
         return $this->text;
     }
