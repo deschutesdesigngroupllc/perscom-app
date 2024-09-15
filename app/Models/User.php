@@ -398,6 +398,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         return $this->belongsTo(Unit::class);
     }
 
+    protected function getDefaultGuardName(): string
+    {
+        return 'web';
+    }
+
     protected function casts(): array
     {
         return [
