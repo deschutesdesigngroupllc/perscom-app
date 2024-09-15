@@ -7,6 +7,7 @@ namespace App\Services;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\JWT;
 
 class ApiPermissionService
@@ -17,14 +18,20 @@ class ApiPermissionService
             return false;
         }
 
-        /** @var JWT $jwt */
-        $jwt = Auth::guard('jwt');
-
-        $scopes = Arr::wrap($jwt->getPayload()->get('scopes'));
         $scope = static::formScope(
             ability: static::mapAbilities($ability),
             model: static::transformResourceName($arguments)
         );
+
+        /** @var HasApiTokens $user */
+        $user = Auth::guard('passport')->user();
+        if (Auth::guard('passport')->check() && $user->tokenCan($scope)) {
+            return true;
+        }
+
+        /** @var JWT $jwt */
+        $jwt = Auth::guard('jwt');
+        $scopes = Arr::wrap($jwt->getPayload()->get('scopes'));
 
         if (in_array('*', $scopes)) {
             return true;
