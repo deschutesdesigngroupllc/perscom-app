@@ -8,9 +8,11 @@ use App\Models\Scopes\StatusScope;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
+use App\Traits\HasColorField;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -60,11 +62,12 @@ use Spatie\EloquentSortable\Sortable;
  * @mixin \Eloquent
  */
 #[ScopedBy(StatusScope::class)]
-class Status extends Model implements HasLabel, Sortable
+class Status extends Model implements HasColor, HasLabel, Sortable
 {
     use CanBeOrdered;
     use ClearsResponseCache;
     use HasAssignmentRecords;
+    use HasColorField;
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
@@ -73,7 +76,6 @@ class Status extends Model implements HasLabel, Sortable
 
     protected $fillable = [
         'name',
-        'color',
         'created_at',
         'updated_at',
         'deleted_at',

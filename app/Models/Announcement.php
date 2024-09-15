@@ -7,8 +7,10 @@ namespace App\Models;
 use App\Contracts\Enableable;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasColorField;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -55,10 +57,11 @@ use Illuminate\Support\Str;
  *
  * @mixin \Eloquent
  */
-class Announcement extends Model implements Enableable, HasLabel
+class Announcement extends Model implements Enableable, HasColor, HasLabel
 {
     use CanBeEnabled;
     use ClearsResponseCache;
+    use HasColorField;
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
@@ -67,7 +70,6 @@ class Announcement extends Model implements Enableable, HasLabel
     protected $fillable = [
         'title',
         'content',
-        'color',
         'global',
         'expires_at',
         'created_at',

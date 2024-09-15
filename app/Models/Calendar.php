@@ -6,9 +6,11 @@ namespace App\Models;
 
 use App\Observers\CalendarObserver;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasColorField;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
+use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -50,9 +52,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  */
 #[ObservedBy(CalendarObserver::class)]
-class Calendar extends Model implements HasLabel
+class Calendar extends Model implements HasColor, HasLabel
 {
     use ClearsResponseCache;
+    use HasColorField;
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
@@ -62,7 +65,6 @@ class Calendar extends Model implements HasLabel
     protected $fillable = [
         'name',
         'description',
-        'color',
         'created_at',
         'updated_at',
         'deleted_at',

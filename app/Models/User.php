@@ -59,7 +59,7 @@ use Stancl\VirtualColumn\VirtualColumn;
  * @property int|null $status_id
  * @property int|null $unit_id
  * @property bool $approved
- * @property mixed $password
+ * @property mixed|null $password
  * @property string|null $remember_token
  * @property string|null $notes
  * @property Carbon|null $notes_updated_at

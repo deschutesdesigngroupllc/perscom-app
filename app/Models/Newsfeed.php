@@ -6,8 +6,10 @@ namespace App\Models;
 
 use App\Models\Scopes\NewsfeedScope;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasColorField;
 use App\Traits\HasLikes;
 use Eloquent;
+use Filament\Support\Contracts\HasColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -64,16 +66,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @mixin Eloquent
  */
 #[ScopedBy(NewsfeedScope::class)]
-class Newsfeed extends Activity
+class Newsfeed extends Activity implements HasColor
 {
     use ClearsResponseCache;
+    use HasColorField;
     use HasFactory;
     use HasLikes;
 
     protected $appends = [
         'headline',
         'text',
-        'color',
         'item',
     ];
 
