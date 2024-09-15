@@ -59,7 +59,7 @@ class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\Initiali
         }
 
         $signed = false;
-        if ($tenant = Tenant::find($token->claims()->get('tenant'))?->first()) {
+        if ($tenant = Tenant::find($token->claims()->get('tenant'))) {
             $tenant->run(function () use ($token, &$signed) {
                 /** @var CustomJwtProvider $provider */
                 $provider = app(CustomJwtProvider::class);

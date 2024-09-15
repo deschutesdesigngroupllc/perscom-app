@@ -14,11 +14,16 @@ class MeController extends Controller
 {
     protected $model = User::class;
 
+    public function authorize(string $ability, $arguments = []): bool
+    {
+        return true;
+    }
+
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
     {
         $query = parent::buildIndexFetchQuery($request, $requestedRelations);
 
-        $query->where('id', '=', Auth::guard('api')->id())->limit(1);
+        $query->where('id', '=', Auth::guard('api')->id())->first();
 
         return $query;
     }
