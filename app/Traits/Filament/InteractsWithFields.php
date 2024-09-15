@@ -85,11 +85,13 @@ trait InteractsWithFields
 
     protected function mutateFormDataBeforeSave(array $data): array
     {
-        /** @var HasFields $record */
-        $record = $this->getRecord();
-        $record->forceFill(data_get($data, 'data'))->save();
+        if ($fields = data_get($data, 'data')) {
+            /** @var HasFields $record */
+            $record = $this->getRecord();
+            $record->forceFill($fields)->save();
 
-        data_forget($data, 'data');
+            data_forget($data, 'data');
+        }
 
         return parent::mutateFormDataBeforeSave($data);
     }
