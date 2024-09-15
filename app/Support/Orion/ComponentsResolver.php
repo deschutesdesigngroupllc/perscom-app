@@ -13,10 +13,10 @@ class ComponentsResolver extends StandardComponentsResolver
     {
         $resource = parent::resolveResourceClass();
 
-        $requestedVersion = Str::of(request()->segment(1))->upper()->squish()->replace('.', '')->toString();
+        $requestedVersion = Str::upper(request()->route('version'));
 
         foreach (array_reverse(config('api.versions', [])) as $version) {
-            $versionFormatted = Str::of($version)->upper()->squish()->replace('.', '')->toString();
+            $versionFormatted = Str::upper($version);
 
             $resourceClassName = $this->getResourceClassesNamespace().'Api\\'.$versionFormatted.'\\'.class_basename($this->resourceModelClass).'Resource';
             if (class_exists($resourceClassName) && $requestedVersion === $versionFormatted) {
