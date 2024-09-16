@@ -20,6 +20,7 @@ class EditUser extends EditRecord
     {
         return [
             RelationManagers\FieldsRelationManager::class,
+            RelationManagers\RolesRelationManager::class,
         ];
     }
 
