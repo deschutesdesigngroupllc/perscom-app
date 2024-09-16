@@ -121,7 +121,7 @@ class SetupTenantAccount
         ]);
         $user->assignRole(Utils::getSuperAdminName());
 
-        Mail::to($user)->send(new NewTenantMail($this->tenant, $user, $password));
+        Mail::to($user)->send(new NewTenantMail($this->tenant->refresh(), $user, $password));
     }
 
     protected function createFirstNewsfeedItem(): void
