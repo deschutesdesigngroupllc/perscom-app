@@ -183,7 +183,7 @@ return [
             'password' => env('REDIS_PASSWORD'),
             'port' => env('REDIS_PORT', '6379'),
             'database' => env('REDIS_QUEUE_DB', '3'),
-            'prefix' => 'perscom_'.env('APP_ENV', 'production').'_queue',
+            'prefix' => 'perscom_'.env('APP_ENV', 'production').'_',
         ],
     ],
 ];
