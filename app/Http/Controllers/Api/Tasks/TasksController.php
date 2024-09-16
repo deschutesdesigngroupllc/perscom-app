@@ -19,7 +19,11 @@ class TasksController extends Controller
 
     public function includes(): array
     {
-        return ['form', 'users'];
+        return [
+            'attachments',
+            'form',
+            'users',
+        ];
     }
 
     public function sortableBy(): array

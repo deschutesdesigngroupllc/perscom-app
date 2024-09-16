@@ -50,10 +50,6 @@ class AttachmentsController extends Controller
                 'path' => $path,
                 'filename' => $file->getClientOriginalName(),
             ]);
-
-            $request->merge([
-                'file' => null,
-            ]);
         }
     }
 }

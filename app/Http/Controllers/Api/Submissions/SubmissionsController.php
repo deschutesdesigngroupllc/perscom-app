@@ -19,7 +19,16 @@ class SubmissionsController extends Controller
 
     public function includes(): array
     {
-        return ['form', 'form.*', 'user', 'user.*', 'statuses', 'statuses.record'];
+        return [
+            'comments',
+            'comments.*',
+            'form',
+            'form.*',
+            'user',
+            'user.*',
+            'statuses',
+            'statuses.record',
+        ];
     }
 
     public function sortableBy(): array

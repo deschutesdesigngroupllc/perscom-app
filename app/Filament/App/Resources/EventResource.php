@@ -87,6 +87,36 @@ class EventResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Details')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                Forms\Components\RichEditor::make('content')
+                                    ->helperText('The informational content of the event.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Image')
+                            ->visibleOn('edit')
+                            ->icon('heroicon-o-photo')
+                            ->schema([
+                                Forms\Components\Section::make()
+                                    ->hiddenLabel()
+                                    ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('path')
+                                            ->hiddenLabel()
+                                            ->image()
+                                            ->imageEditor()
+                                            ->previewable()
+                                            ->openable()
+                                            ->downloadable()
+                                            ->visibility('public')
+                                            ->storeFileNamesIn('filename')
+                                            ->disk('s3')
+                                            ->helperText('Add an optional image for the event.'),
+                                    ]),
+                            ]),
                         Forms\Components\Tabs\Tab::make('Scheduling')
                             ->icon('heroicon-o-clock')
                             ->columns()
@@ -226,15 +256,6 @@ class EventResource extends BaseResource
                                     ->helperText('The date the recurring event will end.')
                                     ->hidden(fn (Forms\Get $get) => $get('end_type') !== 'on')
                                     ->required(fn (Forms\Get $get) => $get('end_type') === 'on'),
-                            ]),
-                        Forms\Components\Tabs\Tab::make('Details')
-                            ->icon('heroicon-o-information-circle')
-                            ->schema([
-                                Forms\Components\RichEditor::make('content')
-                                    ->helperText('The informational content of the event.')
-                                    ->nullable()
-                                    ->maxLength(65535)
-                                    ->columnSpanFull(),
                             ]),
                         Forms\Components\Tabs\Tab::make('Registration')
                             ->icon('heroicon-o-user-plus')

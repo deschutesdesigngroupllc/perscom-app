@@ -19,6 +19,7 @@ class EditUser extends EditRecord
     public function getRelationManagers(): array
     {
         return [
+            RelationManagers\AttachmentsRelationManager::class,
             RelationManagers\FieldsRelationManager::class,
             RelationManagers\RolesRelationManager::class,
         ];

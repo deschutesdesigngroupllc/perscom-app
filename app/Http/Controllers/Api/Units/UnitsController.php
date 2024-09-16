@@ -24,7 +24,7 @@ class UnitsController extends Controller
 
     public function includes(): array
     {
-        return ['assignment_records', 'assignment_records.*', 'groups', 'users'];
+        return ['assignment_records', 'assignment_records.*', 'image', 'groups', 'groups.*', 'users'];
     }
 
     public function sortableBy(): array

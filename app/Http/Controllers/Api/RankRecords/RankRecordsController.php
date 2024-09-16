@@ -20,8 +20,11 @@ class RankRecordsController extends Controller
     public function includes(): array
     {
         return [
+            'attachments',
             'author',
             'author.*',
+            'comments',
+            'comments.*',
             'document',
             'rank',
             'rank.image',

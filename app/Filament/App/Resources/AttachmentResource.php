@@ -63,7 +63,6 @@ class AttachmentResource extends BaseResource
                                 Forms\Components\MorphToSelect::make('model')
                                     ->preload()
                                     ->hiddenLabel()
-                                    ->required()
                                     ->types([
                                         Forms\Components\MorphToSelect\Type::make(Task::class)
                                             ->titleAttribute('title'),
@@ -120,6 +119,10 @@ class AttachmentResource extends BaseResource
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->iconPosition(IconPosition::After)
                     ->url(function (?Attachment $record) {
+                        if (is_null($record->model)) {
+                            return null;
+                        }
+
                         $resource = Filament::getModelResource($record->model);
 
                         return $resource ? $resource::getUrl('edit', [
@@ -201,7 +204,7 @@ class AttachmentResource extends BaseResource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('attachments.created_at', 'desc');
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getEloquentQuery(): Builder

@@ -24,6 +24,7 @@ class UsersController extends Controller
         return [
             'assignment_records',
             'assignment_records.*',
+            'attachments',
             'award_records',
             'award_records.*',
             'award_records.award.*',
@@ -47,6 +48,7 @@ class UsersController extends Controller
             'specialty',
             'status',
             'unit',
+            'unit.*',
         ];
     }
 

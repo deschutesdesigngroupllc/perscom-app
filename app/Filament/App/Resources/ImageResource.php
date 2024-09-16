@@ -70,7 +70,6 @@ class ImageResource extends BaseResource
                                 Forms\Components\MorphToSelect::make('model')
                                     ->preload()
                                     ->hiddenLabel()
-                                    ->required()
                                     ->types([
                                         Forms\Components\MorphToSelect\Type::make(Award::class)
                                             ->titleAttribute('name'),
@@ -110,11 +109,16 @@ class ImageResource extends BaseResource
                             ->icon('heroicon-o-document')
                             ->schema([
                                 TextEntry::make('model.label')
+                                    ->label('Resource')
                                     ->badge()
                                     ->openUrlInNewTab()
                                     ->icon('heroicon-o-arrow-top-right-on-square')
                                     ->iconPosition(IconPosition::After)
                                     ->url(function (?Image $record) {
+                                        if (is_null($record->model)) {
+                                            return null;
+                                        }
+
                                         $resource = Filament::getModelResource($record->model);
 
                                         return $resource ? $resource::getUrl('edit', [
@@ -150,6 +154,23 @@ class ImageResource extends BaseResource
                     ->iconPosition(IconPosition::After)
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('model.label')
+                    ->label('Resource')
+                    ->badge()
+                    ->openUrlInNewTab()
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->iconPosition(IconPosition::After)
+                    ->url(function (?Image $record) {
+                        if (is_null($record->model)) {
+                            return null;
+                        }
+
+                        $resource = Filament::getModelResource($record->model);
+
+                        return $resource ? $resource::getUrl('edit', [
+                            'record' => $record->model,
+                        ]) : false;
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -184,7 +205,8 @@ class ImageResource extends BaseResource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('created_at', 'desc');
     }
 
     public static function getEloquentQuery(): Builder

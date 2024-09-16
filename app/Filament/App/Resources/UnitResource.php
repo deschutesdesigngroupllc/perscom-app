@@ -53,6 +53,27 @@ class UnitResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Image')
+                            ->visibleOn('edit')
+                            ->icon('heroicon-o-photo')
+                            ->schema([
+                                Forms\Components\Section::make()
+                                    ->hiddenLabel()
+                                    ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
+                                    ->schema([
+                                        Forms\Components\FileUpload::make('path')
+                                            ->hiddenLabel()
+                                            ->image()
+                                            ->imageEditor()
+                                            ->previewable()
+                                            ->openable()
+                                            ->downloadable()
+                                            ->visibility('public')
+                                            ->storeFileNamesIn('filename')
+                                            ->disk('s3')
+                                            ->helperText('Add an optional image for the unit.'),
+                                    ]),
+                            ]),
                         Forms\Components\Tabs\Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')
                             ->schema([
@@ -80,6 +101,9 @@ class UnitResource extends BaseResource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\ImageColumn::make('image.path')
+                    ->disk('s3')
+                    ->label('Image'),
                 Tables\Columns\TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()

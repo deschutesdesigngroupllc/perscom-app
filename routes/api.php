@@ -19,11 +19,13 @@ use App\Http\Controllers\Api\CombatRecords\CombatRecordsController;
 use App\Http\Controllers\Api\Comments\CommentsController;
 use App\Http\Controllers\Api\Documents\DocumentsController;
 use App\Http\Controllers\Api\Events\EventsController;
-use App\Http\Controllers\Api\Events\EventsImagesController;
+use App\Http\Controllers\Api\Events\EventsImageController;
 use App\Http\Controllers\Api\Forms\FormsController;
 use App\Http\Controllers\Api\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\Groups\GroupsController;
+use App\Http\Controllers\Api\Groups\GroupsImageController;
 use App\Http\Controllers\Api\HealthController;
+use App\Http\Controllers\Api\Images\ImagesController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\Newsfeed\NewsfeedController;
 use App\Http\Controllers\Api\Newsfeed\NewsfeedLikesController;
@@ -43,7 +45,9 @@ use App\Http\Controllers\Api\Submissions\SubmissionsController;
 use App\Http\Controllers\Api\Submissions\SubmissionsStatusesController;
 use App\Http\Controllers\Api\Tasks\TasksController;
 use App\Http\Controllers\Api\Units\UnitsController;
+use App\Http\Controllers\Api\Units\UnitsImageController;
 use App\Http\Controllers\Api\Users\UsersAssignmentRecordsController;
+use App\Http\Controllers\Api\Users\UsersAttachmentsController;
 use App\Http\Controllers\Api\Users\UsersAwardRecordsController;
 use App\Http\Controllers\Api\Users\UsersCombatRecordsController;
 use App\Http\Controllers\Api\Users\UsersController;
@@ -109,12 +113,15 @@ Route::group([
     Orion::resource('documents', DocumentsController::class);
 
     Orion::resource('events', EventsController::class);
-    Orion::hasManyResource('events', 'images', EventsImagesController::class);
+    Orion::hasManyResource('events', 'image', EventsImageController::class);
 
     Orion::resource('forms', FormsController::class);
     Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
 
     Orion::resource('groups', GroupsController::class);
+    Orion::hasOneResource('groups', 'image', GroupsImageController::class);
+
+    Orion::resource('images', ImagesController::class);
 
     Orion::resource('newsfeed', NewsfeedController::class);
     Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)
@@ -147,6 +154,7 @@ Route::group([
     Orion::resource('tasks', TasksController::class);
 
     Orion::resource('units', UnitsController::class);
+    Orion::hasOneResource('units', 'image', UnitsImageController::class);
 
     Orion::resource('users', UsersController::class);
     Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);
@@ -160,6 +168,7 @@ Route::group([
     Orion::belongsToResource('users', 'specialty', UsersSpecialtyController::class);
     Orion::belongsToResource('users', 'unit', UsersUnitController::class);
     Orion::belongsToResource('users', 'status', UsersStatusController::class);
+    Orion::morphToManyResource('users', 'attachments', UsersAttachmentsController::class);
     Orion::morphToManyResource('users', 'fields', UsersFieldsController::class);
     Orion::morphToManyResource('users', 'status-records', UsersStatusRecordsController::class);
     Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);

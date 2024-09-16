@@ -24,7 +24,17 @@ class EventsController extends Controller
 
     public function includes(): array
     {
-        return ['author', 'calendar', 'tags'];
+        return [
+            'attachments',
+            'author',
+            'author.*'.
+            'calendar',
+            'calendar.*',
+            'comments',
+            'comments.*',
+            'image',
+            'tags',
+        ];
     }
 
     public function sortableBy(): array

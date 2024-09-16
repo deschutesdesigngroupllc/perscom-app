@@ -48,11 +48,19 @@ class LogApiRequests
                         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
                     }
 
+                    if (! mb_check_encoding($content, 'UTF-8')) {
+                        return null;
+                    }
+
                     return $content;
                 }),
                 'content' => optional($response->getContent(), static function ($content) {
                     if (Str::isJson($content)) {
                         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+                    }
+
+                    if (! mb_check_encoding($content, 'UTF-8')) {
+                        return null;
                     }
 
                     return $content;

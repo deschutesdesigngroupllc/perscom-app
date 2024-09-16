@@ -8,6 +8,7 @@ use App\Contracts\HasFields;
 use App\Observers\UserObserver;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
+use App\Traits\HasAttachments;
 use App\Traits\HasAwardRecords;
 use App\Traits\HasCombatRecords;
 use App\Traits\HasCustomFieldData;
@@ -72,6 +73,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read int|null $attachments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
  * @property-read int|null $award_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportClient> $clients
@@ -169,6 +172,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     use ClearsResponseCache;
     use HasApiTokens;
     use HasAssignmentRecords;
+    use HasAttachments;
     use HasAwardRecords;
     use HasCombatRecords;
     use HasCustomFieldData;

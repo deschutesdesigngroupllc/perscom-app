@@ -23,6 +23,9 @@ class UsersTasksController extends RelationController
 
     public function includes(): array
     {
-        return ['assignment'];
+        return [
+            'assignment',
+            'attachments',
+        ];
     }
 }

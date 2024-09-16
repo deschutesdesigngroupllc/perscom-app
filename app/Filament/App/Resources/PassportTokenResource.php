@@ -112,9 +112,7 @@ class PassportTokenResource extends BaseResource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->groups(['revoked'])
             ->filters([
-                Tables\Filters\TernaryFilter::make('revoked'),
                 Tables\Filters\SelectFilter::make('scopes')
                     ->multiple()
                     ->searchable()

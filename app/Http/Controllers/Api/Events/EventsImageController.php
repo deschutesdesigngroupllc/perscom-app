@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Orion\Http\Controllers\RelationController;
 use Orion\Http\Requests\Request;
 
-class EventsImagesController extends RelationController
+class EventsImageController extends RelationController
 {
     use AuthorizesRequests;
 
@@ -38,7 +38,6 @@ class EventsImagesController extends RelationController
 
     protected function beforeSave(Request $request, Model $parentEntity, Model $entity): void
     {
-        // TODO: Remove image from saving to DB
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $file = $request->file('image');
 

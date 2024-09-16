@@ -27,4 +27,11 @@ class AttachmentRequest extends Request
             'file' => 'required|file|min:1|max:10000',
         ];
     }
+
+    public function validated($key = null, $default = null)
+    {
+        $validated = parent::validated($key, $default);
+
+        return data_forget($validated, 'file');
+    }
 }

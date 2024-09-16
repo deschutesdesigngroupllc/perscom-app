@@ -11,6 +11,7 @@ use App\Traits\CanBeOrdered;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
 use App\Traits\HasIcon;
+use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
@@ -36,6 +37,9 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
  * @property-read int|null $groups_count
+ * @property-read Image|null $image
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read int|null $images_count
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
@@ -77,6 +81,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     use HasAssignmentRecords;
     use HasFactory;
     use HasIcon;
+    use HasImages;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUsers;

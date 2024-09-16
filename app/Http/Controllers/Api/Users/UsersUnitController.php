@@ -18,4 +18,9 @@ class UsersUnitController extends RelationController
     protected $request = UnitRequest::class;
 
     protected $relation = 'unit';
+
+    public function includes(): array
+    {
+        return ['image'];
+    }
 }

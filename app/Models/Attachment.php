@@ -20,15 +20,15 @@ use Illuminate\Support\Facades\Storage;
  * @property int $id
  * @property string $name
  * @property string $filename
- * @property string $model_type
- * @property int $model_id
+ * @property string|null $model_type
+ * @property int|null $model_id
  * @property string $path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read string|null $attachment_url
  * @property-read string $label
- * @property-read Model|Eloquent $model
+ * @property-read Model|Eloquent|null $model
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Support\Optional|string|null|null $url
  *

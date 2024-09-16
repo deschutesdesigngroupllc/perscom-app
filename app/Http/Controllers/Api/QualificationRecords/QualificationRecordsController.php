@@ -20,9 +20,12 @@ class QualificationRecordsController extends Controller
     public function includes(): array
     {
         return [
+            'attachments',
             'author',
             'author.*',
             'document',
+            'comments',
+            'comments.*',
             'qualification',
             'qualification.image',
             'user',

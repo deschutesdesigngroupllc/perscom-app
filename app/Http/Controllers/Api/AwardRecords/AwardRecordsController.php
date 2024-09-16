@@ -20,10 +20,13 @@ class AwardRecordsController extends Controller
     public function includes(): array
     {
         return [
+            'attachments',
             'author',
             'author.*',
             'award',
             'award.image',
+            'comments',
+            'comments.*',
             'document',
             'user',
             'user.*',

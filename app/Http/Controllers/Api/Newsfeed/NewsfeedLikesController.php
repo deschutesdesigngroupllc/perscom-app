@@ -20,16 +20,22 @@ class NewsfeedLikesController extends RelationController
     {
         return [
             'assignment_records',
+            'assignment_records.*'.
             'award_records',
+            'award_records.*',
             'combat_records',
+            'combat_records.*',
             'position',
             'qualification_records',
             'rank',
             'rank_records',
+            'rank_records.*',
             'service_records',
+            'service_records.*',
             'specialty',
             'status',
             'unit',
+            'unit.*',
         ];
     }
 }

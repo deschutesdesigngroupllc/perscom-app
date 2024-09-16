@@ -20,8 +20,11 @@ class CombatRecordsController extends Controller
     public function includes(): array
     {
         return [
+            'attachments',
             'author',
             'author.*',
+            'comments',
+            'comments.*',
             'document',
             'user',
             'user.*',

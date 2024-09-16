@@ -22,13 +22,17 @@ class UsersAssignmentRecordsController extends RelationController
     public function includes(): array
     {
         return [
+            'attachments',
             'author',
             'author.*',
+            'comments',
+            'comments.*',
             'document',
             'position',
             'specialty',
             'status',
             'unit',
+            'unit.*',
         ];
     }
 
