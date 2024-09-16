@@ -43,6 +43,8 @@ class NewCombatRecord extends Notification implements ShouldBroadcast, ShouldQue
 
     public function toBroadcast($notifiable): BroadcastMessage
     {
+        $text = Str::limit($this->combatRecord->text);
+
         return FilamentNotification::make()
             ->title('New Combat Record')
             ->body(Str::markdown("A new combat record has been added to your account.<br><br>**Text:** $text"))
