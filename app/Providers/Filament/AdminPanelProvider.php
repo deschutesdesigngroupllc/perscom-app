@@ -73,9 +73,6 @@ class AdminPanelProvider extends PanelProvider
                 Widgets\FilamentInfoWidget::class,
             ])
             ->middleware([
-                SentryContext::class,
-            ], isPersistent: true)
-            ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
@@ -85,6 +82,7 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                SentryContext::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

@@ -81,7 +81,6 @@ class AppPanelProvider extends PanelProvider
             ])
             ->middleware([
                 InitializeTenancyBySubdomain::class,
-                SentryContext::class,
             ], isPersistent: true)
             ->middleware([
                 EncryptCookies::class,
@@ -97,6 +96,7 @@ class AppPanelProvider extends PanelProvider
                 CheckUserApprovalStatus::class,
                 PreventAccessFromCentralDomains::class,
                 RedirectSocialProvider::class,
+                SentryContext::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

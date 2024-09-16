@@ -15,6 +15,7 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
+            Actions\Actions\Action::make(),
             Actions\CreateAction::make(),
         ];
     }

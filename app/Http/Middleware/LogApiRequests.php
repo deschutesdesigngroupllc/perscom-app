@@ -8,18 +8,20 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Passport\Client;
+use Laravel\Passport\Guards\TokenGuard;
 use Symfony\Component\HttpFoundation\Response;
 
 class LogApiRequests
 {
     public function handle(Request $request, Closure $next): Response
     {
+        /** @var Response $response */
         $response = $next($request);
 
         if (tenant()) {
-            /** @var Client $client */
-            $client = Auth::guard('passport')->client(); // @phpstan-ignore-line
+            /** @var TokenGuard $passport */
+            $passport = Auth::guard('passport');
+            $client = $passport->client();
 
             $name = match (true) {
                 optional($client)->firstParty() => 'api',
