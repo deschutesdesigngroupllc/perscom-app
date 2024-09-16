@@ -18,6 +18,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Wiebenieuwenhuis\FilamentCodeEditor\Components\CodeEditor;
 
 class TenantResource extends Resource
 {
@@ -64,6 +65,12 @@ class TenantResource extends Resource
                             ->icon('heroicon-o-credit-card')
                             ->columns(2)
                             ->schema([
+                                Forms\Components\TextInput::make('invoice_emails')
+                                    ->columnSpanFull()
+                                    ->maxLength(255)
+                                    ->label('Invoice Emails')
+                                    ->helperText('Separate using a column for multiple email addresses.')
+                                    ->dehydrateStateUsing(fn ($state) => json_encode($state)),
                                 Forms\Components\TextInput::make('billing_address')
                                     ->maxLength(255)
                                     ->label('Address')
@@ -126,6 +133,16 @@ class TenantResource extends Resource
                                     ->maxLength(255)
                                     ->label('Payment Method Expiration')
                                     ->disabled(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Metadata')
+                            ->visible(fn ($operation) => $operation !== 'create')
+                            ->icon('heroicon-o-code-bracket')
+                            ->schema([
+                                CodeEditor::make('data')
+                                    ->dehydrated(false)
+                                    ->hiddenLabel()
+                                    ->formatStateUsing(fn (?Tenant $record) => json_encode(json_decode($record->getRawOriginal('data')), JSON_PRETTY_PRINT))
+                                    ->json(),
                             ]),
                     ]),
             ]);

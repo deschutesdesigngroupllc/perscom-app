@@ -44,12 +44,12 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property string|null $billing_state
  * @property string|null $billing_postal_code
  * @property string|null $vat_id
- * @property string|null $receipt_emails
+ * @property array $invoice_emails
  * @property string|null $billing_country
+ * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $last_login_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read Domain|null $custom_domain
  * @property-read Optional|string|null|null $custom_url
@@ -59,7 +59,6 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read int|null $domains_count
  * @property-read Domain|null $fallback_domain
  * @property-read Optional|string|null|null $fallback_url
- * @property-read array $invoice_emails
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Optional|string|null|null $slug
@@ -90,12 +89,12 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @method static Builder|Tenant whereEmail($value)
  * @method static Builder|Tenant whereExtraBillingInformation($value)
  * @method static Builder|Tenant whereId($value)
+ * @method static Builder|Tenant whereInvoiceEmails($value)
  * @method static Builder|Tenant whereLastLoginAt($value)
  * @method static Builder|Tenant whereName($value)
  * @method static Builder|Tenant wherePmExpiration($value)
  * @method static Builder|Tenant wherePmLastFour($value)
  * @method static Builder|Tenant wherePmType($value)
- * @method static Builder|Tenant whereReceiptEmails($value)
  * @method static Builder|Tenant whereStripeId($value)
  * @method static Builder|Tenant whereTrialEndsAt($value)
  * @method static Builder|Tenant whereUpdatedAt($value)
@@ -147,7 +146,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             'billing_country',
             'last_login_at',
             'vat_id',
-            'receipt_emails',
+            'invoice_emails',
             'created_at',
             'updated_at',
             'deleted_at',
