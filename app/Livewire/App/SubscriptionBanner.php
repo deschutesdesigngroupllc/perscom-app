@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Livewire\App;
 
 use App\Features\BillingFeature;
+use App\Models\Tenant;
 use Carbon\Carbon;
+use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Laravel\Pennant\Feature;
@@ -19,14 +21,18 @@ class SubscriptionBanner extends Component
 
     public function mount(): void
     {
-        $date = tenant('trial_ends_at');
+        /** @var Tenant $tenant */
+        $tenant = Filament::getTenant();
 
-        $left = Carbon::parse($date)->longRelativeDiffForHumans();
-        $expiration = Carbon::parse($date)->toFormattedDateString();
+        $trialEndsAt = $tenant->trial_ends_at;
+
+        $left = Carbon::parse($trialEndsAt)->longRelativeDiffForHumans();
+        $expiration = Carbon::parse($trialEndsAt)->toFormattedDateString();
 
         $this->message = match (true) {
-            tenant()?->onTrial() => "You are currently on trial. Your trial is set to expire $left on $expiration.",
-            ! tenant()?->subscribed() => 'You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.',
+            $tenant->onTrial() => "You are currently on trial. Your trial is set to expire $left on $expiration.",
+            $tenant->hasIncompletePayment() => 'Your subscription is currently past due. Please pay your invoice to continue using PERSCOM.',
+            ! $tenant->subscribed() => 'You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.',
             default => null
         };
 

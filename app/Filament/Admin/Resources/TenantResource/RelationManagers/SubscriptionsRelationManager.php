@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\TenantResource\RelationManagers;
 
+use App\Models\Enums\StripeStatus;
 use App\Models\Subscription;
 use App\Models\Tenant;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -46,6 +47,8 @@ class SubscriptionsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('stripe_status')
                     ->label('Status')
                     ->badge()
+                    ->color(fn ($state) => StripeStatus::from($state)->getColor())
+                    ->formatStateUsing(fn ($state) => StripeStatus::from($state)->getLabel())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stripe_price')
                     ->label('Price')

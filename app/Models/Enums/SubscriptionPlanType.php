@@ -13,7 +13,7 @@ enum SubscriptionPlanType: string implements HasColor, HasLabel
     case BASIC = 'basic';
     case PRO = 'pro';
     case ENTERPRISE = 'enterprise';
-    case NONE = 'no_plan';
+    case NONE = 'no_current_plan';
 
     public function getColor(): string|array|null
     {
