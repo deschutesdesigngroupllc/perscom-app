@@ -30,7 +30,7 @@ class HealthServiceProvider extends ServiceProvider
             DatabaseCheck::new(),
             HorizonCheck::new(),
             QueueCheck::new()
-                ->onQueue(['default', 'central', 'system']),
+                ->onQueue(['default', 'tenant', 'system']),
             OptimizedAppCheck::new(),
             RedisCheck::new(),
             RedisMemoryUsageCheck::new()
