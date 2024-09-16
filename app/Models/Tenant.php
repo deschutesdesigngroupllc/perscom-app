@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Enums\SubscriptionPlanType;
 use App\Observers\TenantObserver;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -15,9 +16,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Optional;
+use Illuminate\Support\Str;
 use Laravel\Pennant\Concerns\HasFeatures;
 use Laravel\Pennant\Contracts\FeatureScopeable;
 use Spark\Billable;
+use Spark\Plan;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
@@ -60,6 +63,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read Optional|string|null|null $slug
+ * @property-read Optional|SubscriptionPlanType|null|null $subscription_plan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  * @property-read Optional|string|null|null $url
@@ -208,6 +212,12 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return Attribute::make(
             get: fn (): Optional|string|null => $this->custom_url ?? $this->fallback_url
         )->shouldCache();
+    }
+
+    public function subscriptionPlan(): Attribute
+    {
+        return Attribute::get(fn (): Optional|SubscriptionPlanType|null => optional($this->sparkPlan(), fn (Plan $plan) => SubscriptionPlanType::from(Str::lower($plan->name))) ?? SubscriptionPlanType::NONE)
+            ->shouldCache();
     }
 
     public function stripeName(): ?string

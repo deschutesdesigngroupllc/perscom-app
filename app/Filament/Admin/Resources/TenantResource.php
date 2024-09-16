@@ -8,7 +8,9 @@ use App\Filament\Admin\Resources\TenantResource\Pages;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\DomainsRelationManager;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\SubscriptionsRelationManager;
 use App\Models\Tenant;
+use App\Models\User;
 use App\Rules\SubdomainRule;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -145,8 +147,10 @@ class TenantResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->openUrlInNewTab()
-                    ->url(fn ($state) => $state)
-                    ->searchable(),
+                    ->url(fn ($state) => $state),
+                Tables\Columns\TextColumn::make('subscription_plan')
+                    ->label('Subscription')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('last_login_at')
                     ->dateTime()
                     ->sortable(),
@@ -167,6 +171,29 @@ class TenantResource extends Resource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('login')
+                    ->icon('heroicon-o-arrow-right-end-on-rectangle')
+                    ->color('gray')
+                    ->form([
+                        Forms\Components\Select::make('user')
+                            ->searchable()
+                            ->helperText('Select the user to login as.')
+                            ->options(function (Tenant $record) {
+                                return $record->run(function () use (&$users) {
+                                    return User::query()->orderBy('name')->whereHas('roles', function (Builder $query) {
+                                        $query->where('name', Utils::getSuperAdminName());
+                                    })->get()->pluck('name', 'id')->toArray();
+                                });
+                            })
+                            ->required(),
+                    ])
+                    ->action(function (Tables\Actions\Action $action, Tenant $record, array $data) {
+                        $token = tenancy()->impersonate($record, data_get($data, 'user'), '/', 'web');
+
+                        return redirect()->to($record->route('tenant.impersonation', [
+                            'token' => $token,
+                        ]));
+                    }),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources\TenantResource\RelationManagers;
 
 use App\Models\Subscription;
+use App\Models\Tenant;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -15,6 +16,22 @@ class SubscriptionsRelationManager extends RelationManager
     protected static string $relationship = 'subscriptions';
 
     protected static ?string $icon = 'heroicon-o-credit-card';
+
+    /**
+     * @param  Tenant  $ownerRecord
+     */
+    public static function getBadge(Model $ownerRecord, string $pageClass): ?string
+    {
+        return $ownerRecord->subscription_plan->getLabel();
+    }
+
+    /**
+     * @param  Tenant  $ownerRecord
+     */
+    public static function getBadgeColor(Model $ownerRecord, string $pageClass): ?string
+    {
+        return $ownerRecord->subscription_plan->getColor();
+    }
 
     public function table(Table $table): Table
     {

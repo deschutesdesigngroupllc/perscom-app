@@ -7,7 +7,7 @@
         </div>
 
         @if ($this->subtitle)
-          <p class="text-xs text-gray-500 dark:text-gray-400">
+          <p class="text-sm text-gray-500 dark:text-gray-400">
             {{ $this->subtitle }}
           </p>
         @endif
@@ -18,6 +18,9 @@
           icon-alias="panels::widgets.filament-info.open-documentation-button" rel="noopener noreferrer" target="_blank">
           {{ __('filament-panels::widgets/filament-info-widget.actions.open_documentation.label') }}
         </x-filament::link>
+        @if($this->plan)
+          <x-filament::badge color="{{ $this->planColor ?? 'info' }}">{{ $this->plan }}</x-filament::badge>
+        @endif
       </div>
     </div>
   </x-filament::section>
