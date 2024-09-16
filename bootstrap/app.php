@@ -29,11 +29,13 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
+use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
 use Spatie\Health\Commands\DispatchQueueCheckJobsCommand;
 use Spatie\Health\Commands\RunHealthChecksCommand;
 use Spatie\Health\Commands\ScheduleCheckHeartbeatCommand;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
+use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
 use Symfony\Component\HttpFoundation\Response;
 
 return Application::configure(basePath: dirname(__DIR__))
@@ -111,6 +113,11 @@ return Application::configure(basePath: dirname(__DIR__))
         Integration::handles($exceptions);
 
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->routeIs('api.*') || $request->expectsJson());
+
+        $exceptions->dontReport([
+            TenantCouldNotBeIdentifiedException::class,
+            OAuthServerException::class,
+        ]);
 
         $exceptions->render(function (Exception $e, Request $request) {
             $statusCode = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : null;
