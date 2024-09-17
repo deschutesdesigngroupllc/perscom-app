@@ -29,3 +29,4 @@ clover.xml
 .rnd
 tests/Coverage
 phpunit.xml
+herd.yml
