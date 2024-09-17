@@ -11,6 +11,7 @@ use App\Filament\Exports\UserExporter;
 use App\Models\User;
 use App\Settings\DashboardSettings;
 use App\Traits\Filament\InteractsWithFields;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Carbon\CarbonInterface;
 use Carbon\CarbonInterval;
 use Filament\Forms;
@@ -23,11 +24,13 @@ use Filament\Infolists\Components\Tabs\Tab;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Laravel\Pennant\Feature;
 
@@ -272,7 +275,10 @@ class UserResource extends BaseResource
                     ->disk('s3'),
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
-                    ->searchable(),
+                    ->searchable()
+                    ->icon(fn (?User $record) => ! $record->approved && Auth::user()->hasRole(Utils::getSuperAdminName()) ? 'heroicon-o-exclamation-circle' : null)
+                    ->iconColor('danger')
+                    ->iconPosition(IconPosition::After),
                 Tables\Columns\TextColumn::make('email')
                     ->sortable()
                     ->searchable(),
@@ -312,8 +318,9 @@ class UserResource extends BaseResource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->groups(['position.name', 'rank.name', 'specialty.name', 'status.name', 'unit.name'])
+            ->groups(['approved', 'position.name', 'rank.name', 'specialty.name', 'status.name', 'unit.name'])
             ->filters([
+                Tables\Filters\TernaryFilter::make('approved'),
                 Tables\Filters\SelectFilter::make('position')
                     ->relationship('position', 'name')
                     ->preload()
@@ -337,6 +344,18 @@ class UserResource extends BaseResource
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
+                Tables\Actions\Action::make('approve')
+                    ->color('success')
+                    ->icon('heroicon-o-check-circle')
+                    ->visible(fn (?User $record) => ! $record->approved && Auth::user()->hasRole(Utils::getSuperAdminName()))
+                    ->successNotificationTitle('The user has been successfully approved.')
+                    ->action(function (Tables\Actions\Action $action, User $record) {
+                        $record->forceFill([
+                            'approved' => true,
+                        ])->save();
+
+                        $action->success();
+                    }),
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),

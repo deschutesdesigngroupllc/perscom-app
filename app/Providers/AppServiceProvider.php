@@ -141,18 +141,18 @@ class AppServiceProvider extends ServiceProvider
         });
 
         FilamentView::registerRenderHook(
-            PanelsRenderHook::BODY_START,
-            fn () => view('filament.render-hooks.body-start.demo-banner')
+            name: PanelsRenderHook::BODY_START,
+            hook: fn () => view('filament.render-hooks.body-start.demo-banner')
         );
 
         FilamentView::registerRenderHook(
-            PanelsRenderHook::BODY_START,
-            fn () => view('filament.render-hooks.body-start.subscription-banner')
+            name: PanelsRenderHook::BODY_START,
+            hook: fn () => view('filament.render-hooks.body-start.subscription-banner'),
         );
 
         FilamentView::registerRenderHook(
-            PanelsRenderHook::BODY_START,
-            fn () => view('filament.render-hooks.body-start.announcement-banner')
+            name: PanelsRenderHook::BODY_START,
+            hook: fn () => view('filament.render-hooks.body-start.announcement-banner')
         );
 
         FilamentView::registerRenderHook(
