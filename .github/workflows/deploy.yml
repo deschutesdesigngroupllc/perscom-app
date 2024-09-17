@@ -1,0 +1,144 @@
+name: Deploy Application
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  setup:
+    name: Setup Deployment
+    runs-on: ubuntu-latest
+    outputs:
+      branch: ${{ steps.check_step.outputs.branch }}
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Get Current Branch
+        id: check_step
+        run: |
+          raw=$(git branch -r --contains ${{ github.ref }})
+          branch=${raw##*/}
+          echo "branch=${branch}" >> $GITHUB_OUTPUT          
+          echo "Branch is $branch."
+
+  production:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: setup
+    if: contains(needs.setup.outputs.branch, 'master')
+    environment:
+      name: production
+      url: https://perscom.io
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Get Version
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.FORGE_SSH_PRIVATE_KEY }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+          tools: composer
+
+      - name: Require Forge CLI
+        run: composer global require laravel/forge-cli
+
+      - name: Deploy Application
+        run: |
+          forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
+          forge deploy ${{ secrets.FORGE_PRODUCTION_SERVER_SITE }}
+        env:
+          FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+
+      - name: Create Sentry Release
+        uses: getsentry/action-release@v1
+        with:
+          environment: production
+          version: ${{ env.VERSION }}
+          sourcemaps: ./dist ./build/static/js
+
+      - name: Setup AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Invalidate Cloudfront Cache
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_PRODUCTION }}
+          PATHS: "/*"
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+  staging:
+    name: Deploy to Staging
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: setup
+    if: contains(needs.setup.outputs.branch, 'staging')
+    environment:
+      name: staging
+      url: https://staging.perscom.io
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v3
+
+      - name: Get Version
+        run: echo "VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.FORGE_SSH_PRIVATE_KEY }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.3
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite
+          coverage: none
+          tools: composer
+
+      - name: Require Forge CLI
+        run: composer global require laravel/forge-cli
+
+      - name: Deploy Application
+        run: |
+          forge server:switch ${{ secrets.FORGE_SERVER_NAME }}
+          forge deploy ${{ secrets.FORGE_STAGING_SERVER_SITE }}
+        env:
+          FORGE_API_TOKEN: ${{ secrets.FORGE_API_TOKEN }}
+
+      - name: Setup AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+      - name: Invalidate Cloudfront Cache
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID_STAGING }}
+          PATHS: "/*"
+          AWS_REGION: us-east-1
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
