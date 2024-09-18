@@ -17,15 +17,15 @@
       <div x-show="activeTab === 'tab{{ $index }}'" class="text-sm">
         @forelse($group->units as $unit)
           <div
-            class="flex flex-row space-x-2 items-center justify-center bg-gray-50 dark:bg-gray-800 rounded-md first:rounded-t-none py-2 px-4 ">
+            class="flex flex-row space-x-2 items-center justify-center bg-gray-50 dark:bg-gray-950 rounded-md first:rounded-t-none py-2 px-4 ">
             @if ($unit->icon)
               <x-filament::icon icon="{{ $unit->icon }}" class="h-5 w-5 text-gray-500 dark:text-gray-400" />
             @endif
-            <div class="text-center text-gray-500 dark:text-gray-400 font-semibold text-sm">{{ $unit->name }}</div>
+            <div class="text-center text-gray-950 dark:text-white font-semibold text-sm">{{ $unit->name }}</div>
           </div>
           <div class="py-1">
             @forelse($unit->users as $user)
-              <a class="flex flex-row items-center space-x-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-900 rounded-md"
+              <a class="flex flex-row items-center space-x-2 sm:space-x-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
                 href="{{ \App\Filament\App\Resources\UserResource::getUrl('view', ['record' => $user]) }}" target="_blank">
                 <div class="w-10 overflow-hidden">
                   @if ($user->rank->image ?? null)
@@ -40,7 +40,7 @@
                 <div class="flex-1">
                   <div class="dark:text-white font-bold">{{ $user->name }}</div>
                   <div class="flex flex-col md:flex-row md:items-center md:space-x-2">
-                    <div class="text-gray-700 font-medium">
+                    <div class="text-gray-700 dark:text-gray-400 font-medium">
                       {{ optional($user->specialty, fn($specialty) => "$specialty->abbreviation - $specialty->name") }}</div>
                     <div class="hidden md:block">
                       <svg viewBox="0 0 2 2" class="mx-2 inline h-0.5 w-0.5 fill-current" aria-hidden="true">
@@ -65,13 +65,13 @@
               </a>
             @empty
               <div class="flex flex-row items-center justify-center p-4">
-                <div class="text-gray-500 font-normal">No personnel assigned to this unit.</div>
+                <div class="text-gray-700 dark:text-gray-400 font-normal">No personnel assigned to this unit.</div>
               </div>
             @endforelse
           </div>
         @empty
           <div class="flex flex-row items-center justify-center p-4">
-            <div class="text-gray-500 font-normal">No units assigned to this group. Please <a
+            <div class="text-gray-700 dark:text-gray-400 font-normal">No units assigned to this group. Please <a
                 href="{{ \App\Filament\App\Resources\UnitResource::getUrl('create') }}" target="_blank"
                 class="underline font-semibold">create</a> one.</div>
           </div>
@@ -79,7 +79,7 @@
       </div>
     @empty
       <div class="flex flex-row items-center justify-center p-4">
-        <div class="text-gray-500 font-normal">No groups found. Please <a
+        <div class="text-gray-700 dark:text-gray-400 font-normal">No groups found. Please <a
             href="{{ \App\Filament\App\Resources\GroupResource::getUrl('create') }}" target="_blank"
             class="underline font-semibold">create</a> one.</div>
       </div>
