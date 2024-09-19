@@ -114,6 +114,10 @@ class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeed
 
     protected $table = 'records_assignments';
 
+    protected $attributes = [
+        'type' => AssignmentRecordType::PRIMARY,
+    ];
+
     protected $fillable = [
         'status_id',
         'unit_id',

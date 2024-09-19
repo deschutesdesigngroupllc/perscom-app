@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api;
 
+use App\Models\Enums\RankRecordType;
+use Illuminate\Validation\Rule;
 use Orion\Http\Requests\Request;
 
 class RankRecordRequest extends Request
@@ -16,7 +18,7 @@ class RankRecordRequest extends Request
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
             'text' => 'nullable|string',
-            'type' => 'integer|in:0,1',
+            'type' => Rule::enum(RankRecordType::class),
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'date',
@@ -34,7 +36,6 @@ class RankRecordRequest extends Request
 
         return array_merge($rules, [
             'rank_id' => 'required|integer|exists:ranks,id',
-            'type' => 'required|integer|in:0,1',
         ]);
     }
 }

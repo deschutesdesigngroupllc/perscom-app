@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -174,6 +175,16 @@ class TaskAssignment extends Pivot
     public function task(): HasOne
     {
         return $this->hasOne(Task::class, 'id', 'task_id');
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (TaskAssignment $assignment) {
+            $assignment->assigned_by_id = $assignment->assigned_by_id ?? Auth::user()?->getAuthIdentifier() ?? null;
+            $assignment->assigned_at = $assignment->assigned_at ?? now();
+        });
     }
 
     protected function casts(): array

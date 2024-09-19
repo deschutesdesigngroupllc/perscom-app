@@ -94,6 +94,10 @@ class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 
     protected $table = 'records_ranks';
 
+    protected $attributes = [
+        'type' => RankRecordType::PROMOTION,
+    ];
+
     protected $fillable = [
         'rank_id',
         'text',

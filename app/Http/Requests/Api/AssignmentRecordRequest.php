@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api;
 
+use App\Models\Enums\AssignmentRecordType;
+use Illuminate\Validation\Rule;
 use Orion\Http\Requests\Request;
 
 class AssignmentRecordRequest extends Request
@@ -18,6 +20,7 @@ class AssignmentRecordRequest extends Request
             'specialty_id' => 'nullable|integer|exists:specialties,id',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
+            'type' => Rule::enum(AssignmentRecordType::class),
             'text' => 'nullable|string',
             'updated_at' => 'date',
             'created_at' => 'date',
