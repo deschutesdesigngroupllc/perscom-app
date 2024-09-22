@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use App\Exceptions\TenantCouldNotBeIdentified;
-use App\Models\Tenant;
-use App\Support\JwtAuth\Providers\CustomJwtProvider;
 use Illuminate\Http\Request;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
@@ -32,10 +30,11 @@ class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\Initiali
     protected function getPayload(Request $request): ?string
     {
         $tenant = null;
-        if (static::$header && $request->hasHeader(static::$header)) {
-            $tenant = $request->header(static::$header);
-        } elseif (static::$queryParameter && $request->has(static::$queryParameter)) {
+
+        if (static::$queryParameter && $request->has(static::$queryParameter)) {
             $tenant = $request->get(static::$queryParameter);
+        } elseif (static::$header && $request->hasHeader(static::$header)) {
+            $tenant = $request->header(static::$header);
         } elseif ($request->bearerToken()) {
             $tenant = $this->getTenantFromToken($request);
         }
@@ -58,22 +57,10 @@ class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\Initiali
             return null;
         }
 
-        $signed = false;
-        if ($tenant = Tenant::find($token->claims()->get('tenant'))) {
-            $tenant->run(function () use ($token, &$signed) {
-                /** @var CustomJwtProvider $provider */
-                $provider = app(CustomJwtProvider::class);
-
-                if (rescue(fn () => $provider->getConfig()->validator()->validate($token, ...$provider->getConfig()->validationConstraints()), report: false)) {
-                    $signed = true;
-                }
-            });
-        }
-
-        if (! $signed || ! $tenant) {
+        if (! $tenantId = $token->claims()->get('tenant')) {
             return null;
         }
 
-        return (string) $tenant->getKey();
+        return (string) $tenantId;
     }
 }

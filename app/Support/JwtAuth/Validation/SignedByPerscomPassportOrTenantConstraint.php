@@ -26,8 +26,18 @@ readonly class SignedByPerscomPassportOrTenantConstraint implements Constraint
         $signedByPassport = rescue(fn () => $this->signedByPassport($token), false, false);
         $signedByTenant = rescue(fn () => $this->signedByTenant($token), false, false);
 
+        $tenantClaim = $token->claims()->get('tenant');
+
+        if (($signedByPassport || $signedByPerscom) && blank($tenantClaim)) {
+            throw new ConstraintViolation('The provided token does not contain the tenant claim.');
+        }
+
+        if (($signedByPassport || $signedByPerscom) && (string) $tenantClaim !== (string) tenant()->getTenantKey()) {
+            throw new ConstraintViolation('The tenant claim in the provided token does not match the requested tenant.');
+        }
+
         if (! $signedByPerscom && ! $signedByTenant && ! $signedByPassport) {
-            throw new ConstraintViolation('The token was not signed by a valid signer.');
+            throw new ConstraintViolation('The provided token was not signed by a valid signer.');
         }
     }
 

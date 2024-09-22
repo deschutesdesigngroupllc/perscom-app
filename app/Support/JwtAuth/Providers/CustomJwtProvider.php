@@ -30,6 +30,4 @@ class CustomJwtProvider extends Lcobucci
             tenantKey: InMemory::plainText($settings->single_sign_on_key)
         ));
     }
-
-    public function generateConfig() {}
 }

@@ -141,7 +141,7 @@ class TenantResource extends Resource
                                 CodeEditor::make('data')
                                     ->dehydrated(false)
                                     ->hiddenLabel()
-                                    ->formatStateUsing(fn (?Tenant $record) => json_encode(json_decode($record->getRawOriginal('data')), JSON_PRETTY_PRINT))
+                                    ->formatStateUsing(fn (?Tenant $record) => json_encode(json_decode($record?->getRawOriginal('data') ?? ''), JSON_PRETTY_PRINT))
                                     ->json(),
                             ]),
                     ]),
