@@ -15,11 +15,7 @@ class ApiHeaders
         /** @var \Illuminate\Http\Response $response */
         $response = $next($request);
 
-        $response->setVary([
-            'Accept-Encoding',
-            'Authorization',
-            'X-Perscom-Id',
-        ]);
+        $response->setVary('Accept-Encoding, Authorization, X-Perscom-Id');
         $response->setCache([
             'max_age' => 30,
             's_maxage' => 2592000,
