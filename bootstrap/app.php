@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Middleware\ApiHeaders;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\CheckSubscription;
@@ -34,7 +35,6 @@ use Sentry\Laravel\Integration;
 use Spatie\Health\Commands\DispatchQueueCheckJobsCommand;
 use Spatie\Health\Commands\RunHealthChecksCommand;
 use Spatie\Health\Commands\ScheduleCheckHeartbeatCommand;
-use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -74,11 +74,11 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->appendToGroup('api', [
+            ApiHeaders::class,
             LogApiRequests::class,
             'throttle:api',
             SentryContext::class,
             CheckApiVersion::class,
-            CacheResponse::class,
         ]);
 
         $middleware->appendToGroup('web', [

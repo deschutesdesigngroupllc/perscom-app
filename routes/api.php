@@ -123,7 +123,8 @@ Route::group([
 
     Orion::resource('images', ImagesController::class);
 
-    Orion::resource('newsfeed', NewsfeedController::class);
+    Orion::resource('newsfeed', NewsfeedController::class)
+        ->only(['index']);
     Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)
         ->only(['index', 'attach', 'detach', 'sync']);
 
