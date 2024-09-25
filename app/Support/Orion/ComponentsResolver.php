@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Support\Orion;
 
 use App\Http\Resources\Api\ApiResource;
+use App\Http\Resources\Api\ApiResourceCollection;
 use Illuminate\Support\Str;
 use Orion\Drivers\Standard\ComponentsResolver as StandardComponentsResolver;
 use Orion\Http\Resources\Resource;
@@ -20,6 +21,17 @@ class ComponentsResolver extends StandardComponentsResolver
         }
 
         return $resource;
+    }
+
+    public function resolveCollectionResourceClass(): ?string
+    {
+        $resource = parent::resolveCollectionResourceClass();
+
+        if (! is_null($resource)) {
+            return $resource;
+        }
+
+        return ApiResourceCollection::class;
     }
 
     public function getResourceClassesNamespace(): string

@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Http\Resources\Api\ApiResource;
+use App\Http\Resources\Api\ApiResourceCollection;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
@@ -23,12 +26,20 @@ class ApiCacheService
         return strtolower($this->tenant->getTenantKey().':'.class_basename($model)).':'.$model->getKey();
     }
 
-    public function surrogateKeysForResource(Model $resource): Collection
+    public function surrogateKeysForResource(ApiResource|ApiResourceCollection $resource): Collection
     {
         $tags = collect();
-        $tags->push($this->getCacheTag($resource));
 
-        $this->getRelationKeys($resource, $tags);
+        $resources = $resource instanceof ApiResource
+            ? Arr::wrap($resource)
+            : $resource->resource->items();
+
+        foreach ($resources as $resource) {
+            if ($resource instanceof ApiResource) {
+                $tags->push($this->getCacheTag($resource->resource));
+                $this->getRelationKeys($resource->resource, $tags);
+            }
+        }
 
         return $tags->unique();
     }

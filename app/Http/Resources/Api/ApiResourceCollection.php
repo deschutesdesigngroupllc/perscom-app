@@ -7,9 +7,9 @@ namespace App\Http\Resources\Api;
 use App\Services\ApiCacheService;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Orion\Http\Resources\Resource;
+use Orion\Http\Resources\CollectionResource;
 
-class ApiResource extends Resource
+class ApiResourceCollection extends CollectionResource
 {
     public function withResponse(Request $request, JsonResponse $response): void
     {
