@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\SubmissionObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasComments;
 use App\Traits\HasCustomFieldData;
@@ -62,6 +63,7 @@ use Stringable;
 #[ObservedBy(SubmissionObserver::class)]
 class Submission extends Model implements HasLabel, Htmlable, Stringable
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasComments;
     use HasCustomFieldData;

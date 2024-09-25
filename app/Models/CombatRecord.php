@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\CombatRecordScope;
 use App\Observers\CombatRecordObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
@@ -73,6 +74,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ScopedBy(CombatRecordScope::class)]
 class CombatRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;

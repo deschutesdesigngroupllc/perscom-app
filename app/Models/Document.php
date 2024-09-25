@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
 use App\Traits\HasAuthor;
@@ -80,6 +81,7 @@ use Illuminate\Support\Str;
  */
 class Document extends Model implements HasLabel, Htmlable
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAssignmentRecords;
     use HasAuthor;

@@ -8,6 +8,7 @@ use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\AssignmentRecordScope;
 use App\Observers\AssignmentRecordObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
@@ -96,6 +97,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ScopedBy(AssignmentRecordScope::class)]
 class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;

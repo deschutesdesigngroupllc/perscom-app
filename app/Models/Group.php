@@ -8,6 +8,7 @@ use App\Contracts\Hideable;
 use App\Models\Scopes\GroupScope;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasIcon;
 use App\Traits\HasImages;
@@ -70,6 +71,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
 {
     use CanBeHidden;
     use CanBeOrdered;
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
     use HasIcon;

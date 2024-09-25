@@ -20,6 +20,12 @@ return [
         'heartbeat_url' => env('ENVOYER_HEARTBEAT_URL'),
     ],
 
+    'fastly' => [
+        'base_url' => env('FASTLY_BASE_URL', 'https://api.fastly.com'),
+        'token' => env('FASTLY_TOKEN'),
+        'service' => env('FASTLY_SERVICE'),
+    ],
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],

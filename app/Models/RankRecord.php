@@ -8,6 +8,7 @@ use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\RankRecordType;
 use App\Models\Scopes\RankRecordScope;
 use App\Observers\RankRecordObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
@@ -80,6 +81,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ScopedBy(RankRecordScope::class)]
 class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;

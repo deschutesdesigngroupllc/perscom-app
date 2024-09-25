@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasAuthor;
 use App\Traits\HasResourceLabel;
 use Eloquent;
@@ -47,6 +49,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Comment extends Model implements HasLabel
 {
+    use ClearsApiCache;
+    use ClearsResponseCache;
     use HasAuthor;
     use HasFactory;
     use HasResourceLabel;

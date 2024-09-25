@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\QualificationRecordScope;
 use App\Observers\QualificationRecordObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
@@ -77,6 +78,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ScopedBy(QualificationRecordScope::class)]
 class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;

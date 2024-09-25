@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Scopes\StatusScope;
 use App\Traits\CanBeOrdered;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
 use App\Traits\HasColorField;
@@ -65,6 +66,7 @@ use Spatie\EloquentSortable\Sortable;
 class Status extends Model implements HasColor, HasLabel, Sortable
 {
     use CanBeOrdered;
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAssignmentRecords;
     use HasColorField;

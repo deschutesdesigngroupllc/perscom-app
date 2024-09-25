@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Scopes\NewsfeedScope;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasColorField;
 use App\Traits\HasLikes;
@@ -68,6 +69,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 #[ScopedBy(NewsfeedScope::class)]
 class Newsfeed extends Activity implements HasColor
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasColorField;
     use HasFactory;

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
+use App\Traits\HasResourceLabel;
+use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,9 +34,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @mixin \Eloquent
  */
-class Tag extends Model
+class Tag extends Model implements HasLabel
 {
+    use ClearsApiCache;
+    use ClearsResponseCache;
     use HasFactory;
+    use HasResourceLabel;
     use SoftDeletes;
 
     protected $fillable = [

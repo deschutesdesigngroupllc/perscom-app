@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasResourceLabel;
@@ -54,6 +55,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Task extends Model implements HasLabel
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAttachments;
     use HasFactory;

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\V1;
 
-use Orion\Http\Resources\Resource;
+use App\Http\Resources\Api\ApiResource;
 
-class SubmissionResource extends Resource
+class SubmissionResource extends ApiResource
 {
     public function toArray($request): array
     {

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\HasFields;
 use App\Observers\UserObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
 use App\Traits\HasAttachments;
@@ -169,6 +170,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[ObservedBy(UserObserver::class)]
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasApiTokens;
     use HasAssignmentRecords;

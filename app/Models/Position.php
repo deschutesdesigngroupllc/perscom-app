@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Scopes\PositionScope;
 use App\Traits\CanBeOrdered;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
 use App\Traits\HasResourceLabel;
@@ -60,6 +61,7 @@ use Spatie\EloquentSortable\Sortable;
 class Position extends Model implements HasLabel, Sortable
 {
     use CanBeOrdered;
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAssignmentRecords;
     use HasFactory;
