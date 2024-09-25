@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\HasFields;
 use App\Filament\App\Resources\FormResource;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasCategories;
 use App\Traits\HasCustomFields;
@@ -71,6 +72,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Form extends Model implements HasFields, HasLabel
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasCategories;
     use HasCustomFields;

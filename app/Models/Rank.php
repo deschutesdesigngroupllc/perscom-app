@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Scopes\RankScope;
 use App\Traits\CanBeOrdered;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasCategories;
 use App\Traits\HasImages;
@@ -67,6 +68,7 @@ use Spatie\EloquentSortable\Sortable;
 class Rank extends Model implements HasLabel, Sortable
 {
     use CanBeOrdered;
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasCategories;
     use HasFactory;

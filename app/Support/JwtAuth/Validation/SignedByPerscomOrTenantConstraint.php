@@ -12,25 +12,25 @@ use Lcobucci\JWT\Validation\ConstraintViolation;
 readonly class SignedByPerscomOrTenantConstraint implements Constraint
 {
     public function __construct(
-        private Signer $perscomSigner,
-        private Signer\Key $perscomKey,
+        private Signer $appSigner,
+        private Signer\Key $appKey,
         private Signer $tenantSigner,
         private Signer\Key $tenantKey
     ) {}
 
     public function assert(Token $token): void
     {
-        $signedByPerscom = rescue(fn () => $this->signedByPerscom($token), false, false);
+        $signedByApp = rescue(fn () => $this->signedByApp($token), false, false);
         $signedByTenant = rescue(fn () => $this->signedByTenant($token), false, false);
 
-        if (! $signedByPerscom && ! $signedByTenant) {
+        if (! $signedByApp && ! $signedByTenant) {
             throw new ConstraintViolation('The provided token was not signed by a valid signer.');
         }
     }
 
-    private function signedByPerscom(Token $token): bool
+    private function signedByApp(Token $token): bool
     {
-        $constraint = new Constraint\SignedWith($this->perscomSigner, $this->perscomKey);
+        $constraint = new Constraint\SignedWith($this->appSigner, $this->appKey);
         $constraint->assert($token);
 
         return true;

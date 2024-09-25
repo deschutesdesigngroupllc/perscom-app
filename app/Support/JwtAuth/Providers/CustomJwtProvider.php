@@ -22,8 +22,8 @@ class CustomJwtProvider extends Lcobucci
         $settings = app(IntegrationSettings::class);
 
         $this->config->setValidationConstraints(new SignedByPerscomOrTenantConstraint(
-            perscomSigner: $this->signer,
-            perscomKey: $this->getVerificationKey(),
+            appSigner: $this->signer,
+            appKey: $this->getVerificationKey(),
             tenantSigner: new Signer\Hmac\Sha256,
             tenantKey: InMemory::plainText($settings->single_sign_on_key)
         ));

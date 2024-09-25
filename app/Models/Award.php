@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Scopes\AwardScope;
 use App\Traits\CanBeOrdered;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAwardRecords;
 use App\Traits\HasCategories;
@@ -65,6 +66,7 @@ use Spatie\EloquentSortable\Sortable;
 class Award extends Model implements HasLabel, Sortable
 {
     use CanBeOrdered;
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAwardRecords;
     use HasCategories;

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
@@ -55,6 +56,7 @@ use Illuminate\Support\Facades\Storage;
  */
 class Image extends Model implements HasLabel
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
     use HasResourceLabel;

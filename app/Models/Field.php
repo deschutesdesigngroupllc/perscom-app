@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Contracts\Hideable;
 use App\Models\Enums\FieldType;
 use App\Traits\CanBeHidden;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
@@ -82,6 +83,7 @@ use function in_array;
 class Field extends Model implements HasLabel, Hideable
 {
     use CanBeHidden;
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
     use HasResourceLabel;

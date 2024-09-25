@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\LaravelSettings\Models\SettingsProperty;
@@ -34,6 +35,7 @@ use Spatie\LaravelSettings\Models\SettingsProperty;
  */
 class Settings extends SettingsProperty
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
 }

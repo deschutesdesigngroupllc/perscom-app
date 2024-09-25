@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Observers\EventObserver;
 use App\Services\EventService;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasAuthor;
@@ -119,6 +120,7 @@ use RRule\RRule;
 #[ObservedBy(EventObserver::class)]
 class Event extends Model implements HasLabel
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasAttachments;
     use HasAuthor;

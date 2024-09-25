@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\CalendarObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasColorField;
 use App\Traits\HasResourceLabel;
@@ -54,6 +55,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy(CalendarObserver::class)]
 class Calendar extends Model implements HasColor, HasLabel
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasColorField;
     use HasFactory;

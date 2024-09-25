@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Resources\Api\V1;
 
+use App\Http\Resources\Api\ApiResource;
 use App\Models\Status;
-use Orion\Http\Resources\Resource;
 
-class StatusResource extends Resource
+class StatusResource extends ApiResource
 {
     public function toArray($request): array
     {
