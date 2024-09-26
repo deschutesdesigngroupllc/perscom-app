@@ -21,7 +21,7 @@ class PurgeApiCache implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(protected Model $model)
+    public function __construct(protected Model $model, protected bool $purgeAll = false)
     {
         $this->onQueue('api');
     }
@@ -32,12 +32,14 @@ class PurgeApiCache implements ShouldQueue
     public function handle(): void
     {
         $apiService = new ApiCacheService;
-        $response = $apiService->purgeCacheForModel($this->model);
+        $responses = $apiService->purgeCacheForModel($this->model, $this->purgeAll);
 
-        if (! $response->successful()) {
-            $this->fail(new ApiCacheException(
-                body: $response->json()
-            ));
+        foreach ($responses as $response) {
+            if (! $response->successful()) {
+                $this->fail(new ApiCacheException(
+                    body: $response->json()
+                ));
+            }
         }
     }
 }

@@ -16,7 +16,10 @@ trait ClearsApiCache
     protected static function bootClearsApiCache(): void
     {
         self::created(function (Model $model) {
-            PurgeApiCache::dispatch($model);
+            PurgeApiCache::dispatch(
+                model: $model,
+                purgeAll: true
+            );
         });
 
         self::updated(function (Model $model) {

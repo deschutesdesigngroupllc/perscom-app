@@ -8,8 +8,7 @@ use App\Http\Resources\Api\ApiResource;
 use App\Http\Resources\Api\ApiResourceCollection;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Http\Client\ConnectionException;
-use Illuminate\Http\Client\Response;
+use Illuminate\Http\Client\Pool;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
@@ -45,23 +44,31 @@ class ApiCacheService
         return $tags->unique();
     }
 
-    /**
-     * @throws ConnectionException
-     */
-    public function purgeCacheForModel(Model $model): Response
+    public function purgeCacheForModel(Model $model, bool $purgeAll = false): array
     {
         $tags = collect();
-        $tags->push($this->getCachePrefix($model));
         $tags->push($this->getCacheTag($model));
 
-        $service = config('services.fastly.service');
+        if ($purgeAll) {
+            $tags->push($this->getCachePrefix($model));
+        }
 
-        return Http::baseUrl(config('services.fastly.base_url'))
-            ->withHeader('Fastly-Key', config('services.fastly.token'))
-            ->withHeader('Fastly-Soft-Purge', 1)
-            ->post("/service/$service/purge", [
-                'surrogate_keys' => $tags->unique()->toArray(),
-            ]);
+        $baseUrl = config('services.fastly.base_url');
+        $service = config('services.fastly.service');
+        $url = "$baseUrl/service/$service/purge";
+
+        $headers = [
+            'Fastly-Key' => config('services.fastly.token'),
+            'Fastly-Soft-Purge' => 1,
+        ];
+
+        return Http::pool(function (Pool $pool) use ($headers, $tags, $url) {
+            return $tags->map(fn ($tag) => $pool
+                ->baseUrl($url)
+                ->withHeaders($headers)
+                ->post($tag)
+            )->toArray();
+        });
     }
 
     protected function getRelationKeys(Model $model, Collection $tags): void
