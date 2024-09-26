@@ -15,21 +15,23 @@ class RosterController extends Controller
 
     protected $model = Group::class;
 
+    public function includes(): array
+    {
+        return ['units.*'];
+    }
+
     public function alwaysIncludes(): array
     {
         return [
+            'image',
             'units',
+            'units.image',
             'units.users',
             'units.users.position',
             'units.users.rank',
             'units.users.rank.image',
+            'units.users.specialty',
             'units.users.status',
-            'units.secondary_assignment_records',
-            'units.secondary_assignment_records.position',
-            'units.secondary_assignment_records.user',
-            'units.secondary_assignment_records.user.rank',
-            'units.secondary_assignment_records.user.rank.image',
-            'units.secondary_assignment_records.user.status',
         ];
     }
 

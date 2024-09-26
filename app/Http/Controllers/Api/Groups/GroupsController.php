@@ -24,7 +24,7 @@ class GroupsController extends Controller
 
     public function includes(): array
     {
-        return ['image', 'units', 'units.*', 'units.users', 'units.users.*'];
+        return ['image', 'units', 'units.*'];
     }
 
     public function sortableBy(): array

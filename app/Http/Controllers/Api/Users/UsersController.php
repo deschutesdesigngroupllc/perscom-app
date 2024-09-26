@@ -40,7 +40,6 @@ class UsersController extends Controller
             'rank.*',
             'rank_records',
             'rank_records.*',
-            'rank_records.rank.*',
             'secondary_assignment_records',
             'secondary_assignment_records.*',
             'service_records',
