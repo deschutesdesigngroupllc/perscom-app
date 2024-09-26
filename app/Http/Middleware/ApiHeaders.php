@@ -15,6 +15,7 @@ class ApiHeaders
         /** @var \Illuminate\Http\Response $response */
         $response = $next($request);
 
+        $response->headers->set('Surrogate-Control', 'max-age=30, public, s-maxage=2592000');
         $response->setVary('Authorization, X-Perscom-Id');
         $response->setCache([
             'max_age' => 30,
