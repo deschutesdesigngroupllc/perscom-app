@@ -6,6 +6,7 @@ namespace App\Dispatchers\Bus;
 
 use Illuminate\Bus\Dispatcher as BaseDispatcher;
 use Illuminate\Contracts\Container\Container;
+use Illuminate\Notifications\SendQueuedNotifications;
 
 class Dispatcher extends BaseDispatcher
 {
@@ -16,7 +17,8 @@ class Dispatcher extends BaseDispatcher
 
     public function dispatch($command)
     {
-        if (request()->header('x-perscom-notifications') === 'false') {
+        if (request()->header('x-perscom-notifications') === 'false' &&
+            $command instanceof SendQueuedNotifications) {
             return null;
         }
 
