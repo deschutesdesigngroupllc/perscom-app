@@ -26,6 +26,8 @@ class Permission extends SettingsPage
 
     protected static string $settings = PermissionSettingsClass::class;
 
+    protected static ?int $navigationSort = 5;
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

@@ -174,7 +174,7 @@ return [
                     'monthly_id' => env('STRIPE_PRODUCT_ENTERPRISE_MONTH'),
                     'yearly_id' => env('STRIPE_PRODUCT_ENTERPRISE_YEAR'),
                     'features' => [
-                        'Export and backup personnel data',
+                        'Export and backup all account data',
                         'Webhooks and real-time app notifications',
                         'Single sign-on integration',
                         'Priority support',
@@ -185,6 +185,7 @@ return [
                         App\Features\CustomSubDomainFeature::class,
                         App\Features\SupportTicketFeature::class,
                         App\Features\CustomDomainFeature::class,
+                        App\Features\BackupFeature::class,
                         App\Features\ExportDataFeature::class,
                         App\Features\OAuth2AccessFeature::class,
                         App\Features\SingleSignOnFeature::class,
