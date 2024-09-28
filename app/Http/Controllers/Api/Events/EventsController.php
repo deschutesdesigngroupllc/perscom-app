@@ -27,7 +27,7 @@ class EventsController extends Controller
         return [
             'attachments',
             'author',
-            'author.*'.
+            'author.*',
             'calendar',
             'calendar.*',
             'comments',
