@@ -39,6 +39,8 @@ class Dashboard extends SettingsPage
 
     protected static ?string $title = 'Dashboard Settings';
 
+    protected static ?int $navigationSort = 1;
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

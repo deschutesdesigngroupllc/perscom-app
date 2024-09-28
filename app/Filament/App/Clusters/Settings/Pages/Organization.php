@@ -26,6 +26,8 @@ class Organization extends SettingsPage
 
     protected static string $settings = OrganizationSettingsClass::class;
 
+    protected static ?int $navigationSort = 4;
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

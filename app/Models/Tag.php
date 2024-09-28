@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read string $label
  *
  * @method static \Database\Factories\TagFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Tag newModelQuery()

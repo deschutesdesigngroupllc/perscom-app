@@ -119,7 +119,7 @@ export function Pricing() {
             description='For large organizations that rely on powerful personnel manangement services and require personnel data communication between essential business services.'
             href={route('web.register.index')}
             features={[
-              'Export and backup personnel data',
+              'Export and backup all account data',
               'Webhooks and real-time app notifications',
               'Single sign-on integration',
               'Priority support'

@@ -24,6 +24,8 @@ class Registration extends SettingsPage
 
     protected static string $settings = RegistrationSettingsClass::class;
 
+    protected static ?int $navigationSort = 6;
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

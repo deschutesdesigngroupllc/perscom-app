@@ -28,6 +28,8 @@ class Integration extends SettingsPage
 
     protected static string $settings = IntegrationSettingsClass::class;
 
+    protected static ?int $navigationSort = 3;
+
     public static function canAccess(): bool
     {
         return parent::canAccess()
