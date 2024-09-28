@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use Illuminate\Support\Str;
+use Laravel\Telescope\Jobs\ProcessPendingUpdates;
 
 return [
 
@@ -124,7 +125,7 @@ return [
     */
 
     'silenced' => [
-        // App\Jobs\ExampleJob::class,
+        ProcessPendingUpdates::class,
     ],
 
     /*

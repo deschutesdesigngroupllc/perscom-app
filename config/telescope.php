@@ -121,7 +121,13 @@ return [
     ],
 
     'ignore_commands' => [
-        //
+        'health:check',
+        'health:queue-check-heartbeat',
+        'health:schedule-check-heartbeat',
+        'horizon:snapshot',
+        'telescope:prune',
+        'queue:prune-failed',
+        'cache:prune-stale-tags',
     ],
 
     /*
