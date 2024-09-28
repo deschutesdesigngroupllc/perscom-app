@@ -79,6 +79,7 @@ class UserResource extends BaseResource
                                                     ->columnSpanFull()
                                                     ->maxLength(255),
                                                 Forms\Components\TextInput::make('email')
+                                                    ->unique(ignoreRecord: true)
                                                     ->email()
                                                     ->required()
                                                     ->columnSpanFull()
