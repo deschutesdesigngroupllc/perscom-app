@@ -20,7 +20,7 @@ class NewsfeedLikesController extends RelationController
     {
         return [
             'assignment_records',
-            'assignment_records.*'.
+            'assignment_records.*',
             'award_records',
             'award_records.*',
             'combat_records',
