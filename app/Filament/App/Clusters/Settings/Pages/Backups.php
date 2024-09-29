@@ -36,7 +36,7 @@ class Backups extends Page implements HasTable
     {
         return $table
             ->query(Backup::query())
-            ->description('Download load your latest account backups here.')
+            ->description('Download your latest account backups here.')
             ->emptyStateHeading('No current backups')
             ->emptyStateDescription('There are no current backups. Backups are taken automatically every night.')
             ->columns([

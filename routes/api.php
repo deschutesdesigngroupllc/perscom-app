@@ -142,7 +142,7 @@ Route::group([
     Orion::resource('rank-records', RankRecordsController::class);
 
     Orion::resource('roster', RosterController::class)
-        ->only('index');
+        ->only(['index', 'show']);
 
     Orion::resource('service-records', ServiceRecordsController::class);
 
