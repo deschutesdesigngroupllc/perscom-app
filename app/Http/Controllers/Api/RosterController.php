@@ -35,9 +35,9 @@ class RosterController extends Controller
         ];
     }
 
-    protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder
+    protected function buildFetchQuery(Request $request, array $requestedRelations): Builder
     {
-        $query = parent::buildIndexFetchQuery($request, $requestedRelations);
+        $query = parent::buildFetchQuery($request, $requestedRelations);
 
         /** @var Group $query */
         $query->orderForRoster();
