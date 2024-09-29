@@ -15,6 +15,8 @@ class TenantTemporaryDirectory extends TemporaryDirectory implements \Spatie\Bac
 
     protected function getFullPath(): string
     {
-        return storage_path('app/backup-temp').DIRECTORY_SEPARATOR.$this->name;
+        $tenantId = tenant()->getTenantKey();
+
+        return storage_path(optional($tenantId, fn ($id) => "app/backup-temp/tenant$id") ?? 'app/backup-temp').DIRECTORY_SEPARATOR.$this->name;
     }
 }

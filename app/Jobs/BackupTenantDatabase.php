@@ -17,6 +17,8 @@ class BackupTenantDatabase implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
+    public int $timeout = 180;
+
     public function __construct(public int $tenantKey)
     {
         //
