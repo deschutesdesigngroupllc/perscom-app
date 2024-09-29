@@ -45,7 +45,7 @@
     "spatie/eloquent-sortable": "^4.4",
     "spatie/fork": "^1.2",
     "spatie/laravel-activitylog": "^4.8",
-    "spatie/laravel-backup": "^9.1",
+    "spatie/laravel-backup": "dev-feature/bind-temp-service",
     "spatie/laravel-google-fonts": "^1.4.1",
     "spatie/laravel-health": "^1.30",
     "spatie/laravel-permission": "^6.9",
@@ -89,6 +89,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/jonerickson/laravel-orion"
+    },
+    {
+      "type": "vcs",
+      "url": "https://github.com/jonerickson/laravel-backup"
     }
   ],
   "autoload": {

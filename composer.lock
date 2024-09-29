@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "131045ac08c31c486652e57349f439a8",
+    "content-hash": "938cb0b6a0d65bd1447da74abd7bd6a3",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -9490,16 +9490,16 @@
         },
         {
             "name": "spatie/laravel-backup",
-            "version": "9.1.1",
+            "version": "dev-feature/bind-temp-service",
             "source": {
                 "type": "git",
-                "url": "https://github.com/spatie/laravel-backup.git",
-                "reference": "70b48671e5e2dd15d4341800614481924910f636"
+                "url": "https://github.com/jonerickson/laravel-backup.git",
+                "reference": "8f01a89e34ac07629d1e2ac4c15270c0391f6ff7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/spatie/laravel-backup/zipball/70b48671e5e2dd15d4341800614481924910f636",
-                "reference": "70b48671e5e2dd15d4341800614481924910f636",
+                "url": "https://api.github.com/repos/jonerickson/laravel-backup/zipball/8f01a89e34ac07629d1e2ac4c15270c0391f6ff7",
+                "reference": "8f01a89e34ac07629d1e2ac4c15270c0391f6ff7",
                 "shasum": ""
             },
             "require": {
@@ -9545,14 +9545,35 @@
                 }
             },
             "autoload": {
-                "files": [
-                    "src/Helpers/functions.php"
-                ],
                 "psr-4": {
                     "Spatie\\Backup\\": "src"
+                },
+                "files": [
+                    "src/Helpers/functions.php"
+                ]
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Spatie\\Backup\\Tests\\": "tests"
                 }
             },
-            "notification-url": "https://packagist.org/downloads/",
+            "scripts": {
+                "test": [
+                    "vendor/bin/pest --compact"
+                ],
+                "format": [
+                    "vendor/bin/php-cs-fixer fix --allow-risky=yes"
+                ],
+                "analyse": [
+                    "vendor/bin/phpstan analyse"
+                ],
+                "rector": [
+                    "vendor/bin/rector --dry-run"
+                ],
+                "baseline": [
+                    "./vendor/bin/phpstan analyse --generate-baseline --memory-limit=2G"
+                ]
+            },
             "license": [
                 "MIT"
             ],
@@ -9573,20 +9594,19 @@
                 "spatie"
             ],
             "support": {
-                "issues": "https://github.com/spatie/laravel-backup/issues",
-                "source": "https://github.com/spatie/laravel-backup/tree/9.1.1"
+                "source": "https://github.com/jonerickson/laravel-backup/tree/feature/bind-temp-service"
             },
             "funding": [
                 {
-                    "url": "https://github.com/sponsors/spatie",
-                    "type": "github"
+                    "type": "github",
+                    "url": "https://github.com/sponsors/spatie"
                 },
                 {
-                    "url": "https://spatie.be/open-source/support-us",
-                    "type": "other"
+                    "type": "other",
+                    "url": "https://spatie.be/open-source/support-us"
                 }
             ],
-            "time": "2024-09-23T09:23:56+00:00"
+            "time": "2024-09-29T22:17:18+00:00"
         },
         {
             "name": "spatie/laravel-google-fonts",
@@ -18598,6 +18618,7 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
+        "spatie/laravel-backup": 20,
         "stancl/jobpipeline": 5,
         "tailflow/laravel-orion": 20
     },
