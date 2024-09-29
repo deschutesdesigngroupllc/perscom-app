@@ -7,8 +7,14 @@
         </div>
 
         @if ($this->subtitle)
-          <p class="text-sm text-gray-500 dark:text-gray-400">
+          <p class="text-sm text-gray-700 dark:text-gray-400">
             {{ $this->subtitle }}
+          </p>
+        @endif
+
+        @if ($this->version)
+          <p class="text-xs text-gray-500 dark:text-gray-400">
+            {{ $this->version }}
           </p>
         @endif
       </div>

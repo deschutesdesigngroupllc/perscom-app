@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages;
 
+use App\Filament\Actions\CopyAction;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Panel;
 use Filament\Support\Enums\IconPosition;
-use Webbingbrasil\FilamentCopyActions\Pages\Actions\CopyAction;
 
 class Dashboard extends BaseDashboard
 {
@@ -27,8 +27,8 @@ class Dashboard extends BaseDashboard
     protected function getActions(): array
     {
         return [
-            CopyAction::make('test')
-                ->label(fn () => 'PERSCOM ID: '.tenant('id'))
+            CopyAction::make('perscom_id')
+                ->label(fn () => 'PERSCOM ID: '.tenant()->getTenantKey())
                 ->copyable((string) tenant('id'))
                 ->icon('heroicon-o-document-duplicate')
                 ->iconPosition(IconPosition::After)
