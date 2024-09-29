@@ -13,6 +13,7 @@ use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Services\ApiPermissionService;
+use App\Support\Backup\TenantTemporaryDirectory;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
@@ -41,6 +42,7 @@ use Laravel\Pennant\Feature;
 use Laravel\Socialite\Contracts\Factory;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
 use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
+use Spatie\Backup\Contracts\TemporaryDirectory;
 
 use function tenant;
 
@@ -74,6 +76,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->extend(BusDispatcher::class, fn ($dispatcher, $app) => new Dispatcher($app, $dispatcher));
         $this->app->bind(KeyResolverContract::class, fn () => new KeyResolver);
         $this->app->bind(ComponentsResolverContract::class, fn ($app, $params) => new ComponentsResolver(resourceModelClass: data_get($params, 'resourceModelClass')));
+        $this->app->bind(TemporaryDirectory::class, fn () => new TenantTemporaryDirectory);
     }
 
     /**
