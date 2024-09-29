@@ -43,6 +43,9 @@ Route::group(['middleware' => 'landing'], static function () {
         ->name('api.documentation');
 });
 
+Route::redirect('/slack', config('services.slack.invite_link'))
+    ->name('slack');
+
 Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin', 'as' => 'admin.'], function () {
     Route::get('health', HealthCheckResultsController::class)
         ->name('health');

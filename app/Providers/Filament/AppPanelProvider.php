@@ -159,6 +159,10 @@ class AppPanelProvider extends PanelProvider
                     ->url('https://feedback.perscom.io', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-face-smile'),
                 MenuItem::make()
+                    ->label('Support')
+                    ->url('https://perscom.io/slack', shouldOpenInNewTab: true)
+                    ->icon('heroicon-o-question-mark-circle'),
+                MenuItem::make()
                     ->label('System Status')
                     ->url('https://status.perscom.io', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-command-line'),
