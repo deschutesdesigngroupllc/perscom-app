@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Widgets;
 
 use App\Models\Tenant;
+use App\Services\VersionService;
 use App\Settings\DashboardSettings;
 use Filament\Facades\Filament;
 use Filament\Widgets\Widget;
@@ -21,6 +22,8 @@ class OrganizationInfoWidget extends Widget
 
     protected ?string $subtitle = null;
 
+    protected ?string $version = null;
+
     protected ?string $plan = null;
 
     protected ?string $planColor = null;
@@ -29,6 +32,7 @@ class OrganizationInfoWidget extends Widget
     {
         $this->title = $settings->title;
         $this->subtitle = $settings->subtitle;
+        $this->version = VersionService::version();
 
         /** @var Tenant $tenant */
         $tenant = Filament::getTenant();

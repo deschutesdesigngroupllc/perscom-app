@@ -59,7 +59,6 @@
     "tailflow/laravel-orion": "dev-feature/multiple-controller-arguments",
     "tightenco/ziggy": "^2.3",
     "timokoerber/laravel-one-time-operations": "^1.4",
-    "webbingbrasil/filament-copyactions": "^3.0.1",
     "wiebenieuwenhuis/filament-code-editor": "^1.1"
   },
   "require-dev": {
