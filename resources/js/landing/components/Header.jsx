@@ -56,51 +56,47 @@ function MobileNavigation() {
               leaveTo='opacity-0 scale-95'
             >
               <Popover.Panel
-                as="ul"
-                className="absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight shadow-xl ring-1 ring-gray-900/5"
+                as='ul'
+                className='absolute inset-x-0 top-full mt-4 origin-top space-y-4 rounded-2xl bg-white p-6 text-lg tracking-tight shadow-xl ring-1 ring-gray-900/5'
               >
                 <li>
-                  <a href={route('web.landing.home')} className="block w-full hover:text-gray-500"
-                     onClick={() => close()}>
+                  <a href={route('web.landing.home')} className='block w-full hover:text-gray-500' onClick={() => close()}>
                     Home
                   </a>
                 </li>
                 <li>
                   <a
-                    href="https://docs.perscom.io"
-                    target="_blank"
-                    className="block w-full hover:text-gray-500"
+                    href='https://docs.perscom.io'
+                    target='_blank'
+                    className='block w-full hover:text-gray-500'
                     onClick={() => close()}
-                    rel="noreferrer"
+                    rel='noreferrer'
                   >
                     Documentation
                   </a>
                 </li>
                 <li>
-                  <a href={route('web.landing.home') + '#features'} className="block w-full hover:text-gray-600"
-                     onClick={() => close()}>
+                  <a href={route('web.landing.home') + '#features'} className='block w-full hover:text-gray-600' onClick={() => close()}>
                     Features
                   </a>
                 </li>
                 <li>
-                  <a href={route('web.landing.home') + '#pricing'} className="block w-full hover:text-gray-600"
-                     onClick={() => close()}>
+                  <a href={route('web.landing.home') + '#pricing'} className='block w-full hover:text-gray-600' onClick={() => close()}>
                     Pricing
                   </a>
                 </li>
                 <li>
-                  <a href={route('web.slack')} className="block w-full hover:text-gray-600"
-                     onClick={() => close()}>
+                  <a href={route('web.slack')} className='block w-full hover:text-gray-600' onClick={() => close()}>
                     Support
                   </a>
                 </li>
                 <li>
                   <a
                     href={route('web.find-my-organization.index')}
-                    target="_blank"
-                    className="block w-full hover:text-gray-500"
+                    target='_blank'
+                    className='block w-full hover:text-gray-500'
                     onClick={() => close()}
-                    rel="noreferrer"
+                    rel='noreferrer'
                   >
                     Find My Organization
                   </a>
@@ -116,7 +112,7 @@ function MobileNavigation() {
 
 export function Header() {
   return (
-    <header className="py-4">
+    <header className='py-4'>
       <Container>
         <nav className='relative z-50'>
           <ul className='flex items-center'>
@@ -132,8 +128,7 @@ export function Header() {
               </a>
             </li>
             <li className='ml-4 hidden lg:block'>
-              <a href='https://docs.perscom.io' target='_blank' className='rounded-lg p-2.5 text-sm hover:bg-gray-200'
-                 rel='noreferrer'>
+              <a href='https://docs.perscom.io' target='_blank' className='rounded-lg p-2.5 text-sm hover:bg-gray-200' rel='noreferrer'>
                 Documentation
               </a>
             </li>

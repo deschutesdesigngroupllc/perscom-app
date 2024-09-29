@@ -140,7 +140,7 @@ class SetupTenantAccount
     {
         Announcement::create([
             'title' => "Welcome to PERSCOM Personnel Management System, {$this->tenant->name}",
-            'content' => 'Take a look around and if you have any questions, please reach out to support@deschutesdesigngroup.com.',
+            'content' => '<p>Take a look around, and if you have any questions, please join our Slack at <a href="https://perscom.io/slack">https://perscom.io/slack</a>.</p>',
             'color' => 'info',
             'global' => true,
         ]);
