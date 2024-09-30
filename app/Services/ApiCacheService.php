@@ -31,7 +31,10 @@ class ApiCacheService
 
         $resources = $resource instanceof ApiResource
             ? Arr::wrap($resource)
-            : $resource->resource->items();
+            : ($resource->resource instanceof Collection
+                ? $resource->resource
+                : $resource->resource->items()
+            );
 
         foreach ($resources as $resource) {
             if ($resource instanceof ApiResource) {

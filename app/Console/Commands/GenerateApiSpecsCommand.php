@@ -22,8 +22,8 @@ class GenerateApiSpecsCommand extends Command
             return Tenant::find($tenantId);
         });
 
+        /** @var Tenant $tenant */
         $tenant = $tenant ?? Tenant::first();
-
         $tenant->run(function () {
             Artisan::call('orion:specs', [
                 '--format' => $this->option('format'),
