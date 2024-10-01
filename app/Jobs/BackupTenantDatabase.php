@@ -17,11 +17,11 @@ class BackupTenantDatabase implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
-    public int $timeout = 180;
+    public int $timeout = 300;
 
     public function __construct(public int $tenantKey)
     {
-        //
+        $this->onQueue('backup');
     }
 
     public function handle(): void
