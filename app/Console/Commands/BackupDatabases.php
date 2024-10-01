@@ -25,6 +25,8 @@ class BackupDatabases extends Command
             jobs: Tenant::all()->map(fn (Tenant $tenant) => new BackupTenantDatabase($tenant->getKey()))
         )->name(
             name: 'Tenant Database Backups'
+        )->onQueue(
+            queue: 'backup'
         )->dispatch();
 
         $this->info('The database backup job has been dispatched.');
