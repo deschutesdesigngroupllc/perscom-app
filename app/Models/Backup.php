@@ -7,6 +7,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Number;
 use Sushi\Sushi;
 
 /**
@@ -40,6 +41,7 @@ class Backup extends Model
             return [
                 'name' => "$file.zip",
                 'path' => $path,
+                'size' => Number::fileSize(Storage::disk('s3')->size($path)),
                 'url' => Storage::disk('s3')->temporaryUrl($path, now()->addDay()),
                 'created_at' => Carbon::createFromFormat('Y-m-d-H-i-s', $date),
             ];

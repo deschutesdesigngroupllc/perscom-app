@@ -42,6 +42,8 @@ class Backups extends Page implements HasTable
             ->columns([
                 TextColumn::make('name')
                     ->sortable(),
+                TextColumn::make('size')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable(),
