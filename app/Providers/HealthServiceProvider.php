@@ -30,13 +30,14 @@ class HealthServiceProvider extends ServiceProvider
             DatabaseCheck::new(),
             HorizonCheck::new(),
             QueueCheck::new()
-                ->onQueue(['default', 'tenant', 'system', 'api']),
+                ->onQueue(['default', 'tenant', 'system', 'api', 'backup'])
+                ->failWhenHealthJobTakesLongerThanMinutes(10),
             OptimizedAppCheck::new(),
             RedisCheck::new(),
             RedisMemoryUsageCheck::new()
                 ->failWhenAboveMb(1000),
             ScheduleCheck::new()
-                ->heartbeatMaxAgeInMinutes(5),
+                ->heartbeatMaxAgeInMinutes(10),
             UsedDiskSpaceCheck::new(),
         ]);
     }
