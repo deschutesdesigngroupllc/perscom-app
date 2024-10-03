@@ -6,19 +6,25 @@ namespace App\Actions\Features;
 
 use App\Models\Feature;
 use App\Models\Tenant;
+use Laravel\Cashier\Exceptions\IncompletePayment;
 use Laravel\Cashier\Exceptions\SubscriptionUpdateFailure;
 use Laravel\Cashier\Subscription;
 
 class StartFeature
 {
     /**
-     * @throws SubscriptionUpdateFailure
+     * @throws SubscriptionUpdateFailure|IncompletePayment
      */
-    public static function handle(Tenant $tenant, Feature $feature): Subscription|false
+    public static function handle(Tenant $tenant, Feature $feature): Subscription|bool
     {
-        return rescue(function () use ($tenant, $feature) {
-            return $tenant->subscription()
-                ->addPrice($feature->price_id);
+        $subscription = $tenant->subscription();
+        if (is_null($subscription) || is_null($feature->price_id)) {
+            return false;
+        }
+
+        return rescue(function () use ($subscription, $feature) {
+            return $subscription
+                ->addPriceAndInvoice($feature->price_id);
         }, false);
     }
 }

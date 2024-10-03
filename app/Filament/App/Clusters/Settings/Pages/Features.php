@@ -20,6 +20,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Number;
+use Laravel\Pennant\Feature as Pennant;
 
 class Features extends Page implements HasTable
 {
@@ -81,7 +82,7 @@ class Features extends Page implements HasTable
 
                         return "We will charge your card on file $price {$record->term->value}. Please confirm you would like to proceed.";
                     })
-                    ->visible(fn (Feature $record) => \Laravel\Pennant\Feature::inactive($record->feature))
+                    ->visible(fn (Feature $record) => Pennant::inactive($record->feature))
                     ->action(function (Action $action, Feature $record) {
                         /** @var Tenant $tenant */
                         $tenant = Filament::getTenant();
@@ -97,13 +98,13 @@ class Features extends Page implements HasTable
                 Action::make('unsubscribe')
                     ->color('danger')
                     ->icon('heroicon-o-credit-card')
-                    ->successNotificationTitle('The feature has been successfully stopped. You can resubscribe at anytime to resume using the features.')
+                    ->successNotificationTitle('The feature has been successfully stopped. Any unused time will be credited on your next invoice. You can resubscribe at anytime to resume using the features.')
                     ->failureNotificationTitle('We were unable to stop the subscription. Please reach out to support to assist.')
                     ->requiresConfirmation()
                     ->modalHeading(fn (Feature $record) => "Unsubscribe from $record->name")
                     ->modalSubmitActionLabel('Unsubscribe')
-                    ->modalDescription(fn (Feature $record) => "Are you sure you would like to unsubscribe from $record->name?")
-                    ->visible(fn (Feature $record) => \Laravel\Pennant\Feature::active($record->feature))
+                    ->modalDescription(fn (Feature $record) => "Are you sure you would like to unsubscribe from $record->name? Any unused time will be credited on your next invoice.")
+                    ->visible(fn (Feature $record) => Pennant::active($record->feature))
                     ->action(function (Action $action, Feature $record) {
                         /** @var Tenant $tenant */
                         $tenant = Filament::getTenant();

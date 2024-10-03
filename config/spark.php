@@ -138,7 +138,7 @@ return [
         'tenant' => [
             'model' => App\Models\Tenant::class,
             'trial_days' => 7,
-            'default_interval' => 'monthly',
+            'default_interval' => 'yearly',
             'plans' => [
                 [
                     'name' => 'Basic',

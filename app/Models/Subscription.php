@@ -6,7 +6,9 @@ namespace App\Models;
 
 use App\Observers\SubscriptionObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Laravel\Cashier\Subscription as BaseSubscription;
+use Laravel\Cashier\SubscriptionItem;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
@@ -60,4 +62,27 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
 class Subscription extends BaseSubscription
 {
     use CentralConnection;
+
+    public function hasMultiplePrices(): bool
+    {
+        return true;
+    }
+
+    public function stripePrice(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes) {
+            if (filled($value)) {
+                return $value;
+            }
+
+            /** @var SubscriptionItem $item */
+            $item = $this->items->sortBy('created_at')->firstWhere('subscription_id', data_get($attributes, 'id'));
+
+            if (blank($item)) {
+                return null;
+            }
+
+            return $item->stripe_price;
+        })->shouldCache();
+    }
 }
