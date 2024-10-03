@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Features\AdvancedNotificationsFeature;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use Spark\Features;
 
@@ -128,6 +129,10 @@ return [
     | as well as a "bullet point" listing of its distinctive features.
     |
     */
+
+    'addons' => [
+        AdvancedNotificationsFeature::class => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS'),
+    ],
 
     'billables' => [
         'tenant' => [
