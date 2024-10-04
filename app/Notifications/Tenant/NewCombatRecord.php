@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
+use App\Contracts\NotificationCanBeManaged;
 use App\Filament\App\Resources\CombatRecordResource;
 use App\Mail\Tenant\NewCombatRecordMail;
 use App\Models\CombatRecord;
+use App\Models\Enums\NotificationGroup;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -16,7 +18,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
 
-class NewCombatRecord extends Notification implements ShouldBroadcast, ShouldQueue
+class NewCombatRecord extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
@@ -29,6 +31,21 @@ class NewCombatRecord extends Notification implements ShouldBroadcast, ShouldQue
         $this->url = CombatRecordResource::getUrl('view', [
             'record' => $this->combatRecord,
         ], panel: 'app');
+    }
+
+    public static function notificationGroup(): NotificationGroup
+    {
+        return NotificationGroup::RECORDS;
+    }
+
+    public static function notificationTitle(): string
+    {
+        return 'New Combat Record';
+    }
+
+    public static function notificationDescription(): string
+    {
+        return 'Sent when anytime your account receives a new combat record.';
     }
 
     public function via(mixed $notifiable): array

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
+use App\Contracts\NotificationCanBeManaged;
 use App\Filament\App\Resources\ServiceRecordResource;
 use App\Mail\Tenant\NewServiceRecordMail;
+use App\Models\Enums\NotificationGroup;
 use App\Models\ServiceRecord;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -16,7 +18,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
 
-class NewServiceRecord extends Notification implements ShouldBroadcast, ShouldQueue
+class NewServiceRecord extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
@@ -29,6 +31,21 @@ class NewServiceRecord extends Notification implements ShouldBroadcast, ShouldQu
         $this->url = ServiceRecordResource::getUrl('view', [
             'record' => $this->serviceRecord,
         ], panel: 'app');
+    }
+
+    public static function notificationGroup(): NotificationGroup
+    {
+        return NotificationGroup::RECORDS;
+    }
+
+    public static function notificationTitle(): string
+    {
+        return 'New Service Record';
+    }
+
+    public static function notificationDescription(): string
+    {
+        return 'Sent when anytime your account receives a new service record.';
     }
 
     public function via(mixed $notifiable): array

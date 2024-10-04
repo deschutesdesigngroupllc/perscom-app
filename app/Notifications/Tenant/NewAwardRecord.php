@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
+use App\Contracts\NotificationCanBeManaged;
 use App\Filament\App\Resources\AwardRecordResource;
 use App\Mail\Tenant\NewAwardRecordMail;
 use App\Models\AwardRecord;
+use App\Models\Enums\NotificationGroup;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -16,7 +18,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
 
-class NewAwardRecord extends Notification implements ShouldBroadcast, ShouldQueue
+class NewAwardRecord extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
@@ -29,6 +31,21 @@ class NewAwardRecord extends Notification implements ShouldBroadcast, ShouldQueu
         $this->url = AwardRecordResource::getUrl('view', [
             'record' => $this->awardRecord,
         ], panel: 'app');
+    }
+
+    public static function notificationGroup(): NotificationGroup
+    {
+        return NotificationGroup::RECORDS;
+    }
+
+    public static function notificationTitle(): string
+    {
+        return 'New Award Record';
+    }
+
+    public static function notificationDescription(): string
+    {
+        return 'Sent when anytime your account receives a new award record.';
     }
 
     public function via(mixed $notifiable): array

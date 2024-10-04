@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
+use App\Contracts\NotificationCanBeManaged;
 use App\Filament\App\Resources\QualificationRecordResource;
 use App\Mail\Tenant\NewQualificationRecordMail;
+use App\Models\Enums\NotificationGroup;
 use App\Models\QualificationRecord;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -16,7 +18,7 @@ use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
 
-class NewQualificationRecord extends Notification implements ShouldBroadcast, ShouldQueue
+class NewQualificationRecord extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
@@ -29,6 +31,21 @@ class NewQualificationRecord extends Notification implements ShouldBroadcast, Sh
         $this->url = QualificationRecordResource::getUrl('view', [
             'record' => $this->qualificationRecord,
         ], panel: 'app');
+    }
+
+    public static function notificationGroup(): NotificationGroup
+    {
+        return NotificationGroup::RECORDS;
+    }
+
+    public static function notificationTitle(): string
+    {
+        return 'New Qualification Record';
+    }
+
+    public static function notificationDescription(): string
+    {
+        return 'Sent when anytime your account receives a new qualification record.';
     }
 
     public function via(mixed $notifiable): array
