@@ -220,7 +220,7 @@ class Event extends Model implements HasLabel
     {
         return Attribute::make(
             get: fn (): bool|Optional => optional($this->last_occurrence, static function (Carbon $end) {
-                return $end->isPast();
+                return $end->copy()->addMinute()->isPast();
             }) ?: false
         )->shouldCache();
     }

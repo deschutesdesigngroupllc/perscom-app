@@ -24,7 +24,7 @@ class BackupDatabases extends Command
         Bus::batch(
             jobs: Tenant::all()->map(fn (Tenant $tenant) => new BackupTenantDatabase($tenant->getKey()))
         )->name(
-            name: 'Tenant Database Backups'
+            name: 'Database Backups'
         )->onQueue(
             queue: 'backup'
         )->dispatch();

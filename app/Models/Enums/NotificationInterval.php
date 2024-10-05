@@ -11,8 +11,8 @@ enum NotificationInterval: string implements HasLabel
     case PT0M = 'pt0m';
     case PT15M = 'pt15m';
     case PT1H = 'pt1h';
-    case PT1D = 'pt1d';
-    case PT1W = 'pt1w';
+    case P1D = 'p1d';
+    case P1W = 'p1w';
 
     public function getLabel(): ?string
     {
@@ -20,8 +20,8 @@ enum NotificationInterval: string implements HasLabel
             NotificationInterval::PT0M => 'At time of event',
             NotificationInterval::PT15M => '15 minutes before',
             NotificationInterval::PT1H => '1 hour before',
-            NotificationInterval::PT1D => '1 day before',
-            NotificationInterval::PT1W => '1 week before',
+            NotificationInterval::P1D => '1 day before',
+            NotificationInterval::P1W => '1 week before',
         };
     }
 }

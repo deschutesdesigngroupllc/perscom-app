@@ -156,6 +156,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('cache:prune-stale-tags')->hourly();
         $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->dailyAt('06:00');
         $schedule->command('perscom:backup')->environments('production')->dailyAt('05:00');
+        $schedule->command('perscom:event-notifications')->environments('production')->everyMinute();
 
         $schedule->command(RunHealthChecksCommand::class)->environments('production')->everyMinute();
         $schedule->command(DispatchQueueCheckJobsCommand::class)->environments('production')->everyMinute();

@@ -5,20 +5,20 @@ declare(strict_types=1);
 namespace App\Notifications\User;
 
 use App\Contracts\NotificationCanBeManaged;
+use App\Mail\User\UpcomingEvent as UpcomingEventMail;
 use App\Models\Enums\NotificationGroup;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class UpcomingEvent extends Notification implements NotificationCanBeManaged, ShouldQueue, ShouldBroadcast
+class UpcomingEvent extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
-    public function __construct(protected Event $event, protected NotificationInterval $interval)
+    public function __construct(public Event $event, protected NotificationInterval $interval)
     {
         //
     }
@@ -43,12 +43,9 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
         return ['mail', 'database', 'broadcast'];
     }
 
-    public function toMail(object $notifiable): MailMessage
+    public function toMail(object $notifiable): UpcomingEventMail
     {
-        return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+        return (new UpcomingEventMail($this->event, $this->interval))->to($notifiable->email);
     }
 
     public function toArray(object $notifiable): array
