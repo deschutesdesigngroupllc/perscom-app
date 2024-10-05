@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 enum NotificationGroup: string implements HasLabel
 {
+    case EVENTS = 'events';
     case RECORDS = 'records';
 
     public function getLabel(): ?string
@@ -21,6 +22,7 @@ enum NotificationGroup: string implements HasLabel
     public function getDescription(): ?string
     {
         return match ($this) {
+            NotificationGroup::EVENTS => 'All notifications regarding calendar and events.',
             NotificationGroup::RECORDS => 'All notifications regarding account records.',
             default => null
         };
@@ -29,6 +31,7 @@ enum NotificationGroup: string implements HasLabel
     public function getIcon(): ?string
     {
         return match ($this) {
+            NotificationGroup::EVENTS => 'heroicon-o-calendar-days',
             NotificationGroup::RECORDS => 'heroicon-o-rectangle-stack',
             default => null
         };

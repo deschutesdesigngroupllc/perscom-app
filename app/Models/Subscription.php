@@ -23,7 +23,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property \Illuminate\Support\Carbon|null $ends_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Cashier\SubscriptionItem> $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, SubscriptionItem> $items
  * @property-read int|null $items_count
  * @property-read Tenant|null $owner
  * @property-read Tenant|null $user

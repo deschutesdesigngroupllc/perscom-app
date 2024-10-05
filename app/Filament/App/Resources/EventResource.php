@@ -10,6 +10,7 @@ use App\Filament\App\Resources\EventResource\RelationManagers\AttachmentsRelatio
 use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
+use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use App\Services\EventService;
 use Filament\Forms;
@@ -116,6 +117,19 @@ class EventResource extends BaseResource
                                             ->disk('s3')
                                             ->helperText('Add an optional image for the event.'),
                                     ]),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Notifications')
+                            ->icon('heroicon-o-bell')
+                            ->schema([
+                                Forms\Components\Toggle::make('notifications_enabled')
+                                    ->label('Enabled')
+                                    ->default(true)
+                                    ->helperText('Send reminder notifications to all registered users.'),
+                                Forms\Components\Select::make('notifications_interval')
+                                    ->label('Alert')
+                                    ->helperText('When should the notifications be sent.')
+                                    ->multiple()
+                                    ->options(NotificationInterval::class),
                             ]),
                         Forms\Components\Tabs\Tab::make('Scheduling')
                             ->icon('heroicon-o-clock')

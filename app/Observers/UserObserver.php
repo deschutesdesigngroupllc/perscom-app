@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
+use App\Actions\Notifications\SendSms;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
 use App\Models\Webhook;
@@ -49,6 +50,13 @@ class UserObserver
             $user->updateQuietly([
                 'notes_updated_at' => now(),
             ]);
+        }
+
+        if ($user->isDirty('phone_number') && filled($user->phone_number)) {
+            SendSms::handle(
+                user: $user,
+                message: 'Thank you for registering for PERSCOM notifications. You can reply STOP at anytime or deselect SMS as a notification option in your account dashboard top stop receiving text messages.'
+            );
         }
 
         if ($user->approved && $user->isDirty('approved')) {

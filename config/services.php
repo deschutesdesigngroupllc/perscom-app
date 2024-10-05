@@ -68,4 +68,10 @@ return [
         'allow_gif_avatars' => true,
         'avatar_default_extension' => 'jpg',
     ],
+
+    'twilio' => [
+        'sid' => env('TWILIO_SID'),
+        'auth_token' => env('TWILIO_AUTH_TOKEN'),
+        'phone_number' => env('TWILIO_PHONE_NUMBER'),
+    ],
 ];
