@@ -21,7 +21,7 @@ class MailResource extends Resource
 
     protected static ?string $pluralLabel = 'Mail';
 
-    protected static ?string $label = 'Message';
+    protected static ?string $label = 'Alert';
 
     protected static ?string $navigationIcon = 'heroicon-o-envelope-open';
 

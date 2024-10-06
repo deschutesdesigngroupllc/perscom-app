@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\MessageResource\Pages;
-use App\Models\Message;
+use App\Filament\Admin\Resources\AlertResource\Pages;
+use App\Models\Alert;
 use App\Models\Scopes\EnabledScope;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -15,9 +15,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class MessageResource extends Resource
+class AlertResource extends Resource
 {
-    protected static ?string $model = Message::class;
+    protected static ?string $model = Alert::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
@@ -32,7 +32,7 @@ class MessageResource extends Resource
                 Forms\Components\Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Message')
+                        Forms\Components\Tabs\Tab::make('Alert')
                             ->icon('heroicon-o-chat-bubble-left-right')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
@@ -111,9 +111,9 @@ class MessageResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMessages::route('/'),
-            'create' => Pages\CreateMessage::route('/create'),
-            'edit' => Pages\EditMessage::route('/{record}/edit'),
+            'index' => Pages\ListAlerts::route('/'),
+            'create' => Pages\CreateAlert::route('/create'),
+            'edit' => Pages\EditAlert::route('/{record}/edit'),
         ];
     }
 

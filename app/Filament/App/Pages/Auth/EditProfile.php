@@ -35,7 +35,7 @@ class EditProfile extends BaseEditProfile
                                 TextInput::make('phone_number')
                                     ->nullable()
                                     ->tel()
-                                    ->helperText('By providing your phone number, you consent to allow Deschutes Design Group LLC/PERSCOM to send you account-related text messages. Message and data rates may apply. You may configure your notification settings at anytime by clicking the "Notifications" tab above.'),
+                                    ->helperText('By providing your phone number, you consent to allow Deschutes Design Group LLC/PERSCOM to send you account-related text messages. Alert and data rates may apply. You may configure your notification settings at anytime by clicking the "Notifications" tab above.'),
                                 $this->getPasswordFormComponent(),
                                 $this->getPasswordConfirmationFormComponent(),
                             ]),
