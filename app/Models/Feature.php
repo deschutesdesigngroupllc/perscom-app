@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Features\AdvancedNotificationsFeature;
+use App\Features\GoogleCalendarSyncFeature;
 use App\Models\Enums\ProductTerm;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
@@ -57,6 +58,15 @@ class Feature extends Model
                 'price' => 5,
                 'term' => 'monthly',
                 'feature' => AdvancedNotificationsFeature::class,
+            ],
+            [
+                'id' => 2,
+                'name' => 'Google Calendar Sync (Coming Soon)',
+                'description' => 'Keep your Google Calendar up-to-date with PERSCOM using two-way syncing.',
+                'price_id' => data_get($premiumFeatures, GoogleCalendarSyncFeature::class),
+                'price' => 5,
+                'term' => 'monthly',
+                'feature' => GoogleCalendarSyncFeature::class,
             ],
         ];
     }

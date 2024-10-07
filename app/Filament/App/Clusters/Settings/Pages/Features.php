@@ -53,7 +53,7 @@ class Features extends Page implements HasTable
     {
         return $table
             ->query(Feature::query())
-            ->description('Manage your account addons and features here.')
+            ->description('Manage your account addons and premium features here.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable(),

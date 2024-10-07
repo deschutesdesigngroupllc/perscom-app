@@ -131,6 +131,7 @@ return [
 
     'premium_features' => [
         App\Features\AdvancedNotificationsFeature::class => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS'),
+        App\Features\GoogleCalendarSyncFeature::class => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC'),
     ],
 
     'billables' => [
