@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Jobs\SendUpcomingEventNotifications as SendUpcomingEventNotificationJob;
-use App\Models\Tenant;
+use App\Actions\Events\SendUpcomingEventNotifications as SendUpcomingEventNotificationsAction;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Bus;
 use Throwable;
 
 class SendUpcomingEventNotifications extends Command
@@ -21,13 +19,7 @@ class SendUpcomingEventNotifications extends Command
      */
     public function handle(): int
     {
-        Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant $tenant) => new SendUpcomingEventNotificationJob($tenant->getKey()))
-        )->name(
-            name: 'Upcoming Event Notifications'
-        )->onQueue(
-            queue: 'default'
-        )->dispatch();
+        SendUpcomingEventNotificationsAction::handle();
 
         $this->info('The event notification job has been dispatched.');
 

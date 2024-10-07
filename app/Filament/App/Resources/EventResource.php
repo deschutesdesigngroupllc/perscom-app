@@ -12,7 +12,7 @@ use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelat
 use App\Filament\Exports\EventExporter;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
-use App\Services\EventService;
+use App\Services\RepeatService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Livewire;
@@ -330,7 +330,7 @@ class EventResource extends BaseResource
                                     ->visible(fn (?Event $record) => $record->repeats)
                                     ->label('Pattern')
                                     ->getStateUsing(function (?Event $record) {
-                                        $rule = EventService::generateRecurringRule($record);
+                                        $rule = RepeatService::generateRecurringRule($record);
 
                                         return Str::title($rule->humanReadable());
                                     }),

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\EventObserver;
-use App\Services\EventService;
+use App\Services\RepeatService;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
@@ -178,7 +178,7 @@ class Event extends Model implements HasLabel
             get: fn (): ?Carbon => match (true) {
                 ! $this->repeats => $this->start,
                 $this->repeats && $this->end_type === 'on' && $this->until => $this->until,
-                $this->repeats && $this->end_type === 'after' && $this->count => optional(EventService::generateRecurringRule($this), function (RRule $rule) {
+                $this->repeats && $this->end_type === 'after' && $this->count => optional(RepeatService::generateRecurringRule($this), function (RRule $rule) {
                     return $rule->getNthOccurrenceAfter($this->start, $this->count)
                         ? Carbon::parse($rule->getNthOccurrenceAfter($this->start, $this->count))
                         : null;
@@ -231,7 +231,7 @@ class Event extends Model implements HasLabel
             get: fn (): ?Carbon => match (true) {
                 $this->has_passed => null,
                 ! $this->repeats => $this->start,
-                $this->repeats => optional(EventService::generateRecurringRule($this), static function (RRule $rule) {
+                $this->repeats => optional(RepeatService::generateRecurringRule($this), static function (RRule $rule) {
                     return Carbon::parse(collect($rule->getOccurrencesAfter(now(), false, 1))->first());
                 })
             }

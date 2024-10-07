@@ -43,14 +43,14 @@ class Feature extends Model
 
     public function getRows(): array
     {
-        $addons = config('spark.addons');
+        $premiumFeatures = config('spark.premium_features');
 
         return [
             [
                 'id' => 1,
                 'name' => 'Advanced Notifications',
                 'description' => 'Upgrade your PERSCOM experience with advanced notifications - allowing you to send real-time information using channels such as Discord, SMS, or FCM.',
-                'price_id' => data_get($addons, AdvancedNotificationsFeature::class),
+                'price_id' => data_get($premiumFeatures, AdvancedNotificationsFeature::class),
                 'price' => 5,
                 'term' => 'monthly',
                 'feature' => AdvancedNotificationsFeature::class,

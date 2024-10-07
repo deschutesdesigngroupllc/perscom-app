@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Mail\User;
+namespace App\Mail\Tenant;
 
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;

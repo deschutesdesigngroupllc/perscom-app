@@ -1,0 +1,40 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Observers;
+
+use App\Actions\Messages\SendMessage;
+use App\Models\Message;
+use Throwable;
+
+class MessageObserver
+{
+    /**
+     * @throws Throwable
+     */
+    public function created(Message $message): void
+    {
+        SendMessage::handle($message);
+    }
+
+    public function updated(Message $message): void
+    {
+        //
+    }
+
+    public function deleted(Message $message): void
+    {
+        //
+    }
+
+    public function restored(Message $message): void
+    {
+        //
+    }
+
+    public function forceDeleted(Message $message): void
+    {
+        //
+    }
+}

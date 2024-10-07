@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Notifications\User;
+namespace App\Notifications\Tenant;
 
 use App\Contracts\NotificationCanBeManaged;
-use App\Mail\User\UpcomingEvent as UpcomingEventMail;
+use App\Mail\Tenant\UpcomingEvent as UpcomingEventMail;
 use App\Models\Enums\NotificationGroup;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;

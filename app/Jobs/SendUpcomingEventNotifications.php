@@ -8,7 +8,7 @@ use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use App\Models\Tenant;
 use App\Models\User;
-use App\Notifications\User\UpcomingEvent;
+use App\Notifications\Tenant\UpcomingEvent;
 use DateInterval;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;

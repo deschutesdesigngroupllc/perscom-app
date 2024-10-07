@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Pages\Auth;
 
 use App\Data\ManagedNotification;
+use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationGroup;
 use App\Services\NotificationService;
 use App\Settings\UserSettings;
@@ -45,24 +46,25 @@ class EditProfile extends BaseEditProfile
                                 $group = NotificationGroup::from($group);
 
                                 return Section::make($group->getLabel())
-                                    //->description($group->getDescription())
+                                    ->description($group->getDescription())
                                     ->icon($group->getIcon())
                                     ->schema($notifications->map(function (ManagedNotification $notification) {
                                         return CheckboxList::make("notifications.$notification->notificationClass")
                                             ->label($notification->title)
-                                            ->helperText($notification->description)
+                                            //->helperText($notification->description)
                                             ->columns(5)
                                             ->gridDirection('row')
                                             ->bulkToggleable()
-                                            ->options([
-                                                'sms' => 'SMS',
-                                                'discord' => 'Discord',
-                                                'mail' => 'Email',
-                                                'broadcast' => 'Live',
-                                                'database' => 'Dashboard',
-                                            ]);
+                                            ->options(NotificationChannel::class);
                                     })->toArray());
                             })->toArray()),
+                        Tabs\Tab::make('Social')
+                            ->icon('heroicon-o-device-phone-mobile')
+                            ->schema([
+                                TextInput::make('discord_user_id')
+                                    ->label('Discord User ID')
+                                    ->helperText('Your Discord User ID. This should be your Discord snowflake ID - not your username or display name.'),
+                            ]),
                     ]),
             ]);
     }

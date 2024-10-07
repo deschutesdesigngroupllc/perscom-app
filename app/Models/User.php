@@ -216,6 +216,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         'profile_photo',
         'cover_photo',
         'last_seen_at',
+        'discord_user_id',
+        'discord_private_channel_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -224,6 +226,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     protected $hidden = [
         'password',
         'remember_token',
+        'discord_user_id',
+        'discord_private_channel_id',
     ];
 
     protected $appends = [
@@ -253,6 +257,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
             'profile_photo',
             'cover_photo',
             'last_seen_at',
+            'discord_user_id',
+            'discord_private_channel_id',
             'created_at',
             'updated_at',
             'deleted_at',
@@ -290,6 +296,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     public function getFilamentName(): string
     {
         return $this->name;
+    }
+
+    public function routeNotificationForDiscord(): ?string
+    {
+        return $this->discord_private_channel_id;
     }
 
     public function scopeOrderForRoster(Builder $query): void

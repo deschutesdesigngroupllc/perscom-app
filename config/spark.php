@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use App\Features\AdvancedNotificationsFeature;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use Spark\Features;
 
@@ -130,8 +129,8 @@ return [
     |
     */
 
-    'addons' => [
-        AdvancedNotificationsFeature::class => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS'),
+    'premium_features' => [
+        App\Features\AdvancedNotificationsFeature::class => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS'),
     ],
 
     'billables' => [
@@ -147,6 +146,7 @@ return [
                     'yearly_id' => env('STRIPE_PRODUCT_BASIC_YEAR'),
                     'features' => [
                         'All core features',
+                        'No premium features',
                         'Social login support',
                         'Application provided subdomain',
                         'Community support',
@@ -162,6 +162,7 @@ return [
                     'yearly_id' => env('STRIPE_PRODUCT_PRO_YEAR'),
                     'features' => [
                         'Access to powerful API',
+                        'Optional paid premium features',
                         'Widgets and website integration',
                         'Custom subdomain',
                         'Ticket and email support',
@@ -179,12 +180,14 @@ return [
                     'monthly_id' => env('STRIPE_PRODUCT_ENTERPRISE_MONTH'),
                     'yearly_id' => env('STRIPE_PRODUCT_ENTERPRISE_YEAR'),
                     'features' => [
+                        'All premium features included',
                         'Export and backup all account data',
                         'Webhooks and real-time app notifications',
                         'Single sign-on integration',
                         'Priority support',
                     ],
                     'options' => [
+                        App\Features\AdvancedNotificationsFeature::class,
                         App\Features\SocialLoginFeature::class,
                         App\Features\ApiAccessFeature::class,
                         App\Features\CustomSubDomainFeature::class,

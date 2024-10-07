@@ -20,7 +20,9 @@ return new class extends Migration
             $table->text('message');
             $table->json('channels')->nullable();
             $table->json('recipients')->nullable();
-            $table->timestamp('sent_at');
+            $table->boolean('repeats')->default(false);
+            $table->timestamp('send_at')->nullable();
+            $table->timestamp('sent_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

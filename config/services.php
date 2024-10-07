@@ -67,6 +67,7 @@ return [
         'redirect' => env('DISCORD_REDIRECT_URL'),
         'allow_gif_avatars' => true,
         'avatar_default_extension' => 'jpg',
+        'token' => env('DISCORD_BOT_TOKEN'),
     ],
 
     'twilio' => [

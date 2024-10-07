@@ -17,6 +17,7 @@ use App\Settings\PermissionSettings;
 use App\Settings\RegistrationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Support\Facades\Notification;
+use NotificationChannels\Discord\Discord;
 
 class UserObserver
 {
@@ -50,6 +51,16 @@ class UserObserver
             $user->updateQuietly([
                 'notes_updated_at' => now(),
             ]);
+        }
+
+        if ($user->isDirty('discord_user_id') && filled($user->discord_user_id)) {
+            $privateChannelId = app(Discord::class)->getPrivateChannel($user->discord_user_id);
+
+            if ($privateChannelId) {
+                $user->forceFill([
+                    'discord_private_channel_id' => $privateChannelId,
+                ])->save();
+            }
         }
 
         if ($user->isDirty('phone_number') && filled($user->phone_number)) {
