@@ -8,12 +8,14 @@ use App\Filament\App\Resources\MessageResource\Pages;
 use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 
 class MessageResource extends BaseResource
 {
@@ -41,13 +43,18 @@ class MessageResource extends BaseResource
         ];
 
         $details = [
+            Forms\Components\Select::make('recipients')
+                ->helperText('Select the recipients. Leave blank to send to everyone.')
+                ->preload()
+                ->multiple()
+                ->searchable()
+                ->nullable()
+                ->options(User::query()->orderBy('name')->pluck('name', 'id')),
             Forms\Components\DateTimePicker::make('send_at')
-                ->default(now())
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
                 ->hidden(fn (Forms\Get $get) => $get('repeats')),
             Forms\Components\Toggle::make('repeats')
-                ->default(true)
                 ->live()
                 ->helperText('Enable to send the message on a recurring schedule.'),
         ];
@@ -55,20 +62,31 @@ class MessageResource extends BaseResource
         $schedule = [
             Schedule::make()
                 ->visible(fn (Forms\Get $get) => $get('repeats')),
+            Forms\Components\Placeholder::make('no_schedule')
+                ->hiddenLabel()
+                ->content(new HtmlString("<div class='font-bold'>The message is not set to repeat.</div>"))
+                ->dehydrated(false)
+                ->hidden(fn (Forms\Get $get) => $get('repeats')),
         ];
 
         if ($form->getOperation() === 'create') {
             return $form->schema([
                 Forms\Components\Wizard::make([
                     Forms\Components\Wizard\Step::make('Message')
+                        ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema($message),
                     Forms\Components\Wizard\Step::make('Channels')
+                        ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema($channels),
                     Forms\Components\Wizard\Step::make('Details')
+                        ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema($details),
                     Forms\Components\Wizard\Step::make('Schedule')
+                        ->completedIcon('heroicon-m-hand-thumb-up')
                         ->schema($schedule),
-                ])->persistStepInQueryString()->columnSpanFull(),
+                ])
+                    ->persistStepInQueryString()
+                    ->columnSpanFull(),
             ]);
         }
 
@@ -99,6 +117,7 @@ class MessageResource extends BaseResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('message')
+                    ->searchable()
                     ->html()
                     ->wrap()
                     ->sortable()
@@ -113,7 +132,12 @@ class MessageResource extends BaseResource
                     ->dateTime()
                     ->sortable(),
             ])
+            ->groups(['repeats'])
             ->filters([
+                Tables\Filters\SelectFilter::make('channels')
+                    ->options(NotificationChannel::class)
+                    ->modifyQueryUsing(fn (Builder $query, $data) => $query->when(! is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
+                Tables\Filters\TernaryFilter::make('repeats'),
                 Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
@@ -142,7 +166,6 @@ class MessageResource extends BaseResource
         return [
             'index' => Pages\ListMessages::route('/'),
             'create' => Pages\CreateMessage::route('/create'),
-            'edit' => Pages\EditMessage::route('/{record}/edit'),
         ];
     }
 

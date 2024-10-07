@@ -57,6 +57,10 @@ class Message extends Model
     use HasSchedule;
     use SoftDeletes;
 
+    protected $attributes = [
+        'recipients' => null,
+    ];
+
     protected $fillable = [
         'message',
         'channels',
@@ -73,7 +77,7 @@ class Message extends Model
     {
         return [
             'channels' => AsEnumCollection::of(NotificationChannel::class),
-            'recipients' => AsCollection::using(User::class),
+            'recipients' => AsCollection::class,
         ];
     }
 }
