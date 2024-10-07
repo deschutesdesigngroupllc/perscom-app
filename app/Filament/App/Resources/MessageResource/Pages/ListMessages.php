@@ -12,6 +12,8 @@ class ListMessages extends ListRecords
 {
     protected static string $resource = MessageResource::class;
 
+    protected ?string $subheading = 'Send instant, real-time messages across an array of notification channels.';
+
     protected function getHeaderActions(): array
     {
         return [
