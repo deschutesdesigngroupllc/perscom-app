@@ -6,9 +6,11 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Actions\Features\StartFeature;
 use App\Actions\Features\StopFeature;
+use App\Contracts\PremiumFeature;
 use App\Filament\App\Clusters\Settings;
 use App\Models\Feature;
 use App\Models\Tenant;
+use App\Settings\FeatureSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
@@ -82,7 +84,12 @@ class Features extends Page implements HasTable
 
                         return "We will charge your card on file $price {$record->term->value}. Please confirm you would like to proceed.";
                     })
-                    ->visible(fn (Feature $record) => Pennant::inactive($record->feature))
+                    ->visible(function (Feature $record) {
+                        /** @var PremiumFeature|string $feature */
+                        $feature = $record->feature;
+
+                        return Pennant::inactive($feature) && $feature::canSubscribe();
+                    })
                     ->action(function (Action $action, Feature $record) {
                         /** @var Tenant $tenant */
                         $tenant = Filament::getTenant();
@@ -104,7 +111,12 @@ class Features extends Page implements HasTable
                     ->modalHeading(fn (Feature $record) => "Unsubscribe from $record->name")
                     ->modalSubmitActionLabel('Unsubscribe')
                     ->modalDescription(fn (Feature $record) => "Are you sure you would like to unsubscribe from $record->name? Any unused time will be credited on your next invoice.")
-                    ->visible(fn (Feature $record) => Pennant::active($record->feature))
+                    ->visible(function (Feature $record) {
+                        /** @var PremiumFeature|string $feature */
+                        $feature = $record->feature;
+
+                        return Pennant::active($feature) && $feature::canUnsubscribe();
+                    })
                     ->action(function (Action $action, Feature $record) {
                         /** @var Tenant $tenant */
                         $tenant = Filament::getTenant();
@@ -116,6 +128,41 @@ class Features extends Page implements HasTable
                         } else {
                             $action->success();
                         }
+                    }),
+                Action::make('settings')
+                    ->visible(fn (Feature $record) => Pennant::active($record->feature))
+                    ->color('gray')
+                    ->icon('heroicon-o-cog')
+                    ->fillForm(function (Feature $record) {
+                        /** @var PremiumFeature $feature */
+                        $feature = $record->feature;
+                        $key = $feature::settingsKey();
+
+                        /** @var FeatureSettings $settings */
+                        $settings = app()->make(FeatureSettings::class);
+
+                        return $settings->$key;
+                    })
+                    ->mutateFormDataUsing(function (Feature $record, array $data) {
+                        /** @var PremiumFeature $feature */
+                        $feature = $record->feature;
+                        $key = $feature::settingsKey();
+
+                        /** @var FeatureSettings $settings */
+                        $settings = app()->make(FeatureSettings::class);
+                        $settings->$key = $data;
+                        $settings->save();
+
+                        return $data;
+                    })
+                    ->modalSubmitActionLabel('Save')
+                    ->successNotificationTitle('Saved')
+                    ->action(fn (Action $action) => $action->success())
+                    ->form(function (Feature $record) {
+                        /** @var PremiumFeature $feature */
+                        $feature = $record->feature;
+
+                        return $feature::settingsForm();
                     }),
             ]);
     }

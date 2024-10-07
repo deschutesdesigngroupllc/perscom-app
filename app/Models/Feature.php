@@ -15,7 +15,7 @@ use Sushi\Sushi;
  * @property string|null $name
  * @property string|null $description
  * @property string|null $price_id
- * @property int|null $price
+ * @property float|null $price
  * @property ProductTerm|null $term
  * @property string|null $feature
  * @property-read mixed $enabled
@@ -41,6 +41,9 @@ class Feature extends Model
         'enabled',
     ];
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     public function getRows(): array
     {
         $premiumFeatures = config('spark.premium_features');
@@ -58,14 +61,21 @@ class Feature extends Model
         ];
     }
 
+    /**
+     * @return Attribute<bool, void>
+     */
     public function enabled(): Attribute
     {
         return Attribute::get(fn () => true);
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [
+            'price' => 'float',
             'enabled' => 'boolean',
             'term' => ProductTerm::class,
         ];

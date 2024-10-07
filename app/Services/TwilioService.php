@@ -18,7 +18,7 @@ class TwilioService
     public function sendSms(string $phoneNumber, string $message): MessageInstance
     {
         return $this->client()->messages->create($phoneNumber, [
-            'from' => config('services.twilio.phone_number'),
+            'from' => config('services.twilio.from'),
             'body' => $message,
         ]);
     }

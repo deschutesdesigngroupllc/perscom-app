@@ -75,7 +75,7 @@ class NewMessage extends Notification implements ShouldQueue
     public function toTwilio(User $notifiable): TwilioSmsMessage|TwilioMessage
     {
         return (new TwilioSmsMessage)
-            ->from(config('services.twilio.phone_number'))
+            ->from(config('services.twilio.from'))
             ->content($this->message->message);
     }
 }

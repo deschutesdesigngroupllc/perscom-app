@@ -17,7 +17,7 @@ class ApiAccessFeature extends BaseFeature
      */
     public function resolve(?string $scope): bool
     {
-        $tenant = $this->resolveTenant($scope);
+        $tenant = static::resolveTenant($scope);
 
         return match (true) {
             App::isAdmin() => false,

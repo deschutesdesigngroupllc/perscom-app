@@ -282,7 +282,7 @@ class EventResource extends BaseResource
                                 Forms\Components\DateTimePicker::make('registration_deadline')
                                     ->label('Deadline')
                                     ->nullable()
-                                    ->helperText('The deadline for registration.'),
+                                    ->helperText('The deadline for registration. Leave blank for no deadline.'),
                             ]),
                     ]),
             ]);
@@ -371,16 +371,16 @@ class EventResource extends BaseResource
                 Tables\Columns\TextColumn::make('name')
                     ->sortable()
                     ->searchable()
-                    ->icon(fn (?Event $record) => $record->repeats ? 'heroicon-o-arrow-path' : null),
+                    ->icon(fn (Event $record) => $record->repeats ? 'heroicon-o-arrow-path' : null),
                 Tables\Columns\TextColumn::make('calendar.name')
                     ->badge()
-                    ->color(fn (?Event $record) => Color::hex($record->calendar?->color)),
+                    ->color(fn (Event $record) => Color::hex($record->calendar?->color)),
                 Tables\Columns\TextColumn::make('author.name')
                     ->label('Organizer')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start')
                     ->label('Starts')
-                    ->formatStateUsing(function (?Event $record, $column) {
+                    ->formatStateUsing(function (Event $record, $column) {
                         return match ($record->all_day) {
                             true => Carbon::parse($record->start)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateDisplayFormat),
                             false => Carbon::parse($record->start)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateTimeDisplayFormat)
@@ -389,7 +389,7 @@ class EventResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('last_occurrence')
                     ->label('Ends')
-                    ->formatStateUsing(function (?Event $record, $column) {
+                    ->formatStateUsing(function (Event $record, $column) {
                         return match ($record->all_day) {
                             true => Carbon::parse($record->last_occurrence)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateDisplayFormat),
                             false => Carbon::parse($record->last_occurrence)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateTimeDisplayFormat)
@@ -411,7 +411,7 @@ class EventResource extends BaseResource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
-            ->recordClasses(fn (?Event $record) => match ($record->has_passed) {
+            ->recordClasses(fn (Event $record) => match ($record->has_passed) {
                 true => '!border-s-2 !border-s-red-600',
                 default => null,
             })

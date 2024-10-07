@@ -13,7 +13,7 @@ class ExportDataFeature extends BaseFeature
 {
     public function resolve(?string $scope): bool
     {
-        $tenant = $this->resolveTenant($scope);
+        $tenant = static::resolveTenant($scope);
 
         return match (true) {
             App::isAdmin() => true,

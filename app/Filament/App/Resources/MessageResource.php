@@ -33,6 +33,7 @@ class MessageResource extends BaseResource
 
         $channels = [
             Forms\Components\CheckboxList::make('channels')
+                ->required()
                 ->hiddenLabel()
                 ->bulkToggleable()
                 ->options(NotificationChannel::class),
@@ -85,6 +86,16 @@ class MessageResource extends BaseResource
                 Tables\Columns\TextColumn::make('message')
                     ->html()
                     ->wrap()
+                    ->sortable()
+                    ->icon(fn (Message $record) => $record->repeats ? 'heroicon-o-arrow-path' : null),
+                Tables\Columns\TextColumn::make('channels')
+                    ->badge()
+                    ->color('gray'),
+                Tables\Columns\TextColumn::make('send_at')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('sent_at')
+                    ->dateTime()
                     ->sortable(),
             ])
             ->filters([
@@ -92,6 +103,7 @@ class MessageResource extends BaseResource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -99,7 +111,8 @@ class MessageResource extends BaseResource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
+            ])
+            ->defaultSort('sent_at', 'desc');
     }
 
     public static function getRelations(): array

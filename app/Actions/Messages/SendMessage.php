@@ -21,6 +21,10 @@ class SendMessage
             ? $message->recipients
             : User::all();
 
+        $message->forceFill([
+            'sent_at' => now(),
+        ])->save();
+
         Notification::send($recipients, new NewMessage($message));
     }
 }

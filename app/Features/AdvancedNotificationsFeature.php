@@ -4,20 +4,68 @@ declare(strict_types=1);
 
 namespace App\Features;
 
+use App\Contracts\PremiumFeature;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Illuminate\Support\Facades\App;
+use Laravel\Pennant\Feature;
 use Spark\Plan;
 
-class AdvancedNotificationsFeature extends BaseFeature
+class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
 {
+    public static function canSubscribe(): bool
+    {
+        $tenant = static::resolveTenant();
+
+        if (! $tenant) {
+            return false;
+        }
+
+        return optional($tenant->sparkPlan())->name !== 'Enterprise'
+            && Feature::inactive(static::class);
+    }
+
+    public static function canUnsubscribe(): bool
+    {
+        $tenant = static::resolveTenant();
+
+        if (! $tenant) {
+            return false;
+        }
+
+        return optional($tenant->sparkPlan())->name !== 'Enterprise'
+            && Feature::active(static::class);
+    }
+
+    public static function settingsKey(): string
+    {
+        return 'advanced_notifications';
+    }
+
+    public static function settingsForm(): array
+    {
+        return [
+            Toggle::make('discord_enabled')
+                ->helperText('Enable Discord notifications system wide.')
+                ->label('Discord'),
+            TextInput::make('discord_channel')
+                ->numeric()
+                ->helperText('Different features of the platform allow you to send Discord notifications to either an individual user or to all users in a public channel. If you choose public channel, provide the channel ID here.'),
+            Toggle::make('sms_enabled')
+                ->helperText('Enable SMS notifications system wide.')
+                ->label('SMS'),
+        ];
+    }
+
     public function resolve(?string $scope): bool
     {
-        $tenant = $this->resolveTenant($scope);
+        $tenant = static::resolveTenant($scope);
         $premiumFeatures = config('spark.premium_features');
 
         return match (true) {
             App::isAdmin() => false,
             App::isDemo() => true,
-            $tenant?->onTrial() => true,
+            $tenant->onTrial() => true,
             $tenant->subscribedToPrice(data_get($premiumFeatures, static::class)) => true,
             optional($tenant->sparkPlan(), static function (Plan $plan) {
                 return in_array(__CLASS__, $plan->options, true);

@@ -303,6 +303,14 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         return $this->discord_private_channel_id;
     }
 
+    public function routeNotificationForTwilio(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    /**
+     * @param  Builder<User>  $query
+     */
     public function scopeOrderForRoster(Builder $query): void
     {
         $query
@@ -316,6 +324,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
             ->orderBy('users.name');
     }
 
+    /**
+     * @return Attribute<string, void>
+     */
     public function online(): Attribute
     {
         return Attribute::make(

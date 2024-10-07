@@ -17,6 +17,7 @@ use Filament\Forms\Form;
 use Filament\Pages\Auth\EditProfile as BaseEditProfile;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 
 class EditProfile extends BaseEditProfile
 {
@@ -40,30 +41,32 @@ class EditProfile extends BaseEditProfile
                                 $this->getPasswordFormComponent(),
                                 $this->getPasswordConfirmationFormComponent(),
                             ]),
-                        Tabs\Tab::make('Notifications')
-                            ->icon('heroicon-o-bell')
-                            ->schema($notifications->map(function (Collection $notifications, $group) {
-                                $group = NotificationGroup::from($group);
-
-                                return Section::make($group->getLabel())
-                                    ->description($group->getDescription())
-                                    ->icon($group->getIcon())
-                                    ->schema($notifications->map(function (ManagedNotification $notification) {
-                                        return CheckboxList::make("notifications.$notification->notificationClass")
-                                            ->label($notification->title)
-                                            //->helperText($notification->description)
-                                            ->columns(5)
-                                            ->gridDirection('row')
-                                            ->bulkToggleable()
-                                            ->options(NotificationChannel::class);
-                                    })->toArray());
-                            })->toArray()),
+                        // TODO: Implement
+                        //                        Tabs\Tab::make('Notifications')
+                        //                            ->icon('heroicon-o-bell')
+                        //                            ->schema($notifications->map(function (Collection $notifications, $group) {
+                        //                                $group = NotificationGroup::from($group);
+                        //
+                        //                                return Section::make($group->getLabel())
+                        //                                    ->description($group->getDescription())
+                        //                                    ->icon($group->getIcon())
+                        //                                    ->schema($notifications->map(function (ManagedNotification $notification) {
+                        //                                        return CheckboxList::make("notifications.$notification->notificationClass")
+                        //                                            ->label($notification->title)
+                        //                                            //->helperText($notification->description)
+                        //                                            ->columns(5)
+                        //                                            ->gridDirection('row')
+                        //                                            ->bulkToggleable()
+                        //                                            ->options(NotificationChannel::class);
+                        //                                    })->toArray());
+                        //                            })->toArray()),
                         Tabs\Tab::make('Social')
                             ->icon('heroicon-o-device-phone-mobile')
                             ->schema([
                                 TextInput::make('discord_user_id')
+                                    ->numeric()
                                     ->label('Discord User ID')
-                                    ->helperText('Your Discord User ID. This should be your Discord snowflake ID - not your username or display name.'),
+                                    ->helperText(new HtmlString("Your Discord User ID. This should be your Discord <a class='underline' href='https://discord.com/developers/docs/reference#snowflakes' target='_blank'>snowflake</a> ID - not your username or display name.")),
                             ]),
                     ]),
             ]);
