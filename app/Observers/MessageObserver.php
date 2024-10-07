@@ -20,7 +20,9 @@ class MessageObserver
 
     public function updated(Message $message): void
     {
-        //
+        if ($message->isDirty('repeats') && ! $message->repeats) {
+            $message->schedule()->delete();
+        }
     }
 
     public function deleted(Message $message): void

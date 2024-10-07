@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\MessageResource\Pages;
+use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
 use Filament\Forms;
@@ -41,11 +42,19 @@ class MessageResource extends BaseResource
 
         $details = [
             Forms\Components\DateTimePicker::make('send_at')
-                ->nullable()
-                ->helperText('Set a time and date to send later. Leave blank to send immediately.'),
+                ->default(now())
+                ->columnSpanFull()
+                ->helperText('Set a time to send the message in the future. Leave blank to send now.')
+                ->hidden(fn (Forms\Get $get) => $get('repeats')),
             Forms\Components\Toggle::make('repeats')
+                ->default(true)
+                ->live()
                 ->helperText('Enable to send the message on a recurring schedule.'),
+        ];
 
+        $schedule = [
+            Schedule::make()
+                ->visible(fn (Forms\Get $get) => $get('repeats')),
         ];
 
         if ($form->getOperation() === 'create') {
@@ -57,7 +66,9 @@ class MessageResource extends BaseResource
                         ->schema($channels),
                     Forms\Components\Wizard\Step::make('Details')
                         ->schema($details),
-                ])->columnSpanFull(),
+                    Forms\Components\Wizard\Step::make('Schedule')
+                        ->schema($schedule),
+                ])->persistStepInQueryString()->columnSpanFull(),
             ]);
         }
 
@@ -75,6 +86,10 @@ class MessageResource extends BaseResource
                         Forms\Components\Tabs\Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema($details),
+                        Forms\Components\Tabs\Tab::make('Schedule')
+                            ->visible(fn (Forms\Get $get) => $get('repeats'))
+                            ->icon('heroicon-o-arrow-path')
+                            ->schema($schedule),
                     ]),
             ]);
     }
@@ -127,6 +142,7 @@ class MessageResource extends BaseResource
         return [
             'index' => Pages\ListMessages::route('/'),
             'create' => Pages\CreateMessage::route('/create'),
+            'edit' => Pages\EditMessage::route('/{record}/edit'),
         ];
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Models\Repeatable;
+use App\Models\Schedule;
 use App\Services\RepeatService;
 use Carbon\Carbon;
 use Eloquent;
@@ -14,11 +14,11 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
 /**
  * @mixin Eloquent
  */
-trait CanBeRepeated
+trait HasSchedule
 {
-    public function repeatSettings(): MorphOne
+    public function schedule(): MorphOne
     {
-        return $this->morphOne(Repeatable::class, 'repeatable');
+        return $this->morphOne(Schedule::class, 'repeatable');
     }
 
     public function hasPassed(): Attribute
@@ -38,11 +38,11 @@ trait CanBeRepeated
     {
         return Attribute::make(
             get: function (): ?Carbon {
-                if (blank($this->repeatSettings)) {
+                if (blank($this->schedule)) {
                     return null;
                 }
 
-                return RepeatService::lastOccurrence($this->repeatSettings);
+                return RepeatService::lastOccurrence($this->schedule);
             }
         )->shouldCache();
     }
@@ -51,11 +51,11 @@ trait CanBeRepeated
     {
         return Attribute::make(
             get: function (): ?Carbon {
-                if (blank($this->repeatSettings)) {
+                if (blank($this->schedule)) {
                     return null;
                 }
 
-                return RepeatService::nextOccurrence($this->repeatSettings);
+                return RepeatService::nextOccurrence($this->schedule);
             }
         )->shouldCache();
     }

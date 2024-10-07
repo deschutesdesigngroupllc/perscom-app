@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Models\Enums\NotificationChannel;
 use App\Observers\MessageObserver;
-use App\Traits\CanBeRepeated;
+use App\Traits\HasSchedule;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
@@ -28,7 +28,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read bool $has_passed
  * @property-read \Carbon\Carbon|null $last_occurrence
  * @property-read \Carbon\Carbon|null $next_occurrence
- * @property-read Repeatable|null $repeatSettings
+ * @property-read Schedule|null $schedule
  *
  * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
@@ -53,8 +53,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 #[ObservedBy(MessageObserver::class)]
 class Message extends Model
 {
-    use CanBeRepeated;
     use HasFactory;
+    use HasSchedule;
     use SoftDeletes;
 
     protected $fillable = [

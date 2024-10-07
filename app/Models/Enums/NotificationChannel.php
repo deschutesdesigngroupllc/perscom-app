@@ -34,9 +34,9 @@ enum NotificationChannel: string implements HasDescription, HasLabel
         return match ($this) {
             NotificationChannel::BROADCAST => 'Send this message as an instant notification to the user\'s dashboard.',
             NotificationChannel::DATABASE => 'Store this message in the user\'s database so they can review it later.',
-            NotificationChannel::DISCORD => 'Send the message to your configured discord channel.',
+            NotificationChannel::DISCORD => 'Send the message to your the user\'s private channel or a configured public channel.',
             NotificationChannel::MAIL => 'Send this message as an email.',
-            NotificationChannel::SMS => 'The this message straight to the user\'s cell phone.',
+            NotificationChannel::SMS => 'Send this message straight to the user\'s cell phone.',
         };
     }
 

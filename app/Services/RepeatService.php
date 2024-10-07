@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Enums\ScheduleEndType;
+use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
-use App\Models\Repeatable;
+use App\Models\Schedule;
+use BackedEnum;
 use Carbon\Carbon;
 use DateTime;
 use RRule\RRule;
@@ -13,24 +16,26 @@ use RRule\RRule;
 class RepeatService
 {
     /**
-     * @return RRule<DateTime>
+     * @return ?RRule<DateTime>
      */
-    public static function generateRecurringRule(Repeatable|Event $repeatable): RRule
+    public static function generateRecurringRule(Schedule|Event $repeatable): ?RRule
     {
         $payload = [
             'DTSTART' => $repeatable->start->toDateTimeString(),
-            'FREQ' => $repeatable->frequency,
+            'FREQ' => $repeatable->frequency instanceof BackedEnum
+                ? $repeatable->frequency->value
+                : $repeatable->frequency,
             'INTERVAL' => $repeatable->interval,
         ];
 
         switch ($repeatable->frequency) {
-            case 'WEEKLY':
+            case ScheduleFrequency::WEEKLY:
                 if ($repeatable->by_day?->isNotEmpty()) {
                     $payload['BYDAY'] = $repeatable->by_day->implode(',');
                 }
                 break;
 
-            case 'MONTHLY':
+            case ScheduleFrequency::MONTHLY:
                 if ($repeatable->by_day && $repeatable->by_set_position) {
                     $payload['BYDAY'] = $repeatable->by_day;
                     $payload['BYSETPOS'] = $repeatable->by_set_position;
@@ -39,7 +44,7 @@ class RepeatService
                 }
                 break;
 
-            case 'YEARLY':
+            case ScheduleFrequency::YEARLY:
                 if ($repeatable->by_month?->isNotEmpty()) {
                     $payload['BYMONTH'] = $repeatable->by_month->implode(',');
                 }
@@ -51,18 +56,18 @@ class RepeatService
                 break;
         }
 
-        if ($repeatable->count && $repeatable->end_type === 'after') {
+        if ($repeatable->count && $repeatable->end_type === ScheduleEndType::AFTER) {
             $payload['COUNT'] = $repeatable->count;
         }
 
-        if ($repeatable->until && $repeatable->end_type === 'on') {
+        if ($repeatable->until && $repeatable->end_type === ScheduleEndType::ON) {
             $payload['UNTIL'] = $repeatable->until->toDateString();
         }
 
-        return new RRule($payload);
+        return rescue(fn () => new RRule($payload));
     }
 
-    public static function lastOccurrence(Repeatable $repeatable): ?Carbon
+    public static function lastOccurrence(Schedule $repeatable): ?Carbon
     {
         if ($repeatable->end_type === 'on' && filled($repeatable->until)) {
             return $repeatable->until;
@@ -83,7 +88,7 @@ class RepeatService
         return Carbon::parse($lastOccurrence);
     }
 
-    public static function nextOccurrence(Repeatable $repeatable): ?Carbon
+    public static function nextOccurrence(Schedule $repeatable): ?Carbon
     {
         $rule = RepeatService::generateRecurringRule($repeatable);
 
