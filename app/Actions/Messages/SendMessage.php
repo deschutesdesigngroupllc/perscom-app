@@ -17,7 +17,7 @@ class SendMessage
      */
     public static function handle(Message $message): void
     {
-        $recipients = filled($message->recipients) || $message->recipients
+        $recipients = filled($message->recipients)
             ? $message->recipients
             : User::all();
 

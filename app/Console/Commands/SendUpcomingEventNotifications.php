@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Events\SendUpcomingEventNotifications as SendUpcomingEventNotificationsAction;
+use App\Actions\Batches\SendUpcomingEventNotifications as SendUpcomingEventNotificationsAction;
 use Illuminate\Console\Command;
 use Throwable;
 
 class SendUpcomingEventNotifications extends Command
 {
-    protected $signature = 'perscom:event-notifications';
+    protected $signature = 'perscom:event-notification';
 
     protected $description = 'Send any upcoming event notifications.';
 

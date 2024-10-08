@@ -29,6 +29,8 @@ trait HasSchedule
                     return false;
                 }
 
+                // We need to add one minute, so we can actually do minute-by-minute
+                // comparisons to now without missing it.
                 return $this->last_occurrence->copy()->addMinute()->isPast();
             }
         )->shouldCache();

@@ -75,13 +75,13 @@ class RepeatService
 
         $rule = RepeatService::generateRecurringRule($repeatable);
 
-        if (blank($rule) || blank($repeatable->count)) {
+        if (is_null($rule) || blank($repeatable->count)) {
             return null;
         }
 
         $lastOccurrence = $rule->getNthOccurrenceAfter($repeatable->start, $repeatable->count);
 
-        if (blank($lastOccurrence)) {
+        if (is_null($lastOccurrence)) {
             return null;
         }
 
@@ -92,13 +92,15 @@ class RepeatService
     {
         $rule = RepeatService::generateRecurringRule($repeatable);
 
-        if (blank($rule)) {
+        if (is_null($rule)) {
             return null;
         }
 
-        $nextOccurrence = collect($rule->getOccurrencesAfter(now(), false, 1))->first();
+        // We need to sub one minute, so we can actually do minute-by-minute
+        // comparisons to now without it being kicked to the next occurrence.
+        $nextOccurrence = collect($rule->getOccurrencesAfter(now()->subMinute(), true, 1))->first();
 
-        if (blank($nextOccurrence)) {
+        if (is_null($nextOccurrence)) {
             return null;
         }
 

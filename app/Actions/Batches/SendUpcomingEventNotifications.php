@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Actions\Batches;
+
+use App\Jobs\Central\SendUpcomingEventNotifications as SendUpcomingEventNotificationJob;
+use App\Models\Tenant;
+use Illuminate\Bus\Batch;
+use Illuminate\Support\Facades\Bus;
+use Throwable;
+
+class SendUpcomingEventNotifications
+{
+    /**
+     * @throws Throwable
+     */
+    public static function handle(): Batch
+    {
+        return Bus::batch(
+            jobs: Tenant::all()->map(fn (Tenant $tenant) => new SendUpcomingEventNotificationJob($tenant->getKey()))
+        )->name(
+            name: 'Upcoming Event Notifications'
+        )->onQueue(
+            queue: 'default'
+        )->onConnection(
+            connection: 'central'
+        )->dispatch();
+    }
+}

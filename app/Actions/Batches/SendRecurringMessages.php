@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace App\Actions\Events;
+namespace App\Actions\Batches;
 
-use App\Jobs\SendUpcomingEventNotifications as SendUpcomingEventNotificationJob;
+use App\Jobs\Central\SendRecurringMessages as SendRecurringMessagesJob;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class SendUpcomingEventNotifications
+class SendRecurringMessages
 {
     /**
      * @throws Throwable
@@ -18,11 +18,13 @@ class SendUpcomingEventNotifications
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant $tenant) => new SendUpcomingEventNotificationJob($tenant->getKey()))
+            jobs: Tenant::all()->map(fn (Tenant $tenant) => new SendRecurringMessagesJob($tenant->getKey()))
         )->name(
-            name: 'Upcoming Event Notifications'
+            name: 'Recurring Messages'
         )->onQueue(
             queue: 'default'
+        )->onConnection(
+            connection: 'central'
         )->dispatch();
     }
 }

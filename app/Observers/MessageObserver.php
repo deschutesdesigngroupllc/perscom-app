@@ -15,7 +15,9 @@ class MessageObserver
      */
     public function created(Message $message): void
     {
-        SendMessage::handle($message);
+        if (blank($message->send_at) && ! $message->repeats) {
+            SendMessage::handle($message);
+        }
     }
 
     public function updated(Message $message): void

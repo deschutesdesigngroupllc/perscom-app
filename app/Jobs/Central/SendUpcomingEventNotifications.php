@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs;
+namespace App\Jobs\Central;
 
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
@@ -20,14 +20,21 @@ class SendUpcomingEventNotifications implements ShouldQueue
 {
     use Batchable, Queueable;
 
-    public function __construct(public int $tenantKey) {}
+    public function __construct(public int $tenantKey)
+    {
+        $this->onConnection('central');
+    }
 
     public function handle(): void
     {
+        if ($this->batch()?->canceled()) {
+            return;
+        }
+
         Tenant::findOrFail($this->tenantKey)->run(function () {
             // Chunk the events to even out the workload
             Event::chunk(100, function (Collection $events) {
-                $events = $events
+                $events
                     // Reject any that do not have notifications enabled or no interval set
                     ->reject(fn (Event $event) => ! $event->notifications_enabled || blank($event->notifications_interval))
 
@@ -58,8 +65,6 @@ class SendUpcomingEventNotifications implements ShouldQueue
                     ->each(fn (UpcomingEvent $notification) => $notification->event->registrations->each(function (User $user) use ($notification) {
                         $user->notify($notification);
                     }));
-
-                dump($events);
             });
         });
     }

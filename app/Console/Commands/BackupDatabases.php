@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\BackupDatabase as BackupDatabaseAction;
+use App\Actions\Batches\BackupDatabases as BackupDatabaseAction;
 use Illuminate\Console\Command;
 use Throwable;
 
