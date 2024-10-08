@@ -11,6 +11,7 @@ use App\Filament\App\Resources\ServiceRecordResource\RelationManagers\CommentsRe
 use App\Filament\Exports\ServiceRecordExporter;
 use App\Livewire\App\ViewDocument;
 use App\Models\ServiceRecord;
+use App\Services\UserSettingsService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -55,6 +56,7 @@ class ServiceRecordResource extends BaseResource
                             ->maxLength(65535)
                             ->columnSpanFull(),
                         Forms\Components\DateTimePicker::make('created_at')
+                            ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                             ->columnSpanFull()
                             ->default(now())
                             ->required(),
@@ -97,10 +99,13 @@ class ServiceRecordResource extends BaseResource
                             ->schema([
                                 Infolists\Components\TextEntry::make('author.name'),
                                 Infolists\Components\TextEntry::make('created_at')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->dateTime(),
                                 Infolists\Components\TextEntry::make('updated_at')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->dateTime(),
                                 Infolists\Components\TextEntry::make('deleted_at')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->dateTime(),
                             ]),
                         Infolists\Components\Tabs\Tab::make('Document')
@@ -148,14 +153,17 @@ class ServiceRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

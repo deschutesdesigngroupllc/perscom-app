@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources;
 use App\Features\ApiAccessFeature;
 use App\Filament\App\Resources\PassportTokenResource\Pages;
 use App\Models\PassportToken;
+use App\Services\UserSettingsService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -68,6 +69,7 @@ class PassportTokenResource extends BaseResource
             ->schema([
                 TextEntry::make('name'),
                 TextEntry::make('expires_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime(),
                 TextEntry::make('token')
                     ->label('API key')
@@ -100,14 +102,17 @@ class PassportTokenResource extends BaseResource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('expires_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

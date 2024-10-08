@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\FormResource\RelationManagers;
 
+use App\Services\UserSettingsService;
 use Filament\Infolists;
 use Filament\Infolists\Infolist;
 use Filament\Resources\RelationManagers\RelationManager;
@@ -21,10 +22,13 @@ class SubmissionsRelationManager extends RelationManager
         return $infolist
             ->schema([
                 Infolists\Components\TextEntry::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime(),
                 Infolists\Components\TextEntry::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime(),
                 Infolists\Components\TextEntry::make('deleted_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime(),
             ]);
     }

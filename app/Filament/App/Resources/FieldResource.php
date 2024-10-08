@@ -7,6 +7,7 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\FieldResource\Pages;
 use App\Models\Enums\FieldType;
 use App\Models\Field;
+use App\Services\UserSettingsService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -134,14 +135,17 @@ class FieldResource extends BaseResource
                     ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

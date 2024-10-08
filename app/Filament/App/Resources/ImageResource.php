@@ -9,6 +9,7 @@ use App\Models\Award;
 use App\Models\Image;
 use App\Models\Qualification;
 use App\Models\Rank;
+use App\Services\UserSettingsService;
 use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -172,14 +173,17 @@ class ImageResource extends BaseResource
                         ]) : false;
                     }),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

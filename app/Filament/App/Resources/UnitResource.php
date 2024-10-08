@@ -10,6 +10,7 @@ use App\Filament\Exports\UnitExporter;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
 use App\Models\Unit;
+use App\Services\UserSettingsService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -115,14 +116,17 @@ class UnitResource extends BaseResource
                 IconColumn::make('icon')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

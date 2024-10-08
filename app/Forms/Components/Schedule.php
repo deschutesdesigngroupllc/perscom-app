@@ -7,6 +7,7 @@ namespace App\Forms\Components;
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Models\Schedule as ScheduleModel;
+use App\Services\UserSettingsService;
 use Filament\Forms;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
@@ -20,6 +21,7 @@ class Schedule
             ->columns(3)
             ->schema([
                 Forms\Components\DateTimePicker::make('start')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->live()
                     ->default(now())
                     ->required()

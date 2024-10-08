@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\CalendarResource\RelationManagers;
 
+use App\Services\UserSettingsService;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -24,9 +25,11 @@ class EventsRelationManager extends RelationManager
                     ->label('Organizer')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('end')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\IconColumn::make('all_day')

@@ -11,6 +11,7 @@ use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\Comm
 use App\Filament\Exports\QualificationRecordExporter;
 use App\Livewire\App\ViewDocument;
 use App\Models\QualificationRecord;
+use App\Services\UserSettingsService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -108,10 +109,13 @@ class QualificationRecordResource extends BaseResource
                             ->schema([
                                 Infolists\Components\TextEntry::make('author.name'),
                                 Infolists\Components\TextEntry::make('created_at')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->dateTime(),
                                 Infolists\Components\TextEntry::make('updated_at')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->dateTime(),
                                 Infolists\Components\TextEntry::make('deleted_at')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->dateTime(),
                             ]),
                         Infolists\Components\Tabs\Tab::make('Document')
@@ -165,14 +169,17 @@ class QualificationRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

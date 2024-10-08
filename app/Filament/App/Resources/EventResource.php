@@ -13,6 +13,7 @@ use App\Filament\Exports\EventExporter;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use App\Services\RepeatService;
+use App\Services\UserSettingsService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Livewire;
@@ -136,24 +137,29 @@ class EventResource extends BaseResource
                             ->columns()
                             ->schema([
                                 Forms\Components\DateTimePicker::make('start')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->default(now()->addHour()->startOfHour()->toDateTimeLocalString())
                                     ->live()
                                     ->required()
                                     ->visible(fn (Forms\Get $get) => ! $get('all_day')),
                                 Forms\Components\DateTimePicker::make('end')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->live()
                                     ->required()
                                     ->visible(fn (Forms\Get $get) => ! $get('all_day') && ! $get('repeats')),
                                 Forms\Components\DatePicker::make('start')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->default(today()->toDateString())
                                     ->live()
                                     ->required()
                                     ->visible(fn (Forms\Get $get) => $get('all_day')),
                                 Forms\Components\DatePicker::make('end')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->live()
                                     ->required()
                                     ->visible(fn (Forms\Get $get) => $get('all_day') && ! $get('repeats') || ($get('all_day') && $get('repeats'))),
                                 Forms\Components\TimePicker::make('end')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->live()
                                     ->required()
                                     ->visible(fn (Forms\Get $get) => $get('repeats') && ! $get('all_day')),
@@ -280,6 +286,7 @@ class EventResource extends BaseResource
                                     ->required()
                                     ->default(true),
                                 Forms\Components\DateTimePicker::make('registration_deadline')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->label('Deadline')
                                     ->nullable()
                                     ->helperText('The deadline for registration. Leave blank for no deadline.'),
@@ -311,6 +318,7 @@ class EventResource extends BaseResource
                                     ->label('Starts')
                                     ->icon(fn (?Event $record) => $record->repeats ? 'heroicon-o-arrow-path' : null)
                                     ->suffix(fn (?Event $record) => $record->length ? " ({$record->length->forHumans(['parts' => 1])})" : null)
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->formatStateUsing(function (?Event $record, $component) {
                                         return match ($record->all_day) {
                                             true => Carbon::parse($record->start)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
@@ -319,11 +327,12 @@ class EventResource extends BaseResource
                                     }),
                                 TextEntry::make('end')
                                     ->label('Ends')
-                                    ->hidden(fn (?Event $record) => is_null($record->last_occurrence))
+                                    ->hidden(fn (?Event $record) => is_null($record->end))
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->formatStateUsing(function (?Event $record, $component) {
                                         return match ($record->all_day) {
-                                            true => Carbon::parse($record->last_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
-                                            false => Carbon::parse($record->last_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
+                                            true => Carbon::parse($record->end)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
+                                            false => Carbon::parse($record->end)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
                                         };
                                     }),
                                 TextEntry::make('rule_readable')
@@ -352,6 +361,7 @@ class EventResource extends BaseResource
                             ->visible(fn (?Event $record) => $record->registration_enabled)
                             ->schema([
                                 TextEntry::make('registration_deadline')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->label('Deadline')
                                     ->hidden(fn (?Event $record) => is_null($record->registration_deadline))
                                     ->dateTime(),
@@ -380,6 +390,7 @@ class EventResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('start')
                     ->label('Starts')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->formatStateUsing(function (Event $record, $column) {
                         return match ($record->all_day) {
                             true => Carbon::parse($record->start)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateDisplayFormat),
@@ -387,26 +398,30 @@ class EventResource extends BaseResource
                         };
                     })
                     ->sortable(),
-                Tables\Columns\TextColumn::make('last_occurrence')
+                Tables\Columns\TextColumn::make('end')
                     ->label('Ends')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->formatStateUsing(function (Event $record, $column) {
                         return match ($record->all_day) {
-                            true => Carbon::parse($record->last_occurrence)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateDisplayFormat),
-                            false => Carbon::parse($record->last_occurrence)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateTimeDisplayFormat)
+                            true => Carbon::parse($record->end)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateDisplayFormat),
+                            false => Carbon::parse($record->end)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateTimeDisplayFormat)
                         };
                     })
                     ->sortable(),
                 Tables\Columns\IconColumn::make('all_day')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
