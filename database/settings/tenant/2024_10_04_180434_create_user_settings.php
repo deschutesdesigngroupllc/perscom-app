@@ -9,5 +9,6 @@ return new class extends SettingsMigration
     public function up(): void
     {
         $this->migrator->add('user.notifications', []);
+        $this->migrator->add('user.timezone', []);
     }
 };

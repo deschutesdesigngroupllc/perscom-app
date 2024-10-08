@@ -168,6 +168,9 @@ class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeed
         return $this->user;
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

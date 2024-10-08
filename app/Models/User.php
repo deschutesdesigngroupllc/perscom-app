@@ -437,6 +437,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         return 'web';
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

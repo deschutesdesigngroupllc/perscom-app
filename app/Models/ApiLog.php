@@ -118,6 +118,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return array_merge(parent::casts(), parent::getCasts(), [

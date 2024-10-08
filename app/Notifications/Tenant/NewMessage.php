@@ -31,6 +31,10 @@ class NewMessage extends Notification implements ShouldQueue
             ->title('New Message')
             ->body($this->message->message)
             ->info();
+
+        if (filled($this->message->send_at)) {
+            $this->delay(now()->diff($this->message->send_at));
+        }
     }
 
     /**

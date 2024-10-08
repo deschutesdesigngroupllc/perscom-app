@@ -16,7 +16,7 @@ use RRule\RRule;
 class RepeatService
 {
     /**
-     * @return ?RRule<DateTime>
+     * @return RRule<DateTime>|null
      */
     public static function generateRecurringRule(Schedule|Event $repeatable): ?RRule
     {

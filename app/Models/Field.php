@@ -141,6 +141,9 @@ class Field extends Model implements HasLabel, Hideable
             ->withTimestamps();
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

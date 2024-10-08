@@ -57,6 +57,9 @@ class Role extends \Spatie\Permission\Models\Role
         return Attribute::get(fn ($value, $attributes) => data_get($attributes, 'name') === Utils::getSuperAdminName())->shouldCache();
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

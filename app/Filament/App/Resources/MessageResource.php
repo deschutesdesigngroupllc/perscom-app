@@ -9,6 +9,7 @@ use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
 use App\Models\User;
+use App\Services\UserSettingsService;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -51,6 +52,7 @@ class MessageResource extends BaseResource
                 ->nullable()
                 ->options(User::query()->orderBy('name')->pluck('name', 'id')),
             Forms\Components\DateTimePicker::make('send_at')
+                ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
                 ->hidden(fn (Forms\Get $get) => $get('repeats')),
@@ -126,9 +128,11 @@ class MessageResource extends BaseResource
                     ->badge()
                     ->color('gray'),
                 Tables\Columns\TextColumn::make('send_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sent_at')
+                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                     ->dateTime()
                     ->sortable(),
             ])
