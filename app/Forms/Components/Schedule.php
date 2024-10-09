@@ -7,6 +7,7 @@ namespace App\Forms\Components;
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Models\Schedule as ScheduleModel;
+use App\Services\RepeatService;
 use App\Services\UserSettingsService;
 use Filament\Forms;
 use Illuminate\Support\Carbon;
@@ -14,19 +15,26 @@ use Illuminate\Support\Str;
 
 class Schedule
 {
-    public static function make(): Forms\Components\Section
+    public static function make(bool $startHidden = false, bool $allDay = false, bool $shiftScheduleTimezone = false): Forms\Components\Section
     {
+        if (! $startHidden) {
+            $start = Forms\Components\DateTimePicker::make('start')
+                ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                ->live()
+                ->default(now()->addHour()->startOfHour())
+                ->required()
+                ->columnSpanFull()
+                ->helperText('Set a time the schedule should start.');
+        } else {
+            $start = Forms\Components\Hidden::make('start')
+                ->default(now()->addHour()->startOfHour());
+        }
+
         return Forms\Components\Section::make()
             ->relationship('schedule')
             ->columns(3)
             ->schema([
-                Forms\Components\DateTimePicker::make('start')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                    ->live()
-                    ->default(now())
-                    ->required()
-                    ->columnSpanFull()
-                    ->helperText('Set a time the schedule should start.'),
+                $start,
                 Forms\Components\Grid::make()
                     ->columnSpanFull()
                     ->columns(3)
@@ -130,10 +138,17 @@ class Schedule
                 Forms\Components\Placeholder::make('schedule')
                     ->helperText('The configured schedule will repeat using the pattern above.')
                     ->columnSpanFull()
-                    ->content(function (Forms\Get $get): string {
+                    ->content(function (Forms\Get $get) use ($allDay, $shiftScheduleTimezone): string {
+                        $start = Carbon::parse($get('start'));
+
+                        if ($shiftScheduleTimezone) {
+                            $start->shiftTimezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                ->setTimezone(config('app.timezone'));
+                        }
+
                         /** @var ScheduleModel $schedule */
                         $schedule = ScheduleModel::make([
-                            'start' => Carbon::parse($get('start')),
+                            'start' => $start,
                             'frequency' => $get('frequency'),
                             'interval' => $get('interval'),
                             'end_type' => $get('end_type'),
@@ -144,7 +159,7 @@ class Schedule
                             'by_month' => $get('by_month'),
                         ]);
 
-                        return $schedule->human_readable ?? '---';
+                        return RepeatService::getSchedulePattern($schedule, $allDay) ?? '---';
                     }),
             ]);
     }

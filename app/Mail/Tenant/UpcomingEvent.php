@@ -21,8 +21,8 @@ class UpcomingEvent extends Mailable implements ShouldQueue
 
     public function __construct(protected Event $event, protected NotificationInterval $interval)
     {
-        $date = $this->event->start->toFormattedDayDateString();
-        $time = $this->event->start->format('g:i A');
+        $date = $this->event->starts->toFormattedDayDateString();
+        $time = $this->event->starts->format('g:i A');
 
         $this->title = match ($this->interval) {
             NotificationInterval::PT0M => "{$this->event->name} - Now",
@@ -42,8 +42,8 @@ class UpcomingEvent extends Mailable implements ShouldQueue
 
     public function content(): Content
     {
-        $date = $this->event->start->toFormattedDayDateString();
-        $time = $this->event->start->format('g:i A');
+        $date = $this->event->starts->toFormattedDayDateString();
+        $time = $this->event->starts->format('g:i A');
 
         $title = match ($this->interval) {
             NotificationInterval::PT0M => "{$this->event->name} is starting now",
@@ -59,7 +59,7 @@ class UpcomingEvent extends Mailable implements ShouldQueue
                 'title' => $title,
                 'name' => $this->event->name,
                 'start' => "$date at $time",
-                'time' => $this->event->start->toDateTimeString(),
+                'time' => $this->event->starts->toDateTimeString(),
                 'url' => $this->event->url,
             ]
         );

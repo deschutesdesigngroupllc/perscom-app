@@ -7,13 +7,12 @@ namespace App\Models;
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Services\RepeatService;
+use Carbon\Carbon;
 use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Support\Str;
-use IntlDateFormatter;
 
 /**
  * @property int $id
@@ -33,7 +32,9 @@ use IntlDateFormatter;
  * @property string|null $rrule
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read string|null $human_readable
+ * @property-read bool $has_passed
+ * @property-read Carbon|null $last_occurrence
+ * @property-read Carbon|null $next_occurrence
  * @property-read Model|Eloquent|null $repeatable
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule newModelQuery()
@@ -72,22 +73,45 @@ class Schedule extends MorphPivot
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<bool, void>
      */
-    public function humanReadable(): Attribute
+    public function hasPassed(): Attribute
     {
-        return Attribute::get(function (): ?string {
-            $rule = RepeatService::generateRecurringRule($this);
+        return Attribute::make(
+            get: function (): bool {
+                if (blank($this->last_occurrence)) {
+                    return false;
+                }
 
-            if (is_null($rule)) {
-                return null;
+                // We need to add one minute, so we can actually do minute-by-minute
+                // comparisons to now without missing it.
+                return $this->last_occurrence->copy()->addMinute()->isPast();
             }
+        )->shouldCache();
+    }
 
-            return Str::ucwords($rule->humanReadable([
-                'date_format' => IntlDateFormatter::LONG,
-                'time_format' => IntlDateFormatter::MEDIUM,
-            ]));
-        })->shouldCache();
+    /**
+     * @return Attribute<?Carbon, void>
+     */
+    public function lastOccurrence(): Attribute
+    {
+        return Attribute::make(
+            get: function (): ?Carbon {
+                return RepeatService::lastOccurrence($this);
+            }
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?Carbon, void>
+     */
+    public function nextOccurrence(): Attribute
+    {
+        return Attribute::make(
+            get: function (): ?Carbon {
+                return RepeatService::nextOccurrence($this);
+            }
+        )->shouldCache();
     }
 
     /**

@@ -26,9 +26,6 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property Carbon|null $deleted_at
- * @property-read bool $has_passed
- * @property-read \Carbon\Carbon|null $last_occurrence
- * @property-read \Carbon\Carbon|null $next_occurrence
  * @property-read Schedule|null $schedule
  *
  * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])

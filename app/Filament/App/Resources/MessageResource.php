@@ -16,7 +16,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use Illuminate\Support\HtmlString;
 
 class MessageResource extends BaseResource
 {
@@ -56,19 +55,14 @@ class MessageResource extends BaseResource
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
                 ->hidden(fn (Forms\Get $get) => $get('repeats')),
-            Forms\Components\Toggle::make('repeats')
-                ->live()
-                ->helperText('Enable to send the message on a recurring schedule.'),
         ];
 
         $schedule = [
-            Schedule::make()
+            Forms\Components\Toggle::make('repeats')
+                ->live()
+                ->helperText('Enable to send the message on a recurring schedule.'),
+            Schedule::make(shiftScheduleTimezone: true)
                 ->visible(fn (Forms\Get $get) => $get('repeats')),
-            Forms\Components\Placeholder::make('no_schedule')
-                ->hiddenLabel()
-                ->content(new HtmlString("<div class='font-bold'>The message is not set to repeat.</div>"))
-                ->dehydrated(false)
-                ->hidden(fn (Forms\Get $get) => $get('repeats')),
         ];
 
         if ($form->getOperation() === 'create') {
@@ -171,8 +165,7 @@ class MessageResource extends BaseResource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ])
-            ->defaultSort('sent_at', 'desc');
+            ]);
     }
 
     public static function getRelations(): array

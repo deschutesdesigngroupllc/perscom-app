@@ -11,6 +11,8 @@ use App\Models\Schedule;
 use BackedEnum;
 use Carbon\Carbon;
 use DateTime;
+use Illuminate\Support\Str;
+use IntlDateFormatter;
 use RRule\RRule;
 
 class RepeatService
@@ -21,7 +23,7 @@ class RepeatService
     public static function generateRecurringRule(Schedule|Event $repeatable): ?RRule
     {
         $payload = [
-            'DTSTART' => $repeatable->start->toDateTimeString(),
+            'DTSTART' => $repeatable->start->toDateTime(),
             'FREQ' => $repeatable->frequency instanceof BackedEnum
                 ? $repeatable->frequency->value
                 : $repeatable->frequency,
@@ -105,5 +107,30 @@ class RepeatService
         }
 
         return Carbon::parse($nextOccurrence);
+    }
+
+    public static function getSchedulePattern(Schedule $schedule, bool $allDay = false): ?string
+    {
+        $rule = RepeatService::generateRecurringRule($schedule);
+
+        if (is_null($rule)) {
+            return null;
+        }
+
+        return Str::ucwords($rule->humanReadable([
+            'date_formatter' => function ($date) use ($allDay) {
+                $formatter = IntlDateFormatter::create(
+                    locale: config('app.locale'),
+                    dateType: IntlDateFormatter::LONG,
+                    timeType: $allDay
+                        ? IntlDateFormatter::NONE
+                        : IntlDateFormatter::MEDIUM,
+                    timezone: UserSettingsService::get('timezone', config('app.timezone'))
+                );
+
+                return $formatter->format($date);
+            },
+
+        ]));
     }
 }

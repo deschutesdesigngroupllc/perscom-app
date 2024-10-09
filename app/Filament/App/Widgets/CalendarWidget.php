@@ -48,8 +48,8 @@ class CalendarWidget extends BaseCalendarWidget
         return Event::all()->map(function (Event $event) {
             return EventObject::make()
                 ->title($event->name)
-                ->start($event->start)
-                ->end($event->end)
+                ->start($event->starts)
+                ->end($event->ends)
                 ->model(Event::class)
                 ->key((string) $event->getKey())
                 ->action('visit')

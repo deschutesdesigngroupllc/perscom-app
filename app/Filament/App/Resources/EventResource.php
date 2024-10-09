@@ -10,6 +10,7 @@ use App\Filament\App\Resources\EventResource\RelationManagers\AttachmentsRelatio
 use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
+use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use App\Services\RepeatService;
@@ -72,6 +73,42 @@ class EventResource extends BaseResource
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                Forms\Components\DateTimePicker::make('starts')
+                                    ->helperText('The date and time the event starts.')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->default(now()->addHour()->startOfHour())
+                                    ->live(onBlur: true)
+                                    ->required()
+                                    ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, $state, $component) {
+                                        $date = Carbon::parse($state)
+                                            ->shiftTimezone($component->getTimezone())
+                                            ->setTimezone(config('app.timezone'));
+
+                                        $set('schedule.start', $date);
+
+                                        $start = Carbon::parse($state);
+                                        $end = Carbon::parse($get('ends') ?? $state);
+
+                                        if ($get('all_day')) {
+                                            $set('ends', $state);
+                                        } elseif ($start->isAfter($end)) {
+                                            $set('ends', $start->copy()->addHour()->toDateTimeString());
+                                        }
+                                    })
+                                    ->time(fn (Forms\Get $get) => ! $get('all_day')),
+                                Forms\Components\DateTimePicker::make('ends')
+                                    ->helperText('The date and time the event ends.')
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->default(now()->addHours(2)->startOfHour())
+                                    ->afterOrEqual('starts')
+                                    ->live(onBlur: true)
+                                    ->required()
+                                    ->time(fn (Forms\Get $get) => ! $get('all_day')),
+                                Forms\Components\Toggle::make('all_day')
+                                    ->helperText('Check if the event does not have a start and end time.')
+                                    ->columnSpanFull()
+                                    ->live()
+                                    ->required(),
                                 Forms\Components\RichEditor::make('description')
                                     ->helperText('The description of the event.')
                                     ->nullable()
@@ -83,6 +120,7 @@ class EventResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                                 Forms\Components\TextInput::make('url')
+                                    ->label('URL')
                                     ->helperText('An optional URL for the event.')
                                     ->url()
                                     ->nullable()
@@ -93,6 +131,7 @@ class EventResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 Forms\Components\RichEditor::make('content')
+                                    ->hiddenLabel()
                                     ->helperText('The informational content of the event.')
                                     ->nullable()
                                     ->maxLength(65535)
@@ -132,151 +171,22 @@ class EventResource extends BaseResource
                                     ->multiple()
                                     ->options(NotificationInterval::class),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Scheduling')
-                            ->icon('heroicon-o-clock')
+                        Forms\Components\Tabs\Tab::make('Schedule')
+                            ->icon('heroicon-o-arrow-path')
                             ->columns()
-                            ->schema([
-                                Forms\Components\DateTimePicker::make('start')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                                    ->default(now()->addHour()->startOfHour()->toDateTimeLocalString())
-                                    ->live()
-                                    ->required()
-                                    ->visible(fn (Forms\Get $get) => ! $get('all_day')),
-                                Forms\Components\DateTimePicker::make('end')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                                    ->live()
-                                    ->required()
-                                    ->visible(fn (Forms\Get $get) => ! $get('all_day') && ! $get('repeats')),
-                                Forms\Components\DatePicker::make('start')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                                    ->default(today()->toDateString())
-                                    ->live()
-                                    ->required()
-                                    ->visible(fn (Forms\Get $get) => $get('all_day')),
-                                Forms\Components\DatePicker::make('end')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                                    ->live()
-                                    ->required()
-                                    ->visible(fn (Forms\Get $get) => $get('all_day') && ! $get('repeats') || ($get('all_day') && $get('repeats'))),
-                                Forms\Components\TimePicker::make('end')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                                    ->live()
-                                    ->required()
-                                    ->visible(fn (Forms\Get $get) => $get('repeats') && ! $get('all_day')),
-                                Forms\Components\Toggle::make('all_day')
-                                    ->helperText('Check if the event does not have a start and end time.')
-                                    ->columnSpanFull()
-                                    ->live()
-                                    ->required(),
-                                Forms\Components\Toggle::make('repeats')
-                                    ->helperText('Check if the event repeats.')
-                                    ->columnSpanFull()
-                                    ->default(false)
-                                    ->live()
-                                    ->required(),
-                                Forms\Components\Grid::make()
-                                    ->columnSpanFull()
-                                    ->columns(3)
-                                    ->schema([
-                                        Forms\Components\TextInput::make('interval')
-                                            ->helperText('The interval at which the event will repeat.')
-                                            ->numeric()
-                                            ->requiredIf('repeats', true)
-                                            ->default(1)
-                                            ->hidden(fn (Forms\Get $get) => ! $get('repeats')),
-                                        Forms\Components\Select::make('frequency')
-                                            ->live()
-                                            ->helperText('The frequency at which the event will repeat.')
-                                            ->requiredIf('repeats', true)
-                                            ->options([
-                                                'DAILY' => 'Day(s)',
-                                                'WEEKLY' => 'Week(s)',
-                                                'MONTHLY' => 'Month(s)',
-                                                'YEARLY' => 'Year(s)',
-                                            ])
-                                            ->default('WEEKLY')
-                                            ->hidden(fn (Forms\Get $get) => ! $get('repeats')),
-                                        Forms\Components\Select::make('by_day')
-                                            ->helperText('The day(s) of the week the event will repeat.')
-                                            ->requiredIf('frequency', 'WEEKLY')
-                                            ->multiple()
-                                            ->label('On')
-                                            ->default('never')
-                                            ->options([
-                                                'SU' => 'Sunday',
-                                                'MO' => 'Monday',
-                                                'TU' => 'Tuesday',
-                                                'WE' => 'Wednesday',
-                                                'TH' => 'Thursday',
-                                                'FR' => 'Friday',
-                                                'SA' => 'Saturday',
-                                            ])
-                                            ->hidden(fn (Forms\Get $get) => ! $get('repeats') || $get('frequency') === 'DAILY' || $get('frequency') === 'MONTHLY' || $get('frequency') === 'YEARLY'),
-                                        Forms\Components\Select::make('by_month_day')
-                                            ->helperText('The day of the month the event will repeat.')
-                                            ->requiredIf('frequency', 'MONTHLY')
-                                            ->multiple()
-                                            ->label('On')
-                                            ->default('never')
-                                            ->options(function (Forms\Get $get) {
-                                                $month = Carbon::parse($get('start'))->startOfMonth();
-                                                $period = collect($month->toPeriod($month->copy()->endOfMonth(), 1, 'day')->settings([
-                                                    'monthOverflow' => false,
-                                                ]));
-
-                                                return $period->mapWithKeys(function ($value) {
-                                                    return [$value->format('j') => $value->format('jS')];
-                                                });
-                                            })
-                                            ->hidden(fn (Forms\Get $get) => ! $get('repeats') || $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'YEARLY'),
-                                        Forms\Components\Select::make('by_month')
-                                            ->helperText('The month of the year the event will repeat.')
-                                            ->multiple()
-                                            ->label('On')
-                                            ->default('never')
-                                            ->options([
-                                                '1' => 'January',
-                                                '2' => 'February',
-                                                '3' => 'March',
-                                                '4' => 'April',
-                                                '5' => 'May',
-                                                '6' => 'June',
-                                                '7' => 'July',
-                                                '8' => 'August',
-                                                '9' => 'September',
-                                                '10' => 'October',
-                                                '11' => 'November',
-                                                '12' => 'December',
-                                            ])
-                                            ->hidden(fn (Forms\Get $get) => ! $get('repeats') || $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'MONTHLY'),
-                                    ]),
-                                Forms\Components\Select::make('end_type')
-                                    ->columnSpan(fn ($state) => in_array($state, ['on', 'after']) ? 1 : 2)
-                                    ->helperText('When the event will end.')
-                                    ->live()
-                                    ->label('Ends')
-                                    ->default('never')
-                                    ->options([
-                                        'never' => 'Never',
-                                        'on' => 'On',
-                                        'after' => 'After',
-                                    ])
-                                    ->requiredIf('repeats', true)
-                                    ->hidden(fn (Forms\Get $get) => ! $get('repeats')),
-                                Forms\Components\TextInput::make('count')
-                                    ->default(1)
-                                    ->label('Occurrences')
-                                    ->helperText('The number of occurrences before the recurring event ends.')
-                                    ->hidden(fn (Forms\Get $get) => $get('end_type') !== 'after')
-                                    ->required(fn (Forms\Get $get) => $get('end_type') === 'after')
-                                    ->numeric(),
-                                Forms\Components\DatePicker::make('until')
-                                    ->default(today()->addMonth())
-                                    ->label('End Date')
-                                    ->helperText('The date the recurring event will end.')
-                                    ->hidden(fn (Forms\Get $get) => $get('end_type') !== 'on')
-                                    ->required(fn (Forms\Get $get) => $get('end_type') === 'on'),
-                            ]),
+                            ->schema(function (Forms\Get $get) {
+                                return [
+                                    Forms\Components\Toggle::make('repeats')
+                                        ->helperText('Check if the event repeats.')
+                                        ->columnSpanFull()
+                                        ->default(false)
+                                        ->live(),
+                                    Schedule::make(
+                                        startHidden: true,
+                                        allDay: $get('all_day') ?? false
+                                    )->visible($get('repeats') ?? false),
+                                ];
+                            }),
                         Forms\Components\Tabs\Tab::make('Registration')
                             ->icon('heroicon-o-user-plus')
                             ->schema([
@@ -314,35 +224,40 @@ class EventResource extends BaseResource
                                     ->hidden(fn ($state) => is_null($state))
                                     ->hiddenLabel()
                                     ->html(),
-                                TextEntry::make('start')
-                                    ->label('Starts')
+                                TextEntry::make('starts')
+                                    ->visible(fn (?Event $record, Forms\Get $get) => ! is_null($record->ends) && ! $record->repeats)
                                     ->icon(fn (?Event $record) => $record->repeats ? 'heroicon-o-arrow-path' : null)
-                                    ->suffix(fn (?Event $record) => $record->length ? " ({$record->length->forHumans(['parts' => 1])})" : null)
+                                    ->suffix(fn (?Event $record) => filled($record->length) && $record->length->total('seconds') > 0 ? " ({$record->length->forHumans(['parts' => 1])})" : null)
                                     ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                                    ->formatStateUsing(function (?Event $record, $component) {
+                                    ->getStateUsing(function (?Event $record, $component) {
                                         return match ($record->all_day) {
-                                            true => Carbon::parse($record->start)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
-                                            false => Carbon::parse($record->start)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
+                                            true => Carbon::parse($record->starts)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
+                                            false => Carbon::parse($record->starts)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
                                         };
                                     }),
-                                TextEntry::make('end')
-                                    ->label('Ends')
-                                    ->hidden(fn (?Event $record) => is_null($record->end))
+                                TextEntry::make('ends')
+                                    ->visible(fn (?Event $record, Forms\Get $get) => ! is_null($record->ends) && ! $record->repeats)
                                     ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                                    ->formatStateUsing(function (?Event $record, $component) {
+                                    ->getStateUsing(function (?Event $record, TextEntry $component) {
                                         return match ($record->all_day) {
-                                            true => Carbon::parse($record->end)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
-                                            false => Carbon::parse($record->end)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
+                                            true => Carbon::parse($record->ends)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
+                                            false => Carbon::parse($record->ends)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
+                                        };
+                                    }),
+                                TextEntry::make('next_occurrence')
+                                    ->label('Next Occurrence')
+                                    ->visible(fn (?Event $record) => $record->repeats && filled($record->schedule->next_occurrence))
+                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->getStateUsing(function (?Event $record, TextEntry $component) {
+                                        return match ($record->all_day) {
+                                            true => Carbon::parse($record->schedule->next_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
+                                            false => Carbon::parse($record->schedule->next_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
                                         };
                                     }),
                                 TextEntry::make('rule_readable')
-                                    ->visible(fn (?Event $record) => $record->repeats)
-                                    ->label('Pattern')
-                                    ->getStateUsing(function (?Event $record) {
-                                        $rule = RepeatService::generateRecurringRule($record);
-
-                                        return Str::title($rule->humanReadable());
-                                    }),
+                                    ->visible(fn (?Event $record) => $record->repeats && filled($record->schedule))
+                                    ->label('Schedule')
+                                    ->getStateUsing(fn (?Event $record) => RepeatService::getSchedulePattern($record->schedule, $record->all_day)),
                             ]),
                         Tabs\Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
@@ -352,6 +267,7 @@ class EventResource extends BaseResource
                                     ->html(),
                                 TextEntry::make('location'),
                                 TextEntry::make('url')
+                                    ->label('URL')
                                     ->url(fn (?Event $record) => $record->url),
                             ]),
                         Tabs\Tab::make('Registration')
@@ -387,26 +303,6 @@ class EventResource extends BaseResource
                     ->color(fn (Event $record) => Color::hex($record->calendar?->color)),
                 Tables\Columns\TextColumn::make('author.name')
                     ->label('Organizer')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('start')
-                    ->label('Starts')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                    ->formatStateUsing(function (Event $record, $column) {
-                        return match ($record->all_day) {
-                            true => Carbon::parse($record->start)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateDisplayFormat),
-                            false => Carbon::parse($record->start)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateTimeDisplayFormat)
-                        };
-                    })
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('end')
-                    ->label('Ends')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
-                    ->formatStateUsing(function (Event $record, $column) {
-                        return match ($record->all_day) {
-                            true => Carbon::parse($record->end)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateDisplayFormat),
-                            false => Carbon::parse($record->end)->setTimezone($column->getTimezone())->translatedFormat(Table::$defaultDateTimeDisplayFormat)
-                        };
-                    })
                     ->sortable(),
                 Tables\Columns\IconColumn::make('all_day')
                     ->sortable(),
