@@ -39,7 +39,18 @@ class MessageResource extends BaseResource
                 ->required()
                 ->hiddenLabel()
                 ->bulkToggleable()
-                ->options(NotificationChannel::class),
+                ->descriptions(function () {
+                    return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $case) {
+                        return [$case->value => $case->getDescription()];
+                    })->toArray();
+                })
+                ->options(function () {
+                    return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
+                        return $channel->getEnabled();
+                    })->mapWithKeys(function (NotificationChannel $case) {
+                        return [$case->value => $case->getLabel()];
+                    })->toArray();
+                }),
         ];
 
         $details = [

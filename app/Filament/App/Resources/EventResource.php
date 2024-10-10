@@ -11,6 +11,7 @@ use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationMa
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
 use App\Forms\Components\Schedule;
+use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use App\Services\RepeatService;
@@ -163,13 +164,30 @@ class EventResource extends BaseResource
                             ->schema([
                                 Forms\Components\Toggle::make('notifications_enabled')
                                     ->label('Enabled')
+                                    ->validationAttribute('enabled notifications')
                                     ->default(true)
                                     ->helperText('Send reminder notifications to all registered users.'),
                                 Forms\Components\Select::make('notifications_interval')
                                     ->label('Alert')
                                     ->helperText('When should the notifications be sent.')
+                                    ->requiredIf('notifications_enabled', true)
                                     ->multiple()
                                     ->options(NotificationInterval::class),
+                                Forms\Components\CheckboxList::make('channels')
+                                    ->requiredIf('notifications_enabled', true)
+                                    ->bulkToggleable()
+                                    ->descriptions(function () {
+                                        return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $case) {
+                                            return [$case->value => $case->getDescription()];
+                                        })->toArray();
+                                    })
+                                    ->options(function () {
+                                        return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
+                                            return $channel->getEnabled();
+                                        })->mapWithKeys(function (NotificationChannel $case) {
+                                            return [$case->value => $case->getLabel()];
+                                        })->toArray();
+                                    }),
                             ]),
                         Forms\Components\Tabs\Tab::make('Schedule')
                             ->icon('heroicon-o-arrow-path')

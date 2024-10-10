@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Models\Enums;
 
+use App\Features\AdvancedNotificationsFeature;
+use App\Settings\FeatureSettings;
 use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Support\Str;
+use Laravel\Pennant\Feature;
 use NotificationChannels\Discord\DiscordChannel;
 use NotificationChannels\Twilio\TwilioChannel;
 
@@ -46,6 +49,19 @@ enum NotificationChannel: string implements HasDescription, HasLabel
             NotificationChannel::DISCORD => DiscordChannel::class,
             NotificationChannel::SMS => TwilioChannel::class,
             default => $this->value
+        };
+    }
+
+    public function getEnabled(): bool
+    {
+        /** @var FeatureSettings $settings */
+        $settings = app(FeatureSettings::class);
+        $key = AdvancedNotificationsFeature::settingsKey();
+
+        return match ($this) {
+            NotificationChannel::DISCORD => Feature::active(AdvancedNotificationsFeature::class) && data_get($settings->$key, 'discord_enabled', false),
+            NotificationChannel::SMS => Feature::active(AdvancedNotificationsFeature::class) && data_get($settings->$key, 'sms_enabled', false),
+            default => true
         };
     }
 }
