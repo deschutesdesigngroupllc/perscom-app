@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Contracts\NotificationCanBeManaged;
 use App\Data\ManagedNotification;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
@@ -14,9 +13,9 @@ use Symfony\Component\Finder\SplFileInfo;
 class NotificationService
 {
     /**
-     * @return Collection<ManagedNotification>
+     * @return array<string, mixed>
      */
-    public static function configurableNotifications(): Collection
+    public static function configurableNotifications(): array
     {
         return Cache::rememberForever('managed_notifications', function () {
             $finder = new Finder;
@@ -59,7 +58,8 @@ class NotificationService
                         'notificationClass' => $class,
                     ]);
                 })
-                ->groupBy(fn (ManagedNotification $managedNotification) => $managedNotification->group);
+                ->groupBy(fn (ManagedNotification $managedNotification) => $managedNotification->group)
+                ->toArray();
         });
     }
 }

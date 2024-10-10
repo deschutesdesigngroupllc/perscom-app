@@ -40,7 +40,7 @@ class NewMessage extends Notification implements ShouldQueue
     /**
      * @return array<int, string>
      */
-    public function via(object $notifiable): array
+    public function via(): array
     {
         /** @var Collection<int, NotificationChannel> $channels */
         $channels = $this->message->channels;
@@ -53,7 +53,7 @@ class NewMessage extends Notification implements ShouldQueue
         return (new NewMessageMail($this->message))->to($notifiable->email);
     }
 
-    public function toBroadcast(User $notifiable): BroadcastMessage
+    public function toBroadcast(): BroadcastMessage
     {
         return $this->notification->getBroadcastMessage();
     }
@@ -66,7 +66,7 @@ class NewMessage extends Notification implements ShouldQueue
         return $this->notification->getDatabaseMessage();
     }
 
-    public function toDiscord(User $notifiable): DiscordMessage
+    public function toDiscord(): DiscordMessage
     {
         $converter = new HtmlConverter([
             'strip_tags' => true,
@@ -76,7 +76,7 @@ class NewMessage extends Notification implements ShouldQueue
         return DiscordMessage::create($converter->convert($this->message->message));
     }
 
-    public function toTwilio(User $notifiable): TwilioSmsMessage|TwilioMessage
+    public function toTwilio(): TwilioSmsMessage|TwilioMessage
     {
         return (new TwilioSmsMessage)
             ->from(config('services.twilio.from'))

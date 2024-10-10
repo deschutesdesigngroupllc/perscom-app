@@ -29,18 +29,21 @@ class EventFactory extends Factory
             'url' => $this->faker->url,
             'author_id' => User::factory(),
             'all_day' => $this->faker->boolean,
-            'start' => $start,
-            'end' => $start->addHour(),
+            'starts' => $start,
+            'ends' => $start->addHour(),
             'repeats' => false,
             'registration_enabled' => true,
         ];
     }
 
-    public function recurring(): static
+    public function withSchedule(): static
     {
-        return $this->state(function () {
-            return [
+        return $this->afterCreating(function (Event $event) {
+            $event->forceFill([
                 'all_day' => false,
+            ])->save();
+
+            $event->schedule()->create([
                 'start' => now(),
                 'end' => now()->addHour(),
                 'repeats' => true,
@@ -49,7 +52,7 @@ class EventFactory extends Factory
                 'end_type' => 'after',
                 'count' => 10,
                 'by_day' => ['MO'],
-            ];
+            ]);
         });
     }
 }

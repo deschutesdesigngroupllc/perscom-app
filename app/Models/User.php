@@ -226,7 +226,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     protected $hidden = [
         'password',
         'remember_token',
-        'discord_user_id',
         'discord_private_channel_id',
     ];
 

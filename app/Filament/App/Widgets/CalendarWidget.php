@@ -6,6 +6,7 @@ namespace App\Filament\App\Widgets;
 
 use App\Filament\App\Resources\EventResource;
 use App\Models\Event;
+use App\Services\UserSettingsService;
 use Closure;
 use Filament\Actions\Action;
 use Guava\Calendar\ValueObjects\Event as EventObject;
@@ -45,11 +46,16 @@ class CalendarWidget extends BaseCalendarWidget
 
     public function getEvents(array $fetchInfo = []): Collection|array
     {
-        return Event::all()->map(function (Event $event) {
+        $timezone = UserSettingsService::get('timezone', config('app.timezone'));
+
+        return Event::all()->map(function (Event $event) use ($timezone) {
+            $start = $event->starts->setTimezone($timezone)->shiftTimezone('UTC');
+            $end = $event->ends->setTimezone($timezone)->shiftTimezone('UTC');
+
             return EventObject::make()
                 ->title($event->name)
-                ->start($event->starts)
-                ->end($event->ends)
+                ->start($start)
+                ->end($end)
                 ->model(Event::class)
                 ->key((string) $event->getKey())
                 ->action('visit')

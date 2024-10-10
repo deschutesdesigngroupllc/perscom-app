@@ -163,17 +163,21 @@ class EventResource extends BaseResource
                             ->icon('heroicon-o-bell')
                             ->schema([
                                 Forms\Components\Toggle::make('notifications_enabled')
+                                    ->live()
                                     ->label('Enabled')
                                     ->validationAttribute('enabled notifications')
-                                    ->default(true)
+                                    ->default(false)
                                     ->helperText('Send reminder notifications to all registered users.'),
                                 Forms\Components\Select::make('notifications_interval')
+                                    ->visible(fn (Forms\Get $get) => $get('notifications_enabled'))
                                     ->label('Alert')
                                     ->helperText('When should the notifications be sent.')
                                     ->requiredIf('notifications_enabled', true)
                                     ->multiple()
                                     ->options(NotificationInterval::class),
-                                Forms\Components\CheckboxList::make('channels')
+                                Forms\Components\CheckboxList::make('notifications_channels')
+                                    ->visible(fn (Forms\Get $get) => $get('notifications_enabled'))
+                                    ->label('Channels')
                                     ->requiredIf('notifications_enabled', true)
                                     ->bulkToggleable()
                                     ->descriptions(function () {
@@ -209,11 +213,12 @@ class EventResource extends BaseResource
                             ->icon('heroicon-o-user-plus')
                             ->schema([
                                 Forms\Components\Toggle::make('registration_enabled')
+                                    ->live()
                                     ->label('Enabled')
                                     ->helperText('Whether registration is enabled for the event.')
-                                    ->required()
-                                    ->default(true),
+                                    ->default(false),
                                 Forms\Components\DateTimePicker::make('registration_deadline')
+                                    ->visible(fn (Forms\Get $get) => $get('registration_enabled'))
                                     ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->label('Deadline')
                                     ->nullable()
@@ -281,10 +286,13 @@ class EventResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 TextEntry::make('content')
+                                    ->visible(fn ($state) => filled($state))
                                     ->label('Details')
                                     ->html(),
-                                TextEntry::make('location'),
+                                TextEntry::make('location')
+                                    ->visible(fn ($state) => filled($state)),
                                 TextEntry::make('url')
+                                    ->visible(fn ($state) => filled($state))
                                     ->label('URL')
                                     ->url(fn (?Event $record) => $record->url),
                             ]),

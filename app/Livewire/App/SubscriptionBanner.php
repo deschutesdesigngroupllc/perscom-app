@@ -6,7 +6,7 @@ namespace App\Livewire\App;
 
 use App\Features\BillingFeature;
 use App\Models\Tenant;
-use Carbon\Carbon;
+use App\Services\UserSettingsService;
 use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -24,10 +24,13 @@ class SubscriptionBanner extends Component
         /** @var Tenant $tenant */
         $tenant = Filament::getTenant();
 
-        $trialEndsAt = $tenant->trial_ends_at;
+        $timezone = UserSettingsService::get('timezone', config('app.timezone'));
 
-        $left = Carbon::parse($trialEndsAt)->longRelativeDiffForHumans();
-        $expiration = Carbon::parse($trialEndsAt)->toFormattedDateString();
+        $trialEndsAt = $tenant->trial_ends_at?->setTimezone($timezone)->shiftTimezone('UTC');
+
+        $left = $trialEndsAt?->longRelativeDiffForHumans();
+
+        $expiration = $trialEndsAt?->toFormattedDayDateString();
 
         $this->message = match (true) {
             $tenant->onTrial() => "You are currently on trial. Your trial is set to expire $left on $expiration.",

@@ -10,6 +10,7 @@ use App\Models\Enums\NotificationGroup;
 use App\Services\NotificationService;
 use App\Services\UserSettingsService;
 use DateTimeZone;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
@@ -51,7 +52,7 @@ class EditProfile extends BaseEditProfile
                         // TODO: Implement
                         //                        Tabs\Tab::make('Notifications')
                         //                            ->icon('heroicon-o-bell')
-                        //                            ->schema($notifications->map(function (Collection $notifications, $group) {
+                        //                            ->schema(collect($notifications)->map(function (Collection $notifications, $group) {
                         //                                $group = NotificationGroup::from($group);
                         //
                         //                                return Section::make($group->getLabel())
@@ -71,6 +72,12 @@ class EditProfile extends BaseEditProfile
                             ->icon('heroicon-o-device-phone-mobile')
                             ->schema([
                                 TextInput::make('discord_user_id')
+                                    ->suffixAction(fn () => Action::make('discord')
+                                        ->url('https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID')
+                                        ->openUrlInNewTab()
+                                        ->icon('heroicon-o-question-mark-circle')
+                                        ->color('gray')
+                                    )
                                     ->numeric()
                                     ->label('Discord User ID')
                                     ->helperText(new HtmlString("Your Discord User ID. This should be your Discord <a class='underline' href='https://discord.com/developers/docs/reference#snowflakes' target='_blank'>snowflake</a> ID - not your username or display name.")),

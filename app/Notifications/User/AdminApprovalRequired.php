@@ -31,7 +31,7 @@ class AdminApprovalRequired extends Notification implements ShouldQueue
         return ['mail'];
     }
 
-    public function toMail(object $notifiable): AdminApprovalRequiredMail
+    public function toMail(User $notifiable): AdminApprovalRequiredMail
     {
         return (new AdminApprovalRequiredMail($this->user, $this->url))->to($notifiable->email);
     }

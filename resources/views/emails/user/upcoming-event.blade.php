@@ -1,8 +1,6 @@
 @component('mail::message')
 # Upcoming Event
 
-{{ $title }}.
-
 **Event**: {{ $name }}<br>
 **Begins**: {{ $start }}
 

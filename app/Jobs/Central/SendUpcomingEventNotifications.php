@@ -35,11 +35,22 @@ class SendUpcomingEventNotifications implements ShouldQueue
             // Chunk the events to even out the workload
             Event::chunk(100, function (Collection $events) {
                 $events
-                    // Reject any that do not have notifications enabled or no interval set
-                    ->reject(fn (Event $event) => ! $event->notifications_enabled || blank($event->notifications_interval))
+                    // Reject events that do not have notifications enabled, channels/intervals set or registration is disabled
+                    ->reject(fn (Event $event) => ! $event->notifications_enabled
+                        || blank($event->notifications_interval)
+                        || blank($event->notifications_channels)
+                        || ! $event->registration_enabled)
 
-                    // Make sure the event has a next occurrence
-                    ->filter(fn (Event $event) => $event->next_occurrence)
+                    // Make sure the event has a start or next occurrence, and it's not in the past
+                    ->reject(function (Event $event) {
+                        $start = $event->starts ?? $event->schedule->next_occurrence;
+
+                        if (blank($start)) {
+                            return true;
+                        }
+
+                        return $start->addMinute()->isPast();
+                    })
 
                     // Group by the intervals, so we can each interval one at a time
                     ->groupBy(function (Event $event) {
@@ -50,7 +61,9 @@ class SendUpcomingEventNotifications implements ShouldQueue
                     ->flatMap(function (Collection $events, $interval) {
                         return $events
                             ->reject(function (Event $event) use ($interval) {
-                                $sendWhen = $event->next_occurrence->copy()->subtract(new DateInterval(Str::upper($interval)));
+                                $start = $event->starts ?? $event->schedule->next_occurrence;
+
+                                $sendWhen = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
 
                                 if ($sendWhen->isSameMinute(now())) {
                                     return false;

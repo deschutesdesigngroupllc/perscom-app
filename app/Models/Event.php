@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Enums\NotificationChannel;
 use App\Observers\EventObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -18,6 +19,7 @@ use App\Traits\HasTags;
 use Carbon\CarbonInterval;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -39,10 +41,13 @@ use Illuminate\Support\Optional;
  * @property \Illuminate\Support\Carbon $starts
  * @property \Illuminate\Support\Carbon|null $ends
  * @property bool $repeats
+ * @property string|null $by_set_position
+ * @property string|null $by_year_day
  * @property bool $registration_enabled
  * @property \Illuminate\Support\Carbon|null $registration_deadline
- * @property int $notifications_enabled
+ * @property bool $notifications_enabled
  * @property array|null $notifications_interval
+ * @property AsEnumCollection|null $notifications_channels
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -73,6 +78,8 @@ use Illuminate\Support\Optional;
  * @method static \Illuminate\Database\Eloquent\Builder|Event query()
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereAllDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereBySetPosition($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereByYearDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereCalendarId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereCreatedAt($value)
@@ -82,6 +89,7 @@ use Illuminate\Support\Optional;
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereLocation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsChannels($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsInterval($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereRegistrationDeadline($value)
@@ -126,6 +134,7 @@ class Event extends Model implements HasLabel
         'registration_deadline',
         'notifications_enabled',
         'notifications_interval',
+        'notifications_channels',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -184,7 +193,9 @@ class Event extends Model implements HasLabel
             'next_occurrence' => 'datetime',
             'registration_enabled' => 'boolean',
             'registration_deadline' => 'datetime',
+            'notifications_enabled' => 'boolean',
             'notifications_interval' => 'array',
+            'notifications_channels' => AsEnumCollection::of(NotificationChannel::class),
         ];
 
         if ($this->all_day) {

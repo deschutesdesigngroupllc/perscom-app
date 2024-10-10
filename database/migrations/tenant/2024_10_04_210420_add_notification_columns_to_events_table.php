@@ -17,6 +17,7 @@ return new class extends Migration
             $table->after('registration_deadline', function (Blueprint $table) {
                 $table->boolean('notifications_enabled')->default(true);
                 $table->string('notifications_interval')->nullable();
+                $table->string('notifications_channels')->nullable();
             });
         });
     }

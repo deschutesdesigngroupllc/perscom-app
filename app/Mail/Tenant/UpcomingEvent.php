@@ -6,6 +6,8 @@ namespace App\Mail\Tenant;
 
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
+use App\Models\User;
+use App\Services\UserSettingsService;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -19,17 +21,29 @@ class UpcomingEvent extends Mailable implements ShouldQueue
 
     protected string $title;
 
-    public function __construct(protected Event $event, protected NotificationInterval $interval)
+    protected string $date;
+
+    protected string $time;
+
+    public function __construct(protected Event $event, protected NotificationInterval $interval, protected User $user)
     {
-        $date = $this->event->starts->toFormattedDayDateString();
-        $time = $this->event->starts->format('g:i A');
+        $timezone = UserSettingsService::get(
+            key: 'timezone',
+            default: config('app.timezone'),
+            user: $this->user
+        );
+
+        $start = $this->event->starts->setTimezone($timezone)->shiftTimezone('UTC');
+
+        $this->date = $start->toFormattedDayDateString();
+        $this->time = $start->format('g:i A');
 
         $this->title = match ($this->interval) {
             NotificationInterval::PT0M => "{$this->event->name} - Now",
             NotificationInterval::PT15M => "{$this->event->name} - 15 Minutes",
             NotificationInterval::PT1H => "{$this->event->name} - 1 Hour",
-            NotificationInterval::P1D => "{$this->event->name} - Tomorrow at $time",
-            NotificationInterval::P1W => "{$this->event->name} - Next Week on $date at $time",
+            NotificationInterval::P1D => "{$this->event->name} - Tomorrow at $this->time",
+            NotificationInterval::P1W => "{$this->event->name} - Next Week on $this->date at $this->time",
         };
     }
 
@@ -42,23 +56,11 @@ class UpcomingEvent extends Mailable implements ShouldQueue
 
     public function content(): Content
     {
-        $date = $this->event->starts->toFormattedDayDateString();
-        $time = $this->event->starts->format('g:i A');
-
-        $title = match ($this->interval) {
-            NotificationInterval::PT0M => "{$this->event->name} is starting now",
-            NotificationInterval::PT15M => "{$this->event->name} is starting in 15 minutes",
-            NotificationInterval::PT1H => "{$this->event->name} is starting in 1 hour",
-            NotificationInterval::P1D => "{$this->event->name} begins tomorrow at $time",
-            NotificationInterval::P1W => "{$this->event->name} begins next week on $date at $time",
-        };
-
         return new Content(
             markdown: 'emails.user.upcoming-event',
             with: [
-                'title' => $title,
                 'name' => $this->event->name,
-                'start' => "$date at $time",
+                'start' => "$this->date at $this->time",
                 'time' => $this->event->starts->toDateTimeString(),
                 'url' => $this->event->url,
             ]
