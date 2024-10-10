@@ -25,7 +25,7 @@ class NewMessage extends Notification implements ShouldQueue
 
     protected FilamentNotification $notification;
 
-    public function __construct(protected Message $message)
+    public function __construct(public Message $message)
     {
         $this->notification = FilamentNotification::make()
             ->title('New Message')

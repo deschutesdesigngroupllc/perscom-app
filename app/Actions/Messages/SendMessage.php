@@ -18,12 +18,8 @@ class SendMessage
     public static function handle(Message $message): void
     {
         $recipients = filled($message->recipients)
-            ? $message->recipients
+            ? $message->recipients->map(fn ($id) => User::find($id))
             : User::all();
-
-        $message->forceFill([
-            'sent_at' => now(),
-        ])->save();
 
         Notification::send($recipients, new NewMessage($message));
     }
