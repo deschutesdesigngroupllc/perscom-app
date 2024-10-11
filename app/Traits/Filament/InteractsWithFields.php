@@ -67,7 +67,7 @@ trait InteractsWithFields
                         ->options(collect(timezone_identifiers_list())->mapWithKeys(fn ($timezone) => [$timezone => $timezone]));
                 }
 
-                if ($field->type->value === 'country' && $filamentField instanceof FileUpload) {
+                if ($field->type->value === 'file' && $filamentField instanceof FileUpload) {
                     $filamentField = $filamentField
                         ->previewable()
                         ->openable()

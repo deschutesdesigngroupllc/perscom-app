@@ -17,7 +17,7 @@ class FieldDataRule implements ValidationRule
     {
         $values = Arr::wrap($value);
 
-        $fields = Field::query()->whereIn('key', array_keys($values))->get()->toArray();
+        $fields = Field::query()->whereIn('key', array_keys($values))->get();
 
         $rules = FieldService::getValidationRules($fields);
 
