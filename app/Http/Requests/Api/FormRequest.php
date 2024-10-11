@@ -12,7 +12,7 @@ class FormRequest extends Request
     {
         return [
             'name' => 'string',
-            'slug' => 'slug',
+            'slug' => 'string|unique:forms,slug',
             'success_message' => 'nullable|string',
             'submission_status_id' => 'nullable|integer|exists:statuses,id',
             'is_public' => 'boolean',
@@ -28,7 +28,7 @@ class FormRequest extends Request
     {
         return [
             'name' => 'required|string',
-            'slug' => 'required|string',
+            'slug' => 'required|string|unique:forms,slug',
             'is_public' => 'required|boolean',
         ];
     }
