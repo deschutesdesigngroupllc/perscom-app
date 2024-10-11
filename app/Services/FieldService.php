@@ -11,6 +11,8 @@ class FieldService
 {
     public static function getValidationRules(mixed $fields): Collection
     {
-        return collect($fields)->filter(fn (Field $field) => filled($field->validation_rules))->mapWithKeys(fn (Field $field) => [$field->key => $field->validation_rules]);
+        return collect($fields)
+            ->filter(fn (Field $field) => filled($field->validation_rules))
+            ->mapWithKeys(fn (Field $field) => [$field->key => $field->validation_rules]);
     }
 }
