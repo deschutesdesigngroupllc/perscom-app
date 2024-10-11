@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\User;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\JWT;
 
 class ApiPermissionService
@@ -23,7 +23,7 @@ class ApiPermissionService
             model: static::transformResourceName($arguments)
         );
 
-        /** @var HasApiTokens $user */
+        /** @var User $user */
         $user = Auth::guard('passport')->user();
         if (Auth::guard('passport')->check() && $user->tokenCan($scope)) {
             return true;
@@ -31,7 +31,7 @@ class ApiPermissionService
 
         /** @var JWT $jwt */
         $jwt = Auth::guard('jwt');
-        $scopes = Arr::wrap($jwt->getPayload()->get('scopes'));
+        $scopes = rescue(fn () => Arr::wrap($jwt->getPayload()->get('scopes')), [], false);
 
         if (in_array('*', $scopes)) {
             return true;
