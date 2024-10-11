@@ -45,21 +45,8 @@ class SendUpcomingEventNotifications implements ShouldQueue
                         || blank($event->notifications_channels)
                         || ! $event->registration_enabled)
 
-                    // Make sure the event has a start or next occurrence, and it's not in the past
-                    ->reject(function (Event $event) {
-                        $start = $event->starts ?? $event->schedule->next_occurrence ?? null;
-
-                        if (blank($start)) {
-                            return true;
-                        }
-
-                        return $start->addMinute()->isPast();
-                    })
-
                     // Group by the intervals, so we can each interval one at a time
-                    ->groupBy(function (Event $event) {
-                        return $event->notifications_interval;
-                    })
+                    ->groupBy('notifications_interval')
 
                     // Map app the events to notifications by interval, and then flatten to remove the group by keys
                     ->flatMap(function (Collection $events, $interval) {

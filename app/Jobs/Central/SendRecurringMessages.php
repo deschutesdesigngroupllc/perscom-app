@@ -47,7 +47,11 @@ class SendRecurringMessages implements ShouldQueue
 
                     $occurrence = $message->schedule->next_occurrence;
 
-                    if ($occurrence && $occurrence->isSameMinute(now())) {
+                    if (blank($occurrence)) {
+                        return;
+                    }
+
+                    if ($occurrence->isSameMinute(now())) {
                         SendMessage::handle($message);
                     }
                 });

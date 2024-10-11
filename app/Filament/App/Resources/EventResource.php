@@ -280,7 +280,7 @@ class EventResource extends BaseResource
                                     }),
                                 TextEntry::make('next_occurrence')
                                     ->label('Next Occurrence')
-                                    ->visible(fn (?Event $record) => $record->repeats && filled($record->schedule->next_occurrence))
+                                    ->visible(fn (?Event $record) => $record->repeats && filled($record->schedule) && filled($record->schedule->next_occurrence))
                                     ->suffix(fn (?Event $record) => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? " ({$record->schedule->length->forHumans(['parts' => 1])})" : null)
                                     ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->getStateUsing(function (?Event $record, TextEntry $component) {
