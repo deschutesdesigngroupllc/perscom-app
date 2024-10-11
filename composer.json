@@ -66,8 +66,8 @@
     "fakerphp/faker": "^1.23.1",
     "itsgoingd/clockwork": "^5.2.2",
     "larastan/larastan": "^2.9.7",
+    "laravel/pail": "^1.1",
     "laravel/pint": "^1.16.1",
-    "laravel/sail": "^1.30",
     "mockery/mockery": "^1.6.12",
     "nunomaduro/collision": "^8.1.1",
     "pestphp/pest": "^2.34.8",
@@ -135,6 +135,10 @@
       "composer install",
       "npm install",
       "@post-create-project-cmd"
+    ],
+    "dev": [
+      "Composer\\Config::disableProcessTimeout",
+      "npx concurrently -k -c \"#2563eb,#d4d4d8,#4f46e5\" \"php artisan horizon\" \"php artisan pail\" \"npm run dev\" --names=queue,logs,vite"
     ],
     "docs:models": "php artisan tenants:run --tenants=1 ide-helper:models --option=reset=1",
     "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
