@@ -37,9 +37,15 @@ class SendRecurringMessages implements ShouldQueue
         Tenant::findOrFail($this->tenantKey)->run(function () {
             Message::query()->where('repeats', true)->chunk(100, function (Collection $messages) {
                 $messages->reject(function (Message $message) {
-                    return $message->has_passed || blank($message->next_occurrence);
+                    return blank($message->schedule)
+                        || $message->schedule->has_passed
+                        || blank($message->schedule->next_occurrence);
                 })->each(function (Message $message) {
-                    $occurrence = $message->next_occurrence;
+                    if (blank($message->schedule)) {
+                        return;
+                    }
+
+                    $occurrence = $message->schedule->next_occurrence;
 
                     if ($occurrence && $occurrence->isSameMinute(now())) {
                         SendMessage::handle($message);

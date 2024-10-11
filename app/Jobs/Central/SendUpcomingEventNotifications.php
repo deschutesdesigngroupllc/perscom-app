@@ -10,6 +10,7 @@ use App\Models\Tenant;
 use App\Models\User;
 use App\Notifications\Tenant\UpcomingEvent;
 use DateInterval;
+use Exception;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -25,6 +26,9 @@ class SendUpcomingEventNotifications implements ShouldQueue
         $this->onConnection('central');
     }
 
+    /**
+     * @throws Exception
+     */
     public function handle(): void
     {
         if ($this->batch()?->canceled()) {
@@ -43,7 +47,7 @@ class SendUpcomingEventNotifications implements ShouldQueue
 
                     // Make sure the event has a start or next occurrence, and it's not in the past
                     ->reject(function (Event $event) {
-                        $start = $event->starts ?? $event->schedule->next_occurrence;
+                        $start = $event->starts ?? $event->schedule->next_occurrence ?? null;
 
                         if (blank($start)) {
                             return true;
@@ -61,7 +65,11 @@ class SendUpcomingEventNotifications implements ShouldQueue
                     ->flatMap(function (Collection $events, $interval) {
                         return $events
                             ->reject(function (Event $event) use ($interval) {
-                                $start = $event->starts ?? $event->schedule->next_occurrence;
+                                $start = $event->starts ?? $event->schedule->next_occurrence ?? null;
+
+                                if (blank($start)) {
+                                    return true;
+                                }
 
                                 $sendWhen = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
 
