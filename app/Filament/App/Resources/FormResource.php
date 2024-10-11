@@ -52,6 +52,7 @@ class FormResource extends BaseResource
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('slug')
                                     ->helperText('The slug will be used in the URL to access the form. Allowed characters: 0-9, a-z, A-Z, or hyphen.')
+                                    ->unique(ignoreRecord: true)
                                     ->regex('/^[a-zA-Z0-9-]+$/')
                                     ->required()
                                     ->maxLength(255),

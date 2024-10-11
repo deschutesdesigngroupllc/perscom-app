@@ -292,8 +292,7 @@ class UserResource extends BaseResource
                     ->formatStateUsing(fn ($state) => match ($state) {
                         true => 'Online',
                         default => 'Offline',
-                    })
-                    ->sortable(),
+                    }),
                 Tables\Columns\TextColumn::make('position.name')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('specialty.name')

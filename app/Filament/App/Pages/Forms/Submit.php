@@ -68,7 +68,7 @@ class Submit extends Page implements HasForms
 
         Submission::create(array_merge([
             'form_id' => $this->submissionForm->getKey(),
-        ], data_get($data, 'data')));
+        ], data_get($data, 'data', [])));
 
         $this->getSavedNotification()->send();
 
