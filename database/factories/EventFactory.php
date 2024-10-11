@@ -32,6 +32,7 @@ class EventFactory extends Factory
             'starts' => $start,
             'ends' => $start->addHour(),
             'repeats' => false,
+            'notifications_enabled' => false,
             'registration_enabled' => true,
         ];
     }

@@ -35,7 +35,7 @@ use Illuminate\Support\Optional;
  * @property string|null $description
  * @property string|null $content
  * @property string|null $location
- * @property Optional|string|null|null $url
+ * @property string $url
  * @property int|null $author_id
  * @property bool $all_day
  * @property \Illuminate\Support\Carbon $starts
@@ -66,6 +66,7 @@ use Illuminate\Support\Optional;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $registrations
  * @property-read int|null $registrations_count
  * @property-read Optional|string|null|null $relative_url
+ * @property-read Optional|string|null|null $resource_url
  * @property-read Schedule|null $schedule
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
@@ -114,7 +115,9 @@ class Event extends Model implements HasLabel
     use HasFactory;
     use HasImages;
     use HasResourceLabel;
-    use HasResourceUrl;
+    use HasResourceUrl {
+        url as resourceUrl;
+    }
     use HasSchedule;
     use HasTags;
     use SoftDeletes;
@@ -145,11 +148,25 @@ class Event extends Model implements HasLabel
      */
     public function length(): Attribute
     {
-        return Attribute::make(
-            get: fn (): ?CarbonInterval => optional($this->ends, function () {
+        return Attribute::get(
+            fn (): ?CarbonInterval => optional($this->ends, function () {
                 return $this->starts->diff($this->ends);
             }) ?? null
         )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<string, void>
+     */
+    public function url(): Attribute
+    {
+        return Attribute::get(function ($value): string {
+            if (filled($value)) {
+                return $value;
+            }
+
+            return call_user_func($this->resourceUrl()->get, $value, $this->attributes);
+        })->shouldCache();
     }
 
     /**

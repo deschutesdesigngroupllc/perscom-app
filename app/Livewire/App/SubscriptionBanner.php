@@ -26,14 +26,18 @@ class SubscriptionBanner extends Component
 
         $timezone = UserSettingsService::get('timezone', config('app.timezone'));
 
-        $trialEndsAt = $tenant->trial_ends_at?->setTimezone($timezone)->shiftTimezone('UTC');
+        $trialEndsAt = $tenant->trial_ends_at;
 
-        $left = $trialEndsAt?->longRelativeDiffForHumans();
-
-        $expiration = $trialEndsAt?->toFormattedDayDateString();
+        $left = null;
+        $expiration = null;
+        if (filled($trialEndsAt)) {
+            $trialEndsAt->setTimezone($timezone)->shiftTimezone('UTC');
+            $left = $trialEndsAt->longRelativeDiffForHumans();
+            $expiration = $trialEndsAt->toFormattedDayDateString();
+        }
 
         $this->message = match (true) {
-            $tenant->onTrial() => "You are currently on trial. Your trial is set to expire $left on $expiration.",
+            $tenant->onTrial() && isset($left, $expiration) => "You are currently on trial. Your trial is set to expire $left on $expiration.",
             $tenant->hasIncompletePayment() => 'Your subscription is currently past due. Please pay your invoice to continue using PERSCOM.',
             ! $tenant->subscribed() => 'You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.',
             default => null
