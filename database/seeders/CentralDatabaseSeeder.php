@@ -26,6 +26,7 @@ class CentralDatabaseSeeder extends Seeder
             'name' => 'Test Tenant',
             'email' => 'test@deschutesdesigngroup.com',
             'tenancy_db_name' => 'tenant1_local',
+            'trial_ends_at' => now()->addDays(7),
         ]);
 
         Domain::factory()->create([
