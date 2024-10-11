@@ -22,8 +22,7 @@ class RegistrationsRelationManager extends RelationManager
             ->emptyStateHeading('No registrations')
             ->emptyStateDescription('There are no users registered.')
             ->columns([
-                Tables\Columns\TextColumn::make('registration.user.name')
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('registration.user.name'),
                 Tables\Columns\TextColumn::make('registration.created_at')
                     ->label('Registered at')
                     ->dateTime(),
