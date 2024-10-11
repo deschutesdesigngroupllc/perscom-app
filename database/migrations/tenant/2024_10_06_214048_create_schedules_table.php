@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->nullableMorphs('repeatable');
             $table->timestamp('start');
+            $table->integer('duration');
             $table->text('frequency');
             $table->integer('interval')->default(1);
             $table->string('end_type')->nullable();

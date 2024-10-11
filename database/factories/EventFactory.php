@@ -40,13 +40,13 @@ class EventFactory extends Factory
     {
         return $this->afterCreating(function (Event $event) {
             $event->forceFill([
+                'repeats' => true,
                 'all_day' => false,
             ])->save();
 
             $event->schedule()->create([
                 'start' => now(),
-                'end' => now()->addHour(),
-                'repeats' => true,
+                'duration' => 1,
                 'frequency' => 'WEEKLY',
                 'interval' => 1,
                 'end_type' => 'after',

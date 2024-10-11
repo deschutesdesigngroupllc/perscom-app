@@ -35,6 +35,8 @@ class Schedule
             ->columns(3)
             ->schema([
                 $start,
+                Forms\Components\Hidden::make('duration')
+                    ->default(1),
                 Forms\Components\Grid::make()
                     ->columnSpanFull()
                     ->columns(3)

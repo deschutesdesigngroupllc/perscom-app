@@ -104,6 +104,17 @@ class EventResource extends BaseResource
                                     ->afterOrEqual('starts')
                                     ->live(onBlur: true)
                                     ->required()
+                                    ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, $state, $component) {
+                                        $start = Carbon::parse($get('starts'))
+                                            ->shiftTimezone($component->getTimezone())
+                                            ->setTimezone(config('app.timezone'));
+
+                                        $end = Carbon::parse($state)
+                                            ->shiftTimezone($component->getTimezone())
+                                            ->setTimezone(config('app.timezone'));
+
+                                        $set('schedule.duration', $start->diffInHours($end));
+                                    })
                                     ->time(fn (Forms\Get $get) => ! $get('all_day')),
                                 Forms\Components\Toggle::make('all_day')
                                     ->helperText('Check if the event does not have a start and end time.')
@@ -270,6 +281,7 @@ class EventResource extends BaseResource
                                 TextEntry::make('next_occurrence')
                                     ->label('Next Occurrence')
                                     ->visible(fn (?Event $record) => $record->repeats && filled($record->schedule->next_occurrence))
+                                    ->suffix(fn (?Event $record) => filled($record->schedule->length) && $record->schedule->length->total('seconds') > 0 ? " ({$record->schedule->length->forHumans(['parts' => 1])})" : null)
                                     ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
                                     ->getStateUsing(function (?Event $record, TextEntry $component) {
                                         return match ($record->all_day) {

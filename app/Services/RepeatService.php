@@ -9,8 +9,9 @@ use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
 use App\Models\Schedule;
 use BackedEnum;
-use Carbon\Carbon;
+use Carbon\CarbonInterface;
 use DateTime;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use IntlDateFormatter;
 use RRule\RRule;
@@ -107,6 +108,22 @@ class RepeatService
         }
 
         return Carbon::parse($nextOccurrence);
+    }
+
+    /**
+     * @return array<CarbonInterface>|null
+     */
+    public static function occurrenceBetween(Schedule $schedule, CarbonInterface $start, CarbonInterface $end): ?array
+    {
+        $rule = RepeatService::generateRecurringRule($schedule);
+
+        if (is_null($rule)) {
+            return null;
+        }
+
+        return collect($rule->getOccurrencesBetween($start, $end))->map(function (DateTime $dateTime) {
+            return Carbon::parse($dateTime);
+        })->toArray();
     }
 
     public static function getSchedulePattern(Schedule $schedule, bool $allDay = false): ?string
