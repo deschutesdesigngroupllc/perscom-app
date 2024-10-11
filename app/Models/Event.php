@@ -149,7 +149,7 @@ class Event extends Model implements HasLabel
     public function length(): Attribute
     {
         return Attribute::get(
-            fn (): ?CarbonInterval => optional($this->ends, function () {
+            fn () => optional($this->ends, function () {
                 return $this->starts->diff($this->ends);
             }) ?? null
         )->shouldCache();
