@@ -17,7 +17,7 @@ trait ClearsApiCache
     {
         self::created(function (Model $model) {
             PurgeApiCache::dispatch(
-                model: $model,
+                tag: $model,
                 purgeAll: true
             );
         });

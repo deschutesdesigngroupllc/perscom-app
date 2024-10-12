@@ -56,6 +56,13 @@ class ApiCacheService
             $tags->push($this->getCachePrefix($model));
         }
 
+        return $this->purgeCacheForTags($tags);
+    }
+
+    public function purgeCacheForTags(Collection|string $tags): array
+    {
+        $tags = collect($tags);
+
         $baseUrl = config('services.fastly.base_url');
         $service = config('services.fastly.service');
         $url = "$baseUrl/service/$service/purge";
@@ -72,6 +79,11 @@ class ApiCacheService
                 ->post($tag)
             )->toArray();
         });
+    }
+
+    public function getTenantCacheTag(): string
+    {
+        return "tenant:{$this->tenant->getKey()}";
     }
 
     protected function getRelationKeys(Model $model, Collection $tags): void
@@ -93,6 +105,6 @@ class ApiCacheService
 
     protected function getCachePrefix(Model $model): string
     {
-        return strtolower($this->tenant->getTenantKey().':'.class_basename($model));
+        return strtolower($this->tenant->getKey().':'.class_basename($model));
     }
 }
