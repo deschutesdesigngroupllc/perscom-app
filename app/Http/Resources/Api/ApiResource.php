@@ -18,7 +18,7 @@ class ApiResource extends Resource
         $response->withHeaders([
             'Surrogate-Key' => $apiCacheService->surrogateKeysForResource(
                 resource: $this
-            )->push('tenant:'.tenant()->getTenantKey())->implode(' '),
+            )->push($apiCacheService->getTenantCacheTag())->implode(' '),
         ]);
     }
 }
