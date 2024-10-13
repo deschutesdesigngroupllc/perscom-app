@@ -44,6 +44,10 @@ class SetupTenantAccount
             $this->when($this->shouldCreateNewsItem, fn () => $this->createFirstNewsfeedItem());
             $this->when($this->shouldCreateAnnouncement, fn () => $this->createAnnouncement());
         });
+
+        $this->tenant->update([
+            'setup_completed_at' => now(),
+        ]);
     }
 
     public function shouldSeedSettings(bool $seedSettings = true): static
