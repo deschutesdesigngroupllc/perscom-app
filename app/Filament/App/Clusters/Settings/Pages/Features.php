@@ -15,6 +15,7 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -55,6 +56,15 @@ class Features extends Page implements HasTable
             ->query(Feature::query())
             ->description('Manage your account addons and premium features here.')
             ->columns([
+                IconColumn::make('id')
+                    ->label('')
+                    ->color('gray')
+                    ->icon(function (Feature $record) {
+                        /** @var PremiumFeature|string $feature */
+                        $feature = $record->feature;
+
+                        return $feature::settingsIcon();
+                    }),
                 TextColumn::make('name')
                     ->sortable(),
                 TextColumn::make('description')

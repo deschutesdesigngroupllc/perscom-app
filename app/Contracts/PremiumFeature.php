@@ -13,4 +13,6 @@ interface PremiumFeature
     public static function settingsForm(): array;
 
     public static function settingsKey(): string;
+
+    public static function settingsIcon(): string;
 }

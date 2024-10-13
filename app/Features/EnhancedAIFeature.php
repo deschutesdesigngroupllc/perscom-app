@@ -6,7 +6,7 @@ namespace App\Features;
 
 use App\Contracts\PremiumFeature;
 
-class GoogleCalendarSyncFeature extends BaseFeature implements PremiumFeature
+class EnhancedAIFeature extends BaseFeature implements PremiumFeature
 {
     public static function canSubscribe(): bool
     {
@@ -25,12 +25,12 @@ class GoogleCalendarSyncFeature extends BaseFeature implements PremiumFeature
 
     public static function settingsKey(): string
     {
-        return 'google_calendar_sync';
+        return 'enhanced_ai';
     }
 
     public static function settingsIcon(): string
     {
-        return 'heroicon-o-calendar-days';
+        return 'heroicon-o-cube-transparent';
     }
 
     public function resolve(?string $scope): bool

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Features\AdvancedNotificationsFeature;
+use App\Features\EnhancedAIFeature;
 use App\Features\GoogleCalendarSyncFeature;
 use App\Models\Enums\ProductTerm;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -53,7 +54,7 @@ class Feature extends Model
             [
                 'id' => 1,
                 'name' => 'Advanced Notifications',
-                'description' => 'Upgrade your PERSCOM experience with advanced notifications - allowing you to send real-time information using channels such as Discord, SMS, or FCM.',
+                'description' => 'Upgrade your user experience with advanced notifications - allowing you to send real-time information using channels such as Discord, SMS, or FCM.',
                 'price_id' => data_get($premiumFeatures, AdvancedNotificationsFeature::class),
                 'price' => 5,
                 'term' => 'monthly',
@@ -62,11 +63,20 @@ class Feature extends Model
             [
                 'id' => 2,
                 'name' => 'Google Calendar Sync (Coming Soon)',
-                'description' => 'Keep your Google Calendar up-to-date with PERSCOM using two-way syncing.',
+                'description' => 'Keep your Google Calendar up-to-date using our advanced calendar and events syncing technology.',
                 'price_id' => data_get($premiumFeatures, GoogleCalendarSyncFeature::class),
                 'price' => 5,
                 'term' => 'monthly',
                 'feature' => GoogleCalendarSyncFeature::class,
+            ],
+            [
+                'id' => 3,
+                'name' => 'Enhanced AI (Coming Soon)',
+                'description' => 'Use AI to accelerate your productivity by providing an extra set of hands while managing your personnel data.',
+                'price_id' => data_get($premiumFeatures, EnhancedAIFeature::class),
+                'price' => 10,
+                'term' => 'monthly',
+                'feature' => EnhancedAIFeature::class,
             ],
         ];
     }

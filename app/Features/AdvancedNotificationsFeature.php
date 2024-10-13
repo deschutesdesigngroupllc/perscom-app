@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Features;
 
 use App\Contracts\PremiumFeature;
+use Filament\Forms\Components\Tabs;
+use Filament\Forms\Components\Tabs\Tab;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Illuminate\Support\Facades\App;
@@ -42,18 +44,35 @@ class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
         return 'advanced_notifications';
     }
 
+    public static function settingsIcon(): string
+    {
+        return 'heroicon-o-bell-alert';
+    }
+
     public static function settingsForm(): array
     {
         return [
-            Toggle::make('discord_enabled')
-                ->helperText('Enable Discord notifications system wide.')
-                ->label('Discord'),
-            TextInput::make('discord_channel')
-                ->numeric()
-                ->helperText('Different features of the platform allow you to send Discord notifications to either an individual user or to all users in a public channel. If you choose public channel, provide the channel ID here.'),
-            Toggle::make('sms_enabled')
-                ->helperText('Enable SMS notifications system wide.')
-                ->label('SMS'),
+            Tabs::make()
+                ->tabs([
+                    Tab::make('Discord')
+                        ->icon('fab-discord')
+                        ->schema([
+                            Toggle::make('discord_enabled')
+                                ->helperText('Enable Discord notifications system wide.')
+                                ->label('Enabled'),
+                            TextInput::make('discord_channel')
+                                ->label('Public channel')
+                                ->numeric()
+                                ->helperText('Different features of the platform allow you to send Discord notifications to either an individual user or to all users in a public channel. If you choose public channel, provide the channel ID here.'),
+                        ]),
+                    Tab::make('SMS')
+                        ->icon('heroicon-o-device-phone-mobile')
+                        ->schema([
+                            Toggle::make('sms_enabled')
+                                ->helperText('Enable SMS notifications system wide.')
+                                ->label('Enabled'),
+                        ]),
+                ]),
         ];
     }
 
