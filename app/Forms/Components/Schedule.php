@@ -19,7 +19,12 @@ class Schedule
     {
         if (! $startHidden) {
             $start = Forms\Components\DateTimePicker::make('start')
-                ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                ->timezone(UserSettingsService::get('timezone', function () {
+                    /** @var OrganizationSettings $settings */
+                    $settings = app(OrganizationSettings::class);
+
+                    return $settings->timezone ?? config('app.timezone');
+                }))
                 ->live()
                 ->default(now()->addHour()->startOfHour())
                 ->required()
@@ -144,7 +149,12 @@ class Schedule
                         $start = Carbon::parse($get('start'));
 
                         if ($shiftScheduleTimezone) {
-                            $start->shiftTimezone(UserSettingsService::get('timezone', config('app.timezone')))
+                            $start->shiftTimezone(UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            }))
                                 ->setTimezone(config('app.timezone'));
                         }
 

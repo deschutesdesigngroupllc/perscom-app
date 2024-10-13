@@ -8,6 +8,7 @@ use App\Filament\App\Resources\EventResource;
 use App\Models\Event;
 use App\Services\RepeatService;
 use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterface;
 use Closure;
 use Filament\Actions\Action;
@@ -82,7 +83,13 @@ class CalendarWidget extends BaseCalendarWidget
      */
     public function getEvents(array $fetchInfo = []): Collection|array
     {
-        $timezone = UserSettingsService::get('timezone', config('app.timezone'));
+        $timezone = UserSettingsService::get('timezone', function () {
+            /** @var OrganizationSettings $settings */
+            $settings = app(OrganizationSettings::class);
+
+            return $settings->timezone ?? config('app.timezone');
+        });
+
 
         $calendarStart = Carbon::parse(data_get($fetchInfo, 'start'));
         $calendarEnd = Carbon::parse(data_get($fetchInfo, 'end'));

@@ -142,7 +142,12 @@ class RepeatService
                     timeType: $allDay
                         ? IntlDateFormatter::NONE
                         : IntlDateFormatter::MEDIUM,
-                    timezone: UserSettingsService::get('timezone', config('app.timezone'))
+                    timezone: UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    })
                 );
 
                 return $formatter->format($date);

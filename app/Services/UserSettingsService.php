@@ -37,7 +37,7 @@ class UserSettingsService
         $user ??= Auth::user();
 
         if (! $user) {
-            return $default;
+            return value($default);
         }
 
         $cacheKey = UserSettingsService::$cacheKey."_{$user->getKey()}";

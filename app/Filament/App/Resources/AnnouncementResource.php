@@ -11,6 +11,7 @@ use App\Models\Announcement;
 use App\Models\Scopes\DisabledScope;
 use App\Models\Scopes\EnabledScope;
 use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -53,7 +54,12 @@ class AnnouncementResource extends BaseResource
                         Forms\Components\Checkbox::make('global')
                             ->helperText('If checked, the announcement will be displayed at the top of all pages.'),
                         Forms\Components\DateTimePicker::make('expires_at')
-                            ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                            ->timezone(UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            }))
                             ->label('Expiration')
                             ->helperText('If set, the announcement will disappear after this date.'),
                     ]),
@@ -81,22 +87,42 @@ class AnnouncementResource extends BaseResource
                     ->wrap()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('expires_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

@@ -12,6 +12,7 @@ use App\Filament\Exports\CombatRecordExporter;
 use App\Livewire\App\ViewDocument;
 use App\Models\CombatRecord;
 use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -56,7 +57,12 @@ class CombatRecordResource extends BaseResource
                             ->maxLength(65535)
                             ->columnSpanFull(),
                         Forms\Components\DateTimePicker::make('created_at')
-                            ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                            ->timezone(UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            }))
                             ->columnSpanFull()
                             ->default(now())
                             ->required(),
@@ -99,13 +105,28 @@ class CombatRecordResource extends BaseResource
                             ->schema([
                                 Infolists\Components\TextEntry::make('author.name'),
                                 Infolists\Components\TextEntry::make('created_at')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
                                     ->dateTime(),
                                 Infolists\Components\TextEntry::make('updated_at')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
                                     ->dateTime(),
                                 Infolists\Components\TextEntry::make('deleted_at')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
                                     ->dateTime(),
                             ]),
                         Infolists\Components\Tabs\Tab::make('Document')
@@ -153,17 +174,32 @@ class CombatRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

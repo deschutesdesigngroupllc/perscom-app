@@ -9,6 +9,7 @@ use App\Filament\App\Resources\AwardResource\Pages;
 use App\Filament\Exports\AwardExporter;
 use App\Models\Award;
 use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -91,17 +92,32 @@ class AwardResource extends BaseResource
                     ->wrap()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

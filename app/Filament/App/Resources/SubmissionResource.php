@@ -12,6 +12,7 @@ use App\Filament\Exports\SubmissionExporter;
 use App\Models\Submission;
 use App\Rules\FieldDataRule;
 use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\Entry;
@@ -93,7 +94,12 @@ class SubmissionResource extends BaseResource
 
                 if ($field->type->value === 'datetime-local' && $filamentEntry instanceof TextEntry) {
                     $filamentEntry = $filamentEntry
-                        ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                        ->timezone(UserSettingsService::get('timezone', function () {
+                            /** @var OrganizationSettings $settings */
+                            $settings = app(OrganizationSettings::class);
+
+                            return $settings->timezone ?? config('app.timezone');
+                        }))
                         ->dateTime();
                 }
 
@@ -117,13 +123,28 @@ class SubmissionResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 TextEntry::make('created_at')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
                                     ->dateTime(),
                                 TextEntry::make('updated_at')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
                                     ->dateTime(),
                                 TextEntry::make('deleted_at')
-                                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
                                     ->dateTime(),
                             ]),
                         Tabs\Tab::make('')
@@ -147,46 +168,61 @@ class SubmissionResource extends BaseResource
                     ->color(fn (?Submission $record) => Color::hex($record->status->color ?? '#2563eb'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->groups(['user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
-                    ->relationship('user', 'name')
-                    ->preload()
-                    ->multiple(),
-                Tables\Filters\TrashedFilter::make(),
-            ])
+                                    Tables\Filters\SelectFilter::make('user')
+                                        ->relationship('user', 'name')
+                                        ->preload()
+                                        ->multiple(),
+                                    Tables\Filters\TrashedFilter::make(),
+                                ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
-            ])
+                                    Tables\Actions\ViewAction::make(),
+                                    Tables\Actions\EditAction::make(),
+                                    Tables\Actions\DeleteAction::make(),
+                                    Tables\Actions\ForceDeleteAction::make(),
+                                    Tables\Actions\RestoreAction::make(),
+                                ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(SubmissionExporter::class),
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
+                                    Tables\Actions\BulkActionGroup::make([
+                                        Tables\Actions\ExportAction::make()
+                                            ->visible(Feature::active(ExportDataFeature::class))
+                                            ->exporter(SubmissionExporter::class),
+                                        Tables\Actions\DeleteBulkAction::make(),
+                                        Tables\Actions\ForceDeleteBulkAction::make(),
+                                        Tables\Actions\RestoreBulkAction::make(),
+                                    ]),
+                                ]);
     }
 
     public static function getEloquentQuery(): Builder

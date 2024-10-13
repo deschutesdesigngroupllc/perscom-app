@@ -8,6 +8,7 @@ use App\Filament\App\Resources\NewsfeedResource\Pages;
 use App\Models\Newsfeed;
 use App\Models\User;
 use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\TextEntry;
@@ -48,7 +49,12 @@ class NewsfeedResource extends BaseResource
                     ->required()
                     ->maxLength(65535),
                 Forms\Components\DateTimePicker::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->helperText('The date of the newsfeed item.')
                     ->default(now())
                     ->required(),
@@ -79,17 +85,32 @@ class NewsfeedResource extends BaseResource
                 Tables\Columns\TextColumn::make('causer.name')
                     ->label('Author'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -118,7 +139,12 @@ class NewsfeedResource extends BaseResource
                         'class' => 'font-bold',
                     ]),
                 TextEntry::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->hiddenLabel()
                     ->size(TextEntry\TextEntrySize::Small)
                     ->extraAttributes([

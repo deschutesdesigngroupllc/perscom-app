@@ -7,6 +7,7 @@ namespace App\Livewire\App;
 use App\Features\BillingFeature;
 use App\Models\Tenant;
 use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +25,12 @@ class SubscriptionBanner extends Component
         /** @var Tenant $tenant */
         $tenant = Filament::getTenant();
 
-        $timezone = UserSettingsService::get('timezone', config('app.timezone'));
+        $timezone = UserSettingsService::get('timezone', function () {
+            /** @var OrganizationSettings $settings */
+            $settings = app(OrganizationSettings::class);
+
+            return $settings->timezone ?? config('app.timezone');
+        });
 
         $trialEndsAt = $tenant->trial_ends_at;
 

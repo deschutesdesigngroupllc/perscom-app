@@ -62,7 +62,12 @@ class MessageResource extends BaseResource
                 ->nullable()
                 ->options(User::query()->orderBy('name')->pluck('name', 'id')),
             Forms\Components\DateTimePicker::make('send_at')
-                ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                ->timezone(UserSettingsService::get('timezone', function () {
+                    /** @var OrganizationSettings $settings */
+                    $settings = app(OrganizationSettings::class);
+
+                    return $settings->timezone ?? config('app.timezone');
+                }))
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
                 ->hidden(fn (Forms\Get $get) => $get('repeats')),
@@ -134,49 +139,74 @@ class MessageResource extends BaseResource
                     ->color('gray'),
                 Tables\Columns\TextColumn::make('send_at')
                     ->label('Send')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sent_at')
                     ->label('Sent')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', config('app.timezone')))
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->groups(['repeats'])
             ->filters([
-                Tables\Filters\SelectFilter::make('channels')
-                    ->options(NotificationChannel::class)
-                    ->modifyQueryUsing(fn (Builder $query, $data) => $query->when(! is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
-                Tables\Filters\TernaryFilter::make('repeats'),
-                Tables\Filters\TrashedFilter::make(),
-            ])
+                                    Tables\Filters\SelectFilter::make('channels')
+                                        ->options(NotificationChannel::class)
+                                        ->modifyQueryUsing(fn (Builder $query, $data) => $query->when(! is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
+                                    Tables\Filters\TernaryFilter::make('repeats'),
+                                    Tables\Filters\TrashedFilter::make(),
+                                ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
+                                    Tables\Actions\ViewAction::make(),
+                                    Tables\Actions\DeleteAction::make(),
+                                ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
-                ]),
-            ]);
+                                    Tables\Actions\BulkActionGroup::make([
+                                        Tables\Actions\DeleteBulkAction::make(),
+                                        Tables\Actions\ForceDeleteBulkAction::make(),
+                                        Tables\Actions\RestoreBulkAction::make(),
+                                    ]),
+                                ]);
     }
 
     public static function getRelations(): array
