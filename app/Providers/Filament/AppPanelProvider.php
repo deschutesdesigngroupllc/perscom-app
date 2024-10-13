@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Features\BillingFeature;
-use App\Filament\App\Pages\Auth\EmailVerificationPrompt;
 use App\Filament\App\Pages\Auth\EditProfile;
+use App\Filament\App\Pages\Auth\EmailVerificationPrompt;
 use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
 use App\Filament\App\Resources\AssignmentRecordResource;

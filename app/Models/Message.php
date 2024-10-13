@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -21,11 +20,11 @@ use Illuminate\Support\Carbon;
  * @property AsEnumCollection|null $channels
  * @property \Illuminate\Support\Collection|null $recipients
  * @property bool $repeats
- * @property Carbon|null $send_at
- * @property Carbon|null $sent_at
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
+ * @property \Illuminate\Support\Carbon|null $send_at
+ * @property \Illuminate\Support\Carbon|null $sent_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read Schedule|null $schedule
  *
  * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])

@@ -61,7 +61,7 @@ use Illuminate\Support\Optional;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
- * @property-read CarbonInterval|null $length
+ * @property-read mixed $length
  * @property-read EventRegistration $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $registrations
  * @property-read int|null $registrations_count
