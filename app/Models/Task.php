@@ -19,7 +19,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 /**
  * @property int $id
  * @property string $title
- * @property string|null $description
+ * @property string $description
  * @property string|null $instructions
  * @property int|null $form_id
  * @property \Illuminate\Support\Carbon|null $created_at

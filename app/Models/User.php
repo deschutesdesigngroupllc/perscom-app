@@ -55,6 +55,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string $name
  * @property string $email
  * @property Carbon|null $email_verified_at
+ * @property string|null $phone_number
  * @property int|null $position_id
  * @property int|null $rank_id
  * @property int|null $specialty_id
@@ -68,6 +69,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $profile_photo
  * @property string|null $cover_photo
  * @property Carbon|null $last_seen_at
+ * @property string|null $discord_user_id
+ * @property string|null $discord_private_channel_id
  * @property array|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -144,6 +147,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereData($value)
  * @method static Builder|User whereDeletedAt($value)
+ * @method static Builder|User whereDiscordPrivateChannelId($value)
+ * @method static Builder|User whereDiscordUserId($value)
  * @method static Builder|User whereEmail($value)
  * @method static Builder|User whereEmailVerifiedAt($value)
  * @method static Builder|User whereId($value)
@@ -152,6 +157,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereNotes($value)
  * @method static Builder|User whereNotesUpdatedAt($value)
  * @method static Builder|User wherePassword($value)
+ * @method static Builder|User wherePhoneNumber($value)
  * @method static Builder|User wherePositionId($value)
  * @method static Builder|User whereProfilePhoto($value)
  * @method static Builder|User whereRankId($value)

@@ -19,17 +19,6 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
 /**
  * App\Models\Message
  *
- * @property int $id
- * @property string $title
- * @property string $message
- * @property string|null $link_text
- * @property string|null $url
- * @property bool $enabled
- * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
- *
  * @method static Builder|Message disabled()
  * @method static Builder|Message enabled()
  * @method static Builder|Message newModelQuery()
@@ -37,16 +26,6 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder|Message onlyTrashed()
  * @method static Builder|Message ordered(string $direction = 'asc')
  * @method static Builder|Message query()
- * @method static Builder|Message whereCreatedAt($value)
- * @method static Builder|Message whereDeletedAt($value)
- * @method static Builder|Message whereEnabled($value)
- * @method static Builder|Message whereId($value)
- * @method static Builder|Message whereLinkText($value)
- * @method static Builder|Message whereMessage($value)
- * @method static Builder|Message whereOrder($value)
- * @method static Builder|Message whereTitle($value)
- * @method static Builder|Message whereUpdatedAt($value)
- * @method static Builder|Message whereUrl($value)
  * @method static Builder|Message withTrashed()
  * @method static Builder|Message withoutTrashed()
  *

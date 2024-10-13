@@ -38,22 +38,16 @@ use RRule\RRule;
  * @property Optional|string|null|null $url
  * @property int|null $author_id
  * @property bool $all_day
- * @property \Illuminate\Support\Carbon $start
- * @property mixed|null $end
+ * @property string $starts
+ * @property string|null $ends
  * @property bool $repeats
- * @property string|null $frequency
- * @property int $interval
- * @property string|null $end_type
- * @property int|null $count
- * @property \Illuminate\Support\Carbon|null $until
- * @property \Illuminate\Support\Collection|null $by_day
- * @property \Illuminate\Support\Collection|null $by_month
  * @property string|null $by_set_position
- * @property \Illuminate\Support\Collection|null $by_month_day
  * @property string|null $by_year_day
- * @property string|null $rrule
  * @property bool $registration_enabled
  * @property \Illuminate\Support\Carbon|null $registration_deadline
+ * @property int $notifications_enabled
+ * @property string|null $notifications_interval
+ * @property string|null $notifications_channels
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -63,6 +57,7 @@ use RRule\RRule;
  * @property-read Calendar|null $calendar
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
+ * @property-write mixed|null $end
  * @property-read mixed $has_passed
  * @property-read Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
@@ -86,30 +81,24 @@ use RRule\RRule;
  * @method static \Illuminate\Database\Eloquent\Builder|Event query()
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereAllDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereByDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereByMonth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereByMonthDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereBySetPosition($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereByYearDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereCalendarId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereCount($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereEnd($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereEndType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereFrequency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereEnds($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereInterval($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereLocation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsChannels($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsInterval($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereRegistrationDeadline($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereRegistrationEnabled($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereRepeats($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereRrule($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereStart($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereUntil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Event whereStarts($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUrl($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event withTrashed()

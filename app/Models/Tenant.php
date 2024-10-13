@@ -48,12 +48,13 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property string|null $billing_country
  * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $last_login_at
+ * @property \Illuminate\Support\Carbon|null $setup_completed_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read Domain|null $custom_domain
  * @property-read Optional|string|null|null $custom_url
- * @property-read mixed $database_status
+ * @property-read string $database_status
  * @property-read Domain|null $domain
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
  * @property-read int|null $domains_count
@@ -61,6 +62,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read Optional|string|null|null $fallback_url
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
+ * @property-read bool $setup_completed
  * @property-read Optional|string|null|null $slug
  * @property-read Optional|SubscriptionPlanType|null|null $subscription_plan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subscription> $subscriptions
@@ -95,6 +97,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @method static Builder|Tenant wherePmExpiration($value)
  * @method static Builder|Tenant wherePmLastFour($value)
  * @method static Builder|Tenant wherePmType($value)
+ * @method static Builder|Tenant whereSetupCompletedAt($value)
  * @method static Builder|Tenant whereStripeId($value)
  * @method static Builder|Tenant whereTrialEndsAt($value)
  * @method static Builder|Tenant whereUpdatedAt($value)
@@ -123,6 +126,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         'url',
         'custom_url',
         'fallback_url',
+        'setup_completed',
     ];
 
     public static function getCustomColumns(): array
@@ -144,22 +148,29 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             'billing_state',
             'billing_postal_code',
             'billing_country',
-            'last_login_at',
             'vat_id',
             'invoice_emails',
+            'last_login_at',
+            'setup_completed_at',
             'created_at',
             'updated_at',
             'deleted_at',
         ];
     }
 
+    /**
+     * @return Attribute<string, void>
+     */
     public function databaseStatus(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->getAttribute('tenancy_db_name') ? 'created' : 'creating'
+            get: fn (): string => $this->getAttribute('tenancy_db_name') ? 'created' : 'creating'
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?Domain, void>
+     */
     public function customDomain(): Attribute
     {
         return Attribute::make(
@@ -169,6 +180,9 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?Domain, void>
+     */
     public function fallbackDomain(): Attribute
     {
         return Attribute::make(
@@ -178,6 +192,9 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?Domain, void>
+     */
     public function domain(): Attribute
     {
         return Attribute::make(
@@ -185,6 +202,9 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<Optional|string|null, void>
+     */
     public function customUrl(): Attribute
     {
         return Attribute::make(
@@ -192,6 +212,9 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<Optional|string|null, void>
+     */
     public function fallbackUrl(): Attribute
     {
         return Attribute::make(
@@ -199,6 +222,18 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<bool, void>
+     */
+    public function setupCompleted(): Attribute
+    {
+        return Attribute::get(fn (): bool => ! is_null($this->setup_completed_at))
+            ->shouldCache();
+    }
+
+    /**
+     * @return Attribute<Optional|string|null, void>
+     */
     public function slug(): Attribute
     {
         return Attribute::make(
@@ -206,6 +241,9 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<Optional|string|null, void>
+     */
     public function url(): Attribute
     {
         return Attribute::make(
@@ -213,6 +251,9 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<Optional|SubscriptionPlanType|null, void>
+     */
     public function subscriptionPlan(): Attribute
     {
         return Attribute::get(fn (): Optional|SubscriptionPlanType|null => optional($this->sparkPlan(), fn (Plan $plan) => SubscriptionPlanType::from(Str::lower($plan->name))) ?? SubscriptionPlanType::NONE)
@@ -250,10 +291,15 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return parent::resolveRouteBinding($value, $field);
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [
+            'setup_complete' => 'boolean',
             'trial_ends_at' => 'datetime',
+            'setup_completed_at' => 'datetime',
             'last_login_at' => 'datetime',
         ];
     }
