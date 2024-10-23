@@ -119,7 +119,8 @@ class NewServiceRecord extends Notification implements NotificationCanBeManaged,
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
     {
-        $service = new TwilioService;
+        /** @var TwilioService $service */
+        $service = app(TwilioService::class);
 
         if (! $channel = $service->toNotificationChannel(
             message: TwilioService::formatText($this->message)

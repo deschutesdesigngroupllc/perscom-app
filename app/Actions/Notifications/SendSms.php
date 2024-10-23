@@ -17,7 +17,8 @@ class SendSms
             return false;
         }
 
-        $service = new TwilioService;
+        /** @var TwilioService $service */
+        $service = app(TwilioService::class);
 
         try {
             return $service->sendSms(

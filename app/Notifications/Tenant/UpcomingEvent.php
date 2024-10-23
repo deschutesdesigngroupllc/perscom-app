@@ -95,7 +95,8 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
 
     public function toTwilio(User $notifiable): TwilioSmsMessage|TwilioMessage|null
     {
-        $service = new TwilioService;
+        /** @var TwilioService $service */
+        $service = app(TwilioService::class);
 
         if (! $channel = $service->toNotificationChannel(
             message: TwilioService::formatText($this->getMessage($notifiable))
