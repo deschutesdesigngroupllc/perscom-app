@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Models\Tenant;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
@@ -43,6 +44,14 @@ class RouteServiceProvider extends ServiceProvider
 
         RateLimiter::for('find-my-organization', function (Request $request) {
             return Limit::perMinute(10)->by($request->ip());
+        });
+
+        RateLimiter::for('sms', function (?Tenant $tenant = null) {
+            if (blank($tenant)) {
+                return false;
+            }
+
+            return Limit::perDay(50)->by("tenant:{$tenant->getKey()}");
         });
     }
 }

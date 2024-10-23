@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Admin\Resources\MessageResource\Pages;
+namespace App\Filament\App\Resources\MessageResource\Pages;
 
-use App\Filament\Admin\Resources\MessageResource;
+use App\Filament\App\Resources\MessageResource;
 use Filament\Resources\Pages\CreateRecord;
 
 class CreateMessage extends CreateRecord

@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
+use App\Contracts\NotificationCanBeManaged;
 use App\Filament\App\Resources\AwardRecordResource;
 use App\Mail\Tenant\NewAwardRecordMail;
 use App\Models\AwardRecord;
+use App\Models\Enums\NotificationChannel;
+use App\Models\Enums\NotificationGroup;
+use App\Services\TwilioService;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -15,8 +19,12 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
+use League\HTMLToMarkdown\HtmlConverter;
+use NotificationChannels\Discord\DiscordMessage;
+use NotificationChannels\Twilio\TwilioMessage;
+use NotificationChannels\Twilio\TwilioSmsMessage;
 
-class NewAwardRecord extends Notification implements ShouldBroadcast, ShouldQueue
+class NewAwardRecord extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
     use Queueable;
 
@@ -24,16 +32,42 @@ class NewAwardRecord extends Notification implements ShouldBroadcast, ShouldQueu
 
     protected string $url;
 
+    protected string $message;
+
     public function __construct(protected AwardRecord $awardRecord)
     {
         $this->url = AwardRecordResource::getUrl('view', [
             'record' => $this->awardRecord,
         ], panel: 'app');
+
+        $this->message = "A new award record has been added to your account.<br><br>**Award:** {$this->awardRecord?->award?->name}";
     }
 
-    public function via(mixed $notifiable): array
+    public static function notificationGroup(): NotificationGroup
     {
-        return ['mail', 'database', 'broadcast'];
+        return NotificationGroup::RECORDS;
+    }
+
+    public static function notificationTitle(): string
+    {
+        return 'New Award Record';
+    }
+
+    public static function notificationDescription(): string
+    {
+        return 'Sent when anytime your account receives a new award record.';
+    }
+
+    /**
+     * @return string[]
+     */
+    public function via(): array
+    {
+        return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
+            return $channel->getEnabled();
+        })->map(function (NotificationChannel $channel) {
+            return $channel->getChannel();
+        })->toArray();
     }
 
     public function toMail(mixed $notifiable): NewAwardRecordMail
@@ -41,11 +75,11 @@ class NewAwardRecord extends Notification implements ShouldBroadcast, ShouldQueu
         return (new NewAwardRecordMail($this->awardRecord, $this->url))->to($notifiable->email);
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(): BroadcastMessage
     {
         return FilamentNotification::make()
             ->title('New Award Record')
-            ->body(Str::markdown("A new award record has been added to your account.<br><br>**Award:** {$this->awardRecord?->award?->name}"))
+            ->body(Str::markdown($this->message))
             ->actions([
                 Action::make('Open award record')
                     ->button()
@@ -55,11 +89,11 @@ class NewAwardRecord extends Notification implements ShouldBroadcast, ShouldQueu
             ->getBroadcastMessage();
     }
 
-    public function toDatabase($notifiable): array
+    public function toDatabase(): array
     {
         return FilamentNotification::make()
             ->title('New Award Record')
-            ->body(Str::markdown("A new award record has been added to your account.<br><br>**Award:** {$this->awardRecord?->award?->name}"))
+            ->body(Str::markdown($this->message))
             ->actions([
                 Action::make('Open award record')
                     ->button()
@@ -67,5 +101,30 @@ class NewAwardRecord extends Notification implements ShouldBroadcast, ShouldQueu
             ])
             ->info()
             ->getDatabaseMessage();
+    }
+
+    public function toDiscord(): DiscordMessage
+    {
+        $converter = new HtmlConverter([
+            'strip_tags' => true,
+            'remove_nodes' => true,
+        ]);
+
+        return DiscordMessage::create(
+            body: $converter->convert(Str::markdown($this->message))
+        );
+    }
+
+    public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
+    {
+        $service = new TwilioService;
+
+        if (! $channel = $service->toNotificationChannel(
+            message: TwilioService::formatText($this->message)
+        )) {
+            return null;
+        }
+
+        return $channel;
     }
 }

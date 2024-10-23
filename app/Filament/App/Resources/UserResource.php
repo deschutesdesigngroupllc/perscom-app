@@ -9,7 +9,9 @@ use App\Filament\App\Resources\UserResource\Pages;
 use App\Filament\App\Resources\UserResource\RelationManagers;
 use App\Filament\Exports\UserExporter;
 use App\Models\User;
+use App\Services\UserSettingsService;
 use App\Settings\DashboardSettings;
+use App\Settings\OrganizationSettings;
 use App\Traits\Filament\InteractsWithFields;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Carbon\CarbonInterface;
@@ -306,14 +308,32 @@ class UserResource extends BaseResource
                     ->color(fn (?User $record) => Color::hex($record->status->color ?? '#2563eb'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),

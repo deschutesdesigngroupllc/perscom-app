@@ -114,6 +114,9 @@ class Form extends Model implements HasFields, HasLabel
         return $this->belongsTo(Status::class);
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

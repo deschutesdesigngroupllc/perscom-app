@@ -15,7 +15,7 @@ class StatusRequest extends Request
             'color' => ['string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'date',
+            'deleted_at' => 'nullable|date',
         ];
     }
 

@@ -129,11 +129,26 @@ return [
     |
     */
 
+    'premium_features' => [
+        App\Features\AdvancedNotificationsFeature::class => [
+            'monthly_id' => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS_MONTH'),
+            'yearly_id' => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS_YEAR'),
+        ],
+        App\Features\GoogleCalendarSyncFeature::class => [
+            'monthly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_MONTH'),
+            'yearly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_YEAR'),
+        ],
+        App\Features\EnhancedAIFeature::class => [
+            'monthly_id' => env('STRIPE_PRODUCT_ENHANCED_AI_SYNC_MONTH'),
+            'yearly_id' => env('STRIPE_PRODUCT_ENHANCED_AI_SYNC_YEAR'),
+        ],
+    ],
+
     'billables' => [
         'tenant' => [
             'model' => App\Models\Tenant::class,
             'trial_days' => 7,
-            'default_interval' => 'monthly',
+            'default_interval' => 'yearly',
             'plans' => [
                 [
                     'name' => 'Basic',
@@ -142,6 +157,7 @@ return [
                     'yearly_id' => env('STRIPE_PRODUCT_BASIC_YEAR'),
                     'features' => [
                         'All core features',
+                        'No premium features',
                         'Social login support',
                         'Application provided subdomain',
                         'Community support',
@@ -157,6 +173,7 @@ return [
                     'yearly_id' => env('STRIPE_PRODUCT_PRO_YEAR'),
                     'features' => [
                         'Access to powerful API',
+                        'Optional paid premium features',
                         'Widgets and website integration',
                         'Custom subdomain',
                         'Ticket and email support',
@@ -174,12 +191,14 @@ return [
                     'monthly_id' => env('STRIPE_PRODUCT_ENTERPRISE_MONTH'),
                     'yearly_id' => env('STRIPE_PRODUCT_ENTERPRISE_YEAR'),
                     'features' => [
+                        'All premium features included',
                         'Export and backup all account data',
                         'Webhooks and real-time app notifications',
                         'Single sign-on integration',
                         'Priority support',
                     ],
                     'options' => [
+                        App\Features\AdvancedNotificationsFeature::class,
                         App\Features\SocialLoginFeature::class,
                         App\Features\ApiAccessFeature::class,
                         App\Features\CustomSubDomainFeature::class,

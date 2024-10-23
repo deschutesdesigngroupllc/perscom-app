@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Enums\NotificationChannel;
 use App\Observers\EventObserver;
-use App\Services\EventService;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
@@ -14,11 +14,12 @@ use App\Traits\HasComments;
 use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use App\Traits\HasSchedule;
 use App\Traits\HasTags;
-use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -26,7 +27,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Optional;
-use RRule\RRule;
 
 /**
  * @property int $id
@@ -35,19 +35,19 @@ use RRule\RRule;
  * @property string|null $description
  * @property string|null $content
  * @property string|null $location
- * @property Optional|string|null|null $url
+ * @property string $url
  * @property int|null $author_id
  * @property bool $all_day
- * @property string $starts
- * @property string|null $ends
+ * @property \Illuminate\Support\Carbon $starts
+ * @property \Illuminate\Support\Carbon|null $ends
  * @property bool $repeats
  * @property string|null $by_set_position
  * @property string|null $by_year_day
  * @property bool $registration_enabled
  * @property \Illuminate\Support\Carbon|null $registration_deadline
- * @property int $notifications_enabled
- * @property string|null $notifications_interval
- * @property string|null $notifications_channels
+ * @property bool $notifications_enabled
+ * @property array|null $notifications_interval
+ * @property AsEnumCollection|null $notifications_channels
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
@@ -57,19 +57,17 @@ use RRule\RRule;
  * @property-read Calendar|null $calendar
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
- * @property-write mixed|null $end
- * @property-read mixed $has_passed
  * @property-read Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
- * @property-read mixed $last_occurrence
- * @property-read CarbonInterval|Optional|null|null $length
- * @property-read mixed $next_occurrence
+ * @property-read mixed $length
  * @property-read EventRegistration $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $registrations
  * @property-read int|null $registrations_count
  * @property-read Optional|string|null|null $relative_url
+ * @property-read Optional|string|null|null $resource_url
+ * @property-read Schedule|null $schedule
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
  *
@@ -117,7 +115,10 @@ class Event extends Model implements HasLabel
     use HasFactory;
     use HasImages;
     use HasResourceLabel;
-    use HasResourceUrl;
+    use HasResourceUrl {
+        url as resourceUrl;
+    }
+    use HasSchedule;
     use HasTags;
     use SoftDeletes;
 
@@ -129,100 +130,56 @@ class Event extends Model implements HasLabel
         'location',
         'url',
         'all_day',
-        'start',
-        'end',
+        'starts',
+        'ends',
         'repeats',
-        'frequency',
-        'interval',
-        'end_type',
-        'count',
-        'until',
-        'by_day',
-        'by_month_day',
-        'by_month',
-        'rrule',
+        'registration_enabled',
+        'registration_deadline',
+        'notifications_enabled',
+        'notifications_interval',
+        'notifications_channels',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
-    protected $appends = [
-        'has_passed',
-        'last_occurrence',
-        'next_occurrence',
-        //'length'
-    ];
-
-    public function lastOccurrence(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => match (true) {
-                ! $this->repeats && $this->end => $this->end,
-                $this->repeats && $this->end_type === 'on' && $this->until => $this->until,
-                $this->repeats && $this->end_type === 'after' && $this->count => optional(EventService::generateRecurringRule($this), function (RRule $rule) {
-                    return $rule->getNthOccurrenceAfter($this->start, $this->count)
-                        ? Carbon::parse($rule->getNthOccurrenceAfter($this->start, $this->count))
-                        : null;
-                }),
-                default => null
-            }
-        )->shouldCache();
-    }
-
-    public function end(): Attribute
-    {
-        return Attribute::make(
-            set: function (mixed $value, array $attributes) {
-                if (! data_get($attributes, 'all_day', false) && data_get($attributes, 'repeats', false)) {
-                    $start = Carbon::parse(data_get($attributes, 'start'));
-
-                    return Carbon::parse(data_get($attributes, 'end'))->set([
-                        'day' => $start->day,
-                        'month' => $start->month,
-                        'year' => $start->year,
-                    ]);
-                }
-
-                return Carbon::parse($value);
-            }
-        );
-    }
-
+    /**
+     * @return Attribute<?CarbonInterval, void>
+     */
     public function length(): Attribute
     {
-        return Attribute::make(
-            get: fn (): CarbonInterval|Optional|null => optional($this->end, function () {
-                return $this->start->diff($this->end);
-            }) ?: null
+        return Attribute::get(
+            fn () => optional($this->ends, function () {
+                return $this->starts->diff($this->ends);
+            }) ?? null
         )->shouldCache();
     }
 
-    public function hasPassed(): Attribute
+    /**
+     * @return Attribute<string, void>
+     */
+    public function url(): Attribute
     {
-        return Attribute::make(
-            get: fn () => optional($this->last_occurrence, static function (Carbon $end) {
-                return $end->isPast();
-            }) ?: false
-        )->shouldCache();
-    }
-
-    public function nextOccurrence(): Attribute
-    {
-        return Attribute::make(
-            get: fn () => match (true) {
-                ! $this->repeats => null,
-                $this->repeats => optional(EventService::generateRecurringRule($this), static function (RRule $rule) {
-                    return Carbon::parse(collect($rule->getOccurrencesAfter(now(), false, 1))->first());
-                })
+        return Attribute::get(function ($value): string {
+            if (filled($value)) {
+                return $value;
             }
-        )->shouldCache();
+
+            return call_user_func($this->resourceUrl()->get, $value, $this->attributes);
+        })->shouldCache();
     }
 
+    /**
+     * @return BelongsTo<Calendar, Event>
+     */
     public function calendar(): BelongsTo
     {
         return $this->belongsTo(Calendar::class);
     }
 
+    /**
+     * @return BelongsToMany<User>
+     */
     public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')
@@ -232,12 +189,15 @@ class Event extends Model implements HasLabel
             ->withTimestamps();
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         $casts = [
             'all_day' => 'boolean',
-            'start' => 'datetime',
-            'end' => 'datetime',
+            'starts' => 'datetime',
+            'ends' => 'datetime',
             'repeats' => 'boolean',
             'interval' => 'integer',
             'count' => 'integer',
@@ -250,11 +210,14 @@ class Event extends Model implements HasLabel
             'next_occurrence' => 'datetime',
             'registration_enabled' => 'boolean',
             'registration_deadline' => 'datetime',
+            'notifications_enabled' => 'boolean',
+            'notifications_interval' => 'array',
+            'notifications_channels' => AsEnumCollection::of(NotificationChannel::class),
         ];
 
         if ($this->all_day) {
-            $casts['start'] = 'date';
-            $casts['end'] = 'date';
+            $casts['starts'] = 'date';
+            $casts['ends'] = 'date';
         }
 
         return $casts;

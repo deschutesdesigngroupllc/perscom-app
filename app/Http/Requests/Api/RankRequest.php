@@ -18,7 +18,7 @@ class RankRequest extends Request
             'order' => 'integer',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'date',
+            'deleted_at' => 'nullable|date',
         ];
     }
 

@@ -31,7 +31,9 @@ class TenancyServiceProvider extends ServiceProvider
                     SetupTenantAccount::class,
                 ])->send(function (Events\TenantCreated $event) {
                     return $event->tenant;
-                })->shouldBeQueued(queue: 'system'),
+                })->shouldBeQueued(
+                    queue: 'system'
+                ),
             ],
             Events\SavingTenant::class => [],
             Events\TenantSaved::class => [],
@@ -43,7 +45,9 @@ class TenancyServiceProvider extends ServiceProvider
                     Jobs\DeleteDatabase::class,
                 ])->send(function (Events\TenantDeleted $event) {
                     return $event->tenant;
-                })->shouldBeQueued(queue: 'system'),
+                })->shouldBeQueued(
+                    queue: 'system'
+                ),
             ],
             Events\CreatingDomain::class => [],
             Events\DomainCreated::class => [],

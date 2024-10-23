@@ -6,6 +6,8 @@ namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\CommentResource\Pages;
 use App\Models\Comment;
+use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -45,6 +47,12 @@ class CommentResource extends Resource
                     ->wrap(),
                 Tables\Columns\TextColumn::make('author.name'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime(),
             ])
             ->headerActions([
@@ -73,6 +81,12 @@ class CommentResource extends Resource
                     ->wrap(),
                 Tables\Columns\TextColumn::make('author.name'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->timezone(UserSettingsService::get('timezone', function () {
+                        /** @var OrganizationSettings $settings */
+                        $settings = app(OrganizationSettings::class);
+
+                        return $settings->timezone ?? config('app.timezone');
+                    }))
                     ->dateTime(),
             ])
             ->headerActions([

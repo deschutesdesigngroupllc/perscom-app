@@ -78,6 +78,9 @@ class EventRegistration extends Pivot
         return $this->belongsTo(Event::class);
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

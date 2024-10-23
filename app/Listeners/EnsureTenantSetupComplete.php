@@ -24,6 +24,10 @@ class EnsureTenantSetupComplete
             return;
         }
 
+        if (App::runningConsoleCommand()) {
+            return;
+        }
+
         throw_unless($tenant->setup_completed, new TenantAccountSetupNotComplete(403, 'We are still working on setting up your account. We will email you when we are finished.'));
     }
 }

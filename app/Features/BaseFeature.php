@@ -6,6 +6,8 @@ namespace App\Features;
 
 use App\Models\Tenant;
 
+use function tenant;
+
 class BaseFeature
 {
     protected static ?Tenant $tenant = null;
@@ -15,10 +17,12 @@ class BaseFeature
         self::$tenant = null;
     }
 
-    public function resolveTenant(?string $scope): ?Tenant
+    public static function resolveTenant(?string $scope = null): ?Tenant
     {
-        return self::$tenant ??= ! is_null($scope)
-            ? Tenant::find($scope)
-            : null;
+        return self::$tenant ??= match (true) {
+            filled($scope) => Tenant::find($scope),
+            tenancy()->initialized => tenant(),
+            default => null
+        };
     }
 }

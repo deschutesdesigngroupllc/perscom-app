@@ -134,6 +134,9 @@ class RankRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
         return $this->user;
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

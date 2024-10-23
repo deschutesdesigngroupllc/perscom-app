@@ -7,6 +7,7 @@ use App\Models\Tenant;
 use App\Support\Tenancy\Bootstrappers\ConfigBootstrapper;
 use App\Support\Tenancy\Bootstrappers\FilamentBootstrapper;
 use App\Support\Tenancy\Bootstrappers\PermissionsBootstrapper;
+use App\Support\Tenancy\Bootstrappers\SettingsBootstrapper;
 
 return [
     'tenant_model' => Tenant::class,
@@ -43,6 +44,7 @@ return [
         ConfigBootstrapper::class,
         PermissionsBootstrapper::class,
         FilamentBootstrapper::class,
+        SettingsBootstrapper::class,
     ],
 
     /**

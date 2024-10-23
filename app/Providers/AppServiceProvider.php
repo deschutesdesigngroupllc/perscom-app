@@ -160,7 +160,7 @@ class AppServiceProvider extends ServiceProvider
 
         FilamentView::registerRenderHook(
             name: PanelsRenderHook::PAGE_START,
-            hook: fn () => view('filament.render-hooks.page-start.message-banner'),
+            hook: fn () => view('filament.render-hooks.page-start.alert-banner'),
             scopes: Dashboard::class,
         );
 

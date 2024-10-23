@@ -6,7 +6,8 @@ namespace App\Livewire\App;
 
 use App\Features\BillingFeature;
 use App\Models\Tenant;
-use Carbon\Carbon;
+use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
@@ -24,13 +25,25 @@ class SubscriptionBanner extends Component
         /** @var Tenant $tenant */
         $tenant = Filament::getTenant();
 
+        $timezone = UserSettingsService::get('timezone', function () {
+            /** @var OrganizationSettings $settings */
+            $settings = app(OrganizationSettings::class);
+
+            return $settings->timezone ?? config('app.timezone');
+        });
+
         $trialEndsAt = $tenant->trial_ends_at;
 
-        $left = Carbon::parse($trialEndsAt)->longRelativeDiffForHumans();
-        $expiration = Carbon::parse($trialEndsAt)->toFormattedDateString();
+        $left = null;
+        $expiration = null;
+        if (filled($trialEndsAt)) {
+            $trialEndsAt->setTimezone($timezone)->shiftTimezone('UTC');
+            $left = $trialEndsAt->longRelativeDiffForHumans();
+            $expiration = $trialEndsAt->toFormattedDayDateString();
+        }
 
         $this->message = match (true) {
-            $tenant->onTrial() => "You are currently on trial. Your trial is set to expire $left on $expiration.",
+            $tenant->onTrial() && isset($left, $expiration) => "You are currently on trial. Your trial is set to expire $left on $expiration.",
             $tenant->hasIncompletePayment() => 'Your subscription is currently past due. Please pay your invoice to continue using PERSCOM.',
             ! $tenant->subscribed() => 'You do not currently have an active subscription. Please sign up for a subscription to continue using PERSCOM.',
             default => null

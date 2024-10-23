@@ -21,7 +21,7 @@ class SubmissionRequest extends Request
             'user_id' => 'integer|nullable|exists:users,id',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'date',
+            'deleted_at' => 'nullable|date',
         ], $this->getFieldRules());
     }
 

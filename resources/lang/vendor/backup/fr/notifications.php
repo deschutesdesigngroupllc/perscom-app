@@ -1,9 +1,9 @@
 <?php
 
 return [
-    'exception_message' => "Message de l'exception : :message",
+    'exception_message' => "Alert de l'exception : :message",
     'exception_trace' => "Trace de l'exception : :trace",
-    'exception_message_title' => "Message de l'exception",
+    'exception_message_title' => "Alert de l'exception",
     'exception_trace_title' => "Trace de l'exception",
 
     'backup_failed_subject' => 'Échec de la sauvegarde de :application_name',

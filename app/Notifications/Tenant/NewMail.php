@@ -21,7 +21,10 @@ class NewMail extends Notification implements ShouldQueue
         //
     }
 
-    public function via(mixed $notifiable): array
+    /**
+     * @return string[]
+     */
+    public function via(): array
     {
         return ['mail'];
     }

@@ -203,6 +203,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         'name',
         'email',
         'email_verified_at',
+        'phone_number',
         'position_id',
         'rank_id',
         'specialty_id',
@@ -215,6 +216,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         'profile_photo',
         'cover_photo',
         'last_seen_at',
+        'discord_user_id',
+        'discord_private_channel_id',
         'created_at',
         'updated_at',
         'deleted_at',
@@ -223,6 +226,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     protected $hidden = [
         'password',
         'remember_token',
+        'discord_private_channel_id',
     ];
 
     protected $appends = [
@@ -238,6 +242,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
             'name',
             'email',
             'email_verified_at',
+            'phone_number',
             'position_id',
             'rank_id',
             'specialty_id',
@@ -251,6 +256,8 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
             'profile_photo',
             'cover_photo',
             'last_seen_at',
+            'discord_user_id',
+            'discord_private_channel_id',
             'created_at',
             'updated_at',
             'deleted_at',
@@ -290,6 +297,19 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         return $this->name;
     }
 
+    public function routeNotificationForDiscord(): ?string
+    {
+        return $this->discord_private_channel_id;
+    }
+
+    public function routeNotificationForTwilio(): ?string
+    {
+        return $this->phone_number;
+    }
+
+    /**
+     * @param  Builder<User>  $query
+     */
     public function scopeOrderForRoster(Builder $query): void
     {
         $query
@@ -303,6 +323,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
             ->orderBy('users.name');
     }
 
+    /**
+     * @return Attribute<string, void>
+     */
     public function online(): Attribute
     {
         return Attribute::make(
@@ -413,6 +436,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         return 'web';
     }
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

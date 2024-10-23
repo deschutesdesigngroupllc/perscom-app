@@ -23,14 +23,20 @@ class NewSubmission extends Notification implements ShouldBroadcast, ShouldQueue
 
     protected string $url;
 
+    protected string $message;
+
     public function __construct(protected Submission $submission)
     {
         $this->url = SubmissionResource::getUrl('view', [
             'record' => $this->submission,
         ], panel: 'app');
+
+        $name = optional($this->submission->form)->name;
+
+        $this->message = "A new $name has been submitted.";
     }
 
-    public function via(mixed $notifiable): array
+    public function via(): array
     {
         return ['mail', 'database', 'broadcast'];
     }
@@ -40,13 +46,11 @@ class NewSubmission extends Notification implements ShouldBroadcast, ShouldQueue
         return (new NewSubmissionMail($this->submission, $this->url))->to($notifiable->email);
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(): BroadcastMessage
     {
-        $name = optional($this->submission->form)->name;
-
         return FilamentNotification::make()
             ->title('New Form Submission')
-            ->body("A new $name has been submitted.")
+            ->body($this->message)
             ->actions([
                 Action::make('Open submission')
                     ->button()
@@ -56,13 +60,13 @@ class NewSubmission extends Notification implements ShouldBroadcast, ShouldQueue
             ->getBroadcastMessage();
     }
 
-    public function toDatabase($notifiable): array
+    public function toDatabase(): array
     {
         $name = optional($this->submission->form)->name;
 
         return FilamentNotification::make()
             ->title('New Form Submission')
-            ->body("A new $name has been submitted.")
+            ->body($this->message)
             ->actions([
                 Action::make('Open submission')
                     ->button()

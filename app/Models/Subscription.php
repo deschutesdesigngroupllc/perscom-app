@@ -6,7 +6,11 @@ namespace App\Models;
 
 use App\Observers\SubscriptionObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Laravel\Cashier\Subscription as BaseSubscription;
+use Laravel\Cashier\SubscriptionItem;
+use Spark\Plan;
+use Spark\Spark;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
@@ -21,9 +25,10 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property \Illuminate\Support\Carbon|null $ends_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Laravel\Cashier\SubscriptionItem> $items
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, SubscriptionItem> $items
  * @property-read int|null $items_count
  * @property-read Tenant|null $owner
+ * @property-read string $renewal_term
  * @property-read Tenant|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription active()
@@ -60,4 +65,42 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
 class Subscription extends BaseSubscription
 {
     use CentralConnection;
+
+    public function hasMultiplePrices(): bool
+    {
+        return true;
+    }
+
+    /**
+     * @return Attribute<?string>
+     */
+    public function stripePrice(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes) {
+            if (filled($value)) {
+                return $value;
+            }
+
+            /** @var SubscriptionItem $item */
+            $item = $this->items->sortBy('created_at')->firstWhere('subscription_id', data_get($attributes, 'id'));
+
+            if (blank($item)) {
+                return null;
+            }
+
+            return $item->stripe_price;
+        })->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?string>
+     */
+    public function renewalTerm(): Attribute
+    {
+        return Attribute::get(function (): string {
+            $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan) => [$plan->id => $plan->interval]);
+
+            return data_get($plans, $this->stripe_price);
+        })->shouldCache();
+    }
 }

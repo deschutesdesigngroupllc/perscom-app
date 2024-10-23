@@ -25,7 +25,7 @@ class EventRequest extends Request
             'registrations_deadline' => 'nullable|datetime',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'date',
+            'deleted_at' => 'nullable|date',
         ];
     }
 

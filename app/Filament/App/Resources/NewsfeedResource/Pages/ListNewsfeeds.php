@@ -12,6 +12,8 @@ class ListNewsfeeds extends ListRecords
 {
     protected static string $resource = NewsfeedResource::class;
 
+    protected ?string $subheading = 'Keep your users up-to-date with the latest news happening in your organization.';
+
     protected function getHeaderActions(): array
     {
         return [

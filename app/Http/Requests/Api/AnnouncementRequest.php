@@ -17,7 +17,7 @@ class AnnouncementRequest extends Request
             'expires_at' => 'nullable|date',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'date',
+            'deleted_at' => 'nullable|date',
         ];
     }
 

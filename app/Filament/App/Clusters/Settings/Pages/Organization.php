@@ -55,9 +55,11 @@ class Organization extends SettingsPage
                                     ->required()
                                     ->helperText('The organization email that will receive all account-related emails.'),
                                 Select::make('timezone')
+                                    ->searchable()
+                                    ->preload()
                                     ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($timezone) => [$timezone => $timezone])->all())
                                     ->required()
-                                    ->helperText('The timezone that will be used for all dates and times.'),
+                                    ->helperText('The timezone that will be used for all dates and times. Note: A user can still override the system timezone on a per-account basis.'),
                             ]),
                     ]),
             ]);

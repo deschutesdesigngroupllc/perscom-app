@@ -4,50 +4,83 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\Enableable;
-use App\Models\Scopes\EnabledScope;
-use App\Traits\CanBeEnabled;
-use App\Traits\ClearsResponseCache;
-use Illuminate\Database\Eloquent\Attributes\ScopedBy;
-use Illuminate\Database\Eloquent\Builder;
+use App\Models\Enums\NotificationChannel;
+use App\Observers\MessageObserver;
+use App\Traits\HasSchedule;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Casts\AsCollection;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Spatie\EloquentSortable\Sortable;
-use Spatie\EloquentSortable\SortableTrait;
-use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
- * App\Models\Message
+ * @property int $id
+ * @property string $message
+ * @property AsEnumCollection|null $channels
+ * @property \Illuminate\Support\Collection|null $recipients
+ * @property bool $repeats
+ * @property \Illuminate\Support\Carbon|null $send_at
+ * @property \Illuminate\Support\Carbon|null $sent_at
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read Schedule|null $schedule
  *
- * @method static Builder|Message disabled()
- * @method static Builder|Message enabled()
- * @method static Builder|Message newModelQuery()
- * @method static Builder|Message newQuery()
- * @method static Builder|Message onlyTrashed()
- * @method static Builder|Message ordered(string $direction = 'asc')
- * @method static Builder|Message query()
- * @method static Builder|Message withTrashed()
- * @method static Builder|Message withoutTrashed()
+ * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
+ * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message onlyTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereChannels($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereDeletedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereRecipients($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereRepeats($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSendAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereSentAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Message withTrashed()
+ * @method static \Illuminate\Database\Eloquent\Builder|Message withoutTrashed()
  *
  * @mixin \Eloquent
  */
-#[ScopedBy(EnabledScope::class)]
-class Message extends Model implements Enableable, Sortable
+#[ObservedBy(MessageObserver::class)]
+class Message extends Model
 {
-    use CanBeEnabled;
-    use CentralConnection;
-    use ClearsResponseCache;
+    use HasFactory;
+    use HasSchedule;
     use SoftDeletes;
-    use SortableTrait;
+
+    protected $attributes = [
+        'recipients' => null,
+    ];
 
     protected $fillable = [
-        'title',
         'message',
-        'order',
-        'url',
-        'link_text',
+        'channels',
+        'recipients',
+        'repeats',
+        'send_at',
+        'sent_at',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * @return string[]
+     */
+    protected function casts(): array
+    {
+        return [
+            'channels' => AsEnumCollection::of(NotificationChannel::class),
+            'recipients' => AsCollection::class,
+            'repeats' => 'boolean',
+            'send_at' => 'datetime',
+            'sent_at' => 'datetime',
+        ];
+    }
 }

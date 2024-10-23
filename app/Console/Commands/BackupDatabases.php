@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Jobs\BackupTenantDatabase;
-use App\Models\Tenant;
+use App\Actions\Batches\BackupDatabases as BackupDatabaseAction;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Bus;
 use Throwable;
 
 class BackupDatabases extends Command
@@ -21,13 +19,7 @@ class BackupDatabases extends Command
      */
     public function handle(): int
     {
-        Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant $tenant) => new BackupTenantDatabase($tenant->getKey()))
-        )->name(
-            name: 'Tenant Database Backups'
-        )->onQueue(
-            queue: 'backup'
-        )->dispatch();
+        BackupDatabaseAction::handle();
 
         $this->info('The database backup job has been dispatched.');
 

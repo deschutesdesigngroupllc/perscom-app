@@ -63,6 +63,9 @@ class Mail extends Model
         'deleted_at',
     ];
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Providers\Filament;
 
 use App\Features\BillingFeature;
+use App\Filament\App\Pages\Auth\EditProfile;
 use App\Filament\App\Pages\Auth\EmailVerificationPrompt;
 use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
@@ -61,7 +62,7 @@ class AppPanelProvider extends PanelProvider
             ->registration()
             ->passwordReset()
             ->emailVerification(EmailVerificationPrompt::class)
-            ->profile(isSimple: false)
+            ->profile(EditProfile::class, isSimple: false)
             ->colors([
                 'primary' => Color::Blue,
             ])

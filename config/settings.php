@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 use App\Models\Settings;
 use App\Settings\DashboardSettings;
+use App\Settings\FeatureSettings;
+use App\Settings\IntegrationSettings;
 use App\Settings\OrganizationSettings;
 use App\Settings\PermissionSettings;
 use App\Settings\RegistrationSettings;
+use App\Settings\UserSettings;
 
 return [
 
@@ -16,9 +19,12 @@ return [
      */
     'settings' => [
         DashboardSettings::class,
+        FeatureSettings::class,
+        IntegrationSettings::class,
         OrganizationSettings::class,
         PermissionSettings::class,
         RegistrationSettings::class,
+        UserSettings::class,
     ],
 
     /*
@@ -73,7 +79,7 @@ return [
      */
     'cache' => [
         'enabled' => env('SETTINGS_CACHE_ENABLED', false),
-        'store' => null,
+        'store' => env('SETTINGS_CACHE_STORE'),
         'prefix' => null,
         'ttl' => null,
     ],

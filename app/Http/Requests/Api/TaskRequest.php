@@ -17,7 +17,7 @@ class TaskRequest extends Request
             'form_id' => 'integer|exists:forms,id',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'date',
+            'deleted_at' => 'nullable|date',
         ];
     }
 

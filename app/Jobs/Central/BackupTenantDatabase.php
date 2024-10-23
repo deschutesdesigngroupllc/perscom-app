@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs;
+namespace App\Jobs\Central;
 
 use App\Models\Tenant;
 use Illuminate\Bus\Batchable;
@@ -22,6 +22,7 @@ class BackupTenantDatabase implements ShouldQueue
     public function __construct(public int $tenantKey)
     {
         $this->onQueue('backup');
+        $this->onConnection('central');
     }
 
     public function handle(): void
@@ -30,7 +31,7 @@ class BackupTenantDatabase implements ShouldQueue
             return;
         }
 
-        Tenant::findOrFail($this->tenantKey)->run(function (Tenant $tenant) {
+        Tenant::findOrFail($this->tenantKey)->run(function () {
             Artisan::call('backup:run', [
                 '--only-to-disk' => 's3',
                 '--only-db' => true,
