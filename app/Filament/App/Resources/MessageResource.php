@@ -69,6 +69,7 @@ class MessageResource extends BaseResource
 
                     return $settings->timezone ?? config('app.timezone');
                 }))
+                ->minDate(now())
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
                 ->hidden(fn (Forms\Get $get) => $get('repeats')),

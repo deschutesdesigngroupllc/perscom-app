@@ -25,6 +25,8 @@ class CalendarWidget extends BaseCalendarWidget
 
     protected string|Closure|HtmlString|null $heading = '';
 
+    protected int $firstDay = 0;
+
     protected bool $eventClickEnabled = true;
 
     protected int|string|array $columnSpan = 'full';
