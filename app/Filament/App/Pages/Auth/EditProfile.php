@@ -4,29 +4,22 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages\Auth;
 
-use App\Data\ManagedNotification;
-use App\Models\Enums\NotificationChannel;
-use App\Models\Enums\NotificationGroup;
-use App\Services\NotificationService;
+use App\Features\AdvancedNotificationsFeature;
 use App\Services\UserSettingsService;
 use DateTimeZone;
 use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Components\CheckboxList;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\Auth\EditProfile as BaseEditProfile;
-use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
+use Laravel\Pennant\Feature;
 
 class EditProfile extends BaseEditProfile
 {
     public function form(Form $form): Form
     {
-        $notifications = NotificationService::configurableNotifications();
-
         return $form
             ->schema([
                 Tabs::make()
@@ -37,9 +30,10 @@ class EditProfile extends BaseEditProfile
                                 $this->getNameFormComponent(),
                                 $this->getEmailFormComponent(),
                                 TextInput::make('phone_number')
+                                    ->visible(fn () => Feature::active(AdvancedNotificationsFeature::class))
                                     ->nullable()
                                     ->tel()
-                                    ->helperText('By providing your phone number, you consent to allow Deschutes Design Group LLC/PERSCOM to send you account-related text messages. Alert and data rates may apply. You may configure your notification settings at anytime by clicking the "Notifications" tab above.'),
+                                    ->helperText('By providing your phone number, you consent to allow Deschutes Design Group LLC/PERSCOM to send you account-related text messages. Alert and data rates may apply.'),
                                 Select::make('timezone')
                                     ->preload()
                                     ->searchable()
@@ -49,26 +43,8 @@ class EditProfile extends BaseEditProfile
                                 $this->getPasswordFormComponent(),
                                 $this->getPasswordConfirmationFormComponent(),
                             ]),
-                        // TODO: Implement
-                        //                        Tabs\Tab::make('Notifications')
-                        //                            ->icon('heroicon-o-bell')
-                        //                            ->schema(collect($notifications)->map(function (Collection $notifications, $group) {
-                        //                                $group = NotificationGroup::from($group);
-                        //
-                        //                                return Section::make($group->getLabel())
-                        //                                    ->description($group->getDescription())
-                        //                                    ->icon($group->getIcon())
-                        //                                    ->schema($notifications->map(function (ManagedNotification $notification) {
-                        //                                        return CheckboxList::make("notifications.$notification->notificationClass")
-                        //                                            ->label($notification->title)
-                        //                                            //->helperText($notification->description)
-                        //                                            ->columns(5)
-                        //                                            ->gridDirection('row')
-                        //                                            ->bulkToggleable()
-                        //                                            ->options(NotificationChannel::class);
-                        //                                    })->toArray());
-                        //                            })->toArray()),
                         Tabs\Tab::make('Social')
+                            ->visible(fn () => Feature::active(AdvancedNotificationsFeature::class))
                             ->icon('heroicon-o-device-phone-mobile')
                             ->schema([
                                 TextInput::make('discord_user_id')

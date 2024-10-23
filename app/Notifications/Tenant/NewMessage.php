@@ -8,6 +8,7 @@ use App\Mail\Tenant\NewMessage as NewMessageMail;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
 use App\Models\User;
+use App\Services\TwilioService;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -38,7 +39,7 @@ class NewMessage extends Notification implements ShouldQueue
     }
 
     /**
-     * @return array<int, string>
+     * @return string[]
      */
     public function via(): array
     {
@@ -76,10 +77,16 @@ class NewMessage extends Notification implements ShouldQueue
         return DiscordMessage::create($converter->convert($this->message->message));
     }
 
-    public function toTwilio(): TwilioSmsMessage|TwilioMessage
+    public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
     {
-        return (new TwilioSmsMessage)
-            ->from(config('services.twilio.from'))
-            ->content($this->message->message);
+        $service = new TwilioService;
+
+        if (! $channel = $service->toNotificationChannel(
+            message: TwilioService::formatText($this->message->message)
+        )) {
+            return null;
+        }
+
+        return $channel;
     }
 }

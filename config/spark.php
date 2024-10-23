@@ -130,8 +130,18 @@ return [
     */
 
     'premium_features' => [
-        App\Features\AdvancedNotificationsFeature::class => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS'),
-        App\Features\GoogleCalendarSyncFeature::class => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC'),
+        App\Features\AdvancedNotificationsFeature::class => [
+            'monthly_id' => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS_MONTH'),
+            'yearly_id' => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS_YEAR'),
+        ],
+        App\Features\GoogleCalendarSyncFeature::class => [
+            'monthly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_MONTH'),
+            'yearly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_YEAR'),
+        ],
+        App\Features\EnhancedAIFeature::class => [
+            'monthly_id' => env('STRIPE_PRODUCT_ENHANCED_AI_SYNC_MONTH'),
+            'yearly_id' => env('STRIPE_PRODUCT_ENHANCED_AI_SYNC_YEAR'),
+        ],
     ],
 
     'billables' => [

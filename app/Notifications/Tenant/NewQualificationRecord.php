@@ -7,8 +7,10 @@ namespace App\Notifications\Tenant;
 use App\Contracts\NotificationCanBeManaged;
 use App\Filament\App\Resources\QualificationRecordResource;
 use App\Mail\Tenant\NewQualificationRecordMail;
+use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationGroup;
 use App\Models\QualificationRecord;
+use App\Services\TwilioService;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -17,6 +19,10 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Str;
+use League\HTMLToMarkdown\HtmlConverter;
+use NotificationChannels\Discord\DiscordMessage;
+use NotificationChannels\Twilio\TwilioMessage;
+use NotificationChannels\Twilio\TwilioSmsMessage;
 
 class NewQualificationRecord extends Notification implements NotificationCanBeManaged, ShouldBroadcast, ShouldQueue
 {
@@ -26,11 +32,15 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
 
     protected string $url;
 
+    protected string $message;
+
     public function __construct(protected QualificationRecord $qualificationRecord)
     {
         $this->url = QualificationRecordResource::getUrl('view', [
             'record' => $this->qualificationRecord,
         ], panel: 'app');
+
+        $this->message = "A new qualification record has been added to your account.<br><br>**Qualification:** {$this->qualificationRecord?->qualification?->name}";
     }
 
     public static function notificationGroup(): NotificationGroup
@@ -48,9 +58,16 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
         return 'Sent when anytime your account receives a new qualification record.';
     }
 
-    public function via(mixed $notifiable): array
+    /**
+     * @return string[]
+     */
+    public function via(): array
     {
-        return ['mail', 'database', 'broadcast'];
+        return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
+            return $channel->getEnabled();
+        })->map(function (NotificationChannel $channel) {
+            return $channel->getChannel();
+        })->toArray();
     }
 
     public function toMail(mixed $notifiable): NewQualificationRecordMail
@@ -58,11 +75,11 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
         return (new NewQualificationRecordMail($this->qualificationRecord, $this->url))->to($notifiable->email);
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(): BroadcastMessage
     {
         return FilamentNotification::make()
             ->title('New Qualification Record')
-            ->body(Str::markdown("A new qualification record has been added to your account.<br><br>**Qualification:** {$this->qualificationRecord?->qualification?->name}"))
+            ->body(Str::markdown($this->message))
             ->actions([
                 Action::make('Open qualification record')
                     ->button()
@@ -72,11 +89,11 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
             ->getBroadcastMessage();
     }
 
-    public function toDatabase($notifiable): array
+    public function toDatabase(): array
     {
         return FilamentNotification::make()
             ->title('New Qualification Record')
-            ->body(Str::markdown("A new qualification record has been added to your account.<br><br>**Qualification:** {$this->qualificationRecord?->qualification?->name}"))
+            ->body(Str::markdown($this->message))
             ->actions([
                 Action::make('Open qualification record')
                     ->button()
@@ -84,5 +101,30 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
             ])
             ->info()
             ->getDatabaseMessage();
+    }
+
+    public function toDiscord(): DiscordMessage
+    {
+        $converter = new HtmlConverter([
+            'strip_tags' => true,
+            'remove_nodes' => true,
+        ]);
+
+        return DiscordMessage::create(
+            body: $converter->convert(Str::markdown($this->message))
+        );
+    }
+
+    public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
+    {
+        $service = new TwilioService;
+
+        if (! $channel = $service->toNotificationChannel(
+            message: TwilioService::formatText($this->message)
+        )) {
+            return null;
+        }
+
+        return $channel;
     }
 }

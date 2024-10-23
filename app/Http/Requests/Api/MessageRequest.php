@@ -6,13 +6,16 @@ namespace App\Http\Requests\Api;
 
 use Orion\Http\Requests\Request;
 
-class StatusRequest extends Request
+class MessageRequest extends Request
 {
     public function commonRules(): array
     {
         return [
-            'name' => 'string',
-            'color' => ['string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'message' => 'string|max:255',
+            'channels' => 'array',
+            'recipients' => 'array',
+            'send_at' => 'nullable|datetime',
+            'sent_at' => 'nullable|datetime',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',
@@ -22,8 +25,8 @@ class StatusRequest extends Request
     public function storeRules(): array
     {
         return [
-            'name' => 'required|string',
-            'color' => ['required', 'string', 'regex:/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/'],
+            'message' => 'required|string|max:255',
+            'channels' => 'required|array',
         ];
     }
 }

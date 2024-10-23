@@ -11,6 +11,7 @@ use App\Models\Enums\NotificationGroup;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use App\Models\User;
+use App\Services\TwilioService;
 use App\Services\UserSettingsService;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
@@ -92,11 +93,17 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
         return DiscordMessage::create($converter->convert($this->getMessage($notifiable)));
     }
 
-    public function toTwilio(User $notifiable): TwilioSmsMessage|TwilioMessage
+    public function toTwilio(User $notifiable): TwilioSmsMessage|TwilioMessage|null
     {
-        return (new TwilioSmsMessage)
-            ->from(config('services.twilio.from'))
-            ->content($this->getMessage($notifiable));
+        $service = new TwilioService;
+
+        if (! $channel = $service->toNotificationChannel(
+            message: TwilioService::formatText($this->getMessage($notifiable))
+        )) {
+            return null;
+        }
+
+        return $channel;
     }
 
     protected function getMessage(User $user): string

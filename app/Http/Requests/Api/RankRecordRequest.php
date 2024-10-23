@@ -21,7 +21,7 @@ class RankRecordRequest extends Request
             'type' => Rule::enum(RankRecordType::class),
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'date',
+            'deleted_at' => 'nullable|date',
         ];
     }
 

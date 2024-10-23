@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace App\Features;
 
 use App\Contracts\PremiumFeature;
+use Filament\Forms\Components\Component;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\Tabs\Tab;
-use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
 use Illuminate\Support\Facades\App;
 use Laravel\Pennant\Feature;
@@ -49,6 +49,9 @@ class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
         return 'heroicon-o-bell-alert';
     }
 
+    /**
+     * @return array<Component>
+     */
     public static function settingsForm(): array
     {
         return [
@@ -60,10 +63,6 @@ class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
                             Toggle::make('discord_enabled')
                                 ->helperText('Enable Discord notifications system wide.')
                                 ->label('Enabled'),
-                            TextInput::make('discord_channel')
-                                ->label('Public channel')
-                                ->numeric()
-                                ->helperText('Different features of the platform allow you to send Discord notifications to either an individual user or to all users in a public channel. If you choose public channel, provide the channel ID here.'),
                         ]),
                     Tab::make('SMS')
                         ->icon('heroicon-o-device-phone-mobile')
@@ -83,8 +82,8 @@ class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
 
         return match (true) {
             App::isAdmin() => false,
-            App::isDemo() => true,
-            $tenant->onTrial() => true,
+            App::isDemo() => false,
+            $tenant->onTrial() => false,
             $tenant->subscribedToPrice(data_get($premiumFeatures, static::class)) => true,
             optional($tenant->sparkPlan(), static function (Plan $plan) {
                 return in_array(__CLASS__, $plan->options, true);

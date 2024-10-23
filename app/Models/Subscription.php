@@ -9,6 +9,8 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Laravel\Cashier\Subscription as BaseSubscription;
 use Laravel\Cashier\SubscriptionItem;
+use Spark\Plan;
+use Spark\Spark;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
@@ -26,6 +28,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, SubscriptionItem> $items
  * @property-read int|null $items_count
  * @property-read Tenant|null $owner
+ * @property-read string $renewal_term
  * @property-read Tenant|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription active()
@@ -68,6 +71,9 @@ class Subscription extends BaseSubscription
         return true;
     }
 
+    /**
+     * @return Attribute<?string>
+     */
     public function stripePrice(): Attribute
     {
         return Attribute::get(function ($value, $attributes) {
@@ -83,6 +89,18 @@ class Subscription extends BaseSubscription
             }
 
             return $item->stripe_price;
+        })->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?string>
+     */
+    public function renewalTerm(): Attribute
+    {
+        return Attribute::get(function (): string {
+            $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan) => [$plan->id => $plan->interval]);
+
+            return data_get($plans, $this->stripe_price);
         })->shouldCache();
     }
 }

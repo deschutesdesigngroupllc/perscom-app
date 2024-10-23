@@ -90,7 +90,6 @@ class CalendarWidget extends BaseCalendarWidget
             return $settings->timezone ?? config('app.timezone');
         });
 
-
         $calendarStart = Carbon::parse(data_get($fetchInfo, 'start'));
         $calendarEnd = Carbon::parse(data_get($fetchInfo, 'end'));
 

@@ -27,6 +27,7 @@ use App\Http\Controllers\Api\Groups\GroupsImageController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\Images\ImagesController;
 use App\Http\Controllers\Api\MeController;
+use App\Http\Controllers\Api\Messages\MessagesController;
 use App\Http\Controllers\Api\Newsfeed\NewsfeedController;
 use App\Http\Controllers\Api\Newsfeed\NewsfeedLikesController;
 use App\Http\Controllers\Api\Positions\PositionsController;
@@ -123,6 +124,9 @@ Route::group([
     Orion::hasOneResource('groups', 'image', GroupsImageController::class);
 
     Orion::resource('images', ImagesController::class);
+
+    Orion::resource('messages', MessagesController::class)
+        ->middleware('throttle:sms');
 
     Orion::resource('newsfeed', NewsfeedController::class)
         ->only(['index']);

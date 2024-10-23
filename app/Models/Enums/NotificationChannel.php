@@ -59,8 +59,8 @@ enum NotificationChannel: string implements HasDescription, HasLabel
         $key = AdvancedNotificationsFeature::settingsKey();
 
         return match ($this) {
-            NotificationChannel::DISCORD => Feature::active(AdvancedNotificationsFeature::class) && data_get($settings->$key, 'discord_enabled', false),
-            NotificationChannel::SMS => Feature::active(AdvancedNotificationsFeature::class) && data_get($settings->$key, 'sms_enabled', false),
+            NotificationChannel::DISCORD => Feature::active(AdvancedNotificationsFeature::class) && (data_get($settings->$key, 'discord_enabled', false) ?? false),
+            NotificationChannel::SMS => Feature::active(AdvancedNotificationsFeature::class) && (data_get($settings->$key, 'sms_enabled', false) ?? false),
             default => true
         };
     }

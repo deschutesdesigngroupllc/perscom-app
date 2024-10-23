@@ -23,6 +23,7 @@ use Filament\Tables\Table;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Number;
+use Illuminate\Support\Str;
 use Laravel\Pennant\Feature as Pennant;
 
 class Features extends Page implements HasTable
@@ -42,8 +43,13 @@ class Features extends Page implements HasTable
         /** @var Tenant $tenant * */
         $tenant = Filament::getTenant();
 
+        if (! $plan = $tenant->sparkPlan()) {
+            return false;
+        }
+
         return parent::canAccess()
             && $tenant->subscribed()
+            && $plan->name !== 'Basic'
             && ! $tenant->onTrial()
             && ! App::isDemo()
             && ! App::isAdmin()
@@ -52,6 +58,9 @@ class Features extends Page implements HasTable
 
     public static function table(Table $table): Table
     {
+        /** @var Tenant $tenant * */
+        $tenant = Filament::getTenant();
+
         return $table
             ->query(Feature::query())
             ->description('Manage your account addons and premium features here.')
@@ -73,12 +82,17 @@ class Features extends Page implements HasTable
                 TextColumn::make('price')
                     ->badge()
                     ->color('info')
-                    ->formatStateUsing(fn ($state) => Number::currency($state))
-                    ->sortable(),
+                    ->getStateUsing(function (Feature $record) use ($tenant) {
+                        return Number::currency(match ($tenant->subscription()->renewal_term) {
+                            'monthly' => $record->price_monthly,
+                            'yearly' => $record->price_yearly,
+                            default => 0
+                        });
+                    }),
                 TextColumn::make('term')
+                    ->getStateUsing(fn () => Str::ucfirst($tenant->subscription()->renewal_term))
                     ->badge()
-                    ->color('gray')
-                    ->sortable(),
+                    ->color('gray'),
             ])
             ->actions([
                 Action::make('subscribe')
@@ -89,10 +103,16 @@ class Features extends Page implements HasTable
                     ->requiresConfirmation()
                     ->modalHeading(fn (Feature $record) => "Subscribe to $record->name")
                     ->modalSubmitActionLabel('Subscribe')
-                    ->modalDescription(function (Feature $record) {
-                        $price = Number::currency($record->price);
+                    ->modalDescription(function (Feature $record) use ($tenant) {
+                        $term = $tenant->subscription()->renewal_term;
 
-                        return "We will charge your card on file $price {$record->term->value}. Please confirm you would like to proceed.";
+                        $price = Number::currency(match ($term) {
+                            'monthly' => $record->price_monthly,
+                            'yearly' => $record->price_yearly,
+                            default => 0
+                        });
+
+                        return "We will charge your card on file $price $term. Please confirm you would like to proceed.";
                     })
                     ->visible(function (Feature $record) {
                         /** @var PremiumFeature|string $feature */
@@ -115,12 +135,12 @@ class Features extends Page implements HasTable
                 Action::make('unsubscribe')
                     ->color('danger')
                     ->icon('heroicon-o-credit-card')
-                    ->successNotificationTitle('The feature has been successfully stopped. Any unused time will be credited on your next invoice. You can resubscribe at anytime to resume using the features.')
+                    ->successNotificationTitle('The feature has been successfully stopped. Any unused time will be credited to your account balance. You can resubscribe at anytime to resume using the features.')
                     ->failureNotificationTitle('We were unable to stop the subscription. Please reach out to support to assist.')
                     ->requiresConfirmation()
                     ->modalHeading(fn (Feature $record) => "Unsubscribe from $record->name")
                     ->modalSubmitActionLabel('Unsubscribe')
-                    ->modalDescription(fn (Feature $record) => "Are you sure you would like to unsubscribe from $record->name? Any unused time will be credited on your next invoice.")
+                    ->modalDescription(fn (Feature $record) => "Are you sure you would like to unsubscribe from $record->name? Any unused time will be credited to your account balance.")
                     ->visible(function (Feature $record) {
                         /** @var PremiumFeature|string $feature */
                         $feature = $record->feature;

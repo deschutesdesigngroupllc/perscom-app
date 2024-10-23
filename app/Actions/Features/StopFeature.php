@@ -17,13 +17,24 @@ class StopFeature
     public static function handle(Tenant $tenant, Feature $feature): Subscription|bool
     {
         $subscription = $tenant->subscription();
-        if (is_null($subscription) || is_null($feature->price_id)) {
+
+        if (blank($subscription)) {
             return false;
         }
 
-        return rescue(function () use ($subscription, $feature) {
+        $price = match ($subscription->renewal_term) {
+            'monthly' => $feature->monthly_id,
+            'yearly' => $feature->yearly_id,
+            default => null
+        };
+
+        if (is_null($price)) {
+            return false;
+        }
+
+        return rescue(function () use ($subscription, $price) {
             return $subscription
-                ->removePrice($feature->price_id);
+                ->removePrice($price);
         }, false);
     }
 }

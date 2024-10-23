@@ -17,7 +17,7 @@ class ServiceRecordRequest extends Request
             'text' => 'string',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'date',
+            'deleted_at' => 'nullable|date',
         ];
     }
 

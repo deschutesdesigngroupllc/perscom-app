@@ -10,6 +10,7 @@ use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
 use App\Models\User;
 use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -190,23 +191,23 @@ class MessageResource extends BaseResource
             ])
             ->groups(['repeats'])
             ->filters([
-                                    Tables\Filters\SelectFilter::make('channels')
-                                        ->options(NotificationChannel::class)
-                                        ->modifyQueryUsing(fn (Builder $query, $data) => $query->when(! is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
-                                    Tables\Filters\TernaryFilter::make('repeats'),
-                                    Tables\Filters\TrashedFilter::make(),
-                                ])
+                Tables\Filters\SelectFilter::make('channels')
+                    ->options(NotificationChannel::class)
+                    ->modifyQueryUsing(fn (Builder $query, $data) => $query->when(! is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
+                Tables\Filters\TernaryFilter::make('repeats'),
+                Tables\Filters\TrashedFilter::make(),
+            ])
             ->actions([
-                                    Tables\Actions\ViewAction::make(),
-                                    Tables\Actions\DeleteAction::make(),
-                                ])
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make(),
+            ])
             ->bulkActions([
-                                    Tables\Actions\BulkActionGroup::make([
-                                        Tables\Actions\DeleteBulkAction::make(),
-                                        Tables\Actions\ForceDeleteBulkAction::make(),
-                                        Tables\Actions\RestoreBulkAction::make(),
-                                    ]),
-                                ]);
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\ForceDeleteBulkAction::make(),
+                    Tables\Actions\RestoreBulkAction::make(),
+                ]),
+            ]);
     }
 
     public static function getRelations(): array

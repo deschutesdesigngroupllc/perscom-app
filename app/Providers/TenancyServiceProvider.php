@@ -32,7 +32,6 @@ class TenancyServiceProvider extends ServiceProvider
                 ])->send(function (Events\TenantCreated $event) {
                     return $event->tenant;
                 })->shouldBeQueued(
-                    shouldBeQueued: app()->environment(['staging', 'production']),
                     queue: 'system'
                 ),
             ],
@@ -47,7 +46,6 @@ class TenancyServiceProvider extends ServiceProvider
                 ])->send(function (Events\TenantDeleted $event) {
                     return $event->tenant;
                 })->shouldBeQueued(
-                    shouldBeQueued: app()->environment(['staging', 'production']),
                     queue: 'system'
                 ),
             ],

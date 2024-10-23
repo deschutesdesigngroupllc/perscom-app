@@ -23,13 +23,16 @@ class NewTaskAssignment extends Notification implements ShouldBroadcast, ShouldQ
 
     protected string $url;
 
+    protected string $message;
+
     public function __construct(protected TaskAssignment $taskAssignment)
     {
         // TODO: Fix
         $this->url = 'test';
+        $this->message = "A new task has been assigned to you.<br><br>**Task:** {$this->taskAssignment?->task?->title}";
     }
 
-    public function via(mixed $notifiable): array
+    public function via(): array
     {
         return ['mail', 'database', 'broadcast'];
     }
@@ -39,11 +42,11 @@ class NewTaskAssignment extends Notification implements ShouldBroadcast, ShouldQ
         return (new NewTaskAssignmentMail($this->taskAssignment, $this->url))->to($notifiable->email);
     }
 
-    public function toBroadcast($notifiable): BroadcastMessage
+    public function toBroadcast(): BroadcastMessage
     {
         return FilamentNotification::make()
             ->title('New Task Assigned')
-            ->body(Str::markdown("A new task has been assigned to you.<br><br>**Task:** {$this->taskAssignment?->task?->title}"))
+            ->body(Str::markdown($this->message))
             ->actions([
                 Action::make('Open task')
                     ->button()
@@ -53,11 +56,11 @@ class NewTaskAssignment extends Notification implements ShouldBroadcast, ShouldQ
             ->getBroadcastMessage();
     }
 
-    public function toDatabase($notifiable): array
+    public function toDatabase(): array
     {
         return FilamentNotification::make()
             ->title('New Task Assigned')
-            ->body(Str::markdown("A new task has been assigned to you.<br><br>**Task:** {$this->taskAssignment?->task?->title}"))
+            ->body(Str::markdown($this->message))
             ->actions([
                 Action::make('Open task')
                     ->button()
