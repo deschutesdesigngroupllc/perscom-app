@@ -10,7 +10,7 @@ use Throwable;
 
 class SendUpcomingEventNotifications extends Command
 {
-    protected $signature = 'perscom:event-notification';
+    protected $signature = 'perscom:event-notifications';
 
     protected $description = 'Send any upcoming event notifications.';
 
