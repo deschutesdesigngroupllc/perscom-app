@@ -6,6 +6,7 @@ namespace App\Filament\Admin\Resources;
 
 use App\Filament\Admin\Resources\AlertResource\Pages;
 use App\Models\Alert;
+use App\Models\Enums\AlertChannel;
 use App\Models\Scopes\EnabledScope;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -46,13 +47,31 @@ class AlertResource extends Resource
                                 Forms\Components\Toggle::make('enabled')
                                     ->default(true)
                                     ->required(),
+                                Forms\Components\CheckboxList::make('channels')
+                                    ->hiddenLabel()
+                                    ->required()
+                                    ->bulkToggleable()
+                                    ->descriptions(function () {
+                                        return collect(AlertChannel::cases())->mapWithKeys(function (AlertChannel $channel) {
+                                            return [$channel->value => $channel->getDescription()];
+                                        })->toArray();
+                                    })
+                                    ->options(function () {
+                                        return collect(AlertChannel::cases())->mapWithKeys(function (AlertChannel $channel) {
+                                            return [$channel->value => $channel->getLabel()];
+                                        })->toArray();
+                                    }),
                             ]),
                         Forms\Components\Tabs\Tab::make('Link')
                             ->icon('heroicon-o-link')
                             ->schema([
                                 Forms\Components\TextInput::make('link_text')
+                                    ->label('Text')
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('url')
+                                    ->url()
+                                    ->label('URL')
+                                    ->requiredWith('link_text')
                                     ->maxLength(255),
                             ]),
                     ]),
@@ -69,10 +88,13 @@ class AlertResource extends Resource
                 Tables\Columns\TextColumn::make('message')
                     ->html()
                     ->wrap()
+                    ->limit()
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ToggleColumn::make('enabled')
                     ->sortable(),
+                Tables\Columns\TextColumn::make('channels')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
@@ -88,8 +110,8 @@ class AlertResource extends Resource
             ])
             ->groups(['enabled'])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
                 Tables\Filters\TernaryFilter::make('enabled'),
+                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
@@ -104,7 +126,7 @@ class AlertResource extends Resource
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
-            ->defaultSort('order')
+            ->defaultSort('order', 'desc')
             ->reorderable('order');
     }
 

@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Jobs\Central\SendRecurringMessages;
+use App\Jobs\Central\SendUpcomingEventNotifications;
 use Illuminate\Support\Str;
 use Laravel\Telescope\Jobs\ProcessPendingUpdates;
 
@@ -126,6 +128,8 @@ return [
 
     'silenced' => [
         ProcessPendingUpdates::class,
+        SendRecurringMessages::class,
+        SendUpcomingEventNotifications::class,
     ],
 
     /*

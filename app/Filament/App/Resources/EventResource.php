@@ -203,15 +203,15 @@ class EventResource extends BaseResource
                                     ->requiredIf('notifications_enabled', true)
                                     ->bulkToggleable()
                                     ->descriptions(function () {
-                                        return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $case) {
-                                            return [$case->value => $case->getDescription()];
+                                        return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $channel) {
+                                            return [$channel->value => $channel->getDescription()];
                                         })->toArray();
                                     })
                                     ->options(function () {
                                         return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
                                             return $channel->getEnabled();
-                                        })->mapWithKeys(function (NotificationChannel $case) {
-                                            return [$case->value => $case->getLabel()];
+                                        })->mapWithKeys(function (NotificationChannel $channel) {
+                                            return [$channel->value => $channel->getLabel()];
                                         })->toArray();
                                     }),
                             ]),

@@ -32,6 +32,7 @@
     "laravel/passport": "^12.2",
     "laravel/pennant": "^1.11",
     "laravel/pulse": "^1.2.3",
+    "laravel/slack-notification-channel": "^3.3",
     "laravel/spark-stripe": "^5.3",
     "laravel/telescope": "^5.1.1",
     "laravel/tinker": "^2.9",
