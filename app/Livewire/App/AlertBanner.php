@@ -14,10 +14,12 @@ class AlertBanner extends Component
 
     public function mount(): void
     {
-        $this->alerts = Alert::all()->map(function (Alert $alert) {
+        $this->alerts = Alert::query()->orderBy('order', 'desc')->whereJsonContains('channels', 'dashboard')->get()->map(function (Alert $alert) {
             return [
                 'title' => $alert->title,
                 'message' => $alert->message,
+                'url' => $alert->url,
+                'link' => $alert->link_text,
             ];
         })->toArray();
     }

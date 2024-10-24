@@ -5,11 +5,15 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Enableable;
+use App\Models\Enums\AlertChannel;
 use App\Models\Scopes\EnabledScope;
+use App\Observers\AlertObserver;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsResponseCache;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
@@ -24,6 +28,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property string $message
  * @property string|null $link_text
  * @property string|null $url
+ * @property AsEnumCollection|null $channels
  * @property bool $enabled
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -37,6 +42,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder|Alert onlyTrashed()
  * @method static Builder|Alert ordered(string $direction = 'asc')
  * @method static Builder|Alert query()
+ * @method static Builder|Alert whereChannels($value)
  * @method static Builder|Alert whereCreatedAt($value)
  * @method static Builder|Alert whereDeletedAt($value)
  * @method static Builder|Alert whereEnabled($value)
@@ -52,6 +58,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  *
  * @mixin \Eloquent
  */
+#[ObservedBy(AlertObserver::class)]
 #[ScopedBy(EnabledScope::class)]
 class Alert extends Model implements Enableable, Sortable
 {
@@ -71,4 +78,14 @@ class Alert extends Model implements Enableable, Sortable
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * @return string[]
+     */
+    protected function casts(): array
+    {
+        return [
+            'channels' => AsEnumCollection::of(AlertChannel::class),
+        ];
+    }
 }

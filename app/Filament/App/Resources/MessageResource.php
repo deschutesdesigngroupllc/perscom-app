@@ -41,15 +41,15 @@ class MessageResource extends BaseResource
                 ->hiddenLabel()
                 ->bulkToggleable()
                 ->descriptions(function () {
-                    return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $case) {
-                        return [$case->value => $case->getDescription()];
+                    return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $channel) {
+                        return [$channel->value => $channel->getDescription()];
                     })->toArray();
                 })
                 ->options(function () {
                     return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
                         return $channel->getEnabled();
-                    })->mapWithKeys(function (NotificationChannel $case) {
-                        return [$case->value => $case->getLabel()];
+                    })->mapWithKeys(function (NotificationChannel $channel) {
+                        return [$channel->value => $channel->getLabel()];
                     })->toArray();
                 }),
         ];
@@ -69,7 +69,11 @@ class MessageResource extends BaseResource
 
                     return $settings->timezone ?? config('app.timezone');
                 }))
-                ->minDate(now())
+                ->minDate(function ($component) {
+                    return now()
+                        ->shiftTimezone($component->getTimezone())
+                        ->setTimezone(config('app.timezone'));
+                })
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
                 ->hidden(fn (Forms\Get $get) => $get('repeats')),
