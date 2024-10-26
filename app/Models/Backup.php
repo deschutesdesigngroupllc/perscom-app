@@ -12,21 +12,11 @@ use Sushi\Sushi;
 
 /**
  * @property int $id
- * @property string|null $name
- * @property string|null $path
- * @property string|null $size
- * @property string|null $url
- * @property string|null $created_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Backup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Backup newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Backup query()
- * @method static \Illuminate\Database\Eloquent\Builder|Backup whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Backup whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Backup whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Backup wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Backup whereSize($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Backup whereUrl($value)
  *
  * @mixin \Eloquent
  */

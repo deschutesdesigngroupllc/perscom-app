@@ -8,6 +8,7 @@ use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\AnnouncementResource\Pages;
 use App\Filament\Exports\AnnouncementExporter;
 use App\Models\Announcement;
+use App\Models\Enums\NotificationChannel;
 use App\Models\Scopes\DisabledScope;
 use App\Models\Scopes\EnabledScope;
 use App\Services\UserSettingsService;
@@ -36,32 +37,56 @@ class AnnouncementResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Announcement Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('title')
-                            ->helperText('The announcement title.')
-                            ->columnSpanFull()
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('content')
-                            ->helperText('The announcement content.')
-                            ->required()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Forms\Components\ColorPicker::make('color')
-                            ->helperText('Add some color to the announcement.')
-                            ->required(),
-                        Forms\Components\Checkbox::make('global')
-                            ->helperText('If checked, the announcement will be displayed at the top of all pages.'),
-                        Forms\Components\DateTimePicker::make('expires_at')
-                            ->timezone(UserSettingsService::get('timezone', function () {
-                                /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
+                Forms\Components\Tabs::make()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Announcement')
+                            ->icon('heroicon-o-megaphone')
+                            ->schema([
+                                Forms\Components\TextInput::make('title')
+                                    ->helperText('The announcement title.')
+                                    ->columnSpanFull()
+                                    ->required()
+                                    ->maxLength(255),
+                                Forms\Components\RichEditor::make('content')
+                                    ->helperText('The announcement content.')
+                                    ->required()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Forms\Components\ColorPicker::make('color')
+                                    ->helperText('Add some color to the announcement.')
+                                    ->required(),
+                                Forms\Components\Checkbox::make('global')
+                                    ->helperText('If checked, the announcement will be displayed at the top of all pages.'),
+                                Forms\Components\DateTimePicker::make('expires_at')
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
 
-                                return $settings->timezone ?? config('app.timezone');
-                            }))
-                            ->label('Expiration')
-                            ->helperText('If set, the announcement will disappear after this date.'),
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
+                                    ->label('Expiration')
+                                    ->helperText('If set, the announcement will disappear after this date.'),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Notifications')
+                            ->icon('heroicon-o-bell')
+                            ->schema([
+                                Forms\Components\CheckboxList::make('channels')
+                                    ->hiddenLabel()
+                                    ->bulkToggleable()
+                                    ->descriptions(function () {
+                                        return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $channel) {
+                                            return [$channel->value => $channel->getDescription()];
+                                        })->toArray();
+                                    })
+                                    ->options(function () {
+                                        return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
+                                            return $channel->getEnabled();
+                                        })->mapWithKeys(function (NotificationChannel $channel) {
+                                            return [$channel->value => $channel->getLabel()];
+                                        })->toArray();
+                                    }),
+                            ]),
                     ]),
             ]);
     }
@@ -73,19 +98,22 @@ class AnnouncementResource extends BaseResource
                 Tables\Columns\TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ColorColumn::make('color')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\IconColumn::make('global')
-                    ->sortable(),
-                Tables\Columns\ToggleColumn::make('enabled')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('content')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->sortable()
                     ->html()
                     ->wrap()
                     ->searchable(),
+                Tables\Columns\ColorColumn::make('color')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\IconColumn::make('global')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('channels')
+                    ->badge()
+                    ->color('gray'),
+                Tables\Columns\ToggleColumn::make('enabled')
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('expires_at')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */

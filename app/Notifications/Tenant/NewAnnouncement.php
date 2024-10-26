@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
-use App\Mail\Tenant\NewMessage as NewMessageMail;
+use App\Mail\Tenant\NewAnnouncement as NewAnnouncementMail;
+use App\Models\Announcement;
 use App\Models\Enums\NotificationChannel;
-use App\Models\Message;
 use App\Models\User;
 use App\Services\TwilioService;
 use Filament\Notifications\Notification as FilamentNotification;
+use Filament\Support\Colors\Color;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
@@ -20,22 +21,18 @@ use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
 
-class NewMessage extends Notification implements ShouldQueue
+class NewAnnouncement extends Notification implements ShouldQueue
 {
     use Queueable;
 
     protected FilamentNotification $notification;
 
-    public function __construct(public Message $message)
+    public function __construct(public Announcement $announcement)
     {
         $this->notification = FilamentNotification::make()
-            ->title('New Message')
-            ->body($this->message->message)
-            ->info();
-
-        if (filled($this->message->send_at)) {
-            $this->delay(now()->diff($this->message->send_at));
-        }
+            ->title($this->announcement->title)
+            ->body($this->announcement->content)
+            ->color(Color::hex($this->announcement->color));
     }
 
     /**
@@ -44,7 +41,7 @@ class NewMessage extends Notification implements ShouldQueue
     public function via(): array
     {
         /** @var Collection<int, NotificationChannel> $channels */
-        $channels = $this->message->channels;
+        $channels = $this->announcement->channels;
 
         return $channels
             ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
@@ -53,9 +50,9 @@ class NewMessage extends Notification implements ShouldQueue
             ->toArray();
     }
 
-    public function toMail(User $notifiable): NewMessageMail
+    public function toMail(User $notifiable): NewAnnouncementMail
     {
-        return (new NewMessageMail($this->message))->to($notifiable->email);
+        return (new NewAnnouncementMail($this->announcement))->to($notifiable->email);
     }
 
     public function toBroadcast(): BroadcastMessage
@@ -78,7 +75,7 @@ class NewMessage extends Notification implements ShouldQueue
             'remove_nodes' => true,
         ]);
 
-        return DiscordMessage::create($converter->convert($this->message->message));
+        return DiscordMessage::create($converter->convert($this->announcement->content));
     }
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
@@ -87,7 +84,7 @@ class NewMessage extends Notification implements ShouldQueue
         $service = app(TwilioService::class);
 
         if (! $channel = $service->toNotificationChannel(
-            message: TwilioService::formatText($this->message->message)
+            message: TwilioService::formatText($this->announcement->content)
         )) {
             return null;
         }

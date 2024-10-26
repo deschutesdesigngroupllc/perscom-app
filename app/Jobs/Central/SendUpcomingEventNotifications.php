@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Jobs\Central;
 
+use App\Actions\Events\SendUpcomingEventNotification;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
 use App\Models\Tenant;
-use App\Models\User;
-use App\Notifications\Tenant\UpcomingEvent;
 use DateInterval;
 use Exception;
 use Illuminate\Bus\Batchable;
@@ -16,6 +15,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use Throwable;
 
 class SendUpcomingEventNotifications implements ShouldQueue
 {
@@ -28,6 +28,7 @@ class SendUpcomingEventNotifications implements ShouldQueue
 
     /**
      * @throws Exception
+     * @throws Throwable
      */
     public function handle(): void
     {
@@ -66,13 +67,10 @@ class SendUpcomingEventNotifications implements ShouldQueue
 
                                 return true;
                             })
-                            ->map(fn (Event $event) => new UpcomingEvent($event, NotificationInterval::from($interval)));
-                    })
 
-                    // Dispatch the notifications
-                    ->each(fn (UpcomingEvent $notification) => $notification->event->registrations->each(function (User $user) use ($notification) {
-                        $user->notify($notification);
-                    }));
+                            // Send the notifications
+                            ->each(fn (Event $event) => SendUpcomingEventNotification::handle($event, NotificationInterval::from($interval)));
+                    });
             });
         });
     }
