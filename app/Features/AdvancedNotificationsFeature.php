@@ -79,6 +79,9 @@ class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
                                         ->icon('heroicon-o-plus-circle')
                                         ->label('Add To Server');
                                 })
+                                ->searchable()
+                                ->preload()
+                                ->live(onBlur: true)
                                 ->label('Server')
                                 ->options(function () {
                                     return collect(DiscordService::getGuilds())->mapWithKeys(function ($data) {
@@ -90,6 +93,8 @@ class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
                                 }),
                             Select::make('discord_channel')
                                 ->label('Channel')
+                                ->searchable()
+                                ->preload()
                                 ->options(function (Get $get) {
                                     $guildId = $get('discord_server');
 
