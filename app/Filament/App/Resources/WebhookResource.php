@@ -105,26 +105,22 @@ class WebhookResource extends BaseResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('url')
-                    ->sortable()
-                    ->searchable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->sortable()
-                    ->searchable()
                     ->html()
                     ->wrap(),
                 Tables\Columns\TextColumn::make('method')
                     ->badge()
                     ->sortable()
-                    ->color('gray')
-                    ->searchable(),
+                    ->color('gray'),
                 Tables\Columns\TextColumn::make('events')
                     ->listWithLineBreaks()
                     ->expandableLimitedList()
                     ->limitList()
                     ->sortable()
-                    ->badge()
-                    ->searchable(),
+                    ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
@@ -133,39 +129,7 @@ class WebhookResource extends BaseResource
                         return $settings->timezone ?? config('app.timezone');
                     }))
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->groups(['method'])
-            ->filters([
-                Tables\Filters\SelectFilter::make('events')
-                    ->multiple()
-                    ->searchable()
-                    ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event) => [$event->value => $event->value])->toArray())
-                    ->query(fn (Builder $query, $data) => $query->when(data_get($data, 'values'), fn (Builder $query) => $query->whereJsonContains('events', data_get($data, 'values')))),
-                Tables\Filters\SelectFilter::make('method')
-                    ->options(WebhookMethod::class),
-                Tables\Filters\TrashedFilter::make(),
+                    ->sortable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
