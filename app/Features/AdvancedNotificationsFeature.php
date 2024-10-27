@@ -91,9 +91,17 @@ class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
                             Select::make('discord_channel')
                                 ->label('Channel')
                                 ->options(function (Get $get) {
-                                    return collect(DiscordService::getChannels($get('discord_server')))->filter(fn ($data) => (string) data_get($data, 'type') === '0')->mapWithKeys(function ($data) {
-                                        return [data_get($data, 'id') => data_get($data, 'name')];
-                                    });
+                                    $guildId = $get('discord_server');
+
+                                    if (blank($guildId)) {
+                                        return [];
+                                    }
+
+                                    return collect(DiscordService::getChannels($guildId))
+                                        ->filter(fn ($data) => (string) data_get($data, 'type') === '0')
+                                        ->mapWithKeys(function ($data) {
+                                            return [data_get($data, 'id') => data_get($data, 'name')];
+                                        });
                                 })
                                 ->helperText('Select the channel the notifications will be posted to.'),
                         ]),
