@@ -66,7 +66,7 @@ class UserObserver
         if ($user->isDirty('phone_number') && filled($user->phone_number)) {
             SendSms::handle(
                 user: $user,
-                message: 'Thank you for registering for PERSCOM notifications. You can reply STOP at anytime or deselect SMS as a notification option in your account dashboard top stop receiving text messages.'
+                message: 'Thank you for registering for PERSCOM notifications. You can reply STOP at anytime or remove your phone number from the account dashboard to stop receiving text messages.'
             );
         }
 

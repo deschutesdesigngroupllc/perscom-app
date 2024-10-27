@@ -52,14 +52,14 @@ class AlertResource extends Resource
                                     ->required()
                                     ->bulkToggleable()
                                     ->descriptions(function () {
-                                        return collect(AlertChannel::cases())->mapWithKeys(function (AlertChannel $channel) {
-                                            return [$channel->value => $channel->getDescription()];
-                                        })->toArray();
+                                        return collect(AlertChannel::cases())
+                                            ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getDescription()])
+                                            ->toArray();
                                     })
                                     ->options(function () {
-                                        return collect(AlertChannel::cases())->mapWithKeys(function (AlertChannel $channel) {
-                                            return [$channel->value => $channel->getLabel()];
-                                        })->toArray();
+                                        return collect(AlertChannel::cases())
+                                            ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getLabel()])
+                                            ->toArray();
                                     }),
                             ]),
                         Forms\Components\Tabs\Tab::make('Link')

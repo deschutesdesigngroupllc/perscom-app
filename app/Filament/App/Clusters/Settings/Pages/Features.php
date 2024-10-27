@@ -38,6 +38,8 @@ class Features extends Page implements HasTable
 
     protected static ?int $navigationSort = 2;
 
+    protected ?string $subheading = 'Access an array of additional features available for your account.';
+
     public static function canAccess(): bool
     {
         /** @var Tenant $tenant * */

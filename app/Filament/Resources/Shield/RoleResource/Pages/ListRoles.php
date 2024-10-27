@@ -12,6 +12,8 @@ class ListRoles extends ListRecords
 {
     protected static string $resource = RoleResource::class;
 
+    protected ?string $subheading = 'Add and update account roles which define access to certain account resources.';
+
     protected function getActions(): array
     {
         return [

@@ -26,6 +26,8 @@ class Registration extends SettingsPage
 
     protected static ?int $navigationSort = 6;
 
+    protected ?string $subheading = 'Configure user registration settings.';
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

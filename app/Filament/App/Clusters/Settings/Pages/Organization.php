@@ -28,6 +28,8 @@ class Organization extends SettingsPage
 
     protected static ?int $navigationSort = 4;
 
+    protected ?string $subheading = 'Account related settings specific to your organizational details.';
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

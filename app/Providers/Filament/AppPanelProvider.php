@@ -8,11 +8,13 @@ use App\Features\BillingFeature;
 use App\Filament\App\Pages\Auth\EditProfile;
 use App\Filament\App\Pages\Auth\EmailVerificationPrompt;
 use App\Filament\App\Pages\Dashboard;
+use App\Filament\App\Resources\AnnouncementResource;
 use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
 use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Filament\App\Resources\AwardRecordResource;
 use App\Filament\App\Resources\CombatRecordResource;
 use App\Filament\App\Resources\EventResource;
+use App\Filament\App\Resources\MessageResource;
 use App\Filament\App\Resources\QualificationRecordResource;
 use App\Filament\App\Resources\RankRecordResource;
 use App\Filament\App\Resources\ServiceRecordResource;
@@ -114,10 +116,12 @@ class AppPanelProvider extends PanelProvider
                     ->renderUsingHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER)
                     ->alwaysShowModal()
                     ->includes([
+                        AnnouncementResource::class,
                         AssignmentRecordResource::class,
                         AwardRecordResource::class,
                         CombatRecordResource::class,
                         EventResource::class,
+                        MessageResource::class,
                         QualificationRecordResource::class,
                         RankRecordResource::class,
                         ServiceRecordResource::class,

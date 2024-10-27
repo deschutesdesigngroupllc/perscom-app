@@ -73,18 +73,18 @@ class AnnouncementResource extends BaseResource
                             ->schema([
                                 Forms\Components\CheckboxList::make('channels')
                                     ->hiddenLabel()
+                                    ->searchable()
                                     ->bulkToggleable()
                                     ->descriptions(function () {
-                                        return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $channel) {
-                                            return [$channel->value => $channel->getDescription()];
-                                        })->toArray();
+                                        return collect(NotificationChannel::cases())
+                                            ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
+                                            ->toArray();
                                     })
                                     ->options(function () {
-                                        return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
-                                            return $channel->getEnabled();
-                                        })->mapWithKeys(function (NotificationChannel $channel) {
-                                            return [$channel->value => $channel->getLabel()];
-                                        })->toArray();
+                                        return collect(NotificationChannel::cases())
+                                            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
+                                            ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
+                                            ->toArray();
                                     }),
                             ]),
                     ]),

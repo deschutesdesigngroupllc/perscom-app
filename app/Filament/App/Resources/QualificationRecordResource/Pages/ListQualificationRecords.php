@@ -12,6 +12,8 @@ class ListQualificationRecords extends ListRecords
 {
     protected static string $resource = QualificationRecordResource::class;
 
+    protected ?string $subheading = 'Keep track of a users capabilities, qualifications, trainings and certifications.';
+
     protected function getHeaderActions(): array
     {
         return [
