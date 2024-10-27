@@ -114,36 +114,54 @@ class AppServiceProvider extends ServiceProvider
                         ->label('Created')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->dateTime()
-                        ->timezone(UserSettingsService::get('timezone', function () {
-                            /** @var OrganizationSettings $settings */
-                            $settings = app(OrganizationSettings::class);
+                        ->timezone(function () {
+                            if (! tenancy()->initialized) {
+                                return config('app.timezone');
+                            }
 
-                            return $settings->timezone ?? config('app.timezone');
-                        }));
+                            return UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            });
+                        });
                 },
                 'updated_at' => function (TextColumn $field) {
                     $field
                         ->label('Updated')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->dateTime()
-                        ->timezone(UserSettingsService::get('timezone', function () {
-                            /** @var OrganizationSettings $settings */
-                            $settings = app(OrganizationSettings::class);
+                        ->timezone(function () {
+                            if (! tenancy()->initialized) {
+                                return config('app.timezone');
+                            }
 
-                            return $settings->timezone ?? config('app.timezone');
-                        }));
+                            return UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            });
+                        });
                 },
                 'deleted_at' => function (TextColumn $field) {
                     $field
                         ->label('Deleted')
                         ->toggleable(isToggledHiddenByDefault: true)
                         ->dateTime()
-                        ->timezone(UserSettingsService::get('timezone', function () {
-                            /** @var OrganizationSettings $settings */
-                            $settings = app(OrganizationSettings::class);
+                        ->timezone(function () {
+                            if (! tenancy()->initialized) {
+                                return config('app.timezone');
+                            }
 
-                            return $settings->timezone ?? config('app.timezone');
-                        }));
+                            return UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            });
+                        });
                 },
                 default => null,
             };
@@ -157,34 +175,52 @@ class AppServiceProvider extends ServiceProvider
                     $field
                         ->label('Created')
                         ->dateTime()
-                        ->timezone(UserSettingsService::get('timezone', function () {
-                            /** @var OrganizationSettings $settings */
-                            $settings = app(OrganizationSettings::class);
+                        ->timezone(function () {
+                            if (! tenancy()->initialized) {
+                                return config('app.timezone');
+                            }
 
-                            return $settings->timezone ?? config('app.timezone');
-                        }));
+                            return UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            });
+                        });
                 },
                 'updated_at' => function (TextEntry $field) {
                     $field
                         ->label('Updated')
                         ->dateTime()
-                        ->timezone(UserSettingsService::get('timezone', function () {
-                            /** @var OrganizationSettings $settings */
-                            $settings = app(OrganizationSettings::class);
+                        ->timezone(function () {
+                            if (! tenancy()->initialized) {
+                                return config('app.timezone');
+                            }
 
-                            return $settings->timezone ?? config('app.timezone');
-                        }));
+                            return UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            });
+                        });
                 },
                 'deleted_at' => function (TextEntry $field) {
                     $field
                         ->label('Deleted')
                         ->dateTime()
-                        ->timezone(UserSettingsService::get('timezone', function () {
-                            /** @var OrganizationSettings $settings */
-                            $settings = app(OrganizationSettings::class);
+                        ->timezone(function () {
+                            if (! tenancy()->initialized) {
+                                return config('app.timezone');
+                            }
 
-                            return $settings->timezone ?? config('app.timezone');
-                        }));
+                            return UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            });
+                        });
                 },
                 default => null,
             };
