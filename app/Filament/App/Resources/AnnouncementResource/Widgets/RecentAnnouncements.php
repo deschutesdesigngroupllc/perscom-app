@@ -26,7 +26,8 @@ class RecentAnnouncements extends BaseWidget
                 '-mx-4' => true,
             ])
             ->query(
-                Announcement::query()->where('global', false)->latest()->take(10)
+                Announcement::query()->where('global', false)
+                    ->latest()
             )
             ->recordAction('view')
             ->columns([
@@ -38,6 +39,8 @@ class RecentAnnouncements extends BaseWidget
                         ->html()
                         ->wrap(),
                 ]),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->color(Color::Gray),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make()
@@ -54,6 +57,6 @@ class RecentAnnouncements extends BaseWidget
                     ]),
             ])
             ->emptyStateDescription('There are no recent announcements to show.')
-            ->paginated(false);
+            ->paginated([5]);
     }
 }

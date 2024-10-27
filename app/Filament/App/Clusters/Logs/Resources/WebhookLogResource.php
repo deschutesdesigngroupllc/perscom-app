@@ -59,8 +59,7 @@ class WebhookLogResource extends BaseResource
                     ->getStateUsing(fn (WebhookLog $record) => $record->getExtraProperty('event')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()
-                    ->label('Sent')
-                    ->dateTime(),
+                    ->label('Sent'),
             ])
             ->filters([
                 //
@@ -86,7 +85,6 @@ class WebhookLogResource extends BaseResource
                         ->icon('heroicon-o-cloud-arrow-up')
                         ->schema([
                             TextEntry::make('created_at')
-                                ->dateTime()
                                 ->label('Sent'),
                             TextEntry::make('event')
                                 ->badge()

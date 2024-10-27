@@ -85,35 +85,11 @@ class NewsfeedResource extends BaseResource
                 Tables\Columns\TextColumn::make('causer.name')
                     ->label('Author'),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -139,18 +115,11 @@ class NewsfeedResource extends BaseResource
                         'class' => 'font-bold',
                     ]),
                 TextEntry::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
                     ->hiddenLabel()
                     ->size(TextEntry\TextEntrySize::Small)
                     ->extraAttributes([
                         'class' => '-mt-6 !text-gray-700',
-                    ])
-                    ->dateTime(),
+                    ]),
                 TextEntry::make('text')
                     ->hiddenLabel()
                     ->html(),

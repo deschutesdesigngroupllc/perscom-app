@@ -47,7 +47,6 @@ class Backups extends Page implements HasTable
                 TextColumn::make('size')
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable(),
             ])
             ->actions([

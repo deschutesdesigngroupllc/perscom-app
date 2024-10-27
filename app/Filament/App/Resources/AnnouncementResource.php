@@ -125,35 +125,11 @@ class AnnouncementResource extends BaseResource
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->recordClasses(fn (?Announcement $record) => match ($record->enabled) {
                 false => '!border-s-2 !border-s-red-600',

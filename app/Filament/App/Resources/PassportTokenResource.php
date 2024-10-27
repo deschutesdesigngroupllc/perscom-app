@@ -113,13 +113,6 @@ class PassportTokenResource extends BaseResource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
                     ->sortable(),
             ])
             ->actions([

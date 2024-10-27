@@ -24,8 +24,7 @@ class StatusesRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')
                     ->badge()
                     ->color(fn (?Status $record) => Color::hex($record->color ?? '#2563eb')),
-                Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime(),
+                Tables\Columns\TextColumn::make('created_at'),
             ])
             ->filters([
                 //

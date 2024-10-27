@@ -23,7 +23,6 @@ class AwardRecordsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('award.name')
                     ->sortable(),
