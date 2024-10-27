@@ -30,6 +30,8 @@ class Integration extends SettingsPage
 
     protected static ?int $navigationSort = 3;
 
+    protected ?string $subheading = 'Adjust settings related to integrating PERSCOM with third-party services.';
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

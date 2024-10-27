@@ -25,4 +25,11 @@ class ListWebhooks extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            WebhookResource\Widgets\WebhookRequests::class,
+        ];
+    }
 }

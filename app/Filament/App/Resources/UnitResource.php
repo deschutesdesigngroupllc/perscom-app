@@ -10,8 +10,6 @@ use App\Filament\Exports\UnitExporter;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
 use App\Models\Unit;
-use App\Services\UserSettingsService;
-use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -117,35 +115,11 @@ class UnitResource extends BaseResource
                 IconColumn::make('icon')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->recordClasses(fn (?Unit $record) => match ($record->hidden) {
                 true => '!border-s-2 !border-s-red-600',

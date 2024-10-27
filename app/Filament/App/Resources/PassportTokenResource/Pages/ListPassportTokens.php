@@ -44,4 +44,11 @@ class ListPassportTokens extends ListRecords
             Actions\CreateAction::make(),
         ];
     }
+
+    protected function getHeaderWidgets(): array
+    {
+        return [
+            PassportTokenResource\Widgets\ApiRequests::class,
+        ];
+    }
 }

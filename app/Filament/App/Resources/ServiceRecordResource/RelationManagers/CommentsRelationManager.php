@@ -15,6 +15,11 @@ class CommentsRelationManager extends RelationManager
 
     protected static ?string $icon = 'heroicon-o-chat-bubble-left';
 
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
+
     public function form(Form $form): Form
     {
         return CommentResource::form($form);

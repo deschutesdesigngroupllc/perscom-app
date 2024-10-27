@@ -38,19 +38,19 @@ class MessageResource extends BaseResource
         $channels = [
             Forms\Components\CheckboxList::make('channels')
                 ->required()
+                ->searchable()
                 ->hiddenLabel()
                 ->bulkToggleable()
                 ->descriptions(function () {
-                    return collect(NotificationChannel::cases())->mapWithKeys(function (NotificationChannel $channel) {
-                        return [$channel->value => $channel->getDescription()];
-                    })->toArray();
+                    return collect(NotificationChannel::cases())
+                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
+                        ->toArray();
                 })
                 ->options(function () {
-                    return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
-                        return $channel->getEnabled();
-                    })->mapWithKeys(function (NotificationChannel $channel) {
-                        return [$channel->value => $channel->getLabel()];
-                    })->toArray();
+                    return collect(NotificationChannel::cases())
+                        ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
+                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
+                        ->toArray();
                 }),
         ];
 
@@ -164,35 +164,11 @@ class MessageResource extends BaseResource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->groups(['repeats'])
             ->filters([

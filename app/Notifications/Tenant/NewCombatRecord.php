@@ -65,11 +65,11 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
      */
     public function via(): array
     {
-        return collect(NotificationChannel::cases())->filter(function (NotificationChannel $channel) {
-            return $channel->getEnabled();
-        })->map(function (NotificationChannel $channel) {
-            return $channel->getChannel();
-        })->toArray();
+        return collect(NotificationChannel::cases())
+            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
+            ->map(fn (NotificationChannel $channel) => $channel->getChannel())
+            ->values()
+            ->toArray();
     }
 
     public function toMail(mixed $notifiable): NewCombatRecordMail

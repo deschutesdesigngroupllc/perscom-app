@@ -67,8 +67,7 @@ class ApiLogResource extends BaseResource
                     ->suffix(fn ($state) => ' '.Response::$statusTexts[(int) $state]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable()
-                    ->label('Requested')
-                    ->dateTime(),
+                    ->label('Requested'),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -87,7 +86,6 @@ class ApiLogResource extends BaseResource
                             TextEntry::make('causer.name')
                                 ->label('Author'),
                             TextEntry::make('created_at')
-                                ->dateTime()
                                 ->label('Requested'),
                             TextEntry::make('ip_address')
                                 ->label('IP Address'),

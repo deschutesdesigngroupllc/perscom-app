@@ -16,7 +16,7 @@ use Twilio\Rest\Client;
 
 class TwilioService
 {
-    public function __construct(protected RateLimiter $limiter) {}
+    public function __construct(public RateLimiter $limiter) {}
 
     public static function formatText(string $text): string
     {
@@ -68,10 +68,10 @@ class TwilioService
         /** @var Closure $limiter */
         $limiter = $this->limiter->limiter('sms');
 
-        /** @var Limit|bool $response */
+        /** @var Limit|bool $limit */
         $limit = $limiter(tenant());
 
-        if (blank($limit)) {
+        if (blank($limit) || ! $limit instanceof Limit) {
             return false;
         }
 

@@ -27,6 +27,8 @@ class Backups extends Page implements HasTable
 
     protected static ?int $navigationSort = 2;
 
+    protected ?string $subheading = 'Your most recent account backups.';
+
     public static function canAccess(): bool
     {
         return parent::canAccess() && Feature::active(BackupFeature::class);
@@ -45,7 +47,6 @@ class Backups extends Page implements HasTable
                 TextColumn::make('size')
                     ->sortable(),
                 TextColumn::make('created_at')
-                    ->dateTime()
                     ->sortable(),
             ])
             ->actions([

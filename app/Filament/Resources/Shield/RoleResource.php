@@ -98,8 +98,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                     ->colors(['success']),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->label(__('filament-shield::filament-shield.column.updated_at'))
-                    ->sortable()
-                    ->dateTime(),
+                    ->sortable(),
             ])
             ->filters([
                 //

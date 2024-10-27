@@ -15,7 +15,6 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
 use Laravel\Pennant\Feature;
 
@@ -48,7 +47,6 @@ class PassportTokenResource extends BaseResource
                                 'edit' => 'Please create a new API key to change the scopes.',
                                 default => 'The scopes that the API key will have access to.'
                             })
-                            ->searchable()
                             ->multiple()
                             ->live()
                             ->disabled(fn ($operation) => $operation !== 'create')
@@ -98,14 +96,12 @@ class PassportTokenResource extends BaseResource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('scopes')
                     ->badge()
                     ->listWithLineBreaks()
                     ->limitList()
                     ->expandableLimitedList()
-                    ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('expires_at')
                     ->timezone(UserSettingsService::get('timezone', function () {
@@ -115,35 +111,9 @@ class PassportTokenResource extends BaseResource
                         return $settings->timezone ?? config('app.timezone');
                     }))
                     ->dateTime()
-                    ->sortable()
-                    ->toggleable(),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
-            ])
-            ->filters([
-                Tables\Filters\SelectFilter::make('scopes')
-                    ->multiple()
-                    ->searchable()
-                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                    ->query(fn (Builder $query, $data) => $query->when(data_get($data, 'values'), fn (Builder $query) => $query->whereJsonContains('scopes', data_get($data, 'values')))),
+                    ->sortable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

@@ -28,6 +28,8 @@ class Permission extends SettingsPage
 
     protected static ?int $navigationSort = 5;
 
+    protected ?string $subheading = 'Adjust and configure authorization for your account.';
+
     public static function canAccess(): bool
     {
         return parent::canAccess()

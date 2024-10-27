@@ -20,12 +20,9 @@ class SubmissionsRelationManager extends RelationManager
     {
         return $infolist
             ->schema([
-                Infolists\Components\TextEntry::make('created_at')
-                    ->dateTime(),
-                Infolists\Components\TextEntry::make('updated_at')
-                    ->dateTime(),
-                Infolists\Components\TextEntry::make('deleted_at')
-                    ->dateTime(),
+                Infolists\Components\TextEntry::make('created_at'),
+                Infolists\Components\TextEntry::make('updated_at'),
+                Infolists\Components\TextEntry::make('deleted_at'),
             ]);
     }
 
@@ -34,17 +31,11 @@ class SubmissionsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ]);
     }
 }

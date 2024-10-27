@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Enableable;
+use App\Models\Enums\NotificationChannel;
+use App\Observers\AnnouncementObserver;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -13,7 +15,9 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -27,6 +31,7 @@ use Illuminate\Support\Str;
  * @property string $color
  * @property bool $global
  * @property bool $enabled
+ * @property AsEnumCollection|null $channels
  * @property \Illuminate\Support\Carbon|null $expires_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -43,6 +48,7 @@ use Illuminate\Support\Str;
  * @method static Builder|Announcement newQuery()
  * @method static Builder|Announcement onlyTrashed()
  * @method static Builder|Announcement query()
+ * @method static Builder|Announcement whereChannels($value)
  * @method static Builder|Announcement whereColor($value)
  * @method static Builder|Announcement whereContent($value)
  * @method static Builder|Announcement whereCreatedAt($value)
@@ -58,6 +64,7 @@ use Illuminate\Support\Str;
  *
  * @mixin \Eloquent
  */
+#[ObservedBy(AnnouncementObserver::class)]
 class Announcement extends Model implements Enableable, HasColor, HasLabel
 {
     use CanBeEnabled;
@@ -73,6 +80,7 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
         'title',
         'content',
         'global',
+        'channels',
         'expires_at',
         'created_at',
         'updated_at',
@@ -107,6 +115,7 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel
         return [
             'global' => 'boolean',
             'expires_at' => 'datetime',
+            'channels' => AsEnumCollection::of(NotificationChannel::class),
         ];
     }
 }

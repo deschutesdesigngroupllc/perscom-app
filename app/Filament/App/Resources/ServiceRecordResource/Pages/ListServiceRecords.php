@@ -12,6 +12,8 @@ class ListServiceRecords extends ListRecords
 {
     protected static string $resource = ServiceRecordResource::class;
 
+    protected ?string $subheading = 'General non-specific records that do not fall into any other category.';
+
     protected function getHeaderActions(): array
     {
         return [

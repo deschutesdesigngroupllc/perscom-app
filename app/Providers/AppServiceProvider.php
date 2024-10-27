@@ -13,6 +13,8 @@ use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Services\ApiPermissionService;
+use App\Services\UserSettingsService;
+use App\Settings\OrganizationSettings;
 use App\Support\Backup\TenantTemporaryDirectory;
 use App\Support\Orion\ComponentsResolver;
 use App\Support\Orion\KeyResolver;
@@ -21,8 +23,10 @@ use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Middleware\Authenticate;
@@ -104,21 +108,88 @@ class AppServiceProvider extends ServiceProvider
         AuthenticateSession::redirectUsing($authenticationRedirect);
 
         Column::configureUsing(function (Column $field) {
-            match ($field->getName()) {
-                'created_at' => $field->label('Created'),
-                'updated_at' => $field->label('Updated'),
-                'deleted_at' => $field->label('Deleted'),
+            $closure = match ($field->getName()) {
+                'created_at' => function (TextColumn $field) {
+                    $field
+                        ->label('Created')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->dateTime()
+                        ->timezone(UserSettingsService::get('timezone', function () {
+                            /** @var OrganizationSettings $settings */
+                            $settings = app(OrganizationSettings::class);
+
+                            return $settings->timezone ?? config('app.timezone');
+                        }));
+                },
+                'updated_at' => function (TextColumn $field) {
+                    $field
+                        ->label('Updated')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->dateTime()
+                        ->timezone(UserSettingsService::get('timezone', function () {
+                            /** @var OrganizationSettings $settings */
+                            $settings = app(OrganizationSettings::class);
+
+                            return $settings->timezone ?? config('app.timezone');
+                        }));
+                },
+                'deleted_at' => function (TextColumn $field) {
+                    $field
+                        ->label('Deleted')
+                        ->toggleable(isToggledHiddenByDefault: true)
+                        ->dateTime()
+                        ->timezone(UserSettingsService::get('timezone', function () {
+                            /** @var OrganizationSettings $settings */
+                            $settings = app(OrganizationSettings::class);
+
+                            return $settings->timezone ?? config('app.timezone');
+                        }));
+                },
                 default => null,
             };
+
+            return value($closure, $field);
         });
 
         Entry::configureUsing(function (Entry $field) {
-            match ($field->getName()) {
-                'created_at' => $field->label('Created'),
-                'updated_at' => $field->label('Updated'),
-                'deleted_at' => $field->label('Deleted'),
+            $closure = match ($field->getName()) {
+                'created_at' => function (TextEntry $field) {
+                    $field
+                        ->label('Created')
+                        ->dateTime()
+                        ->timezone(UserSettingsService::get('timezone', function () {
+                            /** @var OrganizationSettings $settings */
+                            $settings = app(OrganizationSettings::class);
+
+                            return $settings->timezone ?? config('app.timezone');
+                        }));
+                },
+                'updated_at' => function (TextEntry $field) {
+                    $field
+                        ->label('Updated')
+                        ->dateTime()
+                        ->timezone(UserSettingsService::get('timezone', function () {
+                            /** @var OrganizationSettings $settings */
+                            $settings = app(OrganizationSettings::class);
+
+                            return $settings->timezone ?? config('app.timezone');
+                        }));
+                },
+                'deleted_at' => function (TextEntry $field) {
+                    $field
+                        ->label('Deleted')
+                        ->dateTime()
+                        ->timezone(UserSettingsService::get('timezone', function () {
+                            /** @var OrganizationSettings $settings */
+                            $settings = app(OrganizationSettings::class);
+
+                            return $settings->timezone ?? config('app.timezone');
+                        }));
+                },
                 default => null,
             };
+
+            return value($closure, $field);
         });
 
         Feature::discover();

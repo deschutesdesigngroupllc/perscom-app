@@ -104,30 +104,9 @@ class CombatRecordResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 Infolists\Components\TextEntry::make('author.name'),
-                                Infolists\Components\TextEntry::make('created_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->dateTime(),
-                                Infolists\Components\TextEntry::make('updated_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->dateTime(),
-                                Infolists\Components\TextEntry::make('deleted_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->dateTime(),
+                                Infolists\Components\TextEntry::make('created_at'),
+                                Infolists\Components\TextEntry::make('updated_at'),
+                                Infolists\Components\TextEntry::make('deleted_at'),
                             ]),
                         Infolists\Components\Tabs\Tab::make('Document')
                             ->visible(fn (?CombatRecord $record) => isset($record->document))
@@ -174,35 +153,12 @@ class CombatRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(),
+                    ->toggleable()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
-                    ->timezone(UserSettingsService::get('timezone', function () {
-                        /** @var OrganizationSettings $settings */
-                        $settings = app(OrganizationSettings::class);
-
-                        return $settings->timezone ?? config('app.timezone');
-                    }))
-                    ->dateTime()
-                    ->sortable()
-                    ->toggleable(isToggledHiddenByDefault: true),
+                    ->sortable(),
             ])
             ->groups(['user.name', 'document.name'])
             ->filters([

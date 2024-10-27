@@ -46,7 +46,11 @@ class NewMessage extends Notification implements ShouldQueue
         /** @var Collection<int, NotificationChannel> $channels */
         $channels = $this->message->channels;
 
-        return $channels->map(fn (NotificationChannel $channel) => $channel->getChannel())->toArray();
+        return $channels
+            ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
+            ->map(fn (NotificationChannel $channel) => $channel->getChannel())
+            ->values()
+            ->toArray();
     }
 
     public function toMail(User $notifiable): NewMessageMail

@@ -12,6 +12,8 @@ class ListAssignmentRecords extends ListRecords
 {
     protected static string $resource = AssignmentRecordResource::class;
 
+    protected ?string $subheading = 'Keep track of a users position within the organizational hierarchy.';
+
     protected function getHeaderActions(): array
     {
         return [

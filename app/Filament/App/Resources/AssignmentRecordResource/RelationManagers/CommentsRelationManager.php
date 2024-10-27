@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Resources\AssigmentRecordResource\RelationManagers;
+namespace App\Filament\App\Resources\AssignmentRecordResource\RelationManagers;
 
 use App\Filament\App\Resources\CommentResource;
 use Filament\Forms\Form;
@@ -14,6 +14,11 @@ class CommentsRelationManager extends RelationManager
     protected static string $relationship = 'comments';
 
     protected static ?string $icon = 'heroicon-o-chat-bubble-left';
+
+    public function isReadOnly(): bool
+    {
+        return false;
+    }
 
     public function form(Form $form): Form
     {

@@ -39,6 +39,8 @@ class Dashboard extends SettingsPage
 
     protected static ?string $title = 'Dashboard Settings';
 
+    protected ?string $subheading = 'Settings that focus on configuring and setting up your online dashboard.';
+
     protected static ?int $navigationSort = 1;
 
     public static function canAccess(): bool

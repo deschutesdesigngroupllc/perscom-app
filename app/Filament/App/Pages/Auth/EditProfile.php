@@ -29,11 +29,6 @@ class EditProfile extends BaseEditProfile
                             ->schema([
                                 $this->getNameFormComponent(),
                                 $this->getEmailFormComponent(),
-                                TextInput::make('phone_number')
-                                    ->visible(fn () => Feature::active(AdvancedNotificationsFeature::class))
-                                    ->nullable()
-                                    ->tel()
-                                    ->helperText('By providing your phone number, you consent to allow Deschutes Design Group LLC/PERSCOM to send you account-related text messages. Alert and data rates may apply.'),
                                 Select::make('timezone')
                                     ->preload()
                                     ->searchable()
@@ -43,9 +38,19 @@ class EditProfile extends BaseEditProfile
                                 $this->getPasswordFormComponent(),
                                 $this->getPasswordConfirmationFormComponent(),
                             ]),
-                        Tabs\Tab::make('Social')
+                        Tabs\Tab::make('SMS')
                             ->visible(fn () => Feature::active(AdvancedNotificationsFeature::class))
                             ->icon('heroicon-o-device-phone-mobile')
+                            ->schema([
+                                TextInput::make('phone_number')
+                                    ->visible(fn () => Feature::active(AdvancedNotificationsFeature::class))
+                                    ->nullable()
+                                    ->tel()
+                                    ->helperText('By providing your phone number, you consent to allow Deschutes Design Group LLC/PERSCOM to send you account-related text messages. Alert and data rates may apply. Remove your phone number to disable SMS text messages.'),
+                            ]),
+                        Tabs\Tab::make('Social')
+                            ->visible(fn () => Feature::active(AdvancedNotificationsFeature::class))
+                            ->icon('heroicon-o-globe-americas')
                             ->schema([
                                 TextInput::make('discord_user_id')
                                     ->suffixAction(fn () => Action::make('discord')
