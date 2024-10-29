@@ -38,7 +38,7 @@ class SendUpcomingEventNotifications implements ShouldQueue
 
         Tenant::findOrFail($this->tenantKey)->run(function () {
             // Chunk the events to even out the workload
-            Event::chunk(100, function (Collection $events) {
+            Event::query()->with('schedule')->chunk(100, function (Collection $events) {
                 $events
                     // Reject events that do not have notifications enabled, channels/intervals set or registration is disabled
                     ->reject(fn (Event $event) => ! $event->notifications_enabled
@@ -50,26 +50,21 @@ class SendUpcomingEventNotifications implements ShouldQueue
                     ->groupBy('notifications_interval')
 
                     // Map app the events to notifications by interval, and then flatten to remove the group by keys
-                    ->flatMap(function (Collection $events, $interval) {
+                    ->each(function (Collection $events, $interval) {
                         return $events
-                            ->reject(function (Event $event) use ($interval) {
+                            ->each(function (Event $event) use ($interval) {
                                 $start = $event->starts ?? $event->schedule->next_occurrence ?? null;
 
                                 if (blank($start)) {
-                                    return true;
+                                    return;
                                 }
 
-                                $sendWhen = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
+                                $sendAt = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
 
-                                if ($sendWhen->isSameMinute(now())) {
-                                    return false;
+                                if ($sendAt->isBetween(now(), now()->addHours(24))) {
+                                    SendUpcomingEventNotification::handle($event, NotificationInterval::from($interval), $sendAt);
                                 }
-
-                                return true;
-                            })
-
-                            // Send the notifications
-                            ->each(fn (Event $event) => SendUpcomingEventNotification::handle($event, NotificationInterval::from($interval)));
+                            });
                     });
             });
         });

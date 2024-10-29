@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\SendRecurringMessages as SendRecurringMessagesAction;
+use App\Actions\Batches\ScheduleRecurringMessages;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -19,7 +19,7 @@ class SendRecurringMessages extends Command
      */
     public function handle(): int
     {
-        SendRecurringMessagesAction::handle();
+        ScheduleRecurringMessages::handle();
 
         $this->info('The recurring messages job has been dispatched.');
 

@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Carbon\CarbonInterval;
 use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -32,12 +33,12 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property \Illuminate\Support\Collection|null $by_month_day
  * @property string|null $by_year_day
  * @property string|null $rrule
+ * @property \Illuminate\Support\Carbon|null $next_occurrence
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read bool $has_passed
  * @property-read Carbon|null $last_occurrence
  * @property-read CarbonInterval $length
- * @property-read Carbon|null $next_occurrence
  * @property-read Model|Eloquent|null $repeatable
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule newModelQuery()
@@ -55,6 +56,7 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereFrequency($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereInterval($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereNextOccurrence($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereRepeatableId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereRepeatableType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereRrule($value)
@@ -66,6 +68,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Schedule extends MorphPivot
 {
+    use HasFactory;
+
     protected $table = 'schedules';
 
     protected $attributes = [
@@ -86,6 +90,7 @@ class Schedule extends MorphPivot
         'by_month_day',
         'by_year_day',
         'rrule',
+        'next_occurrence',
     ];
 
     /**
@@ -108,7 +113,7 @@ class Schedule extends MorphPivot
                 }
 
                 // We need to add one minute, so we can actually do minute-by-minute
-                // comparisons to now without missing it.
+                // comparisons to now() without missing it.
                 return $this->last_occurrence->copy()->addMinute()->isPast();
             }
         )->shouldCache();
@@ -127,24 +132,27 @@ class Schedule extends MorphPivot
     }
 
     /**
-     * @return Attribute<?Carbon, void>
-     */
-    public function nextOccurrence(): Attribute
-    {
-        return Attribute::make(
-            get: function (): ?Carbon {
-                return RepeatService::nextOccurrence($this);
-            }
-        )->shouldCache();
-    }
-
-    /**
      * @return Attribute<CarbonInterval, void>
      */
     public function length(): Attribute
     {
         return Attribute::get(fn (): CarbonInterval => $this->start->diff($this->start->copy()->addHours($this->duration)))
             ->shouldCache();
+    }
+
+    protected static function booted(): void
+    {
+        static::creating(function (Schedule $schedule) {
+            $schedule->forceFill([
+                'next_occurrence' => RepeatService::nextOccurrence($schedule),
+            ]);
+        });
+
+        static::updating(function (Schedule $schedule) {
+            $schedule->forceFill([
+                'next_occurrence' => RepeatService::nextOccurrence($schedule),
+            ]);
+        });
     }
 
     /**
@@ -163,6 +171,7 @@ class Schedule extends MorphPivot
             'by_day' => 'collection',
             'by_month_day' => 'collection',
             'by_month' => 'collection',
+            'next_occurrence' => 'datetime',
         ];
     }
 }

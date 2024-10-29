@@ -13,6 +13,7 @@ use App\Models\Event;
 use App\Models\User;
 use App\Services\TwilioService;
 use App\Services\UserSettingsService;
+use Carbon\CarbonInterface;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
@@ -29,7 +30,12 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
 {
     use Queueable;
 
-    public function __construct(public Event $event, protected NotificationInterval $interval) {}
+    public function __construct(public Event $event, protected NotificationInterval $interval, protected ?CarbonInterface $sendAt = null)
+    {
+        if (filled($this->sendAt)) {
+            $this->delay(now()->diff($sendAt));
+        }
+    }
 
     public static function notificationGroup(): NotificationGroup
     {

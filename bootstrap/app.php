@@ -150,21 +150,22 @@ return Application::configure(basePath: dirname(__DIR__))
         });
     })
     ->withSchedule(function (Illuminate\Console\Scheduling\Schedule $schedule) {
-        $schedule->command('telescope:prune --hours=96')->dailyAt('03:00');
-        $schedule->command('queue:prune-failed --hours=96')->dailyAt('04:00');
+        $schedule->command('telescope:prune --hours=96')->dailyAt('16:00');
+        $schedule->command('queue:prune-failed --hours=96')->dailyAt('16:00');
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
         $schedule->command('cache:prune-stale-tags')->hourly();
-        $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->dailyAt('06:00');
-        $schedule->command('perscom:backup')->environments('production')->dailyAt('05:00');
-        $schedule->command('perscom:event-notifications')->environments('production')->everyMinute();
-        $schedule->command('perscom:recurring-messages')->environments('production')->everyMinute();
+        $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->dailyAt('17:00');
+        $schedule->command('perscom:backup')->environments('production')->dailyAt('18:00');
+        $schedule->command('perscom:calculate-schedules')->environments('production')->dailyAt('19:00');
+        $schedule->command('perscom:event-notifications')->environments('production')->dailyAt('20:00');
+        $schedule->command('perscom:recurring-messages')->environments('production')->dailyAt('20:00');
 
         $schedule->command(RunHealthChecksCommand::class)->environments('production')->everyMinute();
         $schedule->command(DispatchQueueCheckJobsCommand::class)->environments('production')->everyMinute();
         $schedule->command(ScheduleCheckHeartbeatCommand::class)->environments('production')->everyMinute();
 
-        $schedule->job(new ResetDemoAccount)->environments('production')->dailyAt('01:00');
-        $schedule->job(new RemoveInactiveAccounts)->environments('production')->dailyAt('02:00');
+        $schedule->job(new ResetDemoAccount)->environments('production')->dailyAt('21:00');
+        $schedule->job(new RemoveInactiveAccounts)->environments('production')->dailyAt('22:00');
     })
     ->withBroadcasting(__DIR__.'/../routes/channels.php', [
         'middleware' => [

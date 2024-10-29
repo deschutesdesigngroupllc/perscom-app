@@ -35,7 +35,7 @@ class SendRecurringMessages implements ShouldQueue
         }
 
         Tenant::findOrFail($this->tenantKey)->run(function () {
-            Message::query()->where('repeats', true)->chunk(100, function (Collection $messages) {
+            Message::query()->with('schedule')->where('repeats', true)->chunk(100, function (Collection $messages) {
                 $messages->reject(function (Message $message) {
                     return blank($message->schedule)
                         || $message->schedule->has_passed
@@ -51,8 +51,8 @@ class SendRecurringMessages implements ShouldQueue
                         return;
                     }
 
-                    if ($occurrence->isSameMinute(now())) {
-                        SendMessage::handle($message);
+                    if ($occurrence->isBetween(now(), now()->addHours(24))) {
+                        SendMessage::handle($message, $occurrence);
                     }
                 });
             });
