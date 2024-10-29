@@ -40,18 +40,23 @@ class SendUpcomingEventNotifications implements ShouldQueue
             // Chunk the events to even out the workload
             Event::query()->with('schedule')->chunk(100, function (Collection $events) {
                 $events
-                    // Reject events that do not have notifications enabled, channels/intervals set or registration is disabled
+                    // Reject events that do not have notifications enabled, channels/intervals set, registration disabled
+                    // or have a schedule, and the schedule has passed, or we have not calculated the next occurrence
                     ->reject(fn (Event $event) => ! $event->notifications_enabled
                         || blank($event->notifications_interval)
                         || blank($event->notifications_channels)
-                        || ! $event->registration_enabled)
+                        || ! $event->registration_enabled
+                        || (filled($event->schedule) && $event->schedule->has_passed)
+                        || (filled($event->schedule) && blank($event->schedule->next_occurrence))
+                    )
 
-                    // Group by the intervals, so we can each interval one at a time
+                    // Group by the intervals, so we can iterate over one interval at a time
                     ->groupBy('notifications_interval')
 
-                    // Map app the events to notifications by interval, and then flatten to remove the group by keys
+                    // Iterate over the collection of events for each interval
                     ->each(function (Collection $events, $interval) {
                         return $events
+                            // Iterate over all the events for a given interval
                             ->each(function (Event $event) use ($interval) {
                                 $start = $event->starts ?? $event->schedule->next_occurrence ?? null;
 
@@ -59,8 +64,12 @@ class SendUpcomingEventNotifications implements ShouldQueue
                                     return;
                                 }
 
+                                // Subtract the interval to determine when the notification should be sent so that it
+                                // hits the users at the correct interval time
                                 $sendAt = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
 
+                                // If the time to send the notification is within the next 24 hours, sent it. We check
+                                // 24 hours because the schedule that runs this job only happens once a day.
                                 if ($sendAt->isBetween(now(), now()->addHours(24))) {
                                     SendUpcomingEventNotification::handle($event, NotificationInterval::from($interval), $sendAt);
                                 }

@@ -320,6 +320,21 @@ class EventResource extends BaseResource
                                             false => Carbon::parse($record->schedule->next_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
                                         };
                                     }),
+                                TextEntry::make('last_occurrence')
+                                    ->label('Last Occurrence')
+                                    ->visible(fn (?Event $record) => $record->repeats && filled($record->schedule) && filled($record->schedule->last_occurrence))
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
+                                    ->getStateUsing(function (?Event $record, TextEntry $component) {
+                                        return match ($record->all_day) {
+                                            true => Carbon::parse($record->schedule->last_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
+                                            false => Carbon::parse($record->schedule->last_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
+                                        };
+                                    }),
                                 TextEntry::make('rule_readable')
                                     ->visible(fn (?Event $record) => $record->repeats && filled($record->schedule))
                                     ->label('Schedule')

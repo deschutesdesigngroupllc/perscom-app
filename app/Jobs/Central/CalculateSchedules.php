@@ -33,6 +33,7 @@ class CalculateSchedules implements ShouldQueue
             Schedule::all()->each(function (Schedule $schedule) {
                 $schedule->updateQuietly([
                     'next_occurrence' => RepeatService::nextOccurrence($schedule),
+                    'last_occurrence' => RepeatService::lastOccurrence($schedule),
                 ]);
             });
         });

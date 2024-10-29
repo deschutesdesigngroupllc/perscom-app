@@ -8,6 +8,7 @@ use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
 use App\Models\Schedule;
+use App\Settings\OrganizationSettings;
 use BackedEnum;
 use Carbon\CarbonInterface;
 use DateTime;
@@ -72,7 +73,11 @@ class RepeatService
 
     public static function lastOccurrence(Schedule $repeatable): ?Carbon
     {
-        if ($repeatable->end_type === 'on' && filled($repeatable->until)) {
+        if ($repeatable->end_type === ScheduleEndType::NEVER) {
+            return null;
+        }
+
+        if ($repeatable->end_type === ScheduleEndType::ON && filled($repeatable->until)) {
             return $repeatable->until;
         }
 
@@ -82,7 +87,7 @@ class RepeatService
             return null;
         }
 
-        $lastOccurrence = $rule->getNthOccurrenceAfter($repeatable->start, $repeatable->count);
+        $lastOccurrence = collect($rule->getOccurrences())->last();
 
         if (is_null($lastOccurrence)) {
             return null;

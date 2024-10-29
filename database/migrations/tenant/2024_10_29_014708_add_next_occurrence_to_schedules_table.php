@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::table('schedules', function (Blueprint $table) {
             $table->after('rrule', function (Blueprint $table) {
                 $table->timestamp('next_occurrence')->nullable();
+                $table->timestamp('last_occurrence')->nullable();
             });
         });
     }
@@ -26,7 +27,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('schedules', function (Blueprint $table) {
-            $table->dropColumn('next_occurrence');
+            $table->dropColumn(['next_occurrence', 'last_occurrence']);
         });
     }
 };
