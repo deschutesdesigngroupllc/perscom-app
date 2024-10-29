@@ -66,6 +66,7 @@ class ApiLogResource extends BaseResource
                     ->badge()
                     ->suffix(fn ($state) => ' '.Response::$statusTexts[(int) $state]),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->sortable()
                     ->label('Requested'),
             ])

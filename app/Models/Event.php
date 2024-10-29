@@ -41,8 +41,6 @@ use Illuminate\Support\Optional;
  * @property \Illuminate\Support\Carbon $starts
  * @property \Illuminate\Support\Carbon|null $ends
  * @property bool $repeats
- * @property string|null $by_set_position
- * @property string|null $by_year_day
  * @property bool $registration_enabled
  * @property \Illuminate\Support\Carbon|null $registration_deadline
  * @property bool $notifications_enabled
@@ -79,8 +77,6 @@ use Illuminate\Support\Optional;
  * @method static \Illuminate\Database\Eloquent\Builder|Event query()
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereAllDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereBySetPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereByYearDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereCalendarId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereCreatedAt($value)

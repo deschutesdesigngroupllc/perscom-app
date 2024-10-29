@@ -16,8 +16,6 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -120,6 +118,7 @@ class WebhookResource extends BaseResource
                     ->sortable()
                     ->badge(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->sortable(),
             ])
             ->actions([
@@ -135,14 +134,6 @@ class WebhookResource extends BaseResource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 

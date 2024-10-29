@@ -14,9 +14,12 @@ use App\Models\QualificationRecord;
 use App\Models\RankRecord;
 use App\Models\ServiceRecord;
 use App\Models\Task;
-use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\Tabs;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -92,6 +95,41 @@ class AttachmentResource extends BaseResource
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                Tabs::make()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Tabs\Tab::make('Attachment')
+                            ->icon('heroicon-o-photo')
+                            ->schema([
+                                TextEntry::make('name'),
+                                TextEntry::make('attachment_url')
+                                    ->label('URL')
+                                    ->url(fn ($state) => $state)
+                                    ->openUrlInNewTab()
+                                    ->copyable(),
+                                ImageEntry::make('path')
+                                    ->label('Attachment')
+                                    ->disk('s3'),
+                            ]),
+                        Tabs\Tab::make('Resource')
+                            ->icon('heroicon-o-document')
+                            ->schema([
+                                TextEntry::make('model.label')
+                                    ->label('Resource')
+                                    ->badge()
+                                    ->openUrlInNewTab()
+                                    ->icon('heroicon-o-arrow-top-right-on-square')
+                                    ->iconPosition(IconPosition::After)
+                                    ->url(fn (Attachment $record) => $record->model_url),
+                            ]),
+                    ]),
+            ]);
+    }
+
     public static function table(Table $table): Table
     {
         return $table
@@ -118,17 +156,7 @@ class AttachmentResource extends BaseResource
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->iconPosition(IconPosition::After)
-                    ->url(function (?Attachment $record) {
-                        if (is_null($record->model)) {
-                            return null;
-                        }
-
-                        $resource = Filament::getModelResource($record->model);
-
-                        return $resource ? $resource::getUrl('edit', [
-                            'record' => $record->model,
-                        ]) : false;
-                    }),
+                    ->url(fn (Attachment $record) => $record->model_url),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -145,6 +173,7 @@ class AttachmentResource extends BaseResource
                     ->color('gray')
                     ->url(fn (?Attachment $record) => $record->attachment_url)
                     ->openUrlInNewTab(),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
@@ -186,6 +215,7 @@ class AttachmentResource extends BaseResource
                     ->color('gray')
                     ->url(fn (?Attachment $record) => $record->attachment_url)
                     ->openUrlInNewTab(),
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
@@ -215,6 +245,7 @@ class AttachmentResource extends BaseResource
             'index' => Pages\ListAttachments::route('/'),
             'create' => Pages\CreateAttachment::route('/create'),
             'edit' => Pages\EditAttachment::route('/{record}/edit'),
+            'view' => Pages\ViewAttachment::route('/{record}'),
         ];
     }
 }

@@ -113,6 +113,7 @@ class PassportTokenResource extends BaseResource
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->sortable(),
             ])
             ->actions([

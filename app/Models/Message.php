@@ -6,7 +6,10 @@ namespace App\Models;
 
 use App\Models\Enums\NotificationChannel;
 use App\Observers\MessageObserver;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
+use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
@@ -25,7 +28,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read string $label
+ * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read Schedule|null $schedule
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
  * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
@@ -48,9 +54,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @mixin \Eloquent
  */
 #[ObservedBy(MessageObserver::class)]
-class Message extends Model
+class Message extends Model implements HasLabel
 {
     use HasFactory;
+    use HasResourceLabel;
+    use HasResourceUrl;
     use HasSchedule;
     use SoftDeletes;
 

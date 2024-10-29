@@ -9,6 +9,8 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Eloquent;
+use Filament\Facades\Filament;
+use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -31,6 +33,7 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string|null $image_url
  * @property-read string $label
  * @property-read Model|Eloquent|null $model
+ * @property-read string|null $model_url
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
@@ -75,11 +78,47 @@ class Image extends Model implements HasLabel
 
     protected $appends = ['image_url'];
 
+    /**
+     * @return Attribute<?string, void>
+     */
     public function imageUrl(): Attribute
     {
         return Attribute::make(
             get: fn (): ?string => $this->path ? Storage::disk('s3')->url($this->path) : null
-        );
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?string, void>
+     */
+    public function modelUrl(): Attribute
+    {
+        return Attribute::get(function (): ?string {
+            if (blank($this->model)) {
+                return null;
+            }
+
+            /** @var resource $resource */
+            $resource = Filament::getModelResource($this->model);
+
+            if (blank($resource)) {
+                return null;
+            }
+
+            if (array_key_exists('view', $resource::getPages())) {
+                return $resource::getUrl('view', [
+                    'record' => $this->model,
+                ]);
+            }
+
+            if (array_key_exists('edit', $resource::getPages())) {
+                return $resource::getUrl('edit', [
+                    'record' => $this->model,
+                ]);
+            }
+
+            return null;
+        })->shouldCache();
     }
 
     public function model(): MorphTo
