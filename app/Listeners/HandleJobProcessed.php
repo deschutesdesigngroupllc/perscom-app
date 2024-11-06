@@ -12,6 +12,10 @@ class HandleJobProcessed
 {
     public function handle(JobProcessed $event): void
     {
+        if (! tenancy()->initialized) {
+            return;
+        }
+
         $job = $event->job;
 
         if (is_a($job, RedisJob::class)) {
