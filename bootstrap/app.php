@@ -164,7 +164,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command(DispatchQueueCheckJobsCommand::class)->environments('production')->everyMinute();
         $schedule->command(ScheduleCheckHeartbeatCommand::class)->environments('production')->everyMinute();
 
-        $schedule->job(new ResetDemoAccount)->environments('production')->dailyAt('21:00');
+        $schedule->job(new ResetDemoAccount)->environments('demo')->dailyAt('21:00');
         $schedule->job(new RemoveInactiveAccounts)->environments('production')->dailyAt('22:00');
     })
     ->withBroadcasting(__DIR__.'/../routes/channels.php', [

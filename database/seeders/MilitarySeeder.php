@@ -33,16 +33,23 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 
 class MilitarySeeder extends Seeder
 {
     use WithoutModelEvents;
 
+    /**
+     * @throws ValidationException
+     */
     public function run(): void
     {
         /** @var SetupTenantAccount $action */
         $action = app(SetupTenantAccount::class);
-        $action->shouldCreateUser(false)->handle(tenant());
+        $action
+            ->shouldCreateUser(false)
+            ->shouldCreateAnnouncement(false)
+            ->handle(tenant());
 
         $user = User::factory()->create([
             'name' => 'Demo User',

@@ -7,6 +7,7 @@ namespace App\Providers\Filament;
 use App\Features\BillingFeature;
 use App\Filament\App\Pages\Auth\EditProfile;
 use App\Filament\App\Pages\Auth\EmailVerificationPrompt;
+use App\Filament\App\Pages\Auth\Login;
 use App\Filament\App\Pages\Dashboard;
 use App\Filament\App\Resources\AnnouncementResource;
 use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
@@ -38,6 +39,8 @@ use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
 use Filament\MinimalTheme;
 use Filament\Navigation\MenuItem;
+use Filament\Pages\Auth\PasswordReset\RequestPasswordReset;
+use Filament\Pages\Auth\Register;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
@@ -57,13 +60,45 @@ class AppPanelProvider extends PanelProvider
 {
     public function panel(Panel $panel): Panel
     {
+        $registration = $this->app->environment('demo')
+            ? null
+            : Register::class;
+
+        $passwordReset = $this->app->environment('demo')
+            ? null
+            : RequestPasswordReset::class;
+
+        $emailVerification = $this->app->environment('demo')
+            ? null
+            : EmailVerificationPrompt::class;
+
+        $socialProviders = $this->app->environment('demo')
+            ? []
+            : [
+                Provider::make('google')
+                    ->label('Google')
+                    ->icon('fab-google')
+                    ->stateless()
+                    ->outlined(false),
+                Provider::make('discord')
+                    ->label('Discord')
+                    ->icon('fab-discord')
+                    ->stateless()
+                    ->outlined(false),
+                Provider::make('github')
+                    ->label('GitHub')
+                    ->icon('fab-github')
+                    ->stateless()
+                    ->outlined(false),
+            ];
+
         return $panel
             ->default()
             ->id('app')
-            ->login()
-            ->registration()
-            ->passwordReset()
-            ->emailVerification(EmailVerificationPrompt::class)
+            ->login(Login::class)
+            ->registration($registration)
+            ->passwordReset($passwordReset)
+            ->emailVerification($emailVerification)
             ->profile(EditProfile::class, isSimple: false)
             ->colors([
                 'primary' => Color::Blue,
@@ -130,23 +165,7 @@ class AppPanelProvider extends PanelProvider
                     ->slideOver(),
                 FilamentSocialitePlugin::make()
                     ->registration()
-                    ->providers([
-                        Provider::make('google')
-                            ->label('Google')
-                            ->icon('fab-google')
-                            ->stateless()
-                            ->outlined(false),
-                        Provider::make('discord')
-                            ->label('Discord')
-                            ->icon('fab-discord')
-                            ->stateless()
-                            ->outlined(false),
-                        Provider::make('github')
-                            ->label('GitHub')
-                            ->icon('fab-github')
-                            ->stateless()
-                            ->outlined(false),
-                    ]),
+                    ->providers($socialProviders),
             ])
             ->databaseNotifications()
             ->sidebarCollapsibleOnDesktop()
