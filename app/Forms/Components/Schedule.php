@@ -7,7 +7,7 @@ namespace App\Forms\Components;
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Models\Schedule as ScheduleModel;
-use App\Services\RepeatService;
+use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Filament\Forms;
@@ -141,8 +141,14 @@ class Schedule
                     ->default(today()->addMonth())
                     ->label('End Date')
                     ->helperText('The date the recurring schedule will end.')
-                    ->hidden(fn (Forms\Get $get) => $get('end_type') !== 'on')
-                    ->required(fn (Forms\Get $get) => $get('end_type') === 'on'),
+                    ->hidden(fn (Forms\Get $get) => ScheduleEndType::from($get('end_type')) !== ScheduleEndType::ON)
+                    ->required(fn (Forms\Get $get) => ScheduleEndType::from($get('end_type')) === ScheduleEndType::ON)
+                    ->dehydrateStateUsing(function ($state, Forms\Get $get) {
+                        $start = Carbon::parse($get('start'));
+                        $until = Carbon::parse($state);
+
+                        return $until->setTimeFrom($start);
+                    }),
                 Forms\Components\Placeholder::make('schedule')
                     ->helperText('The configured schedule will repeat using the pattern above.')
                     ->columnSpanFull()
@@ -172,7 +178,7 @@ class Schedule
                             'by_month' => $get('by_month'),
                         ]);
 
-                        return RepeatService::getSchedulePattern($schedule, $allDay) ?? '---';
+                        return ScheduleService::getSchedulePattern($schedule, $allDay) ?? '---';
                     }),
             ]);
     }

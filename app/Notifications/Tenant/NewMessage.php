@@ -9,6 +9,7 @@ use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
 use App\Models\User;
 use App\Services\TwilioService;
+use Carbon\CarbonInterface;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -26,15 +27,17 @@ class NewMessage extends Notification implements ShouldQueue
 
     protected FilamentNotification $notification;
 
-    public function __construct(public Message $message)
+    public function __construct(public Message $message, protected ?CarbonInterface $sendAt = null)
     {
         $this->notification = FilamentNotification::make()
             ->title('New Message')
             ->body($this->message->message)
             ->info();
 
-        if (filled($this->message->send_at)) {
-            $this->delay(now()->diff($this->message->send_at));
+        $sendAt = $this->sendAt ?? $this->message->send_at ?? null;
+
+        if (filled($sendAt)) {
+            $this->delay(now()->diff($sendAt));
         }
     }
 

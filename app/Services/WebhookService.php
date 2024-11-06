@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Webhook;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\PendingDispatch;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Activitylog\ActivityLogger;
 use Spatie\WebhookServer\WebhookCall;
 
 class WebhookService
@@ -15,13 +18,20 @@ class WebhookService
         $payload = [
             'event' => $event,
             'created' => now(),
-            'data' => $model->toArray(),
-            'changes' => $model->getChanges(),
         ];
+
+        if (is_array($model)) {
+            data_set($payload, 'data', $model);
+            data_set($payload, 'changes', null);
+        } elseif ($model instanceof Model) {
+            data_set($payload, 'data', $model->toArray());
+            data_set($payload, 'changes', $model->getChanges());
+        }
 
         activity('webhook')
             ->withProperties($payload)
-            ->causedBy($model)
+            ->when($model instanceof Model, fn (ActivityLogger $activity) => $activity->causedBy($model))
+            ->when(is_array($model), fn (ActivityLogger $activity) => $activity->causedBy(Auth::user()))
             ->performedOn($webhook)
             ->log($webhook->url);
 

@@ -62,6 +62,9 @@ class MessageResource extends BaseResource
                 ->searchable()
                 ->nullable()
                 ->options(User::query()->orderBy('name')->pluck('name', 'id')),
+        ];
+
+        $schedule = [
             Forms\Components\DateTimePicker::make('send_at')
                 ->timezone(UserSettingsService::get('timezone', function () {
                     /** @var OrganizationSettings $settings */
@@ -71,15 +74,13 @@ class MessageResource extends BaseResource
                 }))
                 ->minDate(function ($component) {
                     return now()
+                        ->subDay()
                         ->shiftTimezone($component->getTimezone())
                         ->setTimezone(config('app.timezone'));
                 })
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
                 ->hidden(fn (Forms\Get $get) => $get('repeats')),
-        ];
-
-        $schedule = [
             Forms\Components\Toggle::make('repeats')
                 ->live()
                 ->helperText('Enable to send the message on a recurring schedule.'),

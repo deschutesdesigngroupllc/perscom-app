@@ -40,6 +40,7 @@ class RecentAnnouncements extends BaseWidget
                         ->wrap(),
                 ]),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->color(Color::Gray),
             ])
             ->actions([

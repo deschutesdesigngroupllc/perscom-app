@@ -9,7 +9,6 @@ use App\Filament\App\Clusters\Logs;
 use App\Filament\App\Clusters\Logs\Resources\WebhookLogResource\Pages;
 use App\Filament\App\Resources\BaseResource;
 use App\Models\WebhookLog;
-use Filament\Facades\Filament;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -38,17 +37,12 @@ class WebhookLogResource extends BaseResource
                     ->label('ID')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('causer.label')
+                    ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->iconPosition(IconPosition::After)
-                    ->url(function (?WebhookLog $record) {
-                        $resource = Filament::getModelResource($record->causer);
-
-                        return $resource ? $resource::getUrl('edit', [
-                            'record' => $record->causer,
-                        ]) : false;
-                    }),
+                    ->url(fn (WebhookLog $record) => $record->resource_url),
                 Tables\Columns\TextColumn::make('description')
                     ->label('Webhook')
                     ->color('gray')
@@ -58,6 +52,7 @@ class WebhookLogResource extends BaseResource
                     ->badge()
                     ->getStateUsing(fn (WebhookLog $record) => $record->getExtraProperty('event')),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->sortable()
                     ->label('Sent'),
             ])
@@ -90,18 +85,19 @@ class WebhookLogResource extends BaseResource
                                 ->badge()
                                 ->color('gray'),
                             TextEntry::make('causer.label')
+                                ->label('Resource')
                                 ->badge()
                                 ->openUrlInNewTab()
                                 ->icon('heroicon-o-arrow-top-right-on-square')
                                 ->iconPosition(IconPosition::After)
-                                ->url(function (?WebhookLog $record) {
-                                    $resource = Filament::getModelResource($record->causer);
-
-                                    return $resource ? $resource::getUrl('edit', [
-                                        'record' => $record->causer,
-                                    ]) : false;
-                                }),
+                                ->url(fn (WebhookLog $record) => $record->resource_url),
+                        ]),
+                    Tabs\Tab::make('Payload')
+                        ->icon('heroicon-o-code-bracket')
+                        ->schema([
                             SyntaxEntry::make('data')
+                                ->getStateUsing(fn (WebhookLog $record) => $record->properties)
+                                ->hiddenLabel()
                                 ->language('json'),
                         ]),
                 ]),

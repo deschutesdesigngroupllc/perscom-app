@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Services;
 
 use App\Models\Event;
-use App\Services\RepeatService;
+use App\Services\ScheduleService;
 use RRule\RRule;
 use Tests\Feature\Tenant\TenantTestCase;
 
@@ -15,7 +15,7 @@ class EventServiceTest extends TenantTestCase
     {
         $event = Event::factory()->withSchedule()->create();
 
-        $rule = RepeatService::generateRecurringRule($event->schedule);
+        $rule = ScheduleService::generateRecurringRule($event->schedule);
 
         $this->assertInstanceOf(RRule::class, $rule);
     }

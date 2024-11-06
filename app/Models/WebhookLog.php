@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Scopes\WebhookLogScope;
 use Eloquent;
+use Filament\Facades\Filament;
+use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -28,6 +30,7 @@ use Illuminate\Support\Optional;
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
  * @property-read mixed|null $data
  * @property-read \Illuminate\Support\Collection $changes
+ * @property-read string|null $resource_url
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
  *
  * @method static Builder|WebhookLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
@@ -69,5 +72,31 @@ class WebhookLog extends Activity
         return Attribute::make(
             get: fn (): Optional|WebhookEvent|null => optional($this->getExtraProperty('event'), fn ($event) => WebhookEvent::from($event))
         )->shouldCache();
+    }
+
+    public function resourceUrl(): Attribute
+    {
+        return Attribute::get(function (): ?string {
+            /** @var resource $resource */
+            $resource = Filament::getModelResource($this->causer);
+
+            if (blank($resource)) {
+                return null;
+            }
+
+            if (array_key_exists('view', $resource::getPages())) {
+                return $resource::getUrl('view', [
+                    'record' => $this->causer,
+                ]);
+            }
+
+            if (array_key_exists('edit', $resource::getPages())) {
+                return $resource::getUrl('edit', [
+                    'record' => $this->causer,
+                ]);
+            }
+
+            return null;
+        })->shouldCache();
     }
 }

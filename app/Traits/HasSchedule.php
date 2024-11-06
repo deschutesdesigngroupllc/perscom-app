@@ -17,4 +17,13 @@ trait HasSchedule
     {
         return $this->morphOne(Schedule::class, 'repeatable');
     }
+
+    protected static function bootHasSchedule(): void
+    {
+        static::deleted(function ($model) {
+            if (filled($model->schedule)) {
+                $model->schedule()->delete();
+            }
+        });
+    }
 }

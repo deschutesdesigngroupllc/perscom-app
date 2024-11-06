@@ -13,13 +13,16 @@ use Exception;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Throwable;
 
 class SendUpcomingEventNotifications implements ShouldQueue
 {
-    use Batchable, Queueable;
+    use Batchable;
+    use InteractsWithQueue;
+    use Queueable;
 
     public function __construct(public int $tenantKey)
     {
@@ -37,39 +40,36 @@ class SendUpcomingEventNotifications implements ShouldQueue
         }
 
         Tenant::findOrFail($this->tenantKey)->run(function () {
-            // Chunk the events to even out the workload
-            Event::chunk(100, function (Collection $events) {
+            // Find all events where they are repeating
+            Event::query()->with('schedule')->where('repeats', true)->chunk(100, function (Collection $events) {
                 $events
-                    // Reject events that do not have notifications enabled, channels/intervals set or registration is disabled
-                    ->reject(fn (Event $event) => ! $event->notifications_enabled
-                        || blank($event->notifications_interval)
-                        || blank($event->notifications_channels)
-                        || ! $event->registration_enabled)
+                    // Filter events that we can't send notifications for
+                    ->filter(fn (Event $event) => SendUpcomingEventNotification::canSendNotification($event))
 
-                    // Group by the intervals, so we can each interval one at a time
+                    // Group by the intervals, so we can iterate over one interval at a time
                     ->groupBy('notifications_interval')
 
-                    // Map app the events to notifications by interval, and then flatten to remove the group by keys
-                    ->flatMap(function (Collection $events, $interval) {
+                    // Iterate over the collection of events for each interval
+                    ->each(function (Collection $events, $interval) {
                         return $events
-                            ->reject(function (Event $event) use ($interval) {
-                                $start = $event->starts ?? $event->schedule->next_occurrence ?? null;
+                            // Iterate over all the events for a given interval
+                            ->each(function (Event $event) use ($interval) {
+                                $start = $event->schedule->next_occurrence ?? $event->starts ?? null;
 
                                 if (blank($start)) {
-                                    return true;
+                                    return;
                                 }
 
-                                $sendWhen = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
+                                // Subtract the interval to determine when the notification should be sent so that it
+                                // hits the users at the correct interval time
+                                $sendAt = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
 
-                                if ($sendWhen->isSameMinute(now())) {
-                                    return false;
+                                // If the time to send the notification is within the next 24 hours, sent it. We check
+                                // 24 hours because the schedule that runs this job only happens once a day.
+                                if ($sendAt->isBetween(now(), now()->addHours(24))) {
+                                    SendUpcomingEventNotification::handle($event, NotificationInterval::from($interval), $sendAt);
                                 }
-
-                                return true;
-                            })
-
-                            // Send the notifications
-                            ->each(fn (Event $event) => SendUpcomingEventNotification::handle($event, NotificationInterval::from($interval)));
+                            });
                     });
             });
         });

@@ -8,6 +8,7 @@ use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
 use App\Models\Schedule;
+use App\Settings\OrganizationSettings;
 use BackedEnum;
 use Carbon\CarbonInterface;
 use DateTime;
@@ -16,7 +17,7 @@ use Illuminate\Support\Str;
 use IntlDateFormatter;
 use RRule\RRule;
 
-class RepeatService
+class ScheduleService
 {
     /**
      * @return RRule<DateTime>|null
@@ -72,17 +73,21 @@ class RepeatService
 
     public static function lastOccurrence(Schedule $repeatable): ?Carbon
     {
-        if ($repeatable->end_type === 'on' && filled($repeatable->until)) {
+        if ($repeatable->end_type === ScheduleEndType::NEVER) {
+            return null;
+        }
+
+        if ($repeatable->end_type === ScheduleEndType::ON && filled($repeatable->until)) {
             return $repeatable->until;
         }
 
-        $rule = RepeatService::generateRecurringRule($repeatable);
+        $rule = ScheduleService::generateRecurringRule($repeatable);
 
         if (is_null($rule) || blank($repeatable->count)) {
             return null;
         }
 
-        $lastOccurrence = $rule->getNthOccurrenceAfter($repeatable->start, $repeatable->count);
+        $lastOccurrence = collect($rule->getOccurrences())->last();
 
         if (is_null($lastOccurrence)) {
             return null;
@@ -93,7 +98,7 @@ class RepeatService
 
     public static function nextOccurrence(Schedule $repeatable): ?Carbon
     {
-        $rule = RepeatService::generateRecurringRule($repeatable);
+        $rule = ScheduleService::generateRecurringRule($repeatable);
 
         if (is_null($rule)) {
             return null;
@@ -115,7 +120,7 @@ class RepeatService
      */
     public static function occurrenceBetween(Schedule $schedule, CarbonInterface $start, CarbonInterface $end): ?array
     {
-        $rule = RepeatService::generateRecurringRule($schedule);
+        $rule = ScheduleService::generateRecurringRule($schedule);
 
         if (is_null($rule)) {
             return null;
@@ -128,7 +133,7 @@ class RepeatService
 
     public static function getSchedulePattern(Schedule $schedule, bool $allDay = false): ?string
     {
-        $rule = RepeatService::generateRecurringRule($schedule);
+        $rule = ScheduleService::generateRecurringRule($schedule);
 
         if (is_null($rule)) {
             return null;

@@ -9,7 +9,6 @@ use App\Models\Award;
 use App\Models\Image;
 use App\Models\Qualification;
 use App\Models\Rank;
-use Filament\Facades\Filament;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists\Components\ImageEntry;
@@ -114,17 +113,7 @@ class ImageResource extends BaseResource
                                     ->openUrlInNewTab()
                                     ->icon('heroicon-o-arrow-top-right-on-square')
                                     ->iconPosition(IconPosition::After)
-                                    ->url(function (?Image $record) {
-                                        if (is_null($record->model)) {
-                                            return null;
-                                        }
-
-                                        $resource = Filament::getModelResource($record->model);
-
-                                        return $resource ? $resource::getUrl('edit', [
-                                            'record' => $record->model,
-                                        ]) : false;
-                                    }),
+                                    ->url(fn (Image $record) => $record->model_url),
                             ]),
                     ]),
             ]);
@@ -160,17 +149,7 @@ class ImageResource extends BaseResource
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->iconPosition(IconPosition::After)
-                    ->url(function (?Image $record) {
-                        if (is_null($record->model)) {
-                            return null;
-                        }
-
-                        $resource = Filament::getModelResource($record->model);
-
-                        return $resource ? $resource::getUrl('edit', [
-                            'record' => $record->model,
-                        ]) : false;
-                    }),
+                    ->url(fn (Image $record) => $record->model_url),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
