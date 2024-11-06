@@ -20,7 +20,7 @@ class SendRecurringMessages implements ShouldQueue
     use InteractsWithQueue;
     use Queueable;
 
-    public function __construct(protected int $tenantKey)
+    public function __construct(public int $tenantKey)
     {
         $this->onConnection('central');
     }
@@ -37,33 +37,21 @@ class SendRecurringMessages implements ShouldQueue
         Tenant::findOrFail($this->tenantKey)->run(function () {
             // Find all messages where they are repeating
             Message::query()->with('schedule')->where('repeats', true)->chunk(100, function (Collection $messages) {
+                $messages
+                    // Filter out any messages we can't send notifications for
+                    ->filter(fn (Message $message) => SendMessage::canSendNotification($message))
 
-                // Reject any messages that don't have a schedule, the schedule has passed, or we have not calculated
-                // the next occurrence.
-                $messages->reject(function (Message $message) {
-                    return blank($message->schedule)
-                        || $message->schedule->has_passed
-                        || blank($message->schedule->next_occurrence);
+                    // Iterate over the messages that we can send
+                    ->each(function (Message $message) {
+                        // Determine when the next message should be sent
+                        $occurrence = $message->schedule->next_occurrence;
 
-                    // Iterate over all messages that have schedules
-                })->each(function (Message $message) {
-                    if (blank($message->schedule)) {
-                        return;
-                    }
-
-                    // Determine when the next message should be sent
-                    $occurrence = $message->schedule->next_occurrence;
-
-                    if (blank($occurrence)) {
-                        return;
-                    }
-
-                    // Check if that time is within the next 24 hours, and if it is, sent it. We check
-                    // 24 hours because the schedule that runs this job only happens once a day.
-                    if ($occurrence->isBetween(now(), now()->addHours(24))) {
-                        SendMessage::handle($message, $occurrence);
-                    }
-                });
+                        // Check if that time is within the next 24 hours, and if it is, send it. We check
+                        // 24 hours because the schedule that runs this job only happens once a day.
+                        if ($occurrence->isBetween(now(), now()->addHours(24))) {
+                            SendMessage::handle($message, $occurrence);
+                        }
+                    });
             });
         });
     }

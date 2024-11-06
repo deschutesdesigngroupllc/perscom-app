@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Models\Calendar;
+use App\Models\Enums\NotificationChannel;
+use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
+use App\Models\Schedule;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -39,21 +42,32 @@ class EventFactory extends Factory
 
     public function withSchedule(): static
     {
-        return $this->afterCreating(function (Event $event) {
-            $event->forceFill([
+        return $this->state(function () {
+            return [
                 'repeats' => true,
                 'all_day' => false,
-            ])->save();
+            ];
+        })->has(Schedule::factory());
+    }
 
-            $event->schedule()->create([
-                'start' => now(),
-                'duration' => 1,
-                'frequency' => 'WEEKLY',
-                'interval' => 1,
-                'end_type' => 'after',
-                'count' => 10,
-                'by_day' => ['MO'],
-            ]);
+    public function withNotifications(): static
+    {
+        return $this->state(function () {
+            return [
+                'notifications_enabled' => true,
+                'notifications_interval' => [NotificationInterval::PT1H],
+                'notifications_channels' => [NotificationChannel::MAIL],
+            ];
         });
+    }
+
+    public function withRegistrations(): static
+    {
+        return $this->state(function () {
+            return [
+                'registration_enabled' => true,
+                'registration_deadline' => null,
+            ];
+        })->has(User::factory(), 'registrations');
     }
 }

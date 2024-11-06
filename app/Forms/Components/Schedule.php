@@ -7,7 +7,7 @@ namespace App\Forms\Components;
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Models\Schedule as ScheduleModel;
-use App\Services\RepeatService;
+use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Filament\Forms;
@@ -178,7 +178,7 @@ class Schedule
                             'by_month' => $get('by_month'),
                         ]);
 
-                        return RepeatService::getSchedulePattern($schedule, $allDay) ?? '---';
+                        return ScheduleService::getSchedulePattern($schedule, $allDay) ?? '---';
                     }),
             ]);
     }

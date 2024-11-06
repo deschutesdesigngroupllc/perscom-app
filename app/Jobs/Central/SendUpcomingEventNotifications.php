@@ -13,13 +13,16 @@ use Exception;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Throwable;
 
 class SendUpcomingEventNotifications implements ShouldQueue
 {
-    use Batchable, Queueable;
+    use Batchable;
+    use InteractsWithQueue;
+    use Queueable;
 
     public function __construct(public int $tenantKey)
     {
@@ -37,18 +40,11 @@ class SendUpcomingEventNotifications implements ShouldQueue
         }
 
         Tenant::findOrFail($this->tenantKey)->run(function () {
-            // Chunk the events to even out the workload
-            Event::query()->with('schedule')->chunk(100, function (Collection $events) {
+            // Find all events where they are repeating
+            Event::query()->with('schedule')->where('repeats', true)->chunk(100, function (Collection $events) {
                 $events
-                    // Reject events that do not have notifications enabled, channels/intervals set, registration disabled
-                    // or have a schedule, and the schedule has passed, or we have not calculated the next occurrence
-                    ->reject(fn (Event $event) => ! $event->notifications_enabled
-                        || blank($event->notifications_interval)
-                        || blank($event->notifications_channels)
-                        || ! $event->registration_enabled
-                        || (filled($event->schedule) && $event->schedule->has_passed)
-                        || (filled($event->schedule) && blank($event->schedule->next_occurrence))
-                    )
+                    // Filter events that we can't send notifications for
+                    ->filter(fn (Event $event) => SendUpcomingEventNotification::canSendNotification($event))
 
                     // Group by the intervals, so we can iterate over one interval at a time
                     ->groupBy('notifications_interval')
@@ -58,7 +54,7 @@ class SendUpcomingEventNotifications implements ShouldQueue
                         return $events
                             // Iterate over all the events for a given interval
                             ->each(function (Event $event) use ($interval) {
-                                $start = $event->starts ?? $event->schedule->next_occurrence ?? null;
+                                $start = $event->schedule->next_occurrence ?? $event->starts ?? null;
 
                                 if (blank($start)) {
                                     return;

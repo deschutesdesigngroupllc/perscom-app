@@ -6,7 +6,7 @@ namespace App\Models;
 
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
-use App\Services\RepeatService;
+use App\Services\ScheduleService;
 use Carbon\CarbonInterval;
 use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -134,15 +134,15 @@ class Schedule extends MorphPivot
     {
         static::creating(function (Schedule $schedule) {
             $schedule->forceFill([
-                'next_occurrence' => RepeatService::nextOccurrence($schedule),
-                'last_occurrence' => RepeatService::lastOccurrence($schedule),
+                'next_occurrence' => ScheduleService::nextOccurrence($schedule),
+                'last_occurrence' => ScheduleService::lastOccurrence($schedule),
             ]);
         });
 
         static::updating(function (Schedule $schedule) {
             $schedule->forceFill([
-                'next_occurrence' => RepeatService::nextOccurrence($schedule),
-                'last_occurrence' => RepeatService::lastOccurrence($schedule),
+                'next_occurrence' => ScheduleService::nextOccurrence($schedule),
+                'last_occurrence' => ScheduleService::lastOccurrence($schedule),
             ]);
         });
     }

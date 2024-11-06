@@ -62,10 +62,16 @@ class Message extends Model implements HasLabel
     use HasSchedule;
     use SoftDeletes;
 
+    /**
+     * @var null[]
+     */
     protected $attributes = [
         'recipients' => null,
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'message',
         'channels',

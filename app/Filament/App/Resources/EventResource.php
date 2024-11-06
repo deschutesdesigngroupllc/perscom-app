@@ -14,7 +14,7 @@ use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
-use App\Services\RepeatService;
+use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Filament\Forms;
@@ -338,7 +338,7 @@ class EventResource extends BaseResource
                                 TextEntry::make('rule_readable')
                                     ->visible(fn (?Event $record) => $record->repeats && filled($record->schedule))
                                     ->label('Schedule')
-                                    ->getStateUsing(fn (?Event $record) => RepeatService::getSchedulePattern($record->schedule, $record->all_day)),
+                                    ->getStateUsing(fn (?Event $record) => ScheduleService::getSchedulePattern($record->schedule, $record->all_day)),
                             ]),
                         Tabs\Tab::make('Details')
                             ->icon('heroicon-o-information-circle')

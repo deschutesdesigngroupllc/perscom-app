@@ -21,11 +21,7 @@ class SendUpcomingEventNotification
      */
     public static function handle(Event $event, NotificationInterval $interval, ?CarbonInterface $sendAt = null): void
     {
-        if (blank($event->registrations)) {
-            return;
-        }
-
-        if (blank($event->notifications_channels)) {
+        if (! SendUpcomingEventNotification::canSendNotification($event)) {
             return;
         }
 
@@ -34,5 +30,24 @@ class SendUpcomingEventNotification
         if (collect($event->notifications_channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
             Notification::sendNow(User::first(), new UpcomingEvent($event, $interval, $sendAt), [DiscordPublicChannel::class]);
         }
+    }
+
+    public static function canSendNotification(Event $event): bool
+    {
+        $event->loadMissing(['schedule', 'registrations']);
+
+        if (filled($event->schedule) && $event->schedule->has_passed) {
+            return false;
+        }
+
+        if (filled($event->schedule) && blank($event->schedule->next_occurrence)) {
+            return false;
+        }
+
+        return filled($event->registrations)
+            && filled($event->notifications_channels)
+            && filled($event->notifications_interval)
+            && $event->registration_enabled
+            && $event->notifications_enabled;
     }
 }

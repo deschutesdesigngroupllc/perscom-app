@@ -1,0 +1,27 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Listeners;
+
+use App\Models\JobHistory;
+use Illuminate\Queue\Events\JobProcessed;
+use Illuminate\Queue\Jobs\RedisJob;
+
+class HandleJobProcessed
+{
+    public function handle(JobProcessed $event): void
+    {
+        $job = $event->job;
+
+        if (is_a($job, RedisJob::class)) {
+            $commandName = data_get($job->payload(), 'data.commandName');
+
+            JobHistory::updateOrCreate([
+                'job' => $commandName,
+            ], [
+                'finished_at' => now(),
+            ]);
+        }
+    }
+}

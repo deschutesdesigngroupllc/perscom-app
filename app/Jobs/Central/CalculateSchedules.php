@@ -6,7 +6,7 @@ namespace App\Jobs\Central;
 
 use App\Models\Schedule;
 use App\Models\Tenant;
-use App\Services\RepeatService;
+use App\Services\ScheduleService;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
@@ -32,8 +32,8 @@ class CalculateSchedules implements ShouldQueue
         Tenant::findOrFail($this->tenantKey)->run(function () {
             Schedule::all()->each(function (Schedule $schedule) {
                 $schedule->updateQuietly([
-                    'next_occurrence' => RepeatService::nextOccurrence($schedule),
-                    'last_occurrence' => RepeatService::lastOccurrence($schedule),
+                    'next_occurrence' => ScheduleService::nextOccurrence($schedule),
+                    'last_occurrence' => ScheduleService::lastOccurrence($schedule),
                 ]);
             });
         });

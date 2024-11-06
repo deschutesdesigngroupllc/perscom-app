@@ -17,7 +17,7 @@ use Illuminate\Support\Str;
 use IntlDateFormatter;
 use RRule\RRule;
 
-class RepeatService
+class ScheduleService
 {
     /**
      * @return RRule<DateTime>|null
@@ -81,7 +81,7 @@ class RepeatService
             return $repeatable->until;
         }
 
-        $rule = RepeatService::generateRecurringRule($repeatable);
+        $rule = ScheduleService::generateRecurringRule($repeatable);
 
         if (is_null($rule) || blank($repeatable->count)) {
             return null;
@@ -98,7 +98,7 @@ class RepeatService
 
     public static function nextOccurrence(Schedule $repeatable): ?Carbon
     {
-        $rule = RepeatService::generateRecurringRule($repeatable);
+        $rule = ScheduleService::generateRecurringRule($repeatable);
 
         if (is_null($rule)) {
             return null;
@@ -120,7 +120,7 @@ class RepeatService
      */
     public static function occurrenceBetween(Schedule $schedule, CarbonInterface $start, CarbonInterface $end): ?array
     {
-        $rule = RepeatService::generateRecurringRule($schedule);
+        $rule = ScheduleService::generateRecurringRule($schedule);
 
         if (is_null($rule)) {
             return null;
@@ -133,7 +133,7 @@ class RepeatService
 
     public static function getSchedulePattern(Schedule $schedule, bool $allDay = false): ?string
     {
-        $rule = RepeatService::generateRecurringRule($schedule);
+        $rule = ScheduleService::generateRecurringRule($schedule);
 
         if (is_null($rule)) {
             return null;

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions\Batches;
 
-use App\Jobs\Central\SendUpcomingEventNotifications;
+use App\Jobs\Central\SendRecurringMessages as SendRecurringMessagesJob;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class ScheduleUpcomingEventNotifications
+class SendRecurringMessages
 {
     /**
      * @throws Throwable
@@ -19,9 +19,9 @@ class ScheduleUpcomingEventNotifications
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant) => new SendUpcomingEventNotifications($tenant->getKey()))
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant) => new SendRecurringMessagesJob($tenant->getKey()))
         )->name(
-            name: 'Upcoming Event Notifications'
+            name: 'Recurring Messages'
         )->onQueue(
             queue: 'default'
         )->onConnection(

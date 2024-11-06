@@ -20,7 +20,7 @@ class SendMessage
      */
     public static function handle(Message $message, ?CarbonInterface $sendAt = null): void
     {
-        if (blank($message->channels)) {
+        if (! SendMessage::canSendNotification($message)) {
             return;
         }
 
@@ -33,5 +33,20 @@ class SendMessage
         if (collect($message->channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
             Notification::sendNow(User::first(), new NewMessage($message, $sendAt), [DiscordPublicChannel::class]);
         }
+    }
+
+    public static function canSendNotification(Message $message): bool
+    {
+        $message->loadMissing(['schedule']);
+
+        if (filled($message->schedule) && $message->schedule->has_passed) {
+            return false;
+        }
+
+        if (filled($message->schedule) && blank($message->schedule->next_occurrence)) {
+            return false;
+        }
+
+        return filled($message->channels);
     }
 }

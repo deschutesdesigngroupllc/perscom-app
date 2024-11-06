@@ -6,7 +6,7 @@ namespace App\Filament\App\Widgets;
 
 use App\Filament\App\Resources\EventResource;
 use App\Models\Event;
-use App\Services\RepeatService;
+use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterface;
@@ -114,7 +114,7 @@ class CalendarWidget extends BaseCalendarWidget
                 return $event->repeats && filled($event->schedule);
             })
             ->flatMap(function (Event $event) use ($timezone, $calendarStart, $calendarEnd) {
-                return collect(RepeatService::occurrenceBetween($event->schedule, $calendarStart, $calendarEnd))->map(function (Carbon $occurrence) use ($timezone, $event) {
+                return collect(ScheduleService::occurrenceBetween($event->schedule, $calendarStart, $calendarEnd))->map(function (Carbon $occurrence) use ($timezone, $event) {
                     $start = $occurrence->setTimezone($timezone)->shiftTimezone('UTC');
                     $end = $start->copy()->addHours($event->schedule->duration);
 
