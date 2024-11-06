@@ -11,13 +11,11 @@ use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelat
 use App\Filament\Exports\SubmissionExporter;
 use App\Models\Submission;
 use App\Rules\FieldDataRule;
-use App\Services\UserSettingsService;
-use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
-use Filament\Infolists\Components\Entry;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Components\ViewEntry;
 use Filament\Infolists\Infolist;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
@@ -61,55 +59,10 @@ class SubmissionResource extends BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
-        $entries = [];
-
-        /** @var Submission $submission */
-        $submission = $infolist->getRecord();
-
-        if ($submission->form?->fields->isNotEmpty()) {
-            foreach ($submission->form->fields as $field) {
-                /** @var Entry $class */
-                $class = $field->type->getFilamentEntry();
-
-                $filamentEntry = $class::make($field->key)
-                    ->label($field->name)
-                    ->hidden($field->hidden);
-
-                if ($field->type->value === 'boolean' && $filamentEntry instanceof TextEntry) {
-                    $filamentEntry = $filamentEntry
-                        ->badge()
-                        ->formatStateUsing(fn ($state) => match ($state) {
-                            '1', 1, true => 'True',
-                            default => 'False'
-                        })
-                        ->color(fn ($state) => match ($state) {
-                            '1', 1, true => 'success',
-                            default => 'danger'
-                        });
-                }
-
-                if ($field->type->value === 'date' && $filamentEntry instanceof TextEntry) {
-                    $filamentEntry = $filamentEntry->date();
-                }
-
-                if ($field->type->value === 'datetime-local' && $filamentEntry instanceof TextEntry) {
-                    $filamentEntry = $filamentEntry
-                        ->timezone(UserSettingsService::get('timezone', function () {
-                            /** @var OrganizationSettings $settings */
-                            $settings = app(OrganizationSettings::class);
-
-                            return $settings->timezone ?? config('app.timezone');
-                        }))
-                        ->dateTime();
-                }
-
-                $entries[] = $filamentEntry;
-            }
-        }
-
         return $infolist
             ->schema([
                 Tabs::make()
+                    ->columnSpanFull()
                     ->tabs([
                         Tabs\Tab::make('Submission')
                             ->badge(fn (?Submission $record) => $record->status->name ?? 'Status')
@@ -129,7 +82,10 @@ class SubmissionResource extends BaseResource
                         Tabs\Tab::make('')
                             ->icon('heroicon-o-pencil-square')
                             ->label(fn (?Submission $record) => $record->form->name ?? 'Form')
-                            ->schema($entries),
+                            ->schema([
+                                ViewEntry::make('form')
+                                    ->view('models.submission'),
+                            ]),
                     ]),
             ]);
     }

@@ -47,7 +47,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
- * @property-read mixed $url
+ * @property-read string $url
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
@@ -97,18 +97,27 @@ class Form extends Model implements HasFields, HasLabel
 
     protected $appends = ['url'];
 
+    /**
+     * @return Attribute<string, void>
+     */
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn () => FormResource::getUrl('create', panel: 'app')
+            get: fn (): string => FormResource::getUrl('create', panel: 'app')
         );
     }
 
+    /**
+     * @return HasMany<Submission>
+     */
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
+    /**
+     * @return BelongsTo<Status, Form>
+     */
     public function submission_status(): BelongsTo
     {
         return $this->belongsTo(Status::class);

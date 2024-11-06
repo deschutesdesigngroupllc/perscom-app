@@ -96,6 +96,9 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
         });
     }
 
+    /**
+     * @return string[]
+     */
     public static function getCustomColumns(): array
     {
         return [

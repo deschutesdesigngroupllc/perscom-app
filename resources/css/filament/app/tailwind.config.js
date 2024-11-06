@@ -8,6 +8,7 @@ export default {
     './resources/views/filament/render-hooks/**/*.blade.php',
     './resources/views/filament/app/**/*.blade.php',
     './resources/views/livewire/app/**/*.blade.php',
+    './resources/views/models/**/*.blade.php',
     './vendor/filament/**/*.blade.php',
     './vendor/awcodes/filament-quick-create/resources/**/*.blade.php'
   ]
