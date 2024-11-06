@@ -10,6 +10,7 @@ use App\Mail\Tenant\NewRankRecordMail;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationGroup;
 use App\Models\RankRecord;
+use App\Models\User;
 use App\Services\TwilioService;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -61,10 +62,10 @@ class NewRankRecord extends Notification implements NotificationCanBeManaged, Sh
     /**
      * @return string[]
      */
-    public function via(): array
+    public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
-            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
+            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
             ->toArray();

@@ -10,6 +10,7 @@ use App\Mail\Tenant\NewAwardRecordMail;
 use App\Models\AwardRecord;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationGroup;
+use App\Models\User;
 use App\Services\TwilioService;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -61,10 +62,10 @@ class NewAwardRecord extends Notification implements NotificationCanBeManaged, S
     /**
      * @return string[]
      */
-    public function via(): array
+    public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
-            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
+            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
             ->toArray();

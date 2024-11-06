@@ -62,10 +62,10 @@ class NewAssignmentRecord extends Notification implements NotificationCanBeManag
     /**
      * @return string[]
      */
-    public function via(): array
+    public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
-            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
+            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
             ->toArray();

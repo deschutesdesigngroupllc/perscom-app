@@ -10,6 +10,7 @@ use App\Mail\Tenant\NewCombatRecordMail;
 use App\Models\CombatRecord;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationGroup;
+use App\Models\User;
 use App\Services\TwilioService;
 use Filament\Notifications\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
@@ -63,10 +64,10 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
     /**
      * @return string[]
      */
-    public function via(): array
+    public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
-            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
+            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
             ->toArray();

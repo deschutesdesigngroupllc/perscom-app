@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models\Enums;
 
 use App\Features\AdvancedNotificationsFeature;
+use App\Models\User;
 use App\Notifications\Channels\DiscordPublicChannel;
 use App\Settings\FeatureSettings;
 use Filament\Support\Contracts\HasDescription;
@@ -56,11 +57,19 @@ enum NotificationChannel: string implements HasDescription, HasLabel
         };
     }
 
-    public function getEnabled(): bool
+    public function getEnabled(?User $notifiable = null): bool
     {
         /** @var FeatureSettings $settings */
         $settings = app(FeatureSettings::class);
         $key = AdvancedNotificationsFeature::settingsKey();
+
+        if ($this === NotificationChannel::SMS && $notifiable && blank($notifiable->phone_number)) {
+            return false;
+        }
+
+        if ($this === NotificationChannel::DISCORD_PRIVATE && $notifiable && blank($notifiable->discord_private_channel_id)) {
+            return false;
+        }
 
         return match ($this) {
             NotificationChannel::DISCORD_PRIVATE => Feature::active(AdvancedNotificationsFeature::class)
