@@ -12,6 +12,7 @@ use App\Filament\Exports\RankRecordExporter;
 use App\Livewire\App\ViewDocument;
 use App\Models\Enums\RankRecordType;
 use App\Models\RankRecord;
+use App\Models\User;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Filament\Forms;
@@ -45,10 +46,12 @@ class RankRecordResource extends BaseResource
                     ->columns()
                     ->schema([
                         Forms\Components\Select::make('user_id')
+                            ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
+                            ->multiple(fn ($operation) => $operation === 'create')
                             ->required()
                             ->helperText('The user this record is assigned to.')
                             ->preload()
-                            ->relationship(name: 'user', titleAttribute: 'name')
+                            ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                             ->searchable()
                             ->createOptionForm(fn ($form) => UserResource::form($form)),
                         Forms\Components\Select::make('rank_id')

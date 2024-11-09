@@ -11,6 +11,7 @@ use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\Comm
 use App\Filament\Exports\QualificationRecordExporter;
 use App\Livewire\App\ViewDocument;
 use App\Models\QualificationRecord;
+use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -42,10 +43,12 @@ class QualificationRecordResource extends BaseResource
                     ->columns()
                     ->schema([
                         Forms\Components\Select::make('user_id')
+                            ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
+                            ->multiple(fn ($operation) => $operation === 'create')
                             ->required()
                             ->helperText('The user this record is assigned to.')
                             ->preload()
-                            ->relationship(name: 'user', titleAttribute: 'name')
+                            ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                             ->searchable()
                             ->createOptionForm(fn ($form) => UserResource::form($form)),
                         Forms\Components\Select::make('qualification_id')
