@@ -2,4 +2,5 @@
 !public/
 !specs/
 !images/
+!images/*
 !.gitignore
