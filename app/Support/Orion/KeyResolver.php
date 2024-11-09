@@ -9,17 +9,26 @@ use Orion\Contracts\KeyResolver as StandardKeyResolver;
 
 class KeyResolver implements StandardKeyResolver
 {
-    public function resolveStandardOperationKey(Request $request, array $args)
+    /**
+     * @param  string[]  $args
+     */
+    public function resolveStandardOperationKey(Request $request, array $args): string
     {
         return $args[1];
     }
 
-    public function resolveRelationOperationParentKey(Request $request, array $args)
+    /**
+     * @param  string[]  $args
+     */
+    public function resolveRelationOperationParentKey(Request $request, array $args): string
     {
         return $args[1];
     }
 
-    public function resolveRelationOperationRelatedKey(Request $request, array $args)
+    /**
+     * @param  string[]  $args
+     */
+    public function resolveRelationOperationRelatedKey(Request $request, array $args): ?string
     {
         return $args[2] ?? null;
     }

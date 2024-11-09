@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0de82db6485bab9e1a7484824c4e2463",
+    "content-hash": "72d204999f9ac65634e2975be26e4311",
     "packages": [
         {
             "name": "amphp/amp",
@@ -15080,20 +15080,20 @@
         },
         {
             "name": "tailflow/laravel-orion",
-            "version": "dev-feature/multiple-controller-arguments",
+            "version": "2.23.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/jonerickson/laravel-orion.git",
-                "reference": "3fa175c429294252cae77332e0e9fd9c3ce5ff9d"
+                "url": "https://github.com/tailflow/laravel-orion.git",
+                "reference": "686c16c5c72eb4ade67fc108e7ae8b5593c686da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jonerickson/laravel-orion/zipball/3fa175c429294252cae77332e0e9fd9c3ce5ff9d",
-                "reference": "3fa175c429294252cae77332e0e9fd9c3ce5ff9d",
+                "url": "https://api.github.com/repos/tailflow/laravel-orion/zipball/686c16c5c72eb4ade67fc108e7ae8b5593c686da",
+                "reference": "686c16c5c72eb4ade67fc108e7ae8b5593c686da",
                 "shasum": ""
             },
             "require": {
-                "doctrine/dbal": "^2.9|^3.1",
+                "doctrine/dbal": "^2.9|^3.1|^4.0",
                 "ext-json": "*",
                 "illuminate/bus": ">=5.7",
                 "illuminate/contracts": ">=5.7",
@@ -15107,7 +15107,7 @@
             "require-dev": {
                 "mockery/mockery": "^1.0",
                 "orchestra/testbench": "^3.7|^4.0|^5.0|^6.0|^7.0|^8.0|^9.0",
-                "phpunit/phpunit": "^6.0|^7.0|^8.0|^9.0"
+                "phpunit/phpunit": "^6.0|^7.0|^8.0|^9.0|^10.0|^11.0"
             },
             "type": "library",
             "extra": {
@@ -15128,12 +15128,7 @@
                     "Orion\\": "src/"
                 }
             },
-            "autoload-dev": {
-                "psr-4": {
-                    "Orion\\Tests\\": "tests/",
-                    "Orion\\Tests\\Fixtures\\App\\": "tests/Fixtures/app/"
-                }
-            },
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -15143,7 +15138,7 @@
                     "email": "alex@tailflow.org"
                 }
             ],
-            "description": "Laravel Orion allows you to build a fully featured REST API based on your Eloquent models and relationships with the simplicity of Laravel as you love it.",
+            "description": "Orion for Laravel allows you to build a fully featured REST API based on your Eloquent models and relationships with the simplicity of Laravel as you love it.",
             "keywords": [
                 "api",
                 "laravel"
@@ -15152,7 +15147,7 @@
                 "issues": "https://github.com/tailflow/laravel-orion/issues",
                 "source": "https://github.com/tailflow/laravel-orion"
             },
-            "time": "2024-09-07T03:28:49+00:00"
+            "time": "2024-11-04T09:10:16+00:00"
         },
         {
             "name": "tempest/highlight",
@@ -20295,8 +20290,7 @@
     "minimum-stability": "stable",
     "stability-flags": {
         "spatie/laravel-backup": 20,
-        "stancl/jobpipeline": 5,
-        "tailflow/laravel-orion": 20
+        "stancl/jobpipeline": 5
     },
     "prefer-stable": true,
     "prefer-lowest": false,
