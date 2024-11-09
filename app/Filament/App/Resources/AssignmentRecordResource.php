@@ -12,6 +12,7 @@ use App\Filament\Exports\AssignmentRecordExporter;
 use App\Livewire\App\ViewDocument;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
+use App\Models\User;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Filament\Forms;
@@ -49,10 +50,12 @@ class AssignmentRecordResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 Forms\Components\Select::make('user_id')
+                                    ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
+                                    ->multiple(fn ($operation) => $operation === 'create')
                                     ->required()
                                     ->helperText('The user this record is assigned to.')
                                     ->preload()
-                                    ->relationship(name: 'user', titleAttribute: 'name')
+                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => UserResource::form($form)),
                                 Forms\Components\Select::make('type')

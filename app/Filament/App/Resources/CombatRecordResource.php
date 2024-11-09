@@ -11,6 +11,7 @@ use App\Filament\App\Resources\CombatRecordResource\RelationManagers\CommentsRel
 use App\Filament\Exports\CombatRecordExporter;
 use App\Livewire\App\ViewDocument;
 use App\Models\CombatRecord;
+use App\Models\User;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Filament\Forms;
@@ -44,10 +45,12 @@ class CombatRecordResource extends BaseResource
                     ->columns()
                     ->schema([
                         Forms\Components\Select::make('user_id')
+                            ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
+                            ->multiple(fn ($operation) => $operation === 'create')
                             ->required()
                             ->helperText('The user this record is assigned to.')
                             ->preload()
-                            ->relationship(name: 'user', titleAttribute: 'name')
+                            ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                             ->searchable()
                             ->columnSpanFull()
                             ->createOptionForm(fn ($form) => UserResource::form($form)),
