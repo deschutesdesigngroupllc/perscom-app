@@ -14,7 +14,7 @@ export function CallToAction() {
         <div className='mx-auto max-w-xl text-center'>
           <h2 className='text-3xl font-bold tracking-tight text-white sm:text-4xl'>Get started today.</h2>
           <p className='mt-4 text-base text-white'>
-            Take the first step toward more efficient personnel management. Sign up for PERSCOM.io today.
+            Ready to streamline your operations and take control of your workflows? Sign up now and experience the power of PERSCOM.io.
           </p>
           <ButtonLink href={route('web.register.index')} color='white' className='mt-10'>
             {' '}
