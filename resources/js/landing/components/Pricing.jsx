@@ -103,7 +103,13 @@ export function Pricing() {
             price='$9'
             description='For small organizations who need core personnel management services without the need to share and exchange personnel data.'
             href={route('web.register.index')}
-            features={['All core features', 'Social login support', 'Application provided subdomain', 'Community support']}
+            features={[
+              'All core features',
+              'No premium features',
+              'Social login support',
+              'Application provided subdomain',
+              'Community support'
+            ]}
           />{' '}
           <Plan
             featured
@@ -111,7 +117,13 @@ export function Pricing() {
             price='$15'
             description='For growing organizations who wish to integrate their personnel data into third-party services without enterprise level complexity.'
             href={route('web.register.index')}
-            features={['Access to powerful API', 'Widgets and website integration', 'Custom subdomain', 'Ticket and email support']}
+            features={[
+              'Access to powerful API',
+              'Optional paid premium features',
+              'Widgets and website integration',
+              'Custom subdomain',
+              'Ticket and email support'
+            ]}
           />{' '}
           <Plan
             name='Enterprise'
@@ -119,6 +131,7 @@ export function Pricing() {
             description='For large organizations that rely on powerful personnel manangement services and require personnel data communication between essential business services.'
             href={route('web.register.index')}
             features={[
+              'All premium features included',
               'Export and backup all account data',
               'Webhooks and real-time app notifications',
               'Single sign-on integration',

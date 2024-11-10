@@ -1,19 +1,19 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Tab } from '@headlessui/react'
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react'
 import clsx from 'clsx'
 import { FolderMinusIcon, CalendarDaysIcon, NewspaperIcon } from '@heroicons/react/20/solid'
 import { Container } from './Container'
-import customFieldsImage from '../../../images/landing/features/secondary1.png'
-import recordsImage from '../../../images/landing/features/secondary2.png'
-import searchImage from '../../../images/landing/features/secondary3.png'
+import customFieldsImage from '../../../images/landing/features/secondary-1.png'
+import recordsImage from '../../../images/landing/features/secondary-2.png'
+import searchImage from '../../../images/landing/features/secondary-3.png'
 
 const features = [
   {
-    name: 'Friendly Organizational Newsfeed',
-    summary: 'Bring everyone in the organization together.',
+    name: 'Realtime Messaging and Notifications',
+    summary: 'Instantly reach your team across multiple channels.',
     description:
-      'The PERSCOM.io newsfeed serves as a central hub for essential organization-wide updates and information. Stay informed at a glance with real-time access to critical announcements, news, and key insights vital for efficient personnel management and decision-making.',
+      "Keep your team informed and responsive with PERSCOM.io's Realtime Messaging & Notifications. Administrators can send critical updates, reminders, or alerts through a variety of channels, including email, SMS, Discord, and more—ensuring that your message is received no matter where your team is. With instant delivery and full control over your communication, you can improve efficiency, reduce delays, and keep everyone on the same page, all in real time.",
     image: customFieldsImage,
     icon: function Icon() {
       return <NewspaperIcon className='h-8 w-8' role='img' />
@@ -21,9 +21,9 @@ const features = [
   },
   {
     name: 'Customizable Form Design',
-    summary: 'Build the forms to collect the data you need.',
+    summary: 'Tailor forms to capture the exact data you need.',
     description:
-      "We understand that every organization has unique needs, which is why we empower you to create custom forms and gather the data necessary for your organization's success. Your ability to build and customize forms ensures that your organization's specific requirements are met.",
+      "Every organization is unique, and your forms should be too. With our powerful form builder, you can easily create custom forms that capture the specific data your business requires. Whether it's for lead generation, feedback, or internal processes, our flexible design options ensure your forms are as unique as your needs. Streamline data collection and ensure you're always gathering the right information to drive your success.",
     image: recordsImage,
     icon: function Icon() {
       return <FolderMinusIcon className='h-8 w-8' role='img' />
@@ -31,9 +31,9 @@ const features = [
   },
   {
     name: 'Powerful Event Management',
-    summary: 'Keep everyone up-to-date and in the know.',
+    summary: 'Keep your team in sync with effortless scheduling.',
     description:
-      "PERSCOM.io's Calendars and Events features provide a comprehensive solution for managing scheduling and events, allowing you to efficiently plan and coordinate meetings, trainings, drills, and more.",
+      "Stay on top of all your organizational events with PERSCOM.io’s powerful Calendars and Events features. Effortlessly manage and coordinate meetings, trainings, drills, and more, ensuring that everyone is up-to-date and in the know. Whether you're planning a small meeting or a large-scale event, our intuitive tools streamline scheduling, reduce conflicts, and improve communication across your team.",
     image: searchImage,
     icon: function Icon() {
       return <CalendarDaysIcon className='h-8 w-8' role='img' />
@@ -66,7 +66,7 @@ function Feature({ feature, isActive, className, ...props }) {
       >
         {feature.name}
       </h3>
-      <h4 className='mt-2 text-xl font-medium'>{feature.summary}</h4>
+      <h4 className='mt-2 text-lg font-medium'>{feature.summary}</h4>
       <p className='mt-4 text-sm'>{feature.description}</p>
     </div>
   )
@@ -80,14 +80,14 @@ Feature.propTypes = {
 
 function FeaturesMobile() {
   return (
-    <div className='-mx-4 mt-16 space-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden'>
+    <div className='-mx-4 mt-20 flex flex-col gap-y-10 overflow-hidden px-4 sm:-mx-6 sm:px-6 lg:hidden'>
       {features.map((feature) => (
-        <div key={feature.name}>
+        <div key={feature.summary}>
           <Feature feature={feature} className='mx-auto max-w-2xl' isActive />
           <div className='relative mt-10 pb-10'>
-            <div className='absolute -inset-x-4 bottom-0 top-8 bg-gray-200 sm:-inset-x-6' />
-            <div className='relative mx-auto aspect-[844/428] w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-gray-900/5 ring-1 ring-gray-500/10'>
-              <img src={feature.image} alt='' sizes='52.75rem' />
+            <div className='absolute -inset-x-4 bottom-0 top-8 bg-slate-200 sm:-inset-x-6' />
+            <div className='relative mx-auto w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10'>
+              <img className='w-full' src={feature.image} alt='' sizes='52.75rem' />
             </div>
           </div>
         </div>
@@ -98,64 +98,70 @@ function FeaturesMobile() {
 
 function FeaturesDesktop() {
   return (
-    <Tab.Group as='div' className='hidden lg:mt-20 lg:block'>
+    <TabGroup className='hidden lg:mt-20 lg:block'>
       {({ selectedIndex }) => (
         <>
-          <Tab.List className='grid grid-cols-3 gap-x-8'>
+          <TabList className='grid grid-cols-3 gap-x-8'>
             {features.map((feature, featureIndex) => (
-              <Tab className='text-left [&:not(:focus-visible)]:focus:outline-none' key={feature.name}>
-                <Feature
-                  feature={{
-                    ...feature,
-                    name: (
-                      <div>
-                        <span className='absolute inset-0' /> {feature.name}
-                      </div>
-                    )
-                  }}
-                  isActive={featureIndex === selectedIndex}
-                  className='relative'
-                />
-              </Tab>
+              <Feature
+                key={feature.summary}
+                feature={{
+                  ...feature,
+                  name: (
+                    <Tab className='ui-not-focus-visible:outline-none'>
+                      <span className='absolute inset-0' />
+                      {feature.name}
+                    </Tab>
+                  )
+                }}
+                isActive={featureIndex === selectedIndex}
+                className='relative'
+              />
             ))}
-          </Tab.List>
-          <Tab.Panels className='rounded-4xl relative mt-20 overflow-hidden bg-gray-200 px-14 py-16 xl:px-16'>
+          </TabList>
+          <TabPanels className='rounded-4xl relative mt-20 overflow-hidden bg-slate-200 px-14 py-16 xl:px-16'>
             <div className='-mx-5 flex'>
               {features.map((feature, featureIndex) => (
-                <Tab.Panel
+                <TabPanel
                   static
-                  key={feature.name}
-                  className={clsx('px-5 transition duration-500 ease-in-out [&:not(:focus-visible)]:focus:outline-none', {
-                    'opacity-60': featureIndex !== selectedIndex
-                  })}
-                  style={{
-                    transform: `translateX(-${selectedIndex * 100}%)`
-                  }}
+                  key={feature.summary}
+                  className={clsx(
+                    'ui-not-focus-visible:outline-none px-5 transition duration-500 ease-in-out',
+                    featureIndex !== selectedIndex && 'opacity-60'
+                  )}
+                  style={{ transform: `translateX(-${selectedIndex * 100}%)` }}
                   aria-hidden={featureIndex !== selectedIndex}
                 >
-                  <div className='relative aspect-[844/428] w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-gray-900/5 ring-1 ring-gray-500/10'>
-                    <img src={feature.image} alt='' sizes='52.75rem' />
+                  <div className='w-[52.75rem] overflow-hidden rounded-xl bg-white shadow-lg shadow-slate-900/5 ring-1 ring-slate-500/10'>
+                    <img className='w-full' src={feature.image} alt='' sizes='52.75rem' />
                   </div>
-                </Tab.Panel>
+                </TabPanel>
               ))}
             </div>
-            <div className='rounded-4xl pointer-events-none absolute inset-0 ring-1 ring-inset ring-gray-900/10' />
-          </Tab.Panels>
+            <div className='rounded-4xl pointer-events-none absolute inset-0 ring-1 ring-inset ring-slate-900/10' />
+          </TabPanels>
         </>
       )}
-    </Tab.Group>
+    </TabGroup>
   )
 }
 
 export function SecondaryFeatures() {
   return (
-    <section id='secondary-features' aria-labelledby='secondary-features-title' className='py-20 sm:py-32'>
-      <Container className='relative'>
-        <div className='mx-auto max-w-2xl md:text-center'>
-          <h2 className='text-3xl font-bold tracking-tight text-gray-800 sm:text-4xl'>Simplify your organization&apos;s tasks.</h2>
-          <p className='mx-auto mt-4 max-w-3xl text-base'>We&apos;ve focused on making your life easier. Let our software show you how.</p>
+    <section
+      id='secondary-features'
+      aria-label='Features for simplifying everyday organizational tasks'
+      className='pb-14 pt-20 sm:pb-20 sm:pt-32 lg:pb-32'
+    >
+      <Container>
+        <div className='mx-auto max-w-3xl md:text-center'>
+          <h2 className='text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl'>Simplify your organization&apos;s tasks.</h2>
+          <p className='mt-4 text-lg tracking-tight text-slate-700'>
+            We&apos;ve focused on making your life easier. Let our software show you how.
+          </p>
         </div>
-        <FeaturesMobile /> <FeaturesDesktop />
+        <FeaturesMobile />
+        <FeaturesDesktop />
       </Container>
     </section>
   )

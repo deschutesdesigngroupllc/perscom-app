@@ -24,6 +24,8 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Support\Assets\AlpineComponent;
+use Filament\Support\Facades\FilamentAsset;
 use Filament\Support\Facades\FilamentView;
 use Filament\Tables\Columns\Column;
 use Filament\Tables\Columns\TextColumn;
@@ -230,6 +232,10 @@ class AppServiceProvider extends ServiceProvider
 
         Feature::discover();
         Feature::resolveScopeUsing(static fn ($driver) => tenant());
+
+        FilamentAsset::register([
+            AlpineComponent::make('widget-code-generator', __DIR__.'/../../resources/js/dist/components/widget-code-generator/index.js'),
+        ]);
 
         FilamentShield::configurePermissionIdentifierUsing(function ($resource) {
             return Str::of($resource)

@@ -80,7 +80,7 @@ export function Footer() {
         </div>
         <div className='flex flex-col items-center border-t border-gray-400/10 py-10'>
           <p className='mt-6 text-center text-sm sm:mt-0'>
-            Copyright &copy; {new Date().getFullYear()} Deschutes Design Group LLC. All rights reserved. reserved.
+            Copyright &copy; {new Date().getFullYear()} Deschutes Design Group LLC. All rights reserved.
           </p>
         </div>
       </Container>

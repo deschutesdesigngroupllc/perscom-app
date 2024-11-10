@@ -37,6 +37,7 @@ use Spatie\Health\Commands\RunHealthChecksCommand;
 use Spatie\Health\Commands\ScheduleCheckHeartbeatCommand;
 use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
 use Symfony\Component\HttpFoundation\Response;
+use Torchlight\Middleware\RenderTorchlight;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -91,6 +92,10 @@ return Application::configure(basePath: dirname(__DIR__))
             'approved' => CheckUserApprovalStatus::class,
             'feature' => EnsureFeaturesAreActive::class,
             'subscribed' => CheckSubscription::class,
+        ]);
+
+        $middleware->use([
+            RenderTorchlight::class,
         ]);
 
         $middleware->priority([

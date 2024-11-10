@@ -64,6 +64,7 @@
     "tailflow/laravel-orion": "^2.23.0",
     "tightenco/ziggy": "^2.3",
     "timokoerber/laravel-one-time-operations": "^1.4.2",
+    "torchlight/torchlight-laravel": "^0.6.0",
     "twilio/sdk": "^7.16.2",
     "wiebenieuwenhuis/filament-code-editor": "^1.1"
   },
