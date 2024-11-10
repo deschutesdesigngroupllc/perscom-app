@@ -4,18 +4,22 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages;
 
+use App\Features\ApiAccessFeature;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Forms\Components\TorchlightCode;
 use App\Forms\Components\WidgetCodeGenerator;
 use App\Models\PassportToken;
 use App\Models\User;
+use DateTimeZone;
 use Filament\Actions\Action;
+use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
+use Laravel\Pennant\Feature;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class Widgets extends Page
@@ -31,6 +35,11 @@ class Widgets extends Page
     protected static string $view = 'filament.app.pages.widgets';
 
     protected ?string $subheading = 'Widgets provide a visual representation of your personnel data that can be embedded in any external website. Use the widget explorer below to try the widgets out in real-time.';
+
+    public static function canAccess(): bool
+    {
+        return parent::canAccess() && Feature::active(ApiAccessFeature::class);
+    }
 
     public function mount(): void
     {
@@ -65,8 +74,11 @@ class Widgets extends Page
                         ->options([
                             'roster' => 'Roster',
                             'awards' => 'Awards',
-                            'ranks' => 'Ranks',
+                            'calendar' => 'Calendar',
+                            'forms' => 'Forms',
+                            'newsfeed' => 'Newsfeed',
                             'qualifications' => 'Qualifications',
+                            'ranks' => 'Ranks',
                         ]),
                     Select::make('api_key')
                         ->label('API Key')
@@ -75,8 +87,20 @@ class Widgets extends Page
                         ->preload()
                         ->live()
                         ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
-                        ->createOptionForm(fn ($form) => PassportTokenResource::form($form))
+                        ->suffixAction(FormAction::make('open')
+                            ->icon('heroicon-o-plus')
+                            ->openUrlInNewTab()
+                            ->url(PassportTokenResource::getUrl('create'))
+                        )
                         ->options(fn () => PassportToken::all()->pluck('name', 'token')),
+                    Select::make('timezone')
+                        ->preload()
+                        ->searchable()
+                        ->live()
+                        ->default('UTC')
+                        ->helperText('The timezone to use. By default all times are stored in UTC. Select a timezone to convert dates and times to your desired timezone.')
+                        ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
+                        ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($value, $key) => [$value => $value])),
                     Checkbox::make('dark_mode')
                         ->helperText('Check to enable dark mode.')
                         ->label('Dark Mode')
@@ -100,7 +124,8 @@ class Widgets extends Page
         $code = $this->generateCodeSnippet(
             widget: $get('widget'),
             apiKey: $get('api_key'),
-            darkMode: $get('dark_mode') ? 'true' : 'false'
+            darkMode: $get('dark_mode') ? 'true' : 'false',
+            timezone: $get('timezone'),
         );
 
         $set('widget_code', $code);
@@ -108,7 +133,7 @@ class Widgets extends Page
         $this->dispatch('update-code', code: $code);
     }
 
-    protected function generateCodeSnippet(?string $widget = null, ?string $apiKey = null, string $darkMode = 'false'): string
+    protected function generateCodeSnippet(?string $widget = null, ?string $apiKey = null, string $darkMode = 'false', string $timezone = 'UTC'): string
     {
         return <<<HTML
 <div id="perscom_widget_wrapper">
@@ -117,6 +142,7 @@ class Widgets extends Page
         data-apikey="$apiKey"
         data-widget="$widget"
         data-dark="$darkMode"
+        data-timezone="$timezone"
         src="https://widget.perscom.io/widget.js"
         type="text/javascript"
     ></script>
