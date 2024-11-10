@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Filament\App\Pages;
 
 use App\Filament\App\Resources\PassportTokenResource;
-use App\Filament\App\Widgets\Widgets\Roster;
 use App\Forms\Components\TorchlightCode;
 use App\Forms\Components\WidgetCodeGenerator;
 use App\Models\PassportToken;
+use App\Models\User;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
@@ -16,6 +16,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
+use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class Widgets extends Page
 {
@@ -29,16 +30,19 @@ class Widgets extends Page
 
     protected static string $view = 'filament.app.pages.widgets';
 
-    protected ?string $subheading = 'Widgets provide a visual representation of your personnel data that can be embedded in any external website.';
+    protected ?string $subheading = 'Widgets provide a visual representation of your personnel data that can be embedded in any external website. Use the widget explorer below to try the widgets out in real-time.';
 
     public function mount(): void
     {
-        $this->apiKey = Auth::guard('jwt')->login(Auth::guard('web')->user());
-    }
+        /** @var JWTGuard $guard */
+        $guard = Auth::guard('jwt');
 
-    public function getHeaderWidgetsColumns(): int|string|array
-    {
-        return 3;
+        /** @var User $user */
+        $user = Auth::guard('web')->user();
+
+        $this->apiKey = $guard->claims([
+            'scopes' => '*',
+        ])->login($user);
     }
 
     protected function getHeaderActions(): array
@@ -88,13 +92,6 @@ class Widgets extends Page
                         ->label('Copy Code')
                         ->color('gray'),
                 ]),
-        ];
-    }
-
-    protected function getHeaderWidgets(): array
-    {
-        return [
-            Roster::class,
         ];
     }
 
