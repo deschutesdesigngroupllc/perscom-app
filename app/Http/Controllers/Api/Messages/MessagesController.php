@@ -17,6 +17,13 @@ class MessagesController extends Controller
 
     protected $request = MessageRequest::class;
 
+    public function includes(): array
+    {
+        return [
+            'schedule',
+        ];
+    }
+
     public function sortableBy(): array
     {
         return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at', 'deleted_at'];
