@@ -22,6 +22,7 @@ use App\Traits\HasResourceUrl;
 use App\Traits\HasServiceRecords;
 use App\Traits\HasStatuses;
 use App\Traits\JwtClaims;
+use Carbon\CarbonInterval;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -45,6 +46,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Optional;
 use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasPermissions;
@@ -92,8 +94,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
  * @property-read int|null $fields_count
  * @property-read string $label
- * @property-read mixed $last_assignment_change_date
- * @property-read mixed $last_rank_change_date
+ * @property-read Carbon|null $last_assignment_change_date
+ * @property-read Carbon|null $last_rank_change_date
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read mixed $online
@@ -108,7 +110,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Rank|null $rank
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
  * @property-read int|null $rank_records_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read Optional|string|null|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
@@ -125,13 +127,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read TaskAssignment $assignment
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
  * @property-read int|null $tasks_count
- * @property-read mixed $time_in_assignment
- * @property-read mixed $time_in_grade
- * @property-read mixed $time_in_service
+ * @property-read CarbonInterval|null $time_in_assignment
+ * @property-read CarbonInterval|null $time_in_grade
+ * @property-read CarbonInterval|null $time_in_service
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read Unit|null $unit
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read Optional|string|null|null $url
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static Builder|User newModelQuery()
@@ -230,11 +232,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     ];
 
     protected $appends = [
+        'last_assignment_change_date',
+        'last_rank_change_date',
         'online',
         'profile_photo_url',
         'cover_photo_url',
     ];
 
+    /**
+     * @return string[]
+     */
     public static function getCustomColumns(): array
     {
         return [
@@ -264,6 +271,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         ];
     }
 
+    /**
+     * @return array<int, Tenant>|Collection<int, Tenant>
+     */
     public function getTenants(Panel $panel): array|Collection
     {
         return Collection::wrap(tenant());
@@ -333,6 +343,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, void>
+     */
     public function coverPhotoUrl(): Attribute
     {
         return Attribute::make(
@@ -340,49 +353,67 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?CarbonInterval, void>
+     */
     public function timeInAssignment(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->primary_assignment_records()->first()->created_at ?? null, function ($date) {
+            get: fn (): ?CarbonInterval => optional($this->primary_assignment_records()->first()->created_at ?? null, function ($date) {
                 return Carbon::now()->diff($date, true);
             })
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?CarbonInterval, void>
+     */
     public function timeInGrade(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->rank_records()->first()?->created_at ?? null, function ($date) {
+            get: fn (): ?CarbonInterval => optional($this->rank_records()->first()?->created_at ?? null, function ($date) {
                 return Carbon::now()->diff($date, true);
             })
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?CarbonInterval, void>
+     */
     public function timeInService(): Attribute
     {
         return Attribute::make(
-            get: fn () => Carbon::now()->diff($this->created_at, true)
+            get: fn (): ?CarbonInterval => Carbon::now()->diff($this->created_at, true)
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?Carbon, null>
+     */
     public function lastAssignmentChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->primary_assignment_records()->latest()->first(), function (?AssignmentRecord $record) {
+            get: fn (): ?Carbon => optional($this->primary_assignment_records()->latest()->first(), function (AssignmentRecord $record) {
                 return $record->created_at;
             })
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?Carbon, null>
+     */
     public function lastRankChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->rank_records()->latest()->first(), function (?RankRecord $record) {
+            get: fn (): ?Carbon => optional($this->rank_records()->latest()->first(), function (RankRecord $record) {
                 return $record->created_at;
             })
         )->shouldCache();
     }
 
+    /**
+     * @return BelongsToMany<Event>
+     */
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'events_registrations')
@@ -392,6 +423,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
             ->using(EventRegistration::class);
     }
 
+    /**
+     * @return HasMany<Submission>
+     */
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);

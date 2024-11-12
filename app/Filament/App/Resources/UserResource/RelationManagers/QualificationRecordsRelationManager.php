@@ -23,6 +23,7 @@ class QualificationRecordsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('qualification.name')
                     ->sortable(),

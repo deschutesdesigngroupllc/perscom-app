@@ -33,6 +33,7 @@ class EventsController extends Controller
             'comments',
             'comments.*',
             'image',
+            'schedule',
             'tags',
         ];
     }

@@ -23,6 +23,7 @@ class RankRecordsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('rank.name')
                     ->sortable(),
