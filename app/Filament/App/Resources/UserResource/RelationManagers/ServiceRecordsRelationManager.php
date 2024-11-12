@@ -23,6 +23,7 @@ class ServiceRecordsRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
