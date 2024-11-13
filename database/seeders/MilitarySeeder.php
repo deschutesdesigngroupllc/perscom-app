@@ -127,7 +127,13 @@ class MilitarySeeder extends Seeder
                 $path = "$award->name.png";
 
                 if (! Storage::disk('s3')->exists($path)) {
-                    Storage::disk('s3')->put($path, file_get_contents(storage_path("app/images/awards/$award->name.png")));
+                    if ($file = file_get_contents(storage_path("app/images/awards/$award->name.png"))) {
+                        Storage::disk('s3')->put(
+                            path: $path,
+                            contents: $file,
+                            options: 'public'
+                        );
+                    }
                 }
 
                 $award->image()->create([
@@ -226,7 +232,13 @@ class MilitarySeeder extends Seeder
                 $path = "$rank->abbreviation.svg";
 
                 if (! Storage::disk('s3')->exists($path)) {
-                    Storage::disk('s3')->put($path, file_get_contents(storage_path("app/images/ranks/military/army/$rank->abbreviation.svg")));
+                    if ($file = file_get_contents(storage_path("app/images/ranks/military/army/$rank->abbreviation.svg"))) {
+                        Storage::disk('s3')->put(
+                            path: $path,
+                            contents: $file,
+                            options: 'public'
+                        );
+                    }
                 }
 
                 $rank->image()->create([
