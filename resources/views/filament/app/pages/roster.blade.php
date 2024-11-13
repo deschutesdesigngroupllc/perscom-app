@@ -59,7 +59,7 @@
                         <x-filament::badge color="info">Offline</x-filament::badge>
                       @endif
                     </div>
-                    <x-filament::badge color="success">{{ $user->status->name ?? 'No Status Set' }}</x-filament::badge>
+                    <x-filament::badge :color="\Filament\Support\Colors\Color::hex($user->status->color)">{{ $user->status->name ?? 'No Status Set' }}</x-filament::badge>
                   </div>
                 </div>
               </a>

@@ -16,4 +16,6 @@ class Calendar extends Page
     protected static ?int $navigationSort = 2;
 
     protected static string $view = 'filament.app.pages.calendar';
+
+    protected ?string $subheading = 'Keep up-to-date with your organization\'s calendar of events and schedule.';
 }

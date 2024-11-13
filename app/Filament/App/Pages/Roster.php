@@ -21,6 +21,8 @@ class Roster extends Page
 
     protected static string $view = 'filament.app.pages.roster';
 
+    protected ?string $subheading = 'An comprehensive overview of your organization\'s personnel.';
+
     public function mount(): void
     {
         $this->data = Group::query()->orderForRoster()->get();

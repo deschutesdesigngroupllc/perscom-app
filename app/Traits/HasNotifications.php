@@ -4,19 +4,22 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Models\User;
+use App\Models\ModelNotification;
 use Eloquent;
-use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 /**
  * @mixin Eloquent
  */
 trait HasNotifications
 {
-    public function notifications(): MorphToMany
+    public static function bootHasNotifications(): void
     {
-        return $this->morphToMany(User::class, 'model', 'model_has_notifications')
-            ->orderByPivot('created_at')
-            ->withTimestamps();
+        static::deleting(fn ($model) => $model->modelNotifications()->delete());
+    }
+
+    public function modelNotifications(): MorphMany
+    {
+        return $this->morphMany(ModelNotification::class, 'model');
     }
 }

@@ -80,7 +80,7 @@ class FieldResource extends BaseResource
                                     ->maxLength(255)
                                     ->columnSpanFull(),
                                 Forms\Components\TextInput::make('help')
-                                    ->helperText('Like this text, this is a short description that should help the user fill out the field.')
+                                    ->helperText('ModelLike this text, this is a short description that should help the user fill out the field.')
                                     ->nullable()
                                     ->maxLength(255)
                                     ->columnSpanFull(),

@@ -35,7 +35,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read \Illuminate\Support\Collection $changes
  * @property-read string|null $headline
  * @property-read string|null $item
- * @property-read Like $pivot
+ * @property-read ModelLike $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $likes
  * @property-read int|null $likes_count
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject

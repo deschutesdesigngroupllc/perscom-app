@@ -51,10 +51,134 @@ class MilitarySeeder extends Seeder
             ->shouldCreateAnnouncement(false)
             ->handle(tenant());
 
-        $user = User::factory()->create([
-            'name' => 'Demo User',
-            'email' => 'demo@perscom.io',
-        ]);
+        $ranks = Rank::factory()
+            ->count(7)
+            ->sequence(
+                [
+                    'name' => 'Sergeant',
+                    'abbreviation' => 'SGT',
+                    'paygrade' => 'E-5',
+                ], [
+                    'name' => 'Staff Sergeant',
+                    'abbreviation' => 'SSG',
+                    'paygrade' => 'E-6',
+                ], [
+                    'name' => 'Sergeant First Class',
+                    'abbreviation' => 'SFC',
+                    'paygrade' => 'E-7',
+                ], [
+                    'name' => 'Master Sergeant',
+                    'abbreviation' => 'MSG',
+                    'paygrade' => 'E-8',
+                ], [
+                    'name' => 'First Sergeant',
+                    'abbreviation' => '1SG',
+                    'paygrade' => 'E-8',
+                ], [
+                    'name' => 'Sergeant Major',
+                    'abbreviation' => 'SGM',
+                    'paygrade' => 'E-9',
+                ], [
+                    'name' => 'Command Sergeant Major',
+                    'abbreviation' => 'CSM',
+                    'paygrade' => 'E-9',
+                ],
+            )
+            ->create()
+            ->each(function (Rank $rank) {
+                $path = "$rank->abbreviation.svg";
+
+                $storage = storage_path("app/images/ranks/$path");
+                if (! Storage::disk('s3')->exists($path) && file_exists($storage)) {
+                    Storage::disk('s3')->put(
+                        path: $path,
+                        contents: file_get_contents($storage),
+                        options: 'public'
+                    );
+                }
+
+                $rank->image()->create([
+                    'path' => $path,
+                    'name' => $rank->name,
+                    'filename' => $path,
+                ]);
+            });
+
+        $specialties = Specialty::factory()
+            ->count(7)
+            ->sequence(
+                [
+                    'name' => 'Special Forces Officer',
+                    'abbreviation' => '18A',
+                    'description' => 'As a Special Forces Officer, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will lead teams on missions, including counter-terrorism, direct action, foreign internal defense, intelligence gathering, and unconventional warfare. You’ll have several duties, including training, resource management, mission and logistics planning, and working with U.S. and foreign government agencies.',
+                ], [
+                    'name' => 'Special Forces Warrant Officer',
+                    'abbreviation' => '180A',
+                    'description' => 'Special Forces (SF) Warrant Officers are combat leaders and staff officers. They are experienced subject matter experts in unconventional warfare, operations and intelligence fusion, and planning and execution at all levels across the operational continuum.',
+                ], [
+                    'name' => 'Special Forces Weapons Sergeant',
+                    'abbreviation' => '18B',
+                    'description' => 'As a Special Forces Weapons Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will operate and maintain a wide variety of domestic (United States), allied, and foreign weaponry. You’ll employ conventional and unconventional warfare tactics and techniques in individual and small arms infantry operations.',
+                ], [
+                    'name' => 'Special Forces Engineer Sergeant',
+                    'abbreviation' => '18C',
+                    'description' => 'As a Special Forces Engineer Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will serve on construction projects, building critical infrastructure and creating bridges, buildings, and field barricades. As a demolitions specialist, you’ll carry out demolition raids against strategic enemy targets like railroads, fuel depots, and bridges, destroying critical components of infrastructure to give our Soldiers a tactical advantage.',
+                ], [
+                    'name' => 'Special Forces Medical Sergeant',
+                    'abbreviation' => '18D',
+                    'description' => 'As a Special Forces Medical Sergeant, you\'ll become Green Berets, one of the most highly skilled Soldiers in the world. Though you’ll primarily train with an emphasis on first-response and trauma medicine much like a paramedic in the civilian world, you’ll also have a working knowledge of dentistry, veterinary care, public sanitation, water quality, and optometry.',
+                ], [
+                    'name' => 'Special Forces Communications Sergeant',
+                    'abbreviation' => '18E',
+                    'description' => 'As a Special Forces Communications Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You’ll supervise communications for special operations and missions. You’ll organize, train, advise, and supervise the installation, use, and operation of communications equipment, and establish and maintain tactical lines of communication with teams during missions.',
+                ], [
+                    'name' => 'Special Forces Intelligence Sergeant',
+                    'abbreviation' => '18F',
+                    'description' => 'As a Special Forces Intelligence Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You’ll collect intelligence for special missions by employing conventional and unconventional warfare tactics and strategies, both in preparation for special missions and during operations, and provide tactical guidance to Army personnel. You’ll also be tasked with preparing reports for intelligence nets (agents who process prisoners of war, establish security plans, and maintain classified documents).',
+                ],
+            )
+            ->create();
+
+        $statuses = Status::factory()
+            ->count(3)
+            ->sequence(
+                [
+                    'name' => 'Active',
+                    'color' => '#16a34a',
+                ], [
+                    'name' => 'Inactive',
+                    'color' => '#dc2626',
+                ], [
+                    'name' => 'On Leave',
+                    'color' => '#d97706',
+                ],
+            )
+            ->create();
+
+        $positions = Position::factory()
+            ->count(8)
+            ->sequence(
+                ['name' => 'Detachment Commander'],
+                ['name' => 'Assistant Detachment Commander'],
+                ['name' => 'Operations Sergeant'],
+                ['name' => 'Assistant Operations and Intelligence Sergeant'],
+                ['name' => 'Weapons Sergeant'],
+                ['name' => 'Communications Sergeant'],
+                ['name' => 'Medical Sergeant'],
+                ['name' => 'Engineering Sergeant'],
+            )
+            ->create();
+
+        $user = User::factory()
+            ->state([
+                'name' => 'Demo User',
+                'email' => 'demo@perscom.io',
+            ])
+            ->recycle($positions)
+            ->recycle($specialties)
+            ->recycle($ranks)
+            ->recycle($statuses)
+            ->create();
         $user->assignRole(Utils::getSuperAdminName());
 
         Announcement::factory()
@@ -68,15 +192,15 @@ class MilitarySeeder extends Seeder
 
         $documents = Document::factory()
             ->count(5)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Document $sequence->index"])
+            ->sequence(fn (Sequence $sequence) => [
+                'name' => "Document $sequence->index",
+            ])
+            ->for($user, 'author')
             ->create();
 
-        $units = Unit::factory()
-            ->count(8)
+        $operationUnits = Unit::factory()
+            ->count(5)
             ->sequence(
-                ['name' => '5th Special Forces Group'],
-                ['name' => 'Headquarters and Headquarters Company, 5th SFG'],
-                ['name' => 'Group Support Company, 5th SFG'],
                 ['name' => '1st Battalion, 5th SFG'],
                 ['name' => 'Alpha Company, 1st Btn, 5th SFG'],
                 ['name' => 'ODB 5110, A Co, 1st Btn, 5th SFG'],
@@ -85,12 +209,28 @@ class MilitarySeeder extends Seeder
             )
             ->create();
 
+        $adminUnits = Unit::factory()
+            ->count(2)
+            ->sequence(
+                ['name' => 'Headquarters and Headquarters Company, 5th SFG'],
+                ['name' => 'Group Support Company, 5th SFG'],
+            )
+            ->create();
+
         Group::factory()
             ->state([
                 'name' => 'Operations',
                 'icon' => 'heroicon-o-fire',
             ])
-            ->hasAttached($units)
+            ->hasAttached($operationUnits)
+            ->create();
+
+        Group::factory()
+            ->state([
+                'name' => 'Administration',
+                'icon' => 'heroicon-o-building-office',
+            ])
+            ->hasAttached($adminUnits)
             ->create();
 
         $awards = Award::factory()
@@ -126,20 +266,19 @@ class MilitarySeeder extends Seeder
             ->each(function (Award $award) {
                 $path = "$award->name.png";
 
-                if (! Storage::disk('s3')->exists($path)) {
-                    if ($file = file_get_contents(storage_path("app/images/awards/$award->name.png"))) {
-                        Storage::disk('s3')->put(
-                            path: $path,
-                            contents: $file,
-                            options: 'public'
-                        );
-                    }
+                $storage = storage_path("app/images/awards/$path");
+                if (! Storage::disk('s3')->exists($path) && file_exists($storage)) {
+                    Storage::disk('s3')->put(
+                        path: $path,
+                        contents: file_get_contents($storage),
+                        options: 'public'
+                    );
                 }
 
                 $award->image()->create([
                     'path' => $path,
                     'name' => $award->name,
-                    'filename' => "$award->name.png",
+                    'filename' => $path,
                 ]);
             });
 
@@ -192,126 +331,25 @@ class MilitarySeeder extends Seeder
                     'description' => 'Following successful completion of Special Forces Assessment and Selection (SFAS) and any other prerequisite courses, selected Soldiers will be scheduled to attend Special Forces Qualification Course (SFQC). SFQC focuses on core Special Forces tactical competencies in support of surgical strike and special warfare; Career Management Field 18 MOS classification; Survival, Evasion, Resistance and Escape (SERE); language proficiency; and regional cultural understanding. The qualification course consists of six sequential phases of training, upon completion of which Soldiers earn the right to join the Special Forces brotherhood, wear the Special Forces tab and don the green beret.',
                 ],
             )
-            ->create();
-
-        $ranks = Rank::factory()
-            ->count(7)
-            ->sequence(
-                [
-                    'name' => 'Sergeant',
-                    'abbreviation' => 'SGT',
-                    'paygrade' => 'E-5',
-                ], [
-                    'name' => 'Staff Sergeant',
-                    'abbreviation' => 'SSG',
-                    'paygrade' => 'E-6',
-                ], [
-                    'name' => 'Sergeant First Class',
-                    'abbreviation' => 'SFC',
-                    'paygrade' => 'E-7',
-                ], [
-                    'name' => 'Master Sergeant',
-                    'abbreviation' => 'MSG',
-                    'paygrade' => 'E-8',
-                ], [
-                    'name' => 'First Sergeant',
-                    'abbreviation' => '1SG',
-                    'paygrade' => 'E-8',
-                ], [
-                    'name' => 'Sergeant Major',
-                    'abbreviation' => 'SGM',
-                    'paygrade' => 'E-9',
-                ], [
-                    'name' => 'Command Sergeant Major',
-                    'abbreviation' => 'CSM',
-                    'paygrade' => 'E-9',
-                ],
-            )
             ->create()
-            ->each(function (Rank $rank) {
-                $path = "$rank->abbreviation.svg";
+            ->each(function (Qualification $qualification) {
+                $path = "$qualification->name.png";
 
-                if (! Storage::disk('s3')->exists($path)) {
-                    if ($file = file_get_contents(storage_path("app/images/ranks/military/army/$rank->abbreviation.svg"))) {
-                        Storage::disk('s3')->put(
-                            path: $path,
-                            contents: $file,
-                            options: 'public'
-                        );
-                    }
+                $storage = storage_path("app/images/qualifications/$path");
+                if (! Storage::disk('s3')->exists($path) && file_exists($storage)) {
+                    Storage::disk('s3')->put(
+                        path: $path,
+                        contents: file_get_contents($storage),
+                        options: 'public'
+                    );
                 }
 
-                $rank->image()->create([
+                $qualification->image()->create([
                     'path' => $path,
-                    'name' => $rank->name,
-                    'filename' => "$rank->abbreviation.svg",
+                    'name' => $qualification->name,
+                    'filename' => $path,
                 ]);
             });
-
-        $specialties = Specialty::factory()
-            ->count(7)
-            ->sequence(
-                [
-                    'name' => 'Special Forces Officer',
-                    'abbreviation' => '18A',
-                    'description' => 'As a Special Forces Officer, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will lead teams on missions, including counter-terrorism, direct action, foreign internal defense, intelligence gathering, and unconventional warfare. You’ll have several duties, including training, resource management, mission and logistics planning, and working with U.S. and foreign government agencies.',
-                ], [
-                    'name' => 'Special Forces Warrant Officer',
-                    'abbreviation' => '180A',
-                    'description' => 'Special Forces (SF) Warrant Officers are combat leaders and staff officers. They are experienced subject matter experts in unconventional warfare, operations and intelligence fusion, and planning and execution at all levels across the operational continuum.',
-                ], [
-                    'name' => 'Special Forces Weapons Sergeant',
-                    'abbreviation' => '18B',
-                    'description' => 'As a Special Forces Weapons Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will operate and maintain a wide variety of domestic (United States), allied, and foreign weaponry. You’ll employ conventional and unconventional warfare tactics and techniques in individual and small arms infantry operations.',
-                ], [
-                    'name' => 'Special Forces Engineer Sergeant',
-                    'abbreviation' => '18C',
-                    'description' => 'As a Special Forces Engineer Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will serve on construction projects, building critical infrastructure and creating bridges, buildings, and field barricades. As a demolitions specialist, you’ll carry out demolition raids against strategic enemy targets like railroads, fuel depots, and bridges, destroying critical components of infrastructure to give our Soldiers a tactical advantage.',
-                ], [
-                    'name' => 'Special Forces Medical Sergeant',
-                    'abbreviation' => '18D',
-                    'description' => 'As a Special Forces Medical Sergeant, you\'ll become Green Berets, one of the most highly skilled Soldiers in the world. Though you’ll primarily train with an emphasis on first-response and trauma medicine much like a paramedic in the civilian world, you’ll also have a working knowledge of dentistry, veterinary care, public sanitation, water quality, and optometry.',
-                ], [
-                    'name' => 'Special Forces Communications Sergeant',
-                    'abbreviation' => '18E',
-                    'description' => 'As a Special Forces Communications Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You’ll supervise communications for special operations and missions. You’ll organize, train, advise, and supervise the installation, use, and operation of communications equipment, and establish and maintain tactical lines of communication with teams during missions.',
-                ], [
-                    'name' => 'Special Forces Intelligence Sergeant',
-                    'abbreviation' => '18F',
-                    'description' => 'As a Special Forces Intelligence Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You’ll collect intelligence for special missions by employing conventional and unconventional warfare tactics and strategies, both in preparation for special missions and during operations, and provide tactical guidance to Army personnel. You’ll also be tasked with preparing reports for intelligence nets (agents who process prisoners of war, establish security plans, and maintain classified documents).',
-                ],
-            )
-            ->create();
-
-        $statuses = Status::factory()
-            ->count(3)
-            ->sequence(
-                [
-                    'name' => 'Active',
-                    'color' => '#dcfce7',
-                ], [
-                    'name' => 'Inactive',
-                    'color' => '#fee2e2',
-                ], [
-                    'name' => 'On Leave',
-                    'color' => '#e0f2fe',
-                ],
-            )
-            ->create();
-
-        $positions = Position::factory()
-            ->count(8)
-            ->sequence(
-                ['name' => 'Detachment Commander'],
-                ['name' => 'Assistant Detachment Commander'],
-                ['name' => 'Operations Sergeant'],
-                ['name' => 'Assistant Operations and Intelligence Sergeant'],
-                ['name' => 'Weapons Sergeant'],
-                ['name' => 'Communications Sergeant'],
-                ['name' => 'Medical Sergeant'],
-                ['name' => 'Engineering Sergeant'],
-            )
-            ->create();
 
         $tasks = Task::factory()
             ->count(3)
@@ -329,10 +367,10 @@ class MilitarySeeder extends Seeder
             ->recycle($ranks)
             ->recycle($statuses)
             ->recycle($tasks)
-            ->recycle($units)
+            ->recycle($operationUnits)
             ->has(AssignmentRecord::factory()
                 ->for($user, 'author')
-                ->recycle([$positions, $specialties, $statuses, $units, $documents])
+                ->recycle([$positions, $specialties, $statuses, $operationUnits, $documents])
                 ->count(5), 'service_records')
             ->has(AwardRecord::factory()
                 ->for($user, 'author')
