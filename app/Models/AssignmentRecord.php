@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\AssignmentRecordScope;
@@ -15,6 +16,7 @@ use App\Traits\HasAuthor;
 use App\Traits\HasComments;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
+use App\Traits\HasModelNotifications;
 use App\Traits\HasPosition;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
@@ -95,7 +97,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(AssignmentRecordObserver::class)]
 #[ScopedBy(AssignmentRecordScope::class)]
-class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
+class AssignmentRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;
@@ -105,6 +107,7 @@ class AssignmentRecord extends Model implements HasLabel, ShouldGenerateNewsfeed
     use HasDocument;
     use HasFactory;
     use HasLogs;
+    use HasModelNotifications;
     use HasPosition;
     use HasResourceLabel;
     use HasResourceUrl;

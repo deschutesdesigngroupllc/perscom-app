@@ -16,42 +16,14 @@ trait InteractsWithModelNotifications
 {
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        if ($this->record instanceof SendsModelNotifications) {
-            $notifications = $this->record->modelNotifications;
-
-            data_set($data, 'model_notifications.groups', $notifications->whereNotNull('group_id')->pluck('group_id')->toArray());
-            data_set($data, 'model_notifications.units', $notifications->whereNotNull('unit_id')->pluck('unit_id')->toArray());
-            data_set($data, 'model_notifications.users', $notifications->whereNotNull('user_id')->pluck('user_id')->toArray());
-
-            data_set($data, 'model_notifications.enabled', filled($notifications));
-            data_set($data, 'model_notifications.subject', data_get($notifications->whereNotNull('subject')->first(), 'subject'));
-            data_set($data, 'model_notifications.message', data_get($notifications->whereNotNull('message')->first(), 'message'));
-            data_set($data, 'model_notifications.channels', data_get($notifications->whereNotNull('channels')->first(), 'channels'));
-        }
+        $data = $this->fillModelNotificationData($this->record, $data);
 
         return parent::mutateFormDataBeforeFill($data);
     }
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        if ($record instanceof SendsModelNotifications) {
-            $record->modelNotifications()->delete();
-
-            if (data_get($data, 'model_notifications.enabled', false)) {
-                $subject = data_get($data, 'model_notifications.subject', '');
-                $message = data_get($data, 'model_notifications.message', '');
-                $channels = data_get($data, 'model_notifications.channels', []);
-
-                $event = 'created';
-                if (method_exists(static::$resource, 'modelNotificationCreatedEvent')) {
-                    $event = static::$resource::modelNotificationCreatedEvent();
-                }
-
-                collect(data_get($data, 'model_notifications.groups'))->each(fn ($groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
-                collect(data_get($data, 'model_notifications.units'))->each(fn ($unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
-                collect(data_get($data, 'model_notifications.users'))->each(fn ($userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
-            }
-        }
+        $this->performModelNotificationInserts($record, $data);
 
         return parent::handleRecordUpdate($record, data_forget($data, 'model_notifications'));
     }
@@ -62,21 +34,44 @@ trait InteractsWithModelNotifications
 
         $record = parent::handleRecordCreation(data_forget($data, 'model_notifications'));
 
-        if ($record instanceof SendsModelNotifications && data_get($notificationData, 'enabled', false)) {
-            $subject = data_get($notificationData, 'subject', '');
-            $message = data_get($notificationData, 'message', '');
-            $channels = data_get($notificationData, 'channels', []);
+        $this->performModelNotificationInserts($record, $notificationData);
+
+        return $record;
+    }
+
+    protected function performModelNotificationInserts(SendsModelNotifications|Model $record, array $data): void
+    {
+        $record->modelNotifications()->delete();
+
+        if (data_get($data, 'enabled', false)) {
+            $subject = data_get($data, 'subject', '');
+            $message = data_get($data, 'message', '');
+            $channels = data_get($data, 'channels', []);
 
             $event = 'created';
             if (method_exists(static::$resource, 'modelNotificationCreatedEvent')) {
                 $event = static::$resource::modelNotificationCreatedEvent();
             }
 
-            collect(data_get($notificationData, 'groups'))->each(fn ($groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
-            collect(data_get($notificationData, 'units'))->each(fn ($unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
-            collect(data_get($notificationData, 'users'))->each(fn ($userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
+            collect(data_get($data, 'groups'))->each(fn ($groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
+            collect(data_get($data, 'units'))->each(fn ($unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
+            collect(data_get($data, 'users'))->each(fn ($userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
         }
+    }
 
-        return $record;
+    protected function fillModelNotificationData(SendsModelNotifications|Model $record, array $data): array
+    {
+        $notifications = $record->modelNotifications;
+
+        data_set($data, 'model_notifications.groups', $notifications->whereNotNull('group_id')->pluck('group_id')->toArray());
+        data_set($data, 'model_notifications.units', $notifications->whereNotNull('unit_id')->pluck('unit_id')->toArray());
+        data_set($data, 'model_notifications.users', $notifications->whereNotNull('user_id')->pluck('user_id')->toArray());
+
+        data_set($data, 'model_notifications.enabled', filled($notifications));
+        data_set($data, 'model_notifications.subject', data_get($notifications->whereNotNull('subject')->first(), 'subject'));
+        data_set($data, 'model_notifications.message', data_get($notifications->whereNotNull('message')->first(), 'message'));
+        data_set($data, 'model_notifications.channels', data_get($notifications->whereNotNull('channels')->first(), 'channels'));
+
+        return $data;
     }
 }

@@ -147,22 +147,23 @@ class AppPanelProvider extends PanelProvider
             ->plugins([
                 new MinimalTheme,
                 FilamentShieldPlugin::make(),
-                QuickCreatePlugin::make()
-                    ->renderUsingHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER)
-                    ->alwaysShowModal()
-                    ->includes([
-                        AnnouncementResource::class,
-                        AssignmentRecordResource::class,
-                        AwardRecordResource::class,
-                        CombatRecordResource::class,
-                        EventResource::class,
-                        MessageResource::class,
-                        QualificationRecordResource::class,
-                        RankRecordResource::class,
-                        ServiceRecordResource::class,
-                        UserResource::class,
-                    ])
-                    ->slideOver(),
+                // TODO: Actions do not take advantage of the handleRecordCreation function so they fail.
+                //                QuickCreatePlugin::make()
+                //                    ->renderUsingHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER)
+                //                    ->alwaysShowModal()
+                //                    ->includes([
+                //                        AnnouncementResource::class,
+                //                        AssignmentRecordResource::class,
+                //                        AwardRecordResource::class,
+                //                        CombatRecordResource::class,
+                //                        EventResource::class,
+                //                        MessageResource::class,
+                //                        QualificationRecordResource::class,
+                //                        RankRecordResource::class,
+                //                        ServiceRecordResource::class,
+                //                        UserResource::class,
+                //                    ])
+                //                    ->slideOver(),
                 FilamentSocialitePlugin::make()
                     ->registration()
                     ->providers($socialProviders),

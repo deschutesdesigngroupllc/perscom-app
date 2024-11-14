@@ -43,7 +43,10 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
 
         $text = Str::limit($this->combatRecord->text);
 
-        $this->message = "A new combat record has been added to your account.<br><br>**Text:** $text";
+        $this->message = <<<HTML
+<p>A new combat record has been added to your account.</p>
+<strong>Text: </strong>$text
+HTML;
     }
 
     public static function notificationGroup(): NotificationGroup
@@ -58,7 +61,7 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
 
     public static function notificationDescription(): string
     {
-        return 'Sent when anytime your account receives a new combat record.';
+        return 'Sent anytime your account receives a new combat record.';
     }
 
     /**
@@ -67,6 +70,7 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
     public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
+            ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
             ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
@@ -82,7 +86,7 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
     {
         return FilamentNotification::make()
             ->title('New Combat Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open combat record')
                     ->button()
@@ -96,7 +100,7 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
     {
         return FilamentNotification::make()
             ->title('New Combat Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open combat record')
                     ->button()
@@ -114,7 +118,7 @@ class NewCombatRecord extends Notification implements NotificationCanBeManaged, 
         ]);
 
         return DiscordMessage::create(
-            body: $converter->convert(Str::markdown($this->message))
+            body: $converter->convert($this->message)
         );
     }
 

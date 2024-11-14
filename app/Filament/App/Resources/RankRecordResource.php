@@ -9,6 +9,7 @@ use App\Filament\App\Resources\RankRecordResource\Pages;
 use App\Filament\App\Resources\RankRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\RankRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\RankRecordExporter;
+use App\Forms\Components\ModelNotification;
 use App\Livewire\App\ViewDocument;
 use App\Models\Enums\RankRecordType;
 use App\Models\RankRecord;
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -42,59 +44,73 @@ class RankRecordResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Rank Record Information')
-                    ->columns()
-                    ->schema([
-                        Forms\Components\Select::make('user_id')
-                            ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
-                            ->multiple(fn ($operation) => $operation === 'create')
-                            ->required()
-                            ->helperText('The user this record is assigned to.')
-                            ->preload()
-                            ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
-                            ->searchable()
-                            ->createOptionForm(fn ($form) => UserResource::form($form)),
-                        Forms\Components\Select::make('rank_id')
-                            ->required()
-                            ->helperText('The rank for this record.')
-                            ->preload()
-                            ->relationship(name: 'rank', titleAttribute: 'name')
-                            ->searchable()
-                            ->createOptionForm(fn ($form) => RankResource::form($form)),
-                        Forms\Components\Select::make('type')
-                            ->helperText('The type of rank record.')
-                            ->columnSpanFull()
-                            ->options(RankRecordType::class)
-                            ->required()
-                            ->default(RankRecordType::PROMOTION),
-                        Forms\Components\RichEditor::make('text')
-                            ->helperText('Optional information about the record.')
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Forms\Components\DateTimePicker::make('created_at')
-                            ->timezone(UserSettingsService::get('timezone', function () {
-                                /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
+                Forms\Components\Tabs::make()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Details')
+                            ->columns()
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                Forms\Components\Select::make('user_id')
+                                    ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
+                                    ->multiple(fn ($operation) => $operation === 'create')
+                                    ->required()
+                                    ->helperText('The user this record is assigned to.')
+                                    ->preload()
+                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                Forms\Components\Select::make('rank_id')
+                                    ->required()
+                                    ->helperText('The rank for this record.')
+                                    ->preload()
+                                    ->relationship(name: 'rank', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => RankResource::form($form)),
+                                Forms\Components\Select::make('type')
+                                    ->helperText('The type of rank record.')
+                                    ->columnSpanFull()
+                                    ->options(RankRecordType::class)
+                                    ->required()
+                                    ->default(RankRecordType::PROMOTION),
+                                Forms\Components\RichEditor::make('text')
+                                    ->helperText('Optional information about the record.')
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Forms\Components\DateTimePicker::make('created_at')
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
 
-                                return $settings->timezone ?? config('app.timezone');
-                            }))
-                            ->columnSpanFull()
-                            ->default(now())
-                            ->required(),
-                        Forms\Components\Select::make('document_id')
-                            ->helperText('The document for this record.')
-                            ->preload()
-                            ->relationship(name: 'document', titleAttribute: 'name')
-                            ->searchable()
-                            ->createOptionForm(fn ($form) => DocumentResource::form($form)),
-                        Forms\Components\Select::make('author_id')
-                            ->required()
-                            ->default(Auth::user()->getAuthIdentifier())
-                            ->helperText('The author of the record.')
-                            ->preload()
-                            ->relationship(name: 'author', titleAttribute: 'name')
-                            ->searchable()
-                            ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
+                                    ->columnSpanFull()
+                                    ->default(now())
+                                    ->required(),
+                                Forms\Components\Select::make('document_id')
+                                    ->helperText('The document for this record.')
+                                    ->preload()
+                                    ->relationship(name: 'document', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => DocumentResource::form($form)),
+                                Forms\Components\Select::make('author_id')
+                                    ->required()
+                                    ->default(Auth::user()->getAuthIdentifier())
+                                    ->helperText('The author of the record.')
+                                    ->preload()
+                                    ->relationship(name: 'author', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Notifications')
+                            ->visible(fn ($operation) => $operation === 'create')
+                            ->icon('heroicon-o-bell')
+                            ->schema([
+                                ModelNotification::make(
+                                    alert: new HtmlString("<div class='font-bold'>The recipients will already receive a notification about the new record.</div>"),
+                                    defaultSubject: 'A new rank record has been added.',
+                                ),
+                            ]),
                     ]),
             ]);
     }

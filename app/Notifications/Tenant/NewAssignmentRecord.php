@@ -41,7 +41,17 @@ class NewAssignmentRecord extends Notification implements NotificationCanBeManag
             'record' => $this->assignmentRecord,
         ], panel: 'app');
 
-        $this->message = "A new assignment record has been added to your account.<br><br>**Type:** {$this->assignmentRecord?->type?->getLabel()}<br>**Position:** {$this->assignmentRecord?->position?->name}<br>**Specialty:** {$this->assignmentRecord?->specialty?->name}<br>**Unit:** {$this->assignmentRecord?->unit?->name}<br>**Status:** {$this->assignmentRecord?->status?->name}";
+        $text = Str::limit($this->assignmentRecord->text);
+
+        $this->message = <<<HTML
+<p>A new assignment record has been added to your account.</p>
+<strong>Type</strong>: {$this->assignmentRecord->type?->getLabel()}<br>
+<strong>Position</strong>: {$this->assignmentRecord->position?->name}<br>
+<strong>Specialty</strong>: {$this->assignmentRecord->specialty?->name}<br>
+<strong>Unit</strong>: {$this->assignmentRecord->unit?->name}<br>
+<strong>Status</strong>: {$this->assignmentRecord->status?->name}<br>
+<strong>Text: </strong>$text
+HTML;
     }
 
     public static function notificationGroup(): NotificationGroup
@@ -51,12 +61,12 @@ class NewAssignmentRecord extends Notification implements NotificationCanBeManag
 
     public static function notificationTitle(): string
     {
-        return 'New Combat Record';
+        return 'New Assignment Record';
     }
 
     public static function notificationDescription(): string
     {
-        return 'Sent when anytime your account receives a new combat record.';
+        return 'Sent anytime your account receives a new assignment record.';
     }
 
     /**
@@ -65,6 +75,7 @@ class NewAssignmentRecord extends Notification implements NotificationCanBeManag
     public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
+            ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
             ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
@@ -80,7 +91,7 @@ class NewAssignmentRecord extends Notification implements NotificationCanBeManag
     {
         return FilamentNotification::make()
             ->title('New Assignment Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open assignment record')
                     ->button()
@@ -94,7 +105,7 @@ class NewAssignmentRecord extends Notification implements NotificationCanBeManag
     {
         return FilamentNotification::make()
             ->title('New Assignment Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open assignment record')
                     ->button()
@@ -112,7 +123,7 @@ class NewAssignmentRecord extends Notification implements NotificationCanBeManag
         ]);
 
         return DiscordMessage::create(
-            body: $converter->convert(Str::markdown($this->message))
+            body: $converter->convert($this->message)
         );
     }
 

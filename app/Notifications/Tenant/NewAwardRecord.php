@@ -41,7 +41,13 @@ class NewAwardRecord extends Notification implements NotificationCanBeManaged, S
             'record' => $this->awardRecord,
         ], panel: 'app');
 
-        $this->message = "A new award record has been added to your account.<br><br>**Award:** {$this->awardRecord?->award?->name}";
+        $text = Str::limit($this->awardRecord->text);
+
+        $this->message = <<<HTML
+<p>A new award record has been added to your account.</p>
+<strong>Award: </strong>{$this->awardRecord->award->name}<br>
+<strong>Text: </strong>$text
+HTML;
     }
 
     public static function notificationGroup(): NotificationGroup
@@ -56,7 +62,7 @@ class NewAwardRecord extends Notification implements NotificationCanBeManaged, S
 
     public static function notificationDescription(): string
     {
-        return 'Sent when anytime your account receives a new award record.';
+        return 'Sent anytime your account receives a new award record.';
     }
 
     /**
@@ -65,6 +71,7 @@ class NewAwardRecord extends Notification implements NotificationCanBeManaged, S
     public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
+            ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
             ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
@@ -80,7 +87,7 @@ class NewAwardRecord extends Notification implements NotificationCanBeManaged, S
     {
         return FilamentNotification::make()
             ->title('New Award Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open award record')
                     ->button()
@@ -94,7 +101,7 @@ class NewAwardRecord extends Notification implements NotificationCanBeManaged, S
     {
         return FilamentNotification::make()
             ->title('New Award Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open award record')
                     ->button()
@@ -112,7 +119,7 @@ class NewAwardRecord extends Notification implements NotificationCanBeManaged, S
         ]);
 
         return DiscordMessage::create(
-            body: $converter->convert(Str::markdown($this->message))
+            body: $converter->convert($this->message)
         );
     }
 

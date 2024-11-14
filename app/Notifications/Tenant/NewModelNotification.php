@@ -36,10 +36,15 @@ class NewModelNotification extends Notification implements ShouldQueue
             ->title($this->modelNotification->subject)
             ->body($this->modelNotification->message);
 
-        if ($this->modelNotification->model instanceof HasColor) {
-            $this->notification->color(Color::hex($this->modelNotification->model->getColor()));
-        } else {
-            $this->notification->info();
+        $model = $this->modelNotification->model;
+        if (filled($model) && $model instanceof HasColor) {
+            $color = $model->getColor();
+
+            match (true) {
+                is_string($color) => $this->notification->color(Color::hex($color)),
+                is_array($color) => $this->notification->color($color),
+                default => $this->notification->info()
+            };
         }
     }
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\ServiceRecordScope;
 use App\Observers\ServiceRecordObserver;
@@ -14,6 +15,7 @@ use App\Traits\HasAuthor;
 use App\Traits\HasComments;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
+use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
@@ -72,7 +74,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(ServiceRecordObserver::class)]
 #[ScopedBy(ServiceRecordScope::class)]
-class ServiceRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
+class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;
@@ -82,6 +84,7 @@ class ServiceRecord extends Model implements HasLabel, ShouldGenerateNewsfeedIte
     use HasDocument;
     use HasFactory;
     use HasLogs;
+    use HasModelNotifications;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;

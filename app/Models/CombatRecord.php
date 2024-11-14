@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\CombatRecordScope;
 use App\Observers\CombatRecordObserver;
@@ -14,6 +15,7 @@ use App\Traits\HasAuthor;
 use App\Traits\HasComments;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
+use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
@@ -72,7 +74,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(CombatRecordObserver::class)]
 #[ScopedBy(CombatRecordScope::class)]
-class CombatRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
+class CombatRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;
@@ -82,6 +84,7 @@ class CombatRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItem
     use HasDocument;
     use HasFactory;
     use HasLogs;
+    use HasModelNotifications;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;

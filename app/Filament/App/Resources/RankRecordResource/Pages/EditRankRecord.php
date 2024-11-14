@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\RankRecordResource\Pages;
 
 use App\Filament\App\Resources\RankRecordResource;
+use App\Traits\Filament\InteractsWithModelNotifications;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
 class EditRankRecord extends EditRecord
 {
+    use InteractsWithModelNotifications;
+
     protected static string $resource = RankRecordResource::class;
 
     protected function getHeaderActions(): array

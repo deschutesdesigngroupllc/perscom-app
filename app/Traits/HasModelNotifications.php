@@ -24,6 +24,10 @@ trait HasModelNotifications
             SendModelNotifications::dispatch($model, 'updated');
         });
 
+        static::deleted(function ($model) {
+            SendModelNotifications::dispatch($model, 'deleted');
+        });
+
         static::deleting(fn ($model) => $model->modelNotifications()->delete());
     }
 

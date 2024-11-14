@@ -87,6 +87,7 @@ class FormResource extends BaseResource
                                     ->helperText('The default status of the submission when it is submitted.')
                                     ->createOptionForm(fn ($form) => StatusResource::form($form)),
                                 Forms\Components\Textarea::make('success_message')
+                                    ->label('Message')
                                     ->nullable()
                                     ->helperText('The message displayed when the form is successfully submitted.')
                                     ->maxLength(65535)
