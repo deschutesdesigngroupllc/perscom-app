@@ -26,6 +26,7 @@ return new class extends Migration
                 $table->string('event')->nullable();
                 $table->text('subject')->nullable();
                 $table->text('message')->nullable();
+                $table->json('channels')->nullable();
             });
         });
     }

@@ -7,8 +7,8 @@ namespace App\Filament\App\Resources;
 use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\AnnouncementResource\Pages;
 use App\Filament\Exports\AnnouncementExporter;
+use App\Forms\Components\ModelNotification;
 use App\Models\Announcement;
-use App\Models\Enums\NotificationChannel;
 use App\Models\Scopes\DisabledScope;
 use App\Models\Scopes\EnabledScope;
 use App\Services\UserSettingsService;
@@ -44,11 +44,15 @@ class AnnouncementResource extends BaseResource
                             ->icon('heroicon-o-megaphone')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
+                                    ->afterStateUpdated(fn (Forms\Set $set, $state) => $set('model_notifications.subject', $state))
+                                    ->live(onBlur: true)
                                     ->helperText('The announcement title.')
                                     ->columnSpanFull()
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\RichEditor::make('content')
+                                    ->afterStateUpdated(fn (Forms\Set $set, $state) => $set('model_notifications.message', $state))
+                                    ->live(onBlur: true)
                                     ->helperText('The announcement content.')
                                     ->required()
                                     ->maxLength(65535)
@@ -71,21 +75,7 @@ class AnnouncementResource extends BaseResource
                         Forms\Components\Tabs\Tab::make('Notifications')
                             ->icon('heroicon-o-bell')
                             ->schema([
-                                Forms\Components\CheckboxList::make('channels')
-                                    ->hiddenLabel()
-                                    ->searchable()
-                                    ->bulkToggleable()
-                                    ->descriptions(function () {
-                                        return collect(NotificationChannel::cases())
-                                            ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
-                                            ->toArray();
-                                    })
-                                    ->options(function () {
-                                        return collect(NotificationChannel::cases())
-                                            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
-                                            ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
-                                            ->toArray();
-                                    }),
+                                ModelNotification::make(),
                             ]),
                     ]),
             ]);

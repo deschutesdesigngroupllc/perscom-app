@@ -5,12 +5,13 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\HasFields;
+use App\Contracts\SendsModelNotifications;
 use App\Filament\App\Resources\FormResource;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasCategories;
 use App\Traits\HasCustomFields;
-use App\Traits\HasNotifications;
+use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
@@ -39,8 +40,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
  * @property-read int|null $fields_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $notifications
- * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
+ * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read Status|null $submission_status
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
@@ -70,14 +71,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @mixin \Eloquent
  */
-class Form extends Model implements HasFields, HasLabel
+class Form extends Model implements HasFields, HasLabel, SendsModelNotifications
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasCategories;
     use HasCustomFields;
     use HasFactory;
-    use HasNotifications;
+    use HasModelNotifications;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasTags;

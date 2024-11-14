@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Observers;
 
+use App\Jobs\SendModelNotifications;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Submission;
 use App\Models\Webhook;
-use App\Notifications\Tenant\NewSubmission;
 use App\Services\WebhookService;
-use Illuminate\Support\Facades\Notification;
 
 class SubmissionObserver
 {
@@ -23,7 +22,7 @@ class SubmissionObserver
             $submission->statuses()->attach($status->getKey());
         }
 
-        Notification::send(optional($submission->form)->notifications, new NewSubmission($submission));
+        SendModelNotifications::dispatch($submission->form, 'submission.created');
     }
 
     public function updated(Submission $submission): void

@@ -24,8 +24,10 @@ trait InteractsWithModelNotifications
             data_set($data, 'model_notifications.units', $notifications->whereNotNull('unit_id')->pluck('unit_id')->toArray());
             data_set($data, 'model_notifications.users', $notifications->whereNotNull('user_id')->pluck('user_id')->toArray());
 
-            data_set($data, 'model_notifications.subject', data_get($notifications->whereNotNull('message')->first(), 'subject'));
+            data_set($data, 'model_notifications.enabled', filled($notifications));
+            data_set($data, 'model_notifications.subject', data_get($notifications->whereNotNull('subject')->first(), 'subject'));
             data_set($data, 'model_notifications.message', data_get($notifications->whereNotNull('message')->first(), 'message'));
+            data_set($data, 'model_notifications.channels', data_get($notifications->whereNotNull('channels')->first(), 'channels'));
         }
 
         return parent::mutateFormDataBeforeFill($data);
@@ -36,12 +38,20 @@ trait InteractsWithModelNotifications
         if (method_exists($record, 'modelNotifications')) {
             $record->modelNotifications()->delete();
 
-            $subject = data_get($data, 'model_notifications.subject', '');
-            $message = data_get($data, 'model_notifications.message', '');
+            if (data_get($data, 'model_notifications.enabled', false)) {
+                $subject = data_get($data, 'model_notifications.subject', '');
+                $message = data_get($data, 'model_notifications.message', '');
+                $channels = data_get($data, 'model_notifications.channels', []);
 
-            collect(data_get($data, 'model_notifications.groups'))->each(fn ($groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, 'created', $message)));
-            collect(data_get($data, 'model_notifications.units'))->each(fn ($unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, 'created', $message)));
-            collect(data_get($data, 'model_notifications.users'))->each(fn ($userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, 'created', $message)));
+                $event = 'created';
+                if (method_exists(static::$resource, 'modelNotificationCreatedEvent')) {
+                    $event = static::$resource::modelNotificationCreatedEvent();
+                }
+
+                collect(data_get($data, 'model_notifications.groups'))->each(fn ($groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
+                collect(data_get($data, 'model_notifications.units'))->each(fn ($unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
+                collect(data_get($data, 'model_notifications.users'))->each(fn ($userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
+            }
         }
 
         return parent::handleRecordUpdate($record, data_forget($data, 'model_notifications'));
@@ -53,13 +63,19 @@ trait InteractsWithModelNotifications
 
         $record = parent::handleRecordCreation(data_forget($data, 'model_notifications'));
 
-        if (method_exists($record, 'modelNotifications')) {
-            $subject = data_get($notificationData, 'message', '');
+        if (method_exists($record, 'modelNotifications') && data_get($notificationData, 'enabled', false)) {
+            $subject = data_get($notificationData, 'subject', '');
             $message = data_get($notificationData, 'message', '');
+            $channels = data_get($notificationData, 'channels', []);
 
-            collect(data_get($notificationData, 'groups'))->each(fn ($groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, 'created', $message)));
-            collect(data_get($notificationData, 'units'))->each(fn ($unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, 'created', $message)));
-            collect(data_get($notificationData, 'users'))->each(fn ($userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, 'created', $message)));
+            $event = 'created';
+            if (method_exists(static::$resource, 'modelNotificationCreatedEvent')) {
+                $event = static::$resource::modelNotificationCreatedEvent();
+            }
+
+            collect(data_get($notificationData, 'groups'))->each(fn ($groupId) => $record->modelNotifications()->create(ModelNotification::forGroup($groupId, $event, $subject, $message, $channels)));
+            collect(data_get($notificationData, 'units'))->each(fn ($unitId) => $record->modelNotifications()->create(ModelNotification::forUnit($unitId, $event, $subject, $message, $channels)));
+            collect(data_get($notificationData, 'users'))->each(fn ($userId) => $record->modelNotifications()->create(ModelNotification::forUser($userId, $event, $subject, $message, $channels)));
         }
 
         return $record;

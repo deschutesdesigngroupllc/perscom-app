@@ -4,44 +4,52 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
-use App\Mail\Tenant\NewAnnouncement as NewAnnouncementMail;
-use App\Models\Announcement;
 use App\Models\Enums\NotificationChannel;
-use App\Models\User;
+use App\Models\ModelNotification;
 use App\Services\TwilioService;
 use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Support\Colors\Color;
+use Filament\Support\Contracts\HasColor;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\BroadcastMessage;
+use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Illuminate\Support\HtmlString;
 use League\HTMLToMarkdown\HtmlConverter;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
 
-class NewAnnouncement extends Notification implements ShouldQueue
+class NewModelNotification extends Notification implements ShouldQueue
 {
     use Queueable;
+    use SerializesModels;
 
     protected FilamentNotification $notification;
 
-    public function __construct(public Announcement $announcement)
+    public function __construct(protected ModelNotification $modelNotification)
     {
         $this->notification = FilamentNotification::make()
-            ->title($this->announcement->title)
-            ->body($this->announcement->content)
-            ->color(Color::hex($this->announcement->color));
+            ->title($this->modelNotification->subject)
+            ->body($this->modelNotification->message);
+
+        if ($this->modelNotification->model instanceof HasColor) {
+            $this->notification->color(Color::hex($this->modelNotification->model->getColor()));
+        } else {
+            $this->notification->info();
+        }
     }
 
     /**
-     * @return string[]
+     * @return array<int, string>
      */
     public function via(): array
     {
         /** @var Collection<int, NotificationChannel> $channels */
-        $channels = $this->announcement->channels;
+        $channels = $this->modelNotification->channels;
 
         return $channels
             ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
@@ -50,9 +58,12 @@ class NewAnnouncement extends Notification implements ShouldQueue
             ->toArray();
     }
 
-    public function toMail(User $notifiable): NewAnnouncementMail
+    public function toMail(): MailMessage
     {
-        return (new NewAnnouncementMail($this->announcement))->to($notifiable->email);
+        return (new MailMessage)
+            ->subject($this->modelNotification->subject ?? 'You have received a new notification')
+            ->greeting($this->modelNotification->subject ?? 'You have received a new notification.')
+            ->line(new HtmlString($this->modelNotification->message ?? 'Unable to parse message.'));
     }
 
     public function toBroadcast(): BroadcastMessage
@@ -75,7 +86,12 @@ class NewAnnouncement extends Notification implements ShouldQueue
             'remove_nodes' => true,
         ]);
 
-        return DiscordMessage::create($converter->convert($this->announcement->content));
+        $html = <<<HTML
+<p>{$this->modelNotification->subject}</p>
+{$this->modelNotification->message}
+HTML;
+
+        return DiscordMessage::create($converter->convert($html));
     }
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null
@@ -84,7 +100,7 @@ class NewAnnouncement extends Notification implements ShouldQueue
         $service = app(TwilioService::class);
 
         if (! $channel = $service->toNotificationChannel(
-            message: TwilioService::formatText($this->announcement->content)
+            message: TwilioService::formatText($this->modelNotification->subject ?? 'Unable to parse message.')
         )) {
             return null;
         }

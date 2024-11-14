@@ -8,10 +8,8 @@ use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\FormResource\Pages;
 use App\Filament\App\Resources\FormResource\RelationManagers;
 use App\Filament\Exports\FormExporter;
+use App\Forms\Components\ModelNotification;
 use App\Models\Form as FormModel;
-use App\Models\Group;
-use App\Models\Unit;
-use App\Models\User;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -31,6 +29,11 @@ class FormResource extends BaseResource
     protected static ?string $navigationGroup = 'Forms';
 
     protected static ?int $navigationSort = 2;
+
+    public static function modelNotificationCreatedEvent(): string
+    {
+        return 'submission.created';
+    }
 
     public static function form(Form $form): Form
     {
@@ -92,36 +95,9 @@ class FormResource extends BaseResource
                         Forms\Components\Tabs\Tab::make('Notifications')
                             ->icon('heroicon-o-bell')
                             ->schema([
-                                Forms\Components\Section::make()
-                                    ->statePath('model_notifications')
-                                    ->schema([
-                                        Forms\Components\Select::make('groups')
-                                            ->helperText('Send a notification to a group when a form us submitted.')
-                                            ->preload()
-                                            ->multiple()
-                                            ->searchable()
-                                            ->options(fn () => Group::query()->orderBy('name')->pluck('name', 'id')),
-                                        Forms\Components\Select::make('units')
-                                            ->helperText('Send a notification to a unit when a form us submitted.')
-                                            ->preload()
-                                            ->multiple()
-                                            ->searchable()
-                                            ->options(fn () => Unit::query()->orderBy('name')->pluck('name', 'id')),
-                                        Forms\Components\Select::make('users')
-                                            ->helperText('Send a notification to a group of users when a form us submitted.')
-                                            ->preload()
-                                            ->multiple()
-                                            ->searchable()
-                                            ->options(fn () => User::query()->orderBy('name')->pluck('name', 'id')),
-                                        Forms\Components\TextInput::make('subject')
-                                            ->maxLength(255)
-                                            ->requiredWith(['groups', 'units', 'users'])
-                                            ->helperText('The subject to use with the notification.'),
-                                        Forms\Components\RichEditor::make('message')
-                                            ->maxLength(65535)
-                                            ->requiredWith(['groups', 'units', 'users'])
-                                            ->helperText('The message to use with the notification.'),
-                                    ]),
+                                ModelNotification::make(
+                                    description: 'Enable to send notifications when a form is submitted.'
+                                ),
                             ]),
                     ]),
             ]);

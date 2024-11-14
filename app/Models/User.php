@@ -97,6 +97,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
+ * @property-read ModelNotification $pivot
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications
+ * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read mixed $online

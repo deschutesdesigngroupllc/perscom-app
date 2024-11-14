@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Enableable;
+use App\Contracts\SendsModelNotifications;
 use App\Models\Enums\NotificationChannel;
 use App\Observers\AnnouncementObserver;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasColorField;
+use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasColor;
@@ -37,6 +39,8 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read string $label
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
+ * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
@@ -65,13 +69,14 @@ use Illuminate\Support\Str;
  * @mixin \Eloquent
  */
 #[ObservedBy(AnnouncementObserver::class)]
-class Announcement extends Model implements Enableable, HasColor, HasLabel
+class Announcement extends Model implements Enableable, HasColor, HasLabel, SendsModelNotifications
 {
     use CanBeEnabled;
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasColorField;
     use HasFactory;
+    use HasModelNotifications;
     use HasResourceLabel;
     use HasResourceUrl;
     use SoftDeletes;

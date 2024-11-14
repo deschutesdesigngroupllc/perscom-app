@@ -17,6 +17,7 @@ use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\HtmlString;
 
 /**
  * @property Form $form
@@ -57,7 +58,7 @@ class Submit extends Page implements HasForms
 
     public function getSubheading(): string|Htmlable|null
     {
-        return $this->submissionForm->description;
+        return new HtmlString($this->submissionForm->description ?? '');
     }
 
     public function form(Form $form): Form
