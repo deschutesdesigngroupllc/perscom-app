@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Traits\Filament;
 
+use App\Contracts\SendsModelNotifications;
 use App\Models\ModelNotification;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 /**
  * @mixin EditRecord
@@ -16,8 +16,7 @@ trait InteractsWithModelNotifications
 {
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        if (method_exists($this->record, 'modelNotifications')) {
-            /** @var Collection $notifications */
+        if ($this->record instanceof SendsModelNotifications) {
             $notifications = $this->record->modelNotifications;
 
             data_set($data, 'model_notifications.groups', $notifications->whereNotNull('group_id')->pluck('group_id')->toArray());
@@ -35,7 +34,7 @@ trait InteractsWithModelNotifications
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        if (method_exists($record, 'modelNotifications')) {
+        if ($record instanceof SendsModelNotifications) {
             $record->modelNotifications()->delete();
 
             if (data_get($data, 'model_notifications.enabled', false)) {
@@ -63,7 +62,7 @@ trait InteractsWithModelNotifications
 
         $record = parent::handleRecordCreation(data_forget($data, 'model_notifications'));
 
-        if (method_exists($record, 'modelNotifications') && data_get($notificationData, 'enabled', false)) {
+        if ($record instanceof SendsModelNotifications && data_get($notificationData, 'enabled', false)) {
             $subject = data_get($notificationData, 'subject', '');
             $message = data_get($notificationData, 'message', '');
             $channels = data_get($notificationData, 'channels', []);
