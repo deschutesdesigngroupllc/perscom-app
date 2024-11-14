@@ -100,9 +100,6 @@ class AnnouncementResource extends BaseResource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('global')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('channels')
-                    ->badge()
-                    ->color('gray'),
                 Tables\Columns\ToggleColumn::make('enabled')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('expires_at')
