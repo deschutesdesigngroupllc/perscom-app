@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Contracts\SendsModelNotifications;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Scopes\QualificationRecordScope;
 use App\Observers\QualificationRecordObserver;
@@ -14,6 +15,7 @@ use App\Traits\HasAuthor;
 use App\Traits\HasComments;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
+use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
@@ -47,6 +49,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
  * @property-read int|null $logs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
+ * @property-read int|null $model_notifications_count
  * @property-read Qualification|null $qualification
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Support\Optional|string|null|null $url
@@ -76,7 +80,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 #[ObservedBy(QualificationRecordObserver::class)]
 #[ScopedBy(QualificationRecordScope::class)]
-class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsfeedItems
+class QualificationRecord extends Model implements HasLabel, SendsModelNotifications, ShouldGenerateNewsfeedItems
 {
     use ClearsApiCache;
     use ClearsResponseCache;
@@ -86,6 +90,7 @@ class QualificationRecord extends Model implements HasLabel, ShouldGenerateNewsf
     use HasDocument;
     use HasFactory;
     use HasLogs;
+    use HasModelNotifications;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;

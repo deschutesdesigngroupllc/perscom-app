@@ -8,6 +8,7 @@ use App\Contracts\Hideable;
 use App\Models\Scopes\GroupScope;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
+use App\Traits\CanReceiveNotifications;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasIcon;
@@ -38,6 +39,9 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
+ * @property-read ModelNotification $pivot
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Group> $modelNotifications
+ * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $units
  * @property-read int|null $units_count
@@ -71,6 +75,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
 {
     use CanBeHidden;
     use CanBeOrdered;
+    use CanReceiveNotifications;
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;

@@ -16,7 +16,7 @@ class SocialLoginFeature extends BaseFeature
         $tenant = static::resolveTenant($scope);
 
         return match (true) {
-            App::isAdmin() => false,
+            App::isAdmin() && ! App::runningInConsole() => false,
             App::isDemo() => false,
             $tenant?->onTrial() => true,
             optional($tenant->sparkPlan(), static function (Plan $plan) {

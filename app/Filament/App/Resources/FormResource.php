@@ -8,6 +8,7 @@ use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\FormResource\Pages;
 use App\Filament\App\Resources\FormResource\RelationManagers;
 use App\Filament\Exports\FormExporter;
+use App\Forms\Components\ModelNotification;
 use App\Models\Form as FormModel;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -16,6 +17,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -28,6 +30,11 @@ class FormResource extends BaseResource
     protected static ?string $navigationGroup = 'Forms';
 
     protected static ?int $navigationSort = 2;
+
+    public static function modelNotificationCreatedEvent(): string
+    {
+        return 'submission.created';
+    }
 
     public static function form(Form $form): Form
     {
@@ -81,10 +88,18 @@ class FormResource extends BaseResource
                                     ->helperText('The default status of the submission when it is submitted.')
                                     ->createOptionForm(fn ($form) => StatusResource::form($form)),
                                 Forms\Components\Textarea::make('success_message')
+                                    ->label('Message')
                                     ->nullable()
                                     ->helperText('The message displayed when the form is successfully submitted.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Notifications')
+                            ->icon('heroicon-o-bell')
+                            ->schema([
+                                ModelNotification::make(
+                                    alert: new HtmlString("<div class='font-bold'>Enable to send notifications when a form is submitted.</div>")
+                                ),
                             ]),
                     ]),
             ]);

@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @mixin CreateRecord
  */
-trait HandlesBatchCreatingRecords
+trait InteractsWithBatchRecords
 {
     protected function handleRecordCreation(array $data): Model
     {

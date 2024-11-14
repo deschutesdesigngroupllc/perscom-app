@@ -71,7 +71,9 @@ class CommentResource extends Resource
                     ->html()
                     ->wrap(),
                 Tables\Columns\TextColumn::make('author.name'),
-                Tables\Columns\TextColumn::make('created_at'),
+                Tables\Columns\TextColumn::make('created_at')
+                    ->label('Commented')
+                    ->toggleable(false),
             ])
             ->headerActions([
                 Tables\Actions\CreateAction::make(),

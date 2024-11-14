@@ -8,6 +8,7 @@ use App\Contracts\Hideable;
 use App\Models\Scopes\UnitScope;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
+use App\Traits\CanReceiveNotifications;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
@@ -42,6 +43,9 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
+ * @property-read ModelNotification $pivot
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $modelNotifications
+ * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
@@ -78,6 +82,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
 {
     use CanBeHidden;
     use CanBeOrdered;
+    use CanReceiveNotifications;
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasAssignmentRecords;

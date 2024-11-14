@@ -41,7 +41,14 @@ class NewRankRecord extends Notification implements NotificationCanBeManaged, Sh
             'record' => $this->rankRecord,
         ], panel: 'app');
 
-        $this->message = "A new rank record has been added to your account.<br><br>**Type:** {$this->rankRecord?->type?->getLabel()}<br>**Rank:** {$this->rankRecord?->rank?->name}";
+        $text = Str::limit($this->rankRecord->text);
+
+        $this->message = <<<HTML
+<p>A new rank record has been added to your account.</p>
+<strong>Rank: </strong>{$this->rankRecord->rank->name}<br>
+<strong>Type: </strong>{$this->rankRecord->type->getLabel()}<br>
+<strong>Text: </strong>$text
+HTML;
     }
 
     public static function notificationGroup(): NotificationGroup
@@ -56,7 +63,7 @@ class NewRankRecord extends Notification implements NotificationCanBeManaged, Sh
 
     public static function notificationDescription(): string
     {
-        return 'Sent when anytime your account receives a new rank record.';
+        return 'Sent anytime your account receives a new rank record.';
     }
 
     /**
@@ -65,6 +72,7 @@ class NewRankRecord extends Notification implements NotificationCanBeManaged, Sh
     public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
+            ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
             ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
@@ -80,7 +88,7 @@ class NewRankRecord extends Notification implements NotificationCanBeManaged, Sh
     {
         return FilamentNotification::make()
             ->title('New Rank Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open rank record')
                     ->button()
@@ -94,7 +102,7 @@ class NewRankRecord extends Notification implements NotificationCanBeManaged, Sh
     {
         return FilamentNotification::make()
             ->title('New Rank Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open rank record')
                     ->button()
@@ -112,7 +120,7 @@ class NewRankRecord extends Notification implements NotificationCanBeManaged, Sh
         ]);
 
         return DiscordMessage::create(
-            body: $converter->convert(Str::markdown($this->message))
+            body: $converter->convert($this->message)
         );
     }
 

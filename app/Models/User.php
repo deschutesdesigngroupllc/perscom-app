@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Contracts\HasFields;
 use App\Observers\UserObserver;
+use App\Traits\CanReceiveNotifications;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
@@ -96,6 +97,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
+ * @property-read ModelNotification $pivot
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications
+ * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read mixed $online
@@ -178,6 +182,7 @@ use Spatie\Permission\Traits\HasRoles;
 #[ObservedBy(UserObserver::class)]
 class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail
 {
+    use CanReceiveNotifications;
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasApiTokens;

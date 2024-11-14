@@ -9,6 +9,7 @@ use App\Filament\App\Resources\AssignmentRecordResource\Pages;
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\AssignmentRecordExporter;
+use App\Forms\Components\ModelNotification;
 use App\Livewire\App\ViewDocument;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
@@ -25,6 +26,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -119,6 +121,15 @@ class AssignmentRecordResource extends BaseResource
                                     ->relationship(name: 'status', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => StatusResource::form($form)),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Notifications')
+                            ->visible(fn ($operation) => $operation === 'create')
+                            ->icon('heroicon-o-bell')
+                            ->schema([
+                                ModelNotification::make(
+                                    alert: new HtmlString("<div class='font-bold'>The recipients will already receive a notification about the new record.</div>"),
+                                    defaultSubject: 'A new assignment record has been added.',
+                                ),
                             ]),
                     ]),
             ]);

@@ -41,7 +41,13 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
             'record' => $this->qualificationRecord,
         ], panel: 'app');
 
-        $this->message = "A new qualification record has been added to your account.<br><br>**Qualification:** {$this->qualificationRecord?->qualification?->name}";
+        $text = Str::limit($this->qualificationRecord->text);
+
+        $this->message = <<<HTML
+<p>A new qualification record has been added to your account.</p>
+<strong>Qualification: </strong>{$this->qualificationRecord->qualification->name}<br>
+<strong>Text: </strong>$text
+HTML;
     }
 
     public static function notificationGroup(): NotificationGroup
@@ -56,7 +62,7 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
 
     public static function notificationDescription(): string
     {
-        return 'Sent when anytime your account receives a new qualification record.';
+        return 'Sent anytime your account receives a new qualification record.';
     }
 
     /**
@@ -65,6 +71,7 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
     public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
+            ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
             ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
@@ -80,7 +87,7 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
     {
         return FilamentNotification::make()
             ->title('New Qualification Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open qualification record')
                     ->button()
@@ -94,7 +101,7 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
     {
         return FilamentNotification::make()
             ->title('New Qualification Record')
-            ->body(Str::markdown($this->message))
+            ->body($this->message)
             ->actions([
                 Action::make('Open qualification record')
                     ->button()
@@ -112,7 +119,7 @@ class NewQualificationRecord extends Notification implements NotificationCanBeMa
         ]);
 
         return DiscordMessage::create(
-            body: $converter->convert(Str::markdown($this->message))
+            body: $converter->convert($this->message)
         );
     }
 

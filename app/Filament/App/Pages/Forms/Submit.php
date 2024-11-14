@@ -17,6 +17,7 @@ use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
 use Illuminate\Contracts\Support\Htmlable;
+use Illuminate\Support\HtmlString;
 
 /**
  * @property Form $form
@@ -29,7 +30,7 @@ class Submit extends Page implements HasForms
     use InteractsWithFormActions;
     use InteractsWithForms;
 
-    public ?FormModel $submissionForm = null;
+    public FormModel $submissionForm;
 
     public ?array $data;
 
@@ -53,6 +54,11 @@ class Submit extends Page implements HasForms
     public function getTitle(): string|Htmlable
     {
         return $this->submissionForm->name ?? 'Submit Form';
+    }
+
+    public function getSubheading(): string|Htmlable|null
+    {
+        return new HtmlString($this->submissionForm->description ?? '');
     }
 
     public function form(Form $form): Form
@@ -79,7 +85,7 @@ class Submit extends Page implements HasForms
     {
         return Notification::make()
             ->success()
-            ->title('Your form has been successfully submitted.');
+            ->title($this->submissionForm->success_message ?? 'Your form has been successfully submitted.');
     }
 
     protected function getFormActions(): array

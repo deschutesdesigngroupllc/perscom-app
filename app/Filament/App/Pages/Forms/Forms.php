@@ -33,6 +33,8 @@ class Forms extends Page implements HasForms, HasTable
 
     protected static ?string $title = 'Forms';
 
+    protected ?string $subheading = 'Access and submit critical data to your organization.';
+
     public function table(Table $table): Table
     {
         return $table

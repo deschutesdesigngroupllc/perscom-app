@@ -9,6 +9,7 @@ use App\Filament\App\Resources\ServiceRecordResource\Pages;
 use App\Filament\App\Resources\ServiceRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\ServiceRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\ServiceRecordExporter;
+use App\Forms\Components\ModelNotification;
 use App\Livewire\App\ViewDocument;
 use App\Models\ServiceRecord;
 use App\Models\User;
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -41,48 +43,62 @@ class ServiceRecordResource extends BaseResource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Service Record Information')
-                    ->columns()
-                    ->schema([
-                        Forms\Components\Select::make('user_id')
-                            ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
-                            ->multiple(fn ($operation) => $operation === 'create')
-                            ->required()
-                            ->helperText('The user this record is assigned to.')
-                            ->preload()
-                            ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
-                            ->searchable()
-                            ->columnSpanFull()
-                            ->createOptionForm(fn ($form) => UserResource::form($form)),
-                        Forms\Components\RichEditor::make('text')
-                            ->required()
-                            ->helperText('Information about the record.')
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Forms\Components\DateTimePicker::make('created_at')
-                            ->timezone(UserSettingsService::get('timezone', function () {
-                                /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
+                Forms\Components\Tabs::make()
+                    ->columnSpanFull()
+                    ->tabs([
+                        Forms\Components\Tabs\Tab::make('Details')
+                            ->columns()
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                Forms\Components\Select::make('user_id')
+                                    ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
+                                    ->multiple(fn ($operation) => $operation === 'create')
+                                    ->required()
+                                    ->helperText('The user this record is assigned to.')
+                                    ->preload()
+                                    ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
+                                    ->searchable()
+                                    ->columnSpanFull()
+                                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                Forms\Components\RichEditor::make('text')
+                                    ->required()
+                                    ->helperText('Information about the record.')
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Forms\Components\DateTimePicker::make('created_at')
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
 
-                                return $settings->timezone ?? config('app.timezone');
-                            }))
-                            ->columnSpanFull()
-                            ->default(now())
-                            ->required(),
-                        Forms\Components\Select::make('document_id')
-                            ->helperText('The document for this record.')
-                            ->preload()
-                            ->relationship(name: 'document', titleAttribute: 'name')
-                            ->searchable()
-                            ->createOptionForm(fn ($form) => DocumentResource::form($form)),
-                        Forms\Components\Select::make('author_id')
-                            ->required()
-                            ->default(Auth::user()->getAuthIdentifier())
-                            ->helperText('The author of the record.')
-                            ->preload()
-                            ->relationship(name: 'author', titleAttribute: 'name')
-                            ->searchable()
-                            ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
+                                    ->columnSpanFull()
+                                    ->default(now())
+                                    ->required(),
+                                Forms\Components\Select::make('document_id')
+                                    ->helperText('The document for this record.')
+                                    ->preload()
+                                    ->relationship(name: 'document', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => DocumentResource::form($form)),
+                                Forms\Components\Select::make('author_id')
+                                    ->required()
+                                    ->default(Auth::user()->getAuthIdentifier())
+                                    ->helperText('The author of the record.')
+                                    ->preload()
+                                    ->relationship(name: 'author', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                            ]),
+                        Forms\Components\Tabs\Tab::make('Notifications')
+                            ->visible(fn ($operation) => $operation === 'create')
+                            ->icon('heroicon-o-bell')
+                            ->schema([
+                                ModelNotification::make(
+                                    alert: new HtmlString("<div class='font-bold'>The recipients will already receive a notification about the new record.</div>"),
+                                    defaultSubject: 'A new service record has been added.',
+                                ),
+                            ]),
                     ]),
             ]);
     }
