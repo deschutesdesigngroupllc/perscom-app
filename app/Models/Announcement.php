@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Contracts\Enableable;
 use App\Contracts\SendsModelNotifications;
-use App\Models\Enums\NotificationChannel;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -17,7 +16,6 @@ use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -31,7 +29,7 @@ use Illuminate\Support\Str;
  * @property string $color
  * @property bool $global
  * @property bool $enabled
- * @property AsEnumCollection|null $channels
+ * @property string|null $channels
  * @property \Illuminate\Support\Carbon|null $expires_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -82,28 +80,33 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
         'title',
         'content',
         'global',
-        'channels',
         'expires_at',
         'created_at',
         'updated_at',
         'deleted_at',
     ];
 
+    /**
+     * @param  Builder<static>  $query
+     */
     public function scopeGlobal(Builder $query): void
     {
         $query->where('global', true);
     }
 
+    /**
+     * @return Attribute<string, void>
+     */
     public function color(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => match (Str::startsWith($value, '#')) {
+            get: fn ($value): string => match (Str::startsWith($value, '#')) {
                 true => $value,
                 default => match ($value) {
-                    'info' => '#2563eb',
                     'success' => '#16a34a',
                     'danger' => '#dc2626',
-                    'warning' => '#ca8a04'
+                    'warning' => '#ca8a04',
+                    default => '#2563eb'
                 },
             },
         );
@@ -117,7 +120,6 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
         return [
             'global' => 'boolean',
             'expires_at' => 'datetime',
-            'channels' => AsEnumCollection::of(NotificationChannel::class),
         ];
     }
 }
