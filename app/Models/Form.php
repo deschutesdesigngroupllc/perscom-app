@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Contracts\HasFields;
 use App\Contracts\SendsModelNotifications;
-use App\Filament\App\Resources\FormResource;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasCategories;
@@ -16,7 +15,6 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
 use Filament\Support\Contracts\HasLabel;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -48,7 +46,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
- * @property-read string $url
+ * @property-read \Illuminate\Support\Optional|string|null|null $url
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
@@ -95,18 +93,6 @@ class Form extends Model implements HasFields, HasLabel, SendsModelNotifications
         'updated_at',
         'deleted_at',
     ];
-
-    protected $appends = ['url'];
-
-    /**
-     * @return Attribute<string, void>
-     */
-    public function url(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): string => FormResource::getUrl('create', panel: 'app')
-        );
-    }
 
     /**
      * @return HasMany<Submission>

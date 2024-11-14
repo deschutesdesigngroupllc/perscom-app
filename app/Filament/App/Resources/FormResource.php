@@ -17,6 +17,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -97,7 +98,7 @@ class FormResource extends BaseResource
                             ->icon('heroicon-o-bell')
                             ->schema([
                                 ModelNotification::make(
-                                    description: 'Enable to send notifications when a form is submitted.'
+                                    alert: new HtmlString("<div class='font-bold'>Enable to send notifications when a form is submitted.</div>")
                                 ),
                             ]),
                     ]),

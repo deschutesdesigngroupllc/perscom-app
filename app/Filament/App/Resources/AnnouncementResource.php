@@ -73,6 +73,7 @@ class AnnouncementResource extends BaseResource
                                     ->helperText('If set, the announcement will disappear after this date.'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Notifications')
+                            ->visible(fn ($operation) => $operation === 'create')
                             ->icon('heroicon-o-bell')
                             ->schema([
                                 ModelNotification::make(),

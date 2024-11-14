@@ -6,6 +6,7 @@ namespace App\Notifications\Tenant;
 
 use App\Models\Enums\NotificationChannel;
 use App\Models\ModelNotification;
+use App\Models\User;
 use App\Services\TwilioService;
 use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Support\Colors\Color;
@@ -51,13 +52,14 @@ class NewModelNotification extends Notification implements ShouldQueue
     /**
      * @return array<int, string>
      */
-    public function via(): array
+    public function via(User $notifiable): array
     {
         /** @var Collection<int, NotificationChannel> $channels */
         $channels = $this->modelNotification->channels;
 
         return $channels
             ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
+            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
             ->map(fn (NotificationChannel $channel) => $channel->getChannel())
             ->values()
             ->toArray();

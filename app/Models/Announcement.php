@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Contracts\Enableable;
 use App\Contracts\SendsModelNotifications;
 use App\Models\Enums\NotificationChannel;
-use App\Observers\AnnouncementObserver;
 use App\Traits\CanBeEnabled;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -17,7 +16,6 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
-use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -68,7 +66,6 @@ use Illuminate\Support\Str;
  *
  * @mixin \Eloquent
  */
-#[ObservedBy(AnnouncementObserver::class)]
 class Announcement extends Model implements Enableable, HasColor, HasLabel, SendsModelNotifications
 {
     use CanBeEnabled;

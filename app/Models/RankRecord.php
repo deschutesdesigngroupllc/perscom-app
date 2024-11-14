@@ -51,6 +51,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
  * @property-read int|null $logs_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
+ * @property-read int|null $model_notifications_count
  * @property-read Rank|null $rank
  * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
  * @property-read \Illuminate\Support\Optional|string|null|null $url

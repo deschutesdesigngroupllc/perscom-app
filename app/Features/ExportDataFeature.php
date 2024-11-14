@@ -16,7 +16,7 @@ class ExportDataFeature extends BaseFeature
         $tenant = static::resolveTenant($scope);
 
         return match (true) {
-            App::isAdmin() => true,
+            App::isAdmin() && ! App::runningInConsole() => true,
             App::isDemo() => true,
             $tenant?->onTrial() => true,
             optional($tenant->sparkPlan(), static function (Plan $plan) {

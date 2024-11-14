@@ -138,7 +138,7 @@ class AdvancedNotificationsFeature extends BaseFeature implements PremiumFeature
         $premiumFeatures = config('spark.premium_features');
 
         return match (true) {
-            App::isAdmin() => false,
+            App::isAdmin() && ! App::runningInConsole() => false,
             App::isDemo() => false,
             $tenant->onTrial() => false,
             $tenant->subscribedToPrice(data_get($premiumFeatures, static::class)) => true,

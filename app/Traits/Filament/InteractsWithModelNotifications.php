@@ -23,7 +23,7 @@ trait InteractsWithModelNotifications
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $this->performModelNotificationInserts($record, $data);
+        $this->performModelNotificationInserts($record, data_get($data, 'model_notifications'));
 
         return parent::handleRecordUpdate($record, data_forget($data, 'model_notifications'));
     }
