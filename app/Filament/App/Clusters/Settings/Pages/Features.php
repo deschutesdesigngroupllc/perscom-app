@@ -32,6 +32,8 @@ class Features extends Page implements HasTable
 
     protected static ?string $navigationIcon = 'heroicon-o-flag';
 
+    protected static ?string $navigationGroup = 'Dashboard';
+
     protected static string $view = 'filament.app.clusters.settings.pages.features';
 
     protected static ?string $cluster = Settings::class;
@@ -65,7 +67,6 @@ class Features extends Page implements HasTable
 
         return $table
             ->query(Feature::query())
-            ->description('Manage your account addons and premium features here.')
             ->columns([
                 IconColumn::make('id')
                     ->label('')

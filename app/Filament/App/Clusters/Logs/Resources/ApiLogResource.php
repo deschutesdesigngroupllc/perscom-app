@@ -8,6 +8,7 @@ use App\Features\ApiAccessFeature;
 use App\Filament\App\Clusters\Logs;
 use App\Filament\App\Clusters\Logs\Resources\ApiLogResource\Pages;
 use App\Filament\App\Resources\BaseResource;
+use App\Filament\App\Resources\PassportTokenResource;
 use App\Models\ApiLog;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\Tabs;
@@ -34,6 +35,12 @@ class ApiLogResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateActions([
+                Tables\Actions\Action::make('new')
+                    ->label('New API key')
+                    ->url(PassportTokenResource::getUrl('create')),
+            ])
+            ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')

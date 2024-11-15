@@ -7,6 +7,7 @@ namespace App\Notifications\Tenant;
 use App\Models\Enums\NotificationChannel;
 use App\Models\ModelNotification;
 use App\Models\User;
+use App\Services\ModelTextParserService;
 use App\Services\TwilioService;
 use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Support\Colors\Color;
@@ -31,11 +32,25 @@ class NewModelNotification extends Notification implements ShouldQueue
 
     protected FilamentNotification $notification;
 
+    protected string $subject;
+
+    protected string $message;
+
     public function __construct(protected ModelNotification $modelNotification)
     {
+        $this->subject = ModelTextParserService::parse(
+            content: $this->modelNotification->subject ?? 'Unable to parse notification subject.',
+            attachedModel: $this->modelNotification->model
+        ) ?? 'Unable to parse notification subject.';
+
+        $this->message = ModelTextParserService::parse(
+            content: $this->modelNotification->message ?? 'Unable to parse notification message.',
+            attachedModel: $this->modelNotification->model
+        ) ?? 'Unable to parse notification message.';
+
         $this->notification = FilamentNotification::make()
-            ->title($this->modelNotification->subject)
-            ->body($this->modelNotification->message);
+            ->title($this->subject)
+            ->body($this->message);
 
         $model = $this->modelNotification->model;
         if (filled($model) && $model instanceof HasColor) {
@@ -68,9 +83,9 @@ class NewModelNotification extends Notification implements ShouldQueue
     public function toMail(): MailMessage
     {
         return (new MailMessage)
-            ->subject($this->modelNotification->subject ?? 'You have received a new notification')
-            ->greeting($this->modelNotification->subject ?? 'You have received a new notification.')
-            ->line(new HtmlString($this->modelNotification->message ?? 'Unable to parse message.'));
+            ->subject($this->subject)
+            ->greeting($this->subject)
+            ->line(new HtmlString($this->message));
     }
 
     public function toBroadcast(): BroadcastMessage
@@ -94,8 +109,8 @@ class NewModelNotification extends Notification implements ShouldQueue
         ]);
 
         $html = <<<HTML
-<p>{$this->modelNotification->subject}</p>
-{$this->modelNotification->message}
+<p>$this->subject</p>
+{$this->message}
 HTML;
 
         return DiscordMessage::create($converter->convert($html));
@@ -107,7 +122,7 @@ HTML;
         $service = app(TwilioService::class);
 
         if (! $channel = $service->toNotificationChannel(
-            message: TwilioService::formatText($this->modelNotification->subject ?? 'Unable to parse message.')
+            message: TwilioService::formatText($this->subject)
         )) {
             return null;
         }

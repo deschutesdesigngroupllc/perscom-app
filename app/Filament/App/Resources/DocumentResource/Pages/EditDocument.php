@@ -15,12 +15,6 @@ class EditDocument extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('tags')
-                ->modalContent(view('app.document-tags'))
-                ->modalSubmitAction(false)
-                ->modalCancelActionLabel('Close')
-                ->modalDescription('Click on a tag to copy it to your clipboard.')
-                ->slideOver(),
             Actions\DeleteAction::make(),
             Actions\ForceDeleteAction::make(),
             Actions\RestoreAction::make(),

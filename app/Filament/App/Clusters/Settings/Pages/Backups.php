@@ -21,6 +21,8 @@ class Backups extends Page implements HasTable
 
     protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
 
+    protected static ?string $navigationGroup = 'Dashboard';
+
     protected static string $view = 'filament.app.clusters.settings.pages.backups';
 
     protected static ?string $cluster = Settings::class;
@@ -38,7 +40,6 @@ class Backups extends Page implements HasTable
     {
         return $table
             ->query(Backup::query())
-            ->description('Download your latest account backups here.')
             ->emptyStateHeading('No current backups')
             ->emptyStateDescription('There are no current backups. Backups are taken automatically every night.')
             ->columns([
@@ -47,6 +48,7 @@ class Backups extends Page implements HasTable
                 TextColumn::make('size')
                     ->sortable(),
                 TextColumn::make('created_at')
+                    ->toggleable(false)
                     ->sortable(),
             ])
             ->actions([

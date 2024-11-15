@@ -153,6 +153,7 @@ class PassportClientResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('Create your first OAuth 2.0 client to start integrating with PERSCOM\'s powerful API.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()

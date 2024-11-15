@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Models\Unit;
 use App\Models\User;
 use Closure;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
@@ -22,10 +23,14 @@ use Illuminate\Support\HtmlString;
 
 class ModelNotification
 {
-    public static function make(?string $description = null, bool $enabled = false, string|HtmlString|Closure|null $alert = null, ?string $defaultSubject = null, ?string $defaultMessage = null): Section
+    /**
+     * @param  array<string, mixed>|null  $defaults
+     */
+    public static function make(?string $description = null, string|HtmlString|Closure|null $alert = null, ?array $defaults = null, ?string $statePath = null): Section
     {
         return Section::make()
-            ->statePath('model_notifications')
+            ->key('model_notifications')
+            ->statePath($statePath ?? 'model_notifications')
             ->schema([
                 Placeholder::make('alert')
                     ->hiddenLabel()
@@ -34,7 +39,7 @@ class ModelNotification
                     ->content($alert),
                 Toggle::make('enabled')
                     ->live()
-                    ->default($enabled)
+                    ->default(data_get($defaults, 'enabled', false))
                     ->helperText($description ?? 'Enable to send notifications.'),
                 Tabs::make()
                     ->columnSpanFull()
@@ -45,6 +50,7 @@ class ModelNotification
                             ->schema([
                                 Select::make('groups')
                                     ->helperText('Send the notification to a group(s).')
+                                    ->default(data_get($defaults, 'groups'))
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
@@ -58,6 +64,7 @@ class ModelNotification
                                     ]),
                                 Select::make('units')
                                     ->helperText('Send the notification to a unit(s).')
+                                    ->default(data_get($defaults, 'units'))
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
@@ -71,6 +78,7 @@ class ModelNotification
                                     ]),
                                 Select::make('users')
                                     ->helperText('Send the notification to a user(s).')
+                                    ->default(data_get($defaults, 'users'))
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
@@ -88,27 +96,51 @@ class ModelNotification
                             ->icon('heroicon-o-bell')
                             ->schema([
                                 TextInput::make('subject')
+                                    ->default(data_get($defaults, 'subject'))
+                                    ->hintIconTooltip('View available content tags.')
+                                    ->hint('Content Tags')
+                                    ->hintColor('gray')
+                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintAction(Action::make('view')
+                                        ->color('gray')
+                                        ->modalHeading('Content Tags')
+                                        ->modalContent(view('app.model-tags'))
+                                        ->modalSubmitAction(false)
+                                        ->modalCancelActionLabel('Close')
+                                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of content. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                                        ->slideOver())
                                     ->maxLength(255)
                                     ->requiredIfAccepted('enabled')
                                     ->validationMessages([
                                         'required_if_accepted' => 'The :attribute field is required when notifications are enabled.',
                                     ])
-                                    ->default($defaultSubject)
                                     ->helperText('The subject to use with the notification.'),
                                 RichEditor::make('message')
+                                    ->default(data_get($defaults, 'message'))
+                                    ->hintIconTooltip('View available content tags.')
+                                    ->hint('Content Tags')
+                                    ->hintColor('gray')
+                                    ->hintIcon('heroicon-o-tag')
+                                    ->hintAction(Action::make('view')
+                                        ->color('gray')
+                                        ->modalHeading('Content Tags')
+                                        ->modalContent(view('app.model-tags'))
+                                        ->modalSubmitAction(false)
+                                        ->modalCancelActionLabel('Close')
+                                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of content. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                                        ->slideOver())
                                     ->maxLength(65535)
                                     ->requiredIfAccepted('enabled')
                                     ->validationMessages([
                                         'required_if_accepted' => 'The :attribute field is required when notifications are enabled.',
                                     ])
-                                    ->default($defaultMessage)
                                     ->helperText('The message to use with the notification.'),
                                 CheckboxList::make('channels')
+                                    ->default(data_get($defaults, 'channels'))
                                     ->requiredIfAccepted('enabled')
                                     ->validationMessages([
                                         'required_if_accepted' => 'The :attribute field is required when notifications are enabled.',
                                     ])
-                                    ->hiddenLabel()
                                     ->searchable()
                                     ->bulkToggleable()
                                     ->descriptions(function () {
