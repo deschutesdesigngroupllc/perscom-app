@@ -10,7 +10,7 @@ return [
         'slug' => 'roles',
         'navigation_sort' => 8,
         'navigation_badge' => false,
-        'navigation_group' => false,
+        'navigation_group' => true,
         'is_globally_searchable' => false,
         'show_model_path' => false,
         'is_scoped_to_tenant' => false,

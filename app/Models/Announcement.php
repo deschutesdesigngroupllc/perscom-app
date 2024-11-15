@@ -29,7 +29,6 @@ use Illuminate\Support\Str;
  * @property string $color
  * @property bool $global
  * @property bool $enabled
- * @property string|null $channels
  * @property \Illuminate\Support\Carbon|null $expires_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -48,7 +47,6 @@ use Illuminate\Support\Str;
  * @method static Builder|Announcement newQuery()
  * @method static Builder|Announcement onlyTrashed()
  * @method static Builder|Announcement query()
- * @method static Builder|Announcement whereChannels($value)
  * @method static Builder|Announcement whereColor($value)
  * @method static Builder|Announcement whereContent($value)
  * @method static Builder|Announcement whereCreatedAt($value)

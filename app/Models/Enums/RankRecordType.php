@@ -13,6 +13,7 @@ enum RankRecordType: int implements HasColor, HasLabel
     case PROMOTION = 0;
     case DEMOTION = 1;
     case LATERAL = 2;
+    case TRANSFER = 3;
 
     public function getLabel(): string
     {
@@ -24,7 +25,7 @@ enum RankRecordType: int implements HasColor, HasLabel
         return match ($this) {
             RankRecordType::PROMOTION => 'success',
             RankRecordType::DEMOTION => 'danger',
-            RankRecordType::LATERAL => 'info'
+            RankRecordType::LATERAL, RankRecordType::TRANSFER => 'info'
         };
     }
 }

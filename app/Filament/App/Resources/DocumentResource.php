@@ -9,6 +9,7 @@ use App\Filament\App\Resources\DocumentResource\Pages;
 use App\Filament\Exports\DocumentExporter;
 use App\Models\Document;
 use Filament\Forms;
+use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -42,6 +43,18 @@ class DocumentResource extends BaseResource
                             ->columnSpanFull(),
                         Forms\Components\RichEditor::make('description')
                             ->helperText('A brief description of the document.')
+                            ->hintIconTooltip('View available content tags.')
+                            ->hint('Content Tags')
+                            ->hintColor('gray')
+                            ->hintIcon('heroicon-o-tag')
+                            ->hintAction(Action::make('view')
+                                ->color('gray')
+                                ->modalHeading('Content Tags')
+                                ->modalContent(view('app.model-tags'))
+                                ->modalSubmitAction(false)
+                                ->modalCancelActionLabel('Close')
+                                ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of content. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                                ->slideOver())
                             ->nullable()
                             ->maxLength(65535)
                             ->columnSpanFull(),

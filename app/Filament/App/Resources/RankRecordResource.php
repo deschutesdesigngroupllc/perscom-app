@@ -15,6 +15,7 @@ use App\Models\Enums\RankRecordType;
 use App\Models\RankRecord;
 use App\Models\User;
 use App\Services\UserSettingsService;
+use App\Settings\NotificationSettings;
 use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -105,12 +106,17 @@ class RankRecordResource extends BaseResource
                         Forms\Components\Tabs\Tab::make('Notifications')
                             ->visible(fn ($operation) => $operation === 'create')
                             ->icon('heroicon-o-bell')
-                            ->schema([
-                                ModelNotification::make(
-                                    alert: new HtmlString("<div class='font-bold'>The recipients will already receive a notification about the new record.</div>"),
-                                    defaultSubject: 'A new rank record has been added.',
-                                ),
-                            ]),
+                            ->schema(function () {
+                                /** @var NotificationSettings $settings */
+                                $settings = app(NotificationSettings::class);
+
+                                return [
+                                    ModelNotification::make(
+                                        alert: new HtmlString("<div class='font-bold'>The recipients will already receive a notification about the new record.</div>"),
+                                        defaults: data_get($settings->toArray(), 'rank_records'),
+                                    ),
+                                ];
+                            }),
                     ]),
             ]);
     }

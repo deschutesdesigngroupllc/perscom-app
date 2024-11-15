@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Filament\App\Clusters\Settings;
-use App\Settings\RegistrationSettings as RegistrationSettingsClass;
+use App\Settings\RegistrationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Tabs;
@@ -22,7 +22,9 @@ class Registration extends SettingsPage
 
     protected static ?string $navigationLabel = 'Registration';
 
-    protected static string $settings = RegistrationSettingsClass::class;
+    protected static ?string $navigationGroup = 'Users';
+
+    protected static string $settings = RegistrationSettings::class;
 
     protected static ?int $navigationSort = 6;
 

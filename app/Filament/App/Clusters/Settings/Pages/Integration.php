@@ -4,9 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters\Settings\Pages;
 
+use App\Features\ApiAccessFeature;
 use App\Features\SingleSignOnFeature;
 use App\Filament\App\Clusters\Settings;
-use App\Settings\IntegrationSettings as IntegrationSettingsClass;
+use App\Filament\App\Resources\PassportClientResource;
+use App\Filament\App\Resources\PassportTokenResource;
+use App\Settings\IntegrationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Tabs;
@@ -26,9 +29,9 @@ class Integration extends SettingsPage
 
     protected static ?string $navigationLabel = 'Integrations';
 
-    protected static string $settings = IntegrationSettingsClass::class;
+    protected static ?int $navigationSort = 2;
 
-    protected static ?int $navigationSort = 3;
+    protected static string $settings = IntegrationSettings::class;
 
     protected ?string $subheading = 'Adjust settings related to integrating PERSCOM with third-party services.';
 
@@ -71,5 +74,21 @@ class Integration extends SettingsPage
                             ]),
                     ]),
             ]);
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            \Filament\Actions\Action::make('API Keys')
+                ->visible(Feature::active(ApiAccessFeature::class))
+                ->label('API Keys')
+                ->color('gray')
+                ->url(PassportTokenResource::getUrl()),
+            \Filament\Actions\Action::make('OAuth 2.0 Clients')
+                ->visible(Feature::active(SingleSignOnFeature::class))
+                ->label('OAuth 2.0 Clients')
+                ->color('gray')
+                ->url(PassportClientResource::getUrl()),
+        ];
     }
 }

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Filament\App\Clusters\Settings;
-use App\Settings\OrganizationSettings as OrganizationSettingsClass;
+use App\Settings\OrganizationSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use DateTimeZone;
 use Filament\Forms\Components\Select;
@@ -24,9 +24,9 @@ class Organization extends SettingsPage
 
     protected static ?string $navigationLabel = 'Organization';
 
-    protected static string $settings = OrganizationSettingsClass::class;
+    protected static ?int $navigationSort = 3;
 
-    protected static ?int $navigationSort = 4;
+    protected static string $settings = OrganizationSettings::class;
 
     protected ?string $subheading = 'Account related settings specific to your organizational details.';
 

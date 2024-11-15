@@ -94,6 +94,7 @@ class PassportTokenResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),

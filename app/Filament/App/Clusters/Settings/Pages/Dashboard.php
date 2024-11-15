@@ -10,7 +10,7 @@ use App\Features\CustomSubDomainFeature;
 use App\Filament\App\Clusters\Settings;
 use App\Models\Tenant;
 use App\Rules\SubdomainRule;
-use App\Settings\DashboardSettings as DashboardSettingsClass;
+use App\Settings\DashboardSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
@@ -35,13 +35,13 @@ class Dashboard extends SettingsPage
 
     protected static ?string $navigationLabel = 'Dashboard';
 
-    protected static string $settings = DashboardSettingsClass::class;
+    protected static ?int $navigationSort = 1;
+
+    protected static string $settings = DashboardSettings::class;
 
     protected static ?string $title = 'Dashboard Settings';
 
     protected ?string $subheading = 'Settings that focus on configuring and setting up your online dashboard.';
-
-    protected static ?int $navigationSort = 1;
 
     public static function canAccess(): bool
     {
@@ -63,10 +63,10 @@ class Dashboard extends SettingsPage
                                 TextInput::make('title')
                                     ->maxLength(255)
                                     ->required()
-                                    ->helperText('This is the main heading that will be displayed on the main dashboard home page.'),
+                                    ->helperText('This is the main heading that will be displayed on the dashboard home page.'),
                                 TextInput::make('subtitle')
                                     ->maxLength(255)
-                                    ->helperText('This is the sub text that will be displayed under the main heading on the main dashboard home page.'),
+                                    ->helperText('This is the subheading text that will be displayed under the main heading on the dashboard home page.'),
                             ]),
                         Tabs\Tab::make('Domain')
                             ->icon('heroicon-o-globe-alt')

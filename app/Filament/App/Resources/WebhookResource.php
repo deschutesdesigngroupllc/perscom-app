@@ -99,6 +99,7 @@ class WebhookResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('Create your first webhook to start sending real-time notifications.')
             ->columns([
                 Tables\Columns\TextColumn::make('url')
                     ->sortable(),

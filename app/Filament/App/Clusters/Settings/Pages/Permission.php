@@ -7,7 +7,7 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 use App\Filament\App\Clusters\Settings;
 use App\Models\Permission as PermissionModel;
 use App\Models\Role;
-use App\Settings\PermissionSettings as PermissionSettingsClass;
+use App\Settings\PermissionSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -24,7 +24,9 @@ class Permission extends SettingsPage
 
     protected static ?string $navigationLabel = 'Permissions';
 
-    protected static string $settings = PermissionSettingsClass::class;
+    protected static ?string $navigationGroup = 'Users';
+
+    protected static string $settings = PermissionSettings::class;
 
     protected static ?int $navigationSort = 5;
 

@@ -8,6 +8,7 @@ use App\Features\WebhookFeature;
 use App\Filament\App\Clusters\Logs;
 use App\Filament\App\Clusters\Logs\Resources\WebhookLogResource\Pages;
 use App\Filament\App\Resources\BaseResource;
+use App\Filament\App\Resources\WebhookResource;
 use App\Models\WebhookLog;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
@@ -32,6 +33,12 @@ class WebhookLogResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateActions([
+                Tables\Actions\Action::make('new')
+                    ->label('New webhook')
+                    ->url(WebhookResource::getUrl('create')),
+            ])
+            ->emptyStateDescription('Create your first webhook to start sending real-time notifications.')
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->label('ID')
