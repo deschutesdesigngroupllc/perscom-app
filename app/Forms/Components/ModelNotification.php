@@ -44,7 +44,7 @@ class ModelNotification
                             ->icon('heroicon-o-users')
                             ->schema([
                                 Select::make('groups')
-                                    ->helperText('Send a notification to a group when a form us submitted.')
+                                    ->helperText('Send the notification to a group(s).')
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
@@ -57,7 +57,7 @@ class ModelNotification
                                         },
                                     ]),
                                 Select::make('units')
-                                    ->helperText('Send a notification to a unit when a form us submitted.')
+                                    ->helperText('Send the notification to a unit(s).')
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
@@ -70,7 +70,7 @@ class ModelNotification
                                         },
                                     ]),
                                 Select::make('users')
-                                    ->helperText('Send a notification to a group of users when a form us submitted.')
+                                    ->helperText('Send the notification to a user(s).')
                                     ->preload()
                                     ->multiple()
                                     ->searchable()
