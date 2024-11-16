@@ -27,9 +27,13 @@ class CreatePassportClient extends CreateRecord
             PassportClientType::PASSWORD->value => $clients->createPasswordGrantClient(null, data_get($data, 'name'), 'http://localhost', 'users'),
         };
 
+        $scopes = data_get($data, 'all_scopes')
+            ? ['*']
+            : data_get($data, 'scopes', []);
+
         $client->update([
             'description' => data_get($data, 'description'),
-            'scopes' => data_get($data, 'scopes', []),
+            'scopes' => $scopes,
             'secret' => Str::random(40),
         ]);
 

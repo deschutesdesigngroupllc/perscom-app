@@ -5,11 +5,11 @@ declare(strict_types=1);
 use App\Http\Controllers\Oidc\DiscoveryController;
 use App\Http\Controllers\Oidc\LogoutController;
 use App\Http\Controllers\Oidc\UserInfoController;
+use App\Http\Middleware\InitializeTenancyBySubdomain;
 use Illuminate\Support\Facades\Route;
-use Stancl\Tenancy\Middleware\InitializeTenancyByDomainOrSubdomain;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
-Route::group(['middleware' => [InitializeTenancyByDomainOrSubdomain::class, PreventAccessFromCentralDomains::class]], static function () {
+Route::group(['middleware' => [InitializeTenancyBySubdomain::class, PreventAccessFromCentralDomains::class]], static function () {
     Route::group(['middleware' => 'web'], static function () {
         Route::get('.well-known/openid-configuration', [DiscoveryController::class, 'index'])
             ->name('discovery');

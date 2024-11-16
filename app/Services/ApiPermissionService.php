@@ -44,7 +44,14 @@ class ApiPermissionService
 
     public static function scopes(): array
     {
-        return collect(config('api.scopes'))->toArray();
+        return array_merge(
+            collect(config('api.scopes'))->toArray(),
+            [
+                'profile' => 'Can view your profile',
+                'email' => 'Can view your email',
+                'openid' => 'Can log your account in and out',
+            ]
+        );
     }
 
     protected static function mapAbilities($ability): string
