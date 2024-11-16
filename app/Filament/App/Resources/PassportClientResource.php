@@ -99,6 +99,8 @@ class PassportClientResource extends BaseResource
                                 ->color('gray')
                                 ->badge()
                                 ->copyable(),
+                            TextEntry::make('type')
+                                ->badge(),
                             TextEntry::make('redirect')
                                 ->label('Redirect URL')
                                 ->url(fn ($state) => $state)
@@ -179,15 +181,17 @@ class PassportClientResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\ToggleColumn::make('revoked')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('redirect')
-                    ->label('Redirect URL')
-                    ->sortable()
-                    ->url(fn ($state) => $state)
-                    ->copyable(),
+                Tables\Columns\TextColumn::make('type')
+                    ->badge()
+                    ->sortable(),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('type')
+                    ->preload()
+                    ->multiple()
+                    ->options(PassportClientType::class),
             ])
+            ->groups(['type'])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),

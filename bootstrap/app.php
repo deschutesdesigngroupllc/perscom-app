@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\ApiHeaders;
+use App\Http\Middleware\AuthenticateApi;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\CheckSubscription;
@@ -92,6 +93,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('universal', []);
 
         $middleware->alias([
+            'auth_api' => AuthenticateApi::class,
             'approved' => CheckUserApprovalStatus::class,
             'feature' => EnsureFeaturesAreActive::class,
             'scope' => CheckForAnyScope::class,

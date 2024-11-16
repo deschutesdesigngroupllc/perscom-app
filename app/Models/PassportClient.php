@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Enums\PassportClientType;
 use App\Traits\HasImages;
 use Laravel\Passport\Client as BaseClientModel;
 
@@ -80,5 +81,15 @@ class PassportClient extends BaseClientModel
         }
 
         return parent::hasScope($scope);
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function casts(): array
+    {
+        return [
+            'type' => PassportClientType::class,
+        ];
     }
 }
