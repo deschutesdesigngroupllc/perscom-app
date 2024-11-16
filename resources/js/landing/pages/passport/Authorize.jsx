@@ -1,22 +1,33 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Button, ButtonLink } from '../../components/Button'
+import { Button } from '../../components/Button'
 import { AuthLayout } from '../../layouts/Auth'
 import { ValidationErrors } from '../../components/ValidationErrors'
-import { Head, Link, useForm } from '@inertiajs/react'
+import { Head, useForm } from '@inertiajs/react'
 
-export function Authorize({ client, description, image, name, scopes, state, authToken, csrfToken, tenant }) {
+export function Authorize({ client, description, image, name, scopes, state, authToken, tenant }) {
   const { post, processing, errors } = useForm({
     state: state,
     client_id: client,
-    auth_token: authToken,
-    _token: csrfToken
+    auth_token: authToken
   })
 
-  const submit = (e) => {
+  const approve = (e) => {
     e.preventDefault()
+
     post(
       route('passport.authorizations.approve', {
+        tenant: tenant
+      })
+    )
+  }
+
+  const deny = (e) => {
+    e.preventDefault()
+
+    post(
+      route('passport.authorizations.deny', {
+        _method: 'delete',
         tenant: tenant
       })
     )
@@ -31,34 +42,28 @@ export function Authorize({ client, description, image, name, scopes, state, aut
     <AuthLayout image={image}>
       <Head title='Authorization' />
       <ValidationErrors errors={errors} />
-      <form onSubmit={submit}>
-        <div className='mb-4'>
-          <span className='font-bold'>{name}</span> is requesting permission to access your account.
+      <div className='mb-4'>
+        <span className='font-bold'>{name}</span> is requesting permission to access your account.
+      </div>
+      {description && (
+        <div className='border-y py-2 text-center'>
+          <div className='text-sm'>{description}</div>
         </div>
-        {description && (
-          <div className='border-y py-2 text-center'>
-            <div className='text-sm'>{description}</div>
-          </div>
-        )}
-        {scopeList.length > 0 && <ul className='my-4 list-inside list-disc'>{scopeList}</ul>}
-        <div className='flex flex-col items-center justify-center space-y-2 pt-4'>
+      )}
+      {scopeList.length > 0 && <ul className='my-4 list-inside list-disc'>{scopeList}</ul>}
+      <div className='flex flex-col items-center justify-center space-y-2 pt-4'>
+        <form onSubmit={approve} className='w-full'>
           <Button className='w-full' processing={processing} color='blue'>
-            {' '}
-            Authorize{' '}
+            Authorize
           </Button>
-          <ButtonLink
-            href={route('passport.authorizations.deny', {
-              tenant: tenant
-            })}
-            method='delete'
-            color='slate'
-            className='w-full'
-          >
-            {' '}
-            Deny{' '}
-          </ButtonLink>
-        </div>
-      </form>
+        </form>
+
+        <form onSubmit={deny} className='w-full'>
+          <Button className='w-full' processing={processing} color='slate'>
+            Deny
+          </Button>
+        </form>
+      </div>
     </AuthLayout>
   )
 }
@@ -68,8 +73,7 @@ Authorize.propTypes = {
   name: PropTypes.string,
   scopes: PropTypes.array,
   state: PropTypes.string,
-  authToken: PropTypes.string,
-  csrfToken: PropTypes.string
+  authToken: PropTypes.string
 }
 
 export default Authorize
