@@ -4,24 +4,42 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Enums\PassportClientType;
+use App\Models\PassportToken;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Laravel\Passport\Guards\TokenGuard;
 use PHPOpenSourceSaver\JWTAuth\JWT;
 
 class ApiPermissionService
 {
-    public static function authorize(string $ability, $arguments = []): bool
+    /**
+     * @param  array<string|Model>|string|Model  $arguments
+     */
+    public static function authorize(string $ability, array|string|Model $arguments = []): bool
     {
-        if (! Auth::guard('api')->check()) {
-            return false;
-        }
-
         $scope = static::formScope(
             ability: static::mapAbilities($ability),
             model: static::transformResourceName($arguments)
         );
+
+        /** @var TokenGuard $passport */
+        $passport = Auth::guard('passport');
+        if ($passport->client() && $passport->client()->getAttribute('type') === PassportClientType::CLIENT_CREDENTIALS) {
+            /** @var ?PassportToken $token */
+            $token = request()->attributes->get('client_credentials_token');
+
+            if (filled($token) && $token->can($scope)) {
+                return true;
+            }
+        }
+
+        if (! Auth::guard('api')->check()) {
+            return false;
+        }
 
         /** @var User $user */
         $user = Auth::guard('passport')->user();
@@ -37,17 +55,25 @@ class ApiPermissionService
             return true;
         }
 
-        abort_unless(in_array($scope, $scopes), 403, 'The API key provided does not have the correct scopes to perform the requested action.');
-
-        return true;
+        return in_array($scope, $scopes);
     }
 
+    /**
+     * @return string[]
+     */
     public static function scopes(): array
     {
-        return collect(config('api.scopes'))->toArray();
+        return array_merge(
+            collect(config('api.scopes'))->toArray(),
+            [
+                'profile' => 'Can view your profile',
+                'email' => 'Can view your email',
+                'openid' => 'Can perform Single Sign On',
+            ]
+        );
     }
 
-    protected static function mapAbilities($ability): string
+    protected static function mapAbilities(string $ability): string
     {
         return match ($ability) {
             'viewAny' => 'view',
@@ -56,14 +82,17 @@ class ApiPermissionService
         };
     }
 
-    protected static function transformResourceName($model): string
+    /**
+     * @param  array<string|Model>|string|Model  $model
+     */
+    protected static function transformResourceName(array|string|Model $model): string
     {
         $model = Arr::wrap($model)[0];
 
         return Str::lower(class_basename($model));
     }
 
-    protected static function formScope($ability, $model): string
+    protected static function formScope(string $ability, string $model): string
     {
         return "$ability:$model";
     }

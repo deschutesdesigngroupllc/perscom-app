@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\ApiHeaders;
+use App\Http\Middleware\AuthenticateApi;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\CheckSubscription;
@@ -29,6 +30,7 @@ use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Laravel\Passport\Http\Middleware\CheckForAnyScope;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
 use League\OAuth2\Server\Exception\OAuthServerException;
 use Sentry\Laravel\Integration;
@@ -66,6 +68,8 @@ return Application::configure(basePath: dirname(__DIR__))
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
+        $middleware->redirectGuestsTo(fn () => route('filament.app.auth.login'));
+
         $middleware->validateCsrfTokens(except: [
             'spark/*',
         ]);
@@ -89,8 +93,10 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->group('universal', []);
 
         $middleware->alias([
+            'auth_api' => AuthenticateApi::class,
             'approved' => CheckUserApprovalStatus::class,
             'feature' => EnsureFeaturesAreActive::class,
+            'scope' => CheckForAnyScope::class,
             'subscribed' => CheckSubscription::class,
         ]);
 

@@ -37,18 +37,10 @@ class DiscoveryController extends Controller
             'id_token_signing_alg_values_supported' => [
                 'HS256',
             ],
-            'token_endpoint_auth_signing_alg_values_supported' => [
-                'RS256',
-            ],
             'scopes_supported' => [
                 'openid',
                 'profile',
                 'email',
-                'tenant',
-            ],
-            'token_endpoint_auth_methods_supported' => [
-                'client_secret_basic',
-                'client_secret_post',
             ],
             'claims_supported' => [
                 'aud',
@@ -62,9 +54,11 @@ class DiscoveryController extends Controller
                 'email',
                 'email_verified',
                 'picture',
+                'phone_number',
                 'tenant',
+                'roles',
                 'locale',
-                'zonefinfo',
+                'zoneinfo',
                 'updated_at',
             ],
             'end_session_endpoint' => $tenant->route('oidc.logout'),

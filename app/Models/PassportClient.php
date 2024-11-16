@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Enums\PassportClientType;
 use App\Traits\HasImages;
 use Laravel\Passport\Client as BaseClientModel;
 
@@ -59,10 +60,36 @@ class PassportClient extends BaseClientModel
 {
     use HasImages;
 
+    /**
+     * @var array<string, string|bool>
+     */
     protected $attributes = [
         'personal_access_client' => false,
         'password_client' => false,
         'redirect' => 'http://your.redirect.path',
         'revoked' => false,
     ];
+
+    public function hasScope($scope): bool
+    {
+        /**
+         * Passport clients do not yet support a wildcard "*" all scopes. Passport
+         * access tokens currently do.
+         */
+        if (is_array($this->scopes) && in_array('*', $this->scopes)) {
+            return true;
+        }
+
+        return parent::hasScope($scope);
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function casts(): array
+    {
+        return [
+            'type' => PassportClientType::class,
+        ];
+    }
 }

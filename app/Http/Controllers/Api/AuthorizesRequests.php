@@ -10,6 +10,10 @@ trait AuthorizesRequests
 {
     public function authorize(string $ability, $arguments = []): bool
     {
-        return ApiPermissionService::authorize($ability, $arguments);
+        $authorized = ApiPermissionService::authorize($ability, $arguments);
+
+        abort_unless($authorized, 403, 'The API key provided does not have the correct scopes to perform the requested action.');
+
+        return $authorized;
     }
 }

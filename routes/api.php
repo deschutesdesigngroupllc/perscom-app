@@ -77,7 +77,7 @@ Route::get('spec.yaml', [SpecController::class, 'index'])
 
 Route::group([
     'middleware' => [
-        'auth:api',
+        'auth_api',
         InitializeTenancyByRequestData::class,
         PreventAccessFromCentralDomains::class,
         'subscribed',
