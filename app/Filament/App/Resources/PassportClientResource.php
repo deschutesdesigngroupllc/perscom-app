@@ -48,9 +48,9 @@ class PassportClientResource extends BaseResource
                                     ->helperText('An identifying name for the client.')
                                     ->maxLength(255)
                                     ->required(),
-                                Forms\Components\Select::make('type')
+                                Forms\Components\Radio::make('type')
+                                    ->disabled(fn ($operation) => $operation !== 'create')
                                     ->live()
-                                    ->helperText('The type of client')
                                     ->options(PassportClientType::class)
                                     ->required(),
                                 Forms\Components\TextInput::make('redirect')
@@ -89,6 +89,7 @@ class PassportClientResource extends BaseResource
                     Tabs\Tab::make('Client')
                         ->icon('heroicon-o-rectangle-stack')
                         ->schema([
+                            TextEntry::make('name'),
                             TextEntry::make('id')
                                 ->label('Client ID')
                                 ->color('gray')
@@ -102,6 +103,7 @@ class PassportClientResource extends BaseResource
                             TextEntry::make('type')
                                 ->badge(),
                             TextEntry::make('redirect')
+                                ->visible(fn (PassportClient $record) => in_array($record->type, [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
                                 ->label('Redirect URL')
                                 ->url(fn ($state) => $state)
                                 ->copyable(),
