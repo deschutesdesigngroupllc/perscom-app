@@ -18,6 +18,11 @@ class DashboardSettings extends Settings
 
     public int $cover_photo_height;
 
+    /**
+     * @var string[]
+     */
+    public ?array $user_hidden_fields;
+
     public static function group(): string
     {
         return 'dashboard';

@@ -9,6 +9,7 @@ use App\Filament\App\Resources\UserResource\Pages;
 use App\Filament\App\Resources\UserResource\RelationManagers;
 use App\Filament\Exports\UserExporter;
 use App\Models\User;
+use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use App\Traits\Filament\InteractsWithFields;
 use BezhanSalleh\FilamentShield\Support\Utils;
@@ -30,6 +31,7 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Laravel\Pennant\Feature;
@@ -196,6 +198,8 @@ class UserResource extends BaseResource
 
     public static function infolist(Infolist $infolist): Infolist
     {
+        $hiddenFields = Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []));
+
         return $infolist
             ->schema([
                 Tabs::make()
@@ -203,11 +207,12 @@ class UserResource extends BaseResource
                     ->tabs([
                         Tab::make('Demographics')
                             ->columnSpanFull()
-                            ->badge(fn (?User $record) => $record?->status?->name)
+                            ->badge(fn (?User $record) => in_array('status_id', $hiddenFields) ? null : $record?->status?->name)
                             ->badgeColor(fn (?User $record) => Color::hex($record->status->color ?? '#2563eb'))
                             ->icon('heroicon-o-user')
                             ->schema([
                                 ImageEntry::make('cover_photo_url')
+                                    ->hidden(fn (User $record) => in_array('cover_photo', $hiddenFields) || is_null($record->cover_photo_url))
                                     ->height(function () {
                                         /** @var DashboardSettings $settings */
                                         $settings = app(DashboardSettings::class);
@@ -218,10 +223,11 @@ class UserResource extends BaseResource
                                         'class' => 'user-cover-photo',
                                     ])
                                     ->columnSpanFull()
-                                    ->hiddenLabel()
-                                    ->hidden(fn (?User $record) => is_null($record->cover_photo_url)),
-                                TextEntry::make('name'),
+                                    ->hiddenLabel(),
+                                TextEntry::make('name')
+                                    ->hidden(fn () => in_array('name', $hiddenFields)),
                                 TextEntry::make('time_in_service')
+                                    ->hidden(fn () => in_array('time_in_service', $hiddenFields))
                                     ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans()),
                             ]),
                         Tab::make('Assignment')
@@ -230,17 +236,21 @@ class UserResource extends BaseResource
                                 Section::make('Primary Assignment')
                                     ->columns(3)
                                     ->schema([
-                                        TextEntry::make('position.name'),
-                                        TextEntry::make('specialty.name'),
-                                        TextEntry::make('unit.name'),
+                                        TextEntry::make('position.name')
+                                            ->hidden(fn () => in_array('position_id', $hiddenFields)),
+                                        TextEntry::make('specialty.name')
+                                            ->hidden(fn () => in_array('specialty_id', $hiddenFields)),
+                                        TextEntry::make('unit.name')
+                                            ->hidden(fn () => in_array('unit_id', $hiddenFields)),
                                         TextEntry::make('last_assignment_change_date')
-                                            ->formatStateUsing(fn ($state) => $state->longRelativeToNowDiffForHumans())
-                                            ->hidden(fn (?User $record) => is_null($record->last_assignment_change_date)),
+                                            ->hidden(fn (User $record) => in_array('last_assignment_change_date', $hiddenFields) || is_null($record->last_assignment_change_date))
+                                            ->formatStateUsing(fn ($state) => $state->longRelativeToNowDiffForHumans()),
                                         TextEntry::make('time_in_assignment')
-                                            ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans())
-                                            ->hidden(fn (?User $record) => is_null($record->time_in_assignment)),
+                                            ->hidden(fn (User $record) => in_array('time_in_assignment', $hiddenFields) || is_null($record->time_in_assignment))
+                                            ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans()),
                                     ]),
                                 Section::make('Secondary Assignment(s)')
+                                    ->hidden(fn () => in_array('secondary_assignment_records', $hiddenFields))
                                     ->schema([
                                         Livewire::make(RelationManagers\SecondaryAssignmentsRelationManager::class, fn (?User $record) => [
                                             'ownerRecord' => $record,
@@ -253,14 +263,15 @@ class UserResource extends BaseResource
                             ->columns()
                             ->schema([
                                 TextEntry::make('rank.name')
+                                    ->hidden(fn () => in_array('rank_id', $hiddenFields))
                                     ->prefix(fn (?User $record) => optional($record?->rank?->image?->image_url, fn ($url) => new HtmlString("<img src='$url' class='h-5 inline' alt='{$record->rank->name}' />")))
                                     ->columnSpanFull(),
                                 TextEntry::make('last_rank_change_date')
-                                    ->formatStateUsing(fn ($state) => $state->longRelativeToNowDiffForHumans())
-                                    ->hidden(fn (?User $record) => is_null($record->last_rank_change_date)),
+                                    ->hidden(fn (User $record) => in_array('last_rank_change_date', $hiddenFields) || is_null($record->last_rank_change_date))
+                                    ->formatStateUsing(fn ($state) => $state->longRelativeToNowDiffForHumans()),
                                 TextEntry::make('time_in_grade')
-                                    ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans())
-                                    ->hidden(fn (?User $record) => is_null($record->time_in_grade)),
+                                    ->hidden(fn (User $record) => in_array('time_in_grade', $hiddenFields) || is_null($record->time_in_grade))
+                                    ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans()),
                             ]),
                     ]),
             ]);
@@ -268,22 +279,28 @@ class UserResource extends BaseResource
 
     public static function table(Table $table): Table
     {
+        $hiddenFields = Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []));
+
         return $table
             ->columns([
                 Tables\Columns\ImageColumn::make('profile_photo')
+                    ->hidden(fn () => in_array('profile_photo', $hiddenFields))
                     ->label('')
                     ->defaultImageUrl(fn (User $record) => $record->profile_photo_url)
                     ->disk('s3'),
                 Tables\Columns\TextColumn::make('name')
+                    ->hidden(fn () => in_array('name', $hiddenFields))
                     ->sortable()
                     ->searchable()
                     ->icon(fn (?User $record) => ! $record->approved && Auth::user()->hasRole(Utils::getSuperAdminName()) ? 'heroicon-o-exclamation-circle' : null)
                     ->iconColor('danger')
                     ->iconPosition(IconPosition::After),
                 Tables\Columns\TextColumn::make('email')
+                    ->hidden(fn () => in_array('email', $hiddenFields))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('online')
+                    ->hidden(fn () => in_array('online', $hiddenFields))
                     ->badge()
                     ->color(fn ($state) => match ($state) {
                         true => 'success',
@@ -294,22 +311,30 @@ class UserResource extends BaseResource
                         default => 'Offline',
                     }),
                 Tables\Columns\TextColumn::make('position.name')
+                    ->hidden(fn () => in_array('position_id', $hiddenFields))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('specialty.name')
+                    ->hidden(fn () => in_array('specialty_id', $hiddenFields))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit.name')
+                    ->hidden(fn () => in_array('unit_id', $hiddenFields))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('rank.name')
+                    ->hidden(fn () => in_array('rank_id', $hiddenFields))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status.name')
+                    ->hidden(fn () => in_array('status_id', $hiddenFields))
                     ->badge()
                     ->color(fn (?User $record) => Color::hex($record->status->color ?? '#2563eb'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->hidden(fn () => in_array('created_at', $hiddenFields))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->hidden(fn () => in_array('updated_at', $hiddenFields))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
+                    ->hidden(fn () => in_array('deleted_at', $hiddenFields))
                     ->sortable(),
             ])
             ->groups(['approved', 'position.name', 'rank.name', 'specialty.name', 'status.name', 'unit.name'])
