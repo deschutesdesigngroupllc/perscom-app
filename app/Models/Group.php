@@ -95,6 +95,9 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         'deleted_at',
     ];
 
+    /**
+     * @param  Builder<Group>  $query
+     */
     public function scopeOrderForRoster(Builder $query, ?string $groupId = null): void
     {
         $query
@@ -107,6 +110,9 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ]);
     }
 
+    /**
+     * @return BelongsToMany<Unit>
+     */
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'units_groups')

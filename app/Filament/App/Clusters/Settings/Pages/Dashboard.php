@@ -10,11 +10,13 @@ use App\Features\CustomSubDomainFeature;
 use App\Filament\App\Clusters\Settings;
 use App\Models\Tenant;
 use App\Rules\SubdomainRule;
+use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -117,6 +119,42 @@ class Dashboard extends SettingsPage
                                     ->numeric()
                                     ->suffix('px')
                                     ->default(250),
+                                Select::make('user_hidden_fields')
+                                    ->label('Hidden fields')
+                                    ->helperText('Choose from a list of user fields that should be hidden from their user profile.')
+                                    ->multiple()
+                                    ->options(collect([
+                                        'email' => 'Email',
+                                        'email_verified_at' => 'Email Verification Date',
+                                        'phone_number' => 'Phone Number',
+                                        'position_id' => 'Position',
+                                        'rank_id' => 'Rank',
+                                        'specialty_id' => 'Specialty',
+                                        'status_id' => 'Status',
+                                        'unit_id' => 'Unit',
+                                        'approved' => 'Approval Status',
+                                        'profile_photo' => 'Profile Photo',
+                                        'cover_photo' => 'Cover Photo',
+                                        'timezone' => 'Timezone',
+                                        'online' => 'Online Status',
+                                        'name' => 'Name',
+                                        'time_in_service' => 'Time In Service',
+                                        'last_assignment_change_date' => 'Last Assignment Change Date',
+                                        'time_in_assignment' => 'Time In Assignment',
+                                        'last_rank_change_date' => 'Last Rank Change Date',
+                                        'time_in_grade' => 'Time In Grade',
+                                        'assignment_records' => 'Assignment Records',
+                                        'award_records' => 'Award Records',
+                                        'combat_records' => 'Combat Records',
+                                        'qualification_records' => 'Qualification Records',
+                                        'rank_records' => 'Rank Records',
+                                        'service_records' => 'Service Records',
+                                        'secondary_assignment_records' => 'Secondary Assignment Records',
+                                        'last_seen_at' => 'Last Online At',
+                                        'created_at' => 'Joined At',
+                                        'updated_at' => 'Last Updated At',
+                                        'deleted_at' => 'Deleted At',
+                                    ])->sort()->toArray()),
                             ]),
                     ]),
             ]);
@@ -140,6 +178,8 @@ class Dashboard extends SettingsPage
         } elseif (blank($subdomain) && filled($tenant->custom_domain)) {
             $this->resetTenantSubdomain();
         }
+
+        SettingsService::flush(DashboardSettings::class);
     }
 
     /**
