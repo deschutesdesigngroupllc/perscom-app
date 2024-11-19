@@ -7,6 +7,8 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\FieldResource\Pages;
 use App\Models\Enums\FieldType;
 use App\Models\Field;
+use App\Models\Scopes\HiddenScope;
+use App\Models\Scopes\VisibleScope;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -170,6 +172,8 @@ class FieldResource extends BaseResource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 SoftDeletingScope::class,
+                VisibleScope::class,
+                HiddenScope::class,
             ]);
     }
 

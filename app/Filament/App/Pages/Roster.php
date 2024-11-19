@@ -36,6 +36,6 @@ class Roster extends Page
     public function mount(): void
     {
         $this->data = Group::query()->orderForRoster()->get();
-        $this->hiddenFields = SettingsService::get(DashboardSettings::class, 'user_hidden_fields');
+        $this->hiddenFields = SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []);
     }
 }

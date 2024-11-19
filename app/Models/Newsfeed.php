@@ -75,6 +75,10 @@ class Newsfeed extends Activity implements HasColor
     use HasFactory;
     use HasLikes;
 
+    public $guarded = [
+        'description',
+    ];
+
     protected $appends = [
         'headline',
         'text',

@@ -34,7 +34,6 @@ use Filament\View\PanelsRenderHook;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Bus\Dispatcher as BusDispatcher;
 use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -308,7 +307,5 @@ class AppServiceProvider extends ServiceProvider
         Table::configureUsing(function (Table $table) {
             $table->defaultSort('created_at', 'desc');
         });
-
-        Model::unguard();
     }
 }
