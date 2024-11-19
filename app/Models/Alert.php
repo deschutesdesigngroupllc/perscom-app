@@ -68,6 +68,13 @@ class Alert extends Model implements Enableable, Sortable
     use SoftDeletes;
     use SortableTrait;
 
+    /**
+     * @var true[]
+     */
+    protected $attributes = [
+        'enabled' => true,
+    ];
+
     protected $fillable = [
         'title',
         'message',

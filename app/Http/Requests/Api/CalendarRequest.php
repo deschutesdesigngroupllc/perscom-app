@@ -8,22 +8,29 @@ use Orion\Http\Requests\Request;
 
 class CalendarRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return [
-            'name' => 'string',
-            'description' => 'nullable|string',
-            'color' => 'nullable|string',
+            'name' => 'string|max:255',
+            'description' => 'nullable|string|max:65535',
+            'color' => 'string|max:255',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|max:255',
+            'color' => 'required|string|max:255',
         ];
     }
 }

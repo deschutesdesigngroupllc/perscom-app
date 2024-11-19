@@ -22,7 +22,9 @@ class SubmissionObserver
             $submission->statuses()->attach($status->getKey());
         }
 
-        SendModelNotifications::dispatch($submission->form, 'submission.created');
+        if (filled($submission->form)) {
+            SendModelNotifications::dispatch($submission->form, 'submission.created');
+        }
     }
 
     public function updated(Submission $submission): void

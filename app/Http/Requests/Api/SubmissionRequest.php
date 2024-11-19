@@ -16,6 +16,9 @@ class SubmissionRequest extends Request
 
     public function commonRules(): array
     {
+        /**
+         * @return string[]
+         */
         return array_merge([
             'form_id' => 'integer|exists:forms,id',
             'user_id' => 'integer|nullable|exists:users,id',
@@ -25,6 +28,9 @@ class SubmissionRequest extends Request
         ], $this->getFieldRules());
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         $rules = [];
@@ -34,9 +40,16 @@ class SubmissionRequest extends Request
             ];
         }
 
+        if (! $this->route('user')) {
+            $rules['user_id'] = 'required|integer|exists:users,id';
+        }
+
         return array_merge($rules, $this->getFieldRules());
     }
 
+    /**
+     * @return string[]
+     */
     protected function getFieldRules(): array
     {
         $routeFormId = $this->route('form');

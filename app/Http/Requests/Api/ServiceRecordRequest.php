@@ -8,19 +8,25 @@ use Orion\Http\Requests\Request;
 
 class ServiceRecordRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return [
             'user_id' => 'integer|exists:users,id',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
-            'text' => 'string',
+            'text' => 'string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         $rules = [];
@@ -31,7 +37,7 @@ class ServiceRecordRequest extends Request
         }
 
         return array_merge($rules, [
-            'text' => 'required|string',
+            'text' => 'required|string|max:65535',
         ]);
     }
 }

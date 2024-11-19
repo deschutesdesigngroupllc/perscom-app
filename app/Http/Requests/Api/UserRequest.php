@@ -10,11 +10,14 @@ use Orion\Http\Requests\Request;
 
 class UserRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return array_merge([
-            'name' => 'string',
-            'email' => 'email|unique:users,email',
+            'name' => 'string|max:255',
+            'email' => 'email|unique:users,email|max:255',
             'email_verified_at' => 'nullable|date',
             'position_id' => 'nullable|integer|exists:positions,id',
             'rank_id' => 'nullable|integer|exists:ranks,id',
@@ -33,14 +36,20 @@ class UserRequest extends Request
         ], $this->getFieldRules());
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         return array_merge([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email',
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email|max:255',
         ], $this->getFieldRules());
     }
 
+    /**
+     * @return string[]
+     */
     protected function getFieldRules(): array
     {
         $user = $this->route('user');

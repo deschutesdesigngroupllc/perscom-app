@@ -17,15 +17,21 @@ trait HasModelNotifications
     public static function bootHasModelNotifications(): void
     {
         static::created(function ($model) {
-            SendModelNotifications::dispatch($model, 'created');
+            if (filled($model)) {
+                SendModelNotifications::dispatch($model, 'created');
+            }
         });
 
         static::updated(function ($model) {
-            SendModelNotifications::dispatch($model, 'updated');
+            if (filled($model)) {
+                SendModelNotifications::dispatch($model, 'updated');
+            }
         });
 
         static::deleted(function ($model) {
-            SendModelNotifications::dispatch($model, 'deleted');
+            if (filled($model)) {
+                SendModelNotifications::dispatch($model, 'deleted');
+            }
         });
 
         static::deleting(fn ($model) => $model->modelNotifications()->delete());

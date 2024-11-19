@@ -8,23 +8,31 @@ use Orion\Http\Requests\Request;
 
 class DocumentRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return [
-            'name' => 'string',
-            'description' => 'nullable|string',
-            'content' => 'string',
+            'author_id' => 'integer|exists:users,id',
+            'name' => 'string|max:255',
+            'description' => 'nullable|string|max:65535',
+            'content' => 'string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         return [
-            'name' => 'required|string',
-            'content' => 'required|string',
+            'author_id' => 'required|integer|exists:users,id',
+            'name' => 'required|string|max:255',
+            'content' => 'required|string|max:65535',
         ];
     }
 }

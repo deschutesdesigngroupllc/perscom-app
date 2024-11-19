@@ -15,7 +15,7 @@ class QualificationRecordRequest extends Request
             'qualification_id' => 'integer|exists:qualifications,id',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
-            'text' => 'nullable|string',
+            'text' => 'nullable|string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',

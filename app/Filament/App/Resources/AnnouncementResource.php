@@ -86,17 +86,15 @@ class AnnouncementResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\Layout\Split::make([
-                    Tables\Columns\TextColumn::make('title')
-                        ->sortable()
-                        ->searchable(),
-                    Tables\Columns\TextColumn::make('content')
-                        ->formatStateUsing(fn ($state) => Str::limit($state))
-                        ->sortable()
-                        ->html()
-                        ->wrap()
-                        ->searchable(),
-                ]),
+                Tables\Columns\TextColumn::make('title')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('content')
+                    ->formatStateUsing(fn ($state) => Str::limit($state))
+                    ->sortable()
+                    ->html()
+                    ->wrap()
+                    ->searchable(),
                 Tables\Columns\ColorColumn::make('color')
                     ->sortable()
                     ->searchable(),

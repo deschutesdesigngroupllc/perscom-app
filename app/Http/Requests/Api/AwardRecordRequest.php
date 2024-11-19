@@ -8,6 +8,9 @@ use Orion\Http\Requests\Request;
 
 class AwardRecordRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return [
@@ -15,13 +18,16 @@ class AwardRecordRequest extends Request
             'award_id' => 'integer|exists:awards,id',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
-            'text' => 'nullable|string',
+            'text' => 'nullable|string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         $rules = [];

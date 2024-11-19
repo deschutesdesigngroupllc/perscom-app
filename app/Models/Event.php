@@ -118,6 +118,16 @@ class Event extends Model implements HasLabel
     use HasTags;
     use SoftDeletes;
 
+    /**
+     * @var array<string, string|bool>
+     */
+    protected $attributes = [
+        'all_day' => false,
+        'repeats' => false,
+        'registration_enabled' => true,
+        'notifications_enabled' => true,
+    ];
+
     protected $fillable = [
         'name',
         'calendar_id',

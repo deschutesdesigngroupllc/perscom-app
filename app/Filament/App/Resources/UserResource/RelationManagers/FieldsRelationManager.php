@@ -4,9 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
+use App\Models\Scopes\HiddenScope;
+use App\Models\Scopes\VisibleScope;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class FieldsRelationManager extends RelationManager
 {
@@ -17,6 +21,13 @@ class FieldsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                    VisibleScope::class,
+                    HiddenScope::class,
+                ]);
+            })
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name'),

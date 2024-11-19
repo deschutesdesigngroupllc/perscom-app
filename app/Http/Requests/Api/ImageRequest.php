@@ -8,23 +8,31 @@ use Orion\Http\Requests\Request;
 
 class ImageRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return [
-            'name' => 'string',
-            'description' => 'nullable|string',
-            'filename' => 'string',
-            'path' => 'string',
+            'name' => 'string|max:255',
+            'description' => 'nullable|string|max:65535',
+            'filename' => 'string|max:255',
+            'model_type' => 'string|max:255',
+            'model_id' => 'integer',
+            'path' => 'string|max:255',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         return [
-            'name' => 'required|string',
+            'name' => 'required|string|max:255',
             'image' => 'required|image|min:1|max:10000',
         ];
     }

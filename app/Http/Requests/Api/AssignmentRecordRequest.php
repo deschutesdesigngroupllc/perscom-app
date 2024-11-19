@@ -6,10 +6,14 @@ namespace App\Http\Requests\Api;
 
 use App\Models\Enums\AssignmentRecordType;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Enum;
 use Orion\Http\Requests\Request;
 
 class AssignmentRecordRequest extends Request
 {
+    /**
+     * @return array<string, string|array<string|Enum>>
+     */
     public function commonRules(): array
     {
         return [
@@ -20,14 +24,17 @@ class AssignmentRecordRequest extends Request
             'specialty_id' => 'nullable|integer|exists:specialties,id',
             'document_id' => 'nullable|integer|exists:documents,id',
             'author_id' => 'nullable|integer|exists:users,id',
-            'type' => Rule::enum(AssignmentRecordType::class),
-            'text' => 'nullable|string',
+            'type' => [Rule::enum(AssignmentRecordType::class), 'max:255'],
+            'text' => 'nullable|string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',
         ];
     }
 
+    /**
+     * @return array<string, string|array<string|Enum>>
+     */
     public function storeRules(): array
     {
         $rules = [];
@@ -37,6 +44,8 @@ class AssignmentRecordRequest extends Request
             ];
         }
 
-        return $rules;
+        return array_merge($rules, [
+            'type' => ['required', Rule::enum(AssignmentRecordType::class), 'max:255'],
+        ]);
     }
 }

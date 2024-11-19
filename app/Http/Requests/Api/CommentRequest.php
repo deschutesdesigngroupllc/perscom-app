@@ -8,22 +8,30 @@ use Orion\Http\Requests\Request;
 
 class CommentRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return [
             'author_id' => 'integer|exists:users,id',
-            'comment' => 'string',
+            'model_type' => 'string|max:255',
+            'model_id' => 'integer',
+            'comment' => 'string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',
             'deleted_at' => 'nullable|date',
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         return [
             'author_id' => 'required|integer|exists:users,id',
-            'comment' => 'required|string',
+            'comment' => 'required|string|max:65535',
         ];
     }
 }

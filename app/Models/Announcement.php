@@ -74,6 +74,14 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
     use HasResourceUrl;
     use SoftDeletes;
 
+    /**
+     * @var array<string, bool>
+     */
+    protected $attributes = [
+        'enabled' => true,
+        'global' => false,
+    ];
+
     protected $fillable = [
         'title',
         'content',

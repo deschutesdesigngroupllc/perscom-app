@@ -94,6 +94,13 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     use HasUsers;
     use SoftDeletes;
 
+    /**
+     * @var false[]
+     */
+    protected $attributes = [
+        'hidden' => false,
+    ];
+
     protected $fillable = [
         'name',
         'description',

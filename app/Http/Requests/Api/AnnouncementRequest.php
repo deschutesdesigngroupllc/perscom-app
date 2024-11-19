@@ -8,12 +8,17 @@ use Orion\Http\Requests\Request;
 
 class AnnouncementRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return [
-            'title' => 'string',
-            'content' => 'string|in:info,success,warning,danger',
-            'color' => 'string',
+            'title' => 'string|max:255',
+            'content' => 'string|max:65535',
+            'color' => 'string|max:255',
+            'global' => 'boolean',
+            'enabled' => 'boolean',
             'expires_at' => 'nullable|date',
             'updated_at' => 'date',
             'created_at' => 'date',
@@ -21,12 +26,15 @@ class AnnouncementRequest extends Request
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         return [
-            'title' => 'required|string',
-            'content' => 'required|string',
-            'color' => 'required|string|in:info,success,warning,danger',
+            'title' => 'required|string|max:255',
+            'content' => 'required|string|max:65535',
+            'color' => 'required|string|max:255',
         ];
     }
 }
