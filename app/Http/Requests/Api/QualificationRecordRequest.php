@@ -8,6 +8,9 @@ use Orion\Http\Requests\Request;
 
 class QualificationRecordRequest extends Request
 {
+    /**
+     * @return string[]
+     */
     public function commonRules(): array
     {
         return [
@@ -22,6 +25,9 @@ class QualificationRecordRequest extends Request
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeRules(): array
     {
         $rules = [];
