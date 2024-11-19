@@ -72,7 +72,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 Route::get('health', HealthController::class);
 
-Route::get('spec.yaml', [SpecController::class, 'index'])
+Route::get('spec.json', [SpecController::class, 'index'])
     ->name('spec');
 
 Route::group([

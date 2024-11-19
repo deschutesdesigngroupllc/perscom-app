@@ -46,9 +46,13 @@ class RouteServiceProvider extends ServiceProvider
             return Limit::perMinute(10)->by($request->ip());
         });
 
-        RateLimiter::for('sms', function (?Tenant $tenant = null) {
+        RateLimiter::for('sms', function (Tenant|Request|null $tenant = null) {
             if (blank($tenant)) {
                 return false;
+            }
+
+            if ($tenant instanceof Request) {
+                return Limit::none();
             }
 
             return Limit::perDay(50)->by("tenant:{$tenant->getKey()}");

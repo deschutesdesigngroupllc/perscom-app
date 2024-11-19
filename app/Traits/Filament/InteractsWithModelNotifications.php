@@ -23,14 +23,14 @@ trait InteractsWithModelNotifications
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $this->performModelNotificationInserts($record, data_get($data, 'model_notifications'));
+        $this->performModelNotificationInserts($record, data_get($data, 'model_notifications') ?? []);
 
         return parent::handleRecordUpdate($record, data_forget($data, 'model_notifications'));
     }
 
     protected function handleRecordCreation(array $data): Model
     {
-        $notificationData = data_get($data, 'model_notifications');
+        $notificationData = data_get($data, 'model_notifications') ?? [];
 
         $record = parent::handleRecordCreation(data_forget($data, 'model_notifications'));
 

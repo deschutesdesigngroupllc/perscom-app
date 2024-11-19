@@ -19,7 +19,6 @@
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
     "axios": "^1.6.4",
-    "chokidar": "^4.0.1",
     "clsx": "^2.1.1",
     "concurrently": "^9.0.1",
     "laravel-echo": "^1.16.1",
@@ -30,7 +29,6 @@
     "prettier-plugin-tailwindcss": "^0.6.5",
     "prop-types": "^15.8.1",
     "pusher-js": "^8.4.0-rc2",
-    "swagger-ui-react": "^5.17.14",
     "tailwindcss": "^3.4.4",
     "vite": "^5.4"
   },

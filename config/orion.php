@@ -18,7 +18,7 @@ return [
             'contact' => [
                 'name' => 'Deschutes Design Group LLC',
                 'url' => 'https://www.deschutesdesigngroup.com',
-                'email' => 'info@deschutesdesigngroup.com',
+                'email' => 'support@deschutesdesigngroup.com',
             ],
             'license' => [
                 'name' => null,

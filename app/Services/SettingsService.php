@@ -22,7 +22,7 @@ class SettingsService
 
         $settings = SettingsService::withCache($class);
 
-        return data_get($settings, $key, $default);
+        return data_get($settings, $key) ?? value($default);
     }
 
     public static function flush(string $class): ?bool

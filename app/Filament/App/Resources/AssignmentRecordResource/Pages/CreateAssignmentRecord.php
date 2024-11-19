@@ -23,7 +23,7 @@ class CreateAssignmentRecord extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $notificationData = data_get($data, 'model_notifications');
+        $notificationData = data_get($data, 'model_notifications') ?? [];
 
         $model = $this->batchCreate(data_forget($data, 'model_notifications'));
 

@@ -56,7 +56,7 @@ class UserSettingsService
             })->filter()->toArray();
         });
 
-        return data_get($settings, $key, $default);
+        return data_get($settings, $key) ?? value($default);
     }
 
     public static function flush(?User $user = null): ?bool
