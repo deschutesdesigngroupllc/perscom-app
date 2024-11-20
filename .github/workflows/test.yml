@@ -35,6 +35,9 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v3
 
+      - name: Install NCC
+        run: npm install -g @vercel/ncc
+
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
