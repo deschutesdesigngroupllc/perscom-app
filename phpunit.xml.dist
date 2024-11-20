@@ -30,7 +30,7 @@
 
   <php>
     <env name="API_URL" value="http://api.lvh.me"/>
-    <env name="API_VERSION" value="v1"/>
+    <env name="API_VERSION" value="v2"/>
     <env name="APP_ENV" value="testing"/>
     <env name="APP_DEBUG" value="false" />
     <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
@@ -38,19 +38,19 @@
     <env name="AUTH_URL" value="http://auth.lvh.me"/>
     <env name="BASE_URL" value=".lvh.me"/>
     <env name="BCRYPT_ROUNDS" value="4"/>
-    <env name="CACHE_DRIVER" value="array"/>
+    <env name="BROADCAST_CONNECTION" value="log"/>
+    <env name="CACHE_STORE" value="array"/>
     <env name="DB_CONNECTION" value="mysql"/>
     <env name="DB_DATABASE" value="testing"/>
     <env name="DB_HOST" value="127.0.0.1"/>
     <env name="DB_USERNAME" value="root"/>
     <env name="DB_PASSWORD" value=""/>
-    <env name="ENVOYER_HEARTBEAT_URL" value="https://foo.bar" />
     <env name='HTTP_HOST' value='http://lvh.me' />
     <env name="JWT_ALGO" value="HS256"/>
     <env name="JWT_SECRET" value="3juKTvPLQ2Vw7djDKazHaGQ0UXht2D3wUC94hroyzy6RLNaRbMWJnKdjo9YfCtHU"/>
     <env name="LOG_CHANNEL" value="single"/>
     <env name="LOG_LEVEL" value="debug"/>
-    <env name="MAIL_MAILER" value="array"/>
+    <env name="MAIL_MAILER" value="log"/>
     <env name="MAIL_FROM_NAME" value="Test"/>
     <env name="PENNANT_STORE" value="array"/>
     <env name="QUEUE_CONNECTION" value="sync"/>

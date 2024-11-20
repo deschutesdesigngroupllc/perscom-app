@@ -101,8 +101,6 @@ jobs:
 
       - name: Clear Cache
         run: php artisan optimize:clear
-        env:
-          DB_DATABASE: testing
 
       - name: Execute Tests
         run: composer test
