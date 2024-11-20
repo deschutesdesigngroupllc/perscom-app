@@ -147,7 +147,7 @@
     "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "lint": "./vendor/bin/pint",
     "octane": "php artisan octane:start --watch --host=perscom.test --workers=8",
-    "test": "php artisan test --parallel --no-coverage --stop-on-failure --stop-on-error",
+    "test": "./vendor/bin/pest",
     "test:lint": "./vendor/bin/pint --test",
     "test:types": "./vendor/bin/phpstan analyse --memory-limit 1G"
   },

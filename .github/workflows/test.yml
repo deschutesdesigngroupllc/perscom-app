@@ -103,7 +103,7 @@ jobs:
         run: php artisan optimize:clear
 
       - name: Execute Tests
-        run: php artisan test --parallel
+        run: composer test
 
       - name: Upload Code Coverage Report
         uses: codecov/codecov-action@v3
