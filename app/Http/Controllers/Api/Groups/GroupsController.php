@@ -29,16 +29,16 @@ class GroupsController extends Controller
 
     public function sortableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'hidden', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'order', 'hidden', 'icon', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     public function searchableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'hidden', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'order', 'hidden', 'icon', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     public function filterableBy(): array
     {
-        return ['id', 'name', 'description', 'order', 'hidden', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'order', 'hidden', 'icon', 'created_at', 'updated_at', 'deleted_at'];
     }
 }

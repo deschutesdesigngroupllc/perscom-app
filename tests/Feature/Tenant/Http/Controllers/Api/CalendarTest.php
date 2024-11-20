@@ -45,6 +45,7 @@ class CalendarTest extends ApiResourceTestCase
     {
         return [
             'name' => $this->faker->word,
+            'color' => $this->faker->hexColor,
         ];
     }
 

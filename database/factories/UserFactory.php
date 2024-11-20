@@ -48,9 +48,22 @@ class UserFactory extends Factory
 
     public function unverified(): static
     {
-        return $this->state(function (array $attributes) {
+        return $this->state(function () {
             return [
                 'email_verified_at' => null,
+            ];
+        });
+    }
+
+    public function unassigned(): static
+    {
+        return $this->state(function () {
+            return [
+                'position_id' => null,
+                'rank_id' => null,
+                'specialty_id' => null,
+                'status_id' => null,
+                'unit_id' => null,
             ];
         });
     }

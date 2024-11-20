@@ -7,6 +7,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 use App\Http\Controllers\Api\Events\EventsController;
 use App\Models\Calendar;
 use App\Models\Event;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EventTest extends ApiResourceTestCase
@@ -45,11 +46,13 @@ class EventTest extends ApiResourceTestCase
     public function storeData(): array
     {
         return [
+            'author_id' => User::factory()->create()->getKey(),
             'calendar_id' => Calendar::factory()->create()->getKey(),
             'name' => $this->faker->word,
-            'start' => now(),
-            'end' => now()->addDay(),
+            'starts' => now(),
+            'ends' => now()->addDay(),
             'all_day' => false,
+            'repeats' => false,
         ];
     }
 

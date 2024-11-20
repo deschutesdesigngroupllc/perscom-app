@@ -10,7 +10,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
-use Laravel\Passport\Passport;
 use Tests\Contracts\ApiResourceTestContract;
 
 abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTestContract
@@ -36,11 +35,8 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
 
     public function test_can_reach_index_endpoint()
     {
-        Passport::actingAs($this->user, [
-            $this->scopes()['index'],
-        ]);
-
-        $this->getJson("/{$this->endpoint()}")
+        $this->withToken($this->apiKey($this->scopes()['index']))
+            ->getJson("/{$this->endpoint()}")
             ->assertJsonCount(1, 'data')
             ->assertJsonStructure(['data', 'links', 'meta'])
             ->assertSuccessful();
@@ -48,52 +44,48 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
 
     public function test_can_reach_show_endpoint()
     {
-        Passport::actingAs($this->user, [
-            $this->scopes()['show'],
-        ]);
-
-        $this->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+        $this->withToken($this->apiKey($this->scopes()['show']))
+            ->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
     }
 
     public function test_can_reach_store_endpoint()
     {
-        Passport::actingAs($this->user, [
-            $this->scopes()['store'],
-        ]);
-
         $data = $this->storeData();
 
-        $this->postJson("/{$this->endpoint()}", $data)
+        $this->withToken($this->apiKey($this->scopes()['store']))
+            ->postJson("/{$this->endpoint()}", $data)
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
+
+        if (method_exists($this, 'beforeAssertDatabaseHas')) {
+            $this->beforeAssertDatabaseHas($data);
+        }
 
         $this->assertDatabaseHas($this->getTable($this->model()), $data);
     }
 
     public function test_can_reach_update_endpoint()
     {
-        Passport::actingAs($this->user, [
-            $this->scopes()['update'],
-        ]);
-
         $data = $this->updateData();
 
-        $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $data)
+        $this->withToken($this->apiKey($this->scopes()['update']))
+            ->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $data)
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
+
+        if (method_exists($this, 'beforeAssertDatabaseHas')) {
+            $this->beforeAssertDatabaseHas($data);
+        }
 
         $this->assertDatabaseHas($this->getTable($this->model()), $data);
     }
 
     public function test_can_reach_delete_endpoint()
     {
-        Passport::actingAs($this->user, [
-            $this->scopes()['delete'],
-        ]);
-
-        $this->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+        $this->withToken($this->apiKey($this->scopes()['delete']))
+            ->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
             ->assertJsonStructure(['data'])
             ->assertSuccessful();
 
@@ -110,9 +102,8 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             $this->markTestSkipped("The $class class policy allows everyone to always view all records so this test is not necessary.");
         }
 
-        Passport::actingAs($this->user);
-
-        $this->getJson("/{$this->endpoint()}")
+        $this->withToken($this->apiKey([]))
+            ->getJson("/{$this->endpoint()}")
             ->assertForbidden();
     }
 
@@ -124,53 +115,43 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             $this->markTestSkipped("The $class class policy allows the user to always view records associated with the user so this test is not necessary.");
         }
 
-        Passport::actingAs($this->user);
-
-        $this->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+        $this->withToken($this->apiKey([]))
+            ->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
             ->assertForbidden();
     }
 
     public function test_cannot_reach_store_endpoint_with_missing_scope()
     {
-        Passport::actingAs($this->user);
-
-        $this->postJson("/{$this->endpoint()}", $this->storeData())
+        $this->withToken($this->apiKey([]))
+            ->postJson("/{$this->endpoint()}", $this->storeData())
             ->assertForbidden();
     }
 
     public function test_cannot_reach_update_endpoint_with_missing_scope()
     {
-        Passport::actingAs($this->user);
-
-        $this->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $this->updateData())
+        $this->withToken($this->apiKey([]))
+            ->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $this->updateData())
             ->assertForbidden();
     }
 
     public function test_cannot_reach_delete_endpoint_with_missing_scope()
     {
-        Passport::actingAs($this->user);
-
-        $this->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
+        $this->withToken($this->apiKey([]))
+            ->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
             ->assertForbidden();
     }
 
     public function test_cannot_reach_store_endpoint_with_missing_body()
     {
-        Passport::actingAs($this->user, [
-            $this->scopes()['store'],
-        ]);
-
-        $this->postJson("/{$this->endpoint()}")
+        $this->withToken($this->apiKey($this->scopes()['store']))
+            ->postJson("/{$this->endpoint()}")
             ->assertStatus(422);
     }
 
     public function test_show_endpoint_returns_not_found()
     {
-        Passport::actingAs($this->user, [
-            $this->scopes()['show'],
-        ]);
-
-        $this->getJson("/{$this->endpoint()}/{$this->faker->randomDigitNot($this->factory->getKey())}")
+        $this->withToken($this->apiKey($this->scopes()['show']))
+            ->getJson("/{$this->endpoint()}/{$this->faker->randomDigitNot($this->factory->getKey())}")
             ->assertNotFound();
     }
 

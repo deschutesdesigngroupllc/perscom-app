@@ -18,6 +18,11 @@ class ImageTest extends ApiResourceTestCase
         $this->user->assignRole(Utils::getSuperAdminName());
     }
 
+    public function beforeAssertDatabaseHas(array &$data): void
+    {
+        data_forget($data, 'image');
+    }
+
     public function endpoint(): string
     {
         return 'images';
@@ -44,11 +49,11 @@ class ImageTest extends ApiResourceTestCase
     public function scopes(): array
     {
         return [
-            'index' => 'view:award',
-            'show' => 'view:award',
+            'index' => 'view:image',
+            'show' => 'view:image',
             'store' => 'create:image',
-            'update' => 'update:award',
-            'delete' => 'delete:award',
+            'update' => 'update:image',
+            'delete' => 'delete:image',
         ];
     }
 

@@ -6,6 +6,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Documents\DocumentsController;
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DocumentTest extends ApiResourceTestCase
@@ -44,6 +45,7 @@ class DocumentTest extends ApiResourceTestCase
     public function storeData(): array
     {
         return [
+            'author_id' => User::factory()->create()->getKey(),
             'name' => $this->faker->word,
             'content' => $this->faker->paragraph,
         ];

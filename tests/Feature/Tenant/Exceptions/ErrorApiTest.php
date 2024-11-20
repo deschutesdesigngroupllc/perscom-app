@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Feature\Central\Exceptions;
+namespace Tests\Feature\Tenant\Exceptions;
 
 use App\Http\Middleware\CheckSubscription;
 use Illuminate\Support\Facades\Route;
-use Tests\Feature\Central\CentralTestCase;
+use Tests\Feature\Tenant\TenantTestCase;
 
-class ErrorApiTest extends CentralTestCase
+class ErrorApiTest extends TenantTestCase
 {
     public function test_4xx_exception_is_thrown_and_error_is_returned()
     {
@@ -29,7 +29,7 @@ class ErrorApiTest extends CentralTestCase
         })->name('api.test')->middleware('auth:api');
 
         $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'Unauthenticated.')
+            ->assertJsonPath('error.message', 'You are not authenticated. Please provide a valid API key that contains your PERSCOM ID to continue.')
             ->assertJsonPath('error.type', 'AuthenticationException')
             ->assertStatus(401);
     }
@@ -37,11 +37,11 @@ class ErrorApiTest extends CentralTestCase
     public function test_402_exception_is_thrown_and_error_is_returned()
     {
         Route::get('/test-route', static function () {
-            abort(402, 'foo bar.');
+            abort(402);
         })->name('api.test')->middleware(CheckSubscription::class);
 
         $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'A valid subscription is required to make an API request.')
+            ->assertJsonPath('error.message', 'A valid subscription is required to complete this request.')
             ->assertJsonPath('error.type', 'HttpException')
             ->assertStatus(402);
     }
@@ -49,11 +49,11 @@ class ErrorApiTest extends CentralTestCase
     public function test_403_exception_is_thrown_and_error_is_returned()
     {
         Route::get('/test-route', static function () {
-            abort(403, 'foo bar');
+            abort(403);
         })->name('api.test');
 
         $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'foo bar')
+            ->assertJsonPath('error.message', 'The API key provided does not have the correct permissions and/or scopes to perform the requested action.')
             ->assertJsonPath('error.type', 'HttpException')
             ->assertStatus(403);
     }
@@ -61,7 +61,7 @@ class ErrorApiTest extends CentralTestCase
     public function test_404_exception_is_thrown_and_error_is_returned()
     {
         $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'The route test-route could not be found.')
+            ->assertJsonPath('error.message', 'The requested resource could not be found.')
             ->assertJsonPath('error.type', 'NotFoundHttpException')
             ->assertStatus(404);
     }
@@ -81,11 +81,11 @@ class ErrorApiTest extends CentralTestCase
     public function test_429_exception_is_thrown_and_error_is_returned()
     {
         Route::get('/test-route', static function () {
-            abort(429, 'foo bar');
+            abort(429);
         })->name('api.test');
 
         $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'foo bar')
+            ->assertJsonPath('error.message', 'You have exceeded the API rate limit. Please wait a minute before trying again.')
             ->assertJsonPath('error.type', 'HttpException')
             ->assertStatus(429);
     }
@@ -105,11 +105,11 @@ class ErrorApiTest extends CentralTestCase
     public function test_500_exception_is_thrown_and_error_is_returned()
     {
         Route::get('/test-route', static function () {
-            abort(500, 'foo bar');
+            abort(500);
         })->name('api.test');
 
         $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'foo bar')
+            ->assertJsonPath('error.message', 'There was a server error with your last request. Please try again.')
             ->assertJsonPath('error.type', 'HttpException')
             ->assertStatus(500);
     }

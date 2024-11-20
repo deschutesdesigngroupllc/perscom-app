@@ -44,11 +44,11 @@ class CommentTest extends ApiResourceTestCase
     public function scopes(): array
     {
         return [
-            'index' => 'view:servicerecord',
-            'show' => 'view:servicerecord',
+            'index' => 'view:comment',
+            'show' => 'view:comment',
             'store' => 'create:comment',
-            'update' => 'update:servicerecord',
-            'delete' => 'delete:servicerecord',
+            'update' => 'update:comment',
+            'delete' => 'delete:comment',
         ];
     }
 

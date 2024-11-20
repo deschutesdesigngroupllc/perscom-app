@@ -6,6 +6,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\AssignmentRecords\AssignmentRecordsController;
 use App\Models\AssignmentRecord;
+use App\Models\Enums\AssignmentRecordType;
 use App\Models\Position;
 use App\Models\Specialty;
 use App\Models\Status;
@@ -56,6 +57,7 @@ class AssignmentRecordTest extends ApiResourceTestCase
             'unit_id' => Unit::factory()->create()->getKey(),
             'specialty_id' => Specialty::factory()->create()->getKey(),
             'status_id' => Status::factory()->create()->getKey(),
+            'type' => AssignmentRecordType::PRIMARY->value,
             'text' => $this->faker->paragraph,
         ];
     }

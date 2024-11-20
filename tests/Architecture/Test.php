@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-arch('globals')
+arch('application does not use globals')
     ->expect(['dd', 'dump', 'ray'])
     ->not
     ->toBeUsed();
