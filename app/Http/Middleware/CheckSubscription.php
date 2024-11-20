@@ -24,15 +24,8 @@ class CheckSubscription extends VerifySparkBillableIsSubscribed
             return $next($request);
         }
 
-        abort_if((Feature::inactive(ApiAccessFeature::class)) && $this->request->routeIs('api.*'),
-            402,
-            'A valid subscription is required to make an API request.'
-        );
-
-        abort_if((Feature::inactive(OAuth2AccessFeature::class)) && ($this->request->routeIs('passport.*') || $this->request->routeIs('oidc.*')),
-            402,
-            'A valid subscription is required to use Single Sign-On (SSO).'
-        );
+        abort_if((Feature::inactive(ApiAccessFeature::class)) && $this->request->routeIs('api.*'), 402);
+        abort_if((Feature::inactive(OAuth2AccessFeature::class)) && ($this->request->routeIs('passport.*') || $this->request->routeIs('oidc.*')), 402);
 
         return parent::handle($request, $next, $billableType, $plan);
     }
@@ -40,7 +33,7 @@ class CheckSubscription extends VerifySparkBillableIsSubscribed
     protected function redirect(string $billableType): string
     {
         if ($this->request->expectsJson()) {
-            abort(402, 'A valid subscription is required.');
+            abort(402);
         }
 
         return parent::redirect($billableType);

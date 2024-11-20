@@ -21,6 +21,7 @@ use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
 use Illuminate\Http\Request;
@@ -37,7 +38,6 @@ use Sentry\Laravel\Integration;
 use Spatie\Health\Commands\DispatchQueueCheckJobsCommand;
 use Spatie\Health\Commands\RunHealthChecksCommand;
 use Spatie\Health\Commands\ScheduleCheckHeartbeatCommand;
-use Stancl\Tenancy\Contracts\TenantCouldNotBeIdentifiedException;
 use Symfony\Component\HttpFoundation\Response;
 use Torchlight\Middleware\RenderTorchlight;
 
@@ -101,6 +101,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->use([
+            CheckForMaintenanceMode::class,
             RenderTorchlight::class,
         ]);
 
@@ -126,7 +127,6 @@ return Application::configure(basePath: dirname(__DIR__))
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->routeIs('api.*') || $request->expectsJson());
 
         $exceptions->dontReport([
-            TenantCouldNotBeIdentifiedException::class,
             OAuthServerException::class,
         ]);
 
@@ -137,21 +137,23 @@ return Application::configure(basePath: dirname(__DIR__))
             $status = $statusCode ?? $statusProperty ?? $statusUnauthenticated ?? Response::HTTP_INTERNAL_SERVER_ERROR;
 
             if ($request->routeIs('api.*') || $request->expectsJson()) {
-                $debug = config('app.debug');
-
                 $response = [
                     'error' => [
-                        'message' => $debug
-                            ? $e->getMessage()
-                            : ($status === Response::HTTP_INTERNAL_SERVER_ERROR
-                                ? 'There was a server error with your last request. Please try again.'
-                                : $e->getMessage()
-                            ),
+                        'message' => match (true) {
+                            $status === Response::HTTP_UNAUTHORIZED => 'You are not authenticated. Please provide a valid API key that contains your PERSCOM ID to continue.',
+                            $status === Response::HTTP_PAYMENT_REQUIRED => 'A valid subscription is required to complete this request.',
+                            $status === Response::HTTP_FORBIDDEN => 'The API key provided does not have the correct permissions and/or scopes to perform the requested action.',
+                            $status === Response::HTTP_NOT_FOUND => 'The requested resource could not be found.',
+                            $status === Response::HTTP_INTERNAL_SERVER_ERROR => 'There was a server error with your last request. Please try again.',
+                            $status === Response::HTTP_TOO_MANY_REQUESTS => 'You have exceeded the API rate limit. Please wait a minute before trying again.',
+                            $status === Response::HTTP_SERVICE_UNAVAILABLE => 'The API is currently down for maintenance. Please check back later.',
+                            default => $e->getMessage(),
+                        },
                         'type' => class_basename($e),
                     ],
                 ];
 
-                if ($debug) {
+                if (config('app.debug', false)) {
                     $response['error']['file'] = $e->getFile();
                     $response['error']['line'] = $e->getLine();
                 }
