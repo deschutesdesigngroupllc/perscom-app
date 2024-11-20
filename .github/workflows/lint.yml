@@ -13,6 +13,19 @@ jobs:
       - name: Checkout Source Code
         uses: actions/checkout@v3
 
+      - name: Install Javascript Dependencies
+        run: npm ci
+
+      - name: Build Alpine.js Components
+        run: |
+          for dir in resources/js/components/*/; do
+            echo "Building component in $dir"
+            cd $dir || continue
+            dirname=$(basename "$dir")
+            ncc build index.js -o "../../dist/components/$dirname" -m
+            cd - > /dev/null || continue
+          done
+
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
         with:
@@ -43,15 +56,6 @@ jobs:
 
       - name: Install PHP Dependencies
         run: composer install --prefer-dist --no-interaction --no-progress
-
-      - name: Setup Node
-        uses: actions/setup-node@v2
-        with:
-          node-version: '20'
-          cache: 'npm'
-
-      - name: Install Javascript Dependencies
-        run: npm ci
 
       - name: Build Project
         run: |
