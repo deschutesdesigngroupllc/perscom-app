@@ -75,6 +75,16 @@ jobs:
       - name: Install Javascript Dependencies
         run: npm ci
 
+      - name: Build Alpine.js Components
+        run: |
+          for dir in resources/js/components/*/; do
+            echo "Building component in $dir"
+            cd $dir || continue
+            dirname=$(basename "$dir")
+            ncc build index.js -o "../../dist/components/$dirname" -m
+            cd - > /dev/null || continue
+          done
+
       - name: Build Project
         run: |
           npm run build
