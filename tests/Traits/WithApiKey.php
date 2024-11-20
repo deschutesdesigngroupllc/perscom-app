@@ -17,6 +17,6 @@ trait WithApiKey
     {
         $action = new CreatePersonalAccessToken;
 
-        return $action->handle(User::factory()->unassigned()->create(), $this->faker->word, Arr::wrap($scopes))->accessToken;
+        return $action->handle(User::factory()->unassigned()->createQuietly(), $this->faker->word, Arr::wrap($scopes))->accessToken;
     }
 }

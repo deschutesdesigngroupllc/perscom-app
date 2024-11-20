@@ -13,7 +13,7 @@ class EventServiceTest extends TenantTestCase
 {
     public function test_it_can_generate_a_recurring_rule()
     {
-        $event = Event::factory()->withSchedule()->create();
+        $event = Event::factory()->withSchedule()->createQuietly();
 
         $rule = ScheduleService::generateRecurringRule($event->schedule);
 

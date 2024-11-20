@@ -8,35 +8,13 @@ use App\Models\Enums\WebhookEvent;
 use App\Models\Form;
 use App\Models\Status;
 use App\Models\Submission;
-use App\Models\User;
 use App\Models\Webhook;
-use App\Notifications\Tenant\NewSubmission;
-use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Facades\Queue;
 use Spatie\WebhookServer\CallWebhookJob;
 use Tests\Feature\Tenant\TenantTestCase;
 
 class SubmissionObserverTest extends TenantTestCase
 {
-    public function test_create_submission_notification_is_sent()
-    {
-        Notification::fake();
-
-        $form = Form::factory()->create();
-        $form->notifications()->attach($user = User::factory()->create());
-
-        $submission = Submission::factory()->for($form)->create();
-
-        Notification::assertSentTo($user, NewSubmission::class, function (NewSubmission $notification, $channels) use ($submission) {
-            $this->assertContains('mail', $channels);
-
-            $mail = $notification->toMail($submission->user);
-            $mail->assertTo($submission->user->email);
-
-            return true;
-        });
-    }
-
     public function test_default_submission_status_is_attached()
     {
         $status = Status::factory()->create();

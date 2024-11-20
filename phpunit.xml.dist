@@ -35,6 +35,7 @@
     <env name="APP_DEBUG" value="false" />
     <env name="APP_KEY" value="AckfSECXIvnK5r28GVIWUAxmbBSjTsmF"/>
     <env name="APP_URL" value="http://lvh.me"/>
+    <env name="APP_SCHEME" value="http"/>
     <env name="AUTH_URL" value="http://auth.lvh.me"/>
     <env name="BASE_URL" value=".lvh.me"/>
     <env name="BCRYPT_ROUNDS" value="4"/>
