@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\TenantCouldNotBeIdentified;
 use Illuminate\Http\Request;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Token\Plain;
+use Stancl\Tenancy\Middleware\InitializeTenancyByRequestData as BaseInitializeTenancyByRequestData;
 use Stancl\Tenancy\Resolvers\RequestDataTenantResolver;
 use Stancl\Tenancy\Tenancy;
 
-class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\InitializeTenancyByRequestData
+class InitializeTenancyByRequestData extends BaseInitializeTenancyByRequestData
 {
     public static $header = 'X-Perscom-Id';
 
@@ -21,7 +21,7 @@ class InitializeTenancyByRequestData extends \Stancl\Tenancy\Middleware\Initiali
     public function __construct(Tenancy $tenancy, RequestDataTenantResolver $resolver)
     {
         self::$onFail = static function () {
-            throw new TenantCouldNotBeIdentified(401, 'We could not identify the organization attempting the request. Please make sure to include the X-Perscom-Id header with your valid PERSCOM ID.');
+            abort(401);
         };
 
         parent::__construct($tenancy, $resolver);

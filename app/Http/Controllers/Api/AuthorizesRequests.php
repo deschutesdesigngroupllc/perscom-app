@@ -12,7 +12,7 @@ trait AuthorizesRequests
     {
         $authorized = ApiPermissionService::authorize($ability, $arguments);
 
-        abort_unless($authorized, 403, 'The API key provided does not have the correct scopes to perform the requested action.');
+        abort_unless($authorized, 403);
 
         return $authorized;
     }
