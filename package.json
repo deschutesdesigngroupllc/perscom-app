@@ -9,7 +9,7 @@
     "format": "prettier './resources/**/*.{blade.php,js,jsx}' './*.{js,json}' --write --config ./.prettierrc"
   },
   "devDependencies": {
-    "@headlessui/react": "^2.1.2",
+    "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.1.5",
     "@inertiajs/react": "^1.2.0",
     "@shufo/prettier-plugin-blade": "^1.14.1",
