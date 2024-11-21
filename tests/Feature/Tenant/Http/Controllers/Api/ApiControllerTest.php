@@ -133,7 +133,7 @@ class ApiControllerTest extends ApiTestCase
             'scopes' => [
                 'view:user',
             ],
-        ])->login(User::factory()->create());
+        ])->login(User::factory()->createQuietly());
 
         $this->withToken($token)
             ->getJson(route('api.users.index', [
@@ -155,7 +155,7 @@ class ApiControllerTest extends ApiTestCase
 
         $token = $tokenBuilder
             ->issuedBy(config('app.url'))
-            ->relatedTo((string) User::factory()->create()->getKey())
+            ->relatedTo((string) User::factory()->createQuietly()->getKey())
             ->identifiedBy(Str::random(10))
             ->issuedAt(now()->toDateTimeImmutable())
             ->canOnlyBeUsedAfter(now()->toDateTimeImmutable())
@@ -177,7 +177,7 @@ class ApiControllerTest extends ApiTestCase
     {
         $token = Auth::guard('jwt')->claims([
             'scopes' => null,
-        ])->login(User::factory()->create());
+        ])->login(User::factory()->createQuietly());
 
         $this->withToken($token)
             ->getJson(route('api.users.index', [
@@ -196,7 +196,7 @@ class ApiControllerTest extends ApiTestCase
             'scopes' => [
                 'view:user',
             ],
-        ])->login(User::factory()->create());
+        ])->login(User::factory()->createQuietly());
 
         $this->withToken($token)
             ->getJson(route('api.users.index', [
@@ -216,7 +216,7 @@ class ApiControllerTest extends ApiTestCase
 
         $token = $tokenBuilder
             ->issuedBy(config('app.url'))
-            ->relatedTo((string) User::factory()->create()->getKey())
+            ->relatedTo((string) User::factory()->createQuietly()->getKey())
             ->identifiedBy(Str::random(10))
             ->issuedAt(now()->toDateTimeImmutable())
             ->canOnlyBeUsedAfter(now()->toDateTimeImmutable())
@@ -246,7 +246,7 @@ class ApiControllerTest extends ApiTestCase
 
         $token = $tokenBuilder
             ->issuedBy(config('app.url'))
-            ->relatedTo((string) User::factory()->create()->getKey())
+            ->relatedTo((string) User::factory()->createQuietly()->getKey())
             ->identifiedBy(Str::random(10))
             ->issuedAt(now()->toDateTimeImmutable())
             ->canOnlyBeUsedAfter(now()->toDateTimeImmutable())

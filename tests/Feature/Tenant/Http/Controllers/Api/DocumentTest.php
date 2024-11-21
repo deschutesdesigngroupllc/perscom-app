@@ -26,11 +26,17 @@ class DocumentTest extends ApiResourceTestCase
         return Document::class;
     }
 
+    /**
+     * @return Factory<Document>
+     */
     public function factory(): Factory
     {
         return Document::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -42,15 +48,21 @@ class DocumentTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
-            'author_id' => User::factory()->create()->getKey(),
+            'author_id' => User::factory()->createQuietly()->getKey(),
             'name' => $this->faker->word,
             'content' => $this->faker->paragraph,
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

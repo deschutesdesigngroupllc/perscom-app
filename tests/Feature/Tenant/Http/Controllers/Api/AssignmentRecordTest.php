@@ -30,6 +30,9 @@ class AssignmentRecordTest extends ApiResourceTestCase
         return AssignmentRecord::class;
     }
 
+    /**
+     * @return Factory<AssignmentRecord>
+     */
     public function factory(): Factory
     {
         return AssignmentRecord::factory()->state([
@@ -37,6 +40,9 @@ class AssignmentRecordTest extends ApiResourceTestCase
         ]);
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -48,6 +54,9 @@ class AssignmentRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -62,6 +71,9 @@ class AssignmentRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

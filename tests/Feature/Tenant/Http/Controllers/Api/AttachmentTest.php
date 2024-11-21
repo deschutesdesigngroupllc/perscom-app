@@ -38,6 +38,9 @@ class AttachmentTest extends ApiResourceTestCase
         return AttachmentsController::class;
     }
 
+    /**
+     * @return Factory<Attachment>
+     */
     public function factory(): Factory
     {
         return Attachment::factory()
@@ -46,6 +49,9 @@ class AttachmentTest extends ApiResourceTestCase
             });
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -57,6 +63,9 @@ class AttachmentTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -65,6 +74,9 @@ class AttachmentTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

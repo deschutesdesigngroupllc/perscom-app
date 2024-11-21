@@ -25,11 +25,17 @@ class AwardTest extends ApiResourceTestCase
         return Award::class;
     }
 
+    /**
+     * @return Factory<Award>
+     */
     public function factory(): Factory
     {
         return Award::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class AwardTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +58,9 @@ class AwardTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

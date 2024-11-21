@@ -27,6 +27,9 @@ class RankRecordTest extends ApiResourceTestCase
         return RankRecord::class;
     }
 
+    /**
+     * @return Factory<RankRecord>
+     */
     public function factory(): Factory
     {
         return RankRecord::factory()->state([
@@ -34,6 +37,9 @@ class RankRecordTest extends ApiResourceTestCase
         ]);
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -45,6 +51,9 @@ class RankRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -56,6 +65,9 @@ class RankRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

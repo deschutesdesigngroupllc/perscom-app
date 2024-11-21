@@ -25,11 +25,17 @@ class CalendarTest extends ApiResourceTestCase
         return Calendar::class;
     }
 
+    /**
+     * @return Factory<Calendar>
+     */
     public function factory(): Factory
     {
         return Calendar::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class CalendarTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +58,9 @@ class CalendarTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

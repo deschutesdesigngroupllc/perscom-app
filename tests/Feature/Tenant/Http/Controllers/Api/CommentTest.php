@@ -33,6 +33,9 @@ class CommentTest extends ApiResourceTestCase
         return CommentsController::class;
     }
 
+    /**
+     * @return Factory<Comment>
+     */
     public function factory(): Factory
     {
         return Comment::factory()
@@ -41,6 +44,9 @@ class CommentTest extends ApiResourceTestCase
             });
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -52,14 +58,20 @@ class CommentTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
-            'author_id' => User::factory()->create()->getKey(),
+            'author_id' => User::factory()->createQuietly()->getKey(),
             'comment' => $this->faker->paragraph,
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

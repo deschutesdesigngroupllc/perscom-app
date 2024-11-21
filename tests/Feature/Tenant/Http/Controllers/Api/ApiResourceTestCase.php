@@ -24,8 +24,8 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
 
         Event::fake();
 
-        $this->user = User::factory()->create();
-        $this->factory = $this->factory()->create();
+        $this->user = User::factory()->unassigned()->createQuietly();
+        $this->factory = $this->factory()->createQuietly();
 
         $beforeCallback = Str::camel('before_'.$this->name());
         if (method_exists($this, $beforeCallback)) {

@@ -25,11 +25,17 @@ class QualificationTest extends ApiResourceTestCase
         return Qualification::class;
     }
 
+    /**
+     * @return Factory<Qualification>
+     */
     public function factory(): Factory
     {
         return Qualification::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class QualificationTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +58,9 @@ class QualificationTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

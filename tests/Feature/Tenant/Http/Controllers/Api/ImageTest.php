@@ -38,6 +38,9 @@ class ImageTest extends ApiResourceTestCase
         return ImagesController::class;
     }
 
+    /**
+     * @return Factory<Image>
+     */
     public function factory(): Factory
     {
         return Image::factory()
@@ -46,6 +49,9 @@ class ImageTest extends ApiResourceTestCase
             });
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -57,6 +63,9 @@ class ImageTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -65,6 +74,9 @@ class ImageTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

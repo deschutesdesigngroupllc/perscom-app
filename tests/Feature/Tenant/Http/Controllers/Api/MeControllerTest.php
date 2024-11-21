@@ -14,7 +14,7 @@ class MeControllerTest extends ApiTestCase
     {
         parent::setUp();
 
-        $this->user = User::factory()->create();
+        $this->user = User::factory()->createQuietly();
     }
 
     public function test_me_endpoint_can_be_reached()

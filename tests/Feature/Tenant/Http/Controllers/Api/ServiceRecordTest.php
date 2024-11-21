@@ -25,6 +25,9 @@ class ServiceRecordTest extends ApiResourceTestCase
         return ServiceRecord::class;
     }
 
+    /**
+     * @return Factory<ServiceRecord>
+     */
     public function factory(): Factory
     {
         return ServiceRecord::factory()->state([
@@ -32,6 +35,9 @@ class ServiceRecordTest extends ApiResourceTestCase
         ]);
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -43,6 +49,9 @@ class ServiceRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -52,6 +61,9 @@ class ServiceRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

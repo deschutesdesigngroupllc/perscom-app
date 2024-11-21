@@ -25,11 +25,17 @@ class UnitTest extends ApiResourceTestCase
         return Unit::class;
     }
 
+    /**
+     * @return Factory<Unit>
+     */
     public function factory(): Factory
     {
         return Unit::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class UnitTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +58,9 @@ class UnitTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

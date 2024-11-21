@@ -43,7 +43,7 @@ class TenantDatabaseSeeder extends Seeder
         $action = app(SetupTenantAccount::class);
         $action->shouldCreateUser(false)->handle(tenant());
 
-        $user = User::factory()->create([
+        $user = User::factory()->unassigned()->createQuietly([
             'name' => 'Test User',
             'email' => 'test@deschutesdesigngroup.com',
         ]);

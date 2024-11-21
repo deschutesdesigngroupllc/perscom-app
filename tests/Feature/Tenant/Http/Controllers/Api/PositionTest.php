@@ -25,11 +25,17 @@ class PositionTest extends ApiResourceTestCase
         return Position::class;
     }
 
+    /**
+     * @return Factory<Position>
+     */
     public function factory(): Factory
     {
         return Position::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class PositionTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +58,9 @@ class PositionTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

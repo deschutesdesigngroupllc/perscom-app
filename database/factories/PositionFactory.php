@@ -15,7 +15,7 @@ class PositionFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => "Position  {$this->faker->unique()->randomNumber()}",
+            'name' => "Position {$this->faker->unique()->randomNumber()}",
             'description' => $this->faker->paragraph,
         ];
     }

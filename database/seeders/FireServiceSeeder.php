@@ -44,7 +44,7 @@ class FireServiceSeeder extends Seeder
         $action = app(SetupTenantAccount::class);
         $action->shouldCreateUser(false)->handle(tenant());
 
-        $user = User::factory()->create([
+        $user = User::factory()->unassigned()->createQuietly([
             'name' => 'Demo User',
             'email' => 'demo@perscom.io',
         ]);

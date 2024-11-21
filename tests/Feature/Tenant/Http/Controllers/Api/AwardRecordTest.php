@@ -26,6 +26,9 @@ class AwardRecordTest extends ApiResourceTestCase
         return AwardRecord::class;
     }
 
+    /**
+     * @return Factory<AwardRecord>
+     */
     public function factory(): Factory
     {
         return AwardRecord::factory()->state([
@@ -33,6 +36,9 @@ class AwardRecordTest extends ApiResourceTestCase
         ]);
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -44,6 +50,9 @@ class AwardRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -54,6 +63,9 @@ class AwardRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

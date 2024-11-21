@@ -27,11 +27,17 @@ class EventTest extends ApiResourceTestCase
         return Event::class;
     }
 
+    /**
+     * @return Factory<Event>
+     */
     public function factory(): Factory
     {
         return Event::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -43,10 +49,13 @@ class EventTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
-            'author_id' => User::factory()->create()->getKey(),
+            'author_id' => User::factory()->createQuietly()->getKey(),
             'calendar_id' => Calendar::factory()->create()->getKey(),
             'name' => $this->faker->word,
             'starts' => now(),
@@ -56,6 +65,9 @@ class EventTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

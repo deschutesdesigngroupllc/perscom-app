@@ -25,11 +25,17 @@ class SpecialtyTest extends ApiResourceTestCase
         return Specialty::class;
     }
 
+    /**
+     * @return Factory<Specialty>
+     */
     public function factory(): Factory
     {
         return Specialty::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class SpecialtyTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +58,9 @@ class SpecialtyTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

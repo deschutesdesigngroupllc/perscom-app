@@ -25,6 +25,9 @@ class CombatRecordTest extends ApiResourceTestCase
         return CombatRecord::class;
     }
 
+    /**
+     * @return Factory<CombatRecord>
+     */
     public function factory(): Factory
     {
         return CombatRecord::factory()->state([
@@ -32,6 +35,9 @@ class CombatRecordTest extends ApiResourceTestCase
         ]);
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -43,6 +49,9 @@ class CombatRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -52,6 +61,9 @@ class CombatRecordTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [
