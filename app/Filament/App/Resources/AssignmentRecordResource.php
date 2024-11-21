@@ -318,14 +318,20 @@ class AssignmentRecordResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|AssignmentRecord $record): string
+    /**
+     * @param  AssignmentRecord  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         $user = optional($record->user)->name;
 
         return "$record->id: $user";
     }
 
-    public static function getGlobalSearchResultDetails(Model|AssignmentRecord $record): array
+    /**
+     * @param  AssignmentRecord  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'Type' => optional($record->type)->getLabel(),
@@ -333,7 +339,7 @@ class AssignmentRecordResource extends BaseResource
             'Specialty' => optional($record->specialty)->name,
             'Unit' => optional($record->unit)->name,
             'Status' => optional($record->status)->name,
-            'Text' => $record->text,
+            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

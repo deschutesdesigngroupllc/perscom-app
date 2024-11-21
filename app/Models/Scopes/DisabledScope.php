@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Scope;
 
 class DisabledScope implements Scope
 {
-    public function apply(Builder $query, Model $model): void
+    public function apply(Builder $builder, Model $model): void
     {
-        /** @var $query Enableable */
-        $query->disabled();
+        /** @var Enableable $builder */
+        $builder->disabled();
     }
 }

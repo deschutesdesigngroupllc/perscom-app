@@ -242,17 +242,23 @@ class ServiceRecordResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|ServiceRecord $record): string
+    /**
+     * @param  ServiceRecord  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         $user = optional($record->user)->name;
 
         return "$record->id: $user";
     }
 
-    public static function getGlobalSearchResultDetails(Model|ServiceRecord $record): array
+    /**
+     * @param  ServiceRecord  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Text' => $record->text,
+            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

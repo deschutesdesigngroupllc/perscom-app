@@ -9,7 +9,6 @@ use Eloquent;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Support\Optional;
 
 /**
  * @mixin Eloquent
@@ -19,8 +18,8 @@ trait HasResourceUrl
     public function url(): Attribute
     {
         return Attribute::make(
-            get: function (): Optional|string|null {
-                return optional($this->getKey(), function ($key) {
+            get: function (): ?string {
+                return optional($this->getKey(), function () {
                     return optional(tenant(), function (Tenant $tenant) {
                         return optional(Filament::getModelResource($this), function ($class) use ($tenant) {
                             /** @var resource $class */
@@ -47,8 +46,8 @@ trait HasResourceUrl
     public function relativeUrl(): Attribute
     {
         return Attribute::make(
-            get: function (): Optional|string|null {
-                return optional($this->getKey(), function ($key) {
+            get: function (): ?string {
+                return optional($this->getKey(), function () {
                     return optional(tenant(), function (Tenant $tenant) {
                         return optional(Filament::getModelResource($this), function ($class) use ($tenant) {
                             /** @var resource $class */

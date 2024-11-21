@@ -6,7 +6,7 @@ namespace App\Policies;
 
 use Illuminate\Support\Facades\App;
 
-class BannerPolicy extends Policy
+class BannerPolicy
 {
     public function before(): bool
     {

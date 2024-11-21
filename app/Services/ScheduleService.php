@@ -9,7 +9,6 @@ use App\Models\Enums\ScheduleFrequency;
 use App\Models\Event;
 use App\Models\Schedule;
 use App\Settings\OrganizationSettings;
-use BackedEnum;
 use Carbon\CarbonInterface;
 use DateTime;
 use Illuminate\Support\Carbon;
@@ -26,9 +25,7 @@ class ScheduleService
     {
         $payload = [
             'DTSTART' => $repeatable->start->toDateTime(),
-            'FREQ' => $repeatable->frequency instanceof BackedEnum
-                ? $repeatable->frequency->value
-                : $repeatable->frequency,
+            'FREQ' => $repeatable->frequency->value,
             'INTERVAL' => $repeatable->interval,
         ];
 
@@ -116,7 +113,7 @@ class ScheduleService
     }
 
     /**
-     * @return array<CarbonInterface>|null
+     * @return array<Carbon>|null
      */
     public static function occurrenceBetween(Schedule $schedule, CarbonInterface $start, CarbonInterface $end): ?array
     {

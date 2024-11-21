@@ -166,15 +166,21 @@ class AnnouncementResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Announcement $record): string
+    /**
+     * @param  Announcement  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->title;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Announcement $record): array
+    /**
+     * @param  Announcement  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Content' => Str::limit($record->content),
+            'Content' => Str::of($record->content)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

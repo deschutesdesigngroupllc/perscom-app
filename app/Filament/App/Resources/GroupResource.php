@@ -168,15 +168,21 @@ class GroupResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Group $record): string
+    /**
+     * @param  Group  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Group $record): array
+    /**
+     * @param  Group  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

@@ -24,7 +24,6 @@ enum NotificationGroup: string implements HasLabel
         return match ($this) {
             NotificationGroup::EVENTS => 'All notifications regarding calendar and events.',
             NotificationGroup::RECORDS => 'All notifications regarding account records.',
-            default => null
         };
     }
 
@@ -33,7 +32,6 @@ enum NotificationGroup: string implements HasLabel
         return match ($this) {
             NotificationGroup::EVENTS => 'heroicon-o-calendar-days',
             NotificationGroup::RECORDS => 'heroicon-o-rectangle-stack',
-            default => null
         };
     }
 }

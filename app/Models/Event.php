@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Optional;
 
 /**
  * @property int $id
@@ -55,6 +54,7 @@ use Illuminate\Support\Optional;
  * @property-read Calendar|null $calendar
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
+ * @property-read bool $has_passed
  * @property-read Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
@@ -63,8 +63,8 @@ use Illuminate\Support\Optional;
  * @property-read EventRegistration $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $registrations
  * @property-read int|null $registrations_count
- * @property-read Optional|string|null|null $relative_url
- * @property-read Optional|string|null|null $resource_url
+ * @property-read string|null $relative_url
+ * @property-read string|null $resource_url
  * @property-read Schedule|null $schedule
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
@@ -148,6 +148,24 @@ class Event extends Model implements HasLabel
         'updated_at',
         'deleted_at',
     ];
+
+    /**
+     * @return Attribute<bool, void>
+     */
+    public function hasPassed(): Attribute
+    {
+        return Attribute::make(
+            get: function (): bool {
+                if (filled($this->schedule)) {
+                    return $this->schedule->has_passed;
+                }
+
+                // We need to add one minute, so we can actually do minute-by-minute
+                // comparisons to now() without missing it.
+                return $this->ends->addMinute()->isPast();
+            }
+        )->shouldCache();
+    }
 
     /**
      * @return Attribute<?CarbonInterval, void>

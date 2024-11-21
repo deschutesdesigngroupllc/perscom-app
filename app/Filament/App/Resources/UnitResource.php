@@ -167,15 +167,21 @@ class UnitResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Unit $record): string
+    /**
+     * @param  Unit  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Unit $record): array
+    /**
+     * @param  Unit  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

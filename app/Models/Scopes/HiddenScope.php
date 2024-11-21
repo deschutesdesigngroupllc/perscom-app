@@ -11,9 +11,9 @@ use Illuminate\Database\Eloquent\Scope;
 
 class HiddenScope implements Scope
 {
-    public function apply(Builder $query, Model $model): void
+    public function apply(Builder $builder, Model $model): void
     {
-        /** @var $query Hideable */
-        $query->hidden();
+        /** @var Hideable $builder */
+        $builder->hidden();
     }
 }

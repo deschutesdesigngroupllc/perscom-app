@@ -13,7 +13,7 @@ class NewsfeedResource extends Resource
 {
     public function toArray(Request $request): array
     {
-        /** @var User|null $causer */
+        /** @var User|null $author */
         $author = $this->resource?->causer;
 
         /** @var User|null $recipient */

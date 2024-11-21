@@ -107,15 +107,21 @@ class PositionResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Position $record): string
+    /**
+     * @param  Position  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Position $record): array
+    /**
+     * @param  Position  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

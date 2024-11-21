@@ -12,14 +12,13 @@ use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Support\Optional;
 
 /**
  * @property int $id
  * @property string|null $log_name
  * @property array $description
  * @property string|null $subject_type
- * @property Optional|WebhookEvent|null|null $event
+ * @property WebhookEvent|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
  * @property string|null $causer_id
@@ -60,6 +59,9 @@ use Illuminate\Support\Optional;
 #[ScopedBy(WebhookLogScope::class)]
 class WebhookLog extends Activity
 {
+    /**
+     * @return Attribute<mixed, void>
+     */
     public function data(): Attribute
     {
         return Attribute::make(
@@ -67,13 +69,19 @@ class WebhookLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?WebhookEvent, void>
+     */
     public function event(): Attribute
     {
         return Attribute::make(
-            get: fn (): Optional|WebhookEvent|null => optional($this->getExtraProperty('event'), fn ($event) => WebhookEvent::from($event))
+            get: fn (): ?WebhookEvent => optional($this->getExtraProperty('event'), fn ($event) => WebhookEvent::from($event))
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, void>
+     */
     public function resourceUrl(): Attribute
     {
         return Attribute::get(function (): ?string {

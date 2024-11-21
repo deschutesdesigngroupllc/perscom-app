@@ -58,7 +58,7 @@ class NotificationService
                         'notificationClass' => $class,
                     ]);
                 })
-                ->groupBy(fn (ManagedNotification $managedNotification) => $managedNotification->group)
+                ->groupBy(fn (ManagedNotification $managedNotification) => $managedNotification->group->value)
                 ->toArray();
         });
     }

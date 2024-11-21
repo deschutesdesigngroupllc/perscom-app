@@ -100,7 +100,7 @@ class Schedule extends MorphPivot
      */
     public function repeatable(): MorphTo
     {
-        return $this->morphTo('repeatable');
+        return $this->morphTo();
     }
 
     /**

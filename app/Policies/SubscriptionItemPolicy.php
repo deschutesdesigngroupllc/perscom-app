@@ -6,7 +6,7 @@ namespace App\Policies;
 
 use Illuminate\Support\Facades\App;
 
-class SubscriptionItemPolicy extends Policy
+class SubscriptionItemPolicy
 {
     public function before(): bool
     {

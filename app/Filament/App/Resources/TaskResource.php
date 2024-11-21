@@ -132,15 +132,21 @@ class TaskResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Task $record): string
+    /**
+     * @param  Task  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->title;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Task $record): array
+    /**
+     * @param  Task  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

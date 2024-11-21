@@ -15,7 +15,7 @@ class CheckUserApprovalStatus
 {
     public function handle(Request $request, Closure $next): Response
     {
-        /** @var User $user */
+        /** @var ?User $user */
         $user = Auth::user();
 
         if (! $user || $user->approved || $request->routeIs('*.logout')) {

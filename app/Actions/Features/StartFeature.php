@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Actions\Features;
 
 use App\Models\Feature;
+use App\Models\Subscription;
 use App\Models\Tenant;
 use Laravel\Cashier\Exceptions\IncompletePayment;
 use Laravel\Cashier\Exceptions\SubscriptionUpdateFailure;
-use Laravel\Cashier\Subscription;
 
 class StartFeature
 {
@@ -17,6 +17,7 @@ class StartFeature
      */
     public static function handle(Tenant $tenant, Feature $feature): Subscription|bool
     {
+        /** @var Subscription $subscription */
         $subscription = $tenant->subscription();
 
         if (blank($subscription)) {

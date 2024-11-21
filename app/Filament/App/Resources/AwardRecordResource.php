@@ -261,18 +261,24 @@ class AwardRecordResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|AwardRecord $record): string
+    /**
+     * @param  AwardRecord  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         $user = optional($record->user)->name;
 
         return "$record->id: $user";
     }
 
-    public static function getGlobalSearchResultDetails(Model|AwardRecord $record): array
+    /**
+     * @param  AwardRecord  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'Award' => optional($record->award)->name,
-            'Text' => $record->text,
+            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

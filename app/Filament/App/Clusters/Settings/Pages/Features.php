@@ -9,6 +9,7 @@ use App\Actions\Features\StopFeature;
 use App\Contracts\PremiumFeature;
 use App\Filament\App\Clusters\Settings;
 use App\Models\Feature;
+use App\Models\Subscription;
 use App\Models\Tenant;
 use App\Settings\FeatureSettings;
 use BezhanSalleh\FilamentShield\Support\Utils;
@@ -86,14 +87,22 @@ class Features extends Page implements HasTable
                     ->badge()
                     ->color('info')
                     ->getStateUsing(function (Feature $record) use ($tenant) {
-                        return Number::currency(match ($tenant->subscription()->renewal_term) {
+                        /** @var Subscription $subscription */
+                        $subscription = $tenant->subscription();
+
+                        return Number::currency(match ($subscription->renewal_term) {
                             'monthly' => $record->price_monthly,
                             'yearly' => $record->price_yearly,
                             default => 0
                         });
                     }),
                 TextColumn::make('term')
-                    ->getStateUsing(fn () => Str::ucfirst($tenant->subscription()->renewal_term))
+                    ->getStateUsing(function () use ($tenant) {
+                        /** @var Subscription $subscription */
+                        $subscription = $tenant->subscription();
+
+                        return Str::ucfirst($subscription->renewal_term);
+                    })
                     ->badge()
                     ->color('gray'),
             ])
@@ -107,7 +116,9 @@ class Features extends Page implements HasTable
                     ->modalHeading(fn (Feature $record) => "Subscribe to $record->name")
                     ->modalSubmitActionLabel('Subscribe')
                     ->modalDescription(function (Feature $record) use ($tenant) {
-                        $term = $tenant->subscription()->renewal_term;
+                        /** @var Subscription $subscription */
+                        $subscription = $tenant->subscription();
+                        $term = $subscription->renewal_term;
 
                         $price = Number::currency(match ($term) {
                             'monthly' => $record->price_monthly,

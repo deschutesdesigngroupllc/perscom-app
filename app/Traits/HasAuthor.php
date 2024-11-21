@@ -28,8 +28,8 @@ trait HasAuthor
     protected static function bootHasAuthor(): void
     {
         static::creating(function ($model) {
-            /** @var User $user */
             if ($user = Auth::user() && ! $model->author_id) {
+                /** @var User $user */
                 $model->author()->associate($user);
             }
         });

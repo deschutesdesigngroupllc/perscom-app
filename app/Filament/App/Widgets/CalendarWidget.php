@@ -14,6 +14,7 @@ use Closure;
 use Filament\Actions\Action;
 use Guava\Calendar\ValueObjects\Event as EventObject;
 use Guava\Calendar\Widgets\CalendarWidget as BaseCalendarWidget;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -62,9 +63,9 @@ class CalendarWidget extends BaseCalendarWidget
             });
     }
 
-    public function authorize($ability, $arguments = []): true
+    public function authorize($ability, $arguments = []): Response
     {
-        return true;
+        return Response::allow();
     }
 
     public function visitAction(): Action

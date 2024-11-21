@@ -64,7 +64,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read int|null $notifications_count
  * @property-read bool $setup_completed
  * @property-read Optional|string|null|null $slug
- * @property-read Optional|SubscriptionPlanType|null|null $subscription_plan
+ * @property-read SubscriptionPlanType $subscription_plan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  * @property-read Optional|string|null|null $url
@@ -252,12 +252,20 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|SubscriptionPlanType|null, void>
+     * @return Attribute<SubscriptionPlanType, void>
      */
     public function subscriptionPlan(): Attribute
     {
-        return Attribute::get(fn (): Optional|SubscriptionPlanType|null => optional($this->sparkPlan(), fn (Plan $plan) => SubscriptionPlanType::from(Str::lower($plan->name))) ?? SubscriptionPlanType::NONE)
-            ->shouldCache();
+        return Attribute::get(function (): SubscriptionPlanType {
+            $plan = $this->sparkPlan();
+
+            if (blank($plan)) {
+                return SubscriptionPlanType::NONE;
+            }
+
+            return SubscriptionPlanType::from(Str::lower($plan->name));
+
+        })->shouldCache();
     }
 
     public function stripeName(): ?string
@@ -284,8 +292,11 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
 
     public function resolveRouteBinding($value, $field = null): Tenant|Model|null
     {
-        if ($tenant = self::query()->whereHas('domains', fn (Builder $query) => $query->where('domain', $value))->first()) {
-            return $tenant;
+        /** @var Domain $domain */
+        $domain = Domain::query()->where('domain', $value)->first();
+
+        if (filled($domain)) {
+            return $domain->tenant;
         }
 
         return parent::resolveRouteBinding($value, $field);

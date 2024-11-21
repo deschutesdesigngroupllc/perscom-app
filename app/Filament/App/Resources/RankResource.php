@@ -149,15 +149,21 @@ class RankResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Rank $record): string
+    /**
+     * @param  Rank  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Rank $record): array
+    /**
+     * @param  Rank  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

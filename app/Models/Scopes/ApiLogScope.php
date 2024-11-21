@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Scope;
 
 class ApiLogScope implements Scope
 {
-    public function apply(Builder $query, Model $model): void
+    public function apply(Builder $builder, Model $model): void
     {
-        $query->whereIn('log_name', ['api', 'oauth']);
+        $builder->whereIn('log_name', ['api', 'oauth']);
     }
 }

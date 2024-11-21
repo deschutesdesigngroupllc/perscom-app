@@ -134,15 +134,21 @@ class AwardResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Award $record): string
+    /**
+     * @param  Award  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Award $record): array
+    /**
+     * @param  Award  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

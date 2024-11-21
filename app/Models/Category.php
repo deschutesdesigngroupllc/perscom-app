@@ -33,8 +33,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $qualifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank> $ranks
  * @property-read int|null $ranks_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $relative_url
+ * @property-read string|null $url
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Category newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Category newQuery()

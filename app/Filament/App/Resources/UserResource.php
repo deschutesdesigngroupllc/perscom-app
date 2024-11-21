@@ -408,12 +408,18 @@ class UserResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|User $record): string
+    /**
+     * @param  User  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|User $record): array
+    /**
+     * @param  User  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'Position' => optional($record->position)->name,

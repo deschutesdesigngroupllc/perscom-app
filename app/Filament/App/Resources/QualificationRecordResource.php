@@ -253,18 +253,24 @@ class QualificationRecordResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|QualificationRecord $record): string
+    /**
+     * @param  QualificationRecord  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         $user = optional($record->user)->name;
 
         return "$record->id: $user";
     }
 
-    public static function getGlobalSearchResultDetails(Model|QualificationRecord $record): array
+    /**
+     * @param  QualificationRecord  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'Qualification' => optional($record->qualification)->name,
-            'Text' => $record->text,
+            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

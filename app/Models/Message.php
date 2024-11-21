@@ -29,9 +29,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read string $label
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read string|null $relative_url
  * @property-read Schedule|null $schedule
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()

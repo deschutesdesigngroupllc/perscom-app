@@ -273,19 +273,25 @@ class RankRecordResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|RankRecord $record): string
+    /**
+     * @param  RankRecord  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         $user = optional($record->user)->name;
 
         return "$record->id: $user";
     }
 
-    public static function getGlobalSearchResultDetails(Model|RankRecord $record): array
+    /**
+     * @param  RankRecord  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'Rank' => optional($record->rank)->name,
             'Type' => optional($record->type)->getLabel(),
-            'Text' => $record->text,
+            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

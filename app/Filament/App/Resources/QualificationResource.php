@@ -133,15 +133,21 @@ class QualificationResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Qualification $record): string
+    /**
+     * @param  Qualification  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Qualification $record): array
+    /**
+     * @param  Qualification  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

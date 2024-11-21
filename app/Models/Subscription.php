@@ -28,7 +28,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, SubscriptionItem> $items
  * @property-read int|null $items_count
  * @property-read Tenant|null $owner
- * @property-read string $renewal_term
+ * @property-read string|null $renewal_term
  * @property-read Tenant|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription active()
@@ -72,11 +72,11 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @return Attribute<?string>
+     * @return Attribute<?string, void>
      */
     public function stripePrice(): Attribute
     {
-        return Attribute::get(function ($value, $attributes) {
+        return Attribute::get(function ($value, $attributes = null): ?string {
             if (filled($value)) {
                 return $value;
             }
@@ -93,11 +93,11 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @return Attribute<?string>
+     * @return Attribute<?string, void>
      */
     public function renewalTerm(): Attribute
     {
-        return Attribute::get(function (): string {
+        return Attribute::get(function (): ?string {
             $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan) => [$plan->id => $plan->interval]);
 
             return data_get($plans, $this->stripe_price);

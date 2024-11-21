@@ -242,17 +242,23 @@ class CombatRecordResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|CombatRecord $record): string
+    /**
+     * @param  CombatRecord  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         $user = optional($record->user)->name;
 
         return "$record->id: $user";
     }
 
-    public static function getGlobalSearchResultDetails(Model|CombatRecord $record): array
+    /**
+     * @param  CombatRecord  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Text' => $record->text,
+            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

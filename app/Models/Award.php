@@ -41,8 +41,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
  * @property-read int|null $logs_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $relative_url
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\AwardFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Award newModelQuery()

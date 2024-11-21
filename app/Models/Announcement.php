@@ -36,8 +36,8 @@ use Illuminate\Support\Str;
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $relative_url
+ * @property-read string|null $url
  *
  * @method static Builder|Announcement disabled()
  * @method static Builder|Announcement enabled()

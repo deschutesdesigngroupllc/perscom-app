@@ -39,7 +39,7 @@ class RosterController extends Controller
     {
         $query = parent::buildFetchQuery($request, $requestedRelations);
 
-        /** @var Group $query */
+        /** @var Group|Builder $query */
         $query->orderForRoster();
 
         return $query;

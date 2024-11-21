@@ -6,7 +6,7 @@ namespace App\Policies;
 
 use Illuminate\Support\Facades\App;
 
-class TenantPolicy extends Policy
+class TenantPolicy
 {
     public function before(): bool
     {

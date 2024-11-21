@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\HasFields;
 use App\Contracts\SendsModelNotifications;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -40,13 +39,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read string|null $relative_url
  * @property-read Status|null $submission_status
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
@@ -69,7 +68,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *
  * @mixin \Eloquent
  */
-class Form extends Model implements HasFields, HasLabel, SendsModelNotifications
+class Form extends Model implements HasLabel, SendsModelNotifications
 {
     use ClearsApiCache;
     use ClearsResponseCache;

@@ -165,8 +165,7 @@ class Schedule
                                 ->setTimezone(config('app.timezone'));
                         }
 
-                        /** @var ScheduleModel $schedule */
-                        $schedule = ScheduleModel::make([
+                        $schedule = new ScheduleModel([
                             'start' => $start,
                             'frequency' => $get('frequency'),
                             'interval' => $get('interval'),

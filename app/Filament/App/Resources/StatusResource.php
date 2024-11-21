@@ -105,7 +105,10 @@ class StatusResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Status $record): string
+    /**
+     * @param  Status  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }

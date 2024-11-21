@@ -34,16 +34,7 @@ trait HasLogs
             ->logFillable();
     }
 
-    protected static function bootHasLogs(): void
-    {
-        static::created(function ($model) {
-            if ($model instanceof ShouldGenerateNewsfeedItems) {
-                $model->generateCreatedNewsfeedItem($model);
-            }
-        });
-    }
-
-    protected function generateCreatedNewsfeedItem(ShouldGenerateNewsfeedItems $model): ?ActivityContract
+    public function generateCreatedNewsfeedItem(ShouldGenerateNewsfeedItems $model): ?ActivityContract
     {
         $resource = Str::camelToLower(class_basename($model));
 
@@ -68,5 +59,14 @@ trait HasLogs
             : 'A';
 
         return $activity->log("$starter $resource has been created.");
+    }
+
+    protected static function bootHasLogs(): void
+    {
+        static::created(function ($model) {
+            if ($model instanceof ShouldGenerateNewsfeedItems) {
+                $model->generateCreatedNewsfeedItem($model);
+            }
+        });
     }
 }

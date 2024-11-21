@@ -133,15 +133,21 @@ class DocumentResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Document $record): string
+    /**
+     * @param  Document  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Document $record): array
+    /**
+     * @param  Document  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

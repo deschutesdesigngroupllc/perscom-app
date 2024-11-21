@@ -34,8 +34,8 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string $label
  * @property-read Model|Eloquent|null $model
  * @property-read string|null $model_url
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $relative_url
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\ImageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Image newModelQuery()

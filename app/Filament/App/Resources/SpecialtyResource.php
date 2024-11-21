@@ -114,15 +114,21 @@ class SpecialtyResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Specialty $record): string
+    /**
+     * @param  Specialty  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Specialty $record): array
+    /**
+     * @param  Specialty  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 
