@@ -13,7 +13,6 @@ use Spatie\LaravelSettings\Models\SettingsProperty;
  * @property int $id
  * @property string|null $group
  * @property string $name
- * @property string|null $value
  * @property string|null $payload
  * @property bool $locked
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -29,7 +28,6 @@ use Spatie\LaravelSettings\Models\SettingsProperty;
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Settings wherePayload($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Settings whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Settings whereValue($value)
  *
  * @mixin \Eloquent
  */

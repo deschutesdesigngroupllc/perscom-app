@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Tests\Feature\Tenant\Observers;
 
 use App\Models\Enums\WebhookEvent;
+use App\Models\Permission;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Webhook;
 use App\Notifications\User\AccountApproved;
@@ -24,18 +26,21 @@ class UserObserverTest extends TenantTestCase
 {
     public function test_user_assigned_appropriate_permissions()
     {
+        $role = Role::factory()->create();
+        $permission = Permission::factory()->create();
+
         PermissionSettings::fake([
-            'default_roles' => [1],
-            'default_permissions' => [1],
+            'default_roles' => [$role->name],
+            'default_permissions' => [$permission->name],
         ]);
 
         /** @var PermissionSettings $settings */
         $settings = app(PermissionSettings::class);
 
-        $user = User::factory()->create();
+        $user = User::factory()->withoutRoles()->create();
 
-        $this->assertEquals($user->roles->pluck('id')->toArray(), $settings->default_roles);
-        $this->assertEquals($user->permissions->pluck('id')->toArray(), $settings->default_permissions);
+        $this->assertEquals($user->roles->pluck('name')->toArray(), $settings->default_roles);
+        $this->assertEquals($user->permissions->pluck('name')->toArray(), $settings->default_permissions);
     }
 
     public function test_user_notes_updated_date_set()

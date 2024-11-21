@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserTest extends ApiResourceTestCase
 {
+    protected int $expectedIndexCount = 3;
+
     public function endpoint(): string
     {
         return 'users';

@@ -48,7 +48,7 @@ class TenantTestCase extends TestCase
     {
         $testToken = ParallelTesting::token() ?: 1;
 
-        $tenantName = "Tenant {$testToken}";
+        $tenantName = "Tenant $testToken";
         $tenantDatabaseName = "tenant{$testToken}_testing";
 
         $this->tenant = Tenant::factory()->state([

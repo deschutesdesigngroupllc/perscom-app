@@ -23,6 +23,7 @@ use Spatie\Permission\Models\Permission as BasePermission;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
+ * @method static \Database\Factories\PermissionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Permission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Permission newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Permission permission($permissions, $without = false)

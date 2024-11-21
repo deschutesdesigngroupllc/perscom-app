@@ -67,4 +67,9 @@ class UserFactory extends Factory
             ];
         });
     }
+
+    public function withoutRoles(): static
+    {
+        return $this->afterCreating(fn (User $user) => $user->removeRole(Utils::getPanelUserRoleName()));
+    }
 }

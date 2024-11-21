@@ -13,7 +13,7 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property int|null $user_id
  * @property string $name
  * @property string|null $description
- * @property string|null $type
+ * @property PassportClientType|null $type
  * @property string|null $secret
  * @property string|null $provider
  * @property string $redirect

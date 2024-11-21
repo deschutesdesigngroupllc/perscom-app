@@ -37,7 +37,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
     {
         $this->withToken($this->apiKey($this->scopes()['index']))
             ->getJson("/{$this->endpoint()}")
-            ->assertJsonCount(1, 'data')
+            ->assertJsonCount($this->expectedIndexCount ?? 1, 'data')
             ->assertJsonStructure(['data', 'links', 'meta'])
             ->assertSuccessful();
     }
