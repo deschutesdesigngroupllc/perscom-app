@@ -6,16 +6,22 @@ namespace App\Traits\Filament;
 
 use App\Contracts\SendsModelNotifications;
 use App\Models\ModelNotification;
+use Filament\Resources\Pages\CreateRecord;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
 /**
+ * @mixin CreateRecord
  * @mixin EditRecord
  */
 trait InteractsWithModelNotifications
 {
     protected function mutateFormDataBeforeFill(array $data): array
     {
+        if (! method_exists(parent::class, 'mutateFormDataBeforeFill')) {
+            return $data;
+        }
+
         $data = $this->fillModelNotificationData($this->record, $data);
 
         return parent::mutateFormDataBeforeFill($data);
@@ -23,6 +29,10 @@ trait InteractsWithModelNotifications
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        if (! method_exists(parent::class, 'handleRecordUpdate')) {
+            return $record;
+        }
+
         $this->performModelNotificationInserts($record, data_get($data, 'model_notifications') ?? []);
 
         return parent::handleRecordUpdate($record, data_forget($data, 'model_notifications'));
@@ -30,6 +40,10 @@ trait InteractsWithModelNotifications
 
     protected function handleRecordCreation(array $data): Model
     {
+        if (! method_exists(parent::class, 'handleRecordCreation')) {
+            return new ($this->getModel());
+        }
+
         $notificationData = data_get($data, 'model_notifications') ?? [];
 
         $record = parent::handleRecordCreation(data_forget($data, 'model_notifications'));
@@ -61,7 +75,7 @@ trait InteractsWithModelNotifications
 
     protected function fillModelNotificationData(SendsModelNotifications|Model $record, array $data): array
     {
-        $notifications = $record->modelNotifications;
+        $notifications = $record->modelNotifications()->get();
 
         data_set($data, 'model_notifications.groups', $notifications->whereNotNull('group_id')->pluck('group_id')->toArray());
         data_set($data, 'model_notifications.units', $notifications->whereNotNull('unit_id')->pluck('unit_id')->toArray());

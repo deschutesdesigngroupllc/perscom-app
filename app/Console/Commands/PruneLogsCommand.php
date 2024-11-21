@@ -6,7 +6,6 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
-use Illuminate\Support\Arr;
 
 class PruneLogsCommand extends Command
 {
@@ -25,9 +24,8 @@ class PruneLogsCommand extends Command
             return 1;
         }
 
-        $tenants = Arr::wrap($this->option('tenants'));
+        $tenants = collect($this->option('tenants'));
 
-        // @phpstan-ignore-next-line
         tenancy()->runForMultiple($tenants, function ($tenant) {
             $this->line("Tenant: {$tenant->getTenantKey()}");
 

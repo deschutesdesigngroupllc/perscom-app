@@ -35,12 +35,12 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
  * @property-read int|null $submissions_count
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *

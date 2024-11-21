@@ -74,7 +74,6 @@ class RankResource extends BaseResource
                                             ->downloadable()
                                             ->visibility('public')
                                             ->storeFileNamesIn('filename')
-                                            ->disk('s3')
                                             ->helperText('Add an optional image for the rank.'),
                                     ]),
                             ]),
@@ -90,7 +89,6 @@ class RankResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image.path')
-                    ->disk('s3')
                     ->label('Image'),
                 Tables\Columns\TextColumn::make('abbreviation')
                     ->sortable()
@@ -151,15 +149,21 @@ class RankResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Rank $record): string
+    /**
+     * @param  Rank  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Rank $record): array
+    /**
+     * @param  Rank  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

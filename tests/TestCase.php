@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace Tests;
 
 use App\Features\BaseFeature;
+use App\Jobs\PurgeApiCache;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Queue;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 
 abstract class TestCase extends BaseTestCase
@@ -21,6 +23,7 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        Queue::fake([PurgeApiCache::class]);
         Http::preventStrayRequests();
         BaseFeature::resetTenant();
 

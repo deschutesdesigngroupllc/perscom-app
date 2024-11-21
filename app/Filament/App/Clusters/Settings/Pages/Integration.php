@@ -62,7 +62,7 @@ class Integration extends SettingsPage
                                             ->icon('heroicon-o-arrow-path')
                                             ->successNotificationTitle('The SSO key has been successfully regenerated.')
                                             ->action(function (Action $action) {
-                                                $settings = app(IntegrationSettingsClass::class);
+                                                $settings = app(IntegrationSettings::class);
                                                 $settings->single_sign_on_key = Str::random(40);
                                                 $settings->save();
 

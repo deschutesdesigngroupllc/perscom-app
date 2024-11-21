@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\Resources\Shield\RoleResource\Pages;
 
 use App\Filament\Resources\Shield\RoleResource;
+use App\Models\Role;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
@@ -47,6 +48,8 @@ class EditRole extends EditRecord
             ]));
         });
 
-        $this->record->syncPermissions($permissionModels);
+        /** @var Role $record */
+        $record = $this->record;
+        $record->syncPermissions($permissionModels);
     }
 }

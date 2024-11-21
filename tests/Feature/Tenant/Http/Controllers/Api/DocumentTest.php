@@ -6,6 +6,7 @@ namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
 use App\Http\Controllers\Api\Documents\DocumentsController;
 use App\Models\Document;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class DocumentTest extends ApiResourceTestCase
@@ -25,11 +26,17 @@ class DocumentTest extends ApiResourceTestCase
         return Document::class;
     }
 
+    /**
+     * @return Factory<Document>
+     */
     public function factory(): Factory
     {
         return Document::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,14 +48,21 @@ class DocumentTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
+            'author_id' => User::factory()->createQuietly()->getKey(),
             'name' => $this->faker->word,
             'content' => $this->faker->paragraph,
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

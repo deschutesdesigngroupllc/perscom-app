@@ -36,7 +36,7 @@ class FindMyOrganizationController extends Controller
         $tenant = $tenantRepository->findByKey('email', data_get($data, 'email'));
 
         return redirect()->signedRoute('web.find-my-organization.show', [
-            'tenant' => $tenant->id,
+            'tenant' => $tenant->getKey(),
         ]);
     }
 

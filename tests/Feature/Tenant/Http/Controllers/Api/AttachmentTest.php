@@ -18,6 +18,11 @@ class AttachmentTest extends ApiResourceTestCase
         $this->user->assignRole(Utils::getSuperAdminName());
     }
 
+    public function beforeAssertDatabaseHas(array &$data): void
+    {
+        data_forget($data, 'file');
+    }
+
     public function endpoint(): string
     {
         return 'attachments';
@@ -33,6 +38,9 @@ class AttachmentTest extends ApiResourceTestCase
         return AttachmentsController::class;
     }
 
+    /**
+     * @return Factory<Attachment>
+     */
     public function factory(): Factory
     {
         return Attachment::factory()
@@ -41,17 +49,23 @@ class AttachmentTest extends ApiResourceTestCase
             });
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
-            'index' => 'view:servicerecord',
-            'show' => 'view:servicerecord',
+            'index' => 'view:attachment',
+            'show' => 'view:attachment',
             'store' => 'create:attachment',
-            'update' => 'update:servicerecord',
-            'delete' => 'delete:servicerecord',
+            'update' => 'update:attachment',
+            'delete' => 'delete:attachment',
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -60,6 +74,9 @@ class AttachmentTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

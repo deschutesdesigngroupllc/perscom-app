@@ -16,9 +16,18 @@ interface ApiResourceTestContract
 
     public function factory(): Factory;
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array;
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array;
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array;
 }

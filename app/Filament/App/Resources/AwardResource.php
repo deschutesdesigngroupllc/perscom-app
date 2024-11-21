@@ -66,7 +66,6 @@ class AwardResource extends BaseResource
                                             ->downloadable()
                                             ->visibility('public')
                                             ->storeFileNamesIn('filename')
-                                            ->disk('s3')
                                             ->helperText('Add an optional image for the award.'),
                                     ]),
                             ]),
@@ -82,7 +81,6 @@ class AwardResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image.path')
-                    ->disk('s3')
                     ->label('Image'),
                 Tables\Columns\TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
@@ -136,15 +134,21 @@ class AwardResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Award $record): string
+    /**
+     * @param  Award  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Award $record): array
+    /**
+     * @param  Award  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

@@ -17,7 +17,7 @@ class AccessTokenTest extends TenantTestCase
     {
         $this->expectException(OAuthServerException::class);
 
-        $user = User::factory()->create();
+        $user = User::factory()->createQuietly();
 
         $user->createToken($this->faker->word, [
             $this->faker->word,
@@ -26,7 +26,7 @@ class AccessTokenTest extends TenantTestCase
 
     public function test_it_adds_all_the_claims()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->createQuietly();
 
         $result = $user->createToken($this->faker->word, [
             'view:user',

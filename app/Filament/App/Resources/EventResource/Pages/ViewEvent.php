@@ -21,8 +21,7 @@ class ViewEvent extends ViewRecord
                 ->url(fn (?Event $record) => $record->url)
                 ->openUrlInNewTab()
                 ->color('gray')
-                ->label('Open')
-                ->hidden(fn (?Event $record) => is_null($record->url)),
+                ->label('Open'),
             Actions\Action::make('register')
                 ->color('success')
                 ->label('Register')

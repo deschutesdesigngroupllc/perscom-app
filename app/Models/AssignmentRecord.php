@@ -60,11 +60,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read Position|null $position
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read string|null $relative_url
  * @property-read Specialty|null $specialty
  * @property-read Status|null $status
  * @property-read Unit|null $unit
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $url
  * @property-read User|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord author(\App\Models\User $user)

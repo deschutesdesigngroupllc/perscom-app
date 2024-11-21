@@ -33,8 +33,8 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string $label
  * @property-read Model|Eloquent|null $model
  * @property-read string|null $model_url
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $relative_url
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Attachment newModelQuery()
@@ -83,7 +83,7 @@ class Attachment extends Model implements HasLabel
     public function attachmentUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->path ? Storage::disk('s3')->url($this->path) : null
+            get: fn (): ?string => $this->path ? Storage::url($this->path) : null
         );
     }
 
@@ -127,6 +127,6 @@ class Attachment extends Model implements HasLabel
 
     protected static function booted(): void
     {
-        static::deleting(fn (Attachment $model) => Storage::disk('s3')->delete($model->path));
+        static::deleting(fn (Attachment $model) => Storage::delete($model->path));
     }
 }

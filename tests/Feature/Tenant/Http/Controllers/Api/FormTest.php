@@ -26,11 +26,17 @@ class FormTest extends ApiResourceTestCase
         return Form::class;
     }
 
+    /**
+     * @return Factory<Form>
+     */
     public function factory(): Factory
     {
         return Form::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -42,6 +48,9 @@ class FormTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -51,6 +60,9 @@ class FormTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

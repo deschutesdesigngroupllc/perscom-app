@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Contracts\HasFields;
 use App\Observers\UserObserver;
 use App\Traits\CanReceiveNotifications;
 use App\Traits\ClearsApiCache;
@@ -47,7 +46,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Optional;
 use Laravel\Passport\HasApiTokens;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Spatie\Permission\Traits\HasPermissions;
@@ -114,7 +112,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read Rank|null $rank
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
  * @property-read int|null $rank_records_count
- * @property-read Optional|string|null|null $relative_url
+ * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
  * @property-read int|null $roles_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
@@ -133,11 +131,11 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $tasks_count
  * @property-read CarbonInterval|null $time_in_assignment
  * @property-read CarbonInterval|null $time_in_grade
- * @property-read CarbonInterval|null $time_in_service
+ * @property-read CarbonInterval $time_in_service
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read Unit|null $unit
- * @property-read Optional|string|null|null $url
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static Builder|User newModelQuery()
@@ -180,7 +178,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @mixin \Eloquent
  */
 #[ObservedBy(UserObserver::class)]
-class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail
+class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel, HasName, HasTenants, JWTSubject, MustVerifyEmail
 {
     use CanReceiveNotifications;
     use ClearsApiCache;
@@ -354,7 +352,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     public function coverPhotoUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->cover_photo ? Storage::disk('s3')->url($this->cover_photo) : null
+            get: fn (): ?string => $this->cover_photo ? Storage::url($this->cover_photo) : null
         )->shouldCache();
     }
 
@@ -383,12 +381,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     }
 
     /**
-     * @return Attribute<?CarbonInterval, void>
+     * @return Attribute<CarbonInterval, void>
      */
     public function timeInService(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?CarbonInterval => Carbon::now()->diff($this->created_at, true)
+            get: fn (): CarbonInterval => Carbon::now()->diff($this->created_at, true)
         )->shouldCache();
     }
 

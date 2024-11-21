@@ -25,11 +25,17 @@ class AnnouncementTest extends ApiResourceTestCase
         return Announcement::class;
     }
 
+    /**
+     * @return Factory<Announcement>
+     */
     public function factory(): Factory
     {
         return Announcement::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class AnnouncementTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -50,6 +59,9 @@ class AnnouncementTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

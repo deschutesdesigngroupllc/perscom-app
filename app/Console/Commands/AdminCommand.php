@@ -38,6 +38,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
             'create' => $this->createAdmin(),
             'password' => $this->updatePassword(),
             'delete' => $this->deleteAdmin(),
+            default => static::INVALID
         };
     }
 

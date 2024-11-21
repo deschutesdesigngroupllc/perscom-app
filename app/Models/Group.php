@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 
@@ -42,10 +41,10 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read ModelNotification $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Group> $modelNotifications
  * @property-read int|null $model_notifications_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $units
  * @property-read int|null $units_count
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
  * @method static Builder|Group hidden()
@@ -110,7 +109,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         $query
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
-                'units.users' => function (HasMany $query) {
+                'units.users' => function ($query) {
                     /** @var User $query */
                     $query->orderForRoster();
                 },

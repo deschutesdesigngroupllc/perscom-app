@@ -6,7 +6,7 @@ namespace App\Policies;
 
 use Illuminate\Support\Facades\App;
 
-class DomainPolicy extends Policy
+class DomainPolicy
 {
     public function before(): bool
     {

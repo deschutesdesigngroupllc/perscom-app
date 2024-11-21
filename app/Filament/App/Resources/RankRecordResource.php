@@ -136,8 +136,7 @@ class RankRecordResource extends BaseResource
                                 Infolists\Components\ImageEntry::make('rank.image.path')
                                     ->visible(fn (?RankRecord $record) => isset($record->rank->image))
                                     ->height(32)
-                                    ->hiddenLabel()
-                                    ->disk('s3'),
+                                    ->hiddenLabel(),
                                 Infolists\Components\TextEntry::make('type')
                                     ->badge(),
                                 Infolists\Components\TextEntry::make('text')
@@ -182,7 +181,6 @@ class RankRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('rank.image.path')
-                    ->disk('s3')
                     ->label(''),
                 Tables\Columns\TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
@@ -275,19 +273,25 @@ class RankRecordResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|RankRecord $record): string
+    /**
+     * @param  RankRecord  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         $user = optional($record->user)->name;
 
         return "$record->id: $user";
     }
 
-    public static function getGlobalSearchResultDetails(Model|RankRecord $record): array
+    /**
+     * @param  RankRecord  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'Rank' => optional($record->rank)->name,
             'Type' => optional($record->type)->getLabel(),
-            'Text' => $record->text,
+            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

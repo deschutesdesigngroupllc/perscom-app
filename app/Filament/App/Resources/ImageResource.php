@@ -60,8 +60,7 @@ class ImageResource extends BaseResource
                                     ->openable()
                                     ->downloadable()
                                     ->visibility('public')
-                                    ->storeFileNamesIn('filename')
-                                    ->disk('s3'),
+                                    ->storeFileNamesIn('filename'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Resource')
                             ->icon('heroicon-o-document')
@@ -101,8 +100,7 @@ class ImageResource extends BaseResource
                                     ->openUrlInNewTab()
                                     ->copyable(),
                                 ImageEntry::make('path')
-                                    ->label('Image')
-                                    ->disk('s3'),
+                                    ->label('Image'),
                             ]),
                         Tabs\Tab::make('Resource')
                             ->icon('heroicon-o-document')
@@ -127,8 +125,7 @@ class ImageResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('path')
-                    ->label('')
-                    ->disk('s3'),
+                    ->label(''),
                 Tables\Columns\TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()

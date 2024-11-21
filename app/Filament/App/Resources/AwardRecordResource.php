@@ -129,8 +129,7 @@ class AwardRecordResource extends BaseResource
                                 Infolists\Components\ImageEntry::make('award.image.path')
                                     ->visible(fn (?AwardRecord $record) => isset($record->award->image))
                                     ->height(32)
-                                    ->hiddenLabel()
-                                    ->disk('s3'),
+                                    ->hiddenLabel(),
                                 Infolists\Components\TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -170,7 +169,6 @@ class AwardRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('award.image.path')
-                    ->disk('s3')
                     ->label(''),
                 Tables\Columns\TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
@@ -263,18 +261,24 @@ class AwardRecordResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|AwardRecord $record): string
+    /**
+     * @param  AwardRecord  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         $user = optional($record->user)->name;
 
         return "$record->id: $user";
     }
 
-    public static function getGlobalSearchResultDetails(Model|AwardRecord $record): array
+    /**
+     * @param  AwardRecord  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
             'Award' => optional($record->award)->name,
-            'Text' => $record->text,
+            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

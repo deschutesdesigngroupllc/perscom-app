@@ -51,7 +51,7 @@ class MilitarySeeder extends Seeder
             ->shouldCreateAnnouncement(false)
             ->handle(tenant());
 
-        $user = User::factory()->create([
+        $user = User::factory()->unassigned()->createQuietly([
             'name' => 'Demo User',
             'email' => 'demo@perscom.io',
         ]);

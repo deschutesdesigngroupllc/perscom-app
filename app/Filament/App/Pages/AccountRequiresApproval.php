@@ -21,10 +21,10 @@ class AccountRequiresApproval extends SimplePage
 
     public function mount(): void
     {
-        /** @var User $user */
+        /** @var ?User $user */
         $user = Auth::user();
 
-        /** @var Tenant $tenant */
+        /** @var ?Tenant $tenant */
         $tenant = Filament::getTenant();
 
         if ($user && $tenant && $user->approved) {

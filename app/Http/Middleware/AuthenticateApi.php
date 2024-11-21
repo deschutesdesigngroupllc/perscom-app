@@ -10,6 +10,7 @@ use Illuminate\Auth\AuthenticationException;
 use Illuminate\Auth\Middleware\Authenticate;
 use Illuminate\Http\Request;
 use Laravel\Passport\Http\Middleware\CheckClientCredentials;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthenticateApi
 {
@@ -21,13 +22,13 @@ class AuthenticateApi
      *
      * @throws AuthenticationException
      */
-    public function handle(Request $request, Closure $next, ...$guards)
+    public function handle(Request $request, Closure $next): Response
     {
         $authenticate = app(Authenticate::class);
         $client = app(ClientCredentials::class);
 
         try {
-            return $authenticate->handle($request, fn ($request) => $next($request), $guards);
+            return $authenticate->handle($request, fn ($request) => $next($request), 'api');
         } catch (Exception $exception) {
             if ($exception instanceof AuthenticationException) {
                 return $client->handle($request, fn ($request) => $next($request));

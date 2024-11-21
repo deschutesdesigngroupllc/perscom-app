@@ -30,6 +30,7 @@ class SendModelNotifications implements ShouldQueue
     {
         $this->model->loadMissing('modelNotifications');
 
+        // @phpstan-ignore-next-line
         if (blank($this->model->modelNotifications)) {
             return;
         }

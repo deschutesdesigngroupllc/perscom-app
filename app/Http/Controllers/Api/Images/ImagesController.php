@@ -44,7 +44,7 @@ class ImagesController extends Controller
         if ($request->hasFile('image') && $request->file('image')->isValid()) {
             $file = $request->file('image');
 
-            $path = $file->storePublicly('/', 's3');
+            $path = $file->storePublicly('/');
 
             $entity->forceFill([
                 'path' => $path,

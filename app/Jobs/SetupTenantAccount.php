@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Jobs;
 
 use App\Actions\SetupTenantAccount as SetupTenantAccountAction;
+use App\Models\Tenant;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Throwable;
 
 class SetupTenantAccount implements ShouldQueue
@@ -21,7 +21,7 @@ class SetupTenantAccount implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
-    public function __construct(protected TenantWithDatabase $tenant)
+    public function __construct(protected Tenant $tenant)
     {
         //
     }

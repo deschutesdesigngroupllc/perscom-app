@@ -33,9 +33,6 @@ class SetupTenantAccount
 
     protected bool $shouldCreateAnnouncement = true;
 
-    /**
-     * @throws ValidationException
-     */
     public function handle(Tenant $tenant): void
     {
         $this->tenant = $tenant;

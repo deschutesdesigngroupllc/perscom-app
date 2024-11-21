@@ -25,11 +25,17 @@ class GroupTest extends ApiResourceTestCase
         return Group::class;
     }
 
+    /**
+     * @return Factory<Group>
+     */
     public function factory(): Factory
     {
         return Group::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class GroupTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +58,9 @@ class GroupTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

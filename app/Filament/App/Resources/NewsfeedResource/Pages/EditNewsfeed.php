@@ -9,6 +9,7 @@ use App\Models\Newsfeed;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 class EditNewsfeed extends EditRecord
 {
@@ -27,13 +28,17 @@ class EditNewsfeed extends EditRecord
      */
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
+        /** @var Collection<string, mixed> $properties */
+        $properties = collect($record->properties);
+
         $record->forceFill([
-            'properties' => collect($record->properties)
+            'properties' => $properties
                 ->put('headline', data_get($data, 'headline'))
                 ->put('text', data_get($data, 'text')),
         ])->save();
 
-        unset($data['headline'], $data['text']);
+        data_forget($data, 'headline');
+        data_forget($data, 'text');
 
         return parent::handleRecordUpdate($record, $data);
     }

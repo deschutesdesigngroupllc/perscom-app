@@ -12,6 +12,11 @@ use Sushi\Sushi;
 
 /**
  * @property int $id
+ * @property string|null $name
+ * @property string|null $path
+ * @property int|null $size
+ * @property string|null $url
+ * @property Carbon|null $created_at
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Backup newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Backup newQuery()
@@ -23,6 +28,14 @@ use Sushi\Sushi;
 class Backup extends Model
 {
     use Sushi;
+
+    protected $fillable = [
+        'name',
+        'path',
+        'size',
+        'url',
+        'created_at',
+    ];
 
     public function getRows(): array
     {

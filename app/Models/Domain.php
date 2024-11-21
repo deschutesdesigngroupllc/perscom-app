@@ -55,7 +55,7 @@ class Domain extends BaseDomain
     protected $fillable = [
         'domain',
         'tenant_id',
-        'is_custom_domain',
+        'is_custom_subdomain',
         'created_at',
         'updated_at',
         'deleted_at',

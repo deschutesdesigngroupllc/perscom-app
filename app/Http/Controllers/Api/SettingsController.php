@@ -19,6 +19,9 @@ class SettingsController extends Controller
 
     protected $resource = SettingsResource::class;
 
+    /**
+     * @param  LengthAwarePaginator  $entities
+     */
     public function afterIndex(Request $request, $entities)
     {
         /** @var Collection $settings */

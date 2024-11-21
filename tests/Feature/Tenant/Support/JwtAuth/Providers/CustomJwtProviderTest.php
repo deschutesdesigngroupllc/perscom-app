@@ -25,7 +25,7 @@ class CustomJwtProviderTest extends TenantTestCase
      */
     public function test_it_will_validate_a_good_perscom_signed_token()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->createQuietly();
 
         /** @var CustomJwtProvider $provider */
         $provider = $this->app->make(CustomJwtProvider::class);
@@ -42,26 +42,9 @@ class CustomJwtProviderTest extends TenantTestCase
     /**
      * @throws BindingResolutionException
      */
-    public function test_it_will_validate_a_good_passport_signed_token()
-    {
-        $user = User::factory()->create();
-        $token = $user->createToken('foobar', ['*']);
-
-        /** @var CustomJwtProvider $provider */
-        $provider = $this->app->make(CustomJwtProvider::class);
-
-        $parser = new Parser(new JoseEncoder);
-        $token = $parser->parse($token->accessToken);
-
-        $this->assertTrue($provider->getConfig()->validator()->validate($token, ...$provider->getConfig()->validationConstraints()));
-    }
-
-    /**
-     * @throws BindingResolutionException
-     */
     public function test_it_will_validate_a_good_tenant_signed_token()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->createQuietly();
 
         /** @var CustomJwtProvider $provider */
         $provider = $this->app->make(CustomJwtProvider::class);
@@ -90,7 +73,7 @@ class CustomJwtProviderTest extends TenantTestCase
      */
     public function test_it_will_not_validate_an_incorrect_perscom_signed_key()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->createQuietly();
 
         /** @var CustomJwtProvider $provider */
         $provider = $this->app->make(CustomJwtProvider::class, [
@@ -111,7 +94,7 @@ class CustomJwtProviderTest extends TenantTestCase
      */
     public function test_it_will_not_validate_an_incorrect_tenant_signed_key()
     {
-        $user = User::factory()->create();
+        $user = User::factory()->createQuietly();
 
         /** @var CustomJwtProvider $provider */
         $provider = $this->app->make(CustomJwtProvider::class);

@@ -40,16 +40,16 @@ class EventsController extends Controller
 
     public function sortableBy(): array
     {
-        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'start', 'end', 'repeats', 'frequency', 'interval', 'end_type', 'count', 'until', 'by_day', 'by_month', 'by_set_position', 'by_month_day', 'by_year_day', 'rrule', 'registration_enabled', 'registration_deadline', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     public function searchableBy(): array
     {
-        return ['id', 'name', 'calendar_id', 'description', 'content', 'location', 'url', 'author_id', 'all_day', 'start', 'end', 'repeats', 'frequency', 'interval', 'end_type', 'count', 'until', 'by_day', 'by_month', 'by_set_position', 'by_month_day', 'by_year_day', 'rrule', 'registration_enabled', 'registration_deadline', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at', 'deleted_at'];
     }
 
     public function filterableBy(): array
     {
-        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'start', 'end', 'repeats', 'frequency', 'interval', 'end_type', 'count', 'until', 'by_day', 'by_month', 'by_set_position', 'by_month_day', 'by_year_day', 'rrule', 'registration_enabled', 'registration_deadline', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'calendar_id', 'calendar.*', 'description', 'content', 'location', 'url', 'author_id', 'author.*', 'all_day', 'starts', 'ends', 'repeats', 'registration_enabled', 'registration_deadline', 'notifications_enabled', 'notifications_interval', 'notifications_channels', 'created_at', 'updated_at', 'deleted_at'];
     }
 }

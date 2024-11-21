@@ -10,8 +10,8 @@ use Illuminate\Database\Eloquent\Scope;
 
 class WebhookLogScope implements Scope
 {
-    public function apply(Builder $query, Model $model): void
+    public function apply(Builder $builder, Model $model): void
     {
-        $query->where('log_name', 'webhook');
+        $builder->where('log_name', 'webhook');
     }
 }

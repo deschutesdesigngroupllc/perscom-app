@@ -69,6 +69,7 @@ class EventRegistration extends Pivot
     public function scopeFuture(Builder $query): void
     {
         $query->whereRelation('event', function (Builder $query) {
+            /** @var static $query */
             $query->future();
         });
     }

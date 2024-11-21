@@ -25,11 +25,17 @@ class RankTest extends ApiResourceTestCase
         return Rank::class;
     }
 
+    /**
+     * @return Factory<Rank>
+     */
     public function factory(): Factory
     {
         return Rank::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class RankTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +58,9 @@ class RankTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

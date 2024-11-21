@@ -36,8 +36,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $relative_url
+ * @property-read string|null $url
  *
  * @method static \Database\Factories\QualificationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification newModelQuery()

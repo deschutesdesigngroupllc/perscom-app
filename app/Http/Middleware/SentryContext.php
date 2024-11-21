@@ -64,7 +64,7 @@ class SentryContext
                 });
             }
 
-            if ($request->hasHeader('X-Perscom-Widget') && $request->header('X-Perscom-Widget') === true) {
+            if ($request->header('X-Perscom-Widget') === 'true') {
                 Sentry\configureScope(function (Scope $scope): void {
                     $scope->setTag('widget', 'true');
                 });

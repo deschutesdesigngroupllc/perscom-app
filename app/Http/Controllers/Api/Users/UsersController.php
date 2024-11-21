@@ -58,6 +58,7 @@ class UsersController extends Controller
             'name',
             'email',
             'email_verified_at',
+            'phone_number',
             'position_id',
             'position.*',
             'rank_id',
@@ -69,9 +70,13 @@ class UsersController extends Controller
             'unit_id',
             'unit.*',
             'approved',
+            'notes',
+            'notes_updated_at',
             'profile_photo',
             'cover_photo',
             'last_seen_at',
+            'discord_user_id',
+            'discord_private_channel_id',
             'updated_at',
             'created_at',
             'deleted_at',
@@ -85,15 +90,25 @@ class UsersController extends Controller
             'name',
             'email',
             'email_verified_at',
+            'phone_number',
             'position_id',
+            'position.*',
             'rank_id',
+            'rank.*',
             'specialty_id',
+            'specialty.*',
             'status_id',
+            'status.*',
             'unit_id',
+            'unit.*',
             'approved',
+            'notes',
+            'notes_updated_at',
             'profile_photo',
             'cover_photo',
             'last_seen_at',
+            'discord_user_id',
+            'discord_private_channel_id',
             'updated_at',
             'created_at',
             'deleted_at',
@@ -107,6 +122,7 @@ class UsersController extends Controller
             'name',
             'email',
             'email_verified_at',
+            'phone_number',
             'position_id',
             'position.*',
             'rank_id',
@@ -118,9 +134,13 @@ class UsersController extends Controller
             'unit_id',
             'unit.*',
             'approved',
+            'notes',
+            'notes_updated_at',
             'profile_photo',
             'cover_photo',
             'last_seen_at',
+            'discord_user_id',
+            'discord_private_channel_id',
             'updated_at',
             'created_at',
             'deleted_at',
@@ -130,7 +150,7 @@ class UsersController extends Controller
     public function beforeSave(Request $request, Model $entity): void
     {
         if ($request->hasFile('profile_photo') && $request->file('profile_photo')->isValid()) {
-            $path = $request->file('profile_photo')->storePublicly('profile-photos', 's3');
+            $path = $request->file('profile_photo')->storePublicly('profile-photos');
 
             $entity->forceFill([
                 'profile_photo' => $path,
@@ -138,7 +158,7 @@ class UsersController extends Controller
         }
 
         if ($request->hasFile('cover_photo') && $request->file('cover_photo')->isValid()) {
-            $path = $request->file('cover_photo')->storePublicly('cover-photos', 's3');
+            $path = $request->file('cover_photo')->storePublicly('cover-photos');
 
             $entity->forceFill([
                 'cover_photo' => $path,

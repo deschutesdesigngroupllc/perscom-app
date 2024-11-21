@@ -26,6 +26,9 @@ class SubmissionTest extends ApiResourceTestCase
         return Submission::class;
     }
 
+    /**
+     * @return Factory<Submission>
+     */
     public function factory(): Factory
     {
         return Submission::factory()->state([
@@ -33,6 +36,9 @@ class SubmissionTest extends ApiResourceTestCase
         ]);
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -44,6 +50,9 @@ class SubmissionTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -52,6 +61,9 @@ class SubmissionTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [];

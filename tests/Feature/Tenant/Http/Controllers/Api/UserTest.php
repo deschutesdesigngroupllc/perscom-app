@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserTest extends ApiResourceTestCase
 {
+    protected int $expectedIndexCount = 3;
+
     public function endpoint(): string
     {
         return 'users';
@@ -25,11 +27,17 @@ class UserTest extends ApiResourceTestCase
         return User::class;
     }
 
+    /**
+     * @return Factory<User>
+     */
     public function factory(): Factory
     {
         return User::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +49,9 @@ class UserTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -49,6 +60,9 @@ class UserTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

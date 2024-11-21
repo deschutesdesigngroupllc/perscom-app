@@ -2,6 +2,8 @@
 
 declare(strict_types=1);
 
+use App\Models\Backup;
+use App\Models\Feature;
 use App\Support\IdeHelper\TenantHook;
 
 return [
@@ -156,7 +158,8 @@ return [
     */
 
     'ignored_models' => [
-
+        Backup::class,
+        Feature::class,
     ],
 
     /*

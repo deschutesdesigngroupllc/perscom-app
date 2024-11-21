@@ -26,7 +26,7 @@ class UsersAttachmentsController extends RelationController
         if ($request->hasFile('file') && $request->file('file')->isValid()) {
             $file = $request->file('file');
 
-            $path = $file->storePublicly('/', 's3');
+            $path = $file->storePublicly('/');
 
             $entity->forceFill([
                 'path' => $path,

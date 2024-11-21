@@ -16,13 +16,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $guard_name
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $is_application_role
- * @property-read mixed $is_custom_role
+ * @property-read bool $is_application_role
+ * @property-read bool $is_custom_role
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
  * @property-read int|null $permissions_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
  * @property-read int|null $users_count
  *
+ * @method static \Database\Factories\RoleFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Role newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Role permission($permissions, $without = false)
@@ -47,14 +48,20 @@ class Role extends \Spatie\Permission\Models\Role
         'is_application_role',
     ];
 
+    /**
+     * @return Attribute<bool, void>
+     */
     public function isCustomRole(): Attribute
     {
-        return Attribute::get(fn () => ! $this->is_application_role)->shouldCache();
+        return Attribute::get(fn (): bool => ! $this->is_application_role)->shouldCache();
     }
 
+    /**
+     * @return Attribute<bool, void>
+     */
     public function isApplicationRole(): Attribute
     {
-        return Attribute::get(fn ($value, $attributes) => data_get($attributes, 'name') === Utils::getSuperAdminName())->shouldCache();
+        return Attribute::get(fn ($value, $attributes = null): bool => data_get($attributes, 'name') === Utils::getSuperAdminName())->shouldCache();
     }
 
     /**

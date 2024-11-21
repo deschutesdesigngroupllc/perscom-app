@@ -49,14 +49,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read int|null $qualification_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
  * @property-read int|null $rank_records_count
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord> $service_records
  * @property-read int|null $service_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
  * @property-read int|null $tags_count
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $url
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Document author(\App\Models\User $user)
  * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])

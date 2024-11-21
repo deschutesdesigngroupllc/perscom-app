@@ -18,6 +18,11 @@ class ImageTest extends ApiResourceTestCase
         $this->user->assignRole(Utils::getSuperAdminName());
     }
 
+    public function beforeAssertDatabaseHas(array &$data): void
+    {
+        data_forget($data, 'image');
+    }
+
     public function endpoint(): string
     {
         return 'images';
@@ -33,6 +38,9 @@ class ImageTest extends ApiResourceTestCase
         return ImagesController::class;
     }
 
+    /**
+     * @return Factory<Image>
+     */
     public function factory(): Factory
     {
         return Image::factory()
@@ -41,17 +49,23 @@ class ImageTest extends ApiResourceTestCase
             });
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
-            'index' => 'view:award',
-            'show' => 'view:award',
+            'index' => 'view:image',
+            'show' => 'view:image',
             'store' => 'create:image',
-            'update' => 'update:award',
-            'delete' => 'delete:award',
+            'update' => 'update:image',
+            'delete' => 'delete:image',
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -60,6 +74,9 @@ class ImageTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

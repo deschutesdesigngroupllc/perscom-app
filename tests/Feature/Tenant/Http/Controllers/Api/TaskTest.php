@@ -25,11 +25,17 @@ class TaskTest extends ApiResourceTestCase
         return Task::class;
     }
 
+    /**
+     * @return Factory<Task>
+     */
     public function factory(): Factory
     {
         return Task::factory();
     }
 
+    /**
+     * @return string[]
+     */
     public function scopes(): array
     {
         return [
@@ -41,6 +47,9 @@ class TaskTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function storeData(): array
     {
         return [
@@ -50,6 +59,9 @@ class TaskTest extends ApiResourceTestCase
         ];
     }
 
+    /**
+     * @return string[]
+     */
     public function updateData(): array
     {
         return [

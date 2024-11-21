@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
+use App\Filament\App\Resources\UserResource;
 use App\Mail\Tenant\NewTaskAssignmentMail;
 use App\Models\TaskAssignment;
 use Filament\Notifications\Actions\Action;
@@ -27,9 +28,14 @@ class NewTaskAssignment extends Notification implements ShouldBroadcast, ShouldQ
 
     public function __construct(protected TaskAssignment $taskAssignment)
     {
-        // TODO: Fix
-        $this->url = 'test';
-        $this->message = "A new task has been assigned to you.<br><br>**Task:** {$this->taskAssignment?->task?->title}";
+        $this->url = UserResource::getUrl('view', [
+            'record' => $this->taskAssignment->user,
+        ], panel: 'app');
+
+        $this->message = <<<HTML
+<p>A new task has been assigned to you.</p>
+<strong>Task: </strong>{$this->taskAssignment->task->title}
+HTML;
     }
 
     public function via(): array

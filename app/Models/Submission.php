@@ -34,12 +34,12 @@ use Stringable;
  * @property-read int|null $comments_count
  * @property-read Form $form
  * @property-read string $label
- * @property-read \Illuminate\Support\Optional|string|null|null $relative_url
+ * @property-read string|null $relative_url
  * @property-read Status|null $status
  * @property-read StatusRecord $record
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
  * @property-read int|null $statuses_count
- * @property-read \Illuminate\Support\Optional|string|null|null $url
+ * @property-read string|null $url
  * @property-read User $user
  *
  * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])

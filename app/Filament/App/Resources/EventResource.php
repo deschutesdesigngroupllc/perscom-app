@@ -177,7 +177,6 @@ class EventResource extends BaseResource
                                             ->downloadable()
                                             ->visibility('public')
                                             ->storeFileNamesIn('filename')
-                                            ->disk('s3')
                                             ->helperText('Add an optional image for the event.'),
                                     ]),
                             ]),
@@ -466,15 +465,21 @@ class EventResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Event $record): string
+    /**
+     * @param  Event  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Event $record): array
+    /**
+     * @param  Event  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

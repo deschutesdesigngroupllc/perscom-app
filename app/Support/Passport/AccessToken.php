@@ -6,7 +6,6 @@ namespace App\Support\Passport;
 
 use App\Models\User;
 use DateTimeImmutable;
-use JetBrains\PhpStorm\NoReturn;
 use Laravel\Passport\Bridge\AccessToken as PassportAccessToken;
 use Lcobucci\JWT\Token;
 use League\OAuth2\Server\Entities\Traits\AccessTokenTrait;
@@ -15,7 +14,7 @@ class AccessToken extends PassportAccessToken
 {
     use AccessTokenTrait;
 
-    #[NoReturn]
+    // @phpstan-ignore-next-line
     private function convertToJWT(): Token
     {
         $this->initJwtConfiguration();

@@ -28,7 +28,6 @@ class AwardRecordsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('award.name')
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('award.image.path')
-                    ->disk('s3')
                     ->label(''),
                 Tables\Columns\TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))

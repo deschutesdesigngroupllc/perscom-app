@@ -247,12 +247,11 @@ class RoleResource extends Resource implements HasShieldPermissions
 
     public static function setPermissionStateForRecordPermissions(Component $component, string $operation, array $permissions, ?Model $record): void
     {
-
         if (in_array($operation, ['edit', 'view'])) {
-
             if (blank($record)) {
                 return;
             }
+
             if ($component->isVisible() && count($permissions) > 0) {
                 $component->state(
                     collect($permissions)
@@ -296,7 +295,7 @@ class RoleResource extends Resource implements HasShieldPermissions
             ->toArray();
     }
 
-    public static function getTabFormComponentForResources(): Component
+    public static function getTabFormComponentForResources(): Forms\Components\Tabs\Tab
     {
         return static::shield()->hasSimpleResourcePermissionView()
             ? static::getTabFormComponentForSimpleResourcePermissionsView()
@@ -318,7 +317,7 @@ class RoleResource extends Resource implements HasShieldPermissions
         return static::getCheckboxListFormComponent($entity['resource'], $permissionsArray, false);
     }
 
-    public static function getTabFormComponentForPage(): Component
+    public static function getTabFormComponentForPage(): Forms\Components\Tabs\Tab
     {
         $options = static::getPageOptions();
         $count = count($options);
@@ -332,7 +331,7 @@ class RoleResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getTabFormComponentForWidget(): Component
+    public static function getTabFormComponentForWidget(): Forms\Components\Tabs\Tab
     {
         $options = static::getWidgetOptions();
         $count = count($options);
@@ -346,7 +345,7 @@ class RoleResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getTabFormComponentForCustomPermissions(): Component
+    public static function getTabFormComponentForCustomPermissions(): Forms\Components\Tabs\Tab
     {
         $options = static::getCustomPermissionOptions();
         $count = count($options);
@@ -360,7 +359,7 @@ class RoleResource extends Resource implements HasShieldPermissions
             ]);
     }
 
-    public static function getTabFormComponentForSimpleResourcePermissionsView(): Component
+    public static function getTabFormComponentForSimpleResourcePermissionsView(): Forms\Components\Tabs\Tab
     {
         $options = FilamentShield::getAllResourcePermissions();
         $count = count($options);

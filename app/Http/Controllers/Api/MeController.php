@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api;
 
 use App\Models\User;
+use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Orion\Http\Controllers\Controller;
@@ -14,9 +15,9 @@ class MeController extends Controller
 {
     protected $model = User::class;
 
-    public function authorize(string $ability, $arguments = []): bool
+    public function authorize(string $ability, $arguments = []): Response
     {
-        return true;
+        return Response::allow();
     }
 
     protected function buildIndexFetchQuery(Request $request, array $requestedRelations): Builder

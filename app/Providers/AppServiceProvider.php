@@ -111,7 +111,8 @@ class AppServiceProvider extends ServiceProvider
 
         Column::configureUsing(function (Column $field) {
             $closure = match ($field->getName()) {
-                'created_at' => function (TextColumn $field) {
+                'created_at' => function (Column $field) {
+                    /** @var TextColumn $field */
                     $field
                         ->label('Created')
                         ->toggleable(isToggledHiddenByDefault: true)
@@ -129,7 +130,8 @@ class AppServiceProvider extends ServiceProvider
                             });
                         });
                 },
-                'updated_at' => function (TextColumn $field) {
+                'updated_at' => function (Column $field) {
+                    /** @var TextColumn $field */
                     $field
                         ->label('Updated')
                         ->toggleable(isToggledHiddenByDefault: true)
@@ -147,7 +149,8 @@ class AppServiceProvider extends ServiceProvider
                             });
                         });
                 },
-                'deleted_at' => function (TextColumn $field) {
+                'deleted_at' => function (Column $field) {
+                    /** @var TextColumn $field */
                     $field
                         ->label('Deleted')
                         ->toggleable(isToggledHiddenByDefault: true)
@@ -173,7 +176,8 @@ class AppServiceProvider extends ServiceProvider
 
         Entry::configureUsing(function (Entry $field) {
             $closure = match ($field->getName()) {
-                'created_at' => function (TextEntry $field) {
+                'created_at' => function (Entry $field) {
+                    /** @var TextEntry $field */
                     $field
                         ->label('Created')
                         ->dateTime()
@@ -190,7 +194,8 @@ class AppServiceProvider extends ServiceProvider
                             });
                         });
                 },
-                'updated_at' => function (TextEntry $field) {
+                'updated_at' => function (Entry $field) {
+                    /** @var TextEntry $field */
                     $field
                         ->label('Updated')
                         ->dateTime()
@@ -207,7 +212,8 @@ class AppServiceProvider extends ServiceProvider
                             });
                         });
                 },
-                'deleted_at' => function (TextEntry $field) {
+                'deleted_at' => function (Entry $field) {
+                    /** @var TextEntry $field */
                     $field
                         ->label('Deleted')
                         ->dateTime()

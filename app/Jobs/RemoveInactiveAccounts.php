@@ -30,7 +30,7 @@ class RemoveInactiveAccounts implements ShouldQueue
 
     public function handle(): void
     {
-        // @phpstan-ignore-next-line
+        /** @phpstan-ignore-next-line */
         Tenant::all()->each(function (Tenant $tenant) {
             $dateToCompare = match (true) {
                 isset($tenant->last_login_at) => $tenant->last_login_at,
@@ -39,27 +39,18 @@ class RemoveInactiveAccounts implements ShouldQueue
 
             if ($dateToCompare?->isSameDay(now()->subMonths(5))) {
                 $tenant->notify(new DeleteAccountOneMonth);
-
                 Log::debug('Inactive account one month deletion warning sent', ['tenant' => $tenant]);
-
-                return true;
             }
 
             if ($dateToCompare?->isSameDay(now()->subMonths(6)->addWeek())) {
                 $tenant->notify(new DeleteAccountOneWeek);
-
                 Log::debug('Inactive account one week deletion warning sent', ['tenant' => $tenant]);
-
-                return true;
             }
 
             if ($dateToCompare?->isSameDay(now()->subMonths(6))) {
                 $tenant->notifyNow(new DeleteAccount);
                 $tenant->delete();
-
                 Log::debug('Inactive account deleted', ['tenant' => $tenant]);
-
-                return true;
             }
         });
     }

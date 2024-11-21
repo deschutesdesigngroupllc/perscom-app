@@ -138,7 +138,7 @@ class ModelNotification extends MorphPivot
      */
     public function model(): MorphTo
     {
-        return $this->morphTo('model');
+        return $this->morphTo();
     }
 
     /**
@@ -146,7 +146,7 @@ class ModelNotification extends MorphPivot
      */
     public function group(): MorphTo
     {
-        return $this->morphTo('group', 'group_type', 'group_id');
+        return $this->morphTo();
     }
 
     /**
@@ -154,7 +154,7 @@ class ModelNotification extends MorphPivot
      */
     public function unit(): MorphTo
     {
-        return $this->morphTo('unit', 'unit_type', 'unit_id');
+        return $this->morphTo();
     }
 
     /**
@@ -171,15 +171,24 @@ class ModelNotification extends MorphPivot
     public function getRecipients(): Collection
     {
         if (filled($this->group)) {
-            return User::whereIn('unit_id', $this->group->units->pluck('id'))->get();
+            /** @var Group $group */
+            $group = $this->group;
+
+            return User::whereIn('unit_id', $group->units->pluck('id'))->get();
         }
 
         if (filled($this->unit)) {
-            return User::whereUnitId($this->unit->getKey())->get();
+            /** @var Unit $unit */
+            $unit = $this->unit;
+
+            return User::whereUnitId($unit->getKey())->get();
         }
 
         if (filled($this->user)) {
-            return Collection::wrap($this->user);
+            /** @var User $user */
+            $user = $this->user;
+
+            return Collection::wrap($user);
         }
 
         return collect();

@@ -6,14 +6,12 @@ namespace App\Support\JwtAuth\Providers;
 
 use App\Settings\IntegrationSettings;
 use App\Support\JwtAuth\Validation\SignedByPerscomOrTenantConstraint;
-use JetBrains\PhpStorm\NoReturn;
 use Lcobucci\JWT\Signer;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use PHPOpenSourceSaver\JWTAuth\Providers\JWT\Lcobucci;
 
 class CustomJwtProvider extends Lcobucci
 {
-    #[NoReturn]
     public function __construct(protected ?string $secret = null)
     {
         parent::__construct($secret ?? config('jwt.secret'), config('jwt.algo'), config('jwt.keys'));

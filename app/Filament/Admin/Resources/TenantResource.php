@@ -190,7 +190,7 @@ class TenantResource extends Resource
                             ->searchable()
                             ->helperText('Select the user to login as.')
                             ->options(function (Tenant $record) {
-                                return $record->run(function () use (&$users) {
+                                return $record->run(function () {
                                     return User::query()->orderBy('name')->whereHas('roles', function (Builder $query) {
                                         $query->where('name', Utils::getSuperAdminName());
                                     })->get()->pluck('name', 'id')->toArray();
@@ -199,6 +199,10 @@ class TenantResource extends Resource
                             ->required(),
                     ])
                     ->action(function (Tables\Actions\Action $action, Tenant $record, array $data) {
+                        if (! method_exists(tenancy(), 'impersonate')) {
+                            return null;
+                        }
+
                         $token = tenancy()->impersonate($record, data_get($data, 'user'), '/', 'web');
 
                         return redirect()->to($record->route('tenant.impersonation', [

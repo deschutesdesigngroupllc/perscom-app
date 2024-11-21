@@ -113,15 +113,21 @@ class CalendarResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchResultTitle(Model|Calendar $record): string
+    /**
+     * @param  Calendar  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
     {
         return $record->name;
     }
 
-    public static function getGlobalSearchResultDetails(Model|Calendar $record): array
+    /**
+     * @param  Calendar  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'Description' => Str::limit($record->description),
+            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 
