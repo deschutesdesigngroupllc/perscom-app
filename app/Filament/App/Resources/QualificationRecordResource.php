@@ -121,8 +121,7 @@ class QualificationRecordResource extends BaseResource
                                 Infolists\Components\ImageEntry::make('qualification.image.path')
                                     ->visible(fn (?QualificationRecord $record) => isset($record->qualification->image))
                                     ->height(32)
-                                    ->hiddenLabel()
-                                    ->disk('s3'),
+                                    ->hiddenLabel(),
                                 Infolists\Components\TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -162,7 +161,6 @@ class QualificationRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('qualification.image.path')
-                    ->disk('s3')
                     ->label(''),
                 Tables\Columns\TextColumn::make('document.name')
                     ->icon('heroicon-o-document')

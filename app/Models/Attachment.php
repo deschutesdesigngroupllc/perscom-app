@@ -83,7 +83,7 @@ class Attachment extends Model implements HasLabel
     public function attachmentUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->path ? Storage::disk('s3')->url($this->path) : null
+            get: fn (): ?string => $this->path ? Storage::url($this->path) : null
         );
     }
 
@@ -127,6 +127,6 @@ class Attachment extends Model implements HasLabel
 
     protected static function booted(): void
     {
-        static::deleting(fn (Attachment $model) => Storage::disk('s3')->delete($model->path));
+        static::deleting(fn (Attachment $model) => Storage::delete($model->path));
     }
 }

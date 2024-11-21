@@ -66,7 +66,6 @@ class AwardResource extends BaseResource
                                             ->downloadable()
                                             ->visibility('public')
                                             ->storeFileNamesIn('filename')
-                                            ->disk('s3')
                                             ->helperText('Add an optional image for the award.'),
                                     ]),
                             ]),
@@ -82,7 +81,6 @@ class AwardResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image.path')
-                    ->disk('s3')
                     ->label('Image'),
                 Tables\Columns\TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))

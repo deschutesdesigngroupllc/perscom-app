@@ -57,8 +57,7 @@ class AttachmentResource extends BaseResource
                                     ->openable()
                                     ->downloadable()
                                     ->visibility('public')
-                                    ->storeFileNamesIn('filename')
-                                    ->disk('s3'),
+                                    ->storeFileNamesIn('filename'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Resource')
                             ->icon('heroicon-o-document')
@@ -112,8 +111,7 @@ class AttachmentResource extends BaseResource
                                     ->openUrlInNewTab()
                                     ->copyable(),
                                 ImageEntry::make('path')
-                                    ->label('Attachment')
-                                    ->disk('s3'),
+                                    ->label('Attachment'),
                             ]),
                         Tabs\Tab::make('Resource')
                             ->icon('heroicon-o-document')

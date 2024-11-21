@@ -46,6 +46,7 @@
     <env name="DB_HOST" value="127.0.0.1"/>
     <env name="DB_USERNAME" value="root"/>
     <env name="DB_PASSWORD" value=""/>
+    <env name="FILESYSTEM_DISK" value="local"/>
     <env name='HTTP_HOST' value='http://lvh.me' />
     <env name="JWT_ALGO" value="HS256"/>
     <env name="JWT_SECRET" value="3juKTvPLQ2Vw7djDKazHaGQ0UXht2D3wUC94hroyzy6RLNaRbMWJnKdjo9YfCtHU"/>

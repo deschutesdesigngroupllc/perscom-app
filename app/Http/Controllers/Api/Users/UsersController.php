@@ -150,7 +150,7 @@ class UsersController extends Controller
     public function beforeSave(Request $request, Model $entity): void
     {
         if ($request->hasFile('profile_photo') && $request->file('profile_photo')->isValid()) {
-            $path = $request->file('profile_photo')->storePublicly('profile-photos', 's3');
+            $path = $request->file('profile_photo')->storePublicly('profile-photos');
 
             $entity->forceFill([
                 'profile_photo' => $path,
@@ -158,7 +158,7 @@ class UsersController extends Controller
         }
 
         if ($request->hasFile('cover_photo') && $request->file('cover_photo')->isValid()) {
-            $path = $request->file('cover_photo')->storePublicly('cover-photos', 's3');
+            $path = $request->file('cover_photo')->storePublicly('cover-photos');
 
             $entity->forceFill([
                 'cover_photo' => $path,

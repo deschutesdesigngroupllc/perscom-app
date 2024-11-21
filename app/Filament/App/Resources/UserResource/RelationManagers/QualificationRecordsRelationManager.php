@@ -28,7 +28,6 @@ class QualificationRecordsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('qualification.name')
                     ->sortable(),
                 Tables\Columns\ImageColumn::make('qualification.image.path')
-                    ->disk('s3')
                     ->label(''),
                 Tables\Columns\TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))

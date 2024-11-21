@@ -65,7 +65,6 @@ class UserResource extends BaseResource
                                     ->schema([
                                         Forms\Components\FileUpload::make('profile_photo')
                                             ->columnSpan(1)
-                                            ->disk('s3')
                                             ->visibility('public')
                                             ->image()
                                             ->imageEditor()
@@ -90,7 +89,6 @@ class UserResource extends BaseResource
                                     ]),
                                 Forms\Components\FileUpload::make('cover_photo')
                                     ->columnSpanFull()
-                                    ->disk('s3')
                                     ->visibility('public')
                                     ->image()
                                     ->imageEditor()
@@ -286,8 +284,7 @@ class UserResource extends BaseResource
                 Tables\Columns\ImageColumn::make('profile_photo')
                     ->hidden(fn () => in_array('profile_photo', $hiddenFields))
                     ->label('')
-                    ->defaultImageUrl(fn (User $record) => $record->profile_photo_url)
-                    ->disk('s3'),
+                    ->defaultImageUrl(fn (User $record) => $record->profile_photo_url),
                 Tables\Columns\TextColumn::make('name')
                     ->hidden(fn () => in_array('name', $hiddenFields))
                     ->sortable()

@@ -136,8 +136,7 @@ class RankRecordResource extends BaseResource
                                 Infolists\Components\ImageEntry::make('rank.image.path')
                                     ->visible(fn (?RankRecord $record) => isset($record->rank->image))
                                     ->height(32)
-                                    ->hiddenLabel()
-                                    ->disk('s3'),
+                                    ->hiddenLabel(),
                                 Infolists\Components\TextEntry::make('type')
                                     ->badge(),
                                 Infolists\Components\TextEntry::make('text')
@@ -182,7 +181,6 @@ class RankRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('rank.image.path')
-                    ->disk('s3')
                     ->label(''),
                 Tables\Columns\TextColumn::make('document.name')
                     ->icon('heroicon-o-document')

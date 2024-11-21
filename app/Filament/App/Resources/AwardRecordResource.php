@@ -129,8 +129,7 @@ class AwardRecordResource extends BaseResource
                                 Infolists\Components\ImageEntry::make('award.image.path')
                                     ->visible(fn (?AwardRecord $record) => isset($record->award->image))
                                     ->height(32)
-                                    ->hiddenLabel()
-                                    ->disk('s3'),
+                                    ->hiddenLabel(),
                                 Infolists\Components\TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -170,7 +169,6 @@ class AwardRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('award.image.path')
-                    ->disk('s3')
                     ->label(''),
                 Tables\Columns\TextColumn::make('document.name')
                     ->icon('heroicon-o-document')

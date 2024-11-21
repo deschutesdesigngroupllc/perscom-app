@@ -354,7 +354,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasFields
     public function coverPhotoUrl(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->cover_photo ? Storage::disk('s3')->url($this->cover_photo) : null
+            get: fn (): ?string => $this->cover_photo ? Storage::url($this->cover_photo) : null
         )->shouldCache();
     }
 

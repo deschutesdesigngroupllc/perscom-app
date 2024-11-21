@@ -72,8 +72,7 @@ trait InteractsWithFields
                         ->previewable()
                         ->openable()
                         ->downloadable()
-                        ->visibility('public')
-                        ->disk('s3');
+                        ->visibility('public');
                 }
 
                 $fields[] = $filamentField;

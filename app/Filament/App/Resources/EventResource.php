@@ -177,7 +177,6 @@ class EventResource extends BaseResource
                                             ->downloadable()
                                             ->visibility('public')
                                             ->storeFileNamesIn('filename')
-                                            ->disk('s3')
                                             ->helperText('Add an optional image for the event.'),
                                     ]),
                             ]),

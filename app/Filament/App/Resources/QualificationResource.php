@@ -65,7 +65,6 @@ class QualificationResource extends BaseResource
                                             ->downloadable()
                                             ->visibility('public')
                                             ->storeFileNamesIn('filename')
-                                            ->disk('s3')
                                             ->helperText('Add an optional image for the qualification.'),
                                     ]),
                             ]),
@@ -80,7 +79,6 @@ class QualificationResource extends BaseResource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
                 Tables\Columns\ImageColumn::make('image.path')
-                    ->disk('s3')
                     ->label('Image'),
                 Tables\Columns\TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
