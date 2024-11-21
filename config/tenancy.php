@@ -21,6 +21,7 @@ return [
      */
     'central_domains' => [
         '127.0.0.1',
+        'lvh.me',
         'localhost',
         'staging.perscom.io',
         'admin.demo.perscom.io',

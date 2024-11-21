@@ -10,6 +10,7 @@ use Exception;
 use Illuminate\Foundation\Testing\DatabaseTransactionsManager;
 use Illuminate\Support\Facades\ParallelTesting;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Str;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 use Tests\TestCase;
 use Tests\Traits\TenantHelpers;
@@ -57,7 +58,7 @@ class TenantTestCase extends TestCase
         ])->createQuietly();
 
         $this->domain = Domain::factory()->state([
-            'domain' => "tenant_{$this->tenant->getKey()}_$testToken",
+            'domain' => Str::random(6),
             'tenant_id' => $this->tenant->getKey(),
         ])->createQuietly();
 
