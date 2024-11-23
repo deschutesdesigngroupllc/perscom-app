@@ -23,6 +23,7 @@ use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
 use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
+use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
@@ -122,6 +123,8 @@ class AppPanelProvider extends PanelProvider
                 InitializeTenancyBySubdomain::class,
             ], isPersistent: true)
             ->middleware([
+                AttachTraceAndRequestId::class,
+                SentryContext::class,
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
                 StartSession::class,
@@ -135,7 +138,6 @@ class AppPanelProvider extends PanelProvider
                 CheckUserApprovalStatus::class,
                 PreventAccessFromCentralDomains::class,
                 RedirectSocialProvider::class,
-                SentryContext::class,
             ])
             ->authMiddleware([
                 Authenticate::class,

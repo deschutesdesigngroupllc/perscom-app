@@ -6,9 +6,10 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Exception;
-use Filament\Facades\Filament;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Route;
 use Sentry;
 use Sentry\State\Scope;
@@ -21,24 +22,38 @@ class SentryContext
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (app()->bound('sentry')) {
-            $guard = match (Filament::getCurrentPanel()?->getId()) {
-                'app' => 'web',
-                'admin' => 'admin',
-                default => null,
+        if (App::bound('sentry')) {
+            $guard = match (true) {
+                $request->routeIs('api.*'), $request->routeIs('oauth.*'), $request->routeIs('oidc.*') => 'api',
+                App::isAdmin() => 'admin',
+                default => 'web',
             };
 
             Sentry\configureScope(function (Scope $scope) use ($request): void {
                 $scope->setTag('request.route', (string) Route::currentRouteName());
                 $scope->setTag('request.method', $request->method());
+                $scope->setTag('request.url', $request->url());
+            });
+
+            Sentry\configureScope(function (Scope $scope) {
+                $requestId = Context::get('request_id');
+                $traceId = Context::get('trace_id');
+
+                $scope->setTag('perscom.request_id', $requestId);
+                $scope->setTag('perscom.trace_id', $traceId);
+
+                $scope->setContext('PERSCOM', [
+                    'Request ID' => $requestId,
+                    'Trace ID' => $traceId,
+                ]);
             });
 
             if (Auth::guard($guard)->check()) {
                 Sentry\configureScope(function (Scope $scope) use ($guard): void {
                     $scope->setUser([
                         'id' => Auth::guard($guard)->user()->getAuthIdentifier(),
-                        'name' => Auth::user()->name,
-                        'email' => Auth::user()->email,
+                        'name' => Auth::guard($guard)->user()->name,
+                        'email' => Auth::guard($guard)->user()->email,
                     ]);
                 });
             }

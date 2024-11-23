@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Traits;
 
 use App\Http\Middleware\CheckSubscription;
-use App\Http\Middleware\LogApiRequests;
+use App\Http\Middleware\LogApiRequest;
 use Illuminate\Foundation\Testing\Concerns\MakesHttpRequests;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 
@@ -16,7 +16,7 @@ trait MakesApiRequests
     public function withoutApiMiddleware(): void
     {
         $this->withoutMiddleware([
-            LogApiRequests::class,
+            LogApiRequest::class,
             ThrottleRequests::class,
             CheckSubscription::class,
         ]);
