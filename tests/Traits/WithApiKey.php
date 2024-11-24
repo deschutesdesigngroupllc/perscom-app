@@ -13,10 +13,10 @@ trait WithApiKey
 {
     use WithFaker;
 
-    protected function apiKey(array|string $scopes = ['view:user']): string
+    protected function apiKey(array|string $scopes = ['view:user'], ?User $user = null): string
     {
         $action = new CreatePersonalAccessToken;
 
-        return $action->handle(User::factory()->unassigned()->createQuietly(), $this->faker->word, Arr::wrap($scopes))->accessToken;
+        return $action->handle($user ?? User::factory()->unassigned()->createQuietly(), $this->faker->word, Arr::wrap($scopes))->accessToken;
     }
 }

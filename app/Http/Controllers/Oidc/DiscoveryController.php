@@ -33,6 +33,7 @@ class DiscoveryController extends Controller
             ],
             'response_modes_supported' => [
                 'query',
+                'fragment',
             ],
             'id_token_signing_alg_values_supported' => [
                 'HS256',

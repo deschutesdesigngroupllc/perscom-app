@@ -37,7 +37,7 @@ trait JwtClaims
             'picture' => $this->profile_photo_url,
             'phone_number' => $this->phone_number,
             'tenant' => (string) tenant()->getTenantKey(),
-            'roles' => $this->roles->pluck('name'),
+            'roles' => $this->roles->pluck('name')->toArray(),
             'locale' => config('app.locale'),
             'zoneinfo' => $timezone,
             'updated_at' => Carbon::parse($this->updated_at)->getTimestamp(),
