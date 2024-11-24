@@ -63,6 +63,7 @@ return [
         'create:awardrecord' => 'Can create an award record',
         'update:awardrecord' => 'Can update an award record',
         'delete:awardrecord' => 'Can delete an award record',
+        'clear:cache' => 'Can clear the cache',
         'view:calendar' => 'Can view a calendar',
         'create:calendar' => 'Can create a calendar',
         'update:calendar' => 'Can update a calendar',

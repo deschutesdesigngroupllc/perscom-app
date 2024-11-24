@@ -87,6 +87,10 @@ class ApiPermissionService
      */
     protected static function transformResourceName(array|string|Model $model): string
     {
+        if (blank($model)) {
+            return '';
+        }
+
         $model = Arr::wrap($model)[0];
 
         return Str::lower(class_basename($model));
@@ -94,6 +98,10 @@ class ApiPermissionService
 
     protected static function formScope(string $ability, string $model): string
     {
+        if (blank($model)) {
+            return $ability;
+        }
+
         return "$ability:$model";
     }
 }
