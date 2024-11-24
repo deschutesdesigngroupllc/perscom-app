@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\Attachments\AttachmentsController;
 use App\Http\Controllers\Api\AwardRecords\AwardRecordsController;
 use App\Http\Controllers\Api\Awards\AwardsController;
 use App\Http\Controllers\Api\Awards\AwardsImageController;
+use App\Http\Controllers\Api\CacheController;
 use App\Http\Controllers\Api\Calendars\CalendarsController;
 use App\Http\Controllers\Api\Categories\CategoriesAwardsController;
 use App\Http\Controllers\Api\Categories\CategoriesController;
@@ -70,7 +71,8 @@ use Orion\Facades\Orion;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-Route::get('health', HealthController::class);
+Route::get('health', HealthController::class)
+    ->name('health');
 
 Route::get('spec.json', [SpecController::class, 'index'])
     ->name('spec');
@@ -107,6 +109,9 @@ Route::group([
     Orion::belongsToManyResource('categories', 'forms', CategoriesFormsController::class);
     Orion::belongsToManyResource('categories', 'qualifications', CategoriesQualificationsController::class);
     Orion::belongsToManyResource('categories', 'ranks', CategoriesRanksController::class);
+
+    Route::post('cache', CacheController::class)
+        ->name('cache');
 
     Orion::resource('combat-records', CombatRecordsController::class);
 
