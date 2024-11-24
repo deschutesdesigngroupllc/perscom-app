@@ -77,6 +77,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->appendToGroup('landing', [
+            AttachTraceAndRequestId::class,
             SentryContext::class,
             HandleInertiaRequests::class,
         ]);
