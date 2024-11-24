@@ -3,6 +3,7 @@
 declare(strict_types=1);
 
 use App\Http\Middleware\ApiHeaders;
+use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\AuthenticateApi;
 use App\Http\Middleware\CaptureUserOnlineStatus;
 use App\Http\Middleware\CheckApiVersion;
@@ -10,7 +11,8 @@ use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\HandleInertiaRequests;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
-use App\Http\Middleware\LogApiRequests;
+use App\Http\Middleware\LogApiRequest;
+use App\Http\Middleware\LogApiResponse;
 use App\Http\Middleware\SentryContext;
 use App\Jobs\RemoveInactiveAccounts;
 use App\Jobs\ResetDemoAccount;
@@ -29,6 +31,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Passport\Http\Middleware\CheckForAnyScope;
@@ -75,14 +78,18 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->appendToGroup('landing', [
+            AttachTraceAndRequestId::class,
+            SentryContext::class,
             HandleInertiaRequests::class,
         ]);
 
         $middleware->appendToGroup('api', [
-            ApiHeaders::class,
-            LogApiRequests::class,
-            'throttle:api',
+            LogApiResponse::class,
+            AttachTraceAndRequestId::class,
             SentryContext::class,
+            ApiHeaders::class,
+            LogApiRequest::class,
+            'throttle:api',
             CheckApiVersion::class,
         ]);
 
@@ -100,12 +107,22 @@ return Application::configure(basePath: dirname(__DIR__))
             'subscribed' => CheckSubscription::class,
         ]);
 
-        $middleware->use([
+        $middleware->append([
             CheckForMaintenanceMode::class,
             RenderTorchlight::class,
         ]);
 
+        /**
+         * When middleware is executing in the order of priority, the responses are executed
+         * in reverse order. For example, during the request, the middleware at the top is
+         * executed first. When returning the response, the middleware at the top is executed last.
+         */
         $middleware->priority([
+            LogApiResponse::class,
+            AttachTraceAndRequestId::class,
+            ApiHeaders::class,
+            SentryContext::class,
+            LogApiRequest::class,
             HandlePrecognitiveRequests::class,
             EncryptCookies::class,
             AddQueuedCookiesToResponse::class,
@@ -118,11 +135,15 @@ return Application::configure(basePath: dirname(__DIR__))
             AuthenticatesRequests::class,
             Authorize::class,
             CheckApiVersion::class,
-            SentryContext::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
+
+        $exceptions->context(fn () => [
+            'requestId' => Context::get('request_id'),
+            'traceId' => Context::get('trace_id'),
+        ]);
 
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->routeIs('api.*') || $request->expectsJson());
 
@@ -150,6 +171,8 @@ return Application::configure(basePath: dirname(__DIR__))
                             default => $e->getMessage(),
                         },
                         'type' => class_basename($e),
+                        'request_id' => Context::get('request_id'),
+                        'trace_id' => Context::get('trace_id'),
                     ],
                 ];
 
