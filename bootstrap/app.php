@@ -31,6 +31,7 @@ use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
 use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Route;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Passport\Http\Middleware\CheckForAnyScope;
@@ -139,6 +140,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         Integration::handles($exceptions);
 
+        $exceptions->context(fn () => [
+            'requestId' => Context::get('request_id'),
+            'traceId' => Context::get('trace_id'),
+        ]);
+
         $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->routeIs('api.*') || $request->expectsJson());
 
         $exceptions->dontReport([
@@ -165,6 +171,8 @@ return Application::configure(basePath: dirname(__DIR__))
                             default => $e->getMessage(),
                         },
                         'type' => class_basename($e),
+                        'request_id' => Context::get('request_id'),
+                        'trace_id' => Context::get('trace_id'),
                     ],
                 ];
 
