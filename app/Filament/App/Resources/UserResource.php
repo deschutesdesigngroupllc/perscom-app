@@ -10,7 +10,9 @@ use App\Filament\App\Resources\UserResource\RelationManagers;
 use App\Filament\Exports\UserExporter;
 use App\Models\User;
 use App\Services\SettingsService;
+use App\Services\UserSettingsService;
 use App\Settings\DashboardSettings;
+use App\Settings\OrganizationSettings;
 use App\Traits\Filament\InteractsWithFields;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Carbon\CarbonInterface;
@@ -133,6 +135,43 @@ class UserResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => UnitResource::form($form)),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Custom Fields')
+                            ->hiddenOn('create')
+                            ->icon('heroicon-o-pencil')
+                            ->schema(fn (?User $record) => UserResource::getFormSchemaFromFields($record)),
+                        Forms\Components\Tabs\Tab::make('Details')
+                            ->hiddenOn('create')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('created_at')
+                                    ->default(now())
+                                    ->required()
+                                    ->helperText('The date the user profile was created. Used to calculate time in service.'),
+                                Forms\Components\DateTimePicker::make('updated_at')
+                                    ->default(now())
+                                    ->required()
+                                    ->helperText('The date the user profile was last updated.'),
+                                Forms\Components\DateTimePicker::make('deleted_at')
+                                    ->helperText('The date the user profile was deleted. Warning this will move the profile to the trash. You can undo this by filtering users by deleted records.'),
+                                Forms\Components\DateTimePicker::make('last_seen_at')
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
+                                    ->label('Last Seen')
+                                    ->helperText('The date the user last logged in.'),
+                                Forms\Components\DateTimePicker::make('email_verified_at')
+                                    ->timezone(UserSettingsService::get('timezone', function () {
+                                        /** @var OrganizationSettings $settings */
+                                        $settings = app(OrganizationSettings::class);
+
+                                        return $settings->timezone ?? config('app.timezone');
+                                    }))
+                                    ->label('Email Verified At')
+                                    ->helperText('The date the user\'s email was verified. Set this to bypass user email verification.'),
+                            ]),
                         Forms\Components\Tabs\Tab::make('Notes')
                             ->icon('heroicon-o-pencil-square')
                             ->schema([
@@ -186,10 +225,6 @@ class UserResource extends BaseResource
                                     ->required()
                                     ->default(true),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Custom Fields')
-                            ->hiddenOn('create')
-                            ->icon('heroicon-o-pencil')
-                            ->schema(fn (?User $record) => UserResource::getFormSchemaFromFields($record)),
                     ]),
             ]);
     }
@@ -225,8 +260,13 @@ class UserResource extends BaseResource
                                 TextEntry::make('name')
                                     ->hidden(fn () => in_array('name', $hiddenFields)),
                                 TextEntry::make('time_in_service')
+                                    ->label('Time In Service')
                                     ->hidden(fn () => in_array('time_in_service', $hiddenFields))
                                     ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans()),
+                                TextEntry::make('last_seen_at')
+                                    ->label('Last Seen')
+                                    ->dateTime()
+                                    ->hidden(fn () => in_array('last_seen_at', $hiddenFields)),
                             ]),
                         Tab::make('Assignment')
                             ->icon('heroicon-o-rectangle-stack')
@@ -235,17 +275,27 @@ class UserResource extends BaseResource
                                     ->columns(3)
                                     ->schema([
                                         TextEntry::make('position.name')
+                                            ->badge()
+                                            ->color('gray')
                                             ->hidden(fn () => in_array('position_id', $hiddenFields)),
                                         TextEntry::make('specialty.name')
+                                            ->badge()
+                                            ->color('gray')
                                             ->hidden(fn () => in_array('specialty_id', $hiddenFields)),
                                         TextEntry::make('unit.name')
+                                            ->badge()
+                                            ->color('gray')
                                             ->hidden(fn () => in_array('unit_id', $hiddenFields)),
-                                        TextEntry::make('last_assignment_change_date')
-                                            ->hidden(fn (User $record) => in_array('last_assignment_change_date', $hiddenFields) || is_null($record->last_assignment_change_date))
-                                            ->formatStateUsing(fn ($state) => $state->longRelativeToNowDiffForHumans()),
                                         TextEntry::make('time_in_assignment')
+                                            ->label('Time In Assignment')
                                             ->hidden(fn (User $record) => in_array('time_in_assignment', $hiddenFields) || is_null($record->time_in_assignment))
-                                            ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans()),
+                                            ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans())
+                                            ->columnSpanFull(),
+                                        TextEntry::make('last_assignment_change_date')
+                                            ->label('Assignment Last Changed')
+                                            ->dateTime()
+                                            ->hidden(fn (User $record) => in_array('last_assignment_change_date', $hiddenFields) || is_null($record->last_assignment_change_date))
+                                            ->columnSpanFull(),
                                     ]),
                                 Section::make('Secondary Assignment(s)')
                                     ->hidden(fn () => in_array('secondary_assignment_records', $hiddenFields))
@@ -261,15 +311,22 @@ class UserResource extends BaseResource
                             ->columns()
                             ->schema([
                                 TextEntry::make('rank.name')
+                                    ->badge()
+                                    ->color('gray')
                                     ->hidden(fn () => in_array('rank_id', $hiddenFields))
                                     ->prefix(fn (?User $record) => optional($record?->rank?->image?->image_url, fn ($url) => new HtmlString("<img src='$url' class='h-5 inline' alt='{$record->rank->name}' />")))
                                     ->columnSpanFull(),
-                                TextEntry::make('last_rank_change_date')
-                                    ->hidden(fn (User $record) => in_array('last_rank_change_date', $hiddenFields) || is_null($record->last_rank_change_date))
-                                    ->formatStateUsing(fn ($state) => $state->longRelativeToNowDiffForHumans()),
                                 TextEntry::make('time_in_grade')
+                                    ->label('Time In Grade')
+                                    ->dateTime()
                                     ->hidden(fn (User $record) => in_array('time_in_grade', $hiddenFields) || is_null($record->time_in_grade))
-                                    ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans()),
+                                    ->formatStateUsing(fn ($state) => CarbonInterval::make($state)->forHumans())
+                                    ->columnSpanFull(),
+                                TextEntry::make('last_rank_change_date')
+                                    ->label('Rank Last Changed')
+                                    ->dateTime()
+                                    ->hidden(fn (User $record) => in_array('last_rank_change_date', $hiddenFields) || is_null($record->last_rank_change_date))
+                                    ->columnSpanFull(),
                             ]),
                     ]),
             ]);

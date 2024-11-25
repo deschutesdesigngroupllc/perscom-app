@@ -12,6 +12,7 @@ use App\Models\Scopes\VisibleScope;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -164,6 +165,45 @@ class FieldResource extends BaseResource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function relationTable(Table $table): Table
+    {
+        return $table
+            ->emptyStateDescription('Attach or create a new field to get started.')
+            ->modifyQueryUsing(function (Builder $query) {
+                $query->withoutGlobalScopes([
+                    SoftDeletingScope::class,
+                    VisibleScope::class,
+                    HiddenScope::class,
+                ]);
+            })
+            ->recordTitleAttribute('name')
+            ->columns([
+                Tables\Columns\TextColumn::make('name'),
+            ])
+            ->headerActions([
+                Tables\Actions\AttachAction::make()
+                    ->modalDescription('Attach a custom field to this resource.')
+                    ->preloadRecordSelect(),
+            ])
+            ->actions([
+                Tables\Actions\DetachAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DetachBulkAction::make(),
+                ]),
+            ])
+            ->defaultSort('order')
+            ->reorderable('order')
+            ->emptyStateActions([
+                Action::make('create')
+                    ->label('New field')
+                    ->openUrlInNewTab()
+                    ->url(FieldResource::getUrl('create'))
+                    ->button(),
             ]);
     }
 
