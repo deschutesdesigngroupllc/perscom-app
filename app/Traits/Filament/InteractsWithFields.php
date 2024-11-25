@@ -6,9 +6,11 @@ namespace App\Traits\Filament;
 
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Pages\EditRecord;
+use Illuminate\Support\Arr;
 
 /**
  * @mixin EditRecord
@@ -21,7 +23,9 @@ trait InteractsWithFields
 
         // @phpstan-ignore-next-line
         if (is_null($record) || blank($record->fields)) {
-            return $fields;
+            return Arr::wrap(Placeholder::make('no_fields')
+                ->hiddenLabel()
+                ->content('There are no custom fields assigned to this resource.'));
         }
 
         foreach ($record->fields as $field) {

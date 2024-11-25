@@ -21,6 +21,7 @@ use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
 use Filament\Infolists\Components\TextEntry;
@@ -254,12 +255,67 @@ class AppServiceProvider extends ServiceProvider
         });
 
         Field::configureUsing(function (Field $field) {
-            match ($field->getName()) {
-                'created_at' => $field->label('Created'),
-                'updated_at' => $field->label('Updated'),
-                'deleted_at' => $field->label('Deleted'),
+            $closure = match ($field->getName()) {
+                'created_at' => function (Field $field) {
+                    $field->label('Created');
+
+                    if ($field instanceof DateTimePicker) {
+                        $field->required()
+                            ->timezone(function () {
+                                if (! tenancy()->initialized) {
+                                    return config('app.timezone');
+                                }
+
+                                return UserSettingsService::get('timezone', function () {
+                                    /** @var OrganizationSettings $settings */
+                                    $settings = app(OrganizationSettings::class);
+
+                                    return $settings->timezone ?? config('app.timezone');
+                                });
+                            });
+                    }
+                },
+                'updated_at' => function (Field $field) {
+                    $field->label('Updated');
+
+                    if ($field instanceof DateTimePicker) {
+                        $field->required()
+                            ->timezone(function () {
+                                if (! tenancy()->initialized) {
+                                    return config('app.timezone');
+                                }
+
+                                return UserSettingsService::get('timezone', function () {
+                                    /** @var OrganizationSettings $settings */
+                                    $settings = app(OrganizationSettings::class);
+
+                                    return $settings->timezone ?? config('app.timezone');
+                                });
+                            });
+                    }
+                },
+                'deleted_at' => function (Field $field) {
+                    $field->label('Deleted');
+
+                    if ($field instanceof DateTimePicker) {
+                        $field->timezone(function () {
+                            if (! tenancy()->initialized) {
+                                return config('app.timezone');
+                            }
+
+                            return UserSettingsService::get('timezone', function () {
+                                /** @var OrganizationSettings $settings */
+                                $settings = app(OrganizationSettings::class);
+
+                                return $settings->timezone ?? config('app.timezone');
+                            });
+                        });
+                    }
+                },
                 default => null,
             };
+
+            return value($closure, $field);
         });
 
         FilamentView::registerRenderHook(

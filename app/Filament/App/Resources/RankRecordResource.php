@@ -14,9 +14,7 @@ use App\Livewire\App\ViewDocument;
 use App\Models\Enums\RankRecordType;
 use App\Models\RankRecord;
 use App\Models\User;
-use App\Services\UserSettingsService;
 use App\Settings\NotificationSettings;
-use App\Settings\OrganizationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Infolists;
@@ -79,12 +77,6 @@ class RankRecordResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                                 Forms\Components\DateTimePicker::make('created_at')
-                                    ->timezone(UserSettingsService::get('timezone', function () {
-                                        /** @var OrganizationSettings $settings */
-                                        $settings = app(OrganizationSettings::class);
-
-                                        return $settings->timezone ?? config('app.timezone');
-                                    }))
                                     ->columnSpanFull()
                                     ->default(now())
                                     ->required(),
