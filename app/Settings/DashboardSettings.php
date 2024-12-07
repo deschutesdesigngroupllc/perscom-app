@@ -18,6 +18,8 @@ class DashboardSettings extends Settings
 
     public int $cover_photo_height;
 
+    public array $roster_sort_order;
+
     /**
      * @var string[]
      */

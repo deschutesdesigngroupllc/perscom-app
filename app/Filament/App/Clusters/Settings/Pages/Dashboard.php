@@ -16,6 +16,7 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
@@ -114,13 +115,14 @@ class Dashboard extends SettingsPage
                             ->icon('heroicon-o-user')
                             ->schema([
                                 TextInput::make('cover_photo_height')
+                                    ->label('Cover Photo Height')
                                     ->required()
                                     ->helperText('The pixel height of a cover photo in a user\'s profile.')
                                     ->numeric()
                                     ->suffix('px')
                                     ->default(250),
                                 Select::make('user_hidden_fields')
-                                    ->label('Hidden fields')
+                                    ->label('Hidden Fields')
                                     ->helperText('Choose from a list of user fields that should be hidden from their user profile.')
                                     ->multiple()
                                     ->options(collect([
@@ -155,6 +157,20 @@ class Dashboard extends SettingsPage
                                         'updated_at' => 'Last Updated At',
                                         'deleted_at' => 'Deleted At',
                                     ])->sort()->toArray()),
+                                Repeater::make('roster_sort_order')
+                                    ->label('Roster Sort Order')
+                                    ->reorderable()
+                                    ->addActionLabel('Add New Field')
+                                    ->helperText('Choose the order in which the roster is sorted. Items on the top will be treated as having the most priority.')
+                                    ->simple(Select::make('roster_sort_order')
+                                        ->distinct()
+                                        ->options([
+                                            'ranks.order' => 'Rank',
+                                            'positions.order' => 'Position',
+                                            'specialties.order' => 'Specialty',
+                                            'users.name' => 'Name',
+                                        ])
+                                    ),
                             ]),
                     ]),
             ]);
