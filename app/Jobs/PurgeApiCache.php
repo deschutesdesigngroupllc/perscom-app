@@ -12,7 +12,10 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\Middleware\Skip;
+use Illuminate\Queue\Middleware\WithoutOverlapping;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\App;
 
 class PurgeApiCache implements ShouldQueue
 {
@@ -24,6 +27,19 @@ class PurgeApiCache implements ShouldQueue
     public function __construct(public Model|string $tag, public bool $purgeAll = false)
     {
         $this->onQueue('api');
+    }
+
+    /**
+     * @return Skip[]
+     */
+    public function middleware(): array
+    {
+        return [
+            new WithoutOverlapping($this->tag),
+            Skip::when(function (): bool {
+                return App::environment('local');
+            }),
+        ];
     }
 
     /**
