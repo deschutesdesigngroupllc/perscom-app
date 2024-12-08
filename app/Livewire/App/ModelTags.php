@@ -31,7 +31,6 @@ class ModelTags extends Component implements HasForms, HasTable
     public function table(Table $table): Table
     {
         return $table
-            ->heading('Click on a string to copy it to your clipboard.')
             ->query(ModelTag::query())
             ->columns([
                 Split::make([
