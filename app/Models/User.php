@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\UserObserver;
+use App\Settings\DashboardSettings;
 use App\Traits\CanReceiveNotifications;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
@@ -325,15 +326,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
      */
     public function scopeOrderForRoster(Builder $query): void
     {
+        /** @var DashboardSettings $settings */
+        $settings = app(DashboardSettings::class);
+
         $query
             ->select('users.*')
             ->leftJoin('ranks', 'ranks.id', '=', 'users.rank_id')
             ->leftJoin('positions', 'positions.id', '=', 'users.position_id')
-            ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id')
-            ->orderBy('ranks.order')
-            ->orderBy('positions.order')
-            ->orderBy('specialties.order')
-            ->orderBy('users.name');
+            ->leftJoin('specialties', 'specialties.id', '=', 'users.specialty_id');
+
+        collect($settings->roster_sort_order)->each(fn ($column) => $query->orderBy($column));
     }
 
     /**

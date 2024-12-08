@@ -14,4 +14,11 @@ class IntegrationSettings extends Settings
     {
         return 'integration';
     }
+
+    public static function encrypted(): array
+    {
+        return [
+            'single_sign_on_key',
+        ];
+    }
 }
