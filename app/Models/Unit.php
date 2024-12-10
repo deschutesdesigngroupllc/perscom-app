@@ -41,7 +41,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
- * @property-read ModelNotification $pivot
+ * @property-read UnitSlot $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $primary_assignment_records
@@ -49,6 +49,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Slot> $units
+ * @property-read int|null $units_count
  * @property-read string|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
@@ -108,9 +110,15 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'units_groups')
-            ->withTimestamps()
             ->withPivot(['order'])
             ->ordered()
             ->as(Membership::class);
+    }
+
+    public function slots(): BelongsToMany
+    {
+        return $this->belongsToMany(Slot::class, 'units_slots')
+            ->withPivot(['order'])
+            ->using(UnitSlot::class);
     }
 }

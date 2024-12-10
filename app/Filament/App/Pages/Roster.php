@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages;
 
+use App\Models\Enums\RosterMode;
 use App\Models\Group;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
@@ -29,13 +30,23 @@ class Roster extends Page
 
     protected static ?int $navigationSort = 4;
 
-    protected static string $view = 'filament.app.pages.roster';
-
     protected ?string $subheading = 'An comprehensive overview of your organization\'s personnel.';
 
     public function mount(): void
     {
         $this->data = Group::query()->orderForRoster()->get();
         $this->hiddenFields = SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []);
+    }
+
+    public function getView(): string
+    {
+        /** @var DashboardSettings $settings */
+        $settings = app(DashboardSettings::class);
+
+        if ($settings->roster_mode === RosterMode::MANUAL) {
+            return 'filament.app.pages.roster.manual';
+        }
+
+        return 'filament.app.pages.roster.automatic';
     }
 }

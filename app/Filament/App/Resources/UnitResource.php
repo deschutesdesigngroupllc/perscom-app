@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources;
 
 use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\UnitResource\Pages;
+use App\Filament\App\Resources\UnitResource\RelationManagers\SlotsRelationManager;
 use App\Filament\Exports\UnitExporter;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
@@ -87,6 +88,10 @@ class UnitResource extends BaseResource
                                 IconPicker::make('icon')
                                     ->preload()
                                     ->helperText(new HtmlString('An optional icon for the unit. A list of icons can be found <a href="https://heroicons.com/" target="_blank" class="underline">here</a>.')),
+                                Forms\Components\Livewire::make(SlotsRelationManager::class, fn (?Unit $record) => [
+                                    'ownerRecord' => $record,
+                                    'pageClass' => Pages\EditUnit::class,
+                                ]),
                             ]),
                     ]),
             ]);

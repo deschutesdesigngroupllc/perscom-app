@@ -8,6 +8,7 @@ use App\Actions\ResetTenantSubdomain;
 use App\Actions\UpdateTenantSubdomain;
 use App\Features\CustomSubDomainFeature;
 use App\Filament\App\Clusters\Settings;
+use App\Models\Enums\RosterMode;
 use App\Models\Tenant;
 use App\Rules\SubdomainRule;
 use App\Services\SettingsService;
@@ -16,6 +17,7 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
@@ -162,6 +164,14 @@ class Dashboard extends SettingsPage
                                         'created_at' => 'Joined At',
                                         'updated_at' => 'Last Updated At',
                                     ])->sort()->toArray()),
+                            ]),
+                        Tabs\Tab::make('Roster')
+                            ->icon('heroicon-o-queue-list')
+                            ->schema([
+                                Radio::make('roster_mode')
+                                    ->label('Mode')
+                                    ->required()
+                                    ->options(RosterMode::class),
                                 Repeater::make('roster_sort_order')
                                     ->label('Roster Sort Order')
                                     ->reorderable()

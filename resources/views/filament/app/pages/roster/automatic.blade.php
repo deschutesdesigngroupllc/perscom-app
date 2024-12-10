@@ -16,13 +16,7 @@
     @forelse($data as $index => $group)
       <div x-show="activeTab === 'tab{{ $index }}'" class="text-sm">
         @forelse($group->units as $unit)
-          <div
-            class="flex flex-row space-x-2 items-center justify-center bg-gray-50 dark:bg-gray-950 rounded-md first:rounded-t-none py-2 px-4 ">
-            @if ($unit->icon)
-              <x-filament::icon icon="{{ $unit->icon }}" class="h-5 w-5 text-gray-500 dark:text-gray-400" />
-            @endif
-            <div class="text-center text-gray-950 dark:text-white font-semibold text-sm">{{ $unit->name }}</div>
-          </div>
+          @include('filament.app.pages.roster.components.unit-header', ['unit' => $unit])
           <div class="py-1">
             @forelse($unit->users as $user)
               <a class="flex flex-row items-center space-x-2 sm:space-x-4 p-2 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-md"
@@ -79,25 +73,15 @@
                 </div>
               </a>
             @empty
-              <div class="flex flex-row items-center justify-center p-4">
-                <div class="text-gray-700 dark:text-gray-400 font-normal">No personnel assigned to this unit.</div>
-              </div>
+              @include('filament.app.pages.roster.components.no-personnel-assigned', ['structure' => 'unit'])
             @endforelse
           </div>
         @empty
-          <div class="flex flex-row items-center justify-center p-4">
-            <div class="text-gray-700 dark:text-gray-400 font-normal">No units assigned to this group. Please <a
-                href="{{ \App\Filament\App\Resources\UnitResource::getUrl('create') }}" target="_blank"
-                class="underline font-semibold">create</a> one.</div>
-          </div>
+          @include('filament.app.pages.roster.components.no-units-found')
         @endforelse
       </div>
     @empty
-      <div class="flex flex-row items-center justify-center p-4">
-        <div class="text-gray-700 dark:text-gray-400 font-normal">No groups found. Please <a
-            href="{{ \App\Filament\App\Resources\GroupResource::getUrl('create') }}" target="_blank"
-            class="underline font-semibold">create</a> one.</div>
-      </div>
+      @include('filament.app.pages.roster.components.no-groups-found')
     @endforelse
   </div>
 </x-filament-panels::page>
