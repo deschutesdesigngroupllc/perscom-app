@@ -40,7 +40,7 @@ class RosterController extends Controller
         $query = parent::buildFetchQuery($request, $requestedRelations);
 
         /** @var Group|Builder $query */
-        $query->orderForRoster();
+        $query->forAutomaticRoster();
 
         return $query;
     }

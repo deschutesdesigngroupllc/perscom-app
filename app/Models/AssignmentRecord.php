@@ -29,6 +29,7 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -37,6 +38,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int|null $unit_id
  * @property int|null $position_id
  * @property int|null $specialty_id
+ * @property int|null $unit_slot_id
  * @property int|null $document_id
  * @property int|null $author_id
  * @property AssignmentRecordType|null $type
@@ -62,6 +64,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read Specialty|null $specialty
  * @property-read Status|null $status
  * @property-read Unit|null $unit
+ * @property-read UnitSlot|null $unit_slot
  * @property-read string|null $url
  * @property-read User|null $user
  *
@@ -86,6 +89,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUnitSlotId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUserId($value)
  *
@@ -126,6 +130,7 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
         'unit_id',
         'position_id',
         'specialty_id',
+        'unit_slot_id',
         'type',
         'text',
         'created_at',
@@ -166,6 +171,11 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
     public function recipientForNewsfeedItem(): ?User
     {
         return $this->user;
+    }
+
+    public function unit_slot(): BelongsTo
+    {
+        return $this->belongsTo(UnitSlot::class);
     }
 
     /**

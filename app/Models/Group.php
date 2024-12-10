@@ -45,10 +45,11 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
+ * @method static Builder|Group forAutomaticRoster(?string $groupId = null)
+ * @method static Builder|Group forManualRoster(?string $groupId = null)
  * @method static Builder|Group hidden()
  * @method static Builder|Group newModelQuery()
  * @method static Builder|Group newQuery()
- * @method static Builder|Group orderForRoster(?string $groupId = null)
  * @method static Builder|Group ordered(string $direction = 'asc')
  * @method static Builder|Group query()
  * @method static Builder|Group visible()
@@ -99,7 +100,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     /**
      * @param  Builder<Group>  $query
      */
-    public function scopeOrderForRoster(Builder $query, ?string $groupId = null): void
+    public function scopeForAutomaticRoster(Builder $query, ?string $groupId = null): void
     {
         $query
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
@@ -107,6 +108,20 @@ class Group extends Model implements HasLabel, Hideable, Sortable
                 'units.users' => function ($query) {
                     /** @var User $query */
                     $query->orderForRoster();
+                },
+            ]);
+    }
+
+    /**
+     * @param  Builder<Group>  $query
+     */
+    public function scopeForManualRoster(Builder $query, ?string $groupId = null): void
+    {
+        $query
+            ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
+            ->with([
+                'units.slots' => function ($query) {
+                    $query->with(['assignment_records.user']);
                 },
             ]);
     }

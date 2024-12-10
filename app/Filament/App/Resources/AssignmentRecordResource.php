@@ -13,6 +13,7 @@ use App\Forms\Components\ModelNotification;
 use App\Livewire\App\ViewDocument;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
+use App\Models\Unit;
 use App\Models\User;
 use App\Settings\NotificationSettings;
 use Filament\Forms;
@@ -61,6 +62,7 @@ class AssignmentRecordResource extends BaseResource
                                 Forms\Components\Select::make('type')
                                     ->helperText('The type of assignment record.')
                                     ->required()
+                                    ->live()
                                     ->options(AssignmentRecordType::class)
                                     ->default(AssignmentRecordType::PRIMARY),
                                 Forms\Components\RichEditor::make('text')
@@ -90,29 +92,43 @@ class AssignmentRecordResource extends BaseResource
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
                                 Forms\Components\Select::make('position_id')
+                                    ->hidden(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
                                     ->helperText('If selected, will assign a position change to this assignment record.')
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => PositionResource::form($form)),
                                 Forms\Components\Select::make('specialty_id')
+                                    ->hidden(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
                                     ->helperText('If selected, will assign a specialty change to this assignment record.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => SpecialtyResource::form($form)),
                                 Forms\Components\Select::make('unit_id')
+                                    ->hidden(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
                                     ->helperText('If selected, will assign a unit change to this assignment record.')
                                     ->preload()
                                     ->relationship(name: 'unit', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => UnitResource::form($form)),
                                 Forms\Components\Select::make('status_id')
+                                    ->hidden(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
                                     ->helperText('If selected, will assign a status change to this assignment record.')
                                     ->preload()
                                     ->relationship(name: 'status', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => StatusResource::form($form)),
+                                Forms\Components\Select::make('unit_slot_id')
+                                    ->visible(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
+                                    ->label('Slot')
+                                    ->preload()
+                                    ->searchable()
+                                    ->options(function () {
+                                        return Unit::ordered()->with('slots')->get()->mapWithKeys(function (Unit $unit) {
+                                            return [$unit->name => $unit->slots->pluck('name', 'id')->toArray()];
+                                        })->toArray();
+                                    }),
                             ]),
                         Forms\Components\Tabs\Tab::make('Notifications')
                             ->visible(fn ($operation) => $operation === 'create')
@@ -153,6 +169,9 @@ class AssignmentRecordResource extends BaseResource
                                     ->hidden(fn (?AssignmentRecord $record) => is_null($record->unit)),
                                 Infolists\Components\TextEntry::make('status.name')
                                     ->hidden(fn (?AssignmentRecord $record) => is_null($record->status)),
+                                Infolists\Components\TextEntry::make('unit_slot.slot.name')
+                                    ->label('Slot')
+                                    ->hidden(fn (?AssignmentRecord $record) => is_null($record->unit_slot)),
                                 Infolists\Components\TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -201,6 +220,9 @@ class AssignmentRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status.name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('unit_slot.slot.name')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('document.name')

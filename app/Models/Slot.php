@@ -11,6 +11,7 @@ use App\Traits\HasUsers;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 
@@ -23,6 +24,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
+ * @property-read int|null $assignment_records_count
  * @property-read UnitSlot $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $units
  * @property-read int|null $units_count
@@ -65,6 +68,11 @@ class Slot extends Model implements Hideable, Sortable
         'name',
         'description',
     ];
+
+    public function assignment_records(): HasManyThrough
+    {
+        return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id');
+    }
 
     public function units(): BelongsToMany
     {

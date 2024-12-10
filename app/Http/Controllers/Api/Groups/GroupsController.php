@@ -19,7 +19,7 @@ class GroupsController extends Controller
 
     public function exposedScopes(): array
     {
-        return ['orderForRoster', 'hidden', 'visible'];
+        return ['forAutomaticRoster', 'forManualRoster', 'hidden', 'visible'];
     }
 
     public function includes(): array

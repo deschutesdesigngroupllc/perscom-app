@@ -10,16 +10,10 @@ use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
-use Illuminate\Support\Collection;
 
 class Roster extends Page
 {
     use HasPageShield;
-
-    /**
-     * @var Collection<int, Group>
-     */
-    public Collection $data;
 
     /**
      * @var string[]
@@ -34,7 +28,6 @@ class Roster extends Page
 
     public function mount(): void
     {
-        $this->data = Group::query()->orderForRoster()->get();
         $this->hiddenFields = SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []);
     }
 
@@ -48,5 +41,19 @@ class Roster extends Page
         }
 
         return 'filament.app.pages.roster.automatic';
+    }
+
+    protected function getViewData(): array
+    {
+        $settings = app(DashboardSettings::class);
+        if ($settings->roster_mode === RosterMode::MANUAL) {
+            $groups = Group::query()->forManualRoster()->get();
+        } else {
+            $groups = Group::query()->forAutomaticRoster()->get();
+        }
+
+        return [
+            'groups' => $groups,
+        ];
     }
 }
