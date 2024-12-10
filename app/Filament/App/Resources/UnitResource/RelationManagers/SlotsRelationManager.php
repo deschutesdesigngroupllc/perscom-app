@@ -33,11 +33,17 @@ class SlotsRelationManager extends RelationManager
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
+                    ->label('Add slot')
+                    ->attachAnother(false)
+                    ->multiple()
+                    ->modalHeading('Add slot')
                     ->modalDescription('Attach a slot to this unit.')
+                    ->modalSubmitActionLabel('Add')
                     ->preloadRecordSelect(),
             ])
             ->actions([
-                Tables\Actions\DetachAction::make(),
+                Tables\Actions\DetachAction::make()
+                    ->label('Remove slot'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

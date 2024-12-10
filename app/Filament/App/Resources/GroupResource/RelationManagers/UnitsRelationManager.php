@@ -17,6 +17,7 @@ class UnitsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->description('The group\'s assigned units.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),
@@ -24,6 +25,9 @@ class UnitsRelationManager extends RelationManager
             ->headerActions([
                 Tables\Actions\AttachAction::make()
                     ->label('Add unit')
+                    ->attachAnother(false)
+                    ->multiple()
+                    ->modalDescription('Add unit')
                     ->modalSubmitActionLabel('Add')
                     ->preloadRecordSelect(),
             ])
