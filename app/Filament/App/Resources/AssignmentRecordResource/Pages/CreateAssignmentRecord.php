@@ -6,7 +6,6 @@ namespace App\Filament\App\Resources\AssignmentRecordResource\Pages;
 
 use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Models\AssignmentRecord;
-use App\Models\ServiceRecord;
 use App\Traits\Filament\InteractsWithBatchRecords;
 use App\Traits\Filament\InteractsWithModelNotifications;
 use Filament\Resources\Pages\CreateRecord;
