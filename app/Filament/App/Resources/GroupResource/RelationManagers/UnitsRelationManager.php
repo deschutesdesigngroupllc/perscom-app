@@ -17,7 +17,9 @@ class UnitsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->recordTitleAttribute('name')
             ->description('The group\'s assigned units.')
+            ->emptyStateDescription('Attach a unit to the group to get started.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),
@@ -27,7 +29,8 @@ class UnitsRelationManager extends RelationManager
                     ->label('Add unit')
                     ->attachAnother(false)
                     ->multiple()
-                    ->modalDescription('Add unit')
+                    ->modalHeading('Add unit')
+                    ->modalDescription('Assign a unit to the group.')
                     ->modalSubmitActionLabel('Add')
                     ->preloadRecordSelect(),
             ])
@@ -40,8 +43,6 @@ class UnitsRelationManager extends RelationManager
                     Tables\Actions\DetachBulkAction::make(),
                 ]),
             ])
-            ->reorderable('units_groups.order')
-            ->defaultSort('units_groups.order')
-            ->recordTitleAttribute('name');
+            ->defaultSort('units.order');
     }
 }

@@ -19,7 +19,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Unit::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Slot::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

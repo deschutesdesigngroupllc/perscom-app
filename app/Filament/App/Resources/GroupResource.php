@@ -85,7 +85,7 @@ class GroupResource extends BaseResource
                                 Forms\Components\Livewire::make(RelationManagers\UnitsRelationManager::class, fn (?Group $record) => [
                                     'ownerRecord' => $record,
                                     'pageClass' => Pages\EditGroup::class,
-                                ]),
+                                ])->visibleOn('edit'),
                             ]),
                     ]),
             ]);

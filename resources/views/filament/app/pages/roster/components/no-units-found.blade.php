@@ -1,5 +1,3 @@
-<div class="flex flex-row items-center justify-center p-4">
-  <div class="text-gray-700 dark:text-gray-400 font-normal">No units assigned to this group. Please <a
-      href="{{ \App\Filament\App\Resources\UnitResource::getUrl('create') }}" target="_blank" class="underline font-semibold">create</a> one.
-  </div>
+<div class="flex flex-row items-center justify-center py-4">
+  <div class="text-gray-700 dark:text-gray-400 font-normal">No units assigned to this group.</div>
 </div>

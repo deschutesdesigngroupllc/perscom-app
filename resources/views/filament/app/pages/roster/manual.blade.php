@@ -19,13 +19,14 @@
           @include('filament.app.pages.roster.components.unit-header', ['unit' => $unit])
           <div class="py-1">
             @forelse($unit->slots as $slot)
-                  <div class="ml-2 font-bold">
-                      {{ $slot->name }}
-                  </div>
+              <div class="font-bold">
+                {{ $slot->name }}
+              </div>
               @forelse($slot->users as $user)
-
               @empty
-                @include('filament.app.pages.roster.components.no-personnel-assigned', ['structure' => 'slot'])
+                <div class="flex items-start">
+                  @include('filament.app.pages.roster.components.no-personnel-assigned', ['structure' => 'slot'])
+                </div>
               @endforelse
             @empty
               @include('filament.app.pages.roster.components.no-slots-found')

@@ -14,8 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('units_groups', function (Blueprint $table) {
-            $table->dropColumn('id');
-            $table->dropTimestamps();
+            $table->dropColumn('order');
         });
     }
 
@@ -25,8 +24,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('units_groups', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
+            $table->integer('order')->default(0);
         });
     }
 };

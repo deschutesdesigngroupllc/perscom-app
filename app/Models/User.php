@@ -62,6 +62,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $specialty_id
  * @property int|null $status_id
  * @property int|null $unit_id
+ * @property int|null $slot_id
  * @property bool $approved
  * @property mixed|null $password
  * @property string|null $remember_token
@@ -163,6 +164,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereProfilePhoto($value)
  * @method static Builder|User whereRankId($value)
  * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereSlotId($value)
  * @method static Builder|User whereSpecialtyId($value)
  * @method static Builder|User whereStatusId($value)
  * @method static Builder|User whereUnitId($value)

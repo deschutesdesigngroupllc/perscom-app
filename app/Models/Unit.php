@@ -49,8 +49,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Slot> $units
- * @property-read int|null $units_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Slot> $slots
+ * @property-read int|null $slots_count
  * @property-read string|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
@@ -110,15 +110,12 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'units_groups')
-            ->withPivot(['order'])
-            ->ordered()
-            ->as(Membership::class);
+            ->as(UnitGroup::class);
     }
 
     public function slots(): BelongsToMany
     {
         return $this->belongsToMany(Slot::class, 'units_slots')
-            ->withPivot(['order'])
             ->using(UnitSlot::class);
     }
 }

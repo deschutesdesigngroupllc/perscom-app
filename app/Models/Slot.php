@@ -26,6 +26,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read UnitSlot $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $units
  * @property-read int|null $units_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read int|null $users_count
  *
  * @method static \Database\Factories\SlotFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Slot hidden()
@@ -67,7 +69,6 @@ class Slot extends Model implements Hideable, Sortable
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'units_slots')
-            ->withPivot(['order'])
             ->using(UnitSlot::class);
     }
 }

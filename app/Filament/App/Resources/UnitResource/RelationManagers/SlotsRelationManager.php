@@ -50,7 +50,6 @@ class SlotsRelationManager extends RelationManager
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
-            ->reorderable('units_slots.order')
-            ->defaultSort('units_slots.order');
+            ->defaultSort('slots.order');
     }
 }

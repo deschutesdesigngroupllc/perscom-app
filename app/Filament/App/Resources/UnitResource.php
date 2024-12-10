@@ -76,12 +76,6 @@ class UnitResource extends BaseResource
                         Forms\Components\Tabs\Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')
                             ->schema([
-                                Forms\Components\Select::make('groups')
-                                    ->preload()
-                                    ->multiple()
-                                    ->relationship('groups', 'name')
-                                    ->helperText('The groups this unit belongs to.')
-                                    ->createOptionForm(fn ($form) => GroupResource::form($form)),
                                 Forms\Components\Toggle::make('hidden')
                                     ->helperText('Hide this unit from the roster.')
                                     ->required(),
@@ -91,7 +85,7 @@ class UnitResource extends BaseResource
                                 Forms\Components\Livewire::make(SlotsRelationManager::class, fn (?Unit $record) => [
                                     'ownerRecord' => $record,
                                     'pageClass' => Pages\EditUnit::class,
-                                ]),
+                                ])->visibleOn('edit'),
                             ]),
                     ]),
             ]);
