@@ -15,7 +15,7 @@ class TaskRequest extends Request
     {
         return [
             'title' => 'string|max:255',
-            'description' => 'string|max:65535',
+            'description' => 'nullable|string|max:65535',
             'instructions' => 'nullable|string|max:65535',
             'form_id' => 'nullable|integer|exists:forms,id',
             'updated_at' => 'date',
@@ -31,7 +31,6 @@ class TaskRequest extends Request
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => 'required|string|max:65535',
         ];
     }
 }
