@@ -164,6 +164,9 @@ class TenantResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('url')
                     ->label(__('URL'))
                     ->copyable()
