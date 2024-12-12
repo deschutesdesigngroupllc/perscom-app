@@ -65,6 +65,16 @@ class TenantResource extends Resource
                                     ->url()
                                     ->maxLength(255),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Details')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('last_login_at')
+                                    ->helperText('The last time a user logged into the tenant account.')
+                                    ->nullable(),
+                                Forms\Components\DateTimePicker::make('setup_completed_at')
+                                    ->helperText('The time the account completed initial setup.')
+                                    ->nullable(),
+                            ]),
                         Forms\Components\Tabs\Tab::make('Billing')
                             ->visible(fn ($operation) => $operation !== 'create')
                             ->icon('heroicon-o-credit-card')
@@ -193,6 +203,7 @@ class TenantResource extends Resource
                 Tables\Actions\Action::make('login')
                     ->icon('heroicon-o-arrow-right-end-on-rectangle')
                     ->color('gray')
+                    ->modalDescription('Login to the tenant using the user below.')
                     ->form([
                         Forms\Components\Select::make('user')
                             ->searchable()
