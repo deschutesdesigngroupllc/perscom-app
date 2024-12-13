@@ -84,7 +84,7 @@ class TenantResource extends Resource
                                     ->columnSpanFull()
                                     ->maxLength(255)
                                     ->label('Invoice Emails')
-                                    ->helperText('Separate using a column for multiple email addresses.')
+                                    ->helperText('Separate using a comma for multiple email addresses.')
                                     ->dehydrateStateUsing(fn ($state) => json_encode($state)),
                                 Forms\Components\TextInput::make('billing_address')
                                     ->maxLength(255)
