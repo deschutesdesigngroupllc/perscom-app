@@ -69,9 +69,11 @@ class TenantResource extends Resource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 Forms\Components\DateTimePicker::make('last_login_at')
+                                    ->label('Last Login')
                                     ->helperText('The last time a user logged into the tenant account.')
                                     ->nullable(),
                                 Forms\Components\DateTimePicker::make('setup_completed_at')
+                                    ->label('Setup Completed')
                                     ->helperText('The time the account completed initial setup.')
                                     ->nullable(),
                             ]),
@@ -187,6 +189,7 @@ class TenantResource extends Resource
                     ->label('Subscription')
                     ->badge(),
                 Tables\Columns\TextColumn::make('last_login_at')
+                    ->label('Last Login')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')

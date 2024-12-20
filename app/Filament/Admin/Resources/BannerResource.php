@@ -47,9 +47,11 @@ class BannerResource extends Resource
                             ->icon('heroicon-o-paint-brush')
                             ->schema([
                                 Forms\Components\ColorPicker::make('text_color')
+                                    ->label('Text Color')
                                     ->required()
                                     ->default('#ffffff'),
                                 Forms\Components\ColorPicker::make('background_color')
+                                    ->label('Background Color')
                                     ->required()
                                     ->default('#2563eb'),
                             ]),
