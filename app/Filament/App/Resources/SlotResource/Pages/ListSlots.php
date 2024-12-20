@@ -12,6 +12,8 @@ class ListSlots extends ListRecords
 {
     protected static string $resource = SlotResource::class;
 
+    protected ?string $subheading = 'Slots provide an ordered way to define how personnel should be assigned within a unit.';
+
     protected function getHeaderActions(): array
     {
         return [

@@ -12,6 +12,8 @@ class ListAwards extends ListRecords
 {
     protected static string $resource = AwardResource::class;
 
+    protected ?string $subheading = 'Awards are used to recognize personnel achievements.';
+
     protected function getHeaderActions(): array
     {
         return [

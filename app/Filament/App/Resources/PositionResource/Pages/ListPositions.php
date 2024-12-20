@@ -12,6 +12,8 @@ class ListPositions extends ListRecords
 {
     protected static string $resource = PositionResource::class;
 
+    protected ?string $subheading = 'Positions outline responsibilities assigned to certain personnel.';
+
     protected function getHeaderActions(): array
     {
         return [
