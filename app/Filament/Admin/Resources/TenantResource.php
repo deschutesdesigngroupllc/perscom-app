@@ -13,16 +13,21 @@ use App\Rules\SubdomainRule;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\GlobalSearch\Actions\Action;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Wiebenieuwenhuis\FilamentCodeEditor\Components\CodeEditor;
 
 class TenantResource extends Resource
 {
     protected static ?string $model = Tenant::class;
+
+    protected static ?string $recordTitleAttribute = 'name';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -60,6 +65,18 @@ class TenantResource extends Resource
                                     ->url()
                                     ->maxLength(255),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Details')
+                            ->icon('heroicon-o-information-circle')
+                            ->schema([
+                                Forms\Components\DateTimePicker::make('last_login_at')
+                                    ->label('Last Login')
+                                    ->helperText('The last time a user logged into the tenant account.')
+                                    ->nullable(),
+                                Forms\Components\DateTimePicker::make('setup_completed_at')
+                                    ->label('Setup Completed')
+                                    ->helperText('The time the account completed initial setup.')
+                                    ->nullable(),
+                            ]),
                         Forms\Components\Tabs\Tab::make('Billing')
                             ->visible(fn ($operation) => $operation !== 'create')
                             ->icon('heroicon-o-credit-card')
@@ -69,7 +86,7 @@ class TenantResource extends Resource
                                     ->columnSpanFull()
                                     ->maxLength(255)
                                     ->label('Invoice Emails')
-                                    ->helperText('Separate using a column for multiple email addresses.')
+                                    ->helperText('Separate using a comma for multiple email addresses.')
                                     ->dehydrateStateUsing(fn ($state) => json_encode($state)),
                                 Forms\Components\TextInput::make('billing_address')
                                     ->maxLength(255)
@@ -159,6 +176,9 @@ class TenantResource extends Resource
                     ->copyable()
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('email')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('url')
                     ->label(__('URL'))
                     ->copyable()
@@ -169,6 +189,7 @@ class TenantResource extends Resource
                     ->label('Subscription')
                     ->badge(),
                 Tables\Columns\TextColumn::make('last_login_at')
+                    ->label('Last Login')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -185,6 +206,7 @@ class TenantResource extends Resource
                 Tables\Actions\Action::make('login')
                     ->icon('heroicon-o-arrow-right-end-on-rectangle')
                     ->color('gray')
+                    ->modalDescription('Login to the tenant using the user below.')
                     ->form([
                         Forms\Components\Select::make('user')
                             ->searchable()
@@ -245,6 +267,52 @@ class TenantResource extends Resource
             'index' => Pages\ListTenants::route('/'),
             'create' => Pages\CreateTenant::route('/create'),
             'edit' => Pages\EditTenant::route('/{record}/edit'),
+        ];
+    }
+
+    /**
+     * @param  Tenant  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string|Htmlable
+    {
+        return $record->name;
+    }
+
+    /**
+     * @return string[]
+     */
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['id', 'name', 'email', 'website', 'domains.domain'];
+    }
+
+    /**
+     * @param  Tenant  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'ID' => $record->id,
+            'Tenant' => $record->name,
+            'Email' => $record->email,
+            'URL' => $record->url,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->with(['domains']);
+    }
+
+    /**
+     * @param  Tenant  $record
+     */
+    public static function getGlobalSearchResultActions(Model $record): array
+    {
+        return [
+            Action::make('dashboard')
+                ->openUrlInNewTab()
+                ->url(fn () => $record->url),
         ];
     }
 }
