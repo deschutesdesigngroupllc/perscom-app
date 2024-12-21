@@ -7,7 +7,6 @@ namespace App\Notifications\Channels;
 use App\Features\AdvancedNotificationsFeature;
 use App\Settings\FeatureSettings;
 use Illuminate\Notifications\Notification;
-use Laravel\Octane\Exceptions\DdException;
 use NotificationChannels\Discord\Discord;
 
 class DiscordPublicChannel
@@ -21,8 +20,6 @@ class DiscordPublicChannel
 
     /**
      * @return array<string, mixed>|null
-     *
-     * @throws DdException
      */
     public function send(object $notifiable, Notification $notification): ?array
     {

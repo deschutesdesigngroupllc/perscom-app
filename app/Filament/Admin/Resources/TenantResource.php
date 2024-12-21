@@ -221,11 +221,8 @@ class TenantResource extends Resource
                             ->required(),
                     ])
                     ->action(function (Tables\Actions\Action $action, Tenant $record, array $data) {
-                        if (! method_exists(tenancy(), 'impersonate')) {
-                            return null;
-                        }
-
-                        $token = tenancy()->impersonate($record, data_get($data, 'user'), '/', 'web');
+                        // @phpstan-ignore-next-line
+                        $token = tenancy()->impersonate($record, data_get($data, 'user'), $record->url, 'web');
 
                         return redirect()->to($record->route('tenant.impersonation', [
                             'token' => $token,
