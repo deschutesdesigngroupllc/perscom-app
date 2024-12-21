@@ -118,6 +118,20 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    public function requestId(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): mixed => $this->getExtraProperty('request_id')
+        )->shouldCache();
+    }
+
+    public function traceId(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): mixed => $this->getExtraProperty('trace_id')
+        )->shouldCache();
+    }
+
     /**
      * @return string[]
      */

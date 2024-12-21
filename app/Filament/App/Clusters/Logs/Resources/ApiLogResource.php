@@ -10,12 +10,14 @@ use App\Filament\App\Clusters\Logs\Resources\ApiLogResource\Pages;
 use App\Filament\App\Resources\BaseResource;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Models\ApiLog;
+use App\Models\User;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
@@ -42,7 +44,8 @@ class ApiLogResource extends BaseResource
             ])
             ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                Tables\Columns\TextColumn::make('request_id')
+                    ->copyable()
                     ->label('ID')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('log_name')
@@ -79,6 +82,64 @@ class ApiLogResource extends BaseResource
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
+            ])
+            ->filters([
+                Tables\Filters\SelectFilter::make('author')
+                    ->searchable()
+                    ->preload()
+                    ->multiple()
+                    ->options(User::orderBy('name')->pluck('name', 'id'))
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                filled(data_get($data, 'values')),
+                                function (Builder $query) use ($data) {
+                                    // @phpstan-ignore-next-line
+                                    $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($id) => $query->orWhereMorphRelation('causer', User::class, 'causer_id', '=', $id)));
+                                },
+                            );
+                    }),
+                Tables\Filters\SelectFilter::make('method')
+                    ->multiple()
+                    ->options([
+                        'GET' => 'GET',
+                        'POST' => 'POST',
+                        'PUT' => 'PUT',
+                        'PATCH' => 'PATCH',
+                        'DELETE' => 'DELETE',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                filled(data_get($data, 'values')),
+                                function (Builder $query) use ($data) {
+                                    // @phpstan-ignore-next-line
+                                    $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($method) => $query->orWhereJsonContains('properties->method', $method)));
+                                },
+                            );
+                    }),
+                Tables\Filters\SelectFilter::make('status')
+                    ->multiple()
+                    ->options([
+                        '200' => '200',
+                        '201' => '201',
+                        '400' => '400',
+                        '401' => '401',
+                        '402' => '402',
+                        '403' => '403',
+                        '404' => '404',
+                        '500' => '500',
+                    ])
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                filled(data_get($data, 'values')),
+                                function (Builder $query) use ($data) {
+                                    // @phpstan-ignore-next-line
+                                    $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($status) => $query->orWhereJsonContains('properties->status', (int) $status)));
+                                },
+                            );
+                    }),
             ]);
     }
 
@@ -91,6 +152,12 @@ class ApiLogResource extends BaseResource
                     Tabs\Tab::make('Client')
                         ->icon('heroicon-o-user')
                         ->schema([
+                            TextEntry::make('request_id')
+                                ->copyable()
+                                ->label('Request ID'),
+                            TextEntry::make('trace_id')
+                                ->copyable()
+                                ->label('Trace ID'),
                             TextEntry::make('causer.name')
                                 ->label('Author'),
                             TextEntry::make('created_at')
