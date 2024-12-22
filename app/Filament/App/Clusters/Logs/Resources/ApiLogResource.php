@@ -46,7 +46,7 @@ class ApiLogResource extends BaseResource
             ->columns([
                 Tables\Columns\TextColumn::make('request_id')
                     ->copyable()
-                    ->label('ID')
+                    ->label('Request ID')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('log_name')
                     ->label('Log')
@@ -61,8 +61,6 @@ class ApiLogResource extends BaseResource
                 Tables\Columns\TextColumn::make('causer.name')
                     ->label('Author')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('ipAddress')
-                    ->label('IP Address'),
                 Tables\Columns\TextColumn::make('method')
                     ->badge(),
                 Tables\Columns\TextColumn::make('endpoint')
@@ -99,6 +97,12 @@ class ApiLogResource extends BaseResource
                                 },
                             );
                     }),
+                Tables\Filters\SelectFilter::make('log_name')
+                    ->label('Log')
+                    ->options([
+                        'api' => 'API',
+                        'oauth' => 'OAuth',
+                    ]),
                 Tables\Filters\SelectFilter::make('method')
                     ->multiple()
                     ->options([
@@ -118,28 +122,110 @@ class ApiLogResource extends BaseResource
                                 },
                             );
                     }),
-                Tables\Filters\SelectFilter::make('status')
-                    ->multiple()
-                    ->options([
-                        '200' => '200',
-                        '201' => '201',
-                        '400' => '400',
-                        '401' => '401',
-                        '402' => '402',
-                        '403' => '403',
-                        '404' => '404',
-                        '500' => '500',
-                    ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                filled(data_get($data, 'values')),
-                                function (Builder $query) use ($data) {
-                                    // @phpstan-ignore-next-line
-                                    $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($status) => $query->orWhereJsonContains('properties->status', (int) $status)));
-                                },
-                            );
-                    }),
+                Tables\Filters\QueryBuilder::make()
+                    ->constraints([
+                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('request_id')
+                            ->label('Request ID')
+                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->operators([
+                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                        if ($isInverse) {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->request_id', 'NOT LIKE', "%$text%");
+                                                    }
+                                                );
+                                        } else {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->request_id', 'LIKE', "%$text%");
+                                                    }
+                                                );
+                                        }
+                                    }),
+                            ]),
+                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('trace_id')
+                            ->label('Trace ID')
+                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->operators([
+                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                        if ($isInverse) {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->trace_id', 'NOT LIKE', "%$text%");
+                                                    }
+                                                );
+                                        } else {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->trace_id', 'LIKE', "%$text%");
+                                                    }
+                                                );
+                                        }
+                                    }),
+                            ]),
+                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('endpoint')
+                            ->icon('heroicon-o-globe-alt')
+                            ->operators([
+                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                        if ($isInverse) {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->endpoint', 'NOT LIKE', "%$text%");
+                                                    }
+                                                );
+                                        } else {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->endpoint', 'LIKE', "%$text%");
+                                                    }
+                                                );
+                                        }
+                                    }),
+                            ]),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('created_at')
+                            ->label('Requested'),
+                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('status')
+                            ->icon('heroicon-o-flag')
+                            ->operators([
+                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                        if ($isInverse) {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->status', 'NOT LIKE', "%$text%");
+                                                    }
+                                                );
+                                        } else {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->status', 'LIKE', "%$text%");
+                                                    }
+                                                );
+                                        }
+
+                                    }),
+                            ]),
+                    ]),
             ]);
     }
 

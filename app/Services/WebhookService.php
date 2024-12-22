@@ -8,6 +8,7 @@ use App\Models\Webhook;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Context;
 use Spatie\Activitylog\ActivityLogger;
 use Spatie\WebhookServer\WebhookCall;
 
@@ -18,6 +19,8 @@ class WebhookService
         $payload = [
             'event' => $event,
             'created' => now(),
+            'request_id' => Context::get('request_id'),
+            'trace_id' => Context::get('trace_id'),
         ];
 
         if (is_array($model)) {

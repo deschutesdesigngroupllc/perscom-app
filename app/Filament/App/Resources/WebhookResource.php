@@ -80,6 +80,7 @@ class WebhookResource extends BaseResource
                                 ->label('URL')
                                 ->copyable(),
                             TextEntry::make('description')
+                                ->visible(fn ($state) => filled($state))
                                 ->html(),
                             TextEntry::make('method')
                                 ->badge()

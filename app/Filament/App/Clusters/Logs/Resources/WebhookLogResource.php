@@ -9,6 +9,7 @@ use App\Filament\App\Clusters\Logs;
 use App\Filament\App\Clusters\Logs\Resources\WebhookLogResource\Pages;
 use App\Filament\App\Resources\BaseResource;
 use App\Filament\App\Resources\WebhookResource;
+use App\Models\Enums\WebhookEvent;
 use App\Models\WebhookLog;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
@@ -16,6 +17,7 @@ use Filament\Infolists\Infolist;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Pennant\Feature;
 use Parallax\FilamentSyntaxEntry\SyntaxEntry;
@@ -40,8 +42,9 @@ class WebhookLogResource extends BaseResource
             ])
             ->emptyStateDescription('Create your first webhook to start sending real-time notifications.')
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
+                Tables\Columns\TextColumn::make('request_id')
+                    ->copyable()
+                    ->label('Request ID')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('causer.label')
                     ->label('Resource')
@@ -52,9 +55,11 @@ class WebhookLogResource extends BaseResource
                     ->url(fn (WebhookLog $record) => $record->resource_url),
                 Tables\Columns\TextColumn::make('description')
                     ->label('Webhook')
+                    ->sortable()
                     ->color('gray')
                     ->badge(),
                 Tables\Columns\TextColumn::make('event')
+                    ->sortable()
                     ->color('gray')
                     ->badge()
                     ->getStateUsing(fn (WebhookLog $record) => $record->getExtraProperty('event')),
@@ -64,7 +69,75 @@ class WebhookLogResource extends BaseResource
                     ->label('Sent'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('event')
+                    ->searchable()
+                    ->multiple()
+                    ->options(WebhookEvent::class)
+                    ->query(function (Builder $query, array $data): Builder {
+                        return $query
+                            ->when(
+                                filled(data_get($data, 'values')),
+                                function (Builder $query) use ($data) {
+                                    // @phpstan-ignore-next-line
+                                    $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->event', $event)));
+                                },
+                            );
+                    }),
+                Tables\Filters\QueryBuilder::make()
+                    ->constraints([
+                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('request_id')
+                            ->label('Request ID')
+                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->operators([
+                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                        if ($isInverse) {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->request_id', 'NOT LIKE', "%$text%");
+                                                    }
+                                                );
+                                        } else {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->request_id', 'LIKE', "%$text%");
+                                                    }
+                                                );
+                                        }
+                                    }),
+                            ]),
+                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('trace_id')
+                            ->label('Trace ID')
+                            ->icon('heroicon-o-cloud-arrow-up')
+                            ->operators([
+                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                    ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
+                                        if ($isInverse) {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->trace_id', 'NOT LIKE', "%$text%");
+                                                    }
+                                                );
+                                        } else {
+                                            return $query
+                                                ->when(filled(data_get($settings, 'text')),
+                                                    function (Builder $query) use ($settings) {
+                                                        $text = data_get($settings, 'text');
+                                                        $query->where('properties->trace_id', 'LIKE', "%$text%");
+                                                    }
+                                                );
+                                        }
+                                    }),
+                            ]),
+                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('created_at')
+                            ->label('Sent'),
+                    ]),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -86,11 +159,14 @@ class WebhookLogResource extends BaseResource
                     Tabs\Tab::make('Webhook')
                         ->icon('heroicon-o-cloud-arrow-up')
                         ->schema([
+                            TextEntry::make('request_id')
+                                ->copyable()
+                                ->label('Request ID'),
+                            TextEntry::make('trace_id')
+                                ->copyable()
+                                ->label('Trace ID'),
                             TextEntry::make('created_at')
                                 ->label('Sent'),
-                            TextEntry::make('event')
-                                ->badge()
-                                ->color('gray'),
                             TextEntry::make('causer.label')
                                 ->label('Resource')
                                 ->badge()
@@ -98,6 +174,13 @@ class WebhookLogResource extends BaseResource
                                 ->icon('heroicon-o-arrow-top-right-on-square')
                                 ->iconPosition(IconPosition::After)
                                 ->url(fn (WebhookLog $record) => $record->resource_url),
+                            TextEntry::make('description')
+                                ->label('Webhook')
+                                ->badge()
+                                ->color('gray'),
+                            TextEntry::make('event')
+                                ->badge()
+                                ->color('gray'),
                         ]),
                     Tabs\Tab::make('Payload')
                         ->icon('heroicon-o-code-bracket')
