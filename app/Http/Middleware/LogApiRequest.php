@@ -8,6 +8,7 @@ use App\Models\Activity;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Str;
 use Laravel\Passport\Guards\TokenGuard;
 use Symfony\Component\HttpFoundation\Response;
@@ -45,6 +46,8 @@ class LogApiRequest
             'method' => $request->getMethod(),
             'ip' => $request->getClientIp(),
             'request_headers' => iterator_to_array($request->headers->getIterator()),
+            'request_id' => Context::get('request_id'),
+            'trace_id' => Context::get('trace_id'),
             'body' => optional($request->getContent(), static function ($content) {
                 if (Str::isJson($content)) {
                     return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
