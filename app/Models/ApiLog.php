@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property string|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
- * @property string|null $causer_id
+ * @property string|null $causer_id (DC2Type:guid)
  * @property \Illuminate\Support\Collection|null $properties
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -27,13 +27,16 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
  * @property-read mixed|null $content
  * @property-read string|null $endpoint
+ * @property-read mixed|null $files
  * @property-read \Illuminate\Support\Collection $changes
  * @property-read string|null $ip_address
  * @property-read string|null $method
  * @property-read mixed|null $request_headers
+ * @property-read mixed|null $request_id
  * @property-read mixed|null $response_headers
  * @property-read string|int|null|null $status
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
+ * @property-read mixed|null $trace_id
  *
  * @method static Builder|ApiLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder|ApiLog forBatch(string $batchUuid)
@@ -87,6 +90,13 @@ class ApiLog extends Activity
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('body')
+        )->shouldCache();
+    }
+
+    public function files(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): mixed => $this->getExtraProperty('files')
         )->shouldCache();
     }
 
