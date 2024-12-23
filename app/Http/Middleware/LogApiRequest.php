@@ -50,8 +50,9 @@ class LogApiRequest
             'request_id' => Context::get('request_id'),
             'trace_id' => Context::get('trace_id'),
             'files' => optional($request->allFiles(), function (array $files) {
-                return collect($files)->map(function (UploadedFile $file) {
+                return collect($files)->map(function (UploadedFile $file, $key) {
                     return [
+                        'key' => $key,
                         'name' => $file->getClientOriginalName(),
                         'size' => $file->getSize(),
                         'extension' => $file->getClientOriginalExtension(),

@@ -280,6 +280,7 @@ class ApiLogResource extends BaseResource
                             RepeatableEntry::make('files')
                                 ->visible(fn (?ApiLog $record) => filled($record->files))
                                 ->schema([
+                                    TextEntry::make('key'),
                                     TextEntry::make('name'),
                                     TextEntry::make('size')
                                         ->formatStateUsing(fn ($state) => Number::fileSize($state ?? 0)),
