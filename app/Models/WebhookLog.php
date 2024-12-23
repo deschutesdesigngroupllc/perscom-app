@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property WebhookEvent|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
- * @property string|null $causer_id
+ * @property string|null $causer_id (DC2Type:guid)
  * @property \Illuminate\Support\Collection|null $properties
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -29,8 +29,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
  * @property-read mixed|null $data
  * @property-read \Illuminate\Support\Collection $changes
+ * @property-read mixed|null $request_id
  * @property-read string|null $resource_url
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
+ * @property-read mixed|null $trace_id
  *
  * @method static Builder|WebhookLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder|WebhookLog forBatch(string $batchUuid)

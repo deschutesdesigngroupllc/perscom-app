@@ -12,6 +12,7 @@ use App\Filament\App\Resources\PassportTokenResource;
 use App\Models\ApiLog;
 use App\Models\User;
 use Filament\Infolists\Components\KeyValueEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -19,6 +20,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 use Parallax\FilamentSyntaxEntry\SyntaxEntry;
@@ -263,9 +265,25 @@ class ApiLogResource extends BaseResource
                                 ->label('Headers')
                                 ->keyLabel('Header')
                                 ->valueLabel('Value')
-                                ->getStateUsing(fn (?ApiLog $record) => collect($record->request_headers)->mapWithKeys(fn ($value, $header) => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->toArray()),
+                                ->helperText('Sensitive headers are hidden by default.')
+                                ->getStateUsing(fn (?ApiLog $record) => collect($record->request_headers)
+                                    ->reject(fn ($value, $key) => in_array(Str::lower($key), [
+                                        'authorization',
+                                        '_token',
+                                        'x-csrf-token',
+                                        'x-xsrf-token',
+                                    ]))
+                                    ->mapWithKeys(fn ($value, $header) => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->toArray()
+                                ),
                             SyntaxEntry::make('body')
                                 ->language('json'),
+                            RepeatableEntry::make('files')
+                                ->visible(fn (?ApiLog $record) => filled($record->files))
+                                ->schema([
+                                    TextEntry::make('name'),
+                                    TextEntry::make('size')
+                                        ->formatStateUsing(fn ($state) => Number::fileSize($state ?? 0)),
+                                ]),
                         ]),
                     Tabs\Tab::make('Response')
                         ->icon('heroicon-o-cloud-arrow-down')
