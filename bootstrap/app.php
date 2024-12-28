@@ -78,18 +78,12 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->appendToGroup('landing', [
-            AttachTraceAndRequestId::class,
             SentryContext::class,
             HandleInertiaRequests::class,
         ]);
 
         $middleware->appendToGroup('api', [
-            LogApiResponse::class,
-            AttachTraceAndRequestId::class,
-            SentryContext::class,
-            LogApiRequest::class,
             'throttle:api',
-            CheckApiVersion::class,
         ]);
 
         $middleware->appendToGroup('web', [
@@ -107,6 +101,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->append([
+            AttachTraceAndRequestId::class,
             CheckForMaintenanceMode::class,
             RenderTorchlight::class,
         ]);
