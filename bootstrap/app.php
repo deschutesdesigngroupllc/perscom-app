@@ -26,6 +26,7 @@ use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode;
 use Illuminate\Foundation\Http\Middleware\HandlePrecognitiveRequests;
 use Illuminate\Foundation\Http\Middleware\ValidateCsrfToken;
+use Illuminate\Http\Middleware\SetCacheHeaders;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Routing\Middleware\ThrottleRequests;
@@ -80,6 +81,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->appendToGroup('landing', [
             SentryContext::class,
             HandleInertiaRequests::class,
+            'cache.headers:public;max_age=2592000;etag',
         ]);
 
         $middleware->appendToGroup('api', [
@@ -95,6 +97,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->alias([
             'auth_api' => AuthenticateApi::class,
             'approved' => CheckUserApprovalStatus::class,
+            'cache.headers' => SetCacheHeaders::class,
             'feature' => EnsureFeaturesAreActive::class,
             'scope' => CheckForAnyScope::class,
             'subscribed' => CheckSubscription::class,
