@@ -16,7 +16,7 @@ class ApiHeaders
         $response = $next($request);
 
         $response->headers->set('Surrogate-Control', 'max-age=2592000');
-        $response->headers->remove('Cache-Control');
+        $response->headers->set('Cache-Control', 'no-store, max-age=0, public');
         $response->headers->remove('Pragma');
         $response->headers->remove('Expires');
         $response->setVary('Authorization, X-Perscom-Id');

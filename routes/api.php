@@ -65,6 +65,7 @@ use App\Http\Controllers\Api\Users\UsersStatusController;
 use App\Http\Controllers\Api\Users\UsersStatusRecordsController;
 use App\Http\Controllers\Api\Users\UsersTasksController;
 use App\Http\Controllers\Api\Users\UsersUnitController;
+use App\Http\Middleware\ApiHeaders;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
@@ -82,6 +83,7 @@ Route::group([
         'auth_api',
         InitializeTenancyByRequestData::class,
         PreventAccessFromCentralDomains::class,
+        ApiHeaders::class,
         'subscribed',
         'approved',
     ],

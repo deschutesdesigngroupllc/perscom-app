@@ -87,7 +87,6 @@ return Application::configure(basePath: dirname(__DIR__))
             LogApiResponse::class,
             AttachTraceAndRequestId::class,
             SentryContext::class,
-            ApiHeaders::class,
             LogApiRequest::class,
             'throttle:api',
             CheckApiVersion::class,

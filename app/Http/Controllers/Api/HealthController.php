@@ -17,8 +17,16 @@ class HealthController extends Controller
     {
         $checkResults = $resultStore->latestResults();
 
+        $headers = [
+            'Surrogate-Control' => 'max-age=0',
+        ];
+
+        if (blank($checkResults)) {
+            return response()->json(status: 204)->withHeaders($headers);
+        }
+
         return response()->json([
             'data' => json_decode($checkResults->toJson(), true),
-        ]);
+        ])->withHeaders($headers);
     }
 }
