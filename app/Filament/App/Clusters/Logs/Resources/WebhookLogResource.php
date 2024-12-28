@@ -14,6 +14,7 @@ use App\Models\WebhookLog;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Panel;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -31,6 +32,11 @@ class WebhookLogResource extends BaseResource
     protected static ?string $cluster = Logs::class;
 
     protected static ?string $label = 'Webhook Logs';
+
+    public static function isTenantSubscriptionRequired(Panel $panel): bool
+    {
+        return false;
+    }
 
     public static function table(Table $table): Table
     {

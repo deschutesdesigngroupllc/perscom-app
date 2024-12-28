@@ -16,6 +16,7 @@ use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
+use Filament\Panel;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
@@ -35,6 +36,11 @@ class ApiLogResource extends BaseResource
     protected static ?string $cluster = Logs::class;
 
     protected static ?string $label = 'API Logs';
+
+    public static function isTenantSubscriptionRequired(Panel $panel): bool
+    {
+        return false;
+    }
 
     public static function table(Table $table): Table
     {

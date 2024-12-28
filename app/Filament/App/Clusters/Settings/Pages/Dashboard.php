@@ -23,6 +23,7 @@ use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
+use Filament\Panel;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
@@ -45,6 +46,11 @@ class Dashboard extends SettingsPage
     protected static ?string $title = 'Dashboard Settings';
 
     protected ?string $subheading = 'Settings that focus on configuring and setting up your online dashboard.';
+
+    public static function isTenantSubscriptionRequired(Panel $panel): bool
+    {
+        return false;
+    }
 
     public static function canAccess(): bool
     {

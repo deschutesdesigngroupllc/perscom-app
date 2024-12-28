@@ -7,6 +7,7 @@ namespace App\Filament\App\Clusters;
 use App;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Clusters\Cluster;
+use Filament\Panel;
 use Illuminate\Support\Facades\Auth;
 
 class Settings extends Cluster
@@ -16,6 +17,11 @@ class Settings extends Cluster
     protected static ?string $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 8;
+
+    public static function isTenantSubscriptionRequired(Panel $panel): bool
+    {
+        return false;
+    }
 
     public static function canAccess(): bool
     {
