@@ -13,6 +13,7 @@ use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Filament\Panel;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
@@ -29,6 +30,11 @@ class Organization extends SettingsPage
     protected static string $settings = OrganizationSettings::class;
 
     protected ?string $subheading = 'Account related settings specific to your organizational details.';
+
+    public static function isTenantSubscriptionRequired(Panel $panel): bool
+    {
+        return false;
+    }
 
     public static function canAccess(): bool
     {

@@ -16,6 +16,10 @@ class CustomJwtProvider extends Lcobucci
     {
         parent::__construct($secret ?? config('jwt.secret'), config('jwt.algo'), config('jwt.keys'));
 
+        if (! tenancy()->initialized) {
+            return;
+        }
+
         /** @var IntegrationSettings $settings */
         $settings = app(IntegrationSettings::class);
 

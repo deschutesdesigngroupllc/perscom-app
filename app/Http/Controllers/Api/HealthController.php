@@ -17,6 +17,10 @@ class HealthController extends Controller
     {
         $checkResults = $resultStore->latestResults();
 
+        if (blank($checkResults)) {
+            return response()->json(status: 204);
+        }
+
         return response()->json([
             'data' => json_decode($checkResults->toJson(), true),
         ]);

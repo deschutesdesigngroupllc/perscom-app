@@ -24,6 +24,9 @@ class SpecController extends Controller
         ])->withHeaders([
             'Access-Control-Allow-Origin' => '*',
             'Access-Control-Allow-Methods' => 'GET',
+            'Surrogate-Control' => 'max-age=2592000',
+            'Surrogate-Key' => 'api:specs',
+            'Cache-Control' => 'no-store, max-age=0, public',
         ]);
     }
 }

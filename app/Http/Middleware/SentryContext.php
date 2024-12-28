@@ -84,6 +84,17 @@ class SentryContext
                     $scope->setTag('widget', 'true');
                 });
             }
+
+            if ($request->header('X-Perscom-Sdk') === 'true') {
+                Sentry\configureScope(function (Scope $scope) use ($request): void {
+                    $scope->setTag('sdk', 'true');
+
+                    $scope->setContext('SDK', [
+                        'Name' => 'perscom-php-sdk',
+                        'Version' => $request->header('X-Perscom-Sdk-Version'),
+                    ]);
+                });
+            }
         }
 
         return $next($request);

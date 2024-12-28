@@ -65,7 +65,12 @@ use App\Http\Controllers\Api\Users\UsersStatusController;
 use App\Http\Controllers\Api\Users\UsersStatusRecordsController;
 use App\Http\Controllers\Api\Users\UsersTasksController;
 use App\Http\Controllers\Api\Users\UsersUnitController;
+use App\Http\Middleware\ApiHeaders;
+use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\InitializeTenancyByRequestData;
+use App\Http\Middleware\LogApiRequest;
+use App\Http\Middleware\LogApiResponse;
+use App\Http\Middleware\SentryContext;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -82,6 +87,11 @@ Route::group([
         'auth_api',
         InitializeTenancyByRequestData::class,
         PreventAccessFromCentralDomains::class,
+        CheckApiVersion::class,
+        ApiHeaders::class,
+        LogApiRequest::class,
+        LogApiResponse::class,
+        SentryContext::class,
         'subscribed',
         'approved',
     ],
