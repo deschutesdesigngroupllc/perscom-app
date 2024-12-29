@@ -14,9 +14,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class MessageFactory extends Factory
 {
-    /**
-     * @return array<string, mixed>
-     */
     public function definition(): array
     {
         return [

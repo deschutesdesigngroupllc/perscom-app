@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Observers;
 
 use App\Actions\Notifications\SendSms;
+use App\Metrics\Metric;
+use App\Metrics\UserCreationMetric;
 use App\Models\Enums\WebhookEvent;
 use App\Models\User;
 use App\Models\Webhook;
@@ -43,6 +45,8 @@ class UserObserver
             Notification::send($user, new ApprovalRequired);
             Notification::send(User::role(Utils::getSuperAdminName())->get(), new AdminApprovalRequired($user));
         }
+
+        Metric::increment(UserCreationMetric::class);
     }
 
     public function updated(User $user): void
