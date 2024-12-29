@@ -46,7 +46,7 @@ abstract class Metric
             return (int) $metric
                 ->query()
                 ->when(filled($query), fn (Builder $builder) => value($query, $builder))
-                ->sum('count') ?? 0;
+                ->sum('count');
         });
     }
 
@@ -60,7 +60,7 @@ abstract class Metric
                 ->query()
                 ->when(filled($query), fn (Builder $builder) => value($query, $builder))
                 ->when(blank($query), fn (Builder $builder) => $builder->whereBetween('created_at', [now()->startOfYear(), now()->startOfMonth()]))
-                ->average('count') ?? 0;
+                ->average('count');
         });
     }
 

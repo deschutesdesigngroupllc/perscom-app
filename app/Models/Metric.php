@@ -33,7 +33,7 @@ class Metric extends Model
     use HasFactory;
 
     /**
-     * @var string[]
+     * @var array<int, string>
      */
     protected $fillable = [
         'key',
