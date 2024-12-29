@@ -114,9 +114,6 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
 
     protected $table = 'records_assignments';
 
-    /**
-     * @var string[]
-     */
     protected $attributes = [
         'type' => AssignmentRecordType::PRIMARY,
     ];
