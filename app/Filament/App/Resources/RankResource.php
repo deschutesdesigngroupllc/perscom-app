@@ -111,8 +111,6 @@ class RankResource extends BaseResource
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -120,8 +118,6 @@ class RankResource extends BaseResource
                         ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(RankExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
             ->defaultSort('order')
