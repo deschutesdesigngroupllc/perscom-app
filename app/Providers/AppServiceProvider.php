@@ -39,6 +39,7 @@ use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use Inertia\Inertia;
@@ -351,6 +352,16 @@ class AppServiceProvider extends ServiceProvider
             if ($user?->hasRole(Utils::getSuperAdminName()) && ! request()->routeIs('api.*')) {
                 return true;
             }
+        });
+
+        Number::macro('percentageDifference', function (int $oldValue, int $newValue) {
+            if ($oldValue === 0) {
+                return $newValue > 0
+                    ? 100
+                    : 0;
+            }
+
+            return (($newValue - $oldValue) / $oldValue) * 100;
         });
 
         $socialite = $this->app->make(Factory::class);

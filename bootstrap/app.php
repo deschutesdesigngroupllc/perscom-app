@@ -10,6 +10,7 @@ use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\CheckSubscription;
 use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\HandleInertiaRequests;
+use App\Http\Middleware\IncrementMetrics;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\LogApiRequest;
 use App\Http\Middleware\LogApiResponse;
@@ -104,6 +105,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         $middleware->append([
+            IncrementMetrics::class,
             AttachTraceAndRequestId::class,
             CheckForMaintenanceMode::class,
             RenderTorchlight::class,
