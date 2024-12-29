@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -34,7 +33,6 @@ use Spatie\EloquentSortable\Sortable;
  * @property string|null $icon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
@@ -59,12 +57,10 @@ use Spatie\EloquentSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder|Unit hidden()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Unit onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Unit query()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit visible()
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereHidden($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereIcon($value)
@@ -72,8 +68,6 @@ use Spatie\EloquentSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Unit whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Unit withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -92,7 +86,6 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUsers;
-    use SoftDeletes;
 
     /**
      * @var false[]
@@ -101,13 +94,15 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
         'hidden' => false,
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
         'order',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function groups(): BelongsToMany

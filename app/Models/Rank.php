@@ -18,7 +18,6 @@ use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -30,7 +29,6 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
  * @property-read Image|null $image
@@ -47,20 +45,16 @@ use Spatie\EloquentSortable\Sortable;
  * @method static \Database\Factories\RankFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Rank newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Rank newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Rank onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Rank ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Rank query()
  * @method static \Illuminate\Database\Eloquent\Builder|Rank whereAbbreviation($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rank whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rank whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rank whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rank whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rank whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rank wherePaygrade($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Rank whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Rank withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -77,8 +71,10 @@ class Rank extends Model implements HasLabel, Sortable
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUsers;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
@@ -87,6 +83,5 @@ class Rank extends Model implements HasLabel, Sortable
         'order',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 }

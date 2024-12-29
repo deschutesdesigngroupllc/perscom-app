@@ -15,7 +15,6 @@ use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -140,8 +139,6 @@ class FieldResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->groups(['hidden', 'readonly', 'required', 'type'])
             ->filters([
@@ -151,19 +148,14 @@ class FieldResource extends BaseResource
                 Tables\Filters\SelectFilter::make('type')
                     ->multiple()
                     ->options(FieldType::class),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -174,7 +166,6 @@ class FieldResource extends BaseResource
             ->emptyStateDescription('Attach or create a new field to get started.')
             ->modifyQueryUsing(function (Builder $query) {
                 $query->withoutGlobalScopes([
-                    SoftDeletingScope::class,
                     VisibleScope::class,
                     HiddenScope::class,
                 ]);
@@ -211,7 +202,6 @@ class FieldResource extends BaseResource
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
-                SoftDeletingScope::class,
                 VisibleScope::class,
                 HiddenScope::class,
             ]);

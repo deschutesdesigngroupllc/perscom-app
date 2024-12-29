@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -36,7 +35,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -61,20 +59,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\QualificationRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereQualificationId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -94,16 +88,17 @@ class QualificationRecord extends Model implements HasLabel, SendsModelNotificat
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
-    use SoftDeletes;
 
     protected $table = 'records_qualifications';
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'qualification_id',
         'text',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function qualification(): BelongsTo

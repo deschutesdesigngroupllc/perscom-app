@@ -22,7 +22,6 @@ use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -32,7 +31,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read User|null $author
@@ -62,18 +60,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Document onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Document query()
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Document whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Document withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -93,15 +87,16 @@ class Document extends Model implements HasLabel, Htmlable
     use HasResourceUrl;
     use HasServiceRecords;
     use HasTags;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
         'content',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function toHtml(?User $user = null, mixed $attachedModel = null): string

@@ -26,17 +26,17 @@ class ImagesController extends Controller
 
     public function sortableBy(): array
     {
-        return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'model.*', 'path', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'model.*', 'path', 'created_at', 'updated_at'];
     }
 
     public function searchableBy(): array
     {
-        return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'path', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'path', 'created_at', 'updated_at'];
     }
 
     public function filterableBy(): array
     {
-        return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'model.*', 'path', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'name', 'description', 'filename', 'model_id', 'model_type', 'model.*', 'path', 'created_at', 'updated_at'];
     }
 
     protected function beforeSave(Request $request, Model $entity): void

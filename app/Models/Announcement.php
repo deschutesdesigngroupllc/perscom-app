@@ -19,7 +19,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 /**
@@ -32,7 +31,6 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $expires_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
@@ -45,20 +43,16 @@ use Illuminate\Support\Str;
  * @method static Builder|Announcement global()
  * @method static Builder|Announcement newModelQuery()
  * @method static Builder|Announcement newQuery()
- * @method static Builder|Announcement onlyTrashed()
  * @method static Builder|Announcement query()
  * @method static Builder|Announcement whereColor($value)
  * @method static Builder|Announcement whereContent($value)
  * @method static Builder|Announcement whereCreatedAt($value)
- * @method static Builder|Announcement whereDeletedAt($value)
  * @method static Builder|Announcement whereEnabled($value)
  * @method static Builder|Announcement whereExpiresAt($value)
  * @method static Builder|Announcement whereGlobal($value)
  * @method static Builder|Announcement whereId($value)
  * @method static Builder|Announcement whereTitle($value)
  * @method static Builder|Announcement whereUpdatedAt($value)
- * @method static Builder|Announcement withTrashed()
- * @method static Builder|Announcement withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -72,7 +66,6 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
     use HasModelNotifications;
     use HasResourceLabel;
     use HasResourceUrl;
-    use SoftDeletes;
 
     /**
      * @var array<string, bool>
@@ -82,6 +75,9 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
         'global' => false,
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'title',
         'content',
@@ -89,7 +85,6 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
         'expires_at',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /**

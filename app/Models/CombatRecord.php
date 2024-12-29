@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -34,7 +33,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -58,19 +56,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\CombatRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -90,15 +84,16 @@ class CombatRecord extends Model implements HasLabel, SendsModelNotifications, S
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
-    use SoftDeletes;
 
     protected $table = 'records_combat';
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'text',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function headlineForNewsfeedItem(): string

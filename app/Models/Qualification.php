@@ -17,7 +17,6 @@ use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -27,7 +26,6 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
  * @property-read Image|null $image
@@ -42,18 +40,14 @@ use Spatie\EloquentSortable\Sortable;
  * @method static \Database\Factories\QualificationFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification query()
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -69,14 +63,15 @@ class Qualification extends Model implements HasLabel, Sortable
     use HasQualificationRecords;
     use HasResourceLabel;
     use HasResourceUrl;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
         'order',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 }

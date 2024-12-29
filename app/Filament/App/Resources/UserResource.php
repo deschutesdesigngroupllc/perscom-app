@@ -30,9 +30,7 @@ use Filament\Support\Colors\Color;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
@@ -151,8 +149,6 @@ class UserResource extends BaseResource
                                     ->default(now())
                                     ->required()
                                     ->helperText('The date the user profile was last updated.'),
-                                Forms\Components\DateTimePicker::make('deleted_at')
-                                    ->helperText('The date the user profile was deleted. Warning this will move the profile to the trash. You can undo this by filtering users by deleted records.'),
                                 Forms\Components\DateTimePicker::make('last_seen_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
@@ -387,9 +383,6 @@ class UserResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->hidden(fn () => in_array('updated_at', $hiddenFields))
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->hidden(fn () => in_array('deleted_at', $hiddenFields))
-                    ->sortable(),
             ])
             ->groups(['approved', 'position.name', 'rank.name', 'specialty.name', 'status.name', 'unit.name'])
             ->filters([
@@ -414,7 +407,6 @@ class UserResource extends BaseResource
                     ->relationship('status', 'name')
                     ->preload()
                     ->multiple(),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')
@@ -432,8 +424,6 @@ class UserResource extends BaseResource
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -441,17 +431,7 @@ class UserResource extends BaseResource
                         ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(UserExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 

@@ -24,7 +24,6 @@ class SpecialtyExporter extends Exporter
             ExportColumn::make('order'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
-            ExportColumn::make('deleted_at'),
         ];
     }
 

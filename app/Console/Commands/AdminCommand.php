@@ -120,7 +120,7 @@ class AdminCommand extends Command implements PromptsForMissingInput
         );
 
         if ($confirmed) {
-            Admin::where('id', '=', $id)->forceDelete();
+            Admin::where('id', '=', $id)->delete();
 
             info('The admin has been successfully deleted.');
         }

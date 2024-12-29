@@ -18,7 +18,6 @@ use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -28,7 +27,6 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
@@ -47,18 +45,14 @@ use Spatie\EloquentSortable\Sortable;
  * @method static \Database\Factories\AwardFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Award newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Award newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Award onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Award ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder|Award query()
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Award whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Award whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Award withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Award withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -75,14 +69,15 @@ class Award extends Model implements HasLabel, Sortable
     use HasLogs;
     use HasResourceLabel;
     use HasResourceUrl;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
         'order',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 }

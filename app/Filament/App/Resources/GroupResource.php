@@ -19,7 +19,6 @@ use Guava\FilamentIconPicker\Forms\IconPicker;
 use Guava\FilamentIconPicker\Tables\IconColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
@@ -111,8 +110,6 @@ class GroupResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->recordClasses(fn (?Group $record) => match ($record->hidden) {
                 true => '!border-s-2 !border-s-red-600',
@@ -121,13 +118,10 @@ class GroupResource extends BaseResource
             ->groups(['hidden'])
             ->filters([
                 Tables\Filters\TernaryFilter::make('hidden'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -135,8 +129,6 @@ class GroupResource extends BaseResource
                         ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(GroupExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
             ->reorderable('groups.order');
@@ -146,7 +138,6 @@ class GroupResource extends BaseResource
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
-                SoftDeletingScope::class,
                 VisibleScope::class,
                 HiddenScope::class,
             ]);

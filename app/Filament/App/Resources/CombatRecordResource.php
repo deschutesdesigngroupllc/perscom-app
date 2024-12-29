@@ -22,7 +22,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -123,7 +122,6 @@ class CombatRecordResource extends BaseResource
                                 Infolists\Components\TextEntry::make('author.name'),
                                 Infolists\Components\TextEntry::make('created_at'),
                                 Infolists\Components\TextEntry::make('updated_at'),
-                                Infolists\Components\TextEntry::make('deleted_at'),
                             ]),
                         Infolists\Components\Tabs\Tab::make('Document')
                             ->visible(fn (?CombatRecord $record) => isset($record->document))
@@ -174,8 +172,6 @@ class CombatRecordResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->groups(['user.name', 'document.name'])
             ->filters([
@@ -187,14 +183,11 @@ class CombatRecordResource extends BaseResource
                     ->relationship('document', 'name')
                     ->preload()
                     ->multiple(),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -202,17 +195,7 @@ class CombatRecordResource extends BaseResource
                         ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(CombatRecordExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 

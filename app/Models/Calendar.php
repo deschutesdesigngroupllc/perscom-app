@@ -17,7 +17,6 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -26,7 +25,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $color
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Event> $events
  * @property-read int|null $events_count
  * @property-read string $label
@@ -38,17 +36,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\CalendarFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar query()
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereColor($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -62,14 +56,15 @@ class Calendar extends Model implements HasColor, HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
     use HasTags;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function events(): HasMany

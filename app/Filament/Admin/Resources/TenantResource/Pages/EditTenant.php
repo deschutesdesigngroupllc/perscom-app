@@ -45,8 +45,6 @@ class EditTenant extends EditRecord
                     ]));
                 }),
             Actions\DeleteAction::make(),
-            Actions\ForceDeleteAction::make(),
-            Actions\RestoreAction::make(),
         ];
     }
 }

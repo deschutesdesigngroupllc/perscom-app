@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Casts\AsCollection;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -27,7 +26,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property \Illuminate\Support\Carbon|null $sent_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read Schedule|null $schedule
@@ -36,11 +34,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Message onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Message query()
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereChannels($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereRecipients($value)
@@ -48,8 +44,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereSendAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereSentAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Message withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -60,7 +54,6 @@ class Message extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
     use HasSchedule;
-    use SoftDeletes;
 
     /**
      * @var null[]
@@ -81,7 +74,6 @@ class Message extends Model implements HasLabel
         'sent_at',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /**

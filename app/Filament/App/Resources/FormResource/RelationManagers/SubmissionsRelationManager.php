@@ -22,7 +22,6 @@ class SubmissionsRelationManager extends RelationManager
             ->schema([
                 Infolists\Components\TextEntry::make('created_at'),
                 Infolists\Components\TextEntry::make('updated_at'),
-                Infolists\Components\TextEntry::make('deleted_at'),
             ]);
     }
 
@@ -33,8 +32,6 @@ class SubmissionsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
                     ->sortable(),
             ]);
     }

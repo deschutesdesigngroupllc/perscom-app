@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -47,7 +46,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property AsEnumCollection|null $notifications_channels
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read User|null $author
@@ -73,14 +71,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Event onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Event query()
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereAllDay($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereCalendarId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereContent($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereEnds($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereId($value)
@@ -95,8 +91,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereStarts($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Event whereUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Event withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -116,7 +110,6 @@ class Event extends Model implements HasLabel
     }
     use HasSchedule;
     use HasTags;
-    use SoftDeletes;
 
     /**
      * @var array<string, string|bool>
@@ -128,6 +121,9 @@ class Event extends Model implements HasLabel
         'notifications_enabled' => true,
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'calendar_id',
@@ -146,7 +142,6 @@ class Event extends Model implements HasLabel
         'notifications_channels',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /**

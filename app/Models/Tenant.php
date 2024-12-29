@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Optional;
@@ -51,7 +50,6 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property \Illuminate\Support\Carbon|null $setup_completed_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read Domain|null $custom_domain
  * @property-read Optional|string|null|null $custom_url
  * @property-read string $database_status
@@ -77,7 +75,6 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @method static Builder|Tenant newModelQuery()
  * @method static Builder|Tenant newQuery()
  * @method static Builder|Tenant onGenericTrial()
- * @method static Builder|Tenant onlyTrashed()
  * @method static Builder|Tenant query()
  * @method static Builder|Tenant whereBillingAddress($value)
  * @method static Builder|Tenant whereBillingAddressLine2($value)
@@ -87,7 +84,6 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @method static Builder|Tenant whereBillingState($value)
  * @method static Builder|Tenant whereCreatedAt($value)
  * @method static Builder|Tenant whereData($value)
- * @method static Builder|Tenant whereDeletedAt($value)
  * @method static Builder|Tenant whereEmail($value)
  * @method static Builder|Tenant whereExtraBillingInformation($value)
  * @method static Builder|Tenant whereId($value)
@@ -103,8 +99,6 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @method static Builder|Tenant whereUpdatedAt($value)
  * @method static Builder|Tenant whereVatId($value)
  * @method static Builder|Tenant whereWebsite($value)
- * @method static Builder|Tenant withTrashed()
- * @method static Builder|Tenant withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -119,7 +113,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     use HasFactory;
     use HasFeatures;
     use Notifiable;
-    use SoftDeletes;
 
     protected $appends = [
         'database_status',
@@ -154,7 +147,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             'setup_completed_at',
             'created_at',
             'updated_at',
-            'deleted_at',
         ];
     }
 

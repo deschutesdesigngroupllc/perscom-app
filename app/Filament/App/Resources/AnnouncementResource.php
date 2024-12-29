@@ -19,7 +19,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -116,8 +115,6 @@ class AnnouncementResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->recordClasses(fn (?Announcement $record) => match ($record->enabled) {
                 false => '!border-s-2 !border-s-red-600',
@@ -127,13 +124,10 @@ class AnnouncementResource extends BaseResource
             ->filters([
                 Tables\Filters\TernaryFilter::make('enabled'),
                 Tables\Filters\TernaryFilter::make('global'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -141,8 +135,6 @@ class AnnouncementResource extends BaseResource
                         ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(AnnouncementExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ]);
     }
@@ -151,7 +143,6 @@ class AnnouncementResource extends BaseResource
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
-                SoftDeletingScope::class,
                 EnabledScope::class,
                 DisabledScope::class,
             ]);

@@ -16,7 +16,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -29,7 +28,6 @@ use Illuminate\Support\Facades\Storage;
  * @property string $path
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read string|null $image_url
  * @property-read string $label
  * @property-read Model|Eloquent|null $model
@@ -40,10 +38,8 @@ use Illuminate\Support\Facades\Storage;
  * @method static \Database\Factories\ImageFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Image newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Image newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Image onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Image query()
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereFilename($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereId($value)
@@ -52,8 +48,6 @@ use Illuminate\Support\Facades\Storage;
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image wherePath($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Image whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Image withoutTrashed()
  *
  * @mixin Eloquent
  */
@@ -64,8 +58,10 @@ class Image extends Model implements HasLabel
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
@@ -73,7 +69,6 @@ class Image extends Model implements HasLabel
         'path',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     protected $appends = ['image_url'];

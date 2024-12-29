@@ -19,7 +19,6 @@ class CategoryRequest extends Request
             'resource' => 'string|max:255',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'nullable|date',
         ];
     }
 

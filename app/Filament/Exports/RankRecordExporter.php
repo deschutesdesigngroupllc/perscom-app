@@ -26,7 +26,6 @@ class RankRecordExporter extends Exporter
             ExportColumn::make('type'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
-            ExportColumn::make('deleted_at'),
         ];
     }
 

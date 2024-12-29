@@ -32,7 +32,6 @@ class UserRequest extends Request
             'last_seen_at' => 'nullable|date',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'nullable|date',
         ], $this->getFieldRules());
     }
 

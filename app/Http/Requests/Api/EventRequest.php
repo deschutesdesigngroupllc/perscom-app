@@ -36,7 +36,6 @@ class EventRequest extends Request
             'notifications_channels' => Rule::enum(NotificationChannel::class),
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'nullable|date',
         ];
     }
 

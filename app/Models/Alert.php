@@ -15,7 +15,6 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
@@ -33,18 +32,15 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  *
  * @method static Builder|Alert disabled()
  * @method static Builder|Alert enabled()
  * @method static Builder|Alert newModelQuery()
  * @method static Builder|Alert newQuery()
- * @method static Builder|Alert onlyTrashed()
  * @method static Builder|Alert ordered(string $direction = 'asc')
  * @method static Builder|Alert query()
  * @method static Builder|Alert whereChannels($value)
  * @method static Builder|Alert whereCreatedAt($value)
- * @method static Builder|Alert whereDeletedAt($value)
  * @method static Builder|Alert whereEnabled($value)
  * @method static Builder|Alert whereId($value)
  * @method static Builder|Alert whereLinkText($value)
@@ -53,8 +49,6 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder|Alert whereTitle($value)
  * @method static Builder|Alert whereUpdatedAt($value)
  * @method static Builder|Alert whereUrl($value)
- * @method static Builder|Alert withTrashed()
- * @method static Builder|Alert withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -65,7 +59,6 @@ class Alert extends Model implements Enableable, Sortable
     use CanBeEnabled;
     use CentralConnection;
     use ClearsResponseCache;
-    use SoftDeletes;
     use SortableTrait;
 
     /**
@@ -75,6 +68,9 @@ class Alert extends Model implements Enableable, Sortable
         'enabled' => true,
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'title',
         'message',
@@ -83,7 +79,6 @@ class Alert extends Model implements Enableable, Sortable
         'link_text',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /**

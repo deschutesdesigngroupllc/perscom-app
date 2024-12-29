@@ -24,16 +24,16 @@ class AnnouncementsController extends Controller
 
     public function sortableBy(): array
     {
-        return ['id', 'title', 'content', 'color', 'global', 'enabled', 'expires_at', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'title', 'content', 'color', 'global', 'enabled', 'expires_at', 'created_at', 'updated_at'];
     }
 
     public function searchableBy(): array
     {
-        return ['id', 'title', 'content', 'color', 'global', 'enabled', 'expires_at', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'title', 'content', 'color', 'global', 'enabled', 'expires_at', 'created_at', 'updated_at'];
     }
 
     public function filterableBy(): array
     {
-        return ['id', 'title', 'content', 'color', 'global', 'enabled', 'expires_at', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'title', 'content', 'color', 'global', 'enabled', 'expires_at', 'created_at', 'updated_at'];
     }
 }
