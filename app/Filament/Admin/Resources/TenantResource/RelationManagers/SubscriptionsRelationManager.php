@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources\TenantResource\RelationManagers;
 
+use App\Filament\Admin\Resources\TenantResource;
 use App\Models\Enums\StripeStatus;
 use App\Models\Subscription;
 use App\Models\Tenant;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -63,6 +65,32 @@ class SubscriptionsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('ends_at')
                     ->dateTime()
                     ->sortable(),
+            ])
+            ->actions([
+                Tables\Actions\Action::make('stripe')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->color(Color::hex('#5167FC'))
+                    ->openUrlInNewTab()
+                    ->url(fn (Subscription $record) => $record->stripe_url),
+            ])
+            ->headerActions([
+                Tables\Actions\Action::make('billing')
+                    ->color(Color::hex('#5167FC'))
+                    ->visible(function () {
+                        /** @var Tenant $tenant */
+                        $tenant = $this->getOwnerRecord();
+
+                        return $tenant->hasStripeId();
+                    })
+                    ->openUrlInNewTab()
+                    ->url(function () {
+                        /** @var Tenant $tenant */
+                        $tenant = $this->getOwnerRecord();
+
+                        return $tenant->billingPortalUrl(TenantResource::getUrl('edit', [
+                            'record' => $tenant,
+                        ]));
+                    }),
             ]);
     }
 

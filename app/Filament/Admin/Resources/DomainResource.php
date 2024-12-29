@@ -33,6 +33,8 @@ class DomainResource extends Resource
                     ->required()
                     ->rule(new SubdomainRule)
                     ->unique('domains', 'domain', ignoreRecord: true)
+                    ->prefix(config('app.scheme').'://')
+                    ->suffix(config('app.base_url'))
                     ->maxLength(255),
                 Forms\Components\Select::make('tenant_id')
                     ->helperText('The tenant the domain will resolve to.')

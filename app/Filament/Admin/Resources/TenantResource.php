@@ -58,6 +58,8 @@ class TenantResource extends Resource
                                     ->required()
                                     ->visibleOn('create')
                                     ->rule(new SubdomainRule)
+                                    ->prefix(config('app.scheme').'://')
+                                    ->suffix(config('app.base_url'))
                                     ->maxLength(255),
                                 Forms\Components\TextInput::make('website')
                                     ->helperText('The tenant\'s website.')
@@ -187,6 +189,9 @@ class TenantResource extends Resource
                 Tables\Columns\TextColumn::make('subscription_plan')
                     ->label('Subscription')
                     ->badge(),
+                Tables\Columns\IconColumn::make('customer')
+                    ->boolean()
+                    ->getStateUsing(fn (Tenant $record) => $record->hasStripeId()),
                 Tables\Columns\TextColumn::make('last_login_at')
                     ->label('Last Login')
                     ->dateTime()
@@ -201,6 +206,7 @@ class TenantResource extends Resource
                     ->icon('heroicon-o-arrow-right-end-on-rectangle')
                     ->color('gray')
                     ->modalDescription('Login to the tenant using the user below.')
+                    ->visible(fn (Tenant $record) => $record->setup_completed)
                     ->form([
                         Forms\Components\Select::make('user')
                             ->searchable()

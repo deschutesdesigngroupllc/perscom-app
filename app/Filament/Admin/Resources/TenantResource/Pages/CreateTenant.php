@@ -23,7 +23,7 @@ class CreateTenant extends CreateRecord
                 'domain' => $domain,
             ]);
 
-            unset($data['domain']);
+            data_forget($data, 'domain');
         }
 
         return $tenant;
