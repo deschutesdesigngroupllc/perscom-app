@@ -26,6 +26,7 @@ use App\Models\RankRecord;
 use App\Models\ServiceRecord;
 use App\Models\Specialty;
 use App\Models\Status;
+use App\Models\Submission;
 use App\Models\Tag;
 use App\Models\Task;
 use App\Models\Unit;
@@ -124,6 +125,11 @@ return new class extends Migration
 
         Rank::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Rank $resource) => $resource->deleteQuietly());
         Schema::table('ranks', function (Blueprint $table) {
+            $table->dropSoftDeletes();
+        });
+
+        Submission::withoutGlobalScope(SoftDeletingScope::class)->whereNotNull('deleted_at')->each(fn (Submission $resource) => $resource->deleteQuietly());
+        Schema::table('submissions', function (Blueprint $table) {
             $table->dropSoftDeletes();
         });
 
@@ -263,6 +269,10 @@ return new class extends Migration
         });
 
         Schema::table('ranks', function (Blueprint $table) {
+            $table->softDeletes();
+        });
+
+        Schema::table('submissions', function (Blueprint $table) {
             $table->softDeletes();
         });
 

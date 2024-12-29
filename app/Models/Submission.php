@@ -28,7 +28,6 @@ use Stringable;
  * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property string|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Form $form
@@ -48,7 +47,6 @@ use Stringable;
  * @method static \Illuminate\Database\Eloquent\Builder|Submission status(?mixed $statuses)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Submission whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereFormId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereUpdatedAt($value)
