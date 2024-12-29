@@ -20,6 +20,8 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::disableForeignKeyConstraints();
+
         Event::query()->whereNull('calendar_id')->forceDelete();
         Schema::table('events', function (Blueprint $table) {
             $table->dropForeign('events_calendar_id_foreign');
@@ -85,6 +87,8 @@ return new class extends Migration
         Schema::table('socialite_users', function (Blueprint $table) {
             $table->foreign('user_id')->references('id')->on('users')->cascadeOnDelete();
         });
+
+        Schema::enableForeignKeyConstraints();
     }
 
     public function down()
