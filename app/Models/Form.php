@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -31,7 +30,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $instructions
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
  * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
@@ -50,10 +48,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Form newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Form onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Form query()
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereInstructions($value)
@@ -63,8 +59,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereSubmissionStatusId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereSuccessMessage($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Form whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Form withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -79,8 +73,10 @@ class Form extends Model implements HasLabel, SendsModelNotifications
     use HasResourceLabel;
     use HasResourceUrl;
     use HasTags;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'slug',
@@ -90,7 +86,6 @@ class Form extends Model implements HasLabel, SendsModelNotifications
         'instructions',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /**

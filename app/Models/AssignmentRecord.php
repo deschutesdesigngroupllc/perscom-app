@@ -29,7 +29,6 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -44,7 +43,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -72,7 +70,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\AssignmentRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord position(\App\Models\Position $position)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord specialty(\App\Models\Specialty $specialty)
@@ -81,7 +78,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord wherePositionId($value)
@@ -92,8 +88,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|AssignmentRecord withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -117,14 +111,19 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
     use HasStatus;
     use HasUnit;
     use HasUser;
-    use SoftDeletes;
 
     protected $table = 'records_assignments';
 
+    /**
+     * @var string[]
+     */
     protected $attributes = [
         'type' => AssignmentRecordType::PRIMARY,
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'status_id',
         'unit_id',
@@ -134,7 +133,6 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
         'text',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function headlineForNewsfeedItem(): string

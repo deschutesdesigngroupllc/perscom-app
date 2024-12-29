@@ -25,7 +25,6 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -36,7 +35,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string|null $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -61,20 +59,16 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\AwardRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereAwardId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -94,16 +88,17 @@ class AwardRecord extends Model implements HasLabel, SendsModelNotifications, Sh
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
-    use SoftDeletes;
 
     protected $table = 'records_awards';
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'award_id',
         'text',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function award(): BelongsTo

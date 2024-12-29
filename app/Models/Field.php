@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 use function in_array;
 
@@ -40,7 +39,6 @@ use function in_array;
  * @property ArrayObject|null $options
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
  * @property-read int|null $forms_count
  * @property-read string $label
@@ -54,13 +52,11 @@ use function in_array;
  * @method static \Illuminate\Database\Eloquent\Builder|Field hidden()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Field newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Field onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Field query()
  * @method static \Illuminate\Database\Eloquent\Builder|Field visible()
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereCast($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereDefault($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Field whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereHelp($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereHidden($value)
@@ -75,8 +71,6 @@ use function in_array;
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereRules($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Field whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Field withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Field withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -88,8 +82,10 @@ class Field extends Model implements HasLabel, Hideable
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'key',
@@ -105,7 +101,6 @@ class Field extends Model implements HasLabel, Hideable
         'options',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function validationRules(): Attribute

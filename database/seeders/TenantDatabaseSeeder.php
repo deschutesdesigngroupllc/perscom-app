@@ -54,6 +54,12 @@ class TenantDatabaseSeeder extends Seeder
             ->sequence(fn (Sequence $sequence) => ['title' => "Announcement $sequence->index"])
             ->create();
 
+        Announcement::factory()
+            ->state([
+                'deleted_at' => now(),
+            ])
+            ->create();
+
         $documents = Document::factory()
             ->count(5)
             ->sequence(fn (Sequence $sequence) => ['name' => "Document $sequence->index"])

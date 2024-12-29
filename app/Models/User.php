@@ -40,7 +40,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -76,7 +75,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @property array|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -141,7 +139,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
- * @method static Builder|User onlyTrashed()
  * @method static Builder|User orderForRoster()
  * @method static Builder|User permission($permissions, $without = false)
  * @method static Builder|User query()
@@ -151,7 +148,6 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereCoverPhoto($value)
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereData($value)
- * @method static Builder|User whereDeletedAt($value)
  * @method static Builder|User whereDiscordPrivateChannelId($value)
  * @method static Builder|User whereDiscordUserId($value)
  * @method static Builder|User whereEmail($value)
@@ -171,10 +167,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder|User whereStatusId($value)
  * @method static Builder|User whereUnitId($value)
  * @method static Builder|User whereUpdatedAt($value)
- * @method static Builder|User withTrashed()
  * @method static Builder|User withoutPermission($permissions)
  * @method static Builder|User withoutRole($roles, $guard = null)
- * @method static Builder|User withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -203,8 +197,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use HasStatuses;
     use JwtClaims;
     use Notifiable;
-    use SoftDeletes;
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'email',
@@ -226,7 +222,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'discord_private_channel_id',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     protected $hidden = [

@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -38,7 +37,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property RankRecordType $type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -63,12 +61,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\RankRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereRankId($value)
@@ -76,8 +72,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -97,21 +91,25 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
-    use SoftDeletes;
 
     protected $table = 'records_ranks';
 
+    /**
+     * @var array
+     */
     protected $attributes = [
         'type' => RankRecordType::PROMOTION,
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'rank_id',
         'text',
         'type',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     public function rank(): BelongsTo

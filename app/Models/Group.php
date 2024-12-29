@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -33,7 +32,6 @@ use Spatie\EloquentSortable\Sortable;
  * @property string|null $icon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read Image|null $image
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
  * @property-read int|null $images_count
@@ -50,13 +48,11 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder|Group hidden()
  * @method static Builder|Group newModelQuery()
  * @method static Builder|Group newQuery()
- * @method static Builder|Group onlyTrashed()
  * @method static Builder|Group orderForRoster(?string $groupId = null)
  * @method static Builder|Group ordered(string $direction = 'asc')
  * @method static Builder|Group query()
  * @method static Builder|Group visible()
  * @method static Builder|Group whereCreatedAt($value)
- * @method static Builder|Group whereDeletedAt($value)
  * @method static Builder|Group whereDescription($value)
  * @method static Builder|Group whereHidden($value)
  * @method static Builder|Group whereIcon($value)
@@ -64,8 +60,6 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder|Group whereName($value)
  * @method static Builder|Group whereOrder($value)
  * @method static Builder|Group whereUpdatedAt($value)
- * @method static Builder|Group withTrashed()
- * @method static Builder|Group withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -82,7 +76,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     use HasImages;
     use HasResourceLabel;
     use HasResourceUrl;
-    use SoftDeletes;
 
     /**
      * @var false[]
@@ -91,6 +84,9 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         'hidden' => false,
     ];
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'name',
         'description',
@@ -98,7 +94,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         'icon',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     /**

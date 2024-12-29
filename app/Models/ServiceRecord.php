@@ -24,7 +24,6 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @property int $id
@@ -34,7 +33,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property string $text
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
@@ -58,19 +56,15 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @method static \Database\Factories\ServiceRecordFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord query()
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereDocumentId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -90,15 +84,16 @@ class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, 
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
-    use SoftDeletes;
 
     protected $table = 'records_service';
 
+    /**
+     * @var array<int, string>
+     */
     protected $fillable = [
         'text',
         'created_at',
         'created_at',
-        'deleted_at',
     ];
 
     public function headlineForNewsfeedItem(): string

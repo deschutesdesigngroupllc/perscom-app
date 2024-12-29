@@ -18,7 +18,6 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Stringable;
 
@@ -29,7 +28,7 @@ use Stringable;
  * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
+ * @property string|null $deleted_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Form $form
@@ -45,7 +44,6 @@ use Stringable;
  * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Submission onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission query()
  * @method static \Illuminate\Database\Eloquent\Builder|Submission status(?mixed $statuses)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereCreatedAt($value)
@@ -55,8 +53,6 @@ use Stringable;
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Submission whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Submission withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Submission withoutTrashed()
  *
  * @mixin \Eloquent
  */
@@ -71,7 +67,6 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
     use HasResourceLabel;
     use HasResourceUrl;
     use HasStatuses;
-    use SoftDeletes;
 
     public function __toString(): string
     {
@@ -107,7 +102,6 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
             'user_id',
             'created_at',
             'updated_at',
-            'deleted_at',
         ];
     }
 
