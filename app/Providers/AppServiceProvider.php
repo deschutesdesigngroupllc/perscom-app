@@ -38,6 +38,7 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Number;
 use Illuminate\Support\ServiceProvider;
@@ -156,6 +157,8 @@ class AppServiceProvider extends ServiceProvider
 
             return value($closure, $field);
         });
+
+        DB::prohibitDestructiveCommands(App::isProduction());
 
         Entry::configureUsing(function (Entry $field) {
             $closure = match ($field->getName()) {
