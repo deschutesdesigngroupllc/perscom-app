@@ -12,7 +12,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Support\Optional;
@@ -119,7 +118,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     use HasFactory;
     use HasFeatures;
     use Notifiable;
-    use SoftDeletes;
 
     protected $appends = [
         'database_status',
@@ -154,7 +152,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             'setup_completed_at',
             'created_at',
             'updated_at',
-            'deleted_at',
         ];
     }
 

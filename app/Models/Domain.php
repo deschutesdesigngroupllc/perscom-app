@@ -9,7 +9,6 @@ use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
@@ -50,7 +49,6 @@ class Domain extends BaseDomain
     use CentralConnection;
     use ClearsResponseCache;
     use HasFactory;
-    use SoftDeletes;
 
     protected $fillable = [
         'domain',
@@ -58,7 +56,6 @@ class Domain extends BaseDomain
         'is_custom_subdomain',
         'created_at',
         'updated_at',
-        'deleted_at',
     ];
 
     protected $appends = [
