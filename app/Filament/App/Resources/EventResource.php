@@ -414,7 +414,6 @@ class EventResource extends BaseResource
                     ->multiple()
                     ->relationship('author', 'name'),
                 Tables\Filters\TernaryFilter::make('repeats'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

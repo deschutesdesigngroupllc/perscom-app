@@ -407,7 +407,6 @@ class UserResource extends BaseResource
                     ->relationship('status', 'name')
                     ->preload()
                     ->multiple(),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('approve')

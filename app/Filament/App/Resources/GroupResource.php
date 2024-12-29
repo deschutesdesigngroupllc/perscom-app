@@ -118,7 +118,6 @@ class GroupResource extends BaseResource
             ->groups(['hidden'])
             ->filters([
                 Tables\Filters\TernaryFilter::make('hidden'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

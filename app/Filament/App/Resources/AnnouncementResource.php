@@ -124,7 +124,6 @@ class AnnouncementResource extends BaseResource
             ->filters([
                 Tables\Filters\TernaryFilter::make('enabled'),
                 Tables\Filters\TernaryFilter::make('global'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

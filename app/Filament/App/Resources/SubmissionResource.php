@@ -110,7 +110,6 @@ class SubmissionResource extends BaseResource
                     ->relationship('user', 'name')
                     ->preload()
                     ->multiple(),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

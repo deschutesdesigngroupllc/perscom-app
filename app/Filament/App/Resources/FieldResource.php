@@ -148,7 +148,6 @@ class FieldResource extends BaseResource
                 Tables\Filters\SelectFilter::make('type')
                     ->multiple()
                     ->options(FieldType::class),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

@@ -159,7 +159,6 @@ class AttachmentResource extends BaseResource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('download')

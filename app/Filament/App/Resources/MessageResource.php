@@ -174,7 +174,6 @@ class MessageResource extends BaseResource
                     ->options(NotificationChannel::class)
                     ->modifyQueryUsing(fn (Builder $query, $data) => $query->when(! is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
                 Tables\Filters\TernaryFilter::make('repeats'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

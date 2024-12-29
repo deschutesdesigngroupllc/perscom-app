@@ -151,7 +151,6 @@ class ImageResource extends BaseResource
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\Action::make('open')

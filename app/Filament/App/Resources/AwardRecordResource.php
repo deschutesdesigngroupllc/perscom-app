@@ -202,7 +202,6 @@ class AwardRecordResource extends BaseResource
                     ->relationship('document', 'name')
                     ->preload()
                     ->multiple(),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

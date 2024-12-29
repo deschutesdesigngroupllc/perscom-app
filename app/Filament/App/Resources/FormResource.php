@@ -135,7 +135,6 @@ class FormResource extends BaseResource
             ->filters([
                 Tables\Filters\TernaryFilter::make('is_public')
                     ->label('Public'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),

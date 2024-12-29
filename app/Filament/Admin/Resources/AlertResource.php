@@ -102,7 +102,6 @@ class AlertResource extends Resource
             ->groups(['enabled'])
             ->filters([
                 Tables\Filters\TernaryFilter::make('enabled'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
