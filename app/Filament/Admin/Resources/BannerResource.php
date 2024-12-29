@@ -11,8 +11,6 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class BannerResource extends Resource
 {
@@ -85,8 +83,6 @@ class BannerResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -103,14 +99,6 @@ class BannerResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 

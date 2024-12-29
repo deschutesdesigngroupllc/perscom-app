@@ -29,16 +29,16 @@ class DocumentsController extends Controller
 
     public function sortableBy(): array
     {
-        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at'];
     }
 
     public function searchableBy(): array
     {
-        return ['id', 'author_id', 'name', 'description', 'content', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'author_id', 'name', 'description', 'content', 'created_at', 'updated_at'];
     }
 
     public function filterableBy(): array
     {
-        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'author_id', 'author.*', 'name', 'description', 'content', 'created_at', 'updated_at'];
     }
 }

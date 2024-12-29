@@ -12,9 +12,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
 
@@ -91,8 +89,6 @@ class AwardResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -115,14 +111,6 @@ class AwardResource extends BaseResource
             ])
             ->defaultSort('order')
             ->reorderable('order');
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 
     public static function getPages(): array

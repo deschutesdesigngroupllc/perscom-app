@@ -23,7 +23,6 @@ class FormRequest extends Request
             'instructions' => 'nullable|string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'nullable|date',
         ];
     }
 

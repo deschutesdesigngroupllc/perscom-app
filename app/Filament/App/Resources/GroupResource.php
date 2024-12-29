@@ -19,7 +19,6 @@ use Guava\FilamentIconPicker\Forms\IconPicker;
 use Guava\FilamentIconPicker\Tables\IconColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
@@ -111,8 +110,6 @@ class GroupResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->recordClasses(fn (?Group $record) => match ($record->hidden) {
                 true => '!border-s-2 !border-s-red-600',
@@ -146,7 +143,6 @@ class GroupResource extends BaseResource
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
-                SoftDeletingScope::class,
                 VisibleScope::class,
                 HiddenScope::class,
             ]);

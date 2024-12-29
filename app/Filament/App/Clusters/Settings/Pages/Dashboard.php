@@ -161,7 +161,6 @@ class Dashboard extends SettingsPage
                                         'last_seen_at' => 'Last Online At',
                                         'created_at' => 'Joined At',
                                         'updated_at' => 'Last Updated At',
-                                        'deleted_at' => 'Deleted At',
                                     ])->sort()->toArray()),
                                 Repeater::make('roster_sort_order')
                                     ->label('Roster Sort Order')

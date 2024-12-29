@@ -24,16 +24,16 @@ class CommentsController extends Controller
 
     public function sortableBy(): array
     {
-        return ['id', 'author_id', 'author.*', 'model_id', 'model_type', 'commentable.*', 'comment', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'author_id', 'author.*', 'model_id', 'model_type', 'commentable.*', 'comment', 'created_at', 'updated_at'];
     }
 
     public function searchableBy(): array
     {
-        return ['id', 'author_id', 'model_id', 'model_type', 'comment', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'author_id', 'model_id', 'model_type', 'comment', 'created_at', 'updated_at'];
     }
 
     public function filterableBy(): array
     {
-        return ['id', 'author_id', 'author.*', 'model_id', 'model_type', 'commentable.*', 'comment', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'author_id', 'author.*', 'model_id', 'model_type', 'commentable.*', 'comment', 'created_at', 'updated_at'];
     }
 }

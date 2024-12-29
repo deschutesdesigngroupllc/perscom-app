@@ -16,7 +16,6 @@ use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class MessageResource extends BaseResource
 {
@@ -168,8 +167,6 @@ class MessageResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->groups(['repeats'])
             ->filters([
@@ -205,13 +202,5 @@ class MessageResource extends BaseResource
             'index' => Pages\ListMessages::route('/'),
             'create' => Pages\CreateMessage::route('/create'),
         ];
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 }

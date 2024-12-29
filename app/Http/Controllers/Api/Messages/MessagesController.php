@@ -26,16 +26,16 @@ class MessagesController extends Controller
 
     public function sortableBy(): array
     {
-        return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at'];
     }
 
     public function searchableBy(): array
     {
-        return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at'];
     }
 
     public function filterableBy(): array
     {
-        return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at', 'deleted_at'];
+        return ['id', 'message', 'channels', 'recipients', 'repeats', 'send_at', 'sent_at', 'created_at', 'updated_at'];
     }
 }

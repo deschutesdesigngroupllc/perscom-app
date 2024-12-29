@@ -14,9 +14,7 @@ use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Feature;
@@ -130,8 +128,6 @@ class FormResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->groups([
                 Tables\Grouping\Group::make('is_public')->label('Public'),
@@ -156,14 +152,6 @@ class FormResource extends BaseResource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 

@@ -27,7 +27,6 @@ class FormExporter extends Exporter
             ExportColumn::make('instructions'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
-            ExportColumn::make('deleted_at'),
         ];
     }
 

@@ -23,7 +23,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -165,7 +164,6 @@ class AssignmentRecordResource extends BaseResource
                                 Infolists\Components\TextEntry::make('author.name'),
                                 Infolists\Components\TextEntry::make('created_at'),
                                 Infolists\Components\TextEntry::make('updated_at'),
-                                Infolists\Components\TextEntry::make('deleted_at'),
                             ]),
                         Infolists\Components\Tabs\Tab::make('Document')
                             ->visible(fn (?AssignmentRecord $record) => isset($record->document))
@@ -232,8 +230,6 @@ class AssignmentRecordResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->groups(['user.name', 'type', 'status.name', 'unit.name', 'specialty.name', 'position.name', 'document.name'])
             ->filters([
@@ -281,14 +277,6 @@ class AssignmentRecordResource extends BaseResource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 

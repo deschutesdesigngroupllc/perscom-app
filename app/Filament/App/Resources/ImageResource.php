@@ -18,8 +18,6 @@ use Filament\Infolists\Infolist;
 use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class ImageResource extends BaseResource
@@ -151,8 +149,6 @@ class ImageResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make(),
@@ -177,14 +173,6 @@ class ImageResource extends BaseResource
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
-            ]);
     }
 
     public static function getPages(): array

@@ -79,7 +79,6 @@ class UsersController extends Controller
             'discord_private_channel_id',
             'updated_at',
             'created_at',
-            'deleted_at',
         ];
     }
 
@@ -111,7 +110,6 @@ class UsersController extends Controller
             'discord_private_channel_id',
             'updated_at',
             'created_at',
-            'deleted_at',
         ];
     }
 
@@ -143,7 +141,6 @@ class UsersController extends Controller
             'discord_private_channel_id',
             'updated_at',
             'created_at',
-            'deleted_at',
         ];
     }
 

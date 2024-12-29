@@ -266,7 +266,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             'discord_private_channel_id',
             'created_at',
             'updated_at',
-            'deleted_at',
         ];
     }
 

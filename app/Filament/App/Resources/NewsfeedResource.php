@@ -80,8 +80,6 @@ class NewsfeedResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),

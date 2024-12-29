@@ -20,7 +20,6 @@ class CombatRecordRequest extends Request
             'text' => 'string|max:65535',
             'updated_at' => 'date',
             'created_at' => 'date',
-            'deleted_at' => 'nullable|date',
         ];
     }
 

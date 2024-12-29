@@ -44,7 +44,6 @@ class EventExporter extends Exporter
             ExportColumn::make('registration_deadline'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
-            ExportColumn::make('deleted_at'),
         ];
     }
 

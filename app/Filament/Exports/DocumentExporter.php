@@ -24,7 +24,6 @@ class DocumentExporter extends Exporter
             ExportColumn::make('content'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
-            ExportColumn::make('deleted_at'),
         ];
     }
 

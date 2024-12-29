@@ -14,7 +14,6 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class AlertResource extends Resource
 {
@@ -99,8 +98,6 @@ class AlertResource extends Resource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->groups(['enabled'])
             ->filters([
@@ -138,7 +135,6 @@ class AlertResource extends Resource
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
                 EnabledScope::class,
-                SoftDeletingScope::class,
             ]);
     }
 }

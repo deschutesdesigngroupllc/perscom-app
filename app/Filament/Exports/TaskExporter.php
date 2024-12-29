@@ -24,7 +24,6 @@ class TaskExporter extends Exporter
             ExportColumn::make('form.name'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
-            ExportColumn::make('deleted_at'),
         ];
     }
 

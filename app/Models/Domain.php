@@ -21,7 +21,6 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property bool $is_custom_subdomain
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \Illuminate\Support\Carbon|null $deleted_at
  * @property-read mixed $host
  * @property-read Tenant $tenant
  * @property-read mixed $url
@@ -29,17 +28,13 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder|Domain newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Domain onlyTrashed()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain query()
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Domain whereDeletedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereDomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereIsCustomSubdomain($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereTenantId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Domain whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Domain withTrashed()
- * @method static \Illuminate\Database\Eloquent\Builder|Domain withoutTrashed()
  *
  * @mixin \Eloquent
  */

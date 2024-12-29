@@ -26,7 +26,6 @@ class AnnouncementExporter extends Exporter
             ExportColumn::make('expires_at'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
-            ExportColumn::make('deleted_at'),
         ];
     }
 

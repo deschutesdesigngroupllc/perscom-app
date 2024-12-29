@@ -151,25 +151,6 @@ class AppServiceProvider extends ServiceProvider
                             });
                         });
                 },
-                'deleted_at' => function (Column $field) {
-                    /** @var TextColumn $field */
-                    $field
-                        ->label('Deleted')
-                        ->toggleable(isToggledHiddenByDefault: true)
-                        ->dateTime()
-                        ->timezone(function () {
-                            if (! tenancy()->initialized) {
-                                return config('app.timezone');
-                            }
-
-                            return UserSettingsService::get('timezone', function () {
-                                /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
-
-                                return $settings->timezone ?? config('app.timezone');
-                            });
-                        });
-                },
                 default => null,
             };
 
@@ -200,24 +181,6 @@ class AppServiceProvider extends ServiceProvider
                     /** @var TextEntry $field */
                     $field
                         ->label('Updated')
-                        ->dateTime()
-                        ->timezone(function () {
-                            if (! tenancy()->initialized) {
-                                return config('app.timezone');
-                            }
-
-                            return UserSettingsService::get('timezone', function () {
-                                /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
-
-                                return $settings->timezone ?? config('app.timezone');
-                            });
-                        });
-                },
-                'deleted_at' => function (Entry $field) {
-                    /** @var TextEntry $field */
-                    $field
-                        ->label('Deleted')
                         ->dateTime()
                         ->timezone(function () {
                             if (! tenancy()->initialized) {
@@ -293,24 +256,6 @@ class AppServiceProvider extends ServiceProvider
                                     return $settings->timezone ?? config('app.timezone');
                                 });
                             });
-                    }
-                },
-                'deleted_at' => function (Field $field) {
-                    $field->label('Deleted');
-
-                    if ($field instanceof DateTimePicker) {
-                        $field->timezone(function () {
-                            if (! tenancy()->initialized) {
-                                return config('app.timezone');
-                            }
-
-                            return UserSettingsService::get('timezone', function () {
-                                /** @var OrganizationSettings $settings */
-                                $settings = app(OrganizationSettings::class);
-
-                                return $settings->timezone ?? config('app.timezone');
-                            });
-                        });
                     }
                 },
                 default => null,

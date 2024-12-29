@@ -20,8 +20,6 @@ use Filament\Infolists\Infolist;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Laravel\Pennant\Feature;
 
 class SubmissionResource extends BaseResource
@@ -77,7 +75,6 @@ class SubmissionResource extends BaseResource
                             ->schema([
                                 TextEntry::make('created_at'),
                                 TextEntry::make('updated_at'),
-                                TextEntry::make('deleted_at'),
                             ]),
                         Tabs\Tab::make('')
                             ->icon('heroicon-o-pencil-square')
@@ -106,8 +103,6 @@ class SubmissionResource extends BaseResource
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('deleted_at')
-                    ->sortable(),
             ])
             ->groups(['user.name'])
             ->filters([
@@ -133,14 +128,6 @@ class SubmissionResource extends BaseResource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ]);
-    }
-
-    public static function getEloquentQuery(): Builder
-    {
-        return parent::getEloquentQuery()
-            ->withoutGlobalScopes([
-                SoftDeletingScope::class,
             ]);
     }
 

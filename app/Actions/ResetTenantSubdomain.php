@@ -20,6 +20,6 @@ class ResetTenantSubdomain
         $settings->subdomain = null;
         $settings->save();
 
-        return $tenant->domains()->where('is_custom_subdomain', true)->forceDelete();
+        return $tenant->domains()->where('is_custom_subdomain', true)->delete();
     }
 }
