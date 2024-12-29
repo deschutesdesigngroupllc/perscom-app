@@ -21,7 +21,7 @@ class TenantObserver
         Metric::increment(TenantCreationMetric::class);
     }
 
-    public function deleted(Tenant $tenant): void
+    public function deleting(Tenant $tenant): void
     {
         Notification::send(Admin::all(), new TenantDeleted($tenant->name, $tenant->email));
     }

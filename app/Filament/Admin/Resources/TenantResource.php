@@ -206,6 +206,7 @@ class TenantResource extends Resource
                     ->icon('heroicon-o-arrow-right-end-on-rectangle')
                     ->color('gray')
                     ->modalDescription('Login to the tenant using the user below.')
+                    ->visible(fn (Tenant $record) => $record->setup_completed)
                     ->form([
                         Forms\Components\Select::make('user')
                             ->searchable()

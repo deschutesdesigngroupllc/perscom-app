@@ -24,6 +24,7 @@ class EditTenant extends EditRecord
             Actions\Action::make('login')
                 ->color('gray')
                 ->modalDescription('Login to the tenant using the user below.')
+                ->visible(fn (Tenant $record) => $record->setup_completed)
                 ->form([
                     Forms\Components\Select::make('user')
                         ->searchable()
