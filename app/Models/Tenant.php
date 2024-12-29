@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Optional;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Concerns\HasFeatures;
@@ -62,6 +63,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read int|null $notifications_count
  * @property-read bool $setup_completed
  * @property-read Optional|string|null|null $slug
+ * @property-read string|null $stripe_url
  * @property-read SubscriptionPlanType $subscription_plan
  * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
@@ -231,6 +233,23 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return Attribute::make(
             get: fn (): Optional|string|null => optional($this->domain)->domain
         )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<?string, never>
+     */
+    public function stripeUrl(): Attribute
+    {
+        return Attribute::get(function (): ?string {
+            if (blank($this->stripe_id)) {
+                return null;
+            }
+
+            return match (true) {
+                App::isProduction() => "https://dashboard.stripe.com/customers/$this->stripe_id",
+                default => "https://dashboard.stripe.com/test/customers/$this->stripe_id"
+            };
+        });
     }
 
     /**

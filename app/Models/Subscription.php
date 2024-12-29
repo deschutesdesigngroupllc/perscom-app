@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Observers\SubscriptionObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\App;
 use Laravel\Cashier\Subscription as BaseSubscription;
 use Laravel\Cashier\SubscriptionItem;
 use Spark\Plan;
@@ -29,6 +30,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read int|null $items_count
  * @property-read Tenant|null $owner
  * @property-read string|null $renewal_term
+ * @property-read string|null $stripe_url
  * @property-read Tenant|null $user
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Subscription active()
@@ -72,7 +74,7 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function stripePrice(): Attribute
     {
@@ -93,7 +95,24 @@ class Subscription extends BaseSubscription
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
+     */
+    public function stripeUrl(): Attribute
+    {
+        return Attribute::get(function (): ?string {
+            if (blank($this->stripe_id)) {
+                return null;
+            }
+
+            return match (true) {
+                App::isProduction() => "https://dashboard.stripe.com/subscriptions/$this->stripe_id",
+                default => "https://dashboard.stripe.com/test/subscriptions/$this->stripe_id"
+            };
+        });
+    }
+
+    /**
+     * @return Attribute<?string, never>
      */
     public function renewalTerm(): Attribute
     {

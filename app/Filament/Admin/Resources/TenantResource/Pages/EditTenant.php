@@ -11,6 +11,7 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions;
 use Filament\Forms;
 use Filament\Resources\Pages\EditRecord;
+use Filament\Support\Colors\Color;
 use Illuminate\Database\Eloquent\Builder;
 
 class EditTenant extends EditRecord
@@ -44,6 +45,11 @@ class EditTenant extends EditRecord
                         'token' => $token,
                     ]));
                 }),
+            Actions\Action::make('stripe')
+                ->color(Color::hex('#5167FC'))
+                ->visible(fn (Tenant $record) => $record->hasStripeId())
+                ->openUrlInNewTab()
+                ->url(fn (Tenant $record) => $record->stripe_url),
             Actions\DeleteAction::make(),
         ];
     }
