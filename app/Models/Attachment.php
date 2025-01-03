@@ -35,17 +35,17 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment query()
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereFilename($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Attachment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Attachment whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

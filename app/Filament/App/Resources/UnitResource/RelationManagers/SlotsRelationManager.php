@@ -22,6 +22,7 @@ class SlotsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->allowDuplicates()
             ->recordTitleAttribute('name')
             ->description('The available slots for the unit.')
             ->emptyStateDescription('Attach a slot to the unit to get started.')
@@ -32,9 +33,9 @@ class SlotsRelationManager extends RelationManager
                 //
             ])
             ->headerActions([
+                Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
                     ->label('Add slot')
-                    ->attachAnother(false)
                     ->multiple()
                     ->modalHeading('Add slot')
                     ->modalDescription('Attach a slot to this unit.')

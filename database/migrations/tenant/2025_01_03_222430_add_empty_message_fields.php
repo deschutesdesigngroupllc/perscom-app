@@ -13,8 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('banners', function (Blueprint $table) {
-            $table->string('title')->after('id')->nullable();
+        Schema::table('groups', function (Blueprint $table) {
+            $table->text('empty')->nullable()->after('description');
+        });
+
+        Schema::table('units', function (Blueprint $table) {
+            $table->text('empty')->nullable()->after('description');
         });
     }
 
@@ -23,8 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('banners', function (Blueprint $table) {
-            $table->dropColumn('title');
-        });
+        //
     }
 };

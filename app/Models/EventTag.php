@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $tag_id
  * @property int $event_id
  *
- * @method static \Illuminate\Database\Eloquent\Builder|EventTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|EventTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|EventTag query()
- * @method static \Illuminate\Database\Eloquent\Builder|EventTag whereEventId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|EventTag whereTagId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|EventTag newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|EventTag newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|EventTag query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|EventTag whereEventId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|EventTag whereTagId($value)
  *
  * @mixin \Eloquent
  */

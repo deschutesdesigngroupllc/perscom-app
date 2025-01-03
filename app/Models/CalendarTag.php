@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $tag_id
  * @property int $calendar_id
  *
- * @method static \Illuminate\Database\Eloquent\Builder|CalendarTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CalendarTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CalendarTag query()
- * @method static \Illuminate\Database\Eloquent\Builder|CalendarTag whereCalendarId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CalendarTag whereTagId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CalendarTag newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CalendarTag newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CalendarTag query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CalendarTag whereCalendarId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CalendarTag whereTagId($value)
  *
  * @mixin \Eloquent
  */

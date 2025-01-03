@@ -39,17 +39,17 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\SpecialtyFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty query()
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereAbbreviation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Specialty whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty whereAbbreviation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Specialty whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

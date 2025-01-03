@@ -8,20 +8,20 @@ use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
+ * @property int $id
  * @property int $unit_id
  * @property int $group_id
- * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|UnitGroup newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UnitGroup newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|UnitGroup query()
- * @method static \Illuminate\Database\Eloquent\Builder|UnitGroup whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UnitGroup whereGroupId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UnitGroup whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UnitGroup whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|UnitGroup whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereGroupId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

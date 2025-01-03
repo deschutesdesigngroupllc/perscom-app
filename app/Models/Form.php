@@ -46,19 +46,19 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Form newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Form newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Form query()
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereInstructions($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereIsPublic($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereSubmissionStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereSuccessMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Form whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereInstructions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereIsPublic($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereSlug($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereSubmissionStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereSuccessMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

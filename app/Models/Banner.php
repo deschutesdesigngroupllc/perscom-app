@@ -20,18 +20,18 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Banner newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Banner newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Banner query()
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereBackgroundColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereLinkText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereLinkUrl($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereTextColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Banner whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereBackgroundColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereLinkText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereLinkUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereTextColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Banner whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

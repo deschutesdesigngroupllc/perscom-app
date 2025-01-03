@@ -43,16 +43,16 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\AwardFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Award newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Award newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Award ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Award query()
- * @method static \Illuminate\Database\Eloquent\Builder|Award whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Award whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Award whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Award whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Award whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Award whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

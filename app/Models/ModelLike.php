@@ -22,16 +22,16 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $model
  * @property-read User $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike query()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelLike whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelLike whereUserId($value)
  *
  * @mixin Eloquent
  */

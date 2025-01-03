@@ -25,7 +25,7 @@ use Illuminate\Support\Collection;
  * @property string|null $event
  * @property string|null $subject
  * @property string|null $message
- * @property AsEnumCollection|null $channels
+ * @property Collection<int, NotificationChannel>|null $channels
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read Model|Eloquent|null $group
@@ -33,24 +33,24 @@ use Illuminate\Support\Collection;
  * @property-read Model|Eloquent|null $unit
  * @property-read Model|Eloquent|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification query()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereChannels($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereEvent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereGroupId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereGroupType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereSubject($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereUnitType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelNotification whereUserType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereChannels($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereEvent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereGroupId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereGroupType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereSubject($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereUnitId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereUnitType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelNotification whereUserType($value)
  *
  * @mixin Eloquent
  */

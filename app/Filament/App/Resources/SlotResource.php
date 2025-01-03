@@ -15,7 +15,6 @@ use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
 use Illuminate\Support\Str;
 
 class SlotResource extends BaseResource
@@ -48,6 +47,16 @@ class SlotResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Roster')
+                            ->icon('heroicon-o-queue-list')
+                            ->schema([
+                                Forms\Components\RichEditor::make('empty')
+                                    ->label('Empty Message')
+                                    ->helperText('Display a message when no users occupy the slot.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                            ]),
                     ]),
             ]);
     }
@@ -70,19 +79,14 @@ class SlotResource extends BaseResource
             ])
             ->filters([
                 Tables\Filters\TernaryFilter::make('hidden'),
-                Tables\Filters\TrashedFilter::make(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
-                Tables\Actions\ForceDeleteAction::make(),
-                Tables\Actions\RestoreAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
-                    Tables\Actions\ForceDeleteBulkAction::make(),
-                    Tables\Actions\RestoreBulkAction::make(),
                 ]),
             ])
             ->reorderable('slots.order');
@@ -92,7 +96,6 @@ class SlotResource extends BaseResource
     {
         return parent::getEloquentQuery()
             ->withoutGlobalScopes([
-                SoftDeletingScope::class,
                 VisibleScope::class,
                 HiddenScope::class,
             ]);

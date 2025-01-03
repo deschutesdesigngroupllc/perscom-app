@@ -43,18 +43,18 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\RankFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Rank newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Rank newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Rank ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Rank query()
- * @method static \Illuminate\Database\Eloquent\Builder|Rank whereAbbreviation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank wherePaygrade($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Rank whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereAbbreviation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank wherePaygrade($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

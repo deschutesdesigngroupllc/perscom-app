@@ -22,17 +22,17 @@ use Spatie\EloquentSortable\Sortable;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $model
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Element newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Element newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Element ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Element query()
- * @method static \Illuminate\Database\Eloquent\Builder|Element whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Element whereFieldId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Element whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Element whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Element whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Element whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Element whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereFieldId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

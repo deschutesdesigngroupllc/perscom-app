@@ -17,16 +17,16 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read Document $document
  * @property-read mixed $document_parsed
  *
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory document(\App\Models\Document $document)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentCategory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory document(\App\Models\Document $document)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentCategory whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

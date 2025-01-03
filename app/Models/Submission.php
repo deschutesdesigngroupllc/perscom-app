@@ -25,7 +25,7 @@ use Stringable;
  * @property int $id
  * @property int $form_id
  * @property int $user_id
- * @property array|null $data
+ * @property array<array-key, mixed>|null $data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
@@ -34,23 +34,23 @@ use Stringable;
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read Status|null $status
- * @property-read StatusRecord $record
+ * @property-read StatusRecord|null $record
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read string|null $url
  * @property-read User $user
  *
  * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Submission newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Submission newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Submission query()
- * @method static \Illuminate\Database\Eloquent\Builder|Submission status(?mixed $statuses)
- * @method static \Illuminate\Database\Eloquent\Builder|Submission whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Submission whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Submission whereFormId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Submission whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Submission whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Submission whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission status(?mixed $statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereData($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereFormId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereUserId($value)
  *
  * @mixin \Eloquent
  */

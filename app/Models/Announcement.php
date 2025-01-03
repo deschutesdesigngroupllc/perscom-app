@@ -37,22 +37,22 @@ use Illuminate\Support\Str;
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *
- * @method static Builder|Announcement disabled()
- * @method static Builder|Announcement enabled()
+ * @method static Builder<static>|Announcement disabled()
+ * @method static Builder<static>|Announcement enabled()
  * @method static \Database\Factories\AnnouncementFactory factory($count = null, $state = [])
- * @method static Builder|Announcement global()
- * @method static Builder|Announcement newModelQuery()
- * @method static Builder|Announcement newQuery()
- * @method static Builder|Announcement query()
- * @method static Builder|Announcement whereColor($value)
- * @method static Builder|Announcement whereContent($value)
- * @method static Builder|Announcement whereCreatedAt($value)
- * @method static Builder|Announcement whereEnabled($value)
- * @method static Builder|Announcement whereExpiresAt($value)
- * @method static Builder|Announcement whereGlobal($value)
- * @method static Builder|Announcement whereId($value)
- * @method static Builder|Announcement whereTitle($value)
- * @method static Builder|Announcement whereUpdatedAt($value)
+ * @method static Builder<static>|Announcement global()
+ * @method static Builder<static>|Announcement newModelQuery()
+ * @method static Builder<static>|Announcement newQuery()
+ * @method static Builder<static>|Announcement query()
+ * @method static Builder<static>|Announcement whereColor($value)
+ * @method static Builder<static>|Announcement whereContent($value)
+ * @method static Builder<static>|Announcement whereCreatedAt($value)
+ * @method static Builder<static>|Announcement whereEnabled($value)
+ * @method static Builder<static>|Announcement whereExpiresAt($value)
+ * @method static Builder<static>|Announcement whereGlobal($value)
+ * @method static Builder<static>|Announcement whereId($value)
+ * @method static Builder<static>|Announcement whereTitle($value)
+ * @method static Builder<static>|Announcement whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

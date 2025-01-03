@@ -19,17 +19,17 @@ use Spatie\LaravelSettings\Models\SettingsProperty;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Settings newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Settings newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Settings query()
- * @method static \Illuminate\Database\Eloquent\Builder|Settings whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Settings whereGroup($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Settings whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Settings whereLocked($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Settings whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Settings wherePayload($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Settings whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Settings whereValue($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings whereGroup($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings whereLocked($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings wherePayload($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Settings whereValue($value)
  *
  * @mixin \Eloquent
  */

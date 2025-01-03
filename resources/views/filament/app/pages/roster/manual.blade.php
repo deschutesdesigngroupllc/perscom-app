@@ -26,15 +26,22 @@
                 @include('filament.app.pages.roster.components.user', ['user' => $assignmentRecord->user])
               @empty
                 <div class="flex items-start">
-                  @include('filament.app.pages.roster.components.no-personnel-assigned', ['structure' => 'slot'])
+                  @include('filament.app.pages.roster.components.no-personnel-assigned', [
+                      'structure' => 'slot',
+                      'message' => $slot->empty,
+                  ])
                 </div>
               @endforelse
             @empty
-              @include('filament.app.pages.roster.components.no-slots-found')
+              @include('filament.app.pages.roster.components.no-slots-found', [
+                  'message' => $unit->empty,
+              ])
             @endforelse
           </div>
         @empty
-          @include('filament.app.pages.roster.components.no-units-found')
+          @include('filament.app.pages.roster.components.no-units-found', [
+              'message' => $group->empty,
+          ])
         @endforelse
       </div>
     @empty

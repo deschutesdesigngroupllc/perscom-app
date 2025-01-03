@@ -21,8 +21,8 @@ enum RosterMode: string implements HasDescription, HasLabel
     public function getDescription(): ?string
     {
         return match ($this) {
-            RosterMode::AUTOMATIC => 'The roster must be manually built by configuring groups, units and assigning available personnel slots to specific roster locations. ',
-            RosterMode::MANUAL => 'The roster will be built automatically based on the groups and units that are created. Personnel will be sorted according to the roster sort order.'
+            RosterMode::MANUAL => 'The roster must be manually built by configuring groups, units and assigning available personnel slots to specific roster locations. ',
+            RosterMode::AUTOMATIC => 'The roster will be built automatically based on the groups and units that are created. Personnel will be sorted according to the roster sort order.'
         };
     }
 }

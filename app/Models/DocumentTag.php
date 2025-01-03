@@ -13,12 +13,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read Document $document
  * @property-read mixed $document_parsed
  *
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentTag document(\App\Models\Document $document)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentTag query()
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentTag whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|DocumentTag whereTagId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag document(\App\Models\Document $document)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag whereTagId($value)
  *
  * @mixin \Eloquent
  */

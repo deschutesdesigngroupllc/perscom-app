@@ -27,6 +27,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $id
  * @property string $name
  * @property string|null $description
+ * @property string|null $empty
  * @property int $order
  * @property bool $hidden
  * @property string|null $icon
@@ -36,7 +37,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
- * @property-read ModelNotification $pivot
+ * @property-read ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Group> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read string|null $relative_url
@@ -45,22 +46,23 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
- * @method static Builder|Group forAutomaticRoster(?string $groupId = null)
- * @method static Builder|Group forManualRoster(?string $groupId = null)
- * @method static Builder|Group hidden()
- * @method static Builder|Group newModelQuery()
- * @method static Builder|Group newQuery()
- * @method static Builder|Group ordered(string $direction = 'asc')
- * @method static Builder|Group query()
- * @method static Builder|Group visible()
- * @method static Builder|Group whereCreatedAt($value)
- * @method static Builder|Group whereDescription($value)
- * @method static Builder|Group whereHidden($value)
- * @method static Builder|Group whereIcon($value)
- * @method static Builder|Group whereId($value)
- * @method static Builder|Group whereName($value)
- * @method static Builder|Group whereOrder($value)
- * @method static Builder|Group whereUpdatedAt($value)
+ * @method static Builder<static>|Group forAutomaticRoster(?string $groupId = null)
+ * @method static Builder<static>|Group forManualRoster(?string $groupId = null)
+ * @method static Builder<static>|Group hidden()
+ * @method static Builder<static>|Group newModelQuery()
+ * @method static Builder<static>|Group newQuery()
+ * @method static Builder<static>|Group ordered(string $direction = 'asc')
+ * @method static Builder<static>|Group query()
+ * @method static Builder<static>|Group visible()
+ * @method static Builder<static>|Group whereCreatedAt($value)
+ * @method static Builder<static>|Group whereDescription($value)
+ * @method static Builder<static>|Group whereEmpty($value)
+ * @method static Builder<static>|Group whereHidden($value)
+ * @method static Builder<static>|Group whereIcon($value)
+ * @method static Builder<static>|Group whereId($value)
+ * @method static Builder<static>|Group whereName($value)
+ * @method static Builder<static>|Group whereOrder($value)
+ * @method static Builder<static>|Group whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -91,6 +93,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     protected $fillable = [
         'name',
         'description',
+        'empty',
         'order',
         'icon',
         'created_at',

@@ -51,20 +51,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord author(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord document(\App\Models\Document $document)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\CombatRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|CombatRecord whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|CombatRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */

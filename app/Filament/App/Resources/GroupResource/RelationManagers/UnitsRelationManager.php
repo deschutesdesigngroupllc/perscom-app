@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\GroupResource\RelationManagers;
 
+use App\Filament\App\Resources\UnitResource;
+use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -13,6 +15,11 @@ class UnitsRelationManager extends RelationManager
     protected static string $relationship = 'units';
 
     protected static ?string $icon = 'heroicon-o-rectangle-stack';
+
+    public function form(Form $form): Form
+    {
+        return UnitResource::form($form);
+    }
 
     public function table(Table $table): Table
     {
@@ -25,6 +32,7 @@ class UnitsRelationManager extends RelationManager
                     ->sortable(),
             ])
             ->headerActions([
+                Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
                     ->label('Add unit')
                     ->attachAnother(false)
@@ -35,6 +43,7 @@ class UnitsRelationManager extends RelationManager
                     ->preloadRecordSelect(),
             ])
             ->actions([
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DetachAction::make()
                     ->label('Remove unit'),
             ])

@@ -26,18 +26,18 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read Model|Eloquent|null $commentable
  * @property-read string $label
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Comment author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment author(\App\Models\User $user)
  * @method static \Database\Factories\CommentFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Comment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Comment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Comment query()
- * @method static \Illuminate\Database\Eloquent\Builder|Comment whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Comment whereComment($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Comment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Comment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Comment whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Comment whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Comment whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereComment($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

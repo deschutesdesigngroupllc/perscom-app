@@ -25,7 +25,9 @@
             @endforelse
           </div>
         @empty
-          @include('filament.app.pages.roster.components.no-units-found')
+          @include('filament.app.pages.roster.components.no-units-found', [
+              'message' => $group->empty,
+          ])
         @endforelse
       </div>
     @empty

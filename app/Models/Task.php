@@ -29,21 +29,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read string|null $url
- * @property-read TaskAssignment $assignment
+ * @property-read TaskAssignment|null $assignment
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Task newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Task newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Task query()
- * @method static \Illuminate\Database\Eloquent\Builder|Task whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Task whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Task whereFormId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Task whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Task whereInstructions($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Task whereTitle($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Task whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereFormId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereInstructions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereTitle($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Task whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

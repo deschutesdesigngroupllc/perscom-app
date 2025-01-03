@@ -56,22 +56,22 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord author(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord document(\App\Models\Document $document)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\RankRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereRankId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|RankRecord whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereRankId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */

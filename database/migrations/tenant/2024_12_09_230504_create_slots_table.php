@@ -17,10 +17,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->text('description')->nullable();
+            $table->text('empty')->nullable();
             $table->integer('order')->default(0);
             $table->boolean('hidden')->default(false);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

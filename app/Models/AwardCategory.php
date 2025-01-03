@@ -14,15 +14,15 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory whereAwardId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardCategory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereAwardId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

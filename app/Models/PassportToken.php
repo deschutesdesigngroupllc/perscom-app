@@ -12,7 +12,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @property int|null $user_id
  * @property string $client_id
  * @property string|null $name
- * @property array|null $scopes
+ * @property array<array-key, mixed>|null $scopes
  * @property mixed|null $token
  * @property bool $revoked
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -23,19 +23,19 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @property-read User|null $user
  *
  * @method static \Database\Factories\PassportTokenFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken query()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereClientId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereExpiresAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereRevoked($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereScopes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportToken whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereClientId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereExpiresAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereRevoked($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereScopes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportToken whereUserId($value)
  *
  * @mixin \Eloquent
  */

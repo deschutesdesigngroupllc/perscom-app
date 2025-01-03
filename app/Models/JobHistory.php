@@ -14,14 +14,14 @@ use Illuminate\Database\Eloquent\Model;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|JobHistory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|JobHistory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|JobHistory query()
- * @method static \Illuminate\Database\Eloquent\Builder|JobHistory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|JobHistory whereFinishedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|JobHistory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|JobHistory whereJob($value)
- * @method static \Illuminate\Database\Eloquent\Builder|JobHistory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHistory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHistory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHistory query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHistory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHistory whereFinishedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHistory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHistory whereJob($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|JobHistory whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
