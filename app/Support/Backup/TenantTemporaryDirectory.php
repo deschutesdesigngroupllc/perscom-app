@@ -6,7 +6,7 @@ namespace App\Support\Backup;
 
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 
-class TenantTemporaryDirectory extends TemporaryDirectory implements \Spatie\Backup\Contracts\TemporaryDirectory
+class TenantTemporaryDirectory extends TemporaryDirectory
 {
     public function __construct()
     {

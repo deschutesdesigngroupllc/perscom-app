@@ -13,8 +13,10 @@ use App\Forms\Components\ModelNotification;
 use App\Livewire\App\ViewDocument;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
+use App\Models\Enums\RosterMode;
 use App\Models\Unit;
 use App\Models\User;
+use App\Settings\DashboardSettings;
 use App\Settings\NotificationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -41,6 +43,10 @@ class AssignmentRecordResource extends BaseResource
 
     public static function form(Form $form): Form
     {
+        /** @var DashboardSettings $settings */
+        $settings = app(DashboardSettings::class);
+        $rosterMode = $settings->roster_mode;
+
         return $form
             ->schema([
                 Forms\Components\Tabs::make()
@@ -92,43 +98,44 @@ class AssignmentRecordResource extends BaseResource
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
                                 Forms\Components\Select::make('position_id')
-                                    ->hidden(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
-                                    ->helperText('If selected, will assign a position change to this assignment record.')
+                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->helperText('If selected, the user(s) will be assigned the position when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => PositionResource::form($form)),
                                 Forms\Components\Select::make('specialty_id')
-                                    ->hidden(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
-                                    ->helperText('If selected, will assign a specialty change to this assignment record.')
+                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->helperText('If selected, the user(s) will be assigned the specialty when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => SpecialtyResource::form($form)),
                                 Forms\Components\Select::make('unit_id')
-                                    ->hidden(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
-                                    ->helperText('If selected, will assign a unit change to this assignment record.')
+                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->helperText('If selected, the user(s) will be assigned to the unit when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'unit', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => UnitResource::form($form)),
-                                Forms\Components\Select::make('status_id')
-                                    ->hidden(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
-                                    ->helperText('If selected, will assign a status change to this assignment record.')
-                                    ->preload()
-                                    ->relationship(name: 'status', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn ($form) => StatusResource::form($form)),
                                 Forms\Components\Select::make('unit_slot_id')
-                                    ->visible(fn (Forms\Get $get) => $get('type') === AssignmentRecordType::SLOT)
+                                    ->visible(fn () => $rosterMode === RosterMode::MANUAL)
+                                    ->required(fn () => $rosterMode === RosterMode::MANUAL)
+                                    ->helperText('The slot the user will be assigned to.')
                                     ->label('Slot')
                                     ->preload()
                                     ->searchable()
                                     ->options(function () {
                                         return Unit::ordered()->with('slots')->get()->mapWithKeys(function (Unit $unit) {
-                                            return [$unit->name => $unit->slots->pluck('name', 'id')->toArray()];
+                                            return [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()];
                                         })->toArray();
                                     }),
+                                Forms\Components\Select::make('status_id')
+                                    ->helperText('If selected, the user(s) will be assigned the status when the record is created.')
+                                    ->preload()
+                                    ->relationship(name: 'status', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => StatusResource::form($form)),
                             ]),
                         Forms\Components\Tabs\Tab::make('Notifications')
                             ->visible(fn ($operation) => $operation === 'create')

@@ -23,7 +23,7 @@
                 {{ $slot->name }}
               </div>
               @forelse($slot->assignment_records as $assignmentRecord)
-                @include('filament.app.pages.roster.components.user', ['user' => $assignmentRecord->user])
+                @include('filament.app.pages.roster.components.user', ['user' => $assignmentRecord->user, 'mode' => $mode])
               @empty
                 <div class="flex items-start">
                   @include('filament.app.pages.roster.components.no-personnel-assigned', [

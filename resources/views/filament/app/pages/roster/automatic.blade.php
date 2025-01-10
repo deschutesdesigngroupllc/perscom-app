@@ -21,7 +21,10 @@
             @forelse($unit->users as $user)
               @include('filament.app.pages.roster.components.user', ['user' => $user])
             @empty
-              @include('filament.app.pages.roster.components.no-personnel-assigned', ['structure' => 'unit'])
+              @include('filament.app.pages.roster.components.no-personnel-assigned', [
+                  'structure' => 'unit',
+                  'message' => $unit->empty,
+              ])
             @endforelse
           </div>
         @empty

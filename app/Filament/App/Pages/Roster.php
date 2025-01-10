@@ -54,6 +54,7 @@ class Roster extends Page
 
         return [
             'groups' => $groups,
+            'mode' => $settings->roster_mode->value,
         ];
     }
 }

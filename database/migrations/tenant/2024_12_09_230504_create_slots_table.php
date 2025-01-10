@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('slots', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('position_id')->nullable()->constrained('positions')->nullOnDelete();
+            $table->foreignId('specialty_id')->nullable()->constrained('specialties')->nullOnDelete();
             $table->text('description')->nullable();
             $table->text('empty')->nullable();
             $table->integer('order')->default(0);

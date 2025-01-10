@@ -10765,12 +10765,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/jonerickson/laravel-backup.git",
-                "reference": "2eb117c5581984742c6262b79df5a80a3a0e3937"
+                "reference": "92f9a1856fafda4b2020b286f18ca0faba638e1c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jonerickson/laravel-backup/zipball/2eb117c5581984742c6262b79df5a80a3a0e3937",
-                "reference": "2eb117c5581984742c6262b79df5a80a3a0e3937",
+                "url": "https://api.github.com/repos/jonerickson/laravel-backup/zipball/92f9a1856fafda4b2020b286f18ca0faba638e1c",
+                "reference": "92f9a1856fafda4b2020b286f18ca0faba638e1c",
                 "shasum": ""
             },
             "require": {
@@ -10877,7 +10877,7 @@
                     "url": "https://spatie.be/open-source/support-us"
                 }
             ],
-            "time": "2024-10-01T03:11:26+00:00"
+            "time": "2025-01-10T02:27:44+00:00"
         },
         {
             "name": "spatie/laravel-data",

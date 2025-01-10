@@ -47,6 +47,22 @@ class SlotResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
+                        Forms\Components\Tabs\Tab::make('Assignment')
+                            ->icon('heroicon-o-rectangle-stack')
+                            ->schema([
+                                Forms\Components\Select::make('position_id')
+                                    ->helperText('If selected, a user will be assigned the position when an assignment record is created for the slot.')
+                                    ->preload()
+                                    ->relationship(name: 'position', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => PositionResource::form($form)),
+                                Forms\Components\Select::make('specialty_id')
+                                    ->helperText('If selected, a user will be assigned the specialty when an assignment record is created for the slot.')
+                                    ->preload()
+                                    ->relationship(name: 'specialty', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form) => SpecialtyResource::form($form)),
+                            ]),
                         Forms\Components\Tabs\Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')
                             ->schema([
@@ -74,6 +90,10 @@ class SlotResource extends BaseResource
                     ->wrap()
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('position.name')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('specialty.name')
+                    ->sortable(),
                 Tables\Columns\ToggleColumn::make('hidden')
                     ->sortable(),
             ])

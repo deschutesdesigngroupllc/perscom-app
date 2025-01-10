@@ -12,7 +12,6 @@ enum AssignmentRecordType: string implements HasColor, HasLabel
 {
     case PRIMARY = 'primary';
     case SECONDARY = 'secondary';
-    case SLOT = 'slot';
 
     public function getLabel(): string
     {
@@ -24,7 +23,6 @@ enum AssignmentRecordType: string implements HasColor, HasLabel
         return match ($this) {
             self::PRIMARY => 'success',
             self::SECONDARY => 'info',
-            self::SLOT => 'gray'
         };
     }
 }
