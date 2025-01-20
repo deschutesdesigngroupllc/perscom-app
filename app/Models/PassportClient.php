@@ -28,9 +28,9 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property-read int|null $auth_codes_count
  * @property-read string|null $plain_secret
  * @property-read Image|null $image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
  * @property-read int|null $images_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read User|null $user
  *

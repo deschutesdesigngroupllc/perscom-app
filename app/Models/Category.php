@@ -20,16 +20,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $resource
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Award> $awards
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Award> $awards
  * @property-read int|null $awards_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Document> $documents
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read int|null $documents_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms
  * @property-read int|null $forms_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Qualification> $qualifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Qualification> $qualifications
  * @property-read int|null $qualifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Rank> $ranks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Rank> $ranks
  * @property-read int|null $ranks_count
  * @property-read string|null $relative_url
  * @property-read string|null $url

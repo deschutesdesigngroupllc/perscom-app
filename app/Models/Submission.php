@@ -28,14 +28,14 @@ use Stringable;
  * @property array|null $data
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Form $form
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read Status|null $status
  * @property-read StatusRecord $record
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read string|null $url
  * @property-read User $user

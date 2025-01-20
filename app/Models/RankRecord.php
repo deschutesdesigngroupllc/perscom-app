@@ -37,19 +37,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property RankRecordType $type
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read User|null $author
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Document|null $document
  * @property-read mixed $document_parsed
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $logs
  * @property-read int|null $logs_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read Rank|null $rank
  * @property-read string|null $relative_url

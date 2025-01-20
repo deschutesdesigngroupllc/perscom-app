@@ -13,7 +13,7 @@ class UsersOverview extends StatsOverviewWidget
 {
     protected static ?int $sort = -3;
 
-    protected static ?string $heading = 'New Users';
+    protected ?string $heading = 'New Users';
 
     protected function getStats(): array
     {

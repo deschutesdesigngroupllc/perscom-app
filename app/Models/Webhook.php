@@ -18,9 +18,9 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $secret
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $logs
  * @property-read int|null $logs_count
  *
  * @method static \Database\Factories\WebhookFactory factory($count = null, $state = [])

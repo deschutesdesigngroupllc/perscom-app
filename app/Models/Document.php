@@ -31,28 +31,28 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $content
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read User|null $author
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AwardRecord> $award_records
  * @property-read int|null $award_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
  * @property-read int|null $categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CombatRecord> $combat_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CombatRecord> $combat_records
  * @property-read int|null $combat_records_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord> $qualification_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, RankRecord> $rank_records
  * @property-read int|null $rank_records_count
  * @property-read string|null $relative_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord> $service_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ServiceRecord> $service_records
  * @property-read int|null $service_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  * @property-read string|null $url
  *

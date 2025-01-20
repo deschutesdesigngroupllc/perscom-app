@@ -46,25 +46,25 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property AsEnumCollection|null $notifications_channels
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read User|null $author
  * @property-read Calendar|null $calendar
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Comment> $comments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read bool $has_passed
  * @property-read Image|null $image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
  * @property-read mixed $length
  * @property-read EventRegistration $registration
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $registrations
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $registrations
  * @property-read int|null $registrations_count
  * @property-read string|null $relative_url
  * @property-read string|null $resource_url
  * @property-read Schedule|null $schedule
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Event author(\App\Models\User $user)
