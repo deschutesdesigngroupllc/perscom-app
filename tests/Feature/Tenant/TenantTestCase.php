@@ -105,7 +105,7 @@ class TenantTestCase extends TestCase
     {
         $database = $this->app->make('db');
 
-        $this->app->instance('db.transactions', $transactionsManager = new DatabaseTransactionsManager);
+        $this->app->instance('db.transactions', $transactionsManager = new DatabaseTransactionsManager(['tenant']));
 
         $connection = $database->connection('tenant');
         $connection->setTransactionManager($transactionsManager);

@@ -20,6 +20,15 @@ class ApiCacheService
         $this->tenant ??= tenant();
     }
 
+    public static function tagForModel(Model $model, bool $stripKey = false): string
+    {
+        if ($stripKey) {
+            return (new self)->getCachePrefix($model);
+        }
+
+        return (new self)->getCacheTag($model);
+    }
+
     public function getCacheTag(Model $model): string
     {
         return $this->getCachePrefix($model).':'.$model->getKey();
@@ -45,18 +54,6 @@ class ApiCacheService
         }
 
         return $tags->unique();
-    }
-
-    public function purgeCacheForModel(Model $model, bool $purgeAll = false): array
-    {
-        $tags = collect();
-        $tags->push($this->getCacheTag($model));
-
-        if ($purgeAll) {
-            $tags->push($this->getCachePrefix($model));
-        }
-
-        return $this->purgeCacheForTags($tags);
     }
 
     public function purgeCacheForTags(Collection|string $tags): array
