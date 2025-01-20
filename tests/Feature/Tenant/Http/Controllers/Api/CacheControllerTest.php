@@ -31,7 +31,7 @@ class CacheControllerTest extends TenantTestCase
             ]);
 
         Queue::assertPushed(PurgeApiCache::class, function (PurgeApiCache $job) {
-            return $job->tag === "tenant:{$this->tenant->getTenantKey()}";
+            return $job->tags === "tenant:{$this->tenant->getTenantKey()}";
         });
     }
 
