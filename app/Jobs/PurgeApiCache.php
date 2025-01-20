@@ -7,14 +7,13 @@ namespace App\Jobs;
 use App\Exceptions\ApiCacheException;
 use App\Services\ApiCacheService;
 use Illuminate\Contracts\Queue\ShouldQueue;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\Skip;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
-use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 
 class PurgeApiCache implements ShouldQueue
@@ -22,20 +21,19 @@ class PurgeApiCache implements ShouldQueue
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
-    use SerializesModels;
 
-    public function __construct(public Model|string $tag, public bool $purgeAll = false)
+    protected string $overlapHash;
+
+    public function __construct(public Collection|string $tags, public string $event)
     {
+        $this->overlapHash = Collection::wrap($this->tags)->implode(',');
         $this->onQueue('api');
     }
 
-    /**
-     * @return Skip[]
-     */
     public function middleware(): array
     {
         return [
-            new WithoutOverlapping($this->tag),
+            new WithoutOverlapping($this->overlapHash),
             Skip::when(function (): bool {
                 return App::environment('local');
             }),
@@ -49,11 +47,7 @@ class PurgeApiCache implements ShouldQueue
     {
         $apiService = new ApiCacheService;
 
-        if ($this->tag instanceof Model) {
-            $responses = $apiService->purgeCacheForModel($this->tag, $this->purgeAll);
-        } else {
-            $responses = $apiService->purgeCacheForTags($this->tag);
-        }
+        $responses = $apiService->purgeCacheForTags($this->tags);
 
         foreach ($responses as $response) {
             if (! $response->successful()) {
