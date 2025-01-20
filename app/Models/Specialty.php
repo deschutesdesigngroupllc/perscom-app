@@ -26,16 +26,16 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
  * @property-read string|null $relative_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
  * @property-read string|null $url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\SpecialtyFactory factory($count = null, $state = [])

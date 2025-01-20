@@ -39,12 +39,12 @@ use function in_array;
  * @property ArrayObject|null $options
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Form> $forms
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms
  * @property-read int|null $forms_count
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read string|null $url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
  * @property-read string|null $validation_rules
  *

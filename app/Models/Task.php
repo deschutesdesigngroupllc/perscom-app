@@ -23,14 +23,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property int|null $form_id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read Form|null $form
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read string|null $url
  * @property-read TaskAssignment $assignment
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])

@@ -30,18 +30,18 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property string|null $instructions
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
  * @property-read int|null $categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Field> $fields
  * @property-read int|null $fields_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read string|null $relative_url
  * @property-read Status|null $submission_status
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Submission> $submissions
  * @property-read int|null $submissions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Tag> $tags
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  * @property-read string|null $url
  *

@@ -33,24 +33,24 @@ use Spatie\EloquentSortable\Sortable;
  * @property string|null $icon
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Group> $groups
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Group> $groups
  * @property-read int|null $groups_count
  * @property-read Image|null $image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
  * @property-read ModelNotification $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $modelNotifications
  * @property-read int|null $model_notifications_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
  * @property-read string|null $relative_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
  * @property-read string|null $url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\User> $users
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\UnitFactory factory($count = null, $state = [])

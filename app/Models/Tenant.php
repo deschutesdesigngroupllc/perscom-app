@@ -55,7 +55,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read Optional|string|null|null $custom_url
  * @property-read string $database_status
  * @property-read Domain|null $domain
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Domain> $domains
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Domain> $domains
  * @property-read int|null $domains_count
  * @property-read Domain|null $fallback_domain
  * @property-read Optional|string|null|null $fallback_url
@@ -65,7 +65,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read Optional|string|null|null $slug
  * @property-read string|null $stripe_url
  * @property-read SubscriptionPlanType $subscription_plan
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Subscription> $subscriptions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  * @property-read Optional|string|null|null $url
  * @property string|null $tenancy_db_name

@@ -75,21 +75,21 @@ use Spatie\Permission\Traits\HasRoles;
  * @property array|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Attachment> $attachments
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AwardRecord> $award_records
  * @property-read int|null $award_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportClient> $clients
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportClient> $clients
  * @property-read int|null $clients_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\CombatRecord> $combat_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CombatRecord> $combat_records
  * @property-read int|null $combat_records_count
  * @property-read string|null $cover_photo_url
  * @property-read EventRegistration $registration
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Event> $events
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Event> $events
  * @property-read int|null $events_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Field> $fields
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Field> $fields
  * @property-read int|null $fields_count
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
@@ -100,38 +100,38 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read mixed $online
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Permission> $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
  * @property-read int|null $permissions_count
  * @property-read Position|null $position
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $primary_assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
  * @property-read string $profile_photo_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\QualificationRecord> $qualification_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
  * @property-read Rank|null $rank
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\RankRecord> $rank_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, RankRecord> $rank_records
  * @property-read int|null $rank_records_count
  * @property-read string|null $relative_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Role> $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Role> $roles
  * @property-read int|null $roles_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AssignmentRecord> $secondary_assignment_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ServiceRecord> $service_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ServiceRecord> $service_records
  * @property-read int|null $service_records_count
  * @property-read Specialty|null $specialty
  * @property-read Status|null $status
  * @property-read StatusRecord $record
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Status> $statuses
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Status> $statuses
  * @property-read int|null $statuses_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Submission> $submissions
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Submission> $submissions
  * @property-read int|null $submissions_count
  * @property-read TaskAssignment $assignment
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Task> $tasks
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @property-read int|null $tasks_count
  * @property-read CarbonInterval|null $time_in_assignment
  * @property-read CarbonInterval|null $time_in_grade
  * @property-read CarbonInterval $time_in_service
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\PassportToken> $tokens
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read Unit|null $unit
  * @property-read string|null $url

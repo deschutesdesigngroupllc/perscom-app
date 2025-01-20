@@ -27,17 +27,17 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $activities
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\AwardRecord> $award_records
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AwardRecord> $award_records
  * @property-read int|null $award_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Category> $categories
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
  * @property-read int|null $categories_count
  * @property-read Image|null $image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Activity> $logs
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $logs
  * @property-read int|null $logs_count
  * @property-read string|null $relative_url
  * @property-read string|null $url

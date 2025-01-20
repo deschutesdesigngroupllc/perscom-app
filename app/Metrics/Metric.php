@@ -17,6 +17,8 @@ abstract class Metric
     public static function increment(string $class, int $amount = 1): int
     {
         return with(new $class, function (Metric $metric) use ($amount) {
+            $metric->ensureMetricExists();
+
             return $metric
                 ->query()
                 ->whereDate('created_at', now()->startOfDay())
@@ -30,6 +32,8 @@ abstract class Metric
     public static function decrement(string $class, int $amount = 1): int
     {
         return with(new $class, function (Metric $metric) use ($amount) {
+            $metric->ensureMetricExists();
+
             return $metric
                 ->query()
                 ->whereDate('created_at', now()->startOfDay())
@@ -73,17 +77,22 @@ abstract class Metric
 
     public function query(): Builder
     {
-        $result = BaseMetric::query()
+        return BaseMetric::query()
             ->where('key', $this->key());
+    }
 
-        if (! $result->exists()) {
-            $result->create([
+    protected function ensureMetricExists(): void
+    {
+        $exists = $this->query()
+            ->whereDate('created_at', now()->startOfDay())
+            ->exists();
+
+        if (! $exists) {
+            $this->query()->create([
                 'key' => $this->key(),
                 'count' => 0,
                 'created_at' => now()->startOfDay(),
             ]);
         }
-
-        return $result;
     }
 }

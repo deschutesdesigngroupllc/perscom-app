@@ -33,14 +33,14 @@ use Spatie\EloquentSortable\Sortable;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read Image|null $image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Image> $images
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
  * @property-read ModelNotification $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Group> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read string|null $relative_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Unit> $units
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $units
  * @property-read int|null $units_count
  * @property-read string|null $url
  *

@@ -32,7 +32,7 @@ use Illuminate\Support\Str;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\ModelNotification> $modelNotifications
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read string|null $relative_url
  * @property-read string|null $url

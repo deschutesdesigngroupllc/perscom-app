@@ -21,7 +21,7 @@ return new class extends Migration
                 $table->string('social_driver')->nullable();
                 $table->string('social_token')->nullable();
                 $table->string('social_refresh_token')->nullable();
-                //$table->string('password')->nullable()->change();
+                // $table->string('password')->nullable()->change();
             });
         });
     }
