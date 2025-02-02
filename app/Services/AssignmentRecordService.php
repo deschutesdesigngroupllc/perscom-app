@@ -6,11 +6,13 @@ namespace App\Services;
 
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
-use Closure;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Traits\Conditionable;
 
 class AssignmentRecordService
 {
+    use Conditionable;
+
     public static function process(AssignmentRecord $record): ?AssignmentRecord
     {
         if (blank($record->user)) {
@@ -21,32 +23,41 @@ class AssignmentRecordService
             return $record;
         }
 
-        $handler = function (string $attribute, mixed $value, AssignmentRecord $record): bool {
+        $handler = function (string $attribute, mixed $value, AssignmentRecord $record) {
             $user = $record->user;
 
             if (blank($user)) {
-                return false;
+                return null;
             }
 
-            return match ($attribute) {
+            return value(match ($attribute) {
                 'position_id' => $user->update([
-                    'position_id' => optional($record->position)->id,
+                    'position_id' => $record->position_id,
                 ]),
                 'specialty_id' => $user->update([
-                    'specialty_id' => optional($record->specialty)->id,
+                    'specialty_id' => $record->specialty_id,
                 ]),
                 'unit_id' => $user->update([
-                    'unit_id' => optional($record->unit)->id,
+                    'unit_id' => $record->unit_id,
                 ]),
                 'status_id' => $user->update([
-                    'status_id' => optional($record->status)->id,
+                    'status_id' => $record->status_id,
                 ]),
+                'unit_slot_id' => function () use ($record, $user) {
+                    if (filled($record->unit_slot)) {
+                        $user->update([
+                            'unit_id' => $record->unit_slot->unit_id ?? null,
+                            'specialty_id' => $record->unit_slot->slot->position_id ?? null,
+                            'position_id' => $record->unit_slot->slot->specialty_id ?? null,
+                        ]);
+                    }
+                },
                 default => null
-            };
+            });
         };
 
         Collection::wrap($record->getDirty())
-            ->each(fn (mixed $value, string $key): Closure => value($handler, $key, $value, $record));
+            ->each(fn (mixed $value, string $key) => value($handler, $key, $value, $record));
 
         return $record;
     }

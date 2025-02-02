@@ -23,6 +23,7 @@ use App\Models\QualificationRecord;
 use App\Models\Rank;
 use App\Models\RankRecord;
 use App\Models\ServiceRecord;
+use App\Models\Slot;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Task;
@@ -33,15 +34,11 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 
 class MilitarySeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * @throws ValidationException
-     */
     public function run(): void
     {
         /** @var SetupTenantAccount $action */
@@ -68,16 +65,87 @@ class MilitarySeeder extends Seeder
 
         $documents = Document::factory()
             ->count(5)
+            ->recycle($user)
             ->sequence(fn (Sequence $sequence) => ['name' => "Document $sequence->index"])
             ->create();
 
-        $units = Unit::factory()
+        $positions = Position::factory()
             ->count(8)
             ->sequence(
-                ['name' => '5th Special Forces Group'],
-                ['name' => 'Headquarters and Headquarters Company, 5th SFG'],
-                ['name' => 'Group Support Company, 5th SFG'],
-                ['name' => '1st Battalion, 5th SFG'],
+                ['name' => 'Detachment Commander'],
+                ['name' => 'Assistant Detachment Commander'],
+                ['name' => 'Operations Sergeant'],
+                ['name' => 'Assistant Operations and Intelligence Sergeant'],
+                ['name' => 'Weapons Sergeant'],
+                ['name' => 'Communications Sergeant'],
+                ['name' => 'Medical Sergeant'],
+                ['name' => 'Engineering Sergeant'],
+            )
+            ->create();
+
+        $specialties = Specialty::factory()
+            ->count(8)
+            ->sequence(
+                [
+                    'name' => 'Special Forces Officer',
+                    'abbreviation' => '18A',
+                    'description' => 'Commands an ODA, responsible for planning, executing, and leading Special Forces operations worldwide.',
+                ], [
+                    'name' => 'Special Forces Warrant Officer',
+                    'abbreviation' => '180A',
+                    'description' => 'Serves as the assistant detachment commander, specializing in mission planning, unconventional warfare, and operational leadership.',
+                ], [
+                    'name' => 'Special Forces Operations Sergeant',
+                    'abbreviation' => '18Z',
+                    'description' => 'A senior enlisted leader of an ODA, responsible for mission planning, training, and operational execution.',
+                ], [
+                    'name' => 'Special Forces Weapons Sergeant',
+                    'abbreviation' => '18B',
+                    'description' => 'Expert in U.S. and foreign weapons, small-unit tactics, and training partner forces in combat operations.',
+                ], [
+                    'name' => 'Special Forces Engineer Sergeant',
+                    'abbreviation' => '18C',
+                    'description' => 'Skilled in demolitions, construction, fortifications, and mobility operations to support mission objectives.',
+                ], [
+                    'name' => 'Special Forces Medical Sergeant',
+                    'abbreviation' => '18D',
+                    'description' => 'Provides advanced trauma care, prolonged field care, and medical training in austere environments.',
+                ], [
+                    'name' => 'Special Forces Communications Sergeant',
+                    'abbreviation' => '18E',
+                    'description' => 'Manages radio, satellite, and cyber communications to ensure secure and reliable team connectivity.',
+                ], [
+                    'name' => 'Special Forces Intelligence Sergeant',
+                    'abbreviation' => '18F',
+                    'description' => 'Conducts intelligence gathering, analysis, and target development to support mission planning and execution.',
+                ],
+            )
+            ->create();
+
+        $units = Unit::factory()
+            ->count(5)
+            ->hasAttached(Slot::factory()
+                ->sequence(
+                    ['name' => 'Group Commander', 'specialty_id' => 1, 'position_id' => null],
+                    ['name' => 'Executive Officer', 'specialty_id' => 1, 'position_id' => null],
+                    ['name' => 'Group Command Sergeant Major', 'specialty_id' => null, 'position_id' => null],
+                    ['name' => 'Company Commander', 'specialty_id' => 1, 'position_id' => null],
+                    ['name' => 'Executive Officer', 'specialty_id' => 1, 'position_id' => null],
+                    ['name' => 'First Sergeant', 'specialty_id' => null, 'position_id' => null],
+                    ['name' => 'Detachment Commander', 'specialty_id' => 1, 'position_id' => 1],
+                    ['name' => 'Assistant Detachment Commander', 'specialty_id' => 2, 'position_id' => 2],
+                    ['name' => 'Operations Sergeant', 'specialty_id' => 3, 'position_id' => 3],
+                    ['name' => 'Detachment Commander', 'specialty_id' => 1,  'position_id' => 1],
+                    ['name' => 'Operations Sergeant', 'specialty_id' => 3, 'position_id' => 3],
+                    ['name' => 'Weapons Sergeant', 'specialty_id' => 4, 'position_id' => 5],
+                    ['name' => 'Detachment Commander', 'specialty_id' => 1,  'position_id' => 1],
+                    ['name' => 'Engineering Sergeant', 'specialty_id' => 5, 'position_id' => 8],
+                    ['name' => 'Medical Sergeant', 'specialty_id' => 6, 'position_id' => 7],
+                )
+                ->count(3)
+            )
+            ->sequence(
+                ['name' => 'Headquarters and Headquarters Company, 5th Special Forces Group'],
                 ['name' => 'Alpha Company, 1st Btn, 5th SFG'],
                 ['name' => 'ODB 5110, A Co, 1st Btn, 5th SFG'],
                 ['name' => 'ODA 5111, A Co, 1st Btn, 5th SFG'],
@@ -91,6 +159,24 @@ class MilitarySeeder extends Seeder
                 'icon' => 'heroicon-o-fire',
             ])
             ->hasAttached($units)
+            ->create();
+
+        Group::factory()
+            ->state([
+                'name' => 'Training',
+                'icon' => 'heroicon-o-academic-cap',
+            ])
+            ->hasAttached(Unit::factory()
+                ->state([
+                    'name' => 'TRADOC',
+                ])
+                ->hasAttached(Slot::factory()
+                    ->state([
+                        'name' => 'Training Command',
+                        'empty' => 'No current openings.',
+                    ])
+                )
+            )
             ->create();
 
         $awards = Award::factory()
@@ -248,41 +334,6 @@ class MilitarySeeder extends Seeder
                 ]);
             });
 
-        $specialties = Specialty::factory()
-            ->count(7)
-            ->sequence(
-                [
-                    'name' => 'Special Forces Officer',
-                    'abbreviation' => '18A',
-                    'description' => 'As a Special Forces Officer, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will lead teams on missions, including counter-terrorism, direct action, foreign internal defense, intelligence gathering, and unconventional warfare. You’ll have several duties, including training, resource management, mission and logistics planning, and working with U.S. and foreign government agencies.',
-                ], [
-                    'name' => 'Special Forces Warrant Officer',
-                    'abbreviation' => '180A',
-                    'description' => 'Special Forces (SF) Warrant Officers are combat leaders and staff officers. They are experienced subject matter experts in unconventional warfare, operations and intelligence fusion, and planning and execution at all levels across the operational continuum.',
-                ], [
-                    'name' => 'Special Forces Weapons Sergeant',
-                    'abbreviation' => '18B',
-                    'description' => 'As a Special Forces Weapons Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will operate and maintain a wide variety of domestic (United States), allied, and foreign weaponry. You’ll employ conventional and unconventional warfare tactics and techniques in individual and small arms infantry operations.',
-                ], [
-                    'name' => 'Special Forces Engineer Sergeant',
-                    'abbreviation' => '18C',
-                    'description' => 'As a Special Forces Engineer Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You will serve on construction projects, building critical infrastructure and creating bridges, buildings, and field barricades. As a demolitions specialist, you’ll carry out demolition raids against strategic enemy targets like railroads, fuel depots, and bridges, destroying critical components of infrastructure to give our Soldiers a tactical advantage.',
-                ], [
-                    'name' => 'Special Forces Medical Sergeant',
-                    'abbreviation' => '18D',
-                    'description' => 'As a Special Forces Medical Sergeant, you\'ll become Green Berets, one of the most highly skilled Soldiers in the world. Though you’ll primarily train with an emphasis on first-response and trauma medicine much like a paramedic in the civilian world, you’ll also have a working knowledge of dentistry, veterinary care, public sanitation, water quality, and optometry.',
-                ], [
-                    'name' => 'Special Forces Communications Sergeant',
-                    'abbreviation' => '18E',
-                    'description' => 'As a Special Forces Communications Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You’ll supervise communications for special operations and missions. You’ll organize, train, advise, and supervise the installation, use, and operation of communications equipment, and establish and maintain tactical lines of communication with teams during missions.',
-                ], [
-                    'name' => 'Special Forces Intelligence Sergeant',
-                    'abbreviation' => '18F',
-                    'description' => 'As a Special Forces Intelligence Sergeant, you’ll become a member of the Green Berets, one of the most highly skilled Soldiers in the world. You’ll collect intelligence for special missions by employing conventional and unconventional warfare tactics and strategies, both in preparation for special missions and during operations, and provide tactical guidance to Army personnel. You’ll also be tasked with preparing reports for intelligence nets (agents who process prisoners of war, establish security plans, and maintain classified documents).',
-                ],
-            )
-            ->create();
-
         $statuses = Status::factory()
             ->count(3)
             ->sequence(
@@ -296,20 +347,6 @@ class MilitarySeeder extends Seeder
                     'name' => 'On Leave',
                     'color' => '#e0f2fe',
                 ],
-            )
-            ->create();
-
-        $positions = Position::factory()
-            ->count(8)
-            ->sequence(
-                ['name' => 'Detachment Commander'],
-                ['name' => 'Assistant Detachment Commander'],
-                ['name' => 'Operations Sergeant'],
-                ['name' => 'Assistant Operations and Intelligence Sergeant'],
-                ['name' => 'Weapons Sergeant'],
-                ['name' => 'Communications Sergeant'],
-                ['name' => 'Medical Sergeant'],
-                ['name' => 'Engineering Sergeant'],
             )
             ->create();
 

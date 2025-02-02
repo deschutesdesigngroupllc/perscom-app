@@ -27,6 +27,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $id
  * @property string $name
  * @property string|null $description
+ * @property string|null $empty
  * @property int $order
  * @property bool $hidden
  * @property string|null $icon
@@ -55,6 +56,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Group visible()
  * @method static Builder<static>|Group whereCreatedAt($value)
  * @method static Builder<static>|Group whereDescription($value)
+ * @method static Builder<static>|Group whereEmpty($value)
  * @method static Builder<static>|Group whereHidden($value)
  * @method static Builder<static>|Group whereIcon($value)
  * @method static Builder<static>|Group whereId($value)

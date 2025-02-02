@@ -121,7 +121,7 @@ class AssignmentRecordResource extends BaseResource
                                 Forms\Components\Select::make('unit_slot_id')
                                     ->visible(fn () => $rosterMode === RosterMode::MANUAL)
                                     ->required(fn () => $rosterMode === RosterMode::MANUAL)
-                                    ->helperText('The slot the user will be assigned to.')
+                                    ->helperText('The slot the user will be assigned to. If the slot has an assign position or specialty, the user will also be assigned the designated specialty and position in addition to the unit the slot is apart of.')
                                     ->label('Slot')
                                     ->preload()
                                     ->searchable()
