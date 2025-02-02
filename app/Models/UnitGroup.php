@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $id
  * @property int $unit_id
  * @property int $group_id
+ * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereGroupId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereOrder($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereUnitId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereUpdatedAt($value)
  *

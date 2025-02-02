@@ -28,7 +28,6 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $id
  * @property string $name
  * @property string|null $description
- * @property string|null $empty
  * @property int $order
  * @property bool $hidden
  * @property string|null $icon
@@ -65,7 +64,6 @@ use Spatie\EloquentSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit visible()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereEmpty($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereHidden($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereIcon($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereId($value)

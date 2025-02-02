@@ -38,7 +38,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $unit_id
  * @property int|null $position_id
  * @property int|null $specialty_id
- * @property int|null $unit_slot_id
  * @property int|null $document_id
  * @property int|null $author_id
  * @property AssignmentRecordType|null $type
@@ -89,7 +88,6 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereText($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereUnitSlotId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereUserId($value)
  *

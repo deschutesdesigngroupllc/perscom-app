@@ -18,20 +18,10 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\EloquentSortable\Sortable;
 
 /**
- * @property int $id
- * @property string $name
- * @property int|null $position_id
- * @property int|null $specialty_id
- * @property string|null $description
- * @property string|null $empty
- * @property int $order
- * @property bool $hidden
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read Position|null $position
- * @property-read Specialty|null $speciality
+ * @property-read Specialty|null $specialty
  * @property-read UnitSlot|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $units
  * @property-read int|null $units_count
@@ -45,16 +35,6 @@ use Spatie\EloquentSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot ordered(string $direction = 'asc')
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot visible()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereEmpty($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereHidden($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot wherePositionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereSpecialtyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
