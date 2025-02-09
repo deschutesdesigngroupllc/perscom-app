@@ -13,7 +13,7 @@ class ListPassportClients extends ListRecords
 {
     protected static string $resource = PassportClientResource::class;
 
-    protected ?string $subheading = 'Manage your SSO clients that enable seamless application-to-application integration with PERSCOM.';
+    protected ?string $subheading = 'Manage your SSO clients to enable seamless application-to-application integration with PERSCOM using OAuth 2.0.';
 
     protected function getHeaderActions(): array
     {

@@ -97,6 +97,10 @@ class AssignmentRecordResource extends BaseResource
                         Forms\Components\Tabs\Tab::make('Assignment Record')
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
+                                Forms\Components\Placeholder::make('warning')
+                                    ->hiddenLabel()
+                                    ->content(new HtmlString("<div class='font-bold'>NOTE: Updating an assignment record does not update a user's position, specialty, or unit. To make these changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</div>"))
+                                    ->visibleOn('edit'),
                                 Forms\Components\Select::make('position_id')
                                     ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
                                     ->helperText('If selected, the user(s) will be assigned the position when the record is created.')
@@ -176,9 +180,6 @@ class AssignmentRecordResource extends BaseResource
                                     ->hidden(fn (?AssignmentRecord $record) => is_null($record->unit)),
                                 Infolists\Components\TextEntry::make('status.name')
                                     ->hidden(fn (?AssignmentRecord $record) => is_null($record->status)),
-                                Infolists\Components\TextEntry::make('unit_slot.slot.name')
-                                    ->label('Slot')
-                                    ->hidden(fn (?AssignmentRecord $record) => is_null($record->unit_slot)),
                                 Infolists\Components\TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -227,9 +228,6 @@ class AssignmentRecordResource extends BaseResource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status.name')
-                    ->sortable()
-                    ->searchable(),
-                Tables\Columns\TextColumn::make('unit_slot.slot.name')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('document.name')

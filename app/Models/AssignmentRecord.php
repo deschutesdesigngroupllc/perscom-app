@@ -137,6 +137,21 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
         'updated_at',
     ];
 
+    public static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (AssignmentRecord $record) {
+            if (filled($record->unit_slot_id)) {
+                $record->forceFill([
+                    'unit_id' => $record->unit_slot->unit_id ?? null,
+                    'specialty_id' => $record->unit_slot->slot->position_id ?? null,
+                    'position_id' => $record->unit_slot->slot->specialty_id ?? null,
+                ]);
+            }
+        });
+    }
+
     public function headlineForNewsfeedItem(): string
     {
         return "An assignment record has been added for {$this->user->name}";

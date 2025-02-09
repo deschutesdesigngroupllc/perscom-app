@@ -57,7 +57,7 @@ class MilitarySeeder extends Seeder
         Announcement::factory()
             ->state([
                 'title' => 'Welcome to the PERSCOM Military Demo',
-                'content' => 'Take a look around and if you have any questions, please reach out to support@deschutesdesigngroup.com.',
+                'content' => 'Take a look around, and if you have any questions, please reach out to support@deschutesdesigngroup.com.',
                 'color' => '#2563eb',
                 'global' => true,
             ])

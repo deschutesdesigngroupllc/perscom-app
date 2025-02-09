@@ -17,11 +17,9 @@
       <div x-show="activeTab === 'tab{{ $index }}'" class="text-sm">
         @forelse($group->units as $unit)
           @include('filament.app.pages.roster.components.unit-header', ['unit' => $unit])
-          <div class="py-1">
+          <div>
             @forelse($unit->slots as $slot)
-              <div class="font-bold">
-                {{ $slot->name }}
-              </div>
+              @include('filament.app.pages.roster.components.slot-header', ['slot' => $slot])
               @forelse($slot->assignment_records as $assignmentRecord)
                 @include('filament.app.pages.roster.components.user', ['user' => $assignmentRecord->user, 'mode' => $mode])
               @empty
