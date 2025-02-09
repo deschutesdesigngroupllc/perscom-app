@@ -168,6 +168,8 @@ Route::group([
     Orion::resource('settings', SettingsController::class)
         ->only('index');
 
+    Orion::resource('slots', SpecialtiesController::class);
+
     Orion::resource('specialties', SpecialtiesController::class);
 
     Orion::resource('statuses', StatusesController::class);
