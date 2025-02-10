@@ -12,9 +12,9 @@ class StatusRecordObserver
     public function created(StatusRecord $statusRecord): void
     {
         if ($statusRecord->model instanceof User) {
-            $statusRecord->update([
+            $statusRecord->forceFill([
                 'status_id' => $statusRecord->status_id,
-            ]);
+            ])->save();
         }
     }
 }

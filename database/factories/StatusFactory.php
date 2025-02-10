@@ -14,7 +14,7 @@ class StatusFactory extends Factory
 {
     public function definition(): array
     {
-        $status = "Status  {$this->faker->unique()->randomNumber()}";
+        $status = "Status {$this->faker->unique()->randomNumber()}";
 
         return [
             'name' => $status,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Enums\RosterMode;
 use App\Models\Group;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request as BaseRequest;
@@ -61,8 +62,8 @@ class RosterController extends Controller
         $query = parent::buildFetchQuery($request, $requestedRelations);
 
         /** @var Group|Builder $query */
-        match ($request->query('type')) {
-            'manual' => $query->forManualRoster(),
+        match (RosterMode::tryFrom($request->query('type'))) {
+            RosterMode::MANUAL => $query->forManualRoster(),
             default => $query->forAutomaticRoster()
         };
 
