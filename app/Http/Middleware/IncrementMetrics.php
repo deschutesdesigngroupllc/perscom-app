@@ -11,6 +11,7 @@ use App\Metrics\Metric;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
 
 class IncrementMetrics
@@ -20,7 +21,7 @@ class IncrementMetrics
         if (App::runningInConsole()) {
             Metric::increment(CliRequestMetric::class);
         } else {
-            if ($request->routeIs('api.*')) {
+            if (Str::startsWith($request->getHost(), 'api.')) {
                 Metric::increment(ApiRequestMetric::class);
             } else {
                 Metric::increment(HttpRequestMetric::class);

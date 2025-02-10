@@ -12,6 +12,8 @@ class ListRanks extends ListRecords
 {
     protected static string $resource = RankResource::class;
 
+    protected ?string $subheading = 'Ranks provide a vertical organization hierarchy that establishes authority within an organization.';
+
     protected function getHeaderActions(): array
     {
         return [

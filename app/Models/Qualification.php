@@ -38,16 +38,16 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\QualificationFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification query()
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Qualification whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Qualification whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -64,9 +64,6 @@ class Qualification extends Model implements HasLabel, Sortable
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

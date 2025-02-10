@@ -28,6 +28,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $id
  * @property string $name
  * @property string|null $description
+ * @property string|null $empty
  * @property int $order
  * @property bool $hidden
  * @property string|null $icon
@@ -41,7 +42,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
- * @property-read ModelNotification $pivot
+ * @property-read UnitSlot|ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $primary_assignment_records
@@ -49,25 +50,28 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $relative_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Slot> $slots
+ * @property-read int|null $slots_count
  * @property-read string|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\UnitFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Unit hidden()
- * @method static \Illuminate\Database\Eloquent\Builder|Unit newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Unit newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Unit ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Unit query()
- * @method static \Illuminate\Database\Eloquent\Builder|Unit visible()
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereHidden($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereIcon($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Unit whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit hidden()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit visible()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereEmpty($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereHidden($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereIcon($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -87,19 +91,14 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     use HasResourceUrl;
     use HasUsers;
 
-    /**
-     * @var false[]
-     */
     protected $attributes = [
         'hidden' => false,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',
+        'empty',
         'order',
         'created_at',
         'updated_at',
@@ -108,9 +107,13 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'units_groups')
-            ->withTimestamps()
-            ->withPivot(['order'])
-            ->ordered()
-            ->as(Membership::class);
+            ->as(UnitGroup::class);
+    }
+
+    public function slots(): BelongsToMany
+    {
+        return $this->belongsToMany(Slot::class, 'units_slots')
+            ->withPivot(['id'])
+            ->using(UnitSlot::class);
     }
 }

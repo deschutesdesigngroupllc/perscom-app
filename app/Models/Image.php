@@ -36,18 +36,18 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\ImageFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Image newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Image newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Image query()
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereFilename($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Image whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereFilename($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image wherePath($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */
@@ -59,9 +59,6 @@ class Image extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',
@@ -74,7 +71,7 @@ class Image extends Model implements HasLabel
     protected $appends = ['image_url'];
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function imageUrl(): Attribute
     {
@@ -84,7 +81,7 @@ class Image extends Model implements HasLabel
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function modelUrl(): Attribute
     {

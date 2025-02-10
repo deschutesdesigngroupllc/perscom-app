@@ -5,32 +5,9 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Actions\SetupTenantAccount;
-use App\Models\Announcement;
-use App\Models\AssignmentRecord;
-use App\Models\Award;
-use App\Models\AwardRecord;
-use App\Models\Calendar;
-use App\Models\CombatRecord;
-use App\Models\Document;
-use App\Models\Enums\FieldType;
-use App\Models\Event;
-use App\Models\Field;
-use App\Models\Form;
-use App\Models\Group;
-use App\Models\Position;
-use App\Models\Qualification;
-use App\Models\QualificationRecord;
-use App\Models\Rank;
-use App\Models\RankRecord;
-use App\Models\ServiceRecord;
-use App\Models\Specialty;
-use App\Models\Status;
-use App\Models\Task;
-use App\Models\Unit;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
 class TenantDatabaseSeeder extends Seeder
@@ -49,134 +26,6 @@ class TenantDatabaseSeeder extends Seeder
         ]);
         $user->assignRole(Utils::getSuperAdminName());
 
-        Announcement::factory()
-            ->count(2)
-            ->sequence(fn (Sequence $sequence) => ['title' => "Announcement $sequence->index"])
-            ->create();
-
-        $documents = Document::factory()
-            ->count(5)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Document $sequence->index"])
-            ->create();
-
-        $units = Unit::factory()
-            ->count(3)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Unit $sequence->index"])
-            ->create();
-
-        Group::factory()
-            ->sequence(fn (Sequence $sequence) => ['name' => "Group $sequence->index"])
-            ->hasAttached($units)
-            ->create();
-
-        $awards = Award::factory()
-            ->count(10)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Award $sequence->index"])
-            ->create();
-
-        $calendars = Calendar::factory()
-            ->count(5)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Calendar $sequence->index"])
-            ->create();
-
-        $events = Event::factory()
-            ->count(10)
-            ->recycle($calendars)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Event $sequence->index"])
-            ->for($user, 'author')
-            ->create();
-
-        $fields = Field::factory()
-            ->count(5)
-            ->sequence(
-                ['name' => 'Field 1 (Text)', 'type' => FieldType::FIELD_TEXT, 'cast' => FieldType::FIELD_TEXT->getCast()],
-                ['name' => 'Field 2 (Boolean)', 'type' => FieldType::FIELD_BOOLEAN, 'cast' => FieldType::FIELD_BOOLEAN->getCast()],
-                ['name' => 'Field 3 (Date)', 'type' => FieldType::FIELD_DATE, 'cast' => FieldType::FIELD_DATE->getCast()],
-                ['name' => 'Field 4 (Email)', 'type' => FieldType::FIELD_EMAIL, 'cast' => FieldType::FIELD_EMAIL->getCast()],
-                ['name' => 'Field 5 (Timezone)', 'type' => FieldType::FIELD_TIMEZONE, 'cast' => FieldType::FIELD_TIMEZONE->getCast()],
-            )
-            ->create();
-
-        $qualifications = Qualification::factory()
-            ->count(10)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Qualification $sequence->index"])
-            ->create();
-
-        $ranks = Rank::factory()
-            ->count(10)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Rank $sequence->index"])
-            ->create();
-
-        $specialties = Specialty::factory()
-            ->count(10)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Specialty $sequence->index"])
-            ->create();
-
-        $statuses = Status::factory()
-            ->count(10)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Status $sequence->index"])
-            ->create();
-
-        $positions = Position::factory()
-            ->count(10)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Position $sequence->index"])
-            ->create();
-
-        $tasks = Task::factory()
-            ->count(10)
-            ->sequence(fn (Sequence $sequence) => ['title' => "Task $sequence->index"])
-            ->create();
-
-        User::factory()
-            ->count(10)
-            ->recycle($positions)
-            ->recycle($specialties)
-            ->recycle($ranks)
-            ->recycle($statuses)
-            ->recycle($tasks)
-            ->recycle($units)
-            ->has(AssignmentRecord::factory()
-                ->for($user, 'author')
-                ->recycle([$positions, $specialties, $statuses, $units, $documents])
-                ->count(5), 'service_records')
-            ->has(AwardRecord::factory()
-                ->for($user, 'author')
-                ->recycle([$awards, $documents])
-                ->count(5), 'award_records')
-            ->has(CombatRecord::factory()
-                ->for($user, 'author')
-                ->recycle($documents)
-                ->count(5), 'combat_records')
-            ->has(QualificationRecord::factory()
-                ->for($user, 'author')
-                ->recycle([$qualifications, $documents])
-                ->count(5), 'qualification_records')
-            ->has(RankRecord::factory()
-                ->for($user, 'author')
-                ->recycle([$ranks, $documents])
-                ->count(5), 'rank_records')
-            ->has(ServiceRecord::factory()
-                ->for($user, 'author')
-                ->recycle($documents)
-                ->count(5), 'service_records')
-            ->hasAttached($tasks->random(3), ['assigned_by_id' => $user->getKey(), 'assigned_at' => now()])
-            ->hasAttached($events->random(3))
-            ->hasAttached($fields->take(3))
-            ->create();
-
-        Form::factory()
-            ->count(3)
-            ->sequence(fn (Sequence $sequence) => ['name' => "Form $sequence->index"])
-            ->hasAttached($fields->random(3))
-            ->create();
-
-        // TODO: Fix
-        //        PassportToken::factory()
-        //            ->for($user, 'user')
-        //            ->for(PassportClient::query()->where('name', '=', 'Default Personal Access Client')->first(), 'client')
-        //            ->state([
-        //                'name' => 'Default API Key',
-        //            ])
-        //            ->create();
+        $this->call(MilitarySeeder::class);
     }
 }

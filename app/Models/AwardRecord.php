@@ -54,21 +54,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord author(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord document(\App\Models\Document $document)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\AwardRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereAwardId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|AwardRecord whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereAwardId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -91,9 +91,6 @@ class AwardRecord extends Model implements HasLabel, SendsModelNotifications, Sh
 
     protected $table = 'records_awards';
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'award_id',
         'text',

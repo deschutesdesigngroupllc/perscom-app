@@ -56,18 +56,18 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $tags_count
  * @property-read string|null $url
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Document author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document author(\App\Models\User $user)
  * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Document newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Document newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Document query()
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Document whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Document whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -88,9 +88,6 @@ class Document extends Model implements HasLabel, Htmlable
     use HasServiceRecords;
     use HasTags;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

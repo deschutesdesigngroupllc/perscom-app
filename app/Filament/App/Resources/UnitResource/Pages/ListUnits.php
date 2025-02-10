@@ -12,6 +12,8 @@ class ListUnits extends ListRecords
 {
     protected static string $resource = UnitResource::class;
 
+    protected ?string $subheading = 'Units provide grouping and sorting of personnel within the organizational hierarchy.';
+
     protected function getHeaderActions(): array
     {
         return [

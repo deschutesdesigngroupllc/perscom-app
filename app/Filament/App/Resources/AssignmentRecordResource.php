@@ -13,7 +13,10 @@ use App\Forms\Components\ModelNotification;
 use App\Livewire\App\ViewDocument;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
+use App\Models\Enums\RosterMode;
+use App\Models\Unit;
 use App\Models\User;
+use App\Settings\DashboardSettings;
 use App\Settings\NotificationSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -40,6 +43,10 @@ class AssignmentRecordResource extends BaseResource
 
     public static function form(Form $form): Form
     {
+        /** @var DashboardSettings $settings */
+        $settings = app(DashboardSettings::class);
+        $rosterMode = $settings->roster_mode;
+
         return $form
             ->schema([
                 Forms\Components\Tabs::make()
@@ -61,6 +68,7 @@ class AssignmentRecordResource extends BaseResource
                                 Forms\Components\Select::make('type')
                                     ->helperText('The type of assignment record.')
                                     ->required()
+                                    ->live()
                                     ->options(AssignmentRecordType::class)
                                     ->default(AssignmentRecordType::PRIMARY),
                                 Forms\Components\RichEditor::make('text')
@@ -89,26 +97,45 @@ class AssignmentRecordResource extends BaseResource
                         Forms\Components\Tabs\Tab::make('Assignment Record')
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
+                                Forms\Components\Placeholder::make('warning')
+                                    ->hiddenLabel()
+                                    ->content(new HtmlString("<div class='font-bold'>NOTE: Updating an assignment record does not update a user's position, specialty, or unit. To make these changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</div>"))
+                                    ->visibleOn('edit'),
                                 Forms\Components\Select::make('position_id')
-                                    ->helperText('If selected, will assign a position change to this assignment record.')
+                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->helperText('If selected, the user(s) will be assigned the position when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => PositionResource::form($form)),
                                 Forms\Components\Select::make('specialty_id')
-                                    ->helperText('If selected, will assign a specialty change to this assignment record.')
+                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->helperText('If selected, the user(s) will be assigned the specialty when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => SpecialtyResource::form($form)),
                                 Forms\Components\Select::make('unit_id')
-                                    ->helperText('If selected, will assign a unit change to this assignment record.')
+                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->helperText('If selected, the user(s) will be assigned to the unit when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'unit', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => UnitResource::form($form)),
+                                Forms\Components\Select::make('unit_slot_id')
+                                    ->visible(fn () => $rosterMode === RosterMode::MANUAL)
+                                    ->required(fn () => $rosterMode === RosterMode::MANUAL)
+                                    ->helperText('The slot the user will be assigned to. If the slot has an assign position or specialty, the user will also be assigned the designated specialty and position in addition to the unit the slot is apart of.')
+                                    ->label('Slot')
+                                    ->preload()
+                                    ->searchable()
+                                    ->options(function () {
+                                        return Unit::ordered()->with('slots')->get()->mapWithKeys(function (Unit $unit) {
+                                            return [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()];
+                                        })->toArray();
+                                    }),
                                 Forms\Components\Select::make('status_id')
-                                    ->helperText('If selected, will assign a status change to this assignment record.')
+                                    ->helperText('If selected, the user(s) will be assigned the status when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'status', titleAttribute: 'name')
                                     ->searchable()

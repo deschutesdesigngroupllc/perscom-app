@@ -54,21 +54,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord author(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord document(\App\Models\Document $document)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\QualificationRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereQualificationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|QualificationRecord whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereQualificationId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -91,9 +91,6 @@ class QualificationRecord extends Model implements HasLabel, SendsModelNotificat
 
     protected $table = 'records_qualifications';
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'qualification_id',
         'text',

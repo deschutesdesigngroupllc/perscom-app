@@ -12,6 +12,8 @@ class ListGroups extends ListRecords
 {
     protected static string $resource = GroupResource::class;
 
+    protected ?string $subheading = 'Groups provide logical sorting and grouping of units within the organizational hierarchy.';
+
     protected function getHeaderActions(): array
     {
         return [

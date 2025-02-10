@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Settings;
 
+use App\Models\Enums\RosterMode;
 use Spatie\LaravelSettings\Settings;
 
 class DashboardSettings extends Settings
@@ -19,6 +20,8 @@ class DashboardSettings extends Settings
     public int $cover_photo_height;
 
     public array $roster_sort_order;
+
+    public RosterMode $roster_mode;
 
     /**
      * @var string[]

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\StatusRecordObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -26,22 +27,23 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @property-read Status $status
  *
  * @method static \Database\Factories\StatusRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|StatusRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereModelId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereModelType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereStatusId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */
 #[ObservedBy(StatusRecordObserver::class)]
 class StatusRecord extends MorphPivot
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
 

@@ -31,7 +31,10 @@ class BackupTenantDatabase implements ShouldQueue
             return;
         }
 
-        Tenant::findOrFail($this->tenantKey)->run(function () {
+        /** @var Tenant $tenant */
+        $tenant = Tenant::findOrFail($this->tenantKey);
+
+        $tenant->run(function () {
             Artisan::call('backup:run', [
                 '--only-to-disk' => 's3',
                 '--only-db' => true,

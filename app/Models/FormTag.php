@@ -10,11 +10,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $tag_id
  * @property int $form_id
  *
- * @method static \Illuminate\Database\Eloquent\Builder|FormTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FormTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FormTag query()
- * @method static \Illuminate\Database\Eloquent\Builder|FormTag whereFormId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FormTag whereTagId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag whereFormId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag whereTagId($value)
  *
  * @mixin \Eloquent
  */

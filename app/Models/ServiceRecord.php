@@ -51,20 +51,20 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord author(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord document(\App\Models\Document $document)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\ServiceRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ServiceRecord whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord user(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord whereDocumentId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord whereText($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ServiceRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -87,9 +87,6 @@ class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, 
 
     protected $table = 'records_service';
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'text',
         'created_at',

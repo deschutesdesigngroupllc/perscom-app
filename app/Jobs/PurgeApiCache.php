@@ -26,7 +26,7 @@ class PurgeApiCache implements ShouldQueue
 
     public function __construct(public Collection|string $tags, public string $event)
     {
-        $this->overlapHash = Collection::wrap($this->tags)->implode(',');
+        $this->overlapHash = md5(Collection::wrap($this->tags)->implode(','));
         $this->onQueue('api');
     }
 
@@ -34,9 +34,7 @@ class PurgeApiCache implements ShouldQueue
     {
         return [
             new WithoutOverlapping($this->overlapHash),
-            Skip::when(function (): bool {
-                return App::environment('local');
-            }),
+            Skip::when(fn (): bool => App::environment('local')),
         ];
     }
 

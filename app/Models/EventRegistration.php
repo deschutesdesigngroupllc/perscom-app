@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\Carbon;
@@ -24,21 +25,22 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read Event $event
  * @property-read User $user
  *
- * @method static Builder|EventRegistration future()
- * @method static Builder|EventRegistration newModelQuery()
- * @method static Builder|EventRegistration newQuery()
- * @method static Builder|EventRegistration query()
- * @method static Builder|EventRegistration user(\App\Models\User $user)
- * @method static Builder|EventRegistration whereCreatedAt($value)
- * @method static Builder|EventRegistration whereEventId($value)
- * @method static Builder|EventRegistration whereId($value)
- * @method static Builder|EventRegistration whereUpdatedAt($value)
- * @method static Builder|EventRegistration whereUserId($value)
+ * @method static Builder<static>|EventRegistration future()
+ * @method static Builder<static>|EventRegistration newModelQuery()
+ * @method static Builder<static>|EventRegistration newQuery()
+ * @method static Builder<static>|EventRegistration query()
+ * @method static Builder<static>|EventRegistration user(\App\Models\User $user)
+ * @method static Builder<static>|EventRegistration whereCreatedAt($value)
+ * @method static Builder<static>|EventRegistration whereEventId($value)
+ * @method static Builder<static>|EventRegistration whereId($value)
+ * @method static Builder<static>|EventRegistration whereUpdatedAt($value)
+ * @method static Builder<static>|EventRegistration whereUserId($value)
  *
  * @mixin \Eloquent
  */
 class EventRegistration extends Pivot
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
     use HasUser;

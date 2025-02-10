@@ -38,16 +38,16 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\PositionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Position newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Position newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Position ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Position query()
- * @method static \Illuminate\Database\Eloquent\Builder|Position whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Position whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Position whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Position whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Position whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Position whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Position whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -63,9 +63,6 @@ class Position extends Model implements HasLabel, Sortable
     use HasResourceUrl;
     use HasUsers;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

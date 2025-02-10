@@ -63,7 +63,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $status_id
  * @property int|null $unit_id
  * @property bool $approved
- * @property mixed|null $password
+ * @property string|null $password
  * @property string|null $remember_token
  * @property string|null $notes
  * @property Carbon|null $notes_updated_at
@@ -72,7 +72,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property Carbon|null $last_seen_at
  * @property string|null $discord_user_id
  * @property string|null $discord_private_channel_id
- * @property array|null $data
+ * @property array<array-key, mixed>|null $data
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
@@ -86,7 +86,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, CombatRecord> $combat_records
  * @property-read int|null $combat_records_count
  * @property-read string|null $cover_photo_url
- * @property-read EventRegistration $registration
+ * @property-read EventRegistration|null $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Event> $events
  * @property-read int|null $events_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Field> $fields
@@ -94,7 +94,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
- * @property-read ModelNotification $pivot
+ * @property-read ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
@@ -120,12 +120,12 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $service_records_count
  * @property-read Specialty|null $specialty
  * @property-read Status|null $status
- * @property-read StatusRecord $record
+ * @property-read StatusRecord|null $record
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Submission> $submissions
  * @property-read int|null $submissions_count
- * @property-read TaskAssignment $assignment
+ * @property-read TaskAssignment|null $assignment
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Task> $tasks
  * @property-read int|null $tasks_count
  * @property-read CarbonInterval|null $time_in_assignment
@@ -137,38 +137,38 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
- * @method static Builder|User newModelQuery()
- * @method static Builder|User newQuery()
- * @method static Builder|User orderForRoster()
- * @method static Builder|User permission($permissions, $without = false)
- * @method static Builder|User query()
- * @method static Builder|User role($roles, $guard = null, $without = false)
- * @method static Builder|User status(?mixed $statuses)
- * @method static Builder|User whereApproved($value)
- * @method static Builder|User whereCoverPhoto($value)
- * @method static Builder|User whereCreatedAt($value)
- * @method static Builder|User whereData($value)
- * @method static Builder|User whereDiscordPrivateChannelId($value)
- * @method static Builder|User whereDiscordUserId($value)
- * @method static Builder|User whereEmail($value)
- * @method static Builder|User whereEmailVerifiedAt($value)
- * @method static Builder|User whereId($value)
- * @method static Builder|User whereLastSeenAt($value)
- * @method static Builder|User whereName($value)
- * @method static Builder|User whereNotes($value)
- * @method static Builder|User whereNotesUpdatedAt($value)
- * @method static Builder|User wherePassword($value)
- * @method static Builder|User wherePhoneNumber($value)
- * @method static Builder|User wherePositionId($value)
- * @method static Builder|User whereProfilePhoto($value)
- * @method static Builder|User whereRankId($value)
- * @method static Builder|User whereRememberToken($value)
- * @method static Builder|User whereSpecialtyId($value)
- * @method static Builder|User whereStatusId($value)
- * @method static Builder|User whereUnitId($value)
- * @method static Builder|User whereUpdatedAt($value)
- * @method static Builder|User withoutPermission($permissions)
- * @method static Builder|User withoutRole($roles, $guard = null)
+ * @method static Builder<static>|User newModelQuery()
+ * @method static Builder<static>|User newQuery()
+ * @method static Builder<static>|User orderForRoster()
+ * @method static Builder<static>|User permission($permissions, $without = false)
+ * @method static Builder<static>|User query()
+ * @method static Builder<static>|User role($roles, $guard = null, $without = false)
+ * @method static Builder<static>|User status(?mixed $statuses)
+ * @method static Builder<static>|User whereApproved($value)
+ * @method static Builder<static>|User whereCoverPhoto($value)
+ * @method static Builder<static>|User whereCreatedAt($value)
+ * @method static Builder<static>|User whereData($value)
+ * @method static Builder<static>|User whereDiscordPrivateChannelId($value)
+ * @method static Builder<static>|User whereDiscordUserId($value)
+ * @method static Builder<static>|User whereEmail($value)
+ * @method static Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static Builder<static>|User whereId($value)
+ * @method static Builder<static>|User whereLastSeenAt($value)
+ * @method static Builder<static>|User whereName($value)
+ * @method static Builder<static>|User whereNotes($value)
+ * @method static Builder<static>|User whereNotesUpdatedAt($value)
+ * @method static Builder<static>|User wherePassword($value)
+ * @method static Builder<static>|User wherePhoneNumber($value)
+ * @method static Builder<static>|User wherePositionId($value)
+ * @method static Builder<static>|User whereProfilePhoto($value)
+ * @method static Builder<static>|User whereRankId($value)
+ * @method static Builder<static>|User whereRememberToken($value)
+ * @method static Builder<static>|User whereSpecialtyId($value)
+ * @method static Builder<static>|User whereStatusId($value)
+ * @method static Builder<static>|User whereUnitId($value)
+ * @method static Builder<static>|User whereUpdatedAt($value)
+ * @method static Builder<static>|User withoutPermission($permissions)
+ * @method static Builder<static>|User withoutRole($roles, $guard = null)
  *
  * @mixin \Eloquent
  */
@@ -198,9 +198,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use JwtClaims;
     use Notifiable;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -333,7 +330,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<string, void>
+     * @return Attribute<string, never>
      */
     public function online(): Attribute
     {
@@ -343,7 +340,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function coverPhotoUrl(): Attribute
     {
@@ -353,7 +350,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?CarbonInterval, void>
+     * @return Attribute<?CarbonInterval, never>
      */
     public function timeInAssignment(): Attribute
     {
@@ -365,7 +362,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?CarbonInterval, void>
+     * @return Attribute<?CarbonInterval, never>
      */
     public function timeInGrade(): Attribute
     {
@@ -377,7 +374,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<CarbonInterval, void>
+     * @return Attribute<CarbonInterval, never>
      */
     public function timeInService(): Attribute
     {
@@ -387,7 +384,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?Carbon, null>
+     * @return Attribute<?Carbon, never>
      */
     public function lastAssignmentChangeDate(): Attribute
     {
@@ -399,7 +396,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?Carbon, null>
+     * @return Attribute<?Carbon, never>
      */
     public function lastRankChangeDate(): Attribute
     {

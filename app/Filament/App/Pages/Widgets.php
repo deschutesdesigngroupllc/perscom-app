@@ -38,7 +38,7 @@ class Widgets extends Page
 
     protected static string $view = 'filament.app.pages.widgets';
 
-    protected ?string $subheading = 'Widgets provide a visual representation of your personnel data that can be embedded in any external website. Use the widget explorer below to try the widgets out in real-time.';
+    protected ?string $subheading = 'Widgets offer a visual representation of your personnel data that can be embedded into any external website. Use the widget explorer below to interact with the widgets in real-time.';
 
     public static function canAccess(): bool
     {

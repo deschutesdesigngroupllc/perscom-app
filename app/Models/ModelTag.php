@@ -14,13 +14,13 @@ use Sushi\Sushi;
  * @property string|null $description
  * @property ModelTagType|null $type
  *
- * @method static \Illuminate\Database\Eloquent\Builder|ModelTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelTag query()
- * @method static \Illuminate\Database\Eloquent\Builder|ModelTag whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelTag whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelTag whereTag($value)
- * @method static \Illuminate\Database\Eloquent\Builder|ModelTag whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag whereTag($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag whereType($value)
  *
  * @mixin \Eloquent
  */

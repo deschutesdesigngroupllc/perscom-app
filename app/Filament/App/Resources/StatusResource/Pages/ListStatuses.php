@@ -12,6 +12,8 @@ class ListStatuses extends ListRecords
 {
     protected static string $resource = StatusResource::class;
 
+    protected ?string $subheading = 'Statuses provide a way to add additional meaning to a resource at a moment in time.';
+
     protected function getHeaderActions(): array
     {
         return [

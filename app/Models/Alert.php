@@ -27,28 +27,28 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property string $message
  * @property string|null $link_text
  * @property string|null $url
- * @property AsEnumCollection|null $channels
+ * @property \Illuminate\Support\Collection<int, AlertChannel>|null $channels
  * @property bool $enabled
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static Builder|Alert disabled()
- * @method static Builder|Alert enabled()
- * @method static Builder|Alert newModelQuery()
- * @method static Builder|Alert newQuery()
- * @method static Builder|Alert ordered(string $direction = 'asc')
- * @method static Builder|Alert query()
- * @method static Builder|Alert whereChannels($value)
- * @method static Builder|Alert whereCreatedAt($value)
- * @method static Builder|Alert whereEnabled($value)
- * @method static Builder|Alert whereId($value)
- * @method static Builder|Alert whereLinkText($value)
- * @method static Builder|Alert whereMessage($value)
- * @method static Builder|Alert whereOrder($value)
- * @method static Builder|Alert whereTitle($value)
- * @method static Builder|Alert whereUpdatedAt($value)
- * @method static Builder|Alert whereUrl($value)
+ * @method static Builder<static>|Alert disabled()
+ * @method static Builder<static>|Alert enabled()
+ * @method static Builder<static>|Alert newModelQuery()
+ * @method static Builder<static>|Alert newQuery()
+ * @method static Builder<static>|Alert ordered(string $direction = 'asc')
+ * @method static Builder<static>|Alert query()
+ * @method static Builder<static>|Alert whereChannels($value)
+ * @method static Builder<static>|Alert whereCreatedAt($value)
+ * @method static Builder<static>|Alert whereEnabled($value)
+ * @method static Builder<static>|Alert whereId($value)
+ * @method static Builder<static>|Alert whereLinkText($value)
+ * @method static Builder<static>|Alert whereMessage($value)
+ * @method static Builder<static>|Alert whereOrder($value)
+ * @method static Builder<static>|Alert whereTitle($value)
+ * @method static Builder<static>|Alert whereUpdatedAt($value)
+ * @method static Builder<static>|Alert whereUrl($value)
  *
  * @mixin \Eloquent
  */
@@ -61,16 +61,10 @@ class Alert extends Model implements Enableable, Sortable
     use ClearsResponseCache;
     use SortableTrait;
 
-    /**
-     * @var true[]
-     */
     protected $attributes = [
         'enabled' => true,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'title',
         'message',

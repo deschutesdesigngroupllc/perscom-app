@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $url
  * @property string|null $description
  * @property WebhookMethod $method
- * @property array $events
+ * @property array<array-key, mixed> $events
  * @property string $secret
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -24,17 +24,17 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $logs_count
  *
  * @method static \Database\Factories\WebhookFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook query()
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereEvents($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereMethod($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereSecret($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Webhook whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereEvents($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereMethod($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereUrl($value)
  *
  * @mixin \Eloquent
  */
@@ -43,9 +43,6 @@ class Webhook extends Model
     use HasFactory;
     use HasLogs;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'url',
         'description',

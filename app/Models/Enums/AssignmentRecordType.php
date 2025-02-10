@@ -22,7 +22,7 @@ enum AssignmentRecordType: string implements HasColor, HasLabel
     {
         return match ($this) {
             self::PRIMARY => 'success',
-            self::SECONDARY => 'info'
+            self::SECONDARY => 'info',
         };
     }
 }

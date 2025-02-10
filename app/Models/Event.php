@@ -42,8 +42,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property bool $registration_enabled
  * @property \Illuminate\Support\Carbon|null $registration_deadline
  * @property bool $notifications_enabled
- * @property array|null $notifications_interval
- * @property AsEnumCollection|null $notifications_channels
+ * @property array<array-key, mixed>|null $notifications_interval
+ * @property \Illuminate\Support\Collection<int, NotificationChannel>|null $notifications_channels
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
@@ -58,7 +58,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read int|null $images_count
  * @property-read string $label
  * @property-read mixed $length
- * @property-read EventRegistration $registration
+ * @property-read EventRegistration|null $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $registrations
  * @property-read int|null $registrations_count
  * @property-read string|null $relative_url
@@ -67,30 +67,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Event author(\App\Models\User $user)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event author(\App\Models\User $user)
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Event newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Event newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Event query()
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereAllDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereCalendarId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereEnds($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereLocation($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsChannels($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereNotificationsInterval($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereRegistrationDeadline($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereRegistrationEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereRepeats($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereStarts($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Event whereUrl($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereAllDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereAuthorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCalendarId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereContent($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereEnds($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereLocation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereNotificationsChannels($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereNotificationsEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereNotificationsInterval($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereRegistrationDeadline($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereRegistrationEnabled($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereRepeats($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereStarts($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereUrl($value)
  *
  * @mixin \Eloquent
  */
@@ -111,9 +111,6 @@ class Event extends Model implements HasLabel
     use HasSchedule;
     use HasTags;
 
-    /**
-     * @var array<string, string|bool>
-     */
     protected $attributes = [
         'all_day' => false,
         'repeats' => false,
@@ -121,9 +118,6 @@ class Event extends Model implements HasLabel
         'notifications_enabled' => true,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'calendar_id',
@@ -145,7 +139,7 @@ class Event extends Model implements HasLabel
     ];
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function hasPassed(): Attribute
     {
@@ -163,7 +157,7 @@ class Event extends Model implements HasLabel
     }
 
     /**
-     * @return Attribute<?CarbonInterval, void>
+     * @return Attribute<?CarbonInterval, never>
      */
     public function length(): Attribute
     {
@@ -175,7 +169,7 @@ class Event extends Model implements HasLabel
     }
 
     /**
-     * @return Attribute<string, void>
+     * @return Attribute<string, never>
      */
     public function url(): Attribute
     {

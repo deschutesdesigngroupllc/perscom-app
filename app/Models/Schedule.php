@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Services\ScheduleService;
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
 use Carbon\CarbonInterval;
 use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -26,10 +28,10 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property ScheduleEndType|null $end_type
  * @property int|null $count
  * @property \Illuminate\Support\Carbon|null $until
- * @property \Illuminate\Support\Collection|null $by_day
- * @property \Illuminate\Support\Collection|null $by_month
+ * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_day
+ * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_month
  * @property string|null $by_set_position
- * @property \Illuminate\Support\Collection|null $by_month_day
+ * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_month_day
  * @property string|null $by_year_day
  * @property string|null $rrule
  * @property \Illuminate\Support\Carbon|null $next_occurrence
@@ -41,34 +43,36 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property-read Model|Eloquent|null $repeatable
  *
  * @method static \Database\Factories\ScheduleFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule query()
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereByDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereByMonth($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereByMonthDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereBySetPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereByYearDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereDuration($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereEndType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereFrequency($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereInterval($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereLastOccurrence($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereNextOccurrence($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereRepeatableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereRepeatableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereRrule($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereStart($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereUntil($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Schedule whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereByDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereByMonth($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereByMonthDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereBySetPosition($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereByYearDay($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereCount($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereDuration($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereEndType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereFrequency($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereInterval($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereLastOccurrence($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereNextOccurrence($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereRepeatableId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereRepeatableType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereRrule($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereStart($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereUntil($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */
 class Schedule extends MorphPivot
 {
+    use ClearsApiCache;
+    use ClearsResponseCache;
     use HasFactory;
 
     protected $table = 'schedules';
@@ -104,7 +108,7 @@ class Schedule extends MorphPivot
     }
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function hasPassed(): Attribute
     {
@@ -122,7 +126,7 @@ class Schedule extends MorphPivot
     }
 
     /**
-     * @return Attribute<CarbonInterval, void>
+     * @return Attribute<CarbonInterval, never>
      */
     public function length(): Attribute
     {

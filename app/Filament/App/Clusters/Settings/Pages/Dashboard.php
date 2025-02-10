@@ -8,6 +8,7 @@ use App\Actions\ResetTenantSubdomain;
 use App\Actions\UpdateTenantSubdomain;
 use App\Features\CustomSubDomainFeature;
 use App\Filament\App\Clusters\Settings;
+use App\Models\Enums\RosterMode;
 use App\Models\Tenant;
 use App\Rules\SubdomainRule;
 use App\Services\SettingsService;
@@ -16,11 +17,13 @@ use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
+use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
 use Filament\Panel;
@@ -162,11 +165,21 @@ class Dashboard extends SettingsPage
                                         'created_at' => 'Joined At',
                                         'updated_at' => 'Last Updated At',
                                     ])->sort()->toArray()),
+                            ]),
+                        Tabs\Tab::make('Roster')
+                            ->icon('heroicon-o-queue-list')
+                            ->schema([
+                                Radio::make('roster_mode')
+                                    ->label('Mode')
+                                    ->required()
+                                    ->live()
+                                    ->options(RosterMode::class),
                                 Repeater::make('roster_sort_order')
                                     ->label('Roster Sort Order')
                                     ->reorderable()
                                     ->addActionLabel('Add New Field')
                                     ->helperText('Choose the order in which the roster is sorted. Items on the top will be treated as having the most priority.')
+                                    ->visible(fn (Get $get) => $get('roster_mode') === RosterMode::AUTOMATIC)
                                     ->simple(Select::make('roster_sort_order')
                                         ->distinct()
                                         ->options([

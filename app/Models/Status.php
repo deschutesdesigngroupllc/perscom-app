@@ -43,16 +43,16 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\StatusFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Status newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Status newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Status ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder|Status query()
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Status whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status whereColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Status whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -69,9 +69,6 @@ class Status extends Model implements HasColor, HasLabel, Sortable
     use HasResourceUrl;
     use HasUsers;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'created_at',

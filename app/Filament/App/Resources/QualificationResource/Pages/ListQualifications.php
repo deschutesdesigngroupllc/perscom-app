@@ -12,6 +12,8 @@ class ListQualifications extends ListRecords
 {
     protected static string $resource = QualificationResource::class;
 
+    protected ?string $subheading = 'Qualifications establish what a user is allowed to do based on performance.';
+
     protected function getHeaderActions(): array
     {
         return [

@@ -18,7 +18,7 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property string|null $provider
  * @property string $redirect
  * @property string|null $logout
- * @property array|null $scopes
+ * @property array<array-key, mixed>|null $scopes
  * @property bool $personal_access_client
  * @property bool $password_client
  * @property bool $revoked
@@ -35,24 +35,24 @@ use Laravel\Passport\Client as BaseClientModel;
  * @property-read User|null $user
  *
  * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient query()
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereLogout($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient wherePasswordClient($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient wherePersonalAccessClient($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereProvider($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereRedirect($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereRevoked($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereScopes($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereSecret($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|PassportClient whereUserId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereLogout($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient wherePasswordClient($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient wherePersonalAccessClient($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereProvider($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereRedirect($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereRevoked($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereScopes($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereSecret($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereType($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|PassportClient whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -60,9 +60,6 @@ class PassportClient extends BaseClientModel
 {
     use HasImages;
 
-    /**
-     * @var array<string, string|bool>
-     */
     protected $attributes = [
         'personal_access_client' => false,
         'password_client' => false,

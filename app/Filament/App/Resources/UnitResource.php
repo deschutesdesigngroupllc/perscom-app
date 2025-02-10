@@ -6,10 +6,13 @@ namespace App\Filament\App\Resources;
 
 use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\UnitResource\Pages;
+use App\Filament\App\Resources\UnitResource\RelationManagers\SlotsRelationManager;
 use App\Filament\Exports\UnitExporter;
+use App\Models\Enums\RosterMode;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
 use App\Models\Unit;
+use App\Settings\DashboardSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -75,18 +78,29 @@ class UnitResource extends BaseResource
                         Forms\Components\Tabs\Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')
                             ->schema([
-                                Forms\Components\Select::make('groups')
-                                    ->preload()
-                                    ->multiple()
-                                    ->relationship('groups', 'name')
-                                    ->helperText('The groups this unit belongs to.')
-                                    ->createOptionForm(fn ($form) => GroupResource::form($form)),
                                 Forms\Components\Toggle::make('hidden')
                                     ->helperText('Hide this unit from the roster.')
                                     ->required(),
                                 IconPicker::make('icon')
                                     ->preload()
                                     ->helperText(new HtmlString('An optional icon for the unit. A list of icons can be found <a href="https://heroicons.com/" target="_blank" class="underline">here</a>.')),
+                                Forms\Components\RichEditor::make('empty')
+                                    ->label('Empty Message')
+                                    ->helperText('Display a message when no users or slots occupy the unit.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Forms\Components\Livewire::make(SlotsRelationManager::class, fn (?Unit $record) => [
+                                    'ownerRecord' => $record,
+                                    'pageClass' => Pages\EditUnit::class,
+                                ])
+                                    ->visible(function () {
+                                        /** @var DashboardSettings $settings */
+                                        $settings = app(DashboardSettings::class);
+
+                                        return $settings->roster_mode === RosterMode::MANUAL;
+                                    })
+                                    ->visibleOn('edit'),
                             ]),
                     ]),
             ]);

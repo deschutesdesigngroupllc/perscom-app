@@ -13,7 +13,7 @@ class ListWebhooks extends ListRecords
 {
     protected static string $resource = WebhookResource::class;
 
-    protected ?string $subheading = 'Webhooks provide real-time outbound notifications to keep your services in sync.';
+    protected ?string $subheading = 'Webhooks provide real-time outbound notifications to ensure your services stay in sync.';
 
     protected function getHeaderActions(): array
     {

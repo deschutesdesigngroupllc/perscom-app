@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Models\Enums\NotificationChannel;
 use App\Observers\MessageObserver;
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
@@ -19,7 +21,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @property int $id
  * @property string $message
- * @property AsEnumCollection|null $channels
+ * @property \Illuminate\Support\Collection<int, NotificationChannel>|null $channels
  * @property \Illuminate\Support\Collection|null $recipients
  * @property bool $repeats
  * @property \Illuminate\Support\Carbon|null $send_at
@@ -32,39 +34,35 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\MessageFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Message newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Message newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Message query()
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereChannels($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereRecipients($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereRepeats($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereSendAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereSentAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Message whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereChannels($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereMessage($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereRecipients($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereRepeats($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereSendAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereSentAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Message whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
 #[ObservedBy(MessageObserver::class)]
 class Message extends Model implements HasLabel
 {
+    use ClearsApiCache;
+    use ClearsResponseCache;
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasSchedule;
 
-    /**
-     * @var null[]
-     */
     protected $attributes = [
         'recipients' => null,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'message',
         'channels',

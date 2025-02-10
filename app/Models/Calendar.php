@@ -34,15 +34,15 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property-read string|null $url
  *
  * @method static \Database\Factories\CalendarFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar query()
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereColor($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Calendar whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar whereColor($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Calendar whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -57,9 +57,6 @@ class Calendar extends Model implements HasColor, HasLabel
     use HasResourceUrl;
     use HasTags;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

@@ -12,6 +12,8 @@ class ListDocuments extends ListRecords
 {
     protected static string $resource = DocumentResource::class;
 
+    protected ?string $subheading = 'Documents provide additional context and meaning to other resources in the platform.';
+
     protected function getHeaderActions(): array
     {
         return [

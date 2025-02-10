@@ -14,15 +14,15 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory whereFormId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder|FormCategory whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereCategoryId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereFormId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereOrder($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

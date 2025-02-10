@@ -46,7 +46,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property string|null $vat_id
  * @property array $invoice_emails
  * @property string|null $billing_country
- * @property array|null $data
+ * @property array<array-key, mixed>|null $data
  * @property \Illuminate\Support\Carbon|null $last_login_at
  * @property \Illuminate\Support\Carbon|null $setup_completed_at
  * @property \Illuminate\Support\Carbon|null $created_at
@@ -73,34 +73,34 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
  * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
  * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> get($columns = ['*'])
- * @method static Builder|Tenant hasExpiredGenericTrial()
- * @method static Builder|Tenant newModelQuery()
- * @method static Builder|Tenant newQuery()
- * @method static Builder|Tenant onGenericTrial()
- * @method static Builder|Tenant query()
- * @method static Builder|Tenant whereBillingAddress($value)
- * @method static Builder|Tenant whereBillingAddressLine2($value)
- * @method static Builder|Tenant whereBillingCity($value)
- * @method static Builder|Tenant whereBillingCountry($value)
- * @method static Builder|Tenant whereBillingPostalCode($value)
- * @method static Builder|Tenant whereBillingState($value)
- * @method static Builder|Tenant whereCreatedAt($value)
- * @method static Builder|Tenant whereData($value)
- * @method static Builder|Tenant whereEmail($value)
- * @method static Builder|Tenant whereExtraBillingInformation($value)
- * @method static Builder|Tenant whereId($value)
- * @method static Builder|Tenant whereInvoiceEmails($value)
- * @method static Builder|Tenant whereLastLoginAt($value)
- * @method static Builder|Tenant whereName($value)
- * @method static Builder|Tenant wherePmExpiration($value)
- * @method static Builder|Tenant wherePmLastFour($value)
- * @method static Builder|Tenant wherePmType($value)
- * @method static Builder|Tenant whereSetupCompletedAt($value)
- * @method static Builder|Tenant whereStripeId($value)
- * @method static Builder|Tenant whereTrialEndsAt($value)
- * @method static Builder|Tenant whereUpdatedAt($value)
- * @method static Builder|Tenant whereVatId($value)
- * @method static Builder|Tenant whereWebsite($value)
+ * @method static Builder<static>|Tenant hasExpiredGenericTrial()
+ * @method static Builder<static>|Tenant newModelQuery()
+ * @method static Builder<static>|Tenant newQuery()
+ * @method static Builder<static>|Tenant onGenericTrial()
+ * @method static Builder<static>|Tenant query()
+ * @method static Builder<static>|Tenant whereBillingAddress($value)
+ * @method static Builder<static>|Tenant whereBillingAddressLine2($value)
+ * @method static Builder<static>|Tenant whereBillingCity($value)
+ * @method static Builder<static>|Tenant whereBillingCountry($value)
+ * @method static Builder<static>|Tenant whereBillingPostalCode($value)
+ * @method static Builder<static>|Tenant whereBillingState($value)
+ * @method static Builder<static>|Tenant whereCreatedAt($value)
+ * @method static Builder<static>|Tenant whereData($value)
+ * @method static Builder<static>|Tenant whereEmail($value)
+ * @method static Builder<static>|Tenant whereExtraBillingInformation($value)
+ * @method static Builder<static>|Tenant whereId($value)
+ * @method static Builder<static>|Tenant whereInvoiceEmails($value)
+ * @method static Builder<static>|Tenant whereLastLoginAt($value)
+ * @method static Builder<static>|Tenant whereName($value)
+ * @method static Builder<static>|Tenant wherePmExpiration($value)
+ * @method static Builder<static>|Tenant wherePmLastFour($value)
+ * @method static Builder<static>|Tenant wherePmType($value)
+ * @method static Builder<static>|Tenant whereSetupCompletedAt($value)
+ * @method static Builder<static>|Tenant whereStripeId($value)
+ * @method static Builder<static>|Tenant whereTrialEndsAt($value)
+ * @method static Builder<static>|Tenant whereUpdatedAt($value)
+ * @method static Builder<static>|Tenant whereVatId($value)
+ * @method static Builder<static>|Tenant whereWebsite($value)
  *
  * @mixin \Eloquent
  */
@@ -153,7 +153,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<string, void>
+     * @return Attribute<string, never>
      */
     public function databaseStatus(): Attribute
     {
@@ -163,7 +163,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<?Domain, void>
+     * @return Attribute<?Domain, never>
      */
     public function customDomain(): Attribute
     {
@@ -175,7 +175,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<?Domain, void>
+     * @return Attribute<?Domain, never>
      */
     public function fallbackDomain(): Attribute
     {
@@ -187,7 +187,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<?Domain, void>
+     * @return Attribute<?Domain, never>
      */
     public function domain(): Attribute
     {
@@ -197,7 +197,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, void>
+     * @return Attribute<Optional|string|null, never>
      */
     public function customUrl(): Attribute
     {
@@ -207,7 +207,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, void>
+     * @return Attribute<Optional|string|null, never>
      */
     public function fallbackUrl(): Attribute
     {
@@ -217,7 +217,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function setupCompleted(): Attribute
     {
@@ -226,7 +226,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, void>
+     * @return Attribute<Optional|string|null, never>
      */
     public function slug(): Attribute
     {
@@ -253,7 +253,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, void>
+     * @return Attribute<Optional|string|null, never>
      */
     public function url(): Attribute
     {
@@ -263,7 +263,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<SubscriptionPlanType, void>
+     * @return Attribute<SubscriptionPlanType, never>
      */
     public function subscriptionPlan(): Attribute
     {

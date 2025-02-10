@@ -26,17 +26,17 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read int|null $notifications_count
  *
  * @method static \Database\Factories\AdminFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Admin newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Admin newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Admin query()
- * @method static \Illuminate\Database\Eloquent\Builder|Admin whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Admin whereEmail($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Admin whereEmailVerifiedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Admin whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Admin whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Admin wherePassword($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Admin whereRememberToken($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Admin whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereEmailVerifiedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Admin whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

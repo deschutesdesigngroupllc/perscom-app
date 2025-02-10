@@ -16,8 +16,9 @@ class RankRecordObserver
     public function created(RankRecord $rank): void
     {
         if ($rank->user) {
-            $rank->user->rank_id = optional($rank->rank)->id;
-            $rank->user->save();
+            $rank->user->update([
+                'rank_id' => $rank->rank_id,
+            ]);
         }
 
         Notification::send($rank->user, new NewRankRecord($rank));

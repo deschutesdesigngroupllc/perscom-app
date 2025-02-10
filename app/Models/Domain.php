@@ -26,15 +26,15 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property-read mixed $url
  *
  * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Domain newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Domain newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Domain query()
- * @method static \Illuminate\Database\Eloquent\Builder|Domain whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Domain whereDomain($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Domain whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Domain whereIsCustomSubdomain($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Domain whereTenantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Domain whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereDomain($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereIsCustomSubdomain($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereTenantId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

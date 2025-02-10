@@ -13,13 +13,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 /**
  * @property int $id
  * @property string|null $log_name
- * @property array $description
+ * @property array<array-key, mixed> $description
  * @property string|null $subject_type
  * @property string|null $event
  * @property int|null $subject_id
  * @property string|null $causer_type
  * @property string|null $causer_id
- * @property \Illuminate\Support\Collection|null $properties
+ * @property \Illuminate\Support\Collection<array-key, mixed>|null $properties
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -38,27 +38,27 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
  * @property-read mixed|null $trace_id
  *
- * @method static Builder|ApiLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
- * @method static Builder|ApiLog forBatch(string $batchUuid)
- * @method static Builder|ApiLog forEvent(string $event)
- * @method static Builder|ApiLog forSubject(\Illuminate\Database\Eloquent\Model $subject)
- * @method static Builder|ApiLog hasBatch()
- * @method static Builder|ApiLog inLog(...$logNames)
- * @method static Builder|ApiLog newModelQuery()
- * @method static Builder|ApiLog newQuery()
- * @method static Builder|ApiLog query()
- * @method static Builder|ApiLog whereBatchUuid($value)
- * @method static Builder|ApiLog whereCauserId($value)
- * @method static Builder|ApiLog whereCauserType($value)
- * @method static Builder|ApiLog whereCreatedAt($value)
- * @method static Builder|ApiLog whereDescription($value)
- * @method static Builder|ApiLog whereEvent($value)
- * @method static Builder|ApiLog whereId($value)
- * @method static Builder|ApiLog whereLogName($value)
- * @method static Builder|ApiLog whereProperties($value)
- * @method static Builder|ApiLog whereSubjectId($value)
- * @method static Builder|ApiLog whereSubjectType($value)
- * @method static Builder|ApiLog whereUpdatedAt($value)
+ * @method static Builder<static>|ApiLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static Builder<static>|ApiLog forBatch(string $batchUuid)
+ * @method static Builder<static>|ApiLog forEvent(string $event)
+ * @method static Builder<static>|ApiLog forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder<static>|ApiLog hasBatch()
+ * @method static Builder<static>|ApiLog inLog(...$logNames)
+ * @method static Builder<static>|ApiLog newModelQuery()
+ * @method static Builder<static>|ApiLog newQuery()
+ * @method static Builder<static>|ApiLog query()
+ * @method static Builder<static>|ApiLog whereBatchUuid($value)
+ * @method static Builder<static>|ApiLog whereCauserId($value)
+ * @method static Builder<static>|ApiLog whereCauserType($value)
+ * @method static Builder<static>|ApiLog whereCreatedAt($value)
+ * @method static Builder<static>|ApiLog whereDescription($value)
+ * @method static Builder<static>|ApiLog whereEvent($value)
+ * @method static Builder<static>|ApiLog whereId($value)
+ * @method static Builder<static>|ApiLog whereLogName($value)
+ * @method static Builder<static>|ApiLog whereProperties($value)
+ * @method static Builder<static>|ApiLog whereSubjectId($value)
+ * @method static Builder<static>|ApiLog whereSubjectType($value)
+ * @method static Builder<static>|ApiLog whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

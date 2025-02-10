@@ -82,6 +82,16 @@ class GroupResource extends BaseResource
                                 IconPicker::make('icon')
                                     ->preload()
                                     ->helperText(new HtmlString('An optional icon for the group. A list of icons can be found <a href="https://heroicons.com/" target="_blank" class="underline">here</a>.')),
+                                Forms\Components\RichEditor::make('empty')
+                                    ->label('Empty Message')
+                                    ->helperText('Display a message when no units occupy the group.')
+                                    ->nullable()
+                                    ->maxLength(65535)
+                                    ->columnSpanFull(),
+                                Forms\Components\Livewire::make(RelationManagers\UnitsRelationManager::class, fn (?Group $record) => [
+                                    'ownerRecord' => $record,
+                                    'pageClass' => Pages\EditGroup::class,
+                                ])->visibleOn('edit'),
                             ]),
                     ]),
             ]);
@@ -141,13 +151,6 @@ class GroupResource extends BaseResource
                 VisibleScope::class,
                 HiddenScope::class,
             ]);
-    }
-
-    public static function getRelations(): array
-    {
-        return [
-            RelationManagers\UnitsRelationManager::class,
-        ];
     }
 
     public static function getPages(): array
