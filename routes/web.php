@@ -8,8 +8,9 @@ use App\Http\Controllers\Landing\PrivacyPolicyController;
 use App\Http\Controllers\Landing\RegisterController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 
-Route::group(['middleware' => 'landing'], static function () {
+Route::group(['middleware' => 'landing', CacheResponse::class], static function () {
     Route::get('/', [HomeController::class, 'index'])
         ->name('landing.home');
 

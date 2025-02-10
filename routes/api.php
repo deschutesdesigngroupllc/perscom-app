@@ -74,6 +74,7 @@ use App\Http\Middleware\LogApiResponse;
 use App\Http\Middleware\SentryContext;
 use Illuminate\Support\Facades\Route;
 use Orion\Facades\Orion;
+use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
@@ -81,11 +82,13 @@ Route::get('health', HealthController::class)
     ->name('health');
 
 Route::get('spec.json', [SpecController::class, 'index'])
+    ->middleware(CacheResponse::class)
     ->name('spec');
 
 Route::group([
     'middleware' => [
         'auth_api',
+        CacheResponse::class,
         InitializeTenancyByRequestData::class,
         PreventAccessFromCentralDomains::class,
         CheckApiVersion::class,
