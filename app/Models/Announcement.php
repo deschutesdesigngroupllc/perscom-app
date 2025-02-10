@@ -67,17 +67,11 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<string, bool>
-     */
     protected $attributes = [
         'enabled' => true,
         'global' => false,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'title',
         'content',
@@ -96,7 +90,7 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
     }
 
     /**
-     * @return Attribute<string, void>
+     * @return Attribute<string, never>
      */
     public function color(): Attribute
     {

@@ -57,9 +57,6 @@ class Calendar extends Model implements HasColor, HasLabel
     use HasResourceUrl;
     use HasTags;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

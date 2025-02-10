@@ -6,6 +6,8 @@ namespace App\Models;
 
 use App\Models\Enums\NotificationChannel;
 use App\Observers\MessageObserver;
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
@@ -50,21 +52,17 @@ use Illuminate\Database\Eloquent\Model;
 #[ObservedBy(MessageObserver::class)]
 class Message extends Model implements HasLabel
 {
+    use ClearsApiCache;
+    use ClearsResponseCache;
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasSchedule;
 
-    /**
-     * @var null[]
-     */
     protected $attributes = [
         'recipients' => null,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'message',
         'channels',

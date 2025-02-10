@@ -54,9 +54,6 @@ class Category extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

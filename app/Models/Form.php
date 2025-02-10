@@ -74,9 +74,6 @@ class Form extends Model implements HasLabel, SendsModelNotifications
     use HasResourceUrl;
     use HasTags;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'slug',

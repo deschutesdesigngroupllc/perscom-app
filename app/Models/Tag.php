@@ -36,9 +36,6 @@ class Tag extends Model implements HasLabel
     use HasFactory;
     use HasResourceLabel;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'created_at',

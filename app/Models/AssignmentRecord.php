@@ -122,9 +122,6 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
         'type' => AssignmentRecordType::PRIMARY,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'status_id',
         'unit_id',

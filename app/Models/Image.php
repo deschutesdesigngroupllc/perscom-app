@@ -59,9 +59,6 @@ class Image extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',
@@ -74,7 +71,7 @@ class Image extends Model implements HasLabel
     protected $appends = ['image_url'];
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function imageUrl(): Attribute
     {
@@ -84,7 +81,7 @@ class Image extends Model implements HasLabel
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function modelUrl(): Attribute
     {

@@ -6,6 +6,7 @@ namespace App\Models;
 
 use App\Models\Enums\TaskAssignmentStatus;
 use App\Observers\TaskAssignmentObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\Carbon;
@@ -62,6 +63,7 @@ use Illuminate\Support\Facades\DB;
 #[ObservedBy(TaskAssignmentObserver::class)]
 class TaskAssignment extends Pivot
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
     use HasUser;

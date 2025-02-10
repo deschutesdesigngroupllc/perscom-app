@@ -64,9 +64,6 @@ class Qualification extends Model implements HasLabel, Sortable
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

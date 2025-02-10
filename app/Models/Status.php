@@ -69,9 +69,6 @@ class Status extends Model implements HasColor, HasLabel, Sortable
     use HasResourceUrl;
     use HasUsers;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'created_at',

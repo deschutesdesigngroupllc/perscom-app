@@ -94,16 +94,10 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
 
     protected $table = 'records_ranks';
 
-    /**
-     * @var array
-     */
     protected $attributes = [
         'type' => RankRecordType::PROMOTION,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'rank_id',
         'text',

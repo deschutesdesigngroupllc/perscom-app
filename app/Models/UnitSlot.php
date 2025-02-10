@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
 use App\Traits\HasSlot;
 use App\Traits\HasUnit;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -35,6 +37,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class UnitSlot extends Pivot
 {
+    use ClearsApiCache;
+    use ClearsResponseCache;
     use HasSlot;
     use HasUnit;
 

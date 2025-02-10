@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
 use Carbon\Carbon;
@@ -39,6 +40,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class EventRegistration extends Pivot
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
     use HasUser;

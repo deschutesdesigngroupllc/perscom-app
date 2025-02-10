@@ -72,9 +72,6 @@ class Rank extends Model implements HasLabel, Sortable
     use HasResourceUrl;
     use HasUsers;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

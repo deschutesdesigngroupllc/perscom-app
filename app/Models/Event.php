@@ -111,9 +111,6 @@ class Event extends Model implements HasLabel
     use HasSchedule;
     use HasTags;
 
-    /**
-     * @var array<string, string|bool>
-     */
     protected $attributes = [
         'all_day' => false,
         'repeats' => false,
@@ -121,9 +118,6 @@ class Event extends Model implements HasLabel
         'notifications_enabled' => true,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'calendar_id',
@@ -145,7 +139,7 @@ class Event extends Model implements HasLabel
     ];
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function hasPassed(): Attribute
     {
@@ -163,7 +157,7 @@ class Event extends Model implements HasLabel
     }
 
     /**
-     * @return Attribute<?CarbonInterval, void>
+     * @return Attribute<?CarbonInterval, never>
      */
     public function length(): Attribute
     {
@@ -175,7 +169,7 @@ class Event extends Model implements HasLabel
     }
 
     /**
-     * @return Attribute<string, void>
+     * @return Attribute<string, never>
      */
     public function url(): Attribute
     {

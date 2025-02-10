@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\CanBeOrdered;
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
 use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
@@ -39,6 +41,8 @@ use Spatie\EloquentSortable\Sortable;
 class Element extends MorphPivot implements Sortable
 {
     use CanBeOrdered;
+    use ClearsApiCache;
+    use ClearsResponseCache;
 
     protected $table = 'model_has_fields';
 

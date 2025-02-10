@@ -49,7 +49,7 @@ class Role extends \Spatie\Permission\Models\Role
     ];
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function isCustomRole(): Attribute
     {
@@ -57,7 +57,7 @@ class Role extends \Spatie\Permission\Models\Role
     }
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function isApplicationRole(): Attribute
     {

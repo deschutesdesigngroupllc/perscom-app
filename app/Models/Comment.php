@@ -49,9 +49,6 @@ class Comment extends Model implements HasLabel
     use HasFactory;
     use HasResourceLabel;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'model_id',
         'model_type',

@@ -61,16 +61,10 @@ class Alert extends Model implements Enableable, Sortable
     use ClearsResponseCache;
     use SortableTrait;
 
-    /**
-     * @var true[]
-     */
     protected $attributes = [
         'enabled' => true,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'title',
         'message',

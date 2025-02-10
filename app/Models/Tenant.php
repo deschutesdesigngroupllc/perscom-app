@@ -153,7 +153,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<string, void>
+     * @return Attribute<string, never>
      */
     public function databaseStatus(): Attribute
     {
@@ -163,7 +163,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<?Domain, void>
+     * @return Attribute<?Domain, never>
      */
     public function customDomain(): Attribute
     {
@@ -175,7 +175,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<?Domain, void>
+     * @return Attribute<?Domain, never>
      */
     public function fallbackDomain(): Attribute
     {
@@ -187,7 +187,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<?Domain, void>
+     * @return Attribute<?Domain, never>
      */
     public function domain(): Attribute
     {
@@ -197,7 +197,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, void>
+     * @return Attribute<Optional|string|null, never>
      */
     public function customUrl(): Attribute
     {
@@ -207,7 +207,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, void>
+     * @return Attribute<Optional|string|null, never>
      */
     public function fallbackUrl(): Attribute
     {
@@ -217,7 +217,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function setupCompleted(): Attribute
     {
@@ -226,7 +226,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, void>
+     * @return Attribute<Optional|string|null, never>
      */
     public function slug(): Attribute
     {
@@ -253,7 +253,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, void>
+     * @return Attribute<Optional|string|null, never>
      */
     public function url(): Attribute
     {
@@ -263,7 +263,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<SubscriptionPlanType, void>
+     * @return Attribute<SubscriptionPlanType, never>
      */
     public function subscriptionPlan(): Attribute
     {

@@ -80,16 +80,10 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var false[]
-     */
     protected $attributes = [
         'hidden' => false,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

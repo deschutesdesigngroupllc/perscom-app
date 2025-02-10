@@ -91,9 +91,6 @@ class AwardRecord extends Model implements HasLabel, SendsModelNotifications, Sh
 
     protected $table = 'records_awards';
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'award_id',
         'text',

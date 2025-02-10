@@ -56,9 +56,6 @@ class Task extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'title',
         'description',

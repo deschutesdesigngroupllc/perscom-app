@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\StatusRecordObserver;
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -42,6 +43,7 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
 #[ObservedBy(StatusRecordObserver::class)]
 class StatusRecord extends MorphPivot
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
 

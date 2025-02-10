@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasGroup;
+use App\Traits\HasUnit;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -27,7 +30,10 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class UnitGroup extends Pivot
 {
+    use ClearsApiCache;
     use ClearsResponseCache;
+    use HasGroup;
+    use HasUnit;
 
     protected $table = 'units_groups';
 

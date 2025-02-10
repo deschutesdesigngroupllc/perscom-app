@@ -8,6 +8,9 @@ use App\Contracts\Hideable;
 use App\Models\Scopes\SlotScope;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
+use App\Traits\HasResourceLabel;
 use App\Traits\HasUsers;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,6 +33,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
+ * @property-read string $label
  * @property-read Position|null $position
  * @property-read Specialty|null $specialty
  * @property-read UnitSlot|null $pivot
@@ -63,12 +67,12 @@ class Slot extends Model implements Hideable, Sortable
 {
     use CanBeHidden;
     use CanBeOrdered;
+    use ClearsApiCache;
+    use ClearsResponseCache;
     use HasFactory;
+    use HasResourceLabel;
     use HasUsers;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'position_id',
         'speciality_id',

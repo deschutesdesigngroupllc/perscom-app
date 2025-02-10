@@ -91,16 +91,10 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     use HasResourceUrl;
     use HasUsers;
 
-    /**
-     * @var false[]
-     */
     protected $attributes = [
         'hidden' => false,
     ];
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

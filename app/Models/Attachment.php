@@ -57,9 +57,6 @@ class Attachment extends Model implements HasLabel
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'filename',
@@ -70,10 +67,12 @@ class Attachment extends Model implements HasLabel
         'updated_at',
     ];
 
-    protected $appends = ['attachment_url'];
+    protected $appends = [
+        'attachment_url',
+    ];
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function attachmentUrl(): Attribute
     {
@@ -83,7 +82,7 @@ class Attachment extends Model implements HasLabel
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function modelUrl(): Attribute
     {

@@ -43,9 +43,6 @@ class Webhook extends Model
     use HasFactory;
     use HasLogs;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'url',
         'description',

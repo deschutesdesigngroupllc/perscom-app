@@ -87,9 +87,6 @@ class ServiceRecord extends Model implements HasLabel, SendsModelNotifications, 
 
     protected $table = 'records_service';
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'text',
         'created_at',

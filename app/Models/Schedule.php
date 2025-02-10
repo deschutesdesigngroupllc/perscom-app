@@ -7,6 +7,8 @@ namespace App\Models;
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
 use App\Services\ScheduleService;
+use App\Traits\ClearsApiCache;
+use App\Traits\ClearsResponseCache;
 use Carbon\CarbonInterval;
 use Eloquent;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -69,6 +71,8 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  */
 class Schedule extends MorphPivot
 {
+    use ClearsApiCache;
+    use ClearsResponseCache;
     use HasFactory;
 
     protected $table = 'schedules';
@@ -104,7 +108,7 @@ class Schedule extends MorphPivot
     }
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function hasPassed(): Attribute
     {
@@ -122,7 +126,7 @@ class Schedule extends MorphPivot
     }
 
     /**
-     * @return Attribute<CarbonInterval, void>
+     * @return Attribute<CarbonInterval, never>
      */
     public function length(): Attribute
     {

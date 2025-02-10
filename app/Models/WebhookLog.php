@@ -62,7 +62,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class WebhookLog extends Activity
 {
     /**
-     * @return Attribute<mixed, void>
+     * @return Attribute<mixed, never>
      */
     public function data(): Attribute
     {
@@ -72,7 +72,7 @@ class WebhookLog extends Activity
     }
 
     /**
-     * @return Attribute<?WebhookEvent, void>
+     * @return Attribute<?WebhookEvent, never>
      */
     public function event(): Attribute
     {
@@ -96,7 +96,7 @@ class WebhookLog extends Activity
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function resourceUrl(): Attribute
     {

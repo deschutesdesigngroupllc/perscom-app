@@ -83,9 +83,6 @@ class Field extends Model implements HasLabel, Hideable
     use HasResourceLabel;
     use HasResourceUrl;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'key',
@@ -103,6 +100,9 @@ class Field extends Model implements HasLabel, Hideable
         'updated_at',
     ];
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function validationRules(): Attribute
     {
         return Attribute::make(

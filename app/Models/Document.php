@@ -88,9 +88,6 @@ class Document extends Model implements HasLabel, Htmlable
     use HasServiceRecords;
     use HasTags;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'description',

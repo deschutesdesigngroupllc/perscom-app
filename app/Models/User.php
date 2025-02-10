@@ -200,9 +200,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use JwtClaims;
     use Notifiable;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -335,7 +332,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<string, void>
+     * @return Attribute<string, never>
      */
     public function online(): Attribute
     {
@@ -345,7 +342,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?string, void>
+     * @return Attribute<?string, never>
      */
     public function coverPhotoUrl(): Attribute
     {
@@ -355,7 +352,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?CarbonInterval, void>
+     * @return Attribute<?CarbonInterval, never>
      */
     public function timeInAssignment(): Attribute
     {
@@ -367,7 +364,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?CarbonInterval, void>
+     * @return Attribute<?CarbonInterval, never>
      */
     public function timeInGrade(): Attribute
     {
@@ -379,7 +376,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<CarbonInterval, void>
+     * @return Attribute<CarbonInterval, never>
      */
     public function timeInService(): Attribute
     {
@@ -389,7 +386,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?Carbon, null>
+     * @return Attribute<?Carbon, never>
      */
     public function lastAssignmentChangeDate(): Attribute
     {
@@ -401,7 +398,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return Attribute<?Carbon, null>
+     * @return Attribute<?Carbon, never>
      */
     public function lastRankChangeDate(): Attribute
     {

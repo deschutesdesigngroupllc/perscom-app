@@ -36,6 +36,9 @@ class JobHistory extends Model
         'finished_at',
     ];
 
+    /**
+     * @return string[]
+     */
     protected function casts(): array
     {
         return [

@@ -32,9 +32,6 @@ class Metric extends Model
     use CentralConnection;
     use HasFactory;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'key',
         'count',

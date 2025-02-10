@@ -41,6 +41,7 @@ use App\Http\Controllers\Api\Ranks\RanksImageController;
 use App\Http\Controllers\Api\RosterController;
 use App\Http\Controllers\Api\ServiceRecords\ServiceRecordsController;
 use App\Http\Controllers\Api\SettingsController;
+use App\Http\Controllers\Api\Slots\SlotsController;
 use App\Http\Controllers\Api\SpecController;
 use App\Http\Controllers\Api\Specialties\SpecialtiesController;
 use App\Http\Controllers\Api\Statuses\StatusesController;
@@ -168,7 +169,7 @@ Route::group([
     Orion::resource('settings', SettingsController::class)
         ->only('index');
 
-    Orion::resource('slots', SpecialtiesController::class);
+    Orion::resource('slots', SlotsController::class);
 
     Orion::resource('specialties', SpecialtiesController::class);
 

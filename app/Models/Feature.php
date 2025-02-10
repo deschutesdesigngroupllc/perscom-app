@@ -88,7 +88,7 @@ class Feature extends Model
     }
 
     /**
-     * @return Attribute<bool, void>
+     * @return Attribute<bool, never>
      */
     public function enabled(): Attribute
     {

@@ -41,9 +41,6 @@ class Banner extends Model
     use ClearsResponseCache;
     use HasFactory;
 
-    /**
-     * @var array<int, string>
-     */
     protected $fillable = [
         'title',
         'message',
