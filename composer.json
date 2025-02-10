@@ -92,10 +92,6 @@
     {
       "type": "composer",
       "url": "https://spark.laravel.com"
-    },
-    {
-      "type": "vcs",
-      "url": "https://github.com/jonerickson/laravel-backup"
     }
   ],
   "autoload": {
