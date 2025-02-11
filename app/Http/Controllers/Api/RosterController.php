@@ -62,7 +62,7 @@ class RosterController extends Controller
         $query = parent::buildFetchQuery($request, $requestedRelations);
 
         /** @var Group|Builder $query */
-        match (RosterMode::tryFrom($request->query('type'))) {
+        match (RosterMode::tryFrom($request->query('type') ?? 'automatic')) {
             RosterMode::MANUAL => $query->forManualRoster(),
             default => $query->forAutomaticRoster()
         };
