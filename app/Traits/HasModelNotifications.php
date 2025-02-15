@@ -37,6 +37,9 @@ trait HasModelNotifications
         static::deleting(fn ($model) => $model->modelNotifications()->delete());
     }
 
+    /**
+     * @return MorphMany<ModelNotification, $this>
+     */
     public function modelNotifications(): MorphMany
     {
         return $this->morphMany(ModelNotification::class, 'model');
