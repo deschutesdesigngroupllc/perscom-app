@@ -26,7 +26,6 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -106,11 +105,6 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
         'created_at',
         'updated_at',
     ];
-
-    public function rank(): BelongsTo
-    {
-        return $this->belongsTo(Rank::class);
-    }
 
     public function headlineForNewsfeedItem(): string
     {
