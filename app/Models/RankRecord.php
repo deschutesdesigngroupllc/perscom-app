@@ -62,6 +62,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord rank(\App\Models\Rank $rank)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereCreatedAt($value)

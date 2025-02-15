@@ -66,6 +66,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $specialty_id
  * @property int|null $status_id
  * @property int|null $unit_id
+ * @property int|null $unit_slot_id
  * @property bool $approved
  * @property string|null $password
  * @property string|null $remember_token
@@ -138,6 +139,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read Unit|null $unit
+ * @property-read UnitSlot|null $unit_slot
  * @property-read string|null $url
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
@@ -145,9 +147,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User newQuery()
  * @method static Builder<static>|User orderForRoster()
  * @method static Builder<static>|User permission($permissions, $without = false)
+ * @method static Builder<static>|User position(\App\Models\Position $position)
  * @method static Builder<static>|User query()
+ * @method static Builder<static>|User rank(\App\Models\Rank $rank)
  * @method static Builder<static>|User role($roles, $guard = null, $without = false)
+ * @method static Builder<static>|User specialty(\App\Models\Specialty $specialty)
  * @method static Builder<static>|User status(?mixed $statuses)
+ * @method static Builder<static>|User unit(\App\Models\Unit $unit)
  * @method static Builder<static>|User whereApproved($value)
  * @method static Builder<static>|User whereCoverPhoto($value)
  * @method static Builder<static>|User whereCreatedAt($value)
@@ -170,6 +176,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User whereSpecialtyId($value)
  * @method static Builder<static>|User whereStatusId($value)
  * @method static Builder<static>|User whereUnitId($value)
+ * @method static Builder<static>|User whereUnitSlotId($value)
  * @method static Builder<static>|User whereUpdatedAt($value)
  * @method static Builder<static>|User withoutPermission($permissions)
  * @method static Builder<static>|User withoutRole($roles, $guard = null)

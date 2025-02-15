@@ -31,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord status(\App\Models\Status $status)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereModelId($value)
