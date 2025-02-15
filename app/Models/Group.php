@@ -116,7 +116,12 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     {
         $query
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
-            ->with(['units.slots.users']);
+            ->with([
+                'units.slots.users' => function ($query) {
+                    /** @var User $query */
+                    $query->orderForRoster();
+                },
+            ]);
     }
 
     /**
