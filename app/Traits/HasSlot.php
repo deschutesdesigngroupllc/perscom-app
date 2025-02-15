@@ -23,4 +23,11 @@ trait HasSlot
     {
         return $this->belongsTo(Slot::class);
     }
+
+    protected function initializeHasSlot(): void
+    {
+        $this->mergeFillable([
+            'slot_id',
+        ]);
+    }
 }

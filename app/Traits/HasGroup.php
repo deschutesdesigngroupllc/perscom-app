@@ -23,4 +23,11 @@ trait HasGroup
     {
         return $this->belongsTo(Group::class);
     }
+
+    protected function initializeHasGroup(): void
+    {
+        $this->mergeFillable([
+            'group_id',
+        ]);
+    }
 }

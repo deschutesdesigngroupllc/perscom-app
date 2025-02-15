@@ -17,6 +17,7 @@ use App\Traits\HasComments;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
+use App\Traits\HasRank;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
@@ -88,6 +89,7 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
     use HasFactory;
     use HasLogs;
     use HasModelNotifications;
+    use HasRank;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
@@ -99,7 +101,6 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
     ];
 
     protected $fillable = [
-        'rank_id',
         'text',
         'type',
         'created_at',

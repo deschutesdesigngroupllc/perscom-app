@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\HasRank;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -28,10 +29,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class RankCategory extends Pivot
 {
+    use HasRank;
+
     protected $table = 'ranks_categories';
 
     protected $fillable = [
-        'rank_id',
         'category_id',
         'order',
         'created_at',

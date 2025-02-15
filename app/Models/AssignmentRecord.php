@@ -123,10 +123,6 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
     ];
 
     protected $fillable = [
-        'status_id',
-        'unit_id',
-        'position_id',
-        'specialty_id',
         'unit_slot_id',
         'type',
         'text',

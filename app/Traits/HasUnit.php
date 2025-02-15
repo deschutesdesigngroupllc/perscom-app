@@ -23,4 +23,11 @@ trait HasUnit
     {
         return $this->belongsTo(Unit::class);
     }
+
+    protected function initializeHasUnit(): void
+    {
+        $this->mergeFillable([
+            'unit_id',
+        ]);
+    }
 }

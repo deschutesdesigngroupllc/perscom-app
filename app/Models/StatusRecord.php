@@ -7,6 +7,7 @@ namespace App\Models;
 use App\Observers\StatusRecordObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasStatus;
 use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -46,6 +47,7 @@ class StatusRecord extends MorphPivot
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
+    use HasStatus;
 
     protected $table = 'model_has_statuses';
 
@@ -56,10 +58,5 @@ class StatusRecord extends MorphPivot
     public function model(): BelongsTo
     {
         return $this->morphTo('model');
-    }
-
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(Status::class);
     }
 }

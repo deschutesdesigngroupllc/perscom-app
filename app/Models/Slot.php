@@ -10,12 +10,13 @@ use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasPosition;
 use App\Traits\HasResourceLabel;
+use App\Traits\HasSpecialty;
 use App\Traits\HasUsers;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\EloquentSortable\Sortable;
@@ -70,12 +71,12 @@ class Slot extends Model implements Hideable, Sortable
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
+    use HasPosition;
     use HasResourceLabel;
+    use HasSpecialty;
     use HasUsers;
 
     protected $fillable = [
-        'position_id',
-        'speciality_id',
         'name',
         'description',
         'empty',
@@ -84,16 +85,6 @@ class Slot extends Model implements Hideable, Sortable
     public function assignment_records(): HasManyThrough
     {
         return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id');
-    }
-
-    public function position(): BelongsTo
-    {
-        return $this->belongsTo(Position::class);
-    }
-
-    public function specialty(): BelongsTo
-    {
-        return $this->belongsTo(Specialty::class);
     }
 
     public function units(): BelongsToMany

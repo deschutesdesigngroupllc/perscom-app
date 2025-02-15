@@ -15,13 +15,17 @@ use App\Traits\HasAwardRecords;
 use App\Traits\HasCombatRecords;
 use App\Traits\HasCustomFieldData;
 use App\Traits\HasCustomFields;
+use App\Traits\HasPosition;
 use App\Traits\HasProfilePhoto;
 use App\Traits\HasQualificationRecords;
+use App\Traits\HasRank;
 use App\Traits\HasRankRecords;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasServiceRecords;
+use App\Traits\HasSpecialty;
 use App\Traits\HasStatuses;
+use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use Carbon\CarbonInterval;
 use Exception;
@@ -187,14 +191,18 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use HasCustomFields;
     use HasFactory;
     use HasPermissions;
+    use HasPosition;
     use HasProfilePhoto;
     use HasQualificationRecords;
+    use HasRank;
     use HasRankRecords;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasRoles;
     use HasServiceRecords;
+    use HasSpecialty;
     use HasStatuses;
+    use HasUnit;
     use JwtClaims;
     use Notifiable;
 
@@ -203,11 +211,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'email',
         'email_verified_at',
         'phone_number',
-        'position_id',
-        'rank_id',
-        'specialty_id',
-        'status_id',
-        'unit_id',
         'unit_slot_id',
         'approved',
         'password',
@@ -430,38 +433,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return BelongsTo<Position, $this>
-     */
-    public function position(): BelongsTo
-    {
-        return $this->belongsTo(Position::class);
-    }
-
-    /**
-     * @return BelongsTo<Rank, $this>
-     */
-    public function rank(): BelongsTo
-    {
-        return $this->belongsTo(Rank::class);
-    }
-
-    /**
-     * @return BelongsTo<Specialty, $this>
-     */
-    public function specialty(): BelongsTo
-    {
-        return $this->belongsTo(Specialty::class);
-    }
-
-    /**
-     * @return BelongsTo<Status, $this>
-     */
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(Status::class);
-    }
-
-    /**
      * @return BelongsToMany<Task, $this>
      */
     public function tasks(): BelongsToMany
@@ -471,14 +442,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             ->as('assignment')
             ->using(TaskAssignment::class)
             ->withTimestamps();
-    }
-
-    /**
-     * @return BelongsTo<Unit, $this>
-     */
-    public function unit(): BelongsTo
-    {
-        return $this->belongsTo(Unit::class);
     }
 
     /**

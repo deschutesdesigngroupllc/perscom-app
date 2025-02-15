@@ -23,4 +23,11 @@ trait HasPosition
     {
         return $this->belongsTo(Position::class);
     }
+
+    protected function initializeHasPosition(): void
+    {
+        $this->mergeFillable([
+            'position_id',
+        ]);
+    }
 }

@@ -23,4 +23,11 @@ trait HasSpecialty
     {
         return $this->belongsTo(Specialty::class);
     }
+
+    protected function initializeHasSpecialty(): void
+    {
+        $this->mergeFillable([
+            'specialty_id',
+        ]);
+    }
 }

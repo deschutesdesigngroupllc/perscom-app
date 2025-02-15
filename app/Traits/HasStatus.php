@@ -23,4 +23,11 @@ trait HasStatus
     {
         return $this->belongsTo(Status::class);
     }
+
+    protected function initializeHasStatus(): void
+    {
+        $this->mergeFillable([
+            'status_id',
+        ]);
+    }
 }

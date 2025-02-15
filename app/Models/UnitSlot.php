@@ -44,11 +44,6 @@ class UnitSlot extends Pivot
 
     protected $table = 'units_slots';
 
-    protected $fillable = [
-        'unit_id',
-        'slot_id',
-    ];
-
     public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class, 'unit_slot_id');

@@ -42,8 +42,6 @@ class UnitGroup extends Pivot
     protected $table = 'units_groups';
 
     protected $fillable = [
-        'unit_id',
-        'group_id',
         'created_at',
         'updated_at',
     ];
