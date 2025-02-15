@@ -114,6 +114,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     {
         return $this->belongsToMany(Slot::class, 'units_slots')
             ->withPivot(['id'])
-            ->using(UnitSlot::class);
+            ->using(UnitSlot::class)
+            ->withTimestamps();
     }
 }

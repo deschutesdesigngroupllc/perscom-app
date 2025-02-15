@@ -116,15 +116,11 @@ class Group extends Model implements HasLabel, Hideable, Sortable
     {
         $query
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
-            ->with([
-                'units.slots' => function ($query) {
-                    $query->with(['assignment_records.user']);
-                },
-            ]);
+            ->with(['units.slots.users']);
     }
 
     /**
-     * @return BelongsToMany<Unit>
+     * @return BelongsToMany<Unit, $this>
      */
     public function units(): BelongsToMany
     {

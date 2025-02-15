@@ -100,6 +100,12 @@ class Slot extends Model implements Hideable, Sortable
     {
         return $this->belongsToMany(Unit::class, 'units_slots')
             ->withPivot(['id'])
-            ->using(UnitSlot::class);
+            ->using(UnitSlot::class)
+            ->withTimestamps();
+    }
+
+    public function users(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, UnitSlot::class, 'slot_id', 'unit_slot_id');
     }
 }

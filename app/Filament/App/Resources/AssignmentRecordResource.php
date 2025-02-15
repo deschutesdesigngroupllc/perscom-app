@@ -66,7 +66,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn ($form) => UserResource::form($form)),
                                 Forms\Components\Select::make('type')
-                                    ->helperText('The type of assignment record.')
+                                    ->helperText('The type of assignment record. A primary assignment record will update the user\'s assigned unit, position, and specialty. A secondary assignment will simply add a new record to the list user\'s secondary assignments.')
                                     ->required()
                                     ->live()
                                     ->options(AssignmentRecordType::class)
@@ -125,7 +125,7 @@ class AssignmentRecordResource extends BaseResource
                                 Forms\Components\Select::make('unit_slot_id')
                                     ->visible(fn () => $rosterMode === RosterMode::MANUAL)
                                     ->required(fn () => $rosterMode === RosterMode::MANUAL)
-                                    ->helperText('The slot the user will be assigned to. If the slot has an assign position or specialty, the user will also be assigned the designated specialty and position in addition to the unit the slot is apart of.')
+                                    ->helperText('The slot the user will be assigned to. If the slot has an assigned position or specialty, the user will also be assigned the designated specialty and position in addition to the unit the slot is apart of.')
                                     ->label('Slot')
                                     ->preload()
                                     ->searchable()

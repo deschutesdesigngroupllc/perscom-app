@@ -20,8 +20,8 @@
           <div>
             @forelse($unit->slots as $slot)
               @include('filament.app.pages.roster.components.slot-header', ['slot' => $slot])
-              @forelse($slot->assignment_records as $assignmentRecord)
-                @include('filament.app.pages.roster.components.user', ['user' => $assignmentRecord->user, 'mode' => $mode])
+              @forelse($slot->users as $user)
+                @include('filament.app.pages.roster.components.user', ['user' => $user, 'mode' => $mode])
               @empty
                 <div class="flex items-start">
                   @include('filament.app.pages.roster.components.no-personnel-assigned', [

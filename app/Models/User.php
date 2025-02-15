@@ -208,6 +208,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'specialty_id',
         'status_id',
         'unit_id',
+        'unit_slot_id',
         'approved',
         'password',
         'notes',
@@ -251,6 +252,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             'specialty_id',
             'status_id',
             'unit_id',
+            'unit_slot_id',
             'approved',
             'password',
             'remember_token',
@@ -408,7 +410,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return BelongsToMany<Event>
+     * @return BelongsToMany<Event, $this>
      */
     public function events(): BelongsToMany
     {
@@ -420,33 +422,48 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return HasMany<Submission>
+     * @return HasMany<Submission, $this>
      */
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
+    /**
+     * @return BelongsTo<Position, $this>
+     */
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);
     }
 
+    /**
+     * @return BelongsTo<Rank, $this>
+     */
     public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
     }
 
+    /**
+     * @return BelongsTo<Specialty, $this>
+     */
     public function specialty(): BelongsTo
     {
         return $this->belongsTo(Specialty::class);
     }
 
+    /**
+     * @return BelongsTo<Status, $this>
+     */
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
     }
 
+    /**
+     * @return BelongsToMany<Task, $this>
+     */
     public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class, 'users_tasks')
@@ -456,9 +473,20 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             ->withTimestamps();
     }
 
+    /**
+     * @return BelongsTo<Unit, $this>
+     */
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);
+    }
+
+    /**
+     * @return BelongsTo<UnitSlot, $this>
+     */
+    public function unit_slot(): BelongsTo
+    {
+        return $this->belongsTo(UnitSlot::class);
     }
 
     protected function getDefaultGuardName(): string
