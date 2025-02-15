@@ -19,7 +19,7 @@ class SlotsController extends Controller
 
     public function includes(): array
     {
-        return ['assignment_records', 'assignment_records.*', 'position', 'specialty', 'units'];
+        return ['assignment_records', 'assignment_records.*', 'position', 'specialty', 'units', 'users', 'users.*'];
     }
 
     public function sortableBy(): array
