@@ -23,7 +23,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed $host
  * @property-read Tenant $tenant
- * @property-read mixed $url
+ * @property-read string $url
  *
  * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain newModelQuery()

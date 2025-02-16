@@ -32,11 +32,11 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property-read string|null $ip_address
  * @property-read string|null $method
  * @property-read mixed|null $request_headers
- * @property-read mixed|null $request_id
+ * @property-read string|null $request_id
  * @property-read mixed|null $response_headers
  * @property-read string|int|null|null $status
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
- * @property-read mixed|null $trace_id
+ * @property-read string|null $trace_id
  *
  * @method static Builder<static>|ApiLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder<static>|ApiLog forBatch(string $batchUuid)
