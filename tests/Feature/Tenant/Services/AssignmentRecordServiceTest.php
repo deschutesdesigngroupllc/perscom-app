@@ -7,6 +7,7 @@ namespace Tests\Feature\Tenant\Services;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\Position;
+use App\Models\Slot;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
@@ -33,6 +34,28 @@ class AssignmentRecordServiceTest extends TenantTestCase
         $this->assertSame($assignment->unit->getKey(), $user->unit->getKey());
         $this->assertSame($assignment->position->getKey(), $user->position->getKey());
         $this->assertSame($assignment->specialty->getKey(), $user->specialty->getKey());
+    }
+
+    public function test_create_primary_assignment_record_assigns_user_properties_using_unit_slot(): void
+    {
+        $slot = Slot::factory()->createQuietly();
+        $unit = Unit::factory()->hasAttached($slot)->createQuietly();
+        $unitSlot = $unit->slots->first();
+
+        $assignment = AssignmentRecord::factory()
+            ->state([
+                'unit_slot_id' => $unitSlot->getKey(),
+                'type' => AssignmentRecordType::PRIMARY,
+            ])
+            ->for($user = User::factory()->unassigned()->createQuietly())
+            ->create();
+
+        $user = $user->fresh();
+
+        $this->assertSame($unitSlot->getKey(), $user->unit_slot_id);
+        $this->assertSame($assignment->unit->getKey(), $user->unit->getKey());
+        $this->assertSame($slot->position->getKey(), $user->position->getKey());
+        $this->assertSame($slot->specialty->getKey(), $user->specialty->getKey());
     }
 
     public function test_create_primary_assignment_record_removes_user_properties(): void
