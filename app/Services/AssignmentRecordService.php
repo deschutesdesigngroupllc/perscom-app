@@ -50,7 +50,7 @@ class AssignmentRecordService
                 ])->save();
             }
 
-            if (filled($record->unit_slot)) {
+            if (filled($record->unit_slot_id)) {
                 $user->forceFill([
                     'unit_id' => $record->unit_slot->unit_id ?? null,
                     'specialty_id' => $record->unit_slot->slot->position_id ?? null,
