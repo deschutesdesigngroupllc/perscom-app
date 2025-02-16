@@ -86,7 +86,7 @@ class Form extends Model implements HasLabel, SendsModelNotifications
     ];
 
     /**
-     * @return HasMany<Submission>
+     * @return HasMany<Submission, $this>
      */
     public function submissions(): HasMany
     {
@@ -94,7 +94,7 @@ class Form extends Model implements HasLabel, SendsModelNotifications
     }
 
     /**
-     * @return BelongsTo<Status, Form>
+     * @return BelongsTo<Status, $this>
      */
     public function submission_status(): BelongsTo
     {

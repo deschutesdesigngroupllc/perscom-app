@@ -6,15 +6,22 @@ namespace App\Traits;
 
 use App\Models\RankRecord;
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin Eloquent
+ *
+ * @template TModel of Model
  */
 trait HasRankRecords
 {
+    /**
+     * @return HasMany<RankRecord, TModel>
+     */
     public function rank_records(): HasMany
     {
+        /** @var TModel $this */
         return $this->hasMany(RankRecord::class);
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Alert;
 use App\Models\Enums\AlertChannel;
 use App\Models\Tenant;
 use App\Notifications\Tenant\NewAlert;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 
 class AlertObserver
@@ -17,7 +18,7 @@ class AlertObserver
     {
         Notification::send(Tenant::all(), new NewAlert($alert));
 
-        if (collect($alert->channels)->contains(AlertChannel::SLACK)) {
+        if (Collection::wrap($alert->channels)->contains(AlertChannel::SLACK)) {
             Notification::sendNow(Admin::first(), new NewAlert($alert), ['slack']);
         }
     }

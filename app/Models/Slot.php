@@ -84,11 +84,17 @@ class Slot extends Model implements Hideable, Sortable
         'empty',
     ];
 
+    /**
+     * @return HasManyThrough<AssignmentRecord, UnitSlot, $this>
+     */
     public function assignment_records(): HasManyThrough
     {
         return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id');
     }
 
+    /**
+     * @return BelongsToMany<Unit, $this>
+     */
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'units_slots')
@@ -97,6 +103,9 @@ class Slot extends Model implements Hideable, Sortable
             ->withTimestamps();
     }
 
+    /**
+     * @return HasManyThrough<User, UnitSlot, $this>
+     */
     public function users(): HasManyThrough
     {
         return $this->hasManyThrough(User::class, UnitSlot::class, 'slot_id', 'unit_slot_id');

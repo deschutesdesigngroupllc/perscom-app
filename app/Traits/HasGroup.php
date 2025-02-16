@@ -7,10 +7,13 @@ namespace App\Traits;
 use App\Models\Group;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @mixin Eloquent
+ *
+ * @template TModel of Model
  */
 trait HasGroup
 {
@@ -19,8 +22,12 @@ trait HasGroup
         $query->whereBelongsTo($group);
     }
 
+    /**
+     * @return BelongsTo<Group, TModel>
+     */
     public function group(): BelongsTo
     {
+        /** @var TModel $this */
         return $this->belongsTo(Group::class);
     }
 

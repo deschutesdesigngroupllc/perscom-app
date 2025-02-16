@@ -104,12 +104,18 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
         'updated_at',
     ];
 
+    /**
+     * @return BelongsToMany<Group, $this>
+     */
     public function groups(): BelongsToMany
     {
         return $this->belongsToMany(Group::class, 'units_groups')
             ->as(UnitGroup::class);
     }
 
+    /**
+     * @return BelongsToMany<Slot, $this>
+     */
     public function slots(): BelongsToMany
     {
         return $this->belongsToMany(Slot::class, 'units_slots')

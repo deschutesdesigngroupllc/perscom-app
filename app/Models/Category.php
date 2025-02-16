@@ -62,6 +62,9 @@ class Category extends Model implements HasLabel
         'updated_at',
     ];
 
+    /**
+     * @return BelongsToMany<Award, $this>
+     */
     public function awards(): BelongsToMany
     {
         return $this->belongsToMany(Award::class, 'awards_categories')
@@ -69,6 +72,9 @@ class Category extends Model implements HasLabel
             ->withTimestamps();
     }
 
+    /**
+     * @return BelongsToMany<Document, $this>
+     */
     public function documents(): BelongsToMany
     {
         return $this->belongsToMany(Document::class, 'documents_categories')
@@ -76,6 +82,9 @@ class Category extends Model implements HasLabel
             ->withTimestamps();
     }
 
+    /**
+     * @return BelongsToMany<Form, $this>
+     */
     public function forms(): BelongsToMany
     {
         return $this->belongsToMany(Form::class, 'forms_categories')
@@ -83,6 +92,9 @@ class Category extends Model implements HasLabel
             ->withTimestamps();
     }
 
+    /**
+     * @return BelongsToMany<Qualification, $this>
+     */
     public function qualifications(): BelongsToMany
     {
         return $this->belongsToMany(Qualification::class, 'qualifications_categories')
@@ -90,6 +102,9 @@ class Category extends Model implements HasLabel
             ->withTimestamps();
     }
 
+    /**
+     * @return BelongsToMany<Rank, $this>
+     */
     public function ranks(): BelongsToMany
     {
         return $this->belongsToMany(Rank::class, 'ranks_categories')

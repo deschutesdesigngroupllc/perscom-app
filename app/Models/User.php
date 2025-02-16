@@ -324,9 +324,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return $this->phone_number;
     }
 
-    /**
-     * @param  Builder<User>  $query
-     */
     public function scopeOrderForRoster(Builder $query): void
     {
         /** @var DashboardSettings $settings */
@@ -401,9 +398,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function lastAssignmentChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?Carbon => optional($this->primary_assignment_records()->latest()->first(), function (AssignmentRecord $record) {
-                return $record->created_at;
-            })
+            get: function (): ?Carbon {
+                /** @var ?AssignmentRecord $record */
+                $record = $this->primary_assignment_records()->latest()->first();
+
+                return $record->created_at ?? null;
+            }
         )->shouldCache();
     }
 
@@ -413,9 +413,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function lastRankChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?Carbon => optional($this->rank_records()->latest()->first(), function (RankRecord $record) {
-                return $record->created_at;
-            })
+            get: function (): ?Carbon {
+                /** @var ?RankRecord $record */
+                $record = $this->rank_records()->latest()->first();
+
+                return $record->created_at ?? null;
+            }
         )->shouldCache();
     }
 

@@ -133,33 +133,21 @@ class ModelNotification extends MorphPivot
         ];
     }
 
-    /**
-     * @return MorphTo<Model, ModelNotification>
-     */
     public function model(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * @return MorphTo<Model, ModelNotification>
-     */
     public function group(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * @return MorphTo<Model, ModelNotification>
-     */
     public function unit(): MorphTo
     {
         return $this->morphTo();
     }
 
-    /**
-     * @return MorphTo<Model, ModelNotification>
-     */
     public function user(): MorphTo
     {
         return $this->morphTo('user', 'user_type', 'user_id');

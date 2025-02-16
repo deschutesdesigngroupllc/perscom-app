@@ -14,6 +14,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\ActionsBlock;
 use Illuminate\Notifications\Slack\BlockKit\Blocks\SectionBlock;
 use Illuminate\Notifications\Slack\SlackMessage;
+use Illuminate\Support\Collection;
 use League\HTMLToMarkdown\HtmlConverter;
 
 class NewAlert extends Notification implements ShouldQueue
@@ -32,8 +33,8 @@ class NewAlert extends Notification implements ShouldQueue
      */
     public function via(): array
     {
-        return collect($this->alert->channels)
-            ->reject(fn (AlertChannel $channel) => $channel === AlertChannel::SLACK)
+        return Collection::wrap($this->alert->channels)
+            ->reject(fn (AlertChannel $channel): bool => $channel === AlertChannel::SLACK)
             ->map(fn (AlertChannel $channel) => $channel->value)
             ->values()
             ->toArray();

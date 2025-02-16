@@ -6,24 +6,31 @@ namespace App\Traits;
 
 use App\Models\Tag;
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 /**
  * @mixin Eloquent
+ *
+ * @template TModel of Model
  */
 trait HasTags
 {
-    private ?string $tagsAccessor = null;
+    public static ?string $tagsAccessor = null;
 
+    /**
+     * @return BelongsToMany<Tag, TModel>
+     */
     public function tags(): BelongsToMany
     {
+        /** @var TModel $this */
         $relationship = $this->belongsToMany(Tag::class, "{$this->getTable()}_tags")
             ->withPivot('order')
             ->withTimestamps();
 
-        if ($this->tagsAccessor) {
-            $relationship = $relationship->as($this->tagsAccessor);
+        if (static::$tagsAccessor) {
+            $relationship = $relationship->as(static::$tagsAccessor);
         }
 
         return $relationship;
@@ -34,7 +41,7 @@ trait HasTags
         $class = Str::singular(class_basename($this)).'Tag';
 
         if (class_exists($class)) {
-            $this->tagsAccessor = $class;
+            static::$tagsAccessor = $class;
         }
     }
 }

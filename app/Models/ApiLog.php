@@ -65,6 +65,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 #[ScopedBy(ApiLogScope::class)]
 class ApiLog extends Activity
 {
+    /**
+     * @return Attribute<?string, never>
+     */
     public function ipAddress(): Attribute
     {
         return Attribute::make(
@@ -72,6 +75,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function method(): Attribute
     {
         return Attribute::make(
@@ -79,6 +85,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function endpoint(): Attribute
     {
         return Attribute::make(
@@ -86,6 +95,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<mixed, never>
+     */
     public function body(): Attribute
     {
         return Attribute::make(
@@ -93,6 +105,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<mixed, never>
+     */
     public function files(): Attribute
     {
         return Attribute::make(
@@ -100,6 +115,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<mixed, never>
+     */
     public function content(): Attribute
     {
         return Attribute::make(
@@ -107,6 +125,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<string|int|null, never>
+     */
     public function status(): Attribute
     {
         return Attribute::make(
@@ -114,6 +135,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<mixed, never>
+     */
     public function requestHeaders(): Attribute
     {
         return Attribute::make(
@@ -121,6 +145,9 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<mixed, never>
+     */
     public function responseHeaders(): Attribute
     {
         return Attribute::make(
@@ -128,17 +155,23 @@ class ApiLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function requestId(): Attribute
     {
         return Attribute::make(
-            get: fn (): mixed => $this->getExtraProperty('request_id')
+            get: fn (): ?string => $this->getExtraProperty('request_id')
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function traceId(): Attribute
     {
         return Attribute::make(
-            get: fn (): mixed => $this->getExtraProperty('trace_id')
+            get: fn (): ?string => $this->getExtraProperty('trace_id')
         )->shouldCache();
     }
 

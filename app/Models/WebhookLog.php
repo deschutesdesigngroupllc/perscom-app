@@ -81,17 +81,23 @@ class WebhookLog extends Activity
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function requestId(): Attribute
     {
         return Attribute::make(
-            get: fn (): mixed => $this->getExtraProperty('request_id')
+            get: fn (): ?string => $this->getExtraProperty('request_id')
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function traceId(): Attribute
     {
         return Attribute::make(
-            get: fn (): mixed => $this->getExtraProperty('trace_id')
+            get: fn (): ?string => $this->getExtraProperty('trace_id')
         )->shouldCache();
     }
 

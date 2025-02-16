@@ -181,6 +181,9 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
         return $this->user;
     }
 
+    /**
+     * @return BelongsTo<UnitSlot, $this>
+     */
     public function unit_slot(): BelongsTo
     {
         return $this->belongsTo(UnitSlot::class);

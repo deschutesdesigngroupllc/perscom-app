@@ -7,10 +7,13 @@ namespace App\Traits;
 use App\Models\Rank;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @mixin Eloquent
+ *
+ * @template TModel of Model
  */
 trait HasRank
 {
@@ -19,8 +22,12 @@ trait HasRank
         $query->whereBelongsTo($rank);
     }
 
+    /**
+     * @return BelongsTo<Rank, TModel>
+     */
     public function rank(): BelongsTo
     {
+        /** @var TModel $this */
         return $this->belongsTo(Rank::class);
     }
 

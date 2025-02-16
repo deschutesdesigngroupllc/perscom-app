@@ -94,9 +94,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         'updated_at',
     ];
 
-    /**
-     * @param  Builder<Group>  $query
-     */
     public function scopeForAutomaticRoster(Builder $query, ?string $groupId = null): void
     {
         $query
@@ -109,9 +106,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ]);
     }
 
-    /**
-     * @param  Builder<Group>  $query
-     */
     public function scopeForManualRoster(Builder $query, ?string $groupId = null): void
     {
         $query

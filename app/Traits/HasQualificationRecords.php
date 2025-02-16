@@ -6,15 +6,22 @@ namespace App\Traits;
 
 use App\Models\QualificationRecord;
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin Eloquent
+ *
+ * @template TModel of Model
  */
 trait HasQualificationRecords
 {
+    /**
+     * @return HasMany<QualificationRecord, TModel>
+     */
     public function qualification_records(): HasMany
     {
+        /** @var TModel $this */
         return $this->hasMany(QualificationRecord::class);
     }
 }

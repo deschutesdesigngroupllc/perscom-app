@@ -100,7 +100,6 @@ class ApiLogResource extends BaseResource
                             ->when(
                                 filled(data_get($data, 'values')),
                                 function (Builder $query) use ($data) {
-                                    // @phpstan-ignore-next-line
                                     $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($id) => $query->orWhereMorphRelation('causer', User::class, 'causer_id', '=', $id)));
                                 },
                             );
@@ -125,7 +124,6 @@ class ApiLogResource extends BaseResource
                             ->when(
                                 filled(data_get($data, 'values')),
                                 function (Builder $query) use ($data) {
-                                    // @phpstan-ignore-next-line
                                     $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($method) => $query->orWhereJsonContains('properties->method', $method)));
                                 },
                             );

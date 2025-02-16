@@ -7,10 +7,13 @@ namespace App\Traits;
 use App\Models\Position;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @mixin Eloquent
+ *
+ * @template TModel of Model
  */
 trait HasPosition
 {
@@ -19,8 +22,12 @@ trait HasPosition
         $query->whereBelongsTo($position);
     }
 
+    /**
+     * @return BelongsTo<Position, TModel>
+     */
     public function position(): BelongsTo
     {
+        /** @var TModel $this */
         return $this->belongsTo(Position::class);
     }
 

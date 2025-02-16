@@ -11,8 +11,8 @@ use App\Traits\HasStatus;
 use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * App\Models\StatusRecord
@@ -56,7 +56,7 @@ class StatusRecord extends MorphPivot
         'text',
     ];
 
-    public function model(): BelongsTo
+    public function model(): MorphTo
     {
         return $this->morphTo('model');
     }

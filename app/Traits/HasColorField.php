@@ -14,9 +14,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 trait HasColorField
 {
+    /**
+     * @return Attribute<string, never>
+     */
     public function color(): Attribute
     {
-        return Attribute::get(fn ($value) => $value ?? '#2563eb');
+        return Attribute::get(fn ($value): string => $value ?? '#2563eb');
     }
 
     public function getColor(): string|array|null

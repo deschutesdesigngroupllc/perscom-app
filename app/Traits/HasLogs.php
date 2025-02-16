@@ -7,6 +7,7 @@ namespace App\Traits;
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Activity;
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
 use Spatie\Activitylog\Contracts\Activity as ActivityContract;
@@ -17,13 +18,19 @@ use function activity;
 
 /**
  * @mixin Eloquent
+ *
+ * @template TModel of Model
  */
 trait HasLogs
 {
     use LogsActivity;
 
+    /**
+     * @return MorphMany<Activity, TModel>
+     */
     public function logs(): MorphMany
     {
+        /** @var TModel $this */
         return $this->morphMany(Activity::class, 'subject');
     }
 

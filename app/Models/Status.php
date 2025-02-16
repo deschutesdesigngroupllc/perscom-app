@@ -24,7 +24,7 @@ use Spatie\EloquentSortable\Sortable;
 /**
  * @property int $id
  * @property string $name
- * @property string|null $color
+ * @property string $color
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -75,6 +75,9 @@ class Status extends Model implements HasColor, HasLabel, Sortable
         'updated_at',
     ];
 
+    /**
+     * @return MorphToMany<Submission, $this>
+     */
     public function submissions(): MorphToMany
     {
         return $this->morphedByMany(Submission::class, 'model', 'model_has_statuses');
