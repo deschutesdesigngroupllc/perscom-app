@@ -138,8 +138,8 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
             if (filled($record->unit_slot_id)) {
                 $record->forceFill([
                     'unit_id' => $record->unit_slot->unit_id ?? null,
-                    'specialty_id' => $record->unit_slot->slot->position_id ?? null,
-                    'position_id' => $record->unit_slot->slot->specialty_id ?? null,
+                    'position_id' => $record->unit_slot->slot->position_id ?? null,
+                    'specialty_id' => $record->unit_slot->slot->specialty_id ?? null,
                 ]);
             }
         });

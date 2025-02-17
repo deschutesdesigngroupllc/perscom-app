@@ -19,7 +19,7 @@ use Illuminate\Support\Collection;
  *
  * @template TModel of Model
  */
-trait HasStatuses
+trait HasStatusRecords
 {
     /**
      * @return Attribute<Status|null, never>

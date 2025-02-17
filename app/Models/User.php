@@ -24,7 +24,8 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasServiceRecords;
 use App\Traits\HasSpecialty;
-use App\Traits\HasStatuses;
+use App\Traits\HasStatus;
+use App\Traits\HasStatusRecords;
 use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use Carbon\CarbonInterval;
@@ -208,7 +209,10 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use HasRoles;
     use HasServiceRecords;
     use HasSpecialty;
-    use HasStatuses;
+    use HasStatus, HasStatusRecords {
+        HasStatus::status insteadof HasStatusRecords;
+        HasStatus::scopeStatus insteadof HasStatusRecords;
+    }
     use HasUnit;
     use JwtClaims;
     use Notifiable;

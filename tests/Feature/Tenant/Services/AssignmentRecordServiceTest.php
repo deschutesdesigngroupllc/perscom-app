@@ -34,17 +34,23 @@ class AssignmentRecordServiceTest extends TenantTestCase
         $this->assertSame($assignment->unit->getKey(), $user->unit->getKey());
         $this->assertSame($assignment->position->getKey(), $user->position->getKey());
         $this->assertSame($assignment->specialty->getKey(), $user->specialty->getKey());
+        $this->assertSame($assignment->status->getKey(), $user->status->getKey());
     }
 
     public function test_create_primary_assignment_record_assigns_user_properties_using_unit_slot(): void
     {
         $slot = Slot::factory()->createQuietly();
         $unit = Unit::factory()->hasAttached($slot)->createQuietly();
-        $unitSlot = $unit->slots->first();
+        $unitSlot = $unit->slots->first()->pivot->id;
 
         $assignment = AssignmentRecord::factory()
             ->state([
-                'unit_slot_id' => $unitSlot->getKey(),
+                'unit_id' => null,
+                'position_id' => null,
+                'specialty_id' => null,
+                'status_id' => null,
+                'unit_slot_id' => $unitSlot,
+                'text' => 'BLAH',
                 'type' => AssignmentRecordType::PRIMARY,
             ])
             ->for($user = User::factory()->unassigned()->createQuietly())
@@ -52,7 +58,7 @@ class AssignmentRecordServiceTest extends TenantTestCase
 
         $user = $user->fresh();
 
-        $this->assertSame($unitSlot->getKey(), $user->unit_slot_id);
+        $this->assertSame($unitSlot, $user->unit_slot_id);
         $this->assertSame($assignment->unit->getKey(), $user->unit->getKey());
         $this->assertSame($slot->position->getKey(), $user->position->getKey());
         $this->assertSame($slot->specialty->getKey(), $user->specialty->getKey());
