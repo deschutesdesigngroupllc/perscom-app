@@ -71,7 +71,12 @@ jobs:
           npm run build
           npm run build:landing
 
-      - name: Run Linter
+      - name: Run JS Linter
+        run: |
+          echo "Running Prettier $(prettier --version)"
+          npm run format:test
+
+      - name: Run PHP Linter
         run: |
           echo "Running $(./vendor/bin/pint --version)"
           composer test:lint

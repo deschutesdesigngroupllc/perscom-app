@@ -6,7 +6,8 @@
     "build": "vite build",
     "dev:landing": "vite --config vite.landing.config.js",
     "build:landing": "vite build --config vite.landing.config.js",
-    "format": "prettier './resources/**/*.{blade.php,js,jsx}' './*.{js,json}' --write --config ./.prettierrc"
+    "format": "prettier './resources/**/*.{blade.php,js,jsx}' './*.{js,json}' --write --config ./.prettierrc",
+    "format:test": "prettier './resources/**/*.{blade.php,js,jsx}' './*.{js,json}' --check --config ./.prettierrc"
   },
   "devDependencies": {
     "@headlessui/react": "^2.2.0",
