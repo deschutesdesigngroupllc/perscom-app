@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Traits\HasRank;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -13,10 +14,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $order
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Rank $rank
  *
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory rank(\App\Models\Rank $rank)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereCategoryId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereId($value)
@@ -28,10 +31,11 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  */
 class RankCategory extends Pivot
 {
+    use HasRank;
+
     protected $table = 'ranks_categories';
 
     protected $fillable = [
-        'rank_id',
         'category_id',
         'order',
         'created_at',

@@ -123,10 +123,6 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
     ];
 
     protected $fillable = [
-        'status_id',
-        'unit_id',
-        'position_id',
-        'specialty_id',
         'unit_slot_id',
         'type',
         'text',
@@ -142,8 +138,8 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
             if (filled($record->unit_slot_id)) {
                 $record->forceFill([
                     'unit_id' => $record->unit_slot->unit_id ?? null,
-                    'specialty_id' => $record->unit_slot->slot->position_id ?? null,
-                    'position_id' => $record->unit_slot->slot->specialty_id ?? null,
+                    'position_id' => $record->unit_slot->slot->position_id ?? null,
+                    'specialty_id' => $record->unit_slot->slot->specialty_id ?? null,
                 ]);
             }
         });
@@ -185,6 +181,9 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
         return $this->user;
     }
 
+    /**
+     * @return BelongsTo<UnitSlot, $this>
+     */
     public function unit_slot(): BelongsTo
     {
         return $this->belongsTo(UnitSlot::class);

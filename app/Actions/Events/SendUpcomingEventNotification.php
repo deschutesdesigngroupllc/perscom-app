@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Notifications\Channels\DiscordPublicChannel;
 use App\Notifications\Tenant\UpcomingEvent;
 use Carbon\CarbonInterface;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Throwable;
 
@@ -27,7 +28,7 @@ class SendUpcomingEventNotification
 
         Notification::send($event->registrations, new UpcomingEvent($event, $interval, $sendAt));
 
-        if (collect($event->notifications_channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
+        if (Collection::wrap($event->notifications_channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
             Notification::sendNow(User::first(), new UpcomingEvent($event, $interval, $sendAt), [DiscordPublicChannel::class]);
         }
     }

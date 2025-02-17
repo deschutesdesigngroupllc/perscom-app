@@ -7,17 +7,16 @@ namespace App\Contracts;
 use App\Models\ModelNotification;
 use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
-use Illuminate\Support\Collection;
 
 /**
  * @mixin Eloquent
  *
- * @property Collection $modelNotifications
+ * @template T of ModelNotification
  */
 interface SendsModelNotifications
 {
     /**
-     * @return MorphMany<ModelNotification>
+     * @return MorphMany<ModelNotification, T>
      */
     public function modelNotifications(): MorphMany;
 }

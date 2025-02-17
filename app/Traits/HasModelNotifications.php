@@ -39,6 +39,7 @@ trait HasModelNotifications
 
     public function modelNotifications(): MorphMany
     {
+        /** @phpstan-ignore return.type */
         return $this->morphMany(ModelNotification::class, 'model');
     }
 }

@@ -81,9 +81,6 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
         'updated_at',
     ];
 
-    /**
-     * @param  Builder<static>  $query
-     */
     public function scopeGlobal(Builder $query): void
     {
         $query->where('global', true);

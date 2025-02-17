@@ -23,7 +23,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed $host
  * @property-read Tenant $tenant
- * @property-read mixed $url
+ * @property-read string $url
  *
  * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain newModelQuery()
@@ -63,19 +63,25 @@ class Domain extends BaseDomain
         return Str::lower(Str::random(8));
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->host, static function ($host) {
+            get: fn (): string => optional($this->host, static function ($host) {
                 return rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/');
             }),
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<string, never>
+     */
     public function host(): Attribute
     {
         return Attribute::make(
-            get: fn () => optional($this->domain, static function ($domain) {
+            get: fn (): string => optional($this->domain, static function ($domain) {
                 return Url::fromString(Str::endsWith($domain, config('tenancy.central_domains'))
                     ? $domain
                     : $domain.config('app.base_url'))->__toString();

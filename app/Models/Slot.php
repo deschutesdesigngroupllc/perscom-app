@@ -10,12 +10,13 @@ use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasPosition;
 use App\Traits\HasResourceLabel;
+use App\Traits\HasSpecialty;
 use App\Traits\HasUsers;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 use Spatie\EloquentSortable\Sortable;
@@ -47,7 +48,9 @@ use Spatie\EloquentSortable\Sortable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot ordered(string $direction = 'asc')
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot position(\App\Models\Position $position)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot specialty(\App\Models\Specialty $specialty)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot visible()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereDescription($value)
@@ -70,36 +73,41 @@ class Slot extends Model implements Hideable, Sortable
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
+    use HasPosition;
     use HasResourceLabel;
+    use HasSpecialty;
     use HasUsers;
 
     protected $fillable = [
-        'position_id',
-        'speciality_id',
         'name',
         'description',
         'empty',
     ];
 
+    /**
+     * @return HasManyThrough<AssignmentRecord, UnitSlot, $this>
+     */
     public function assignment_records(): HasManyThrough
     {
         return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id');
     }
 
-    public function position(): BelongsTo
-    {
-        return $this->belongsTo(Position::class);
-    }
-
-    public function specialty(): BelongsTo
-    {
-        return $this->belongsTo(Specialty::class);
-    }
-
+    /**
+     * @return BelongsToMany<Unit, $this>
+     */
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'units_slots')
             ->withPivot(['id'])
-            ->using(UnitSlot::class);
+            ->using(UnitSlot::class)
+            ->withTimestamps();
+    }
+
+    /**
+     * @return HasManyThrough<User, UnitSlot, $this>
+     */
+    public function users(): HasManyThrough
+    {
+        return $this->hasManyThrough(User::class, UnitSlot::class, 'slot_id', 'unit_slot_id');
     }
 }

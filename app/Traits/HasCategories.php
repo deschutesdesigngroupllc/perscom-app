@@ -6,24 +6,31 @@ namespace App\Traits;
 
 use App\Models\Category;
 use Eloquent;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 /**
  * @mixin Eloquent
+ *
+ * @template TModel of Model
  */
 trait HasCategories
 {
-    private ?string $categoriesAccessor = null;
+    public static ?string $categoriesAccessor = null;
 
+    /**
+     * @return BelongsToMany<Category, TModel>
+     */
     public function categories(): BelongsToMany
     {
+        /** @var TModel $this */
         $relationship = $this->belongsToMany(Category::class, "{$this->getTable()}_categories")
             ->withPivot('order')
             ->withTimestamps();
 
-        if ($this->categoriesAccessor) {
-            $relationship = $relationship->as($this->categoriesAccessor);
+        if (static::$categoriesAccessor) {
+            $relationship = $relationship->as(static::$categoriesAccessor);
         }
 
         return $relationship;
@@ -34,7 +41,7 @@ trait HasCategories
         $class = Str::singular(class_basename($this)).'Category';
 
         if (class_exists($class)) {
-            $this->categoriesAccessor = $class;
+            static::$categoriesAccessor = $class;
         }
     }
 }

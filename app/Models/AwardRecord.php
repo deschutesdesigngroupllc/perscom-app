@@ -98,6 +98,9 @@ class AwardRecord extends Model implements HasLabel, SendsModelNotifications, Sh
         'updated_at',
     ];
 
+    /**
+     * @return BelongsTo<Award, $this>
+     */
     public function award(): BelongsTo
     {
         return $this->belongsTo(Award::class);

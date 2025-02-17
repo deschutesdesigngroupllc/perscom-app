@@ -85,6 +85,9 @@ class Newsfeed extends Activity implements HasColor
         'item',
     ];
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function headline(): Attribute
     {
         return Attribute::make(
@@ -94,6 +97,9 @@ class Newsfeed extends Activity implements HasColor
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function text(): Attribute
     {
         return Attribute::make(
@@ -103,6 +109,9 @@ class Newsfeed extends Activity implements HasColor
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function color(): Attribute
     {
         return Attribute::make(
@@ -112,6 +121,9 @@ class Newsfeed extends Activity implements HasColor
         )->shouldCache();
     }
 
+    /**
+     * @return Attribute<?string, never>
+     */
     public function item(): Attribute
     {
         return Attribute::make(

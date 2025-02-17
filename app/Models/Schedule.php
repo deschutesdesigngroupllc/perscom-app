@@ -99,9 +99,6 @@ class Schedule extends MorphPivot
         'last_occurrence',
     ];
 
-    /**
-     * @return MorphTo<Model, Schedule>
-     */
     public function repeatable(): MorphTo
     {
         return $this->morphTo();

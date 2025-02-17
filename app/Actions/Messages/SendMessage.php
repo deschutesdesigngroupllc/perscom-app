@@ -10,6 +10,7 @@ use App\Models\User;
 use App\Notifications\Channels\DiscordPublicChannel;
 use App\Notifications\Tenant\NewMessage;
 use Carbon\CarbonInterface;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 use Throwable;
 
@@ -30,7 +31,7 @@ class SendMessage
 
         Notification::send($recipients, new NewMessage($message, $sendAt));
 
-        if (collect($message->channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
+        if (Collection::wrap($message->channels)->contains(NotificationChannel::DISCORD_PUBLIC)) {
             Notification::sendNow(User::first(), new NewMessage($message, $sendAt), [DiscordPublicChannel::class]);
         }
     }

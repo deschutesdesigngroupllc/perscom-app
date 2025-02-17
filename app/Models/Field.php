@@ -120,6 +120,9 @@ class Field extends Model implements HasLabel, Hideable
         )->shouldCache();
     }
 
+    /**
+     * @return MorphToMany<Form, $this>
+     */
     public function forms(): MorphToMany
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
@@ -128,6 +131,9 @@ class Field extends Model implements HasLabel, Hideable
             ->withTimestamps();
     }
 
+    /**
+     * @return MorphToMany<User, $this>
+     */
     public function users(): MorphToMany
     {
         return $this->morphedByMany(User::class, 'model', 'model_has_fields')

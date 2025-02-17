@@ -7,11 +7,12 @@ namespace App\Models;
 use App\Observers\StatusRecordObserver;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
+use App\Traits\HasStatus;
 use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
+use Illuminate\Database\Eloquent\Relations\MorphTo;
 
 /**
  * App\Models\StatusRecord
@@ -30,6 +31,7 @@ use Illuminate\Database\Eloquent\Relations\MorphPivot;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord status(\App\Models\Status $status)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereModelId($value)
@@ -46,6 +48,7 @@ class StatusRecord extends MorphPivot
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasFactory;
+    use HasStatus;
 
     protected $table = 'model_has_statuses';
 
@@ -53,13 +56,8 @@ class StatusRecord extends MorphPivot
         'text',
     ];
 
-    public function model(): BelongsTo
+    public function model(): MorphTo
     {
         return $this->morphTo('model');
-    }
-
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(Status::class);
     }
 }

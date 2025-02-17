@@ -37,6 +37,9 @@ class Backup extends Model
         'created_at',
     ];
 
+    /**
+     * @return array<string, mixed>
+     */
     public function getRows(): array
     {
         return collect(Storage::disk('s3')->files('backups'))->map(function ($path) {

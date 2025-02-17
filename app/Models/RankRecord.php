@@ -17,6 +17,7 @@ use App\Traits\HasComments;
 use App\Traits\HasDocument;
 use App\Traits\HasLogs;
 use App\Traits\HasModelNotifications;
+use App\Traits\HasRank;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
@@ -25,7 +26,6 @@ use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @property int $id
@@ -62,6 +62,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord rank(\App\Models\Rank $rank)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord user(\App\Models\User $user)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereAuthorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|RankRecord whereCreatedAt($value)
@@ -88,6 +89,7 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
     use HasFactory;
     use HasLogs;
     use HasModelNotifications;
+    use HasRank;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUser;
@@ -99,17 +101,11 @@ class RankRecord extends Model implements HasLabel, SendsModelNotifications, Sho
     ];
 
     protected $fillable = [
-        'rank_id',
         'text',
         'type',
         'created_at',
         'updated_at',
     ];
-
-    public function rank(): BelongsTo
-    {
-        return $this->belongsTo(Rank::class);
-    }
 
     public function headlineForNewsfeedItem(): string
     {

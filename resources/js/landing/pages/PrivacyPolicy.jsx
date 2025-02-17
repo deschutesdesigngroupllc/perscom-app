@@ -117,7 +117,8 @@ function PrivacyPolicy() {
         </p>
         <p>
           However, if necessary, we may retain your personal information for our compliance with a legal, accounting, or reporting
-          obligation or for archiving purposes in the public interest, scientific, or historical research purposes or statistical purposes.{' '}
+          obligation or for archiving purposes in the public interest, scientific, or historical research purposes or statistical
+          purposes.{' '}
         </p>
         <h3>Children’s Privacy</h3>
         <p>

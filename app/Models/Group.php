@@ -94,9 +94,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         'updated_at',
     ];
 
-    /**
-     * @param  Builder<Group>  $query
-     */
     public function scopeForAutomaticRoster(Builder $query, ?string $groupId = null): void
     {
         $query
@@ -109,22 +106,20 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ]);
     }
 
-    /**
-     * @param  Builder<Group>  $query
-     */
     public function scopeForManualRoster(Builder $query, ?string $groupId = null): void
     {
         $query
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
-                'units.slots' => function ($query) {
-                    $query->with(['assignment_records.user']);
+                'units.slots.users' => function ($query) {
+                    /** @var User $query */
+                    $query->orderForRoster();
                 },
             ]);
     }
 
     /**
-     * @return BelongsToMany<Unit>
+     * @return BelongsToMany<Unit, $this>
      */
     public function units(): BelongsToMany
     {

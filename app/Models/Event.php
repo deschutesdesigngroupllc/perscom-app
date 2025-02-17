@@ -183,7 +183,7 @@ class Event extends Model implements HasLabel
     }
 
     /**
-     * @return BelongsTo<Calendar, Event>
+     * @return BelongsTo<Calendar, $this>
      */
     public function calendar(): BelongsTo
     {
@@ -191,7 +191,7 @@ class Event extends Model implements HasLabel
     }
 
     /**
-     * @return BelongsToMany<User>
+     * @return BelongsToMany<User, $this>
      */
     public function registrations(): BelongsToMany
     {

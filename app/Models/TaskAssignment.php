@@ -169,11 +169,17 @@ class TaskAssignment extends Pivot
                 ($this->complete && Carbon::parse($this->due_at)->isBefore($this->completed_at)));
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function assigned_by(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
+    /**
+     * @return HasOne<Task, $this>
+     */
     public function task(): HasOne
     {
         return $this->hasOne(Task::class, 'id', 'task_id');

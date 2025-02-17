@@ -15,13 +15,18 @@ use App\Traits\HasAwardRecords;
 use App\Traits\HasCombatRecords;
 use App\Traits\HasCustomFieldData;
 use App\Traits\HasCustomFields;
+use App\Traits\HasPosition;
 use App\Traits\HasProfilePhoto;
 use App\Traits\HasQualificationRecords;
+use App\Traits\HasRank;
 use App\Traits\HasRankRecords;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasServiceRecords;
-use App\Traits\HasStatuses;
+use App\Traits\HasSpecialty;
+use App\Traits\HasStatus;
+use App\Traits\HasStatusRecords;
+use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use Carbon\CarbonInterval;
 use Exception;
@@ -62,6 +67,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property int|null $specialty_id
  * @property int|null $status_id
  * @property int|null $unit_id
+ * @property int|null $unit_slot_id
  * @property bool $approved
  * @property string|null $password
  * @property string|null $remember_token
@@ -134,6 +140,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
  * @property-read Unit|null $unit
+ * @property-read UnitSlot|null $unit_slot
  * @property-read string|null $url
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
@@ -141,9 +148,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User newQuery()
  * @method static Builder<static>|User orderForRoster()
  * @method static Builder<static>|User permission($permissions, $without = false)
+ * @method static Builder<static>|User position(\App\Models\Position $position)
  * @method static Builder<static>|User query()
+ * @method static Builder<static>|User rank(\App\Models\Rank $rank)
  * @method static Builder<static>|User role($roles, $guard = null, $without = false)
+ * @method static Builder<static>|User specialty(\App\Models\Specialty $specialty)
  * @method static Builder<static>|User status(?mixed $statuses)
+ * @method static Builder<static>|User unit(\App\Models\Unit $unit)
  * @method static Builder<static>|User whereApproved($value)
  * @method static Builder<static>|User whereCoverPhoto($value)
  * @method static Builder<static>|User whereCreatedAt($value)
@@ -166,6 +177,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User whereSpecialtyId($value)
  * @method static Builder<static>|User whereStatusId($value)
  * @method static Builder<static>|User whereUnitId($value)
+ * @method static Builder<static>|User whereUnitSlotId($value)
  * @method static Builder<static>|User whereUpdatedAt($value)
  * @method static Builder<static>|User withoutPermission($permissions)
  * @method static Builder<static>|User withoutRole($roles, $guard = null)
@@ -187,14 +199,21 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use HasCustomFields;
     use HasFactory;
     use HasPermissions;
+    use HasPosition;
     use HasProfilePhoto;
     use HasQualificationRecords;
+    use HasRank;
     use HasRankRecords;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasRoles;
     use HasServiceRecords;
-    use HasStatuses;
+    use HasSpecialty;
+    use HasStatus, HasStatusRecords {
+        HasStatus::status insteadof HasStatusRecords;
+        HasStatus::scopeStatus insteadof HasStatusRecords;
+    }
+    use HasUnit;
     use JwtClaims;
     use Notifiable;
 
@@ -203,11 +222,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'email',
         'email_verified_at',
         'phone_number',
-        'position_id',
-        'rank_id',
-        'specialty_id',
-        'status_id',
-        'unit_id',
+        'unit_slot_id',
         'approved',
         'password',
         'notes',
@@ -251,6 +266,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             'specialty_id',
             'status_id',
             'unit_id',
+            'unit_slot_id',
             'approved',
             'password',
             'remember_token',
@@ -312,9 +328,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return $this->phone_number;
     }
 
-    /**
-     * @param  Builder<User>  $query
-     */
     public function scopeOrderForRoster(Builder $query): void
     {
         /** @var DashboardSettings $settings */
@@ -389,9 +402,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function lastAssignmentChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?Carbon => optional($this->primary_assignment_records()->latest()->first(), function (AssignmentRecord $record) {
-                return $record->created_at;
-            })
+            get: function (): ?Carbon {
+                /** @var ?AssignmentRecord $record */
+                $record = $this->primary_assignment_records()->latest()->first();
+
+                return $record->created_at ?? null;
+            }
         )->shouldCache();
     }
 
@@ -401,14 +417,17 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function lastRankChangeDate(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?Carbon => optional($this->rank_records()->latest()->first(), function (RankRecord $record) {
-                return $record->created_at;
-            })
+            get: function (): ?Carbon {
+                /** @var ?RankRecord $record */
+                $record = $this->rank_records()->latest()->first();
+
+                return $record->created_at ?? null;
+            }
         )->shouldCache();
     }
 
     /**
-     * @return BelongsToMany<Event>
+     * @return BelongsToMany<Event, $this>
      */
     public function events(): BelongsToMany
     {
@@ -420,33 +439,16 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
 
     /**
-     * @return HasMany<Submission>
+     * @return HasMany<Submission, $this>
      */
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
-    public function position(): BelongsTo
-    {
-        return $this->belongsTo(Position::class);
-    }
-
-    public function rank(): BelongsTo
-    {
-        return $this->belongsTo(Rank::class);
-    }
-
-    public function specialty(): BelongsTo
-    {
-        return $this->belongsTo(Specialty::class);
-    }
-
-    public function status(): BelongsTo
-    {
-        return $this->belongsTo(Status::class);
-    }
-
+    /**
+     * @return BelongsToMany<Task, $this>
+     */
     public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class, 'users_tasks')
@@ -456,9 +458,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             ->withTimestamps();
     }
 
-    public function unit(): BelongsTo
+    /**
+     * @return BelongsTo<UnitSlot, $this>
+     */
+    public function unit_slot(): BelongsTo
     {
-        return $this->belongsTo(Unit::class);
+        return $this->belongsTo(UnitSlot::class);
     }
 
     protected function getDefaultGuardName(): string

@@ -23,7 +23,6 @@ use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
 use Filament\Panel;
@@ -175,11 +174,10 @@ class Dashboard extends SettingsPage
                                     ->live()
                                     ->options(RosterMode::class),
                                 Repeater::make('roster_sort_order')
-                                    ->label('Roster Sort Order')
+                                    ->label('Sort')
                                     ->reorderable()
                                     ->addActionLabel('Add New Field')
-                                    ->helperText('Choose the order in which the roster is sorted. Items on the top will be treated as having the most priority.')
-                                    ->visible(fn (Get $get) => $get('roster_mode') === RosterMode::AUTOMATIC)
+                                    ->helperText('Choose the order in which the users on the roster are sorted under their respective unit or slot. Items on the top will be treated as having the most priority.')
                                     ->simple(Select::make('roster_sort_order')
                                         ->distinct()
                                         ->options([

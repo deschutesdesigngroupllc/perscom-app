@@ -84,7 +84,6 @@ class WebhookLogResource extends BaseResource
                             ->when(
                                 filled(data_get($data, 'values')),
                                 function (Builder $query) use ($data) {
-                                    // @phpstan-ignore-next-line
                                     $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->event', $event)));
                                 },
                             );

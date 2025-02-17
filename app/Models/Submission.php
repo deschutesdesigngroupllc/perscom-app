@@ -11,7 +11,7 @@ use App\Traits\HasComments;
 use App\Traits\HasCustomFieldData;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use App\Traits\HasStatuses;
+use App\Traits\HasStatusRecords;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -64,7 +64,7 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
     use HasFactory;
     use HasResourceLabel;
     use HasResourceUrl;
-    use HasStatuses;
+    use HasStatusRecords;
 
     public function __toString(): string
     {
@@ -103,11 +103,17 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
         ];
     }
 
+    /**
+     * @return BelongsTo<Form, $this>
+     */
     public function form(): BelongsTo
     {
         return $this->belongsTo(Form::class);
     }
 
+    /**
+     * @return BelongsTo<User, $this>
+     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

@@ -58,4 +58,10 @@ abstract class Metric
             ->snake()
             ->toString();
     }
+
+    public function query(): Builder
+    {
+        return BaseMetric::query()
+            ->where('key', $this->key());
+    }
 }

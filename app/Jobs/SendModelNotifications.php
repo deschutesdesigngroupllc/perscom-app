@@ -14,6 +14,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Notification;
 
 class SendModelNotifications implements ShouldQueue
@@ -53,7 +54,7 @@ class SendModelNotifications implements ShouldQueue
         });
 
         $hasDiscordPublic = $modelNotifications->contains(function (ModelNotification $notification) {
-            return collect($notification->channels)->contains(NotificationChannel::DISCORD_PUBLIC);
+            return Collection::wrap($notification->channels)->contains(NotificationChannel::DISCORD_PUBLIC);
         });
 
         if ($hasDiscordPublic && filled($recipients) && filled($modelNotifications)) {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Traits;
 
-use App\Models\Status;
+use App\Models\Rank;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
@@ -15,26 +15,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @template TModel of Model
  */
-trait HasStatus
+trait HasRank
 {
-    public function scopeStatus(Builder $query, Status $status): void
+    public function scopeRank(Builder $query, Rank $rank): void
     {
-        $query->whereBelongsTo($status);
+        $query->whereBelongsTo($rank);
     }
 
     /**
-     * @return BelongsTo<Status, TModel>
+     * @return BelongsTo<Rank, TModel>
      */
-    public function status(): BelongsTo
+    public function rank(): BelongsTo
     {
         /** @var TModel $this */
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Rank::class);
     }
 
-    protected function initializeHasStatus(): void
+    protected function initializeHasRank(): void
     {
         $this->mergeFillable([
-            'status_id',
+            'rank_id',
         ]);
     }
 }
