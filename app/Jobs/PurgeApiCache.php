@@ -13,6 +13,7 @@ use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\Skip;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 
@@ -54,5 +55,15 @@ class PurgeApiCache implements ShouldQueue
                 ));
             }
         }
+    }
+
+    public function retryUntil(): Carbon
+    {
+        return now()->addHour();
+    }
+
+    public function backoff(): array
+    {
+        return [1, 5, 10];
     }
 }
