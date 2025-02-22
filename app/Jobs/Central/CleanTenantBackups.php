@@ -11,7 +11,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Artisan;
 
-class BackupTenantDatabase implements ShouldQueue
+class CleanTenantBackups implements ShouldQueue
 {
     use Batchable;
     use InteractsWithQueue;
@@ -32,10 +32,7 @@ class BackupTenantDatabase implements ShouldQueue
         /** @var Tenant $tenant */
         $tenant = Tenant::findOrFail($this->tenantKey);
         $tenant->run(function () {
-            Artisan::call('backup:run', [
-                '--only-to-disk' => 's3',
-                '--only-db' => true,
-            ]);
+            Artisan::call('backup:clean');
         });
     }
 }

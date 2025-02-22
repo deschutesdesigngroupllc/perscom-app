@@ -213,7 +213,7 @@ return [
         ],
 
         'supervisor-3' => [
-            'connection' => 'redis',
+            'connection' => 'central',
             'queue' => ['backup'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',
@@ -222,7 +222,7 @@ return [
             'maxJobs' => 0,
             'memory' => 256,
             'tries' => 1,
-            'timeout' => 300,
+            'timeout' => 1800,
             'nice' => 10,
         ],
 
@@ -253,7 +253,7 @@ return [
                 'balanceCooldown' => 3,
             ],
             'supervisor-3' => [
-                'maxProcesses' => 10,
+                'maxProcesses' => 5,
                 'balanceMaxShift' => 1,
                 'balanceCooldown' => 3,
             ],

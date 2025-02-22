@@ -190,6 +190,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $schedule->command('horizon:snapshot')->everyFiveMinutes();
         $schedule->command('cache:prune-stale-tags')->hourly();
         $schedule->command('perscom:prune --force --days=7')->environments(['staging', 'production'])->dailyAt('17:00');
+        $schedule->command('perscom:backup-clean')->environments('production')->dailyAt('17:00');
         $schedule->command('perscom:backup')->environments('production')->dailyAt('18:00');
         $schedule->command('perscom:calculate-schedules')->environments('production')->dailyAt('19:00');
         $schedule->command('perscom:event-notifications')->environments('production')->dailyAt('20:00');
