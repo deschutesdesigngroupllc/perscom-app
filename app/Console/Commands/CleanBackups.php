@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Actions\Batches\CleanBackups as CleanBackupsAction;
+use App\Jobs\Central\CleanCentralBackups;
 use Illuminate\Console\Command;
 use Throwable;
 
@@ -12,7 +13,7 @@ class CleanBackups extends Command
 {
     protected $signature = 'perscom:backup-clean';
 
-    protected $description = 'Clean up the tenant backups.';
+    protected $description = 'Clean up the all application backups.';
 
     /**
      * @throws Throwable
@@ -21,7 +22,9 @@ class CleanBackups extends Command
     {
         CleanBackupsAction::handle();
 
-        $this->info('The database backup job has been dispatched.');
+        CleanCentralBackups::dispatch();
+
+        $this->info('The database cleanup jobs have been dispatched.');
 
         return static::SUCCESS;
     }

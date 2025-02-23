@@ -6,7 +6,9 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Features\BackupFeature;
 use App\Filament\App\Clusters\Settings;
+use App\Jobs\Central\BackupTenantDatabase;
 use App\Models\Backup;
+use Filament\Actions;
 use Filament\Pages\Page;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
@@ -57,5 +59,20 @@ class Backups extends Page implements HasTable
                     ->openUrlInNewTab()
                     ->url(fn (Backup $record) => $record->url),
             ]);
+    }
+
+    protected function getHeaderActions(): array
+    {
+        return [
+            Actions\Action::make('backup_now')
+                ->successNotificationTitle('The backup has been requested. Please check back later for the latest copy.')
+                ->action(function (Actions\Action $action) {
+                    BackupTenantDatabase::dispatch(
+                        tenantKey: tenant()->getKey(),
+                    );
+
+                    $action->success();
+                }),
+        ];
     }
 }

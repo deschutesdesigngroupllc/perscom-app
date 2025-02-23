@@ -42,15 +42,15 @@ class Backup extends Model
      */
     public function getRows(): array
     {
-        return collect(Storage::disk('s3')->files('backups'))->map(function ($path) {
+        return collect(Storage::disk('backups')->files('backups'))->map(function ($path) {
             $file = pathinfo($path, PATHINFO_FILENAME);
             $date = preg_replace('/\.\w+$/', '', $file);
 
             return [
                 'name' => "$file.zip",
                 'path' => $path,
-                'size' => Number::fileSize(Storage::disk('s3')->size($path)),
-                'url' => Storage::disk('s3')->temporaryUrl($path, now()->addDay()),
+                'size' => Number::fileSize(Storage::disk('backups')->size($path)),
+                'url' => Storage::disk('backups')->temporaryUrl($path, now()->addDay()),
                 'created_at' => Carbon::createFromFormat('Y-m-d-H-i-s', $date),
             ];
         })->toArray();

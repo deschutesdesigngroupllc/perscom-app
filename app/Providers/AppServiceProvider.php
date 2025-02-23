@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Console\Commands\BackupCommand;
 use App\Dispatchers\Bus\Dispatcher;
 use App\Filament\App\Pages\Dashboard;
 use App\Models\Admin;
@@ -50,6 +51,8 @@ use Laravel\Pennant\Feature;
 use Laravel\Socialite\Contracts\Factory;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
 use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
+use Spatie\Backup\Commands\BackupCommand as BaseBackupCommand;
+use Spatie\Backup\Config\Config;
 
 use function tenant;
 
@@ -81,10 +84,39 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
+        /**
+         * A custom event dispatcher that allows events to be dispatched, or stopped based on some
+         * custom logic. We used it to stop notifications from being sent if a certain HTTP header
+         * is present.
+         */
         $this->app->extend(BusDispatcher::class, fn ($dispatcher, $app) => new Dispatcher($app, $dispatcher));
+
+        /**
+         * This API key resolver modifies how the resource IDs are resolved in the HTTP request path
+         * different from how the API package would normally resolve them.
+         */
         $this->app->bind(KeyResolverContract::class, fn () => new KeyResolver);
+
+        /**
+         * This custom component resolver for the API is used to resolve API HTTP resources based
+         * on the requested API version using a versioned folder structure for identifying which
+         * HTTP resources belong with which API Version.
+         */
         $this->app->bind(ComponentsResolverContract::class, fn ($app, $params) => new ComponentsResolver(resourceModelClass: data_get($params, 'resourceModelClass')));
+
+        /**
+         * Tenant DB's are backed up using a batching of individual jobs - one for each tenant. Because
+         * of this, we need to customize the temporary directory for each tenant job so that it is not
+         * overwritten by another job.
+         */
         $this->app->bind('backup-temporary-project', fn () => new TenantTemporaryDirectory);
+
+        /**
+         * Because we back up using two different MySQL connections, one for tenant, and one for central,
+         * this allows us to rebind the config with the new DB connection values before running the
+         * actual back up command.
+         */
+        $this->app->bind(BaseBackupCommand::class, fn ($app) => new BackupCommand($app->make(Config::class)));
     }
 
     /**

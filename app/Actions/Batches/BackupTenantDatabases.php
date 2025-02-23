@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class BackupDatabases
+class BackupTenantDatabases
 {
     /**
      * @throws Throwable
