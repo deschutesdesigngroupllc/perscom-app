@@ -82,7 +82,6 @@ class UnitResource extends BaseResource
                                     ->helperText('Hide this unit from the roster.')
                                     ->required(),
                                 IconPicker::make('icon')
-                                    ->preload()
                                     ->helperText(new HtmlString('An optional icon for the unit. A list of icons can be found <a href="https://heroicons.com/" target="_blank" class="underline">here</a>.')),
                                 Forms\Components\RichEditor::make('empty')
                                     ->label('Empty Message')
