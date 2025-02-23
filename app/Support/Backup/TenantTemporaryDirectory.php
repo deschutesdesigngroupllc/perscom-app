@@ -15,8 +15,12 @@ class TenantTemporaryDirectory extends TemporaryDirectory
 
     protected function getFullPath(): string
     {
-        $tenantId = tenant()->getTenantKey();
+        $tenantId = tenant()?->getTenantKey() ?? null;
 
-        return storage_path(optional($tenantId, fn ($id) => "app/backup-temp/tenant$id") ?? 'app/backup-temp').DIRECTORY_SEPARATOR.$this->name;
+        if (blank($tenantId)) {
+            return parent::getFullPath();
+        }
+
+        return storage_path("app/backup-temp/tenant$tenantId").(! empty($this->name) ? DIRECTORY_SEPARATOR.$this->name : '');
     }
 }

@@ -117,6 +117,7 @@ return [
             'local',
             'public',
             's3',
+            'backups',
         ],
 
         /**
