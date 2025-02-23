@@ -335,14 +335,19 @@ class AssignmentRecordResource extends BaseResource
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        return [
+        $details = [
             'Type' => optional($record->type)->getLabel(),
             'Position' => optional($record->position)->name,
             'Specialty' => optional($record->specialty)->name,
             'Unit' => optional($record->unit)->name,
             'Status' => optional($record->status)->name,
-            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
+
+        if (filled($record->text)) {
+            $details['Text'] = Str::of($record->text)->stripTags()->limit()->squish()->toString();
+        }
+
+        return $details;
     }
 
     public static function getGloballySearchableAttributes(): array

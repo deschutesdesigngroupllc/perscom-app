@@ -232,6 +232,10 @@ class CombatRecordResource extends BaseResource
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
+        if (blank($record->text)) {
+            return [];
+        }
+
         return [
             'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];

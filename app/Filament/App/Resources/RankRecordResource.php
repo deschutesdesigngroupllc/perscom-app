@@ -263,11 +263,16 @@ class RankRecordResource extends BaseResource
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        return [
+        $details = [
             'Rank' => optional($record->rank)->name,
             'Type' => optional($record->type)->getLabel(),
-            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
+
+        if (filled($record->text)) {
+            $details['Text'] = Str::of($record->text)->stripTags()->limit()->squish()->toString();
+        }
+
+        return $details;
     }
 
     public static function getGloballySearchableAttributes(): array

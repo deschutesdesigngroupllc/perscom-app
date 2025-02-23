@@ -251,10 +251,15 @@ class AwardRecordResource extends BaseResource
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        return [
+        $details = [
             'Award' => optional($record->award)->name,
-            'Text' => Str::of($record->text)->stripTags()->limit()->squish()->toString(),
         ];
+
+        if (filled($record->text)) {
+            $details['Text'] = Str::of($record->text)->stripTags()->limit()->squish()->toString();
+        }
+
+        return $details;
     }
 
     public static function getGloballySearchableAttributes(): array

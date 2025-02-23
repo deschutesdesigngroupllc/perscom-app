@@ -15,6 +15,7 @@ use Filament\Forms\Form;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
 
 class SlotResource extends BaseResource
@@ -121,13 +122,6 @@ class SlotResource extends BaseResource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
-
     public static function getPages(): array
     {
         return [
@@ -143,5 +137,33 @@ class SlotResource extends BaseResource
         $settings = app(DashboardSettings::class);
 
         return $settings->roster_mode === RosterMode::MANUAL && parent::canAccess();
+    }
+
+    /**
+     * @param  Slot  $record
+     */
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->name;
+    }
+
+    /**
+     * @param  Slot  $record
+     * @return string[]
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        if (blank($record->description)) {
+            return [];
+        }
+
+        return [
+            Str::of($record->description)->stripTags()->limit()->squish()->toString(),
+        ];
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'description'];
     }
 }

@@ -458,11 +458,16 @@ class EventResource extends BaseResource
 
     /**
      * @param  Event  $record
+     * @return string[]
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
+        if (blank($record->description)) {
+            return [];
+        }
+
         return [
-            'Description' => Str::of($record->description)->stripTags()->limit()->squish()->toString(),
+            Str::of($record->description)->stripTags()->limit()->squish()->toString(),
         ];
     }
 

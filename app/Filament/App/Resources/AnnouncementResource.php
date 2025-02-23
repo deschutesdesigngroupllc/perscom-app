@@ -167,11 +167,16 @@ class AnnouncementResource extends BaseResource
 
     /**
      * @param  Announcement  $record
+     * @return string[]
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
+        if (blank($record->content)) {
+            return [];
+        }
+
         return [
-            'Content' => Str::of($record->content)->stripTags()->limit()->squish()->toString(),
+            Str::of($record->content)->stripTags()->limit()->squish()->toString(),
         ];
     }
 
