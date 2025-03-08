@@ -14,8 +14,6 @@ use Tests\Contracts\ApiResourceTestContract;
 
 abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTestContract
 {
-    public $expectedIndexCount;
-
     protected Collection|Model $factory;
 
     protected User $user;
