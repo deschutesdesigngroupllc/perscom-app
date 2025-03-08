@@ -11,11 +11,11 @@ class DashboardSettings extends Settings
 {
     public string $title;
 
-    public ?string $subtitle;
+    public ?string $subtitle = null;
 
-    public ?string $subdomain;
+    public ?string $subdomain = null;
 
-    public ?string $domain;
+    public ?string $domain = null;
 
     public int $cover_photo_height;
 
@@ -26,7 +26,7 @@ class DashboardSettings extends Settings
     /**
      * @var string[]
      */
-    public ?array $user_hidden_fields;
+    public ?array $user_hidden_fields = null;
 
     public static function group(): string
     {

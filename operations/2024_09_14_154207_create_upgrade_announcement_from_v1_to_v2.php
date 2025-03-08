@@ -10,7 +10,7 @@ return new class extends OneTimeOperation
 {
     public function process(): void
     {
-        tenancy()->runForMultiple(Tenant::all(), function ($tenant) {
+        tenancy()->runForMultiple(Tenant::all(), function ($tenant): void {
             Announcement::create([
                 'global' => true,
                 'color' => 'info',

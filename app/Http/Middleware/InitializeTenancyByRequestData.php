@@ -20,7 +20,7 @@ class InitializeTenancyByRequestData extends BaseInitializeTenancyByRequestData
 
     public function __construct(Tenancy $tenancy, RequestDataTenantResolver $resolver)
     {
-        self::$onFail = static function () {
+        self::$onFail = static function (): void {
             abort(401);
         };
 
@@ -51,7 +51,7 @@ class InitializeTenancyByRequestData extends BaseInitializeTenancyByRequestData
         $parser = new Parser(new JoseEncoder);
 
         /** @var Plain|null $token */
-        $token = rescue(fn () => $parser->parse($request->bearerToken()), report: false);
+        $token = rescue(fn (): \Lcobucci\JWT\Token => $parser->parse($request->bearerToken()), report: false);
 
         if (is_null($token)) {
             return null;

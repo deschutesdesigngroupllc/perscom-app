@@ -23,7 +23,7 @@ class CustomJwtProviderTest extends TenantTestCase
     /**
      * @throws BindingResolutionException
      */
-    public function test_it_will_validate_a_good_perscom_signed_token()
+    public function test_it_will_validate_a_good_perscom_signed_token(): void
     {
         $user = User::factory()->createQuietly();
 
@@ -42,7 +42,7 @@ class CustomJwtProviderTest extends TenantTestCase
     /**
      * @throws BindingResolutionException
      */
-    public function test_it_will_validate_a_good_tenant_signed_token()
+    public function test_it_will_validate_a_good_tenant_signed_token(): void
     {
         $user = User::factory()->createQuietly();
 
@@ -71,7 +71,7 @@ class CustomJwtProviderTest extends TenantTestCase
     /**
      * @throws BindingResolutionException
      */
-    public function test_it_will_not_validate_an_incorrect_perscom_signed_key()
+    public function test_it_will_not_validate_an_incorrect_perscom_signed_key(): void
     {
         $user = User::factory()->createQuietly();
 
@@ -92,7 +92,7 @@ class CustomJwtProviderTest extends TenantTestCase
     /**
      * @throws BindingResolutionException
      */
-    public function test_it_will_not_validate_an_incorrect_tenant_signed_key()
+    public function test_it_will_not_validate_an_incorrect_tenant_signed_key(): void
     {
         $user = User::factory()->createQuietly();
 

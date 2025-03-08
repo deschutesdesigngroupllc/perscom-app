@@ -368,9 +368,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function timeInAssignment(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?CarbonInterval => optional($this->primary_assignment_records()->first()->created_at ?? null, function ($date) {
-                return Carbon::now()->diff($date, true);
-            })
+            get: fn (): ?CarbonInterval => optional($this->primary_assignment_records()->first()->created_at ?? null, fn ($date): CarbonInterval => Carbon::now()->diff($date, true))
         )->shouldCache();
     }
 
@@ -380,9 +378,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     public function timeInGrade(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?CarbonInterval => optional($this->rank_records()->first()?->created_at ?? null, function ($date) {
-                return Carbon::now()->diff($date, true);
-            })
+            get: fn (): ?CarbonInterval => optional($this->rank_records()->first()?->created_at ?? null, fn ($date): CarbonInterval => Carbon::now()->diff($date, true))
         )->shouldCache();
     }
 

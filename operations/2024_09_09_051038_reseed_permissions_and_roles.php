@@ -31,7 +31,7 @@ return new class extends OneTimeOperation
 
     protected function reseedTenant(Tenant $tenant): void
     {
-        $tenant->run(function (Tenant $tenant) {
+        $tenant->run(function (Tenant $tenant): void {
             $adminIds = User::role(Utils::getSuperAdminName())->get()->pluck('id');
 
             Schema::disableForeignKeyConstraints();

@@ -75,7 +75,7 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
     {
         parent::boot();
 
-        static::creating(function ($model) {
+        static::creating(function ($model): void {
             $user = match (true) {
                 isset($model->user) => $model->user,
                 Auth::guard('web')->check() => Auth::guard('web')->user(),

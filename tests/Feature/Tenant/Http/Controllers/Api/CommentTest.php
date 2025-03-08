@@ -39,7 +39,7 @@ class CommentTest extends ApiResourceTestCase
     public function factory(): Factory
     {
         return Comment::factory()
-            ->afterMaking(function (Comment $comment) {
+            ->afterMaking(function (Comment $comment): void {
                 $comment->commentable()->associate(ServiceRecord::factory()->create());
             });
     }

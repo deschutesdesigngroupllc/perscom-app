@@ -56,18 +56,18 @@ class JobsHandled extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Jobs processed',
-                    'data' => $jobsProcessedData->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $jobsProcessedData->map(fn (TrendValue $value): mixed => $value->aggregate),
                     'fill' => true,
                     'borderColor' => '#2563eb',
                 ],
                 [
                     'label' => 'Jobs failed',
-                    'data' => $jobsFailedData->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $jobsFailedData->map(fn (TrendValue $value): mixed => $value->aggregate),
                     'fill' => true,
                     'borderColor' => '#991b1b',
                 ],
             ],
-            'labels' => $jobsProcessedData->map(fn (TrendValue $value) => $value->date),
+            'labels' => $jobsProcessedData->map(fn (TrendValue $value): string => $value->date),
         ];
     }
 

@@ -10,7 +10,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class DomainTest extends TenantTestCase
 {
-    public function test_url_attribute_properly_returns_url()
+    public function test_url_attribute_properly_returns_url(): void
     {
         $domain = Domain::factory()->create([
             'domain' => $word = $this->faker->domainWord,
@@ -23,7 +23,7 @@ class DomainTest extends TenantTestCase
         $this->assertEquals("$scheme://$word$base", $domain->url);
     }
 
-    public function test_host_attribute_properly_returns()
+    public function test_host_attribute_properly_returns(): void
     {
         $domain = Domain::factory()->create([
             'domain' => $word = $this->faker->domainWord,

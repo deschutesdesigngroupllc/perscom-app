@@ -11,7 +11,7 @@ use function tenant;
 
 class ConfigBootstrapperTest extends TenantTestCase
 {
-    public function test_bootstrap_method_sets_up_config()
+    public function test_bootstrap_method_sets_up_config(): void
     {
         $this->assertEquals(config('mail.from.name'), "PERSCOM - {$this->tenant->name}");
         $this->assertEquals(config('responsecache.cache_tag'), "tenant{$this->tenant->getKey()}");
@@ -20,7 +20,7 @@ class ConfigBootstrapperTest extends TenantTestCase
     /**
      * @throws TenantCouldNotBeIdentifiedById
      */
-    public function test_revert_method_resets_config()
+    public function test_revert_method_resets_config(): void
     {
         $tenant = tenant();
         tenancy()->end();

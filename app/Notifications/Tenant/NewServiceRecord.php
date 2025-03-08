@@ -70,9 +70,9 @@ HTML;
     public function via(User $notifiable): array
     {
         return collect(NotificationChannel::cases())
-            ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
-            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled($notifiable))
-            ->map(fn (NotificationChannel $channel) => $channel->getChannel())
+            ->reject(fn (NotificationChannel $channel): bool => $channel === NotificationChannel::DISCORD_PUBLIC)
+            ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled($notifiable))
+            ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()
             ->toArray();
     }

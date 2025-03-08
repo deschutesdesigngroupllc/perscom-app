@@ -18,7 +18,7 @@ class HandleJobProcessed
 
         $job = $event->job;
 
-        if (is_a($job, RedisJob::class)) {
+        if ($job instanceof RedisJob) {
             $commandName = data_get($job->payload(), 'data.commandName');
 
             JobHistory::updateOrCreate([

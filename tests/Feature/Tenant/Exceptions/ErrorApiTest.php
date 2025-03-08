@@ -10,9 +10,9 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class ErrorApiTest extends TenantTestCase
 {
-    public function test_4xx_exception_is_thrown_and_error_is_returned()
+    public function test_4xx_exception_is_thrown_and_error_is_returned(): void
     {
-        Route::get('/test-route', static function () {
+        Route::get('/test-route', static function (): void {
             abort(499, 'foo bar');
         })->name('api.test');
 
@@ -22,11 +22,9 @@ class ErrorApiTest extends TenantTestCase
             ->assertStatus(499);
     }
 
-    public function test_401_exception_is_thrown_and_error_is_returned()
+    public function test_401_exception_is_thrown_and_error_is_returned(): void
     {
-        Route::get('/test-route', static function () {
-            return response()->json('test');
-        })->name('api.test')->middleware('auth:api');
+        Route::get('/test-route', static fn () => response()->json('test'))->name('api.test')->middleware('auth:api');
 
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'You are not authenticated. Please provide a valid API key that contains your PERSCOM ID to continue.')
@@ -34,9 +32,9 @@ class ErrorApiTest extends TenantTestCase
             ->assertStatus(401);
     }
 
-    public function test_402_exception_is_thrown_and_error_is_returned()
+    public function test_402_exception_is_thrown_and_error_is_returned(): void
     {
-        Route::get('/test-route', static function () {
+        Route::get('/test-route', static function (): void {
             abort(402);
         })->name('api.test')->middleware(CheckSubscription::class);
 
@@ -46,9 +44,9 @@ class ErrorApiTest extends TenantTestCase
             ->assertStatus(402);
     }
 
-    public function test_403_exception_is_thrown_and_error_is_returned()
+    public function test_403_exception_is_thrown_and_error_is_returned(): void
     {
-        Route::get('/test-route', static function () {
+        Route::get('/test-route', static function (): void {
             abort(403);
         })->name('api.test');
 
@@ -58,7 +56,7 @@ class ErrorApiTest extends TenantTestCase
             ->assertStatus(403);
     }
 
-    public function test_404_exception_is_thrown_and_error_is_returned()
+    public function test_404_exception_is_thrown_and_error_is_returned(): void
     {
         $this->getJson('/test-route')
             ->assertJsonPath('error.message', 'The requested resource could not be found.')
@@ -66,9 +64,9 @@ class ErrorApiTest extends TenantTestCase
             ->assertStatus(404);
     }
 
-    public function test_419_exception_is_thrown_and_error_is_returned()
+    public function test_419_exception_is_thrown_and_error_is_returned(): void
     {
-        Route::get('/test-route', static function () {
+        Route::get('/test-route', static function (): void {
             abort(419, 'foo bar');
         })->name('api.test');
 
@@ -78,9 +76,9 @@ class ErrorApiTest extends TenantTestCase
             ->assertStatus(419);
     }
 
-    public function test_429_exception_is_thrown_and_error_is_returned()
+    public function test_429_exception_is_thrown_and_error_is_returned(): void
     {
-        Route::get('/test-route', static function () {
+        Route::get('/test-route', static function (): void {
             abort(429);
         })->name('api.test');
 
@@ -90,9 +88,9 @@ class ErrorApiTest extends TenantTestCase
             ->assertStatus(429);
     }
 
-    public function test_5xx_exception_is_thrown_and_error_is_returned()
+    public function test_5xx_exception_is_thrown_and_error_is_returned(): void
     {
-        Route::get('/test-route', static function () {
+        Route::get('/test-route', static function (): void {
             abort(599, 'foo bar');
         })->name('api.test');
 
@@ -102,9 +100,9 @@ class ErrorApiTest extends TenantTestCase
             ->assertStatus(599);
     }
 
-    public function test_500_exception_is_thrown_and_error_is_returned()
+    public function test_500_exception_is_thrown_and_error_is_returned(): void
     {
-        Route::get('/test-route', static function () {
+        Route::get('/test-route', static function (): void {
             abort(500);
         })->name('api.test');
 

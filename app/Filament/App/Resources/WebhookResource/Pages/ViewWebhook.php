@@ -34,7 +34,7 @@ class ViewWebhook extends ViewRecord
                 ->modalHeading('Send a test webhook payload')
                 ->modalSubmitActionLabel('Send')
                 ->successNotificationTitle('The test webhook has been successfully sent.')
-                ->action(function (array $data, Actions\Action $action, Webhook $record) {
+                ->action(function (array $data, Actions\Action $action, Webhook $record): void {
                     WebhookService::dispatch($record, WebhookEvent::TEST_WEBHOOK->value, json_decode(data_get($data, 'payload', []) ?? [], true));
 
                     $action->success();

@@ -70,22 +70,22 @@ class AttachmentResource extends BaseResource
                                             ->titleAttribute('name'),
                                         Forms\Components\MorphToSelect\Type::make(AssignmentRecord::class)
                                             ->titleAttribute('id')
-                                            ->getOptionLabelFromRecordUsing(fn (AssignmentRecord $record) => $record->getLabel()),
+                                            ->getOptionLabelFromRecordUsing(fn (AssignmentRecord $record): string => $record->getLabel()),
                                         Forms\Components\MorphToSelect\Type::make(AwardRecord::class)
                                             ->titleAttribute('id')
-                                            ->getOptionLabelFromRecordUsing(fn (AwardRecord $record) => $record->getLabel()),
+                                            ->getOptionLabelFromRecordUsing(fn (AwardRecord $record): string => $record->getLabel()),
                                         Forms\Components\MorphToSelect\Type::make(CombatRecord::class)
                                             ->titleAttribute('id')
-                                            ->getOptionLabelFromRecordUsing(fn (CombatRecord $record) => $record->getLabel()),
+                                            ->getOptionLabelFromRecordUsing(fn (CombatRecord $record): string => $record->getLabel()),
                                         Forms\Components\MorphToSelect\Type::make(QualificationRecord::class)
                                             ->titleAttribute('id')
-                                            ->getOptionLabelFromRecordUsing(fn (QualificationRecord $record) => $record->getLabel()),
+                                            ->getOptionLabelFromRecordUsing(fn (QualificationRecord $record): string => $record->getLabel()),
                                         Forms\Components\MorphToSelect\Type::make(RankRecord::class)
                                             ->titleAttribute('id')
-                                            ->getOptionLabelFromRecordUsing(fn (RankRecord $record) => $record->getLabel()),
+                                            ->getOptionLabelFromRecordUsing(fn (RankRecord $record): string => $record->getLabel()),
                                         Forms\Components\MorphToSelect\Type::make(ServiceRecord::class)
                                             ->titleAttribute('id')
-                                            ->getOptionLabelFromRecordUsing(fn (ServiceRecord $record) => $record->getLabel()),
+                                            ->getOptionLabelFromRecordUsing(fn (ServiceRecord $record): string => $record->getLabel()),
                                     ]),
                             ]),
                     ]),

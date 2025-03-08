@@ -42,7 +42,7 @@ class Backup extends Model
      */
     public function getRows(): array
     {
-        return collect(Storage::disk('backups')->files('backups'))->map(function ($path) {
+        return collect(Storage::disk('backups')->files('backups'))->map(function ($path): array {
             $file = pathinfo($path, PATHINFO_FILENAME);
             $date = preg_replace('/\.\w+$/', '', $file);
 

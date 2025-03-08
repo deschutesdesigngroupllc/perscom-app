@@ -9,7 +9,7 @@ use Tests\TestCase;
 
 class SubmissionTest extends TestCase
 {
-    public function test_virtual_column_can_be_set()
+    public function test_virtual_column_can_be_set(): void
     {
         $submission = Submission::factory()->state([
             'user_id' => null,

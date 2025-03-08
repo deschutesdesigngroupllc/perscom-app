@@ -40,12 +40,12 @@ class SubmissionResource extends BaseResource
                     ->preload()
                     ->relationship(name: 'form', titleAttribute: 'name')
                     ->searchable()
-                    ->createOptionForm(fn ($form) => FormResource::form($form)),
+                    ->createOptionForm(fn ($form): Form => FormResource::form($form)),
                 Forms\Components\Select::make('user_id')
                     ->preload()
                     ->relationship(name: 'user', titleAttribute: 'name')
                     ->searchable()
-                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
                 Forms\Components\KeyValue::make('data')
                     ->columnSpanFull()
                     ->helperText('The submission data.')
@@ -64,7 +64,7 @@ class SubmissionResource extends BaseResource
                     ->tabs([
                         Tabs\Tab::make('Submission')
                             ->badge(fn (?Submission $record) => $record->status->name ?? 'Status')
-                            ->badgeColor(fn (?Submission $record) => Color::hex($record->status->color ?? '#2563eb'))
+                            ->badgeColor(fn (?Submission $record): array => Color::hex($record->status->color ?? '#2563eb'))
                             ->icon('heroicon-o-folder-plus')
                             ->schema([
                                 TextEntry::make('user.name'),
@@ -97,7 +97,7 @@ class SubmissionResource extends BaseResource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('status.name')
                     ->badge()
-                    ->color(fn (?Submission $record) => Color::hex($record->status->color ?? '#2563eb'))
+                    ->color(fn (?Submission $record): array => Color::hex($record->status->color ?? '#2563eb'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable(),

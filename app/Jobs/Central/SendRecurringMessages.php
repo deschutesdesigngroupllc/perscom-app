@@ -34,15 +34,15 @@ class SendRecurringMessages implements ShouldQueue
             return;
         }
 
-        Tenant::findOrFail($this->tenantKey)->run(function () {
+        Tenant::findOrFail($this->tenantKey)->run(function (): void {
             // Find all messages where they are repeating
-            Message::query()->with('schedule')->where('repeats', true)->chunk(100, function (Collection $messages) {
+            Message::query()->with('schedule')->where('repeats', true)->chunk(100, function (Collection $messages): void {
                 $messages
                     // Filter out any messages we can't send notifications for
-                    ->filter(fn (Message $message) => SendMessage::canSendNotification($message))
+                    ->filter(fn (Message $message): bool => SendMessage::canSendNotification($message))
 
                     // Iterate over the messages that we can send
-                    ->each(function (Message $message) {
+                    ->each(function (Message $message): void {
                         // Determine when the next message should be sent
                         $occurrence = $message->schedule->next_occurrence;
 

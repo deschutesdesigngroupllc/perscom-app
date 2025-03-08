@@ -10,10 +10,6 @@ class BannerPolicy
 {
     public function before(): bool
     {
-        if (App::isAdmin()) {
-            return true;
-        }
-
-        return false;
+        return (bool) App::isAdmin();
     }
 }

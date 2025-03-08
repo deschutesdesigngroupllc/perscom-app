@@ -13,21 +13,21 @@ class CalendarObserver
 {
     public function created(Calendar $calendar): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_CREATED->value])->each(function (Webhook $webhook) use ($calendar) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_CREATED->value])->each(function (Webhook $webhook) use ($calendar): void {
             WebhookService::dispatch($webhook, WebhookEvent::CALENDAR_CREATED->value, $calendar);
         });
     }
 
     public function updated(Calendar $calendar): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_UPDATED->value])->each(function (Webhook $webhook) use ($calendar) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_UPDATED->value])->each(function (Webhook $webhook) use ($calendar): void {
             WebhookService::dispatch($webhook, WebhookEvent::CALENDAR_UPDATED->value, $calendar);
         });
     }
 
     public function deleted(Calendar $calendar): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_DELETED->value])->each(function (Webhook $webhook) use ($calendar) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::CALENDAR_DELETED->value])->each(function (Webhook $webhook) use ($calendar): void {
             WebhookService::dispatch($webhook, WebhookEvent::CALENDAR_DELETED->value, $calendar);
         });
     }

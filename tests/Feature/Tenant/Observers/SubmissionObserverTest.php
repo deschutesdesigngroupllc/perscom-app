@@ -15,7 +15,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class SubmissionObserverTest extends TenantTestCase
 {
-    public function test_default_submission_status_is_attached()
+    public function test_default_submission_status_is_attached(): void
     {
         $status = Status::factory()->create();
         $form = Form::factory()->for($status, 'submission_status')->create();
@@ -24,7 +24,7 @@ class SubmissionObserverTest extends TenantTestCase
         $this->assertEquals($status->name, $submission->statuses()->first()->name);
     }
 
-    public function test_create_submission_webhook_sent()
+    public function test_create_submission_webhook_sent(): void
     {
         Queue::fake();
 
@@ -37,7 +37,7 @@ class SubmissionObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_submission_webhook_sent()
+    public function test_update_submission_webhook_sent(): void
     {
         Queue::fake();
 
@@ -53,7 +53,7 @@ class SubmissionObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_submission_webhook_sent()
+    public function test_delete_submission_webhook_sent(): void
     {
         Queue::fake();
 

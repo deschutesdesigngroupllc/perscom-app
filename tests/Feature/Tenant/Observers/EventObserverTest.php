@@ -13,7 +13,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class EventObserverTest extends TenantTestCase
 {
-    public function test_create_event_webhook_sent()
+    public function test_create_event_webhook_sent(): void
     {
         Queue::fake();
 
@@ -26,7 +26,7 @@ class EventObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_event_webhook_sent()
+    public function test_update_event_webhook_sent(): void
     {
         Queue::fake();
 
@@ -42,7 +42,7 @@ class EventObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_event_webhook_sent()
+    public function test_delete_event_webhook_sent(): void
     {
         Queue::fake();
 

@@ -19,7 +19,7 @@ return new class extends OneTimeOperation
 {
     public function process(): void
     {
-        tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant) {
+        tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
             try {
                 Artisan::call('tenants:migrate', [
                     '--tenants' => [$tenant->getTenantKey()],

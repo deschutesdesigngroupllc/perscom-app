@@ -50,7 +50,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
-        then: function () {
+        then: function (): void {
             Route::middleware('api')
                 ->name('api.')
                 ->domain(config('api.url'))
@@ -72,7 +72,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->group(base_path('routes/passport.php'));
         }
     )
-    ->withMiddleware(function (Middleware $middleware) {
+    ->withMiddleware(function (Middleware $middleware): void {
         $middleware->redirectGuestsTo(fn () => route('filament.app.auth.login'));
 
         $middleware->validateCsrfTokens(except: [
@@ -136,15 +136,15 @@ return Application::configure(basePath: dirname(__DIR__))
             CheckApiVersion::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions) {
+    ->withExceptions(function (Exceptions $exceptions): void {
         Integration::handles($exceptions);
 
-        $exceptions->context(fn () => [
+        $exceptions->context(fn (): array => [
             'requestId' => Context::get('request_id'),
             'traceId' => Context::get('trace_id'),
         ]);
 
-        $exceptions->shouldRenderJsonWhen(fn (Request $request) => $request->routeIs('api.*') || $request->expectsJson());
+        $exceptions->shouldRenderJsonWhen(fn (Request $request): bool => $request->routeIs('api.*') || $request->expectsJson());
 
         $exceptions->dontReport([
             OAuthServerException::class,
@@ -184,7 +184,7 @@ return Application::configure(basePath: dirname(__DIR__))
             }
         });
     })
-    ->withSchedule(function (Illuminate\Console\Scheduling\Schedule $schedule) {
+    ->withSchedule(function (Illuminate\Console\Scheduling\Schedule $schedule): void {
         $schedule->command('telescope:prune --hours=96')->dailyAt('16:00');
         $schedule->command('queue:prune-failed --hours=96')->dailyAt('16:00');
         $schedule->command('horizon:snapshot')->everyFiveMinutes();

@@ -61,8 +61,8 @@ class UpcomingEvent extends Notification implements NotificationCanBeManaged, Sh
         $channels = $this->event->notifications_channels;
 
         return $channels
-            ->reject(fn (NotificationChannel $channel) => $channel === NotificationChannel::DISCORD_PUBLIC)
-            ->map(fn (NotificationChannel $channel) => $channel->getChannel())
+            ->reject(fn (NotificationChannel $channel): bool => $channel === NotificationChannel::DISCORD_PUBLIC)
+            ->map(fn (NotificationChannel $channel): string => $channel->getChannel())
             ->values()
             ->toArray();
     }

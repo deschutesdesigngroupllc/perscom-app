@@ -11,7 +11,7 @@ class UpdateTenantLastLoginDate
 {
     public function handle(Login $event): void
     {
-        optional(tenant(), static function (Tenant $tenant) {
+        optional(tenant(), static function (Tenant $tenant): void {
             $tenant->updateQuietly([
                 'last_login_at' => now(),
             ]);

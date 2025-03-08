@@ -30,7 +30,7 @@ trait HasTags
             ->withTimestamps();
 
         if (static::$tagsAccessor) {
-            $relationship = $relationship->as(static::$tagsAccessor);
+            return $relationship->as(static::$tagsAccessor);
         }
 
         return $relationship;

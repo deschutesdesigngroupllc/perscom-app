@@ -10,7 +10,7 @@ use Tests\TestCase;
 
 class RemoveInactiveAccountsTest extends TestCase
 {
-    public function test_command_will_queue_job()
+    public function test_command_will_queue_job(): void
     {
         Queue::fake();
 

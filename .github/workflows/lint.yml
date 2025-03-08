@@ -55,8 +55,8 @@ jobs:
           composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
           composer config http-basic.whizzy.dev ${{ secrets.FILAMENT_USERNAME }} ${{ secrets.FILAMENT_PASSWORD }}
 
-      - name: Cache Composer Dependencies
-        uses: actions/cache@v3
+      - name: Composer Cache
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -71,15 +71,35 @@ jobs:
           npm run build
           npm run build:landing
 
+      - name: Rector Cache
+        uses: actions/cache@v4
+        with:
+          path: /tmp/rector
+          key: ${{ runner.os }}-rector-${{ github.run_id }}
+          restore-keys: ${{ runner.os }}-rector-
+
+      - name: Create Cache Directory
+        run: mkdir -p /tmp/rector
+
+      - name: Run Rector
+        run: |
+          echo "Running $(./vendor/bin/rector --version)"
+          composer rector || true
+
       - name: Run JS Linter
         run: |
           echo "Running Prettier $(prettier --version)"
-          npm run format:test
+          npm run format || true
 
       - name: Run PHP Linter
         run: |
           echo "Running $(./vendor/bin/pint --version)"
-          composer test:lint
+          composer lint || true
+
+      - name: Commit Linter and Rector Changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: apply code style fixes"
 
       - name: Run Static Analysis
         run: |

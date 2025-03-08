@@ -69,7 +69,11 @@ class AdminCommand extends Command implements PromptsForMissingInput
             hint: 'Minimum characters required: 8'
         ));
 
-        Admin::create(compact('name', 'email', 'password'));
+        Admin::create([
+            'name' => $name,
+            'email' => $email,
+            'password' => $password,
+        ]);
 
         info('The admin has been successfully created.');
 

@@ -39,7 +39,7 @@ class QualificationRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         Action::make('select')
-                            ->visible(fn (?QualificationRecord $record) => isset($record->document))
+                            ->visible(fn (?QualificationRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
                             ->modalHeading(fn (?QualificationRecord $record) => $record->document->name ?? 'Document')

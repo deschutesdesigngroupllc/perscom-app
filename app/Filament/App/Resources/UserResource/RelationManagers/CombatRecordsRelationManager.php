@@ -35,7 +35,7 @@ class CombatRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         Action::make('select')
-                            ->visible(fn (?CombatRecord $record) => isset($record->document))
+                            ->visible(fn (?CombatRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
                             ->modalHeading(fn (?CombatRecord $record) => $record->document->name ?? 'Document')

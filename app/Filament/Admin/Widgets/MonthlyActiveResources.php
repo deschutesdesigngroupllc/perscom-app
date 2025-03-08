@@ -21,10 +21,10 @@ class MonthlyActiveResources extends BaseWidget
 
     protected function getStats(): array
     {
-        $currentUserLogin = Metric::total(UserLoginMetric::class, function (Builder $query) {
+        $currentUserLogin = Metric::total(UserLoginMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()]);
         });
-        $previousUserLogin = Metric::total(UserLoginMetric::class, function (Builder $query) {
+        $previousUserLogin = Metric::total(UserLoginMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonths()->endOfMonth()]);
         });
         $userLoginDifference = Number::percentageDifference($previousUserLogin, $currentUserLogin);
@@ -37,10 +37,10 @@ class MonthlyActiveResources extends BaseWidget
             ->perMonth()
             ->sum('count');
 
-        $currentUserCreation = Metric::total(UserCreationMetric::class, function (Builder $query) {
+        $currentUserCreation = Metric::total(UserCreationMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()]);
         });
-        $previousUserCreation = Metric::total(UserCreationMetric::class, function (Builder $query) {
+        $previousUserCreation = Metric::total(UserCreationMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->subMonth()->startOfMonth(), now()->subMonths()->endOfMonth()]);
         });
         $userCreationDifference = Number::percentageDifference($previousUserCreation, $currentUserCreation);
@@ -53,10 +53,10 @@ class MonthlyActiveResources extends BaseWidget
             ->perMonth()
             ->sum('count');
 
-        $currentRegistrations = Metric::total(TenantCreationMetric::class, function (Builder $query) {
+        $currentRegistrations = Metric::total(TenantCreationMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->startOfQuarter(), now()->endOfQuarter()]);
         });
-        $previousRegistrations = Metric::total(TenantCreationMetric::class, function (Builder $query) {
+        $previousRegistrations = Metric::total(TenantCreationMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->subQuarter()->startOfQuarter(), now()->subQuarter()->endOfQuarter()]);
         });
         $registrationDifference = Number::percentageDifference($previousRegistrations, $currentRegistrations);
@@ -69,11 +69,9 @@ class MonthlyActiveResources extends BaseWidget
             ->perMonth()
             ->sum('count');
 
-        $icon = function ($number): string {
-            return match (true) {
-                $number >= 0 => 'heroicon-m-arrow-trending-up',
-                default => 'heroicon-m-arrow-trending-down'
-            };
+        $icon = fn ($number): string => match (true) {
+            $number >= 0 => 'heroicon-m-arrow-trending-up',
+            default => 'heroicon-m-arrow-trending-down'
         };
 
         return [
@@ -81,17 +79,17 @@ class MonthlyActiveResources extends BaseWidget
                 ->color('gray')
                 ->description(Number::percentage($userLoginDifference))
                 ->descriptionIcon($icon($userLoginDifference))
-                ->chart($userLoginData->map(fn (TrendValue $value) => $value->aggregate)->toArray()),
+                ->chart($userLoginData->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray()),
             Stat::make('Monthly new users', Number::format($currentUserCreation))
                 ->color('gray')
                 ->description(Number::percentage($userCreationDifference))
                 ->descriptionIcon($icon($userCreationDifference))
-                ->chart($userCreationData->map(fn (TrendValue $value) => $value->aggregate)->toArray()),
+                ->chart($userCreationData->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray()),
             Stat::make('Quarterly registrations', Number::format($currentRegistrations))
                 ->color('gray')
                 ->description(Number::percentage($registrationDifference))
                 ->descriptionIcon($icon($registrationDifference))
-                ->chart($registrationData->map(fn (TrendValue $value) => $value->aggregate)->toArray()),
+                ->chart($registrationData->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray()),
         ];
     }
 }

@@ -57,14 +57,14 @@ class AssignmentRecordResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 Forms\Components\Select::make('user_id')
-                                    ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
-                                    ->multiple(fn ($operation) => $operation === 'create')
+                                    ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
+                                    ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
                                     ->helperText('The user this record is assigned to.')
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
                                 Forms\Components\Select::make('type')
                                     ->helperText('The type of assignment record. A primary assignment record will update the user\'s assigned unit, position, and specialty. A secondary assignment will simply add a new record to the list user\'s secondary assignments.')
                                     ->required()
@@ -84,7 +84,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => DocumentResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => DocumentResource::form($form)),
                                 Forms\Components\Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
@@ -92,7 +92,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
                             ]),
                         Forms\Components\Tabs\Tab::make('Assignment Record')
                             ->icon('heroicon-o-rectangle-stack')
@@ -102,49 +102,45 @@ class AssignmentRecordResource extends BaseResource
                                     ->content(new HtmlString("<div class='font-bold'>NOTE: Updating an assignment record does not update a user's position, specialty, or unit. To make these changes, please create a new assignment record. Alternatively, you may manually update a user's position, specialty, or unit from their personnel file.</div>"))
                                     ->visibleOn('edit'),
                                 Forms\Components\Select::make('position_id')
-                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
                                     ->helperText('If selected, the user(s) will be assigned the position when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => PositionResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => PositionResource::form($form)),
                                 Forms\Components\Select::make('specialty_id')
-                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
                                     ->helperText('If selected, the user(s) will be assigned the specialty when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => SpecialtyResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => SpecialtyResource::form($form)),
                                 Forms\Components\Select::make('unit_id')
-                                    ->visible(fn () => $rosterMode === RosterMode::AUTOMATIC)
+                                    ->visible(fn (): bool => $rosterMode === RosterMode::AUTOMATIC)
                                     ->helperText('If selected, the user(s) will be assigned to the unit when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'unit', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => UnitResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => UnitResource::form($form)),
                                 Forms\Components\Select::make('unit_slot_id')
-                                    ->visible(fn () => $rosterMode === RosterMode::MANUAL)
-                                    ->required(fn () => $rosterMode === RosterMode::MANUAL)
+                                    ->visible(fn (): bool => $rosterMode === RosterMode::MANUAL)
+                                    ->required(fn (): bool => $rosterMode === RosterMode::MANUAL)
                                     ->helperText('The slot the user will be assigned to. If the slot has an assigned position or specialty, the user will also be assigned the designated specialty and position in addition to the unit the slot is apart of.')
                                     ->label('Slot')
                                     ->preload()
                                     ->searchable()
-                                    ->options(function () {
-                                        return Unit::ordered()->with('slots')->get()->mapWithKeys(function (Unit $unit) {
-                                            return [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()];
-                                        })->toArray();
-                                    }),
+                                    ->options(fn () => Unit::ordered()->with('slots')->get()->mapWithKeys(fn (Unit $unit) => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()])->toArray()),
                                 Forms\Components\Select::make('status_id')
                                     ->helperText('If selected, the user(s) will be assigned the status when the record is created.')
                                     ->preload()
                                     ->relationship(name: 'status', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => StatusResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => StatusResource::form($form)),
                             ]),
                         Forms\Components\Tabs\Tab::make('Notifications')
-                            ->visible(fn ($operation) => $operation === 'create')
+                            ->visible(fn ($operation): bool => $operation === 'create')
                             ->icon('heroicon-o-bell')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = app(NotificationSettings::class);
 
@@ -173,13 +169,13 @@ class AssignmentRecordResource extends BaseResource
                                 Infolists\Components\TextEntry::make('type')
                                     ->badge(),
                                 Infolists\Components\TextEntry::make('position.name')
-                                    ->hidden(fn (?AssignmentRecord $record) => is_null($record->position)),
+                                    ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->position)),
                                 Infolists\Components\TextEntry::make('specialty.name')
-                                    ->hidden(fn (?AssignmentRecord $record) => is_null($record->specialty)),
+                                    ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->specialty)),
                                 Infolists\Components\TextEntry::make('unit.name')
-                                    ->hidden(fn (?AssignmentRecord $record) => is_null($record->unit)),
+                                    ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->unit)),
                                 Infolists\Components\TextEntry::make('status.name')
-                                    ->hidden(fn (?AssignmentRecord $record) => is_null($record->status)),
+                                    ->hidden(fn (?AssignmentRecord $record): bool => is_null($record->status)),
                                 Infolists\Components\TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -193,11 +189,11 @@ class AssignmentRecordResource extends BaseResource
                                 Infolists\Components\TextEntry::make('updated_at'),
                             ]),
                         Infolists\Components\Tabs\Tab::make('Document')
-                            ->visible(fn (?AssignmentRecord $record) => isset($record->document))
+                            ->visible(fn (?AssignmentRecord $record): bool => $record->document !== null)
                             ->label(fn (?AssignmentRecord $record) => $record->document->name ?? 'Document')
                             ->icon('heroicon-o-document')
                             ->schema([
-                                Infolists\Components\Livewire::make(ViewDocument::class, fn (?AssignmentRecord $record) => [
+                                Infolists\Components\Livewire::make(ViewDocument::class, fn (?AssignmentRecord $record): array => [
                                     'document' => $record->document,
                                     'user' => $record->user,
                                     'model' => $record,
@@ -236,7 +232,7 @@ class AssignmentRecordResource extends BaseResource
                     ->searchable()
                     ->action(
                         Tables\Actions\Action::make('select')
-                            ->visible(fn (?AssignmentRecord $record) => isset($record->document))
+                            ->visible(fn (?AssignmentRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
                             ->modalHeading(fn (?AssignmentRecord $record) => $record->document->name ?? 'Document')

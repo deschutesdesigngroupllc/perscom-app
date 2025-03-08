@@ -29,22 +29,16 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function configureRateLimiting(): void
     {
-        RateLimiter::for('api', function (Request $request) {
-            return App::environment('local')
-                ? Limit::perMinute(2500)->by(optional($request->user())->id ?: $request->ip())
-                : ($request->user()
-                    ? Limit::perMinute(1000)->by($request->user()->id)
-                    : Limit::perMinute(100)->by($request->ip())
-                );
-        });
+        RateLimiter::for('api', fn (Request $request) => App::environment('local')
+            ? Limit::perMinute(2500)->by(optional($request->user())->id ?: $request->ip())
+            : ($request->user()
+                ? Limit::perMinute(1000)->by($request->user()->id)
+                : Limit::perMinute(100)->by($request->ip())
+            ));
 
-        RateLimiter::for('register', function (Request $request) {
-            return Limit::perMinute(5)->by($request->ip());
-        });
+        RateLimiter::for('register', fn (Request $request) => Limit::perMinute(5)->by($request->ip()));
 
-        RateLimiter::for('find-my-organization', function (Request $request) {
-            return Limit::perMinute(10)->by($request->ip());
-        });
+        RateLimiter::for('find-my-organization', fn (Request $request) => Limit::perMinute(10)->by($request->ip()));
 
         RateLimiter::for('sms', function (Tenant|Request|null $tenant = null) {
             if (blank($tenant)) {

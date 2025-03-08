@@ -8,17 +8,17 @@ use Spatie\LaravelSettings\Settings;
 
 class NotificationSettings extends Settings
 {
-    public ?array $assignment_records;
+    public ?array $assignment_records = null;
 
-    public ?array $award_records;
+    public ?array $award_records = null;
 
-    public ?array $combat_records;
+    public ?array $combat_records = null;
 
-    public ?array $qualification_records;
+    public ?array $qualification_records = null;
 
-    public ?array $rank_records;
+    public ?array $rank_records = null;
 
-    public ?array $service_records;
+    public ?array $service_records = null;
 
     public static function group(): string
     {

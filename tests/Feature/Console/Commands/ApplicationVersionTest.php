@@ -10,12 +10,12 @@ use Tests\TestCase;
 
 class ApplicationVersionTest extends TestCase
 {
-    public function test_command_will_fail_return_version()
+    public function test_command_will_fail_return_version(): void
     {
         $this->artisan('perscom:version')->assertSuccessful();
     }
 
-    public function test_command_updates_environment_file()
+    public function test_command_updates_environment_file(): void
     {
         $version = "v{$this->faker->semver()}";
 
@@ -24,15 +24,9 @@ class ApplicationVersionTest extends TestCase
         ])->assertSuccessful();
 
         $envVars = Collection::make(explode("\n", file_get_contents(App::environmentFilePath())))
-            ->map(function ($line) {
-                return explode('=', $line, 2);
-            })
-            ->filter(function ($parts) {
-                return count($parts) === 2 && trim($parts[0]) !== '';
-            })
-            ->mapWithKeys(function ($parts) {
-                return [trim($parts[0]) => trim($parts[1])];
-            });
+            ->map(fn ($line): array => explode('=', (string) $line, 2))
+            ->filter(fn ($parts): bool => count($parts) === 2 && trim((string) $parts[0]) !== '')
+            ->mapWithKeys(fn (array $parts) => [trim((string) $parts[0]) => trim((string) $parts[1])]);
 
         $this->assertSame($version, $envVars->get('APP_VERSION'));
 
@@ -41,7 +35,7 @@ class ApplicationVersionTest extends TestCase
         ]);
     }
 
-    public function test_command_will_fail_when_not_prefixed_with_v()
+    public function test_command_will_fail_when_not_prefixed_with_v(): void
     {
         $this->artisan('perscom:version', [
             '--set' => $this->faker->semver(),

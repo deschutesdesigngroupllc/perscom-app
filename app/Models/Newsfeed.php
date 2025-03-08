@@ -91,9 +91,7 @@ class Newsfeed extends Activity implements HasColor
     public function headline(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => optional($this->properties, function () {
-                return $this->getExtraProperty('headline');
-            })
+            get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('headline'))
         )->shouldCache();
     }
 
@@ -103,9 +101,7 @@ class Newsfeed extends Activity implements HasColor
     public function text(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => optional($this->properties, function () {
-                return $this->getExtraProperty('text');
-            })
+            get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('text'))
         )->shouldCache();
     }
 
@@ -115,9 +111,7 @@ class Newsfeed extends Activity implements HasColor
     public function color(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => optional($this->properties, function () {
-                return $this->getExtraProperty('color');
-            })
+            get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('color'))
         )->shouldCache();
     }
 
@@ -127,9 +121,7 @@ class Newsfeed extends Activity implements HasColor
     public function item(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => optional($this->properties, function () {
-                return $this->getExtraProperty('item');
-            })
+            get: fn (): ?string => optional($this->properties, fn (): mixed => $this->getExtraProperty('item'))
         )->shouldCache();
     }
 }

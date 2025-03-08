@@ -31,7 +31,7 @@ class SecondaryAssignmentsRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status.name')
                     ->badge()
-                    ->color(fn (?AssignmentRecord $record) => Color::hex($record->status->color ?? '#2563eb'))
+                    ->color(fn (?AssignmentRecord $record): array => Color::hex($record->status->color ?? '#2563eb'))
                     ->sortable(),
             ])
             ->filters([

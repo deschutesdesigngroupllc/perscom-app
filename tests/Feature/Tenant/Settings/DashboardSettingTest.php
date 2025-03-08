@@ -11,7 +11,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class DashboardSettingTest extends TenantTestCase
 {
-    public function test_roster_sort_order_sorts_users_correctly()
+    public function test_roster_sort_order_sorts_users_correctly(): void
     {
         $ranks = Rank::factory()->count(5)->state(new Sequence(
             ['name' => 'Rank1', 'order' => 1],

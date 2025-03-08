@@ -15,15 +15,15 @@ trait ClearsResponseCache
     protected static function bootClearsResponseCache(): void
     {
         if (config('responsecache.enabled')) {
-            self::created(function () {
+            self::created(function (): void {
                 ResponseCache::clear();
             });
 
-            self::updated(function () {
+            self::updated(function (): void {
                 ResponseCache::clear();
             });
 
-            self::deleted(function () {
+            self::deleted(function (): void {
                 ResponseCache::clear();
             });
         }

@@ -49,16 +49,12 @@ class LogApiRequest
             'request_headers' => iterator_to_array($request->headers->getIterator()),
             'request_id' => Context::get('request_id'),
             'trace_id' => Context::get('trace_id'),
-            'files' => optional($request->allFiles(), function (array $files) {
-                return collect($files)->map(function (UploadedFile $file, $key) {
-                    return [
-                        'key' => $key,
-                        'name' => $file->getClientOriginalName(),
-                        'size' => $file->getSize(),
-                        'extension' => $file->getClientOriginalExtension(),
-                    ];
-                });
-            }),
+            'files' => optional($request->allFiles(), fn (array $files) => collect($files)->map(fn (UploadedFile $file, $key): array => [
+                'key' => $key,
+                'name' => $file->getClientOriginalName(),
+                'size' => $file->getSize(),
+                'extension' => $file->getClientOriginalExtension(),
+            ])),
             'body' => optional($request->getContent(), static function ($content) {
                 if (Str::isJson($content)) {
                     return json_decode($content, true, 512, JSON_THROW_ON_ERROR);

@@ -57,20 +57,18 @@ class Integration extends SettingsPage
                                     ->label('SSO Key')
                                     ->disabled()
                                     ->helperText('Use this Single Sign-On Key to sign JWT access tokens and access PERSCOM.io resources on the fly through the PERSCOM.io API.')
-                                    ->suffixAction(function () {
-                                        return Action::make('regenerate')
-                                            ->icon('heroicon-o-arrow-path')
-                                            ->successNotificationTitle('The SSO key has been successfully regenerated.')
-                                            ->action(function (Action $action) {
-                                                $settings = app(IntegrationSettings::class);
-                                                $settings->single_sign_on_key = Str::random(40);
-                                                $settings->save();
+                                    ->suffixAction(fn (): Action => Action::make('regenerate')
+                                        ->icon('heroicon-o-arrow-path')
+                                        ->successNotificationTitle('The SSO key has been successfully regenerated.')
+                                        ->action(function (Action $action): void {
+                                            $settings = app(IntegrationSettings::class);
+                                            $settings->single_sign_on_key = Str::random(40);
+                                            $settings->save();
 
-                                                $action->success();
+                                            $action->success();
 
-                                                $this->fillForm();
-                                            });
-                                    }),
+                                            $this->fillForm();
+                                        })),
                             ]),
                     ]),
             ]);

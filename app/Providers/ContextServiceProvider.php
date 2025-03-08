@@ -22,13 +22,9 @@ class ContextServiceProvider extends ServiceProvider
         Context::add('request_id', $requestId);
         Context::add('trace_id', $traceId);
 
-        FilamentView::registerRenderHook(PanelsRenderHook::HEAD_START, function () use ($requestId) {
-            return sprintf('<meta name="perscom_request_id" content="%s"/>', $requestId);
-        });
+        FilamentView::registerRenderHook(PanelsRenderHook::HEAD_START, fn (): string => sprintf('<meta name="perscom_request_id" content="%s"/>', $requestId));
 
-        FilamentView::registerRenderHook(PanelsRenderHook::HEAD_START, function () use ($traceId) {
-            return sprintf('<meta name="perscom_trace_id" content="%s"/>', $traceId);
-        });
+        FilamentView::registerRenderHook(PanelsRenderHook::HEAD_START, fn (): string => sprintf('<meta name="perscom_trace_id" content="%s"/>', $traceId));
 
         Http::globalRequestMiddleware(fn ($request) => $request->withHeader(
             'X-Perscom-Trace-Id', $traceId

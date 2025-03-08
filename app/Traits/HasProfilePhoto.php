@@ -17,7 +17,7 @@ trait HasProfilePhoto
 {
     public function updateProfilePhoto(UploadedFile $photo, $storagePath = 'profile-photos'): void
     {
-        tap($this->profile_photo, function ($previous) use ($photo, $storagePath) {
+        tap($this->profile_photo, function ($previous) use ($photo, $storagePath): void {
             $this->forceFill([
                 'profile_photo' => $photo->storePublicly(
                     $storagePath, ['disk' => $this->profilePhotoDisk()]
@@ -45,18 +45,14 @@ trait HasProfilePhoto
 
     public function profilePhotoUrl(): Attribute
     {
-        return Attribute::get(function (): string {
-            return $this->profile_photo
-                ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo)
-                : $this->defaultProfilePhotoUrl();
-        })->shouldCache();
+        return Attribute::get(fn (): string => $this->profile_photo
+            ? Storage::disk($this->profilePhotoDisk())->url($this->profile_photo)
+            : $this->defaultProfilePhotoUrl())->shouldCache();
     }
 
     protected function defaultProfilePhotoUrl(): string
     {
-        $name = trim(collect(explode(' ', $this->name))->map(function ($segment) {
-            return mb_substr($segment, 0, 1);
-        })->join(' '));
+        $name = trim(collect(explode(' ', $this->name))->map(fn ($segment): string => mb_substr((string) $segment, 0, 1))->join(' '));
 
         return 'https://ui-avatars.com/api/?name='.urlencode($name).'&color=2563eb&background=eff6ff';
     }

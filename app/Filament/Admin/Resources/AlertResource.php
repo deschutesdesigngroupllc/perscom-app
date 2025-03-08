@@ -50,16 +50,12 @@ class AlertResource extends Resource
                                     ->hiddenLabel()
                                     ->required()
                                     ->bulkToggleable()
-                                    ->descriptions(function () {
-                                        return collect(AlertChannel::cases())
-                                            ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getDescription()])
-                                            ->toArray();
-                                    })
-                                    ->options(function () {
-                                        return collect(AlertChannel::cases())
-                                            ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getLabel()])
-                                            ->toArray();
-                                    }),
+                                    ->descriptions(fn () => collect(AlertChannel::cases())
+                                        ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getDescription()])
+                                        ->toArray())
+                                    ->options(fn () => collect(AlertChannel::cases())
+                                        ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getLabel()])
+                                        ->toArray()),
                             ]),
                         Forms\Components\Tabs\Tab::make('Link')
                             ->icon('heroicon-o-link')

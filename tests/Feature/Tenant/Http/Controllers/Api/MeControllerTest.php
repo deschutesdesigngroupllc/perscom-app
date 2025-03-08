@@ -17,7 +17,7 @@ class MeControllerTest extends ApiTestCase
         $this->user = User::factory()->createQuietly();
     }
 
-    public function test_me_endpoint_can_be_reached()
+    public function test_me_endpoint_can_be_reached(): void
     {
         $this->withToken($this->apiKey([]))
             ->getJson(route('api.me.index', [

@@ -42,20 +42,20 @@ class CalendarWidget extends BaseCalendarWidget
     public static function query(CarbonInterface $calendarStart, CarbonInterface $calendarEnd): Builder
     {
         return Event::query()
-            ->where(function (Builder $query) use ($calendarStart, $calendarEnd) {
+            ->where(function (Builder $query) use ($calendarStart, $calendarEnd): void {
                 $query
                     ->whereBetween('starts', [$calendarStart, $calendarEnd])
                     ->orWhereBetween('ends', [$calendarStart, $calendarEnd])
-                    ->orWhere(function (Builder $query) use ($calendarStart, $calendarEnd) {
+                    ->orWhere(function (Builder $query) use ($calendarStart, $calendarEnd): void {
                         $query
                             ->whereDate('starts', '<=', $calendarStart)
                             ->whereDate('ends', '>=', $calendarEnd);
                     });
             })
-            ->orWhere(function (Builder $query) use ($calendarStart, $calendarEnd) {
-                $query->whereHas('schedule', function (Builder $query) use ($calendarStart, $calendarEnd) {
+            ->orWhere(function (Builder $query) use ($calendarStart, $calendarEnd): void {
+                $query->whereHas('schedule', function (Builder $query) use ($calendarStart, $calendarEnd): void {
                     $query->whereDate('start', '<=', $calendarEnd)
-                        ->orWhere(function (Builder $query) use ($calendarStart) {
+                        ->orWhere(function (Builder $query) use ($calendarStart): void {
                             $query->whereNotNull('until')
                                 ->whereDate('until', '>=', $calendarStart);
                         });
@@ -71,7 +71,7 @@ class CalendarWidget extends BaseCalendarWidget
     public function visitAction(): Action
     {
         return Action::make('visit')
-            ->action(function (CalendarWidget $livewire) {
+            ->action(function (CalendarWidget $livewire): void {
                 /** @var Event $record */
                 $record = $livewire->getEventRecord();
 
@@ -111,25 +111,21 @@ class CalendarWidget extends BaseCalendarWidget
         }
 
         return $this->events
-            ->filter(function (Event $event) {
-                return $event->repeats && filled($event->schedule);
-            })
-            ->flatMap(function (Event $event) use ($timezone, $calendarStart, $calendarEnd) {
-                return collect(ScheduleService::occurrenceBetween($event->schedule, $calendarStart, $calendarEnd))->map(function (Carbon $occurrence) use ($timezone, $event) {
-                    $start = $occurrence->setTimezone($timezone)->shiftTimezone('UTC');
-                    $end = $start->copy()->addHours($event->schedule->duration);
+            ->filter(fn (Event $event): bool => $event->repeats && filled($event->schedule))
+            ->flatMap(fn (Event $event) => collect(ScheduleService::occurrenceBetween($event->schedule, $calendarStart, $calendarEnd))->map(function (Carbon $occurrence) use ($timezone, $event): EventObject {
+                $start = $occurrence->setTimezone($timezone)->shiftTimezone('UTC');
+                $end = $start->copy()->addHours($event->schedule->duration);
 
-                    return EventObject::make()
-                        ->title($event->name)
-                        ->start($start)
-                        ->end($end)
-                        ->model(Event::class)
-                        ->key((string) $event->getKey())
-                        ->action('visit')
-                        ->allDay($event->all_day)
-                        ->backgroundColor($event->calendar->color);
-                });
-            })->toArray();
+                return EventObject::make()
+                    ->title($event->name)
+                    ->start($start)
+                    ->end($end)
+                    ->model(Event::class)
+                    ->key((string) $event->getKey())
+                    ->action('visit')
+                    ->allDay($event->all_day)
+                    ->backgroundColor($event->calendar->color);
+            }))->toArray();
     }
 
     /**
@@ -141,7 +137,7 @@ class CalendarWidget extends BaseCalendarWidget
             return [];
         }
 
-        return $this->events->reject->repeats->map(function (Event $event) use ($timezone) {
+        return $this->events->reject->repeats->map(function (Event $event) use ($timezone): EventObject {
             $start = $event->starts->setTimezone($timezone)->shiftTimezone('UTC');
             $end = $event->ends->setTimezone($timezone)->shiftTimezone('UTC');
 

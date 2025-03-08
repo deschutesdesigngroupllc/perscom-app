@@ -10,11 +10,11 @@ use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 
-Route::group(['middleware' => 'landing', CacheResponse::class], static function () {
+Route::group(['middleware' => 'landing', CacheResponse::class], static function (): void {
     Route::get('/', [HomeController::class, 'index'])
         ->name('landing.home');
 
-    Route::group(['prefix' => 'find-my-organization'], static function () {
+    Route::group(['prefix' => 'find-my-organization'], static function (): void {
         Route::get('/', [FindMyOrganizationController::class, 'index'])
             ->name('find-my-organization.index');
         Route::post('/', [FindMyOrganizationController::class, 'store'])
@@ -28,7 +28,7 @@ Route::group(['middleware' => 'landing', CacheResponse::class], static function 
     Route::get('privacy-policy', [PrivacyPolicyController::class, 'index'])
         ->name('privacy-policy.index');
 
-    Route::group(['prefix' => 'register'], static function () {
+    Route::group(['prefix' => 'register'], static function (): void {
         Route::get('/', [RegisterController::class, 'index'])
             ->name('register.index');
         Route::post('/', [RegisterController::class, 'store'])
@@ -43,7 +43,7 @@ Route::group(['middleware' => 'landing', CacheResponse::class], static function 
 Route::redirect('/slack', config('services.slack.invite_link'))
     ->name('slack');
 
-Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin', 'as' => 'admin.'], function () {
+Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin', 'as' => 'admin.'], function (): void {
     Route::get('health', HealthCheckResultsController::class)
         ->name('health');
 });

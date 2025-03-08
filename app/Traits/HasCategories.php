@@ -30,7 +30,7 @@ trait HasCategories
             ->withTimestamps();
 
         if (static::$categoriesAccessor) {
-            $relationship = $relationship->as(static::$categoriesAccessor);
+            return $relationship->as(static::$categoriesAccessor);
         }
 
         return $relationship;

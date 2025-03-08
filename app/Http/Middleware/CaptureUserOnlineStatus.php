@@ -15,7 +15,7 @@ class CaptureUserOnlineStatus
     public function handle(Request $request, Closure $next)
     {
         if (tenancy()->initialized) {
-            optional(Auth::guard('web')->user(), function (User $user) {
+            optional(Auth::guard('web')->user(), function (User $user): void {
                 Cache::tags('users_online')->put("user_online_{$user->getAuthIdentifier()}", true, now()->addMinutes(2));
 
                 $user->timestamps = false;

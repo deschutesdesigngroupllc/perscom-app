@@ -43,15 +43,15 @@ class PassportTokenResource extends BaseResource
                             ->required()
                             ->maxLength(255),
                         Forms\Components\Select::make('scopes')
-                            ->helperText(fn ($operation) => match ($operation) {
+                            ->helperText(fn ($operation): string => match ($operation) {
                                 'edit' => 'Please create a new API key to change the scopes.',
                                 default => 'The scopes that the API key will have access to.'
                             })
                             ->multiple()
                             ->live()
-                            ->disabled(fn ($operation) => $operation !== 'create')
+                            ->disabled(fn ($operation): bool => $operation !== 'create')
                             ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                            ->hidden(fn (Forms\Get $get) => $get('all_scopes')),
+                            ->hidden(fn (Forms\Get $get): mixed => $get('all_scopes')),
                         Forms\Components\Checkbox::make('all_scopes')
                             ->visibleOn('create')
                             ->default(true)

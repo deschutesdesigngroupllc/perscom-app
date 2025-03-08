@@ -39,38 +39,36 @@ class SendUpcomingEventNotifications implements ShouldQueue
             return;
         }
 
-        Tenant::findOrFail($this->tenantKey)->run(function () {
+        Tenant::findOrFail($this->tenantKey)->run(function (): void {
             // Find all events where they are repeating
-            Event::query()->with('schedule')->where('repeats', true)->chunk(100, function (Collection $events) {
+            Event::query()->with('schedule')->where('repeats', true)->chunk(100, function (Collection $events): void {
                 $events
                     // Filter events that we can't send notifications for
-                    ->filter(fn (Event $event) => SendUpcomingEventNotification::canSendNotification($event))
+                    ->filter(fn (Event $event): bool => SendUpcomingEventNotification::canSendNotification($event))
 
                     // Group by the intervals, so we can iterate over one interval at a time
                     ->groupBy('notifications_interval')
 
                     // Iterate over the collection of events for each interval
-                    ->each(function (Collection $events, $interval) {
-                        return $events
-                            // Iterate over all the events for a given interval
-                            ->each(function (Event $event) use ($interval) {
-                                $start = $event->schedule->next_occurrence ?? $event->starts ?? null;
+                    ->each(fn (Collection $events, $interval) => $events
+                        // Iterate over all the events for a given interval
+                        ->each(function (Event $event) use ($interval): void {
+                            $start = $event->schedule->next_occurrence ?? $event->starts ?? null;
 
-                                if (blank($start)) {
-                                    return;
-                                }
+                            if (blank($start)) {
+                                return;
+                            }
 
-                                // Subtract the interval to determine when the notification should be sent so that it
-                                // hits the users at the correct interval time
-                                $sendAt = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
+                            // Subtract the interval to determine when the notification should be sent so that it
+                            // hits the users at the correct interval time
+                            $sendAt = $start->copy()->subtract(new DateInterval(Str::upper($interval)));
 
-                                // If the time to send the notification is within the next 24 hours, sent it. We check
-                                // 24 hours because the schedule that runs this job only happens once a day.
-                                if ($sendAt->isBetween(now(), now()->addHours(24))) {
-                                    SendUpcomingEventNotification::handle($event, NotificationInterval::from($interval), $sendAt);
-                                }
-                            });
-                    });
+                            // If the time to send the notification is within the next 24 hours, sent it. We check
+                            // 24 hours because the schedule that runs this job only happens once a day.
+                            if ($sendAt->isBetween(now(), now()->addHours(24))) {
+                                SendUpcomingEventNotification::handle($event, NotificationInterval::from($interval), $sendAt);
+                            }
+                        }));
             });
         });
     }

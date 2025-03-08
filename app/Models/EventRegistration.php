@@ -55,7 +55,7 @@ class EventRegistration extends Pivot
     {
         parent::boot();
 
-        static::creating(function (EventRegistration $eventRegistration) {
+        static::creating(function (EventRegistration $eventRegistration): void {
             throw_if(! $eventRegistration->event->registration_enabled,
                 Exception::class,
                 "Registrations for {$eventRegistration->event->name} are disabled.");
@@ -70,7 +70,7 @@ class EventRegistration extends Pivot
 
     public function scopeFuture(Builder $query): void
     {
-        $query->whereRelation('event', function (Builder $query) {
+        $query->whereRelation('event', function (Builder $query): void {
             /** @var static $query */
             $query->future();
         });

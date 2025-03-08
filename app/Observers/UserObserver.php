@@ -31,7 +31,7 @@ class UserObserver
         $user->assignRole($permissionSettings->default_roles);
         $user->givePermissionTo($permissionSettings->default_permissions);
 
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_CREATED->value])->each(function (Webhook $webhook) use ($user) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_CREATED->value])->each(function (Webhook $webhook) use ($user): void {
             WebhookService::dispatch($webhook, WebhookEvent::USER_CREATED->value, $user);
         });
 
@@ -82,14 +82,14 @@ class UserObserver
             Notification::send($user, new PasswordChanged);
         }
 
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_UPDATED->value])->each(function (Webhook $webhook) use ($user) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_UPDATED->value])->each(function (Webhook $webhook) use ($user): void {
             WebhookService::dispatch($webhook, WebhookEvent::USER_UPDATED->value, $user);
         });
     }
 
     public function deleted(User $user): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_DELETED->value])->each(function (Webhook $webhook) use ($user) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::USER_DELETED->value])->each(function (Webhook $webhook) use ($user): void {
             WebhookService::dispatch($webhook, WebhookEvent::USER_DELETED->value, $user);
         });
     }

@@ -44,7 +44,7 @@ class AttachmentTest extends ApiResourceTestCase
     public function factory(): Factory
     {
         return Attachment::factory()
-            ->afterMaking(function (Attachment $attachment) {
+            ->afterMaking(function (Attachment $attachment): void {
                 $attachment->model()->associate(ServiceRecord::factory()->create());
             });
     }

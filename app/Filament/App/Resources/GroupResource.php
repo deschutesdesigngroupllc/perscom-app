@@ -87,7 +87,7 @@ class GroupResource extends BaseResource
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\Livewire::make(RelationManagers\UnitsRelationManager::class, fn (?Group $record) => [
+                                Forms\Components\Livewire::make(RelationManagers\UnitsRelationManager::class, fn (?Group $record): array => [
                                     'ownerRecord' => $record,
                                     'pageClass' => Pages\EditGroup::class,
                                 ])->visibleOn('edit'),
@@ -120,7 +120,7 @@ class GroupResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->recordClasses(fn (?Group $record) => match ($record->hidden) {
+            ->recordClasses(fn (?Group $record): ?string => match ($record->hidden) {
                 true => '!border-s-2 !border-s-red-600',
                 default => null,
             })

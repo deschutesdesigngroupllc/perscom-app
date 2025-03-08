@@ -44,7 +44,7 @@ class ImageTest extends ApiResourceTestCase
     public function factory(): Factory
     {
         return Image::factory()
-            ->afterMaking(function (Image $image) {
+            ->afterMaking(function (Image $image): void {
                 $image->model()->associate(Award::factory()->create());
             });
     }

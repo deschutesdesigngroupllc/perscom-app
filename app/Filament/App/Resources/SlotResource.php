@@ -56,13 +56,13 @@ class SlotResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => PositionResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => PositionResource::form($form)),
                                 Forms\Components\Select::make('specialty_id')
                                     ->helperText('If selected, a user will be assigned the specialty when an assignment record is created for the slot.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => SpecialtyResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => SpecialtyResource::form($form)),
                             ]),
                         Forms\Components\Tabs\Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')

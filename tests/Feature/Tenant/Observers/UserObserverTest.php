@@ -24,7 +24,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class UserObserverTest extends TenantTestCase
 {
-    public function test_user_assigned_appropriate_permissions()
+    public function test_user_assigned_appropriate_permissions(): void
     {
         $role = Role::factory()->create();
         $permission = Permission::factory()->create();
@@ -43,7 +43,7 @@ class UserObserverTest extends TenantTestCase
         $this->assertEquals($user->permissions->pluck('name')->toArray(), $settings->default_permissions);
     }
 
-    public function test_user_notes_updated_date_set()
+    public function test_user_notes_updated_date_set(): void
     {
         $user = User::factory()->create();
 
@@ -52,7 +52,7 @@ class UserObserverTest extends TenantTestCase
         $this->assertEqualsWithDelta(now(), $user->notes_updated_at, 3);
     }
 
-    public function test_user_password_changed_notification_sent()
+    public function test_user_password_changed_notification_sent(): void
     {
         Notification::fake();
 
@@ -62,7 +62,7 @@ class UserObserverTest extends TenantTestCase
             'password' => Str::password(),
         ]);
 
-        Notification::assertSentTo($user, PasswordChanged::class, function (PasswordChanged $notification, $channels) use ($user) {
+        Notification::assertSentTo($user, PasswordChanged::class, function (PasswordChanged $notification, $channels) use ($user): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($user);
@@ -72,7 +72,7 @@ class UserObserverTest extends TenantTestCase
         });
     }
 
-    public function test_user_approval_required_notification_sent()
+    public function test_user_approval_required_notification_sent(): void
     {
         Notification::fake();
 
@@ -82,7 +82,7 @@ class UserObserverTest extends TenantTestCase
 
         $user = User::factory()->create();
 
-        Notification::assertSentTo($user, ApprovalRequired::class, function (ApprovalRequired $notification, $channels) use ($user) {
+        Notification::assertSentTo($user, ApprovalRequired::class, function (ApprovalRequired $notification, $channels) use ($user): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($user);
@@ -92,7 +92,7 @@ class UserObserverTest extends TenantTestCase
         });
     }
 
-    public function test_admin_approval_required_notification_sent()
+    public function test_admin_approval_required_notification_sent(): void
     {
         Notification::fake();
 
@@ -105,7 +105,7 @@ class UserObserverTest extends TenantTestCase
 
         User::factory()->create();
 
-        Notification::assertSentTo($user, AdminApprovalRequired::class, function (AdminApprovalRequired $notification, $channels) use ($user) {
+        Notification::assertSentTo($user, AdminApprovalRequired::class, function (AdminApprovalRequired $notification, $channels) use ($user): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($user);
@@ -115,7 +115,7 @@ class UserObserverTest extends TenantTestCase
         });
     }
 
-    public function test_account_approved_notification_sent()
+    public function test_account_approved_notification_sent(): void
     {
         Notification::fake();
 
@@ -128,7 +128,7 @@ class UserObserverTest extends TenantTestCase
             'approved' => true,
         ]);
 
-        Notification::assertSentTo($user, AccountApproved::class, function (AccountApproved $notification, $channels) use ($user) {
+        Notification::assertSentTo($user, AccountApproved::class, function (AccountApproved $notification, $channels) use ($user): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($user);
@@ -138,7 +138,7 @@ class UserObserverTest extends TenantTestCase
         });
     }
 
-    public function test_create_user_webhook_sent()
+    public function test_create_user_webhook_sent(): void
     {
         Queue::fake();
 
@@ -151,7 +151,7 @@ class UserObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_user_webhook_sent()
+    public function test_update_user_webhook_sent(): void
     {
         Queue::fake();
 
@@ -167,7 +167,7 @@ class UserObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_user_webhook_sent()
+    public function test_delete_user_webhook_sent(): void
     {
         Queue::fake();
 

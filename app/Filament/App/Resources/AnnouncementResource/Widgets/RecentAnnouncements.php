@@ -33,7 +33,7 @@ class RecentAnnouncements extends BaseWidget
             ->columns([
                 Tables\Columns\Layout\Stack::make([
                     Tables\Columns\TextColumn::make('title')
-                        ->color(fn (?Announcement $record) => Color::hex($record->color))
+                        ->color(fn (?Announcement $record): array => Color::hex($record->color))
                         ->weight(FontWeight::Bold),
                     Tables\Columns\TextColumn::make('content')
                         ->html()
@@ -50,7 +50,7 @@ class RecentAnnouncements extends BaseWidget
                     ->infolist([
                         TextEntry::make('title')
                             ->hiddenLabel()
-                            ->color(fn (?Announcement $record) => Color::hex($record->color))
+                            ->color(fn (?Announcement $record): array => Color::hex($record->color))
                             ->weight(FontWeight::Bold),
                         TextEntry::make('content')
                             ->hiddenLabel()

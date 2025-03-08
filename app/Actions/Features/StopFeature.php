@@ -33,9 +33,7 @@ class StopFeature
             return false;
         }
 
-        return rescue(function () use ($subscription, $price) {
-            return $subscription
-                ->removePrice($price);
-        }, false);
+        return rescue(fn () => $subscription
+            ->removePrice($price), false);
     }
 }

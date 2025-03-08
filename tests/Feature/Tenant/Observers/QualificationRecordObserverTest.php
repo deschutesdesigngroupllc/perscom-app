@@ -16,13 +16,13 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class QualificationRecordObserverTest extends TenantTestCase
 {
-    public function test_create_qualification_record_notification_sent()
+    public function test_create_qualification_record_notification_sent(): void
     {
         Notification::fake();
 
         $qualification = QualificationRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewQualificationRecord::class, function (NewQualificationRecord $notification, $channels) use ($qualification) {
+        Notification::assertSentTo($user, NewQualificationRecord::class, function (NewQualificationRecord $notification, $channels) use ($qualification): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($qualification->user);
@@ -32,7 +32,7 @@ class QualificationRecordObserverTest extends TenantTestCase
         });
     }
 
-    public function test_create_qualification_record_webhook_sent()
+    public function test_create_qualification_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -45,7 +45,7 @@ class QualificationRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_qualification_record_webhook_sent()
+    public function test_update_qualification_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -61,7 +61,7 @@ class QualificationRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_qualification_record_webhook_sent()
+    public function test_delete_qualification_record_webhook_sent(): void
     {
         Queue::fake();
 

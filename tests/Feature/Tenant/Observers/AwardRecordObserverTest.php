@@ -16,13 +16,13 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class AwardRecordObserverTest extends TenantTestCase
 {
-    public function test_create_award_record_notification_sent()
+    public function test_create_award_record_notification_sent(): void
     {
         Notification::fake();
 
         $award = AwardRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewAwardRecord::class, function (NewAwardRecord $notification, $channels) use ($award) {
+        Notification::assertSentTo($user, NewAwardRecord::class, function (NewAwardRecord $notification, $channels) use ($award): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($award->user);
@@ -32,7 +32,7 @@ class AwardRecordObserverTest extends TenantTestCase
         });
     }
 
-    public function test_create_award_record_webhook_sent()
+    public function test_create_award_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -45,7 +45,7 @@ class AwardRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_award_record_webhook_sent()
+    public function test_update_award_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -61,7 +61,7 @@ class AwardRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_award_record_webhook_sent()
+    public function test_delete_award_record_webhook_sent(): void
     {
         Queue::fake();
 

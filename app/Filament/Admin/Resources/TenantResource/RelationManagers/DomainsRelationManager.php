@@ -45,11 +45,11 @@ class DomainsRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('type')
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
+                    ->color(fn ($state): string => match ($state) {
                         'Custom Domain' => 'success',
                         default => 'info'
                     })
-                    ->getStateUsing(fn (?Domain $record) => match ($record->is_custom_subdomain) {
+                    ->getStateUsing(fn (?Domain $record): string => match ($record->is_custom_subdomain) {
                         true => 'Custom Domain',
                         false => 'Fallback Domain'
                     }),

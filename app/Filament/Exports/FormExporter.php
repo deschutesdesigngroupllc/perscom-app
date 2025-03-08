@@ -34,7 +34,7 @@ class FormExporter extends Exporter
     {
         $body = 'Your form export has completed and '.number_format($export->successful_rows).' '.str('row')->plural($export->successful_rows).' exported.';
 
-        if ($failedRowsCount = $export->getFailedRowsCount()) {
+        if (($failedRowsCount = $export->getFailedRowsCount()) !== 0) {
             $body .= ' '.number_format($failedRowsCount).' '.str('row')->plural($failedRowsCount).' failed to export.';
         }
 

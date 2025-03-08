@@ -16,13 +16,13 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class AssignmentRecordObserverTest extends TenantTestCase
 {
-    public function test_create_assignment_record_notification_sent()
+    public function test_create_assignment_record_notification_sent(): void
     {
         Notification::fake();
 
         $assignment = AssignmentRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewAssignmentRecord::class, function (NewAssignmentRecord $notification, $channels) use ($assignment) {
+        Notification::assertSentTo($user, NewAssignmentRecord::class, function (NewAssignmentRecord $notification, $channels) use ($assignment): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($assignment->user);
@@ -32,7 +32,7 @@ class AssignmentRecordObserverTest extends TenantTestCase
         });
     }
 
-    public function test_create_assignment_record_webhook_sent()
+    public function test_create_assignment_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -45,7 +45,7 @@ class AssignmentRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_assignment_record_webhook_sent()
+    public function test_update_assignment_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -61,7 +61,7 @@ class AssignmentRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_assignment_record_webhook_sent()
+    public function test_delete_assignment_record_webhook_sent(): void
     {
         Queue::fake();
 

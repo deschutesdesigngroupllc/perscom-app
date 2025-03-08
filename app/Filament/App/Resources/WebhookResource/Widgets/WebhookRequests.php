@@ -43,11 +43,11 @@ class WebhookRequests extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Webhook requests',
-                    'data' => $data->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $data->map(fn (TrendValue $value): mixed => $value->aggregate),
                     'fill' => true,
                 ],
             ],
-            'labels' => $data->map(fn (TrendValue $value) => $value->date),
+            'labels' => $data->map(fn (TrendValue $value): string => $value->date),
         ];
     }
 

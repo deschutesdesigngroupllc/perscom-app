@@ -27,7 +27,7 @@ trait HasSchedule
 
     protected static function bootHasSchedule(): void
     {
-        static::deleted(function ($model) {
+        static::deleted(function ($model): void {
             if (filled($model->schedule)) {
                 $model->schedule()->delete();
             }

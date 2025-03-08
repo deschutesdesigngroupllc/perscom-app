@@ -19,7 +19,7 @@ class SendUpcomingEventNotifications
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant) => new SendUpcomingEventNotificationsJob($tenant->getKey()))
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): SendUpcomingEventNotificationsJob => new SendUpcomingEventNotificationsJob($tenant->getKey()))
         )->name(
             name: 'Upcoming Event Notifications'
         )->onQueue(

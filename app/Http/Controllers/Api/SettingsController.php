@@ -25,11 +25,9 @@ class SettingsController extends Controller
     public function afterIndex(Request $request, $entities)
     {
         /** @var Collection $settings */
-        $settings = $entities->getCollection()->transform(function (Settings $setting) {
-            return $setting->forceFill([
-                'payload' => json_decode($setting->payload),
-            ]);
-        });
+        $settings = $entities->getCollection()->transform(fn (Settings $setting) => $setting->forceFill([
+            'payload' => json_decode($setting->payload),
+        ]));
 
         $paginator = new LengthAwarePaginator($settings, $settings->count(), $this->paginator->resolvePaginationLimit($request));
 

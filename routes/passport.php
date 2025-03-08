@@ -14,7 +14,7 @@ Route::group([
         'subscribed',
         'approved',
     ],
-], function () {
+], function (): void {
     Route::post('/token', [
         'uses' => 'AccessTokenController@issueToken',
         'as' => 'token',
@@ -29,7 +29,7 @@ Route::group([
 
     $guard = config('passport.guard', null);
 
-    Route::middleware(['web', $guard ? 'auth:'.$guard : 'auth'])->group(function () {
+    Route::middleware(['web', $guard ? 'auth:'.$guard : 'auth'])->group(function (): void {
         Route::post('/token/refresh', [
             'uses' => 'TransientTokenController@refresh',
             'as' => 'token.refresh',

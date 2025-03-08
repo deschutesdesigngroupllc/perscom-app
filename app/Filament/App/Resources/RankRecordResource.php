@@ -50,21 +50,21 @@ class RankRecordResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 Forms\Components\Select::make('user_id')
-                                    ->label(fn ($operation) => $operation === 'create' ? 'User(s)' : 'User')
-                                    ->multiple(fn ($operation) => $operation === 'create')
+                                    ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
+                                    ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
                                     ->helperText('The user this record is assigned to.')
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
                                 Forms\Components\Select::make('rank_id')
                                     ->required()
                                     ->helperText('The rank for this record.')
                                     ->preload()
                                     ->relationship(name: 'rank', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => RankResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => RankResource::form($form)),
                                 Forms\Components\Select::make('type')
                                     ->helperText('The type of rank record.')
                                     ->columnSpanFull()
@@ -84,7 +84,7 @@ class RankRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => DocumentResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => DocumentResource::form($form)),
                                 Forms\Components\Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
@@ -92,12 +92,12 @@ class RankRecordResource extends BaseResource
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form) => UserResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
                             ]),
                         Forms\Components\Tabs\Tab::make('Notifications')
-                            ->visible(fn ($operation) => $operation === 'create')
+                            ->visible(fn ($operation): bool => $operation === 'create')
                             ->icon('heroicon-o-bell')
-                            ->schema(function () {
+                            ->schema(function (): array {
                                 /** @var NotificationSettings $settings */
                                 $settings = app(NotificationSettings::class);
 
@@ -125,7 +125,7 @@ class RankRecordResource extends BaseResource
                                 Infolists\Components\TextEntry::make('user.name'),
                                 Infolists\Components\TextEntry::make('rank.name'),
                                 Infolists\Components\ImageEntry::make('rank.image.path')
-                                    ->visible(fn (?RankRecord $record) => isset($record->rank->image))
+                                    ->visible(fn (?RankRecord $record): bool => isset($record->rank->image))
                                     ->height(32)
                                     ->hiddenLabel(),
                                 Infolists\Components\TextEntry::make('type')
@@ -143,11 +143,11 @@ class RankRecordResource extends BaseResource
                                 Infolists\Components\TextEntry::make('updated_at'),
                             ]),
                         Infolists\Components\Tabs\Tab::make('Document')
-                            ->visible(fn (?RankRecord $record) => isset($record->document))
+                            ->visible(fn (?RankRecord $record): bool => $record->document !== null)
                             ->label(fn (?RankRecord $record) => $record->document->name ?? 'Document')
                             ->icon('heroicon-o-document')
                             ->schema([
-                                Infolists\Components\Livewire::make(ViewDocument::class, fn (?RankRecord $record) => [
+                                Infolists\Components\Livewire::make(ViewDocument::class, fn (?RankRecord $record): array => [
                                     'document' => $record->document,
                                     'user' => $record->user,
                                     'model' => $record,
@@ -178,7 +178,7 @@ class RankRecordResource extends BaseResource
                     ->searchable()
                     ->action(
                         Tables\Actions\Action::make('select')
-                            ->visible(fn (?RankRecord $record) => isset($record->document))
+                            ->visible(fn (?RankRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
                             ->modalHeading(fn (?RankRecord $record) => $record->document->name ?? 'Document')

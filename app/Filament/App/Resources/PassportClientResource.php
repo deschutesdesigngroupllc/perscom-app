@@ -49,7 +49,7 @@ class PassportClientResource extends BaseResource
                                     ->maxLength(255)
                                     ->required(),
                                 Forms\Components\Radio::make('type')
-                                    ->disabled(fn ($operation) => $operation !== 'create')
+                                    ->disabled(fn ($operation): bool => $operation !== 'create')
                                     ->live()
                                     ->options(PassportClientType::class)
                                     ->required(),
@@ -58,8 +58,8 @@ class PassportClientResource extends BaseResource
                                     ->label('Redirect URL')
                                     ->url()
                                     ->helperText('The URL to redirect to after authorization.')
-                                    ->required(fn (Forms\Get $get) => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE->value, PassportClientType::IMPLICIT->value]))
-                                    ->visible(fn (Forms\Get $get) => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE->value, PassportClientType::IMPLICIT->value])),
+                                    ->required(fn (Forms\Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE->value, PassportClientType::IMPLICIT->value]))
+                                    ->visible(fn (Forms\Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE->value, PassportClientType::IMPLICIT->value])),
                                 Forms\Components\Textarea::make('description')
                                     ->maxLength(65535)
                                     ->helperText('An optional description of the client'),
@@ -69,7 +69,7 @@ class PassportClientResource extends BaseResource
                                     ->multiple()
                                     ->live()
                                     ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                                    ->hidden(fn (Forms\Get $get) => $get('all_scopes')),
+                                    ->hidden(fn (Forms\Get $get): mixed => $get('all_scopes')),
                                 Forms\Components\Checkbox::make('all_scopes')
                                     ->default(true)
                                     ->live()
@@ -103,18 +103,18 @@ class PassportClientResource extends BaseResource
                             TextEntry::make('type')
                                 ->badge(),
                             TextEntry::make('redirect')
-                                ->visible(fn (PassportClient $record) => in_array($record->type, [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
+                                ->visible(fn (PassportClient $record): bool => in_array($record->type, [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
                                 ->label('Redirect URL')
                                 ->url(fn ($state) => $state)
                                 ->copyable(),
                             TextEntry::make('revoked')
                                 ->label('Status')
                                 ->badge()
-                                ->color(fn ($state) => match ($state) {
+                                ->color(fn ($state): string => match ($state) {
                                     '1', 1, true => 'danger',
                                     default => 'success'
                                 })
-                                ->formatStateUsing(fn ($state) => match ($state) {
+                                ->formatStateUsing(fn ($state): string => match ($state) {
                                     '1', 1, true => 'Revoked',
                                     default => 'In Use'
                                 }),
@@ -132,7 +132,7 @@ class PassportClientResource extends BaseResource
                                 ->hiddenLabel()
                                 ->keyLabel('Endpoint')
                                 ->valueLabel('URL')
-                                ->getStateUsing(fn () => [
+                                ->getStateUsing(fn (): array => [
                                     'Discovery Endpoint' => route('oidc.discovery', [
                                         'tenant' => optional(tenant()->domain)->domain,
                                     ]),

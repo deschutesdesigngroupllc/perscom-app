@@ -40,17 +40,13 @@ class MessageResource extends BaseResource
                 ->searchable()
                 ->hiddenLabel()
                 ->bulkToggleable()
-                ->descriptions(function () {
-                    return collect(NotificationChannel::cases())
-                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
-                        ->toArray();
-                })
-                ->options(function () {
-                    return collect(NotificationChannel::cases())
-                        ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
-                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
-                        ->toArray();
-                }),
+                ->descriptions(fn () => collect(NotificationChannel::cases())
+                    ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
+                    ->toArray())
+                ->options(fn () => collect(NotificationChannel::cases())
+                    ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
+                    ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
+                    ->toArray()),
         ];
 
         $details = [
@@ -71,20 +67,18 @@ class MessageResource extends BaseResource
 
                     return $settings->timezone ?? config('app.timezone');
                 }))
-                ->minDate(function ($component) {
-                    return now()
-                        ->subDay()
-                        ->shiftTimezone($component->getTimezone())
-                        ->setTimezone(config('app.timezone'));
-                })
+                ->minDate(fn ($component) => now()
+                    ->subDay()
+                    ->shiftTimezone($component->getTimezone())
+                    ->setTimezone(config('app.timezone')))
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
-                ->hidden(fn (Forms\Get $get) => $get('repeats')),
+                ->hidden(fn (Forms\Get $get): mixed => $get('repeats')),
             Forms\Components\Toggle::make('repeats')
                 ->live()
                 ->helperText('Enable to send the message on a recurring schedule.'),
             Schedule::make(shiftScheduleTimezone: true)
-                ->visible(fn (Forms\Get $get) => $get('repeats')),
+                ->visible(fn (Forms\Get $get): mixed => $get('repeats')),
         ];
 
         if ($form->getOperation() === 'create') {
@@ -123,7 +117,7 @@ class MessageResource extends BaseResource
                             ->icon('heroicon-o-information-circle')
                             ->schema($details),
                         Forms\Components\Tabs\Tab::make('Schedule')
-                            ->visible(fn (Forms\Get $get) => $get('repeats'))
+                            ->visible(fn (Forms\Get $get): mixed => $get('repeats'))
                             ->icon('heroicon-o-arrow-path')
                             ->schema($schedule),
                     ]),
@@ -139,7 +133,7 @@ class MessageResource extends BaseResource
                     ->html()
                     ->wrap()
                     ->sortable()
-                    ->icon(fn (Message $record) => $record->repeats ? 'heroicon-o-arrow-path' : null),
+                    ->icon(fn (Message $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null),
                 Tables\Columns\TextColumn::make('channels')
                     ->badge()
                     ->color('gray'),

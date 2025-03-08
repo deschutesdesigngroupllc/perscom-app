@@ -66,24 +66,24 @@ class Requests extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'HTTP requests',
-                    'data' => $httpData->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $httpData->map(fn (TrendValue $value): mixed => $value->aggregate),
                     'fill' => true,
                     'borderColor' => '#2563eb',
                 ],
                 [
                     'label' => 'API requests',
-                    'data' => $apiData->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $apiData->map(fn (TrendValue $value): mixed => $value->aggregate),
                     'fill' => false,
                     'borderColor' => '#166534',
                 ],
                 [
                     'label' => 'CLI requests',
-                    'data' => $cliData->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $cliData->map(fn (TrendValue $value): mixed => $value->aggregate),
                     'fill' => false,
                     'borderColor' => '#991b1b',
                 ],
             ],
-            'labels' => $httpData->map(fn (TrendValue $value) => $value->date),
+            'labels' => $httpData->map(fn (TrendValue $value): string => $value->date),
         ];
     }
 

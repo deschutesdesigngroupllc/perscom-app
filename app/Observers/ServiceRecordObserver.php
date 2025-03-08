@@ -17,21 +17,21 @@ class ServiceRecordObserver
     {
         Notification::send($service->user, new NewServiceRecord($service));
 
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::SERVICE_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($service) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::SERVICE_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($service): void {
             WebhookService::dispatch($webhook, WebhookEvent::SERVICE_RECORD_CREATED->value, $service);
         });
     }
 
     public function updated(ServiceRecord $service): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::SERVICE_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($service) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::SERVICE_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($service): void {
             WebhookService::dispatch($webhook, WebhookEvent::SERVICE_RECORD_UPDATED->value, $service);
         });
     }
 
     public function deleted(ServiceRecord $service): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::SERVICE_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($service) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::SERVICE_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($service): void {
             WebhookService::dispatch($webhook, WebhookEvent::SERVICE_RECORD_DELETED->value, $service);
         });
     }

@@ -33,27 +33,25 @@ class DiscordService
      */
     public static function getGuilds(): mixed
     {
-        return with(new self, function (DiscordService $service) {
-            return $service->withRateLimitHandler(function (DiscordService $service) {
-                $response = $service
-                    ->client()
-                    ->get('users/@me/guilds');
+        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler(function (DiscordService $service) {
+            $response = $service
+                ->client()
+                ->get('users/@me/guilds');
 
-                $data = $response->json();
+            $data = $response->json();
 
-                if ($response->getStatusCode() === 429) {
-                    throw DiscordRateLimitException::withData($data);
-                }
+            if ($response->getStatusCode() === 429) {
+                throw DiscordRateLimitException::withData($data);
+            }
 
-                if (! $response->successful()) {
-                    Log::debug('Discord get guilds error', $data);
+            if (! $response->successful()) {
+                Log::debug('Discord get guilds error', $data);
 
-                    return null;
-                }
+                return null;
+            }
 
-                return $data;
-            });
-        });
+            return $data;
+        }));
     }
 
     /**
@@ -62,27 +60,25 @@ class DiscordService
      */
     public static function getChannels(string|int $guildId): mixed
     {
-        return with(new self, function (DiscordService $service) use ($guildId) {
-            return $service->withRateLimitHandler(function (DiscordService $service) use ($guildId) {
-                $response = $service
-                    ->client()
-                    ->get("guilds/$guildId/channels");
+        return with(new self, fn (DiscordService $service): mixed => $service->withRateLimitHandler(function (DiscordService $service) use ($guildId) {
+            $response = $service
+                ->client()
+                ->get("guilds/$guildId/channels");
 
-                $data = $response->json();
+            $data = $response->json();
 
-                if ($response->getStatusCode() === 429) {
-                    throw DiscordRateLimitException::withData($data);
-                }
+            if ($response->getStatusCode() === 429) {
+                throw DiscordRateLimitException::withData($data);
+            }
 
-                if (! $response->successful()) {
-                    Log::debug('Discord get channels error', $data);
+            if (! $response->successful()) {
+                Log::debug('Discord get channels error', $data);
 
-                    return null;
-                }
+                return null;
+            }
 
-                return $data;
-            });
-        });
+            return $data;
+        }));
     }
 
     public function client(): PendingRequest

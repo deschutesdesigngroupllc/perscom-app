@@ -35,7 +35,7 @@ class SentryContext
                 $scope->setTag('request.url', $request->url());
             });
 
-            Sentry\configureScope(function (Scope $scope) {
+            Sentry\configureScope(function (Scope $scope): void {
                 $requestId = Context::get('request_id');
                 $traceId = Context::get('trace_id');
 

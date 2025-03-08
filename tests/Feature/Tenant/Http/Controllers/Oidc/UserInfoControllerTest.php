@@ -23,7 +23,7 @@ class UserInfoControllerTest extends TenantTestCase
         $this->user = User::factory()->createQuietly();
     }
 
-    public function test_userinfo_endpoint_can_be_reached()
+    public function test_userinfo_endpoint_can_be_reached(): void
     {
         $this->withoutApiMiddleware();
 
@@ -46,7 +46,7 @@ class UserInfoControllerTest extends TenantTestCase
             ]);
     }
 
-    public function test_cannot_reach_userinfo_endpoint_without_openid_scope()
+    public function test_cannot_reach_userinfo_endpoint_without_openid_scope(): void
     {
         $this->withoutApiMiddleware();
 
@@ -55,7 +55,7 @@ class UserInfoControllerTest extends TenantTestCase
             ->assertForbidden();
     }
 
-    public function test_userinfo_endpoint_does_not_return_email_scope()
+    public function test_userinfo_endpoint_does_not_return_email_scope(): void
     {
         $this->withoutApiMiddleware();
 
@@ -80,7 +80,7 @@ class UserInfoControllerTest extends TenantTestCase
             ]);
     }
 
-    public function test_userinfo_endpoint_does_not_return_profile_scope()
+    public function test_userinfo_endpoint_does_not_return_profile_scope(): void
     {
         $this->withoutApiMiddleware();
 
@@ -105,7 +105,7 @@ class UserInfoControllerTest extends TenantTestCase
             ]);
     }
 
-    public function test_userinfo_endpoint_only_returns_id_for_openid_scope()
+    public function test_userinfo_endpoint_only_returns_id_for_openid_scope(): void
     {
         $this->withoutApiMiddleware();
 

@@ -99,7 +99,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         $query
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
-                'units.users' => function ($query) {
+                'units.users' => function ($query): void {
                     /** @var User $query */
                     $query->orderForRoster();
                 },
@@ -111,7 +111,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
         $query
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
-                'units.slots.users' => function ($query) {
+                'units.slots.users' => function ($query): void {
                     /** @var User $query */
                     $query->orderForRoster();
                 },

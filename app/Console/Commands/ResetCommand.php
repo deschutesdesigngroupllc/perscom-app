@@ -82,7 +82,7 @@ class ResetCommand extends Command implements Isolatable
             return static::FAILURE;
         }
 
-        tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant) {
+        tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
             if (filled($tenant->tenancy_db_name) && $tenant->database()->manager()->databaseExists($tenant->tenancy_db_name)) {
                 $tenant->database()->manager()->deleteDatabase($tenant);
             }

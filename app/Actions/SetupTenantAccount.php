@@ -37,7 +37,7 @@ class SetupTenantAccount
     {
         $this->tenant = $tenant;
 
-        $this->tenant->run(function () {
+        $this->tenant->run(function (): void {
             $this->when($this->shouldSeedSettings, fn () => $this->seedInitialSettings());
             $this->when($this->shouldSetInitialSettings, fn () => $this->setInitialSettings());
             $this->when($this->shouldCreateUser, fn () => $this->createInitialUserAccount());

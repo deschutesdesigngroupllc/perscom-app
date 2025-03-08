@@ -28,7 +28,7 @@ class Widgets extends Page
 {
     use HasPageShield;
 
-    public ?string $apiKey;
+    public ?string $apiKey = null;
 
     protected static ?string $navigationIcon = 'heroicon-o-code-bracket';
 
@@ -113,11 +113,11 @@ class Widgets extends Page
                         ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set)),
                     TorchlightCode::make('widget_code')
                         ->helperText('Copy the code above and paste it into your website.')
-                        ->default(fn () => $this->generateCodeSnippet())
+                        ->default(fn (): string => $this->generateCodeSnippet())
                         ->hiddenLabel()
                         ->language('html'),
                     WidgetCodeGenerator::make('copy')
-                        ->default(fn () => $this->generateCodeSnippet())
+                        ->default(fn (): string => $this->generateCodeSnippet())
                         ->label('Copy Code')
                         ->color('gray'),
                 ]),

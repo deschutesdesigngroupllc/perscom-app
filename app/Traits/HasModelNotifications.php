@@ -16,19 +16,19 @@ trait HasModelNotifications
 {
     public static function bootHasModelNotifications(): void
     {
-        static::created(function ($model) {
+        static::created(function ($model): void {
             if (filled($model)) {
                 SendModelNotifications::dispatch($model, 'created');
             }
         });
 
-        static::updated(function ($model) {
+        static::updated(function ($model): void {
             if (filled($model)) {
                 SendModelNotifications::dispatch($model, 'updated');
             }
         });
 
-        static::deleted(function ($model) {
+        static::deleted(function ($model): void {
             if (filled($model)) {
                 SendModelNotifications::dispatch($model, 'deleted');
             }

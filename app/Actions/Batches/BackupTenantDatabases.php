@@ -19,7 +19,7 @@ class BackupTenantDatabases
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant) => new BackupTenantDatabase($tenant->getKey()))
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): BackupTenantDatabase => new BackupTenantDatabase($tenant->getKey()))
         )->name(
             name: 'Database Backups'
         )->onQueue(

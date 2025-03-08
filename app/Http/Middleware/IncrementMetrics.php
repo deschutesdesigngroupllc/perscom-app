@@ -20,12 +20,10 @@ class IncrementMetrics
     {
         if (App::runningInConsole()) {
             Metric::increment(CliRequestMetric::class);
+        } elseif (Str::startsWith($request->getHost(), 'api.')) {
+            Metric::increment(ApiRequestMetric::class);
         } else {
-            if (Str::startsWith($request->getHost(), 'api.')) {
-                Metric::increment(ApiRequestMetric::class);
-            } else {
-                Metric::increment(HttpRequestMetric::class);
-            }
+            Metric::increment(HttpRequestMetric::class);
         }
 
         return $next($request);

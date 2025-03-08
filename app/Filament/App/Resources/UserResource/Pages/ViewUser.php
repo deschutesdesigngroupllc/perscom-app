@@ -40,9 +40,9 @@ class ViewUser extends ViewRecord
     {
         return [
             Actions\Action::make('email')
-                ->hidden(fn () => in_array('email', Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []))))
+                ->hidden(fn (): bool => in_array('email', Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []))))
                 ->color('gray')
-                ->url(fn (?User $record) => "mailto:$record->email")
+                ->url(fn (?User $record): string => "mailto:$record->email")
                 ->openUrlInNewTab()
                 ->tooltip(fn (?User $record) => $record->email),
             Actions\EditAction::make(),

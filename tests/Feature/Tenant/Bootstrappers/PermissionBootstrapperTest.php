@@ -12,7 +12,7 @@ use function tenant;
 
 class PermissionBootstrapperTest extends TenantTestCase
 {
-    public function test_bootstrap_method_sets_permission_cache_key()
+    public function test_bootstrap_method_sets_permission_cache_key(): void
     {
         /** @var PermissionRegistrar $registrar */
         $registrar = $this->app->make(PermissionRegistrar::class);
@@ -23,7 +23,7 @@ class PermissionBootstrapperTest extends TenantTestCase
     /**
      * @throws TenantCouldNotBeIdentifiedById
      */
-    public function test_revert_method_resets_permission_cache_key()
+    public function test_revert_method_resets_permission_cache_key(): void
     {
         $tenant = tenant();
         tenancy()->end();

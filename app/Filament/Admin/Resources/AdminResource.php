@@ -48,7 +48,7 @@ class AdminResource extends Resource
                             ->dehydrated(false)
                             ->requiredWith('password')
                             ->maxLength(255)
-                            ->visible(fn (Forms\Get $get, $operation) => filled($get('password')) || $operation === 'create')
+                            ->visible(fn (Forms\Get $get, $operation): bool => filled($get('password')) || $operation === 'create')
                             ->required(fn (Forms\Get $get, string $context): bool => filled($get('password')) || $context === 'create'),
                         Forms\Components\TextInput::make('email')
                             ->email()

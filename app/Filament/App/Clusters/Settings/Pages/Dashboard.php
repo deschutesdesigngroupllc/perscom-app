@@ -90,7 +90,7 @@ class Dashboard extends SettingsPage
                             })
                             ->schema([
                                 Placeholder::make('fallback')
-                                    ->content(function () {
+                                    ->content(function (): HtmlString {
                                         /** @var Tenant $tenant */
                                         $tenant = Filament::getTenant();
 
@@ -99,7 +99,7 @@ class Dashboard extends SettingsPage
                                     ->helperText('The default URL for your account. You can always access your dashboard from this domain.'),
                                 TextInput::make('subdomain')
                                     ->maxLength(255)
-                                    ->rules(function () {
+                                    ->rules(function (): array {
                                         /** @var Tenant $tenant */
                                         $tenant = Filament::getTenant();
 

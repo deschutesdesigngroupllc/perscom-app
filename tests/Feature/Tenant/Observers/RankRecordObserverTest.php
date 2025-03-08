@@ -23,13 +23,13 @@ class RankRecordObserverTest extends TenantTestCase
         $this->assertSame($rank->rank->getKey(), $user->fresh()->rank->getKey());
     }
 
-    public function test_create_rank_record_notification_sent()
+    public function test_create_rank_record_notification_sent(): void
     {
         Notification::fake();
 
         $rank = RankRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewRankRecord::class, function (NewRankRecord $notification, $channels) use ($rank) {
+        Notification::assertSentTo($user, NewRankRecord::class, function (NewRankRecord $notification, $channels) use ($rank): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($rank->user);
@@ -39,7 +39,7 @@ class RankRecordObserverTest extends TenantTestCase
         });
     }
 
-    public function test_create_rank_record_webhook_sent()
+    public function test_create_rank_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -52,7 +52,7 @@ class RankRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_rank_record_webhook_sent()
+    public function test_update_rank_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -68,7 +68,7 @@ class RankRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_rank_record_webhook_sent()
+    public function test_delete_rank_record_webhook_sent(): void
     {
         Queue::fake();
 

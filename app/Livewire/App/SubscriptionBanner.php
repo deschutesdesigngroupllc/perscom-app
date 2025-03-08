@@ -16,7 +16,7 @@ use Livewire\Component;
 
 class SubscriptionBanner extends Component
 {
-    public ?string $message;
+    public ?string $message = null;
 
     public bool $show = false;
 

@@ -13,7 +13,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class CalendarObserverTest extends TenantTestCase
 {
-    public function test_create_calendar_webhook_sent()
+    public function test_create_calendar_webhook_sent(): void
     {
         Queue::fake();
 
@@ -26,7 +26,7 @@ class CalendarObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_calendar_webhook_sent()
+    public function test_update_calendar_webhook_sent(): void
     {
         Queue::fake();
 
@@ -42,7 +42,7 @@ class CalendarObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_calendar_webhook_sent()
+    public function test_delete_calendar_webhook_sent(): void
     {
         Queue::fake();
 

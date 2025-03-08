@@ -61,7 +61,7 @@ trait HasStatusRecords
             return Status::query()->where($column, '=', $status)->first();
         });
 
-        $query->whereHas('statuses', function (Builder $query) use ($statuses) {
+        $query->whereHas('statuses', function (Builder $query) use ($statuses): void {
             $query->whereIn('status_id', array_column($statuses, 'id'));
         });
     }

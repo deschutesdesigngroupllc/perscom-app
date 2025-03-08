@@ -22,7 +22,7 @@ class MessageObserver
             SendMessage::handle($message);
         }
 
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::MESSAGE_CREATED->value])->each(function (Webhook $webhook) use ($message) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::MESSAGE_CREATED->value])->each(function (Webhook $webhook) use ($message): void {
             WebhookService::dispatch($webhook, WebhookEvent::MESSAGE_CREATED->value, $message);
         });
     }
@@ -33,14 +33,14 @@ class MessageObserver
             $message->schedule()->delete();
         }
 
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::MESSAGE_UPDATED->value])->each(function (Webhook $webhook) use ($message) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::MESSAGE_UPDATED->value])->each(function (Webhook $webhook) use ($message): void {
             WebhookService::dispatch($webhook, WebhookEvent::MESSAGE_UPDATED->value, $message);
         });
     }
 
     public function deleted(Message $message): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::MESSAGE_DELETED->value])->each(function (Webhook $webhook) use ($message) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::MESSAGE_DELETED->value])->each(function (Webhook $webhook) use ($message): void {
             WebhookService::dispatch($webhook, WebhookEvent::MESSAGE_DELETED->value, $message);
         });
     }

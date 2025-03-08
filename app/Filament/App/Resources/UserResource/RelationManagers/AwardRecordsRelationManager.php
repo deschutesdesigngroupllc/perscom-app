@@ -39,7 +39,7 @@ class AwardRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         Action::make('select')
-                            ->visible(fn (?AwardRecord $record) => isset($record->document))
+                            ->visible(fn (?AwardRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
                             ->modalHeading(fn (?AwardRecord $record) => $record->document->name ?? 'Document')

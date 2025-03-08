@@ -30,9 +30,7 @@ class TenancyServiceProvider extends ServiceProvider
                     Jobs\MigrateDatabase::class,
                     Jobs\SeedDatabase::class,
                     SetupTenantAccount::class,
-                ])->send(function (Events\TenantCreated $event) {
-                    return $event->tenant;
-                })->shouldBeQueued(
+                ])->send(fn (Events\TenantCreated $event) => $event->tenant)->shouldBeQueued(
                     queue: 'system'
                 ),
             ],
@@ -45,9 +43,7 @@ class TenancyServiceProvider extends ServiceProvider
                 JobPipeline::make([
                     RemoveTenantAccount::class,
                     Jobs\DeleteDatabase::class,
-                ])->send(function (Events\TenantDeleted $event) {
-                    return $event->tenant;
-                })->shouldBeQueued(
+                ])->send(fn (Events\TenantDeleted $event) => $event->tenant)->shouldBeQueued(
                     queue: 'system'
                 ),
             ],
@@ -105,7 +101,7 @@ class TenancyServiceProvider extends ServiceProvider
 
     protected function mapRoutes(): void
     {
-        $this->app->booted(function () {
+        $this->app->booted(function (): void {
             if (file_exists(base_path('routes/tenant.php'))) {
                 Route::namespace(static::$controllerNamespace)
                     ->group(base_path('routes/tenant.php'));

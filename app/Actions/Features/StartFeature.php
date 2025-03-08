@@ -34,9 +34,7 @@ class StartFeature
             return false;
         }
 
-        return rescue(function () use ($subscription, $price) {
-            return $subscription
-                ->addPriceAndInvoice($price);
-        }, false);
+        return rescue(fn () => $subscription
+            ->addPriceAndInvoice($price), false);
     }
 }

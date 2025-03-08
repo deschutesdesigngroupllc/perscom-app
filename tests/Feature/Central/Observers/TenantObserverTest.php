@@ -17,7 +17,7 @@ use Tests\Feature\Central\CentralTestCase;
 
 class TenantObserverTest extends CentralTestCase
 {
-    public function test_new_tenant_notification_sent()
+    public function test_new_tenant_notification_sent(): void
     {
         Event::fake([BaseTenantCreated::class]);
         Notification::fake();
@@ -25,7 +25,7 @@ class TenantObserverTest extends CentralTestCase
         Tenant::factory()->create();
 
         Event::assertDispatched(BaseTenantCreated::class);
-        Notification::assertSentTo($this->admin, TenantCreated::class, function ($notification, $channels) {
+        Notification::assertSentTo($this->admin, TenantCreated::class, function ($notification, $channels): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($this->admin);
@@ -35,7 +35,7 @@ class TenantObserverTest extends CentralTestCase
         });
     }
 
-    public function test_new_subscription_notification_sent()
+    public function test_new_subscription_notification_sent(): void
     {
         Notification::fake();
 
@@ -50,7 +50,7 @@ class TenantObserverTest extends CentralTestCase
             'ends_at' => null,
         ]);
 
-        Notification::assertSentTo($this->admin, NewSubscription::class, function ($notification, $channels) {
+        Notification::assertSentTo($this->admin, NewSubscription::class, function ($notification, $channels): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($this->admin);
@@ -60,7 +60,7 @@ class TenantObserverTest extends CentralTestCase
         });
     }
 
-    public function test_tenant_deleted_notification_sent()
+    public function test_tenant_deleted_notification_sent(): void
     {
         Event::fake([BaseTenantDeleted::class]);
         Notification::fake();
@@ -69,7 +69,7 @@ class TenantObserverTest extends CentralTestCase
         $tenant->delete();
 
         Event::assertDispatched(BaseTenantDeleted::class);
-        Notification::assertSentTo($this->admin, TenantDeleted::class, function ($notification, $channels) {
+        Notification::assertSentTo($this->admin, TenantDeleted::class, function ($notification, $channels): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($this->admin);

@@ -22,11 +22,11 @@ class CopyAction extends Action
             ->dispatch('FilamentCopyActions')
             ->successNotificationTitle(__('Copied!'))
             ->icon('heroicon-o-clipboard-document')
-            ->extraAttributes(fn () => [
+            ->extraAttributes(fn (): array => [
                 'x-data' => '',
                 'x-on:click' => new HtmlString(
                     'window.navigator.clipboard.writeText('.$this->getCopyable().');'
-                    .(($title = $this->getSuccessNotificationTitle()) ? ' $tooltip('.Js::from($title).');' : '')
+                    .((($title = $this->getSuccessNotificationTitle()) !== null && ($title = $this->getSuccessNotificationTitle()) !== '' && ($title = $this->getSuccessNotificationTitle()) !== '0') ? ' $tooltip('.Js::from($title).');' : '')
                 ),
             ]);
     }

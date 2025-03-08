@@ -31,21 +31,17 @@ class TwilioService
 
     public function toNotificationChannel(string $message): TwilioSmsMessage|TwilioMessage|false
     {
-        return $this->withRateLimiter(function () use ($message) {
-            return (new TwilioSmsMessage)
-                ->from(config('services.twilio.from'))
-                ->content(TwilioService::formatText($message));
-        });
+        return $this->withRateLimiter(fn (): TwilioMessage => (new TwilioSmsMessage)
+            ->from(config('services.twilio.from'))
+            ->content(TwilioService::formatText($message)));
     }
 
     public function sendSms(string $phoneNumber, string $message): MessageInstance|false
     {
-        return $this->withRateLimiter(function () use ($phoneNumber, $message) {
-            return $this->client()->messages->create($phoneNumber, [
-                'from' => config('services.twilio.from'),
-                'body' => $message,
-            ]);
-        });
+        return $this->withRateLimiter(fn () => $this->client()->messages->create($phoneNumber, [
+            'from' => config('services.twilio.from'),
+            'body' => $message,
+        ]));
     }
 
     /**

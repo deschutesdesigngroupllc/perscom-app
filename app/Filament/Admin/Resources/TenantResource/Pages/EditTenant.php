@@ -29,13 +29,9 @@ class EditTenant extends EditRecord
                     Forms\Components\Select::make('user')
                         ->searchable()
                         ->helperText('Select the user to login as.')
-                        ->options(function (Tenant $record) {
-                            return $record->run(function () {
-                                return User::query()->orderBy('name')->whereHas('roles', function (Builder $query) {
-                                    $query->where('name', Utils::getSuperAdminName());
-                                })->get()->pluck('name', 'id')->toArray();
-                            });
-                        })
+                        ->options(fn (Tenant $record) => $record->run(fn () => User::query()->orderBy('name')->whereHas('roles', function (Builder $query): void {
+                            $query->where('name', Utils::getSuperAdminName());
+                        })->get()->pluck('name', 'id')->toArray()))
                         ->required(),
                 ])
                 ->action(function (Actions\Action $action, Tenant $record, array $data) {
