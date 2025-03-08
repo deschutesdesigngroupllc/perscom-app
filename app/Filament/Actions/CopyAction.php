@@ -26,7 +26,9 @@ class CopyAction extends Action
                 'x-data' => '',
                 'x-on:click' => new HtmlString(
                     'window.navigator.clipboard.writeText('.$this->getCopyable().');'
-                    .((($title = $this->getSuccessNotificationTitle()) !== null && ($title = $this->getSuccessNotificationTitle()) !== '' && ($title = $this->getSuccessNotificationTitle()) !== '0') ? ' $tooltip('.Js::from($title).');' : '')
+                    .((filled($title = $this->getSuccessNotificationTitle()))
+                        ? ' $tooltip('.Js::from($title).');'
+                        : '')
                 ),
             ]);
     }

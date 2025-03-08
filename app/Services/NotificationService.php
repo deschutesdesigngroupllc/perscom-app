@@ -35,7 +35,7 @@ class NotificationService
                         $namespace = trim($matches[1]);
                     }
 
-                    return $namespace !== '' && $namespace !== '0'
+                    return filled($namespace)
                         ? $namespace.'\\'.$className
                         : $className;
                 })

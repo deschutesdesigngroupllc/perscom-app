@@ -50,7 +50,7 @@ trait HasLogs
             'text' => $model->textForNewsfeedItem(),
         ];
 
-        if (($item = $model->itemForNewsfeedItem()) !== null && ($item = $model->itemForNewsfeedItem()) !== '' && ($item = $model->itemForNewsfeedItem()) !== '0') {
+        if (filled($item = $model->itemForNewsfeedItem())) {
             $properties['item'] = $item;
         }
 

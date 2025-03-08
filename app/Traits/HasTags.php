@@ -29,7 +29,7 @@ trait HasTags
             ->withPivot('order')
             ->withTimestamps();
 
-        if (static::$tagsAccessor) {
+        if (filled(static::$tagsAccessor)) {
             return $relationship->as(static::$tagsAccessor);
         }
 
