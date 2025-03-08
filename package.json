@@ -19,7 +19,7 @@
     "@vercel/ncc": "^0.38.2",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
-    "axios": "^1.6.4",
+    "axios": "^1.8.1",
     "clsx": "^2.1.1",
     "concurrently": "^9.1.0",
     "laravel-echo": "^2.0.0",
