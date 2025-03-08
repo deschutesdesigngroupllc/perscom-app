@@ -11,7 +11,7 @@ return new class extends OneTimeOperation
 {
     public function process(): void
     {
-        tenancy()->runForMultiple(Tenant::all(), function ($tenant) {
+        tenancy()->runForMultiple(Tenant::all(), function ($tenant): void {
             /** @var IntegrationSettings $settings */
             $settings = app(IntegrationSettings::class);
             $settings->single_sign_on_key = Str::random(40);

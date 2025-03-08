@@ -14,7 +14,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class WebhookServiceTest extends TenantTestCase
 {
-    public function test_it_dispatches_a_webhook()
+    public function test_it_dispatches_a_webhook(): void
     {
         Queue::fake();
 

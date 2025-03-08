@@ -8,7 +8,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class DiscoveryControllerTest extends TenantTestCase
 {
-    public function test_it_can_return_the_discovery_endpoint()
+    public function test_it_can_return_the_discovery_endpoint(): void
     {
         $this->get($this->tenant->route('oidc.discovery'))
             ->assertSuccessful()

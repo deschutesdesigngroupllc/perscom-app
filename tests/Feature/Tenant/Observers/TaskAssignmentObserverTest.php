@@ -12,13 +12,13 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class TaskAssignmentObserverTest extends TenantTestCase
 {
-    public function test_create_task_assignment_notification_sent()
+    public function test_create_task_assignment_notification_sent(): void
     {
         Notification::fake();
 
         $assignment = TaskAssignment::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewTaskAssignment::class, function (NewTaskAssignment $notification, $channels) use ($assignment) {
+        Notification::assertSentTo($user, NewTaskAssignment::class, function (NewTaskAssignment $notification, $channels) use ($assignment): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($assignment->user);

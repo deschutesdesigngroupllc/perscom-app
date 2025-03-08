@@ -43,7 +43,7 @@ class FieldResource extends BaseResource
                                     ->helperText('This is the name of the field that will be displayed to the user.')
                                     ->required()
                                     ->lazy()
-                                    ->afterStateUpdated(function (Forms\Set $set, $state, $operation) {
+                                    ->afterStateUpdated(function (Forms\Set $set, $state, $operation): void {
                                         if ($operation === 'create') {
                                             $set('key', Str::slug($state, '_'));
                                         }
@@ -52,7 +52,7 @@ class FieldResource extends BaseResource
                                 Forms\Components\TextInput::make('key')
                                     ->label('Slug')
                                     ->helperText('The slug will be used as the field key when saving a form that utilizes the field. Allowed characters: 0-9, a-z, A-Z, or underscore.')
-                                    ->regex('/^[a-zA-Z0-9_]+$/')
+                                    ->regex('/^\w+$/')
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\Select::make('type')
@@ -64,7 +64,7 @@ class FieldResource extends BaseResource
                                 Forms\Components\KeyValue::make('options')
                                     ->helperText('The options for the input.')
                                     ->columnSpanFull()
-                                    ->visible(fn (Forms\Get $get) => in_array($get('type'), ['select']))
+                                    ->visible(fn (Forms\Get $get): bool => $get('type') === 'select')
                                     ->requiredIf('type', 'select'),
                                 Forms\Components\RichEditor::make('description')
                                     ->helperText('A optional brief description of the field.')
@@ -164,7 +164,7 @@ class FieldResource extends BaseResource
     {
         return $table
             ->emptyStateDescription('Attach or create a new field to get started.')
-            ->modifyQueryUsing(function (Builder $query) {
+            ->modifyQueryUsing(function (Builder $query): void {
                 $query->withoutGlobalScopes([
                     VisibleScope::class,
                     HiddenScope::class,

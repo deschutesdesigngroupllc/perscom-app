@@ -29,7 +29,7 @@ class UpdateTenantSubdomain
             return false;
         }
 
-        return DB::transaction(function () use ($tenant, $validator) {
+        return DB::transaction(function () use ($tenant, $validator): true {
             $action = new ResetTenantSubdomain;
             $action->handle($tenant);
 

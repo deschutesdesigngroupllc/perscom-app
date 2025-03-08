@@ -18,56 +18,48 @@ trait HasResourceUrl
     public function url(): Attribute
     {
         return Attribute::make(
-            get: function (): ?string {
-                return optional($this->getKey(), function () {
-                    return optional(tenant(), function (Tenant $tenant) {
-                        return optional(Filament::getModelResource($this), function ($class) use ($tenant) {
-                            /** @var resource $class */
-                            if ($class::hasPage('view')) {
-                                return $class::getUrl('view', [
-                                    'record' => $this,
-                                    'tenant' => $tenant,
-                                ], panel: 'app');
-                            } elseif ($class::hasPage('edit')) {
-                                return $class::getUrl('edit', [
-                                    'record' => $this,
-                                    'tenant' => $tenant,
-                                ], panel: 'app');
-                            }
+            get: fn (): ?string => optional($this->getKey(), fn () => optional(tenant(), fn (Tenant $tenant) => optional(Filament::getModelResource($this), function ($class) use ($tenant) {
+                /** @var resource $class */
+                if ($class::hasPage('view')) {
+                    return $class::getUrl('view', [
+                        'record' => $this,
+                        'tenant' => $tenant,
+                    ], panel: 'app');
+                }
+                /** @var resource $class */
+                if ($class::hasPage('edit')) {
+                    return $class::getUrl('edit', [
+                        'record' => $this,
+                        'tenant' => $tenant,
+                    ], panel: 'app');
+                }
 
-                            return null;
-                        });
-                    });
-                });
-            }
+                return null;
+            })))
         )->shouldCache();
     }
 
     public function relativeUrl(): Attribute
     {
         return Attribute::make(
-            get: function (): ?string {
-                return optional($this->getKey(), function () {
-                    return optional(tenant(), function (Tenant $tenant) {
-                        return optional(Filament::getModelResource($this), function ($class) use ($tenant) {
-                            /** @var resource $class */
-                            if ($class::hasPage('view')) {
-                                return $class::getUrl('view', [
-                                    'record' => $this,
-                                    'tenant' => $tenant,
-                                ], isAbsolute: false, panel: 'app');
-                            } elseif ($class::hasPage('edit')) {
-                                return $class::getUrl('edit', [
-                                    'record' => $this,
-                                    'tenant' => $tenant,
-                                ], isAbsolute: false, panel: 'app');
-                            }
+            get: fn (): ?string => optional($this->getKey(), fn () => optional(tenant(), fn (Tenant $tenant) => optional(Filament::getModelResource($this), function ($class) use ($tenant) {
+                /** @var resource $class */
+                if ($class::hasPage('view')) {
+                    return $class::getUrl('view', [
+                        'record' => $this,
+                        'tenant' => $tenant,
+                    ], isAbsolute: false, panel: 'app');
+                }
+                /** @var resource $class */
+                if ($class::hasPage('edit')) {
+                    return $class::getUrl('edit', [
+                        'record' => $this,
+                        'tenant' => $tenant,
+                    ], isAbsolute: false, panel: 'app');
+                }
 
-                            return null;
-                        });
-                    });
-                });
-            }
+                return null;
+            })))
         )->shouldCache();
     }
 

@@ -70,53 +70,51 @@ class AppServiceProvider extends ServiceProvider
         Passport::useAccessTokenEntity(AccessToken::class);
         Passport::useTokenModel(PassportToken::class);
         Passport::useClientModel(PassportClient::class);
-        Passport::authorizationView(function ($parameters) {
-            return Inertia::render('passport/Authorize', [
-                'client' => $parameters['client']->id,
-                'description' => $parameters['client']->description,
-                'image' => $parameters['client']->image?->image_url,
-                'name' => $parameters['client']->name,
-                'scopes' => $parameters['scopes'],
-                'state' => $parameters['request']->state,
-                'authToken' => $parameters['authToken'],
-                'csrfToken' => csrf_token(),
-                'tenant' => tenant('slug'),
-            ]);
-        });
+        Passport::authorizationView(fn (array $parameters) => Inertia::render('passport/Authorize', [
+            'client' => $parameters['client']->id,
+            'description' => $parameters['client']->description,
+            'image' => $parameters['client']->image?->image_url,
+            'name' => $parameters['client']->name,
+            'scopes' => $parameters['scopes'],
+            'state' => $parameters['request']->state,
+            'authToken' => $parameters['authToken'],
+            'csrfToken' => csrf_token(),
+            'tenant' => tenant('slug'),
+        ]));
 
         /**
          * A custom event dispatcher that allows events to be dispatched, or stopped based on some
          * custom logic. We used it to stop notifications from being sent if a certain HTTP header
          * is present.
          */
-        $this->app->extend(BusDispatcher::class, fn ($dispatcher, $app) => new Dispatcher($app, $dispatcher));
+        $this->app->extend(BusDispatcher::class, fn ($dispatcher, $app): Dispatcher => new Dispatcher($app, $dispatcher));
 
         /**
          * This API key resolver modifies how the resource IDs are resolved in the HTTP request path
          * different from how the API package would normally resolve them.
          */
-        $this->app->bind(KeyResolverContract::class, fn () => new KeyResolver);
+        $this->app->bind(KeyResolverContract::class, fn (): KeyResolver => new KeyResolver);
 
         /**
          * This custom component resolver for the API is used to resolve API HTTP resources based
          * on the requested API version using a versioned folder structure for identifying which
          * HTTP resources belong with which API Version.
          */
-        $this->app->bind(ComponentsResolverContract::class, fn ($app, $params) => new ComponentsResolver(resourceModelClass: data_get($params, 'resourceModelClass')));
+        $this->app->bind(ComponentsResolverContract::class, fn ($app, $params): ComponentsResolver => new ComponentsResolver(resourceModelClass: data_get($params, 'resourceModelClass')));
 
         /**
          * Tenant DB's are backed up using a batching of individual jobs - one for each tenant. Because
          * of this, we need to customize the temporary directory for each tenant job so that it is not
          * overwritten by another job.
          */
-        $this->app->bind('backup-temporary-project', fn () => new TenantTemporaryDirectory);
+        $this->app->bind('backup-temporary-project', fn (): TenantTemporaryDirectory => new TenantTemporaryDirectory);
 
         /**
          * Because we back up using two different MySQL connections, one for tenant, and one for central,
          * this allows us to rebind the config with the new DB connection values before running the
          * actual back up command.
          */
-        $this->app->bind(BaseBackupCommand::class, fn ($app) => new BackupCommand($app->make(Config::class)));
+        $this->app->bind(BaseBackupCommand::class, fn ($app): BackupCommand => new BackupCommand($app->make(Config::class)));
     }
 
     /**
@@ -127,17 +125,13 @@ class AppServiceProvider extends ServiceProvider
         App::macro('isAdmin', fn () => collect(config('tenancy.central_domains'))->contains(request()->getHost()));
         App::macro('isDemo', fn () => $this->app->environment('demo'));
 
-        Auth::viaRequest('api', static function () {
-            return Auth::guard('jwt')->user() ?? Auth::guard('passport')->user();
-        });
+        Auth::viaRequest('api', static fn () => Auth::guard('jwt')->user() ?? Auth::guard('passport')->user());
 
-        $authenticationRedirect = function () {
-            return match (App::isAdmin()) {
-                true => route('filament.admin.pages.dashboard'),
-                default => route('filament.app.pages.dashboard', [
-                    'tenant' => tenant(),
-                ])
-            };
+        $authenticationRedirect = fn () => match (App::isAdmin()) {
+            true => route('filament.admin.pages.dashboard'),
+            default => route('filament.app.pages.dashboard', [
+                'tenant' => tenant(),
+            ])
         };
 
         Authenticate::redirectUsing($authenticationRedirect);
@@ -145,7 +139,7 @@ class AppServiceProvider extends ServiceProvider
 
         Column::configureUsing(function (Column $field) {
             $closure = match ($field->getName()) {
-                'created_at' => function (Column $field) {
+                'created_at' => function (Column $field): void {
                     /** @var TextColumn $field */
                     $field
                         ->label('Created')
@@ -164,7 +158,7 @@ class AppServiceProvider extends ServiceProvider
                             });
                         });
                 },
-                'updated_at' => function (Column $field) {
+                'updated_at' => function (Column $field): void {
                     /** @var TextColumn $field */
                     $field
                         ->label('Updated')
@@ -193,7 +187,7 @@ class AppServiceProvider extends ServiceProvider
 
         Entry::configureUsing(function (Entry $field) {
             $closure = match ($field->getName()) {
-                'created_at' => function (Entry $field) {
+                'created_at' => function (Entry $field): void {
                     /** @var TextEntry $field */
                     $field
                         ->label('Created')
@@ -211,7 +205,7 @@ class AppServiceProvider extends ServiceProvider
                             });
                         });
                 },
-                'updated_at' => function (Entry $field) {
+                'updated_at' => function (Entry $field): void {
                     /** @var TextEntry $field */
                     $field
                         ->label('Updated')
@@ -242,19 +236,17 @@ class AppServiceProvider extends ServiceProvider
             AlpineComponent::make('widget-code-generator', __DIR__.'/../../resources/js/dist/components/widget-code-generator/index.js'),
         ]);
 
-        FilamentShield::configurePermissionIdentifierUsing(function ($resource) {
-            return Str::of($resource)
-                ->afterLast('Resources\\')
-                ->before('Resource')
-                ->replace('\\', '')
-                ->lower()
-                ->replace('_', '')
-                ->toString();
-        });
+        FilamentShield::configurePermissionIdentifierUsing(fn ($resource) => Str::of($resource)
+            ->afterLast('Resources\\')
+            ->before('Resource')
+            ->replace('\\', '')
+            ->lower()
+            ->replace('_', '')
+            ->toString());
 
         Field::configureUsing(function (Field $field) {
             $closure = match ($field->getName()) {
-                'created_at' => function (Field $field) {
+                'created_at' => function (Field $field): void {
                     $field->label('Created');
 
                     if ($field instanceof DateTimePicker) {
@@ -273,7 +265,7 @@ class AppServiceProvider extends ServiceProvider
                             });
                     }
                 },
-                'updated_at' => function (Field $field) {
+                'updated_at' => function (Field $field): void {
                     $field->label('Updated');
 
                     if ($field instanceof DateTimePicker) {
@@ -319,9 +311,7 @@ class AppServiceProvider extends ServiceProvider
             scopes: Dashboard::class,
         );
 
-        Gate::define('viewPulse', function (Admin|User|null $user = null) {
-            return $user instanceof Admin;
-        });
+        Gate::define('viewPulse', fn (Admin|User|null $user = null): bool => $user instanceof Admin);
 
         Gate::before(function (Admin|User|null $user, string $ability, $model) {
             if ($user instanceof Admin) {
@@ -333,7 +323,7 @@ class AppServiceProvider extends ServiceProvider
             }
         });
 
-        Number::macro('percentageDifference', function (int $oldValue, int $newValue) {
+        Number::macro('percentageDifference', function (int $oldValue, int $newValue): int|float {
             if ($oldValue === 0) {
                 return $newValue > 0
                     ? 100
@@ -344,19 +334,13 @@ class AppServiceProvider extends ServiceProvider
         });
 
         $socialite = $this->app->make(Factory::class);
-        $socialite->extend('discord', function () use ($socialite) {
-            return $socialite->buildProvider(DiscordSocialiteProvider::class, config('services.discord'));
-        });
+        $socialite->extend('discord', fn () => $socialite->buildProvider(DiscordSocialiteProvider::class, config('services.discord')));
 
-        Str::macro('camelToLower', function ($value) {
-            return Str::lower(preg_replace_callback(
-                '/([a-z])([A-Z])/',
-                function ($matches) {
-                    return $matches[1].' '.$matches[2];
-                }, $value));
-        });
+        Str::macro('camelToLower', fn ($value) => Str::lower(preg_replace_callback(
+            '/([a-z])([A-Z])/',
+            fn ($matches): string => $matches[1].' '.$matches[2], (string) $value)));
 
-        Table::configureUsing(function (Table $table) {
+        Table::configureUsing(function (Table $table): void {
             $table->defaultSort('created_at', 'desc');
         });
     }

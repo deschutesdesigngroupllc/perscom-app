@@ -23,11 +23,7 @@ class ModelTextParserService
 
     public static function parse(string $content, ?User $user = null, mixed $attachedModel = null): ?string
     {
-        $result = with(new ModelTextParserService($content, $user, $attachedModel), function (ModelTextParserService $service) {
-            return Str::replaceMatches('/\{(.*?)}/', function (array $matches) use ($service) {
-                return $service->resolveTag($matches[0]) ?? $matches[0];
-            }, $service->content);
-        });
+        $result = with(new ModelTextParserService($content, $user, $attachedModel), fn (ModelTextParserService $service) => Str::replaceMatches('/\{(.*?)}/', fn (array $matches) => $service->resolveTag($matches[0]) ?? $matches[0], $service->content));
 
         if (is_string($result)) {
             return $result;
@@ -38,10 +34,8 @@ class ModelTextParserService
 
     protected function resolveTag(string $tag): mixed
     {
-        if (blank($this->user)) {
-            if (filled($this->attachedModel) && in_array(HasUser::class, class_uses_recursive(get_class($this->attachedModel)))) {
-                $this->user = $this->attachedModel->user;
-            }
+        if (blank($this->user) && (filled($this->attachedModel) && in_array(HasUser::class, class_uses_recursive($this->attachedModel::class)))) {
+            $this->user = $this->attachedModel->user;
         }
 
         $this->user ??= Auth::user();
@@ -61,7 +55,7 @@ class ModelTextParserService
             $tag === '{assignment_record_position}' => $this->attachedModel->position->name ?? null,
             $tag === '{assignment_record_speciality}' => $this->attachedModel->specialty->name ?? null,
             $tag === '{assignment_record_text}', $tag === '{award_record_text}', $tag === '{combat_record_text}', $tag === '{qualification_record_text}', $tag === '{service_record_text}', $tag === '{rank_record_text}' => $this->attachedModel->text ?? null,
-            $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{service_record_date}', $tag === '{rank_record_date}' => function ($user, $attachedModel) {
+            $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{service_record_date}', $tag === '{rank_record_date}' => function ($user, $attachedModel): ?string {
                 $createdAt = $attachedModel->created_at ?? null;
 
                 if (blank($createdAt)) {
@@ -84,7 +78,7 @@ class ModelTextParserService
                     ->toDayDateTimeString();
             },
             $tag === '{award_record_award}' => $this->attachedModel->award->name ?? null,
-            $tag === '{award_record_award_image}' => function ($user, $attachedModel) {
+            $tag === '{award_record_award_image}' => function ($user, $attachedModel): ?HtmlString {
                 $imageUrl = $attachedModel->award->image->image_url ?? null;
                 $imageName = $attachedModel->award->name ?? 'Image';
 
@@ -95,7 +89,7 @@ class ModelTextParserService
                 return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
             },
             $tag === '{qualification_record_qualification}' => $this->attachedModel->qualification->name ?? null,
-            $tag === '{qualification_record_qualification_image}' => function ($user, $attachedModel) {
+            $tag === '{qualification_record_qualification_image}' => function ($user, $attachedModel): ?HtmlString {
                 $imageUrl = $attachedModel->qualification->image->image_url ?? null;
                 $imageName = $attachedModel->qualification->name ?? 'Image';
 
@@ -106,7 +100,7 @@ class ModelTextParserService
                 return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
             },
             $tag === '{rank_record_rank}' => $this->attachedModel->rank->name ?? null,
-            $tag === '{rank_record_rank_image}' => function ($user, $attachedModel) {
+            $tag === '{rank_record_rank_image}' => function ($user, $attachedModel): ?HtmlString {
                 $imageUrl = $attachedModel->rank->image->image_url ?? null;
                 $imageName = $attachedModel->rank->name ?? 'Image';
 
@@ -117,7 +111,7 @@ class ModelTextParserService
                 return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
             },
             $tag === '{rank_record_type}' => optional($this->attachedModel->type ?? null)->getLabel() ?? null,
-            $tag === '{author_resource_name}' => filled($this->attachedModel) && in_array(HasAuthor::class, class_uses_recursive(get_class($this->attachedModel))) ? optional($this->attachedModel->author)->name : null,
+            $tag === '{author_resource_name}' => filled($this->attachedModel) && in_array(HasAuthor::class, class_uses_recursive($this->attachedModel::class)) ? optional($this->attachedModel->author)->name : null,
             default => null
         }, $this->user, $this->attachedModel);
     }

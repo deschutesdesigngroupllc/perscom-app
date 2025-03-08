@@ -43,14 +43,14 @@ class AnnouncementResource extends BaseResource
                             ->icon('heroicon-o-megaphone')
                             ->schema([
                                 Forms\Components\TextInput::make('title')
-                                    ->afterStateUpdated(fn (Forms\Set $set, $state) => $set('model_notifications.subject', $state))
+                                    ->afterStateUpdated(fn (Forms\Set $set, $state): mixed => $set('model_notifications.subject', $state))
                                     ->live(onBlur: true)
                                     ->helperText('The announcement title.')
                                     ->columnSpanFull()
                                     ->required()
                                     ->maxLength(255),
                                 Forms\Components\RichEditor::make('content')
-                                    ->afterStateUpdated(fn (Forms\Set $set, $state) => $set('model_notifications.message', $state))
+                                    ->afterStateUpdated(fn (Forms\Set $set, $state): mixed => $set('model_notifications.message', $state))
                                     ->live(onBlur: true)
                                     ->helperText('The announcement content.')
                                     ->required()
@@ -72,7 +72,7 @@ class AnnouncementResource extends BaseResource
                                     ->helperText('If set, the announcement will disappear after this date.'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Notifications')
-                            ->visible(fn ($operation) => $operation === 'create')
+                            ->visible(fn ($operation): bool => $operation === 'create')
                             ->icon('heroicon-o-bell')
                             ->schema([
                                 ModelNotification::make(),
@@ -116,7 +116,7 @@ class AnnouncementResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->recordClasses(fn (?Announcement $record) => match ($record->enabled) {
+            ->recordClasses(fn (?Announcement $record): ?string => match ($record->enabled) {
                 false => '!border-s-2 !border-s-red-600',
                 default => null,
             })

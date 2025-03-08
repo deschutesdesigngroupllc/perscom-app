@@ -8,7 +8,7 @@ use App\Http\Resources\Api\ApiResource;
 
 class AssignmentRecordResource extends ApiResource
 {
-    public function toArray($request): array
+    public function toArray(\Illuminate\Http\Request $request): array
     {
         $response = parent::toArray($request);
 

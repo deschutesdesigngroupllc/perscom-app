@@ -17,7 +17,7 @@ class DomainObserverTest extends TenantTestCase
     /**
      * @throws Exception
      */
-    public function test_new_domain_notification_sent()
+    public function test_new_domain_notification_sent(): void
     {
         Notification::fake();
 
@@ -35,7 +35,7 @@ class DomainObserverTest extends TenantTestCase
     /**
      * @throws Exception
      */
-    public function test_updated_domain_notification_sent()
+    public function test_updated_domain_notification_sent(): void
     {
         Notification::fake();
 
@@ -53,7 +53,7 @@ class DomainObserverTest extends TenantTestCase
     /**
      * @throws Exception
      */
-    public function test_deleted_domain_notification_sent()
+    public function test_deleted_domain_notification_sent(): void
     {
         Notification::fake();
 

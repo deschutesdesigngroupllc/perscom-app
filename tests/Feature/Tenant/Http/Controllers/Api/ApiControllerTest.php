@@ -20,21 +20,21 @@ use Lcobucci\JWT\Token\Builder;
 
 class ApiControllerTest extends ApiTestCase
 {
-    public function test_api_cannot_be_reached_without_bearer_token()
+    public function test_api_cannot_be_reached_without_bearer_token(): void
     {
         $this->getJson(route('api.users.index', [
             'version' => config('api.version'),
         ]))->assertUnauthorized();
     }
 
-    public function test_api_cannot_be_reached_with_invalid_version()
+    public function test_api_cannot_be_reached_with_invalid_version(): void
     {
         $this->withToken($this->apiKey())->getJson(route('api.users.index', [
             'version' => $this->faker->word,
         ]))->assertBadRequest();
     }
 
-    public function test_api_cannot_be_reached_with_incorrect_perscom_id()
+    public function test_api_cannot_be_reached_with_incorrect_perscom_id(): void
     {
         $this->withToken($this->apiKey())->getJson(route('api.users.index', [
             'version' => config('api.version'),
@@ -43,14 +43,14 @@ class ApiControllerTest extends ApiTestCase
         ])->assertUnauthorized();
     }
 
-    public function test_api_can_be_reached_with_perscom_id()
+    public function test_api_can_be_reached_with_perscom_id(): void
     {
         $this->withToken($this->apiKey())->getJson(route('api.users.index', [
             'version' => config('api.version'),
         ]))->assertSuccessful();
     }
 
-    public function test_api_cannot_be_reached_without_api_access_feature()
+    public function test_api_cannot_be_reached_without_api_access_feature(): void
     {
         $this->withMiddleware(CheckSubscription::class);
 
@@ -61,7 +61,7 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertStatus(402);
     }
 
-    public function test_api_cannot_be_reached_with_basic_plan()
+    public function test_api_cannot_be_reached_with_basic_plan(): void
     {
         $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
 
@@ -72,7 +72,7 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertPaymentRequired();
     }
 
-    public function test_api_can_be_reached_with_complete_pro_subscription()
+    public function test_api_can_be_reached_with_complete_pro_subscription(): void
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
 
@@ -83,7 +83,7 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertSuccessful();
     }
 
-    public function test_api_can_be_reached_with_complete_enterprise_subscription()
+    public function test_api_can_be_reached_with_complete_enterprise_subscription(): void
     {
         $this->withSubscription(env('STRIPE_PRODUCT_ENTERPRISE_MONTH'));
 
@@ -94,7 +94,7 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertSuccessful();
     }
 
-    public function test_api_cannot_be_reached_with_incomplete_subscription()
+    public function test_api_cannot_be_reached_with_incomplete_subscription(): void
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete');
 
@@ -105,7 +105,7 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertStatus(402);
     }
 
-    public function test_api_cannot_be_reached_with_incomplete_expired_subscription()
+    public function test_api_cannot_be_reached_with_incomplete_expired_subscription(): void
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete_expired');
 
@@ -116,7 +116,7 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertStatus(402);
     }
 
-    public function test_api_can_be_reached_while_on_trial()
+    public function test_api_can_be_reached_while_on_trial(): void
     {
         $this->onTrial();
 
@@ -127,7 +127,7 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertSuccessful();
     }
 
-    public function test_api_can_be_reached_when_using_perscom_signed_jwt()
+    public function test_api_can_be_reached_when_using_perscom_signed_jwt(): void
     {
         $token = Auth::guard('jwt')->claims([
             'scopes' => [
@@ -144,7 +144,7 @@ class ApiControllerTest extends ApiTestCase
     /**
      * @throws BindingResolutionException
      */
-    public function test_api_can_be_reached_when_using_tenant_signed_jwt()
+    public function test_api_can_be_reached_when_using_tenant_signed_jwt(): void
     {
         /** @var IntegrationSettings $settings */
         $settings = $this->app->make(IntegrationSettings::class);
@@ -173,7 +173,7 @@ class ApiControllerTest extends ApiTestCase
             ->assertSuccessful();
     }
 
-    public function test_api_cannot_be_reached_when_using_perscom_signed_jwt_without_proper_scopes()
+    public function test_api_cannot_be_reached_when_using_perscom_signed_jwt_without_proper_scopes(): void
     {
         $token = Auth::guard('jwt')->claims([
             'scopes' => null,
@@ -186,7 +186,7 @@ class ApiControllerTest extends ApiTestCase
             ->assertForbidden();
     }
 
-    public function test_api_cannot_be_reached_when_using_perscom_signed_jwt_and_on_basic_plan()
+    public function test_api_cannot_be_reached_when_using_perscom_signed_jwt_and_on_basic_plan(): void
     {
         $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
 
@@ -205,7 +205,7 @@ class ApiControllerTest extends ApiTestCase
             ->assertPaymentRequired();
     }
 
-    public function test_api_cannot_be_reached_when_using_tenant_signed_jwt_without_proper_scopes()
+    public function test_api_cannot_be_reached_when_using_tenant_signed_jwt_without_proper_scopes(): void
     {
         /** @var IntegrationSettings $settings */
         $settings = $this->app->make(IntegrationSettings::class);
@@ -231,7 +231,7 @@ class ApiControllerTest extends ApiTestCase
             ->assertForbidden();
     }
 
-    public function test_api_cannot_be_reached_when_using_tenant_signed_jwt_and_on_basic_plan()
+    public function test_api_cannot_be_reached_when_using_tenant_signed_jwt_and_on_basic_plan(): void
     {
         $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
 

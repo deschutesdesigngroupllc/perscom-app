@@ -17,21 +17,21 @@ class CombatRecordObserver
     {
         Notification::send($combat->user, new NewCombatRecord($combat));
 
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::COMBAT_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($combat) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::COMBAT_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($combat): void {
             WebhookService::dispatch($webhook, WebhookEvent::COMBAT_RECORD_CREATED->value, $combat);
         });
     }
 
     public function updated(CombatRecord $combat): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::COMBAT_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($combat) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::COMBAT_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($combat): void {
             WebhookService::dispatch($webhook, WebhookEvent::COMBAT_RECORD_UPDATED->value, $combat);
         });
     }
 
     public function deleted(CombatRecord $combat): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::COMBAT_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($combat) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::COMBAT_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($combat): void {
             WebhookService::dispatch($webhook, WebhookEvent::COMBAT_RECORD_DELETED->value, $combat);
         });
     }

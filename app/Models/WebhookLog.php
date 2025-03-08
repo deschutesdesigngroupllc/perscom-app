@@ -77,7 +77,7 @@ class WebhookLog extends Activity
     public function event(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?WebhookEvent => optional($this->getExtraProperty('event'), fn ($event) => WebhookEvent::from($event))
+            get: fn (): ?WebhookEvent => optional($this->getExtraProperty('event'), fn ($event): WebhookEvent => WebhookEvent::from($event))
         )->shouldCache();
     }
 

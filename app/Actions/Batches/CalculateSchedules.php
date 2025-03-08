@@ -19,7 +19,7 @@ class CalculateSchedules
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant) => new CalculateSchedulesJob($tenant->getKey()))
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): CalculateSchedulesJob => new CalculateSchedulesJob($tenant->getKey()))
         )->name(
             name: 'Schedule Calculations'
         )->onQueue(

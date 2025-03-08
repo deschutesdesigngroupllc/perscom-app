@@ -19,7 +19,7 @@ class SendRecurringMessages
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant) => new SendRecurringMessagesJob($tenant->getKey()))
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): SendRecurringMessagesJob => new SendRecurringMessagesJob($tenant->getKey()))
         )->name(
             name: 'Recurring Messages'
         )->onQueue(

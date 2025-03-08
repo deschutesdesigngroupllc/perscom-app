@@ -43,13 +43,13 @@ class Forms extends Page implements HasForms, HasTable
             ->columns([
                 TextColumn::make('name'),
             ])
-            ->recordUrl(fn (?Form $record) => Submit::getUrl([
+            ->recordUrl(fn (?Form $record): string => Submit::getUrl([
                 'record' => $record,
             ]))
             ->actions([
                 Action::make('open')
                     ->icon('heroicon-o-pencil')
-                    ->url(fn (?Form $record) => Submit::getUrl([
+                    ->url(fn (?Form $record): string => Submit::getUrl([
                         'record' => $record,
                     ])),
             ]);

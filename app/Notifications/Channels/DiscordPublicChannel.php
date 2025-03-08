@@ -11,12 +11,7 @@ use NotificationChannels\Discord\Discord;
 
 class DiscordPublicChannel
 {
-    protected Discord $discord;
-
-    public function __construct(Discord $discord)
-    {
-        $this->discord = $discord;
-    }
+    public function __construct(protected Discord $discord) {}
 
     /**
      * @return array<string, mixed>|null

@@ -14,6 +14,8 @@ use Tests\Contracts\ApiResourceTestContract;
 
 abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTestContract
 {
+    public $expectedIndexCount;
+
     protected Collection|Model $factory;
 
     protected User $user;
@@ -33,7 +35,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         }
     }
 
-    public function test_can_reach_index_endpoint()
+    public function test_can_reach_index_endpoint(): void
     {
         $this->withToken($this->apiKey($this->scopes()['index']))
             ->getJson("/{$this->endpoint()}")
@@ -42,7 +44,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertSuccessful();
     }
 
-    public function test_can_reach_show_endpoint()
+    public function test_can_reach_show_endpoint(): void
     {
         $this->withToken($this->apiKey($this->scopes()['show']))
             ->getJson("/{$this->endpoint()}/{$this->factory->getKey()}")
@@ -50,7 +52,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertSuccessful();
     }
 
-    public function test_can_reach_store_endpoint()
+    public function test_can_reach_store_endpoint(): void
     {
         $data = $this->storeData();
 
@@ -66,7 +68,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $this->assertDatabaseHas($this->getTable($this->model()), $data);
     }
 
-    public function test_can_reach_update_endpoint()
+    public function test_can_reach_update_endpoint(): void
     {
         $data = $this->updateData();
 
@@ -82,7 +84,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $this->assertDatabaseHas($this->getTable($this->model()), $data);
     }
 
-    public function test_can_reach_delete_endpoint()
+    public function test_can_reach_delete_endpoint(): void
     {
         $this->withToken($this->apiKey($this->scopes()['delete']))
             ->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
@@ -94,7 +96,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         ]);
     }
 
-    public function test_cannot_reach_index_endpoint_with_missing_scope()
+    public function test_cannot_reach_index_endpoint_with_missing_scope(): void
     {
         $class = class_basename($this->model());
 
@@ -107,7 +109,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertForbidden();
     }
 
-    public function test_cannot_reach_show_endpoint_with_missing_scope()
+    public function test_cannot_reach_show_endpoint_with_missing_scope(): void
     {
         $class = class_basename($this->model());
 
@@ -120,42 +122,42 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
             ->assertForbidden();
     }
 
-    public function test_cannot_reach_store_endpoint_with_missing_scope()
+    public function test_cannot_reach_store_endpoint_with_missing_scope(): void
     {
         $this->withToken($this->apiKey([]))
             ->postJson("/{$this->endpoint()}", $this->storeData())
             ->assertForbidden();
     }
 
-    public function test_cannot_reach_update_endpoint_with_missing_scope()
+    public function test_cannot_reach_update_endpoint_with_missing_scope(): void
     {
         $this->withToken($this->apiKey([]))
             ->patchJson("/{$this->endpoint()}/{$this->factory->getKey()}", $this->updateData())
             ->assertForbidden();
     }
 
-    public function test_cannot_reach_delete_endpoint_with_missing_scope()
+    public function test_cannot_reach_delete_endpoint_with_missing_scope(): void
     {
         $this->withToken($this->apiKey([]))
             ->deleteJson("/{$this->endpoint()}/{$this->factory->getKey()}")
             ->assertForbidden();
     }
 
-    public function test_cannot_reach_store_endpoint_with_missing_body()
+    public function test_cannot_reach_store_endpoint_with_missing_body(): void
     {
         $this->withToken($this->apiKey($this->scopes()['store']))
             ->postJson("/{$this->endpoint()}")
             ->assertStatus(422);
     }
 
-    public function test_show_endpoint_returns_not_found()
+    public function test_show_endpoint_returns_not_found(): void
     {
         $this->withToken($this->apiKey($this->scopes()['show']))
             ->getJson("/{$this->endpoint()}/{$this->faker->randomDigitNot($this->factory->getKey())}")
             ->assertNotFound();
     }
 
-    public function test_sortable_fields_match_table_columns()
+    public function test_sortable_fields_match_table_columns(): void
     {
         $controller = $this->app->make($this->controller());
 
@@ -169,7 +171,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $this->assertCount(count($required), $intersection);
     }
 
-    public function test_searchable_fields_match_table_columns()
+    public function test_searchable_fields_match_table_columns(): void
     {
         $controller = $this->app->make($this->controller());
 
@@ -183,7 +185,7 @@ abstract class ApiResourceTestCase extends ApiTestCase implements ApiResourceTes
         $this->assertCount(count($required), $intersection);
     }
 
-    public function test_filterable_fields_match_table_columns()
+    public function test_filterable_fields_match_table_columns(): void
     {
         $controller = $this->app->make($this->controller());
 

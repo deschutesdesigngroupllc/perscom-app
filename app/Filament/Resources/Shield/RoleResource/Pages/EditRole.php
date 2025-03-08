@@ -28,9 +28,7 @@ class EditRole extends EditRecord
     protected function mutateFormDataBeforeSave(array $data): array
     {
         $this->permissions = collect($data)
-            ->filter(function ($permission, $key) {
-                return ! in_array($key, ['name', 'guard_name', 'select_all']);
-            })
+            ->filter(fn ($permission, $key): bool => ! in_array($key, ['name', 'guard_name', 'select_all']))
             ->values()
             ->flatten()
             ->unique();
@@ -41,7 +39,7 @@ class EditRole extends EditRecord
     protected function afterSave(): void
     {
         $permissionModels = collect();
-        $this->permissions->each(function ($permission) use ($permissionModels) {
+        $this->permissions->each(function ($permission) use ($permissionModels): void {
             $permissionModels->push(Utils::getPermissionModel()::firstOrCreate([
                 'name' => $permission,
                 'guard_name' => $this->data['guard_name'],

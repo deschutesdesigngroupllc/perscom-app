@@ -50,7 +50,7 @@ class StatusResource extends BaseResource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->badge()
-                    ->color(fn (?Status $record) => Color::hex($record->color))
+                    ->color(fn (?Status $record): array => Color::hex($record->color))
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\ColorColumn::make('color')

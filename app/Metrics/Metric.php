@@ -16,13 +16,11 @@ abstract class Metric
      */
     public static function increment(string $class, int $amount = 1): BaseMetric
     {
-        return with(new $class, function (Metric $metric) use ($amount) {
-            return BaseMetric::query()
-                ->incrementOrCreate([
-                    'created_at' => now()->startOfDay(),
-                    'key' => $metric->key(),
-                ], step: $amount);
-        });
+        return with(new $class, fn (Metric $metric) => BaseMetric::query()
+            ->incrementOrCreate([
+                'created_at' => now()->startOfDay(),
+                'key' => $metric->key(),
+            ], step: $amount));
     }
 
     /**
@@ -30,12 +28,10 @@ abstract class Metric
      */
     public static function total(string $class, ?Closure $query = null): int
     {
-        return with(new $class, function (Metric $metric) use ($query) {
-            return (int) BaseMetric::query()
-                ->where('key', $metric->key())
-                ->when(filled($query), fn (Builder $builder) => value($query, $builder))
-                ->sum('count');
-        });
+        return with(new $class, fn (Metric $metric): int => (int) BaseMetric::query()
+            ->where('key', $metric->key())
+            ->when(filled($query), fn (Builder $builder) => value($query, $builder))
+            ->sum('count'));
     }
 
     /**
@@ -43,13 +39,11 @@ abstract class Metric
      */
     public static function average(string $class, ?Closure $query = null): int
     {
-        return with(new $class, function (Metric $metric) use ($query) {
-            return (int) BaseMetric::query()
-                ->where('key', $metric->key())
-                ->when(filled($query), fn (Builder $builder) => value($query, $builder))
-                ->when(blank($query), fn (Builder $builder) => $builder->whereBetween('created_at', [now()->startOfYear(), now()->startOfMonth()]))
-                ->average('count');
-        });
+        return with(new $class, fn (Metric $metric): int => (int) BaseMetric::query()
+            ->where('key', $metric->key())
+            ->when(filled($query), fn (Builder $builder) => value($query, $builder))
+            ->when(blank($query), fn (Builder $builder) => $builder->whereBetween('created_at', [now()->startOfYear(), now()->startOfMonth()]))
+            ->average('count'));
     }
 
     public function key(): string

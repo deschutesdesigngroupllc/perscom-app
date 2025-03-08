@@ -9,7 +9,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class TenantTest extends TenantTestCase
 {
-    public function test_custom_domain_attribute_is_returned()
+    public function test_custom_domain_attribute_is_returned(): void
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
@@ -21,7 +21,7 @@ class TenantTest extends TenantTestCase
         $this->assertEquals($domain, $tenant->custom_domain->domain);
     }
 
-    public function test_fallback_domain_attribute_is_returned()
+    public function test_fallback_domain_attribute_is_returned(): void
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
@@ -32,7 +32,7 @@ class TenantTest extends TenantTestCase
         $this->assertEquals($tenant->domain->domain, $tenant->fallback_domain->domain);
     }
 
-    public function test_domain_attribute_returns_custom_domain()
+    public function test_domain_attribute_returns_custom_domain(): void
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
@@ -43,7 +43,7 @@ class TenantTest extends TenantTestCase
         $this->assertEquals($tenant->custom_domain, $tenant->domain);
     }
 
-    public function test_fallback_url_attribute_returns_proper_url()
+    public function test_fallback_url_attribute_returns_proper_url(): void
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
@@ -56,7 +56,7 @@ class TenantTest extends TenantTestCase
         $this->assertEquals("$scheme://{$tenant->fallback_domain->domain}$base", $tenant->fallback_url);
     }
 
-    public function test_custom_url_attribute_returns_proper_url()
+    public function test_custom_url_attribute_returns_proper_url(): void
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
@@ -70,7 +70,7 @@ class TenantTest extends TenantTestCase
         $this->assertEquals("$scheme://{$tenant->custom_domain->domain}$base", $tenant->custom_url);
     }
 
-    public function test_url_attribute_properly_returns_domain()
+    public function test_url_attribute_properly_returns_domain(): void
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([
@@ -83,7 +83,7 @@ class TenantTest extends TenantTestCase
         $this->assertEquals("$scheme://{$tenant->domain->domain}$base", $tenant->url);
     }
 
-    public function test_url_attribute_properly_returns_custom_domain()
+    public function test_url_attribute_properly_returns_custom_domain(): void
     {
         $tenant = Tenant::factory()->createQuietly();
         $tenant->domains()->createQuietly([

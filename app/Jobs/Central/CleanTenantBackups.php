@@ -31,7 +31,7 @@ class CleanTenantBackups implements ShouldQueue
 
         /** @var Tenant $tenant */
         $tenant = Tenant::findOrFail($this->tenantKey);
-        $tenant->run(function () {
+        $tenant->run(function (): void {
             $exit = Artisan::call('backup:clean');
 
             if ($exit !== 0) {

@@ -13,7 +13,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class AccessTokenTest extends TenantTestCase
 {
-    public function test_it_errors_on_incorrect_claims()
+    public function test_it_errors_on_incorrect_claims(): void
     {
         $this->expectException(OAuthServerException::class);
 
@@ -24,7 +24,7 @@ class AccessTokenTest extends TenantTestCase
         ]);
     }
 
-    public function test_it_adds_all_the_claims()
+    public function test_it_adds_all_the_claims(): void
     {
         $user = User::factory()->createQuietly();
 

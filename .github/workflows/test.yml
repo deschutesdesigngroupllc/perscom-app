@@ -77,8 +77,8 @@ jobs:
           composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
           composer config http-basic.whizzy.dev ${{ secrets.FILAMENT_USERNAME }} ${{ secrets.FILAMENT_PASSWORD }}
 
-      - name: Cache Composer Dependencies
-        uses: actions/cache@v3
+      - name: Composer Cache
+        uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}

@@ -65,7 +65,7 @@ class ScheduleService
             $payload['UNTIL'] = $repeatable->until->toDateString();
         }
 
-        return rescue(fn () => new RRule($payload));
+        return rescue(fn (): RRule => new RRule($payload));
     }
 
     public static function lastOccurrence(Schedule $repeatable): ?Carbon
@@ -123,9 +123,7 @@ class ScheduleService
             return null;
         }
 
-        return collect($rule->getOccurrencesBetween($start, $end))->map(function (DateTime $dateTime) {
-            return Carbon::parse($dateTime);
-        })->toArray();
+        return collect($rule->getOccurrencesBetween($start, $end))->map(fn (DateTime $dateTime): Carbon => Carbon::parse($dateTime))->toArray();
     }
 
     public static function getSchedulePattern(Schedule $schedule, bool $allDay = false): ?string

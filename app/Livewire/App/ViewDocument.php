@@ -11,9 +11,9 @@ use Livewire\Component;
 
 class ViewDocument extends Component
 {
-    public ?Document $document;
+    public ?Document $document = null;
 
-    public ?User $user;
+    public ?User $user = null;
 
     public mixed $model;
 

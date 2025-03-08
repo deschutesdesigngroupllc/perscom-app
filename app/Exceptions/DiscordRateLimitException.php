@@ -13,7 +13,7 @@ class DiscordRateLimitException extends Exception
 
     public static function withData(array $data): DiscordRateLimitException|HigherOrderTapProxy
     {
-        return tap(new DiscordRateLimitException, function (DiscordRateLimitException $exception) use ($data) {
+        return tap(new DiscordRateLimitException, function (DiscordRateLimitException $exception) use ($data): void {
             $exception->setData($data);
         });
     }

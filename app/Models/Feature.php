@@ -92,7 +92,7 @@ class Feature extends Model
      */
     public function enabled(): Attribute
     {
-        return Attribute::get(fn () => true);
+        return Attribute::get(fn (): true => true);
     }
 
     /**

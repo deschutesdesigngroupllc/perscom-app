@@ -33,8 +33,8 @@ class WebhookService
 
         activity('webhook')
             ->withProperties($payload)
-            ->when($model instanceof Model, fn (ActivityLogger $activity) => $activity->causedBy($model))
-            ->when(is_array($model), fn (ActivityLogger $activity) => $activity->causedBy(Auth::user()))
+            ->when($model instanceof Model, fn (ActivityLogger $activity): ActivityLogger => $activity->causedBy($model))
+            ->when(is_array($model), fn (ActivityLogger $activity): ActivityLogger => $activity->causedBy(Auth::user()))
             ->performedOn($webhook)
             ->log($webhook->url);
 

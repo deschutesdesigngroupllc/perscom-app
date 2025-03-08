@@ -11,7 +11,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class EventServiceTest extends TenantTestCase
 {
-    public function test_it_can_generate_a_recurring_rule()
+    public function test_it_can_generate_a_recurring_rule(): void
     {
         $event = Event::factory()->withSchedule()->createQuietly();
 

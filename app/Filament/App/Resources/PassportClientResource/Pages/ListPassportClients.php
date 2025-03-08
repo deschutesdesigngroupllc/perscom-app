@@ -21,7 +21,7 @@ class ListPassportClients extends ListRecords
             Actions\Action::make('logs')
                 ->label('View logs')
                 ->color('gray')
-                ->url(fn () => ApiLogResource::getUrl()),
+                ->url(fn (): string => ApiLogResource::getUrl()),
             Actions\CreateAction::make(),
         ];
     }

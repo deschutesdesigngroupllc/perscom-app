@@ -100,7 +100,7 @@ Route::group([
         'approved',
     ],
     'prefix' => '{version}',
-], static function () {
+], static function (): void {
     Orion::resource('me', MeController::class)
         ->only('index');
 
@@ -204,6 +204,6 @@ Route::group([
     Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
 });
 
-Route::fallback(static function () {
+Route::fallback(static function (): void {
     throw new NotFoundHttpException('The requested API endpoint could not be found or you do not have access to it.');
 })->name('error');

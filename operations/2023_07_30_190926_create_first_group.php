@@ -11,13 +11,13 @@ return new class extends OneTimeOperation
 {
     public function process(): void
     {
-        tenancy()->runForMultiple(Tenant::all(), function ($tenant) {
+        tenancy()->runForMultiple(Tenant::all(), function ($tenant): void {
             $group = Group::create([
                 'name' => 'Group 1',
                 'description' => 'This is your first default group.',
             ]);
 
-            Unit::all()->each(function ($unit) use ($group) {
+            Unit::all()->each(function ($unit) use ($group): void {
                 $unit->groups()->attach($group);
             });
         });

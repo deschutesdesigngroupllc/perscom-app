@@ -27,7 +27,7 @@ class NotificationService
             )->name('*.php');
 
             return collect($finder)
-                ->map(function (SplFileInfo $fileInfo) {
+                ->map(function (SplFileInfo $fileInfo): string {
                     $className = basename($fileInfo->getFilename(), '.php');
 
                     $namespace = '';
@@ -35,29 +35,23 @@ class NotificationService
                         $namespace = trim($matches[1]);
                     }
 
-                    return $namespace
+                    return filled($namespace)
                         ? $namespace.'\\'.$className
                         : $className;
                 })
-                ->reject(function (string $class) {
+                ->reject(function (string $class): bool {
                     if (! class_exists($class)) {
                         return true;
                     }
 
-                    if (! is_subclass_of($class, NotificationCanBeManaged::class)) {
-                        return true;
-                    }
-
-                    return false;
+                    return ! is_subclass_of($class, NotificationCanBeManaged::class);
                 })
-                ->map(function (string|NotificationCanBeManaged $class) {
-                    return ManagedNotification::from([
-                        'group' => $class::notificationGroup(),
-                        'title' => $class::notificationTitle(),
-                        'description' => $class::notificationDescription(),
-                        'notificationClass' => $class,
-                    ]);
-                })
+                ->map(fn (string|NotificationCanBeManaged $class): ManagedNotification => ManagedNotification::from([
+                    'group' => $class::notificationGroup(),
+                    'title' => $class::notificationTitle(),
+                    'description' => $class::notificationDescription(),
+                    'notificationClass' => $class,
+                ]))
                 ->groupBy(fn (ManagedNotification $managedNotification) => $managedNotification->group->value)
                 ->toArray();
         });

@@ -14,7 +14,7 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class AuthorizationControllerTest extends TenantTestCase
 {
-    public function test_authorization_page_can_be_reached()
+    public function test_authorization_page_can_be_reached(): void
     {
         $this->withoutMiddleware(CheckSubscription::class);
 
@@ -30,7 +30,7 @@ class AuthorizationControllerTest extends TenantTestCase
                 'redirect_url' => $client->redirect,
                 'scope' => 'view:user',
             ]))
-            ->assertInertia(fn (AssertableInertia $page) => $page
+            ->assertInertia(fn (AssertableInertia $page): \Illuminate\Testing\Fluent\AssertableJson => $page
                 ->where('client', $client->getKey())
                 ->where('description', $client->description)
                 ->where('name', $client->name)
@@ -41,7 +41,7 @@ class AuthorizationControllerTest extends TenantTestCase
             ->assertSuccessful();
     }
 
-    public function test_authorization_page_forces_login_when_already_logged_in()
+    public function test_authorization_page_forces_login_when_already_logged_in(): void
     {
         $this->withoutMiddleware(CheckSubscription::class);
 
@@ -61,7 +61,7 @@ class AuthorizationControllerTest extends TenantTestCase
             ->assertRedirect('/login');
     }
 
-    public function test_approve_authorization_returns_redirect_as_query_parameters()
+    public function test_approve_authorization_returns_redirect_as_query_parameters(): void
     {
         $this->withoutMiddleware(CheckSubscription::class);
 
@@ -90,7 +90,7 @@ class AuthorizationControllerTest extends TenantTestCase
         $this->assertTrue(array_key_exists('state', $redirect->getAllQueryParameters()));
     }
 
-    public function test_implicit_grant_returns_token_as_fragment_parameter()
+    public function test_implicit_grant_returns_token_as_fragment_parameter(): void
     {
         $this->withoutMiddleware(CheckSubscription::class);
 

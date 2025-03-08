@@ -46,12 +46,12 @@ class EmailsSent extends ChartWidget
             'datasets' => [
                 [
                     'label' => 'Emails sent',
-                    'data' => $emailsSentData->map(fn (TrendValue $value) => $value->aggregate),
+                    'data' => $emailsSentData->map(fn (TrendValue $value): mixed => $value->aggregate),
                     'fill' => true,
                     'borderColor' => '#2563eb',
                 ],
             ],
-            'labels' => $emailsSentData->map(fn (TrendValue $value) => $value->date),
+            'labels' => $emailsSentData->map(fn (TrendValue $value): string => $value->date),
         ];
     }
 

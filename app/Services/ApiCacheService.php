@@ -69,13 +69,11 @@ class ApiCacheService
             'Fastly-Soft-Purge' => 1,
         ];
 
-        return Http::pool(function (Pool $pool) use ($headers, $tags, $url) {
-            return $tags->map(fn ($tag) => $pool
-                ->baseUrl($url)
-                ->withHeaders($headers)
-                ->post($tag)
-            )->toArray();
-        });
+        return Http::pool(fn (Pool $pool) => $tags->map(fn ($tag) => $pool
+            ->baseUrl($url)
+            ->withHeaders($headers)
+            ->post($tag)
+        )->toArray());
     }
 
     public function getTenantCacheTag(): string

@@ -35,7 +35,7 @@ class ServiceRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         Action::make('select')
-                            ->visible(fn (?ServiceRecord $record) => isset($record->document))
+                            ->visible(fn (?ServiceRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
                             ->modalHeading(fn (?ServiceRecord $record) => $record->document->name ?? 'Document')

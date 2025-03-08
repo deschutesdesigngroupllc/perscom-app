@@ -22,7 +22,7 @@ class CreateCombatRecord extends CreateRecord
     {
         $notificationData = data_get($data, 'model_notifications') ?? [];
 
-        $models = $this->performModelCreations(data_forget($data, 'model_notifications'), function (CombatRecord $record) use ($notificationData) {
+        $models = $this->performModelCreations(data_forget($data, 'model_notifications'), function (CombatRecord $record) use ($notificationData): void {
             $this->performModelNotificationInserts($record, $notificationData);
         });
 

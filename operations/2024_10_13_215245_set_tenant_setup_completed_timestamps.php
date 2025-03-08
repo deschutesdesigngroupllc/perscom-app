@@ -9,7 +9,7 @@ return new class extends OneTimeOperation
 {
     public function process(): void
     {
-        tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant) {
+        tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
             $tenant->updateQuietly([
                 'setup_completed_at' => $tenant->created_at,
             ]);

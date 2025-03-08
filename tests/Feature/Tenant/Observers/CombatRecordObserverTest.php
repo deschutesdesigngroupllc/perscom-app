@@ -16,13 +16,13 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class CombatRecordObserverTest extends TenantTestCase
 {
-    public function test_create_combat_record_notification_sent()
+    public function test_create_combat_record_notification_sent(): void
     {
         Notification::fake();
 
         $combat = CombatRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewCombatRecord::class, function (NewCombatRecord $notification, $channels) use ($combat) {
+        Notification::assertSentTo($user, NewCombatRecord::class, function (NewCombatRecord $notification, $channels) use ($combat): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($combat->user);
@@ -32,7 +32,7 @@ class CombatRecordObserverTest extends TenantTestCase
         });
     }
 
-    public function test_create_combat_record_webhook_sent()
+    public function test_create_combat_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -45,7 +45,7 @@ class CombatRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_combat_record_webhook_sent()
+    public function test_update_combat_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -61,7 +61,7 @@ class CombatRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_combat_record_webhook_sent()
+    public function test_delete_combat_record_webhook_sent(): void
     {
         Queue::fake();
 

@@ -134,7 +134,7 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
     {
         parent::boot();
 
-        static::creating(function (AssignmentRecord $record) {
+        static::creating(function (AssignmentRecord $record): void {
             if (filled($record->unit_slot_id)) {
                 $record->forceFill([
                     'unit_id' => $record->unit_slot->unit_id ?? null,
@@ -157,21 +157,13 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
 
     public function itemForNewsfeedItem(): ?string
     {
-        $position = optional($this->position, function (Position $position) {
-            return $position->name;
-        }) ?? 'No Position Assigned';
+        $position = optional($this->position, fn (Position $position) => $position->name) ?? 'No Position Assigned';
 
-        $specialty = optional($this->specialty, function (Specialty $specialty) {
-            return $specialty->name;
-        }) ?? 'No Specialty Assigned';
+        $specialty = optional($this->specialty, fn (Specialty $specialty) => $specialty->name) ?? 'No Specialty Assigned';
 
-        $unit = optional($this->unit, function (Unit $unit) {
-            return $unit->name;
-        }) ?? 'No Unit Assigned';
+        $unit = optional($this->unit, fn (Unit $unit) => $unit->name) ?? 'No Unit Assigned';
 
-        $status = optional($this->status, function (Status $status) {
-            return $status->name;
-        }) ?? 'No Status Assigned';
+        $status = optional($this->status, fn (Status $status) => $status->name) ?? 'No Status Assigned';
 
         return "Position: $position<br> Specialty: $specialty<br> Unit: $unit<br>Status: $status<br>";
     }

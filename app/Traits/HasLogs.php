@@ -50,14 +50,14 @@ trait HasLogs
             'text' => $model->textForNewsfeedItem(),
         ];
 
-        if ($item = $model->itemForNewsfeedItem()) {
+        if (filled($item = $model->itemForNewsfeedItem())) {
             $properties['item'] = $item;
         }
 
         $activity = activity('newsfeed')
             ->withProperties($properties);
 
-        if ($recipient = $model->recipientForNewsfeedItem()) {
+        if (($recipient = $model->recipientForNewsfeedItem()) instanceof \App\Models\User) {
             $activity = $activity->performedOn($recipient);
         }
 
@@ -70,7 +70,7 @@ trait HasLogs
 
     protected static function bootHasLogs(): void
     {
-        static::created(function ($model) {
+        static::created(function ($model): void {
             if ($model instanceof ShouldGenerateNewsfeedItems) {
                 $model->generateCreatedNewsfeedItem($model);
             }

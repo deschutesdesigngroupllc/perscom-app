@@ -55,11 +55,11 @@ class NewAlert extends Notification implements ShouldQueue
         return (new SlackMessage)
             ->text($this->alert->title)
             ->headerBlock($this->alert->title)
-            ->sectionBlock(function (SectionBlock $block) use ($converter) {
+            ->sectionBlock(function (SectionBlock $block) use ($converter): void {
                 $block->text($converter->convert($this->alert->message));
             })
-            ->when(filled($this->alert->url), function (SlackMessage $message) {
-                $message->actionsBlock(function (ActionsBlock $block) {
+            ->when(filled($this->alert->url), function (SlackMessage $message): void {
+                $message->actionsBlock(function (ActionsBlock $block): void {
                     $block->button($this->alert->link_text)
                         ->url($this->alert->url)
                         ->primary();

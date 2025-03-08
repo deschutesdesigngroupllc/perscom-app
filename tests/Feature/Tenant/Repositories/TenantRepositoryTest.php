@@ -10,7 +10,7 @@ use Tests\Feature\Tenant\Models\TenantTest;
 
 class TenantRepositoryTest extends TenantTest
 {
-    public function test_get_all_returns_correct_tenants()
+    public function test_get_all_returns_correct_tenants(): void
     {
         $tenantRepository = app(TenantRepository::class);
 
@@ -20,7 +20,7 @@ class TenantRepositoryTest extends TenantTest
         $this->assertSame(Tenant::query()->count(), $tenants->count());
     }
 
-    public function test_find_by_key_returns_correct_tenant()
+    public function test_find_by_key_returns_correct_tenant(): void
     {
         $tenantRepository = app(TenantRepository::class);
 
@@ -30,7 +30,7 @@ class TenantRepositoryTest extends TenantTest
         $this->assertSame($this->tenant->getKey(), $tenant->getKey());
     }
 
-    public function test_find_by_id_returns_correct_tenant()
+    public function test_find_by_id_returns_correct_tenant(): void
     {
         $tenantRepository = app(TenantRepository::class);
 

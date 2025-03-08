@@ -22,21 +22,21 @@ class EventObserver
         //            defer(fn () => collect($event->notifications_interval)->each( fn ($interval) => SendUpcomingEventNotification::handle($event, $interval)));
         //        }
 
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::EVENT_CREATED->value])->each(function (Webhook $webhook) use ($event) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::EVENT_CREATED->value])->each(function (Webhook $webhook) use ($event): void {
             WebhookService::dispatch($webhook, WebhookEvent::EVENT_CREATED->value, $event);
         });
     }
 
     public function updated(Event $event): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::EVENT_UPDATED->value])->each(function (Webhook $webhook) use ($event) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::EVENT_UPDATED->value])->each(function (Webhook $webhook) use ($event): void {
             WebhookService::dispatch($webhook, WebhookEvent::EVENT_UPDATED->value, $event);
         });
     }
 
     public function deleted(Event $event): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::EVENT_DELETED->value])->each(function (Webhook $webhook) use ($event) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::EVENT_DELETED->value])->each(function (Webhook $webhook) use ($event): void {
             WebhookService::dispatch($webhook, WebhookEvent::EVENT_DELETED->value, $event);
         });
     }

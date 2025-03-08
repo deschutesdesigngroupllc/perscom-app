@@ -32,7 +32,7 @@ class Submit extends Page implements HasForms
 
     public FormModel $submissionForm;
 
-    public ?array $data;
+    public ?array $data = null;
 
     protected static ?string $slug = '/forms/submit/{record}';
 

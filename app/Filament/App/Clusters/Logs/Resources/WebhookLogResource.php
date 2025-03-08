@@ -68,7 +68,7 @@ class WebhookLogResource extends BaseResource
                     ->sortable()
                     ->color('gray')
                     ->badge()
-                    ->getStateUsing(fn (WebhookLog $record) => $record->getExtraProperty('event')),
+                    ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('event')),
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable()
@@ -79,15 +79,13 @@ class WebhookLogResource extends BaseResource
                     ->searchable()
                     ->multiple()
                     ->options(WebhookEvent::class)
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                filled(data_get($data, 'values')),
-                                function (Builder $query) use ($data) {
-                                    $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->event', $event)));
-                                },
-                            );
-                    }),
+                    ->query(fn (Builder $query, array $data): Builder => $query
+                        ->when(
+                            filled(data_get($data, 'values')),
+                            function (Builder $query) use ($data): void {
+                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->event', $event)));
+                            },
+                        )),
                 Tables\Filters\QueryBuilder::make()
                     ->constraints([
                         Tables\Filters\QueryBuilder\Constraints\Constraint::make('request_id')
@@ -99,20 +97,20 @@ class WebhookLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
+                                                    function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
                                                         $query->where('properties->request_id', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
-                                        } else {
-                                            return $query
-                                                ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
-                                                        $text = data_get($settings, 'text');
-                                                        $query->where('properties->request_id', 'LIKE', "%$text%");
-                                                    }
-                                                );
                                         }
+
+                                        return $query
+                                            ->when(filled(data_get($settings, 'text')),
+                                                function (Builder $query) use ($settings): void {
+                                                    $text = data_get($settings, 'text');
+                                                    $query->where('properties->request_id', 'LIKE', "%$text%");
+                                                }
+                                            );
                                     }),
                             ]),
                         Tables\Filters\QueryBuilder\Constraints\Constraint::make('trace_id')
@@ -124,20 +122,20 @@ class WebhookLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
+                                                    function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
                                                         $query->where('properties->trace_id', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
-                                        } else {
-                                            return $query
-                                                ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
-                                                        $text = data_get($settings, 'text');
-                                                        $query->where('properties->trace_id', 'LIKE', "%$text%");
-                                                    }
-                                                );
                                         }
+
+                                        return $query
+                                            ->when(filled(data_get($settings, 'text')),
+                                                function (Builder $query) use ($settings): void {
+                                                    $text = data_get($settings, 'text');
+                                                    $query->where('properties->trace_id', 'LIKE', "%$text%");
+                                                }
+                                            );
                                     }),
                             ]),
                         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('created_at')

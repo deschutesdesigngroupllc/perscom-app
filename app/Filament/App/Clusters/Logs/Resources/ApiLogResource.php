@@ -75,12 +75,12 @@ class ApiLogResource extends BaseResource
                     ->badge()
                     ->color('gray'),
                 Tables\Columns\TextColumn::make('status')
-                    ->color(fn ($state) => match (true) {
+                    ->color(fn ($state): string => match (true) {
                         $state >= 200 && $state < 300 => 'success',
                         default => 'danger',
                     })
                     ->badge()
-                    ->suffix(fn ($state) => ' '.Response::$statusTexts[(int) $state]),
+                    ->suffix(fn ($state): string => ' '.Response::$statusTexts[(int) $state]),
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable()
@@ -95,15 +95,13 @@ class ApiLogResource extends BaseResource
                     ->preload()
                     ->multiple()
                     ->options(User::orderBy('name')->pluck('name', 'id'))
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                filled(data_get($data, 'values')),
-                                function (Builder $query) use ($data) {
-                                    $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($id) => $query->orWhereMorphRelation('causer', User::class, 'causer_id', '=', $id)));
-                                },
-                            );
-                    }),
+                    ->query(fn (Builder $query, array $data): Builder => $query
+                        ->when(
+                            filled(data_get($data, 'values')),
+                            function (Builder $query) use ($data): void {
+                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($id) => $query->orWhereMorphRelation('causer', User::class, 'causer_id', '=', $id)));
+                            },
+                        )),
                 Tables\Filters\SelectFilter::make('log_name')
                     ->label('Log')
                     ->options([
@@ -119,15 +117,13 @@ class ApiLogResource extends BaseResource
                         'PATCH' => 'PATCH',
                         'DELETE' => 'DELETE',
                     ])
-                    ->query(function (Builder $query, array $data): Builder {
-                        return $query
-                            ->when(
-                                filled(data_get($data, 'values')),
-                                function (Builder $query) use ($data) {
-                                    $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($method) => $query->orWhereJsonContains('properties->method', $method)));
-                                },
-                            );
-                    }),
+                    ->query(fn (Builder $query, array $data): Builder => $query
+                        ->when(
+                            filled(data_get($data, 'values')),
+                            function (Builder $query) use ($data): void {
+                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($method) => $query->orWhereJsonContains('properties->method', $method)));
+                            },
+                        )),
                 Tables\Filters\QueryBuilder::make()
                     ->constraints([
                         Tables\Filters\QueryBuilder\Constraints\Constraint::make('request_id')
@@ -139,20 +135,20 @@ class ApiLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
+                                                    function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
                                                         $query->where('properties->request_id', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
-                                        } else {
-                                            return $query
-                                                ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
-                                                        $text = data_get($settings, 'text');
-                                                        $query->where('properties->request_id', 'LIKE', "%$text%");
-                                                    }
-                                                );
                                         }
+
+                                        return $query
+                                            ->when(filled(data_get($settings, 'text')),
+                                                function (Builder $query) use ($settings): void {
+                                                    $text = data_get($settings, 'text');
+                                                    $query->where('properties->request_id', 'LIKE', "%$text%");
+                                                }
+                                            );
                                     }),
                             ]),
                         Tables\Filters\QueryBuilder\Constraints\Constraint::make('trace_id')
@@ -164,20 +160,20 @@ class ApiLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
+                                                    function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
                                                         $query->where('properties->trace_id', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
-                                        } else {
-                                            return $query
-                                                ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
-                                                        $text = data_get($settings, 'text');
-                                                        $query->where('properties->trace_id', 'LIKE', "%$text%");
-                                                    }
-                                                );
                                         }
+
+                                        return $query
+                                            ->when(filled(data_get($settings, 'text')),
+                                                function (Builder $query) use ($settings): void {
+                                                    $text = data_get($settings, 'text');
+                                                    $query->where('properties->trace_id', 'LIKE', "%$text%");
+                                                }
+                                            );
                                     }),
                             ]),
                         Tables\Filters\QueryBuilder\Constraints\Constraint::make('endpoint')
@@ -188,20 +184,20 @@ class ApiLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
+                                                    function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
                                                         $query->where('properties->endpoint', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
-                                        } else {
-                                            return $query
-                                                ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
-                                                        $text = data_get($settings, 'text');
-                                                        $query->where('properties->endpoint', 'LIKE', "%$text%");
-                                                    }
-                                                );
                                         }
+
+                                        return $query
+                                            ->when(filled(data_get($settings, 'text')),
+                                                function (Builder $query) use ($settings): void {
+                                                    $text = data_get($settings, 'text');
+                                                    $query->where('properties->endpoint', 'LIKE', "%$text%");
+                                                }
+                                            );
                                     }),
                             ]),
                         Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('created_at')
@@ -214,20 +210,20 @@ class ApiLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
+                                                    function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
                                                         $query->where('properties->status', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
-                                        } else {
-                                            return $query
-                                                ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings) {
-                                                        $text = data_get($settings, 'text');
-                                                        $query->where('properties->status', 'LIKE', "%$text%");
-                                                    }
-                                                );
                                         }
+
+                                        return $query
+                                            ->when(filled(data_get($settings, 'text')),
+                                                function (Builder $query) use ($settings): void {
+                                                    $text = data_get($settings, 'text');
+                                                    $query->where('properties->status', 'LIKE', "%$text%");
+                                                }
+                                            );
 
                                     }),
                             ]),
@@ -271,7 +267,7 @@ class ApiLogResource extends BaseResource
                                 ->valueLabel('Value')
                                 ->helperText('Sensitive headers are hidden by default.')
                                 ->getStateUsing(fn (?ApiLog $record) => collect($record->request_headers)
-                                    ->reject(fn ($value, $key) => in_array(Str::lower($key), [
+                                    ->reject(fn ($value, $key): bool => in_array(Str::lower($key), [
                                         'authorization',
                                         '_token',
                                         'x-csrf-token',
@@ -294,8 +290,8 @@ class ApiLogResource extends BaseResource
                         ->icon('heroicon-o-cloud-arrow-down')
                         ->schema([
                             TextEntry::make('status')
-                                ->suffix(fn ($state) => ' '.Response::$statusTexts[(int) $state])
-                                ->color(fn ($state) => match (true) {
+                                ->suffix(fn ($state): string => ' '.Response::$statusTexts[(int) $state])
+                                ->color(fn ($state): string => match (true) {
                                     $state >= 200 && $state < 300 => 'success',
                                     default => 'danger',
                                 })

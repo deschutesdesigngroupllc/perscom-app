@@ -29,8 +29,8 @@ class CalculateSchedules implements ShouldQueue
             return;
         }
 
-        Tenant::findOrFail($this->tenantKey)->run(function () {
-            Schedule::all()->each(function (Schedule $schedule) {
+        Tenant::findOrFail($this->tenantKey)->run(function (): void {
+            Schedule::all()->each(function (Schedule $schedule): void {
                 $schedule->updateQuietly([
                     'next_occurrence' => ScheduleService::nextOccurrence($schedule),
                     'last_occurrence' => ScheduleService::lastOccurrence($schedule),

@@ -21,7 +21,7 @@ class ListWebhooks extends ListRecords
             Actions\Action::make('logs')
                 ->label('View logs')
                 ->color('gray')
-                ->url(fn () => WebhookLogResource::getUrl()),
+                ->url(fn (): string => WebhookLogResource::getUrl()),
             Actions\CreateAction::make(),
         ];
     }

@@ -48,7 +48,7 @@ class FormResource extends BaseResource
                                 Forms\Components\TextInput::make('name')
                                     ->helperText('The name of the form.')
                                     ->lazy()
-                                    ->afterStateUpdated(function (Forms\Set $set, $state, $operation) {
+                                    ->afterStateUpdated(function (Forms\Set $set, $state, $operation): void {
                                         if ($operation === 'create') {
                                             $set('slug', Str::slug($state));
                                         }
@@ -84,7 +84,7 @@ class FormResource extends BaseResource
                                     ->label('Status')
                                     ->relationship('submission_status', 'name')
                                     ->helperText('The default status of the submission when it is submitted.')
-                                    ->createOptionForm(fn ($form) => StatusResource::form($form)),
+                                    ->createOptionForm(fn ($form): Form => StatusResource::form($form)),
                                 Forms\Components\Textarea::make('success_message')
                                     ->label('Message')
                                     ->nullable()

@@ -15,7 +15,7 @@ class CacheControllerTest extends TenantTestCase
     use MakesApiRequests;
     use WithApiKey;
 
-    public function test_it_queues_the_purge_api_cache_job()
+    public function test_it_queues_the_purge_api_cache_job(): void
     {
         $this->withoutApiMiddleware();
 
@@ -30,12 +30,10 @@ class CacheControllerTest extends TenantTestCase
                 'status' => 'okay',
             ]);
 
-        Queue::assertPushed(PurgeApiCache::class, function (PurgeApiCache $job) {
-            return $job->tags === "tenant:{$this->tenant->getTenantKey()}";
-        });
+        Queue::assertPushed(PurgeApiCache::class, fn (PurgeApiCache $job): bool => $job->tags === "tenant:{$this->tenant->getTenantKey()}");
     }
 
-    public function test_cannot_call_api_with_incorrect_scopes()
+    public function test_cannot_call_api_with_incorrect_scopes(): void
     {
         $this->withoutApiMiddleware();
 

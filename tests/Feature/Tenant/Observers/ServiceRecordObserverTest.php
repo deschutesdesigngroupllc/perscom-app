@@ -16,13 +16,13 @@ use Tests\Feature\Tenant\TenantTestCase;
 
 class ServiceRecordObserverTest extends TenantTestCase
 {
-    public function test_create_service_record_notification_sent()
+    public function test_create_service_record_notification_sent(): void
     {
         Notification::fake();
 
         $service = ServiceRecord::factory()->for($user = User::factory()->create())->create();
 
-        Notification::assertSentTo($user, NewServiceRecord::class, function (NewServiceRecord $notification, $channels) use ($service) {
+        Notification::assertSentTo($user, NewServiceRecord::class, function (NewServiceRecord $notification, $channels) use ($service): true {
             $this->assertContains('mail', $channels);
 
             $mail = $notification->toMail($service->user);
@@ -32,7 +32,7 @@ class ServiceRecordObserverTest extends TenantTestCase
         });
     }
 
-    public function test_create_service_record_webhook_sent()
+    public function test_create_service_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -45,7 +45,7 @@ class ServiceRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_update_service_record_webhook_sent()
+    public function test_update_service_record_webhook_sent(): void
     {
         Queue::fake();
 
@@ -61,7 +61,7 @@ class ServiceRecordObserverTest extends TenantTestCase
         Queue::assertPushed(CallWebhookJob::class);
     }
 
-    public function test_delete_service_record_webhook_sent()
+    public function test_delete_service_record_webhook_sent(): void
     {
         Queue::fake();
 

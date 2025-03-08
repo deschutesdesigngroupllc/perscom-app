@@ -84,7 +84,7 @@ class ModelNotification extends MorphPivot
         }
 
         return [
-            'user_type' => get_class($user),
+            'user_type' => $user::class,
             'user_id' => $user->id,
             'event' => $event,
             'subject' => $subject,
@@ -104,7 +104,7 @@ class ModelNotification extends MorphPivot
         }
 
         return [
-            'group_type' => get_class($group),
+            'group_type' => $group::class,
             'group_id' => $group->id,
             'event' => $event,
             'subject' => $subject,
@@ -124,7 +124,7 @@ class ModelNotification extends MorphPivot
         }
 
         return [
-            'unit_type' => get_class($unit),
+            'unit_type' => $unit::class,
             'unit_id' => $unit->id,
             'event' => $event,
             'subject' => $subject,

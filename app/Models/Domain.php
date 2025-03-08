@@ -69,9 +69,7 @@ class Domain extends BaseDomain
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => optional($this->host, static function ($host) {
-                return rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/');
-            }),
+            get: fn (): string => optional($this->host, static fn ($host): string => rtrim(Url::fromString($host)->withScheme(config('app.scheme'))->__toString(), '/')),
         )->shouldCache();
     }
 
@@ -81,11 +79,9 @@ class Domain extends BaseDomain
     public function host(): Attribute
     {
         return Attribute::make(
-            get: fn (): string => optional($this->domain, static function ($domain) {
-                return Url::fromString(Str::endsWith($domain, config('tenancy.central_domains'))
-                    ? $domain
-                    : $domain.config('app.base_url'))->__toString();
-            })
+            get: fn (): string => optional($this->domain, static fn (string $domain): string => Url::fromString(Str::endsWith($domain, config('tenancy.central_domains'))
+                ? $domain
+                : $domain.config('app.base_url'))->__toString())
         )->shouldCache();
     }
 

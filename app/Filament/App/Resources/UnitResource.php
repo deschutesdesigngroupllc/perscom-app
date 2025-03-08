@@ -89,11 +89,11 @@ class UnitResource extends BaseResource
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\Livewire::make(SlotsRelationManager::class, fn (?Unit $record) => [
+                                Forms\Components\Livewire::make(SlotsRelationManager::class, fn (?Unit $record): array => [
                                     'ownerRecord' => $record,
                                     'pageClass' => Pages\EditUnit::class,
                                 ])
-                                    ->visible(function () {
+                                    ->visible(function (): bool {
                                         /** @var DashboardSettings $settings */
                                         $settings = app(DashboardSettings::class);
 
@@ -129,7 +129,7 @@ class UnitResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->recordClasses(fn (?Unit $record) => match ($record->hidden) {
+            ->recordClasses(fn (?Unit $record): ?string => match ($record->hidden) {
                 true => '!border-s-2 !border-s-red-600',
                 default => null,
             })

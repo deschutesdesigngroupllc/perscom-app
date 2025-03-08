@@ -51,9 +51,7 @@ class UserSettingsService
             /** @var UserSettings $settings */
             $settings = app(UserSettings::class);
 
-            return collect($settings->toArray())->map(function ($values) use ($user) {
-                return $values[$user->getKey()] ?? null;
-            })->filter()->toArray();
+            return collect($settings->toArray())->map(fn ($values): mixed => $values[$user->getKey()] ?? null)->filter()->toArray();
         });
 
         return data_get($settings, $key) ?? value($default);

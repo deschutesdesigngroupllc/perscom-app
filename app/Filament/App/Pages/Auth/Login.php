@@ -23,8 +23,8 @@ class Login extends BaseLogin
 
         return $form
             ->schema([
-                $email->placeholder(fn () => $demo ? 'demo@perscom.io' : null),
-                $password->placeholder(fn () => $demo ? 'password' : null),
+                $email->placeholder(fn (): ?string => $demo ? 'demo@perscom.io' : null),
+                $password->placeholder(fn (): ?string => $demo ? 'password' : null),
                 $this->getRememberFormComponent(),
             ]);
     }

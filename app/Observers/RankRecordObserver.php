@@ -23,21 +23,21 @@ class RankRecordObserver
 
         Notification::send($rank->user, new NewRankRecord($rank));
 
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($rank) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_CREATED->value])->each(function (Webhook $webhook) use ($rank): void {
             WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_CREATED->value, $rank);
         });
     }
 
     public function updated(RankRecord $rank): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($rank) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_UPDATED->value])->each(function (Webhook $webhook) use ($rank): void {
             WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_UPDATED->value, $rank);
         });
     }
 
     public function deleted(RankRecord $rank): void
     {
-        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($rank) {
+        Webhook::query()->whereJsonContains('events', [WebhookEvent::RANK_RECORD_DELETED->value])->each(function (Webhook $webhook) use ($rank): void {
             WebhookService::dispatch($webhook, WebhookEvent::RANK_RECORD_DELETED->value, $rank);
         });
     }

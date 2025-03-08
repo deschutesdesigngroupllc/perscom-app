@@ -162,9 +162,7 @@ class Event extends Model implements HasLabel
     public function length(): Attribute
     {
         return Attribute::get(
-            fn () => optional($this->ends, function () {
-                return $this->starts->diff($this->ends);
-            }) ?? null
+            fn () => optional($this->ends, fn () => $this->starts->diff($this->ends)) ?? null
         )->shouldCache();
     }
 

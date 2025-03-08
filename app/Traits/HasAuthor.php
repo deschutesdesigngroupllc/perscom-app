@@ -34,7 +34,7 @@ trait HasAuthor
 
     protected static function bootHasAuthor(): void
     {
-        static::creating(function ($model) {
+        static::creating(function ($model): void {
             if (($user = Auth::user()) && ! $model->author_id) {
                 /** @var User $user */
                 $model->author()->associate($user);

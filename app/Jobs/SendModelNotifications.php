@@ -39,23 +39,21 @@ class SendModelNotifications implements ShouldQueue
         $recipients = collect();
 
         $modelNotifications = $this->model->modelNotifications()->where('event', $this->event)->get();
-        $modelNotifications->each(function (ModelNotification $modelNotification) use ($recipients) {
+        $modelNotifications->each(function (ModelNotification $modelNotification) use ($recipients): void {
             $notificationRecipients = $modelNotification->getRecipients();
             if (filled($notificationRecipients)) {
-                $notificationRecipients->each(function (User $user) use ($modelNotification, $recipients) {
+                $notificationRecipients->each(function (User $user) use ($modelNotification, $recipients): void {
                     $recipients->put($user->getKey(), $modelNotification);
                 });
             }
         });
 
-        $recipients->each(function (ModelNotification $modelNotification, $userId) {
+        $recipients->each(function (ModelNotification $modelNotification, $userId): void {
             $user = User::findOrFail($userId);
             $user->notify(new NewModelNotification($modelNotification));
         });
 
-        $hasDiscordPublic = $modelNotifications->contains(function (ModelNotification $notification) {
-            return Collection::wrap($notification->channels)->contains(NotificationChannel::DISCORD_PUBLIC);
-        });
+        $hasDiscordPublic = $modelNotifications->contains(fn (ModelNotification $notification) => Collection::wrap($notification->channels)->contains(NotificationChannel::DISCORD_PUBLIC));
 
         if ($hasDiscordPublic && filled($recipients) && filled($modelNotifications)) {
             Notification::sendNow($recipients->first(), new NewModelNotification($modelNotifications->first()), [DiscordPublicChannel::class]);

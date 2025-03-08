@@ -45,7 +45,7 @@ class ModelNotification
                     ->columnSpanFull()
                     ->tabs([
                         Tabs\Tab::make('Recipients')
-                            ->visible(fn (Get $get) => $get('enabled'))
+                            ->visible(fn (Get $get): mixed => $get('enabled'))
                             ->icon('heroicon-o-users')
                             ->schema([
                                 Select::make('groups')
@@ -56,7 +56,7 @@ class ModelNotification
                                     ->searchable()
                                     ->options(fn () => Group::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
-                                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
                                                 $fail('When notifications are enabled, at least one recipient group should be selected.');
                                             }
@@ -70,7 +70,7 @@ class ModelNotification
                                     ->searchable()
                                     ->options(fn () => Unit::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
-                                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
                                                 $fail('When notifications are enabled, at least one recipient group should be selected.');
                                             }
@@ -84,7 +84,7 @@ class ModelNotification
                                     ->searchable()
                                     ->options(fn () => User::query()->orderBy('name')->pluck('name', 'id'))
                                     ->rules([
-                                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get) {
+                                        fn (Get $get): Closure => function (string $attribute, $value, Closure $fail) use ($get): void {
                                             if (filled($get('enabled')) && blank($get('groups')) && blank($get('units')) && blank($get('users'))) {
                                                 $fail('When notifications are enabled, at least one recipient group should be selected.');
                                             }
@@ -92,7 +92,7 @@ class ModelNotification
                                     ]),
                             ]),
                         Tabs\Tab::make('Notification')
-                            ->visible(fn (Get $get) => $get('enabled'))
+                            ->visible(fn (Get $get): mixed => $get('enabled'))
                             ->icon('heroicon-o-bell')
                             ->schema([
                                 TextInput::make('subject')
@@ -143,17 +143,13 @@ class ModelNotification
                                     ])
                                     ->searchable()
                                     ->bulkToggleable()
-                                    ->descriptions(function () {
-                                        return collect(NotificationChannel::cases())
-                                            ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
-                                            ->toArray();
-                                    })
-                                    ->options(function () {
-                                        return collect(NotificationChannel::cases())
-                                            ->filter(fn (NotificationChannel $channel) => $channel->getEnabled())
-                                            ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
-                                            ->toArray();
-                                    }),
+                                    ->descriptions(fn () => collect(NotificationChannel::cases())
+                                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
+                                        ->toArray())
+                                    ->options(fn () => collect(NotificationChannel::cases())
+                                        ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
+                                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
+                                        ->toArray()),
                             ]),
                     ]),
             ]);

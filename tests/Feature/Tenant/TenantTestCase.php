@@ -115,7 +115,7 @@ class TenantTestCase extends TestCase
         $connection->beginTransaction();
         $connection->setEventDispatcher($dispatcher);
 
-        $this->beforeApplicationDestroyed(function () use ($database) {
+        $this->beforeApplicationDestroyed(function () use ($database): void {
             $connection = $database->connection('tenant');
             $dispatcher = $connection->getEventDispatcher();
 
@@ -138,7 +138,7 @@ class TenantTestCase extends TestCase
 
         $this->setupTenantTransactions();
 
-        $this->beforeApplicationDestroyed(function () {
+        $this->beforeApplicationDestroyed(function (): void {
             tenancy()->end();
         });
     }

@@ -60,7 +60,7 @@ class Schedule
                             ->required()
                             ->options(ScheduleFrequency::class)
                             ->default('WEEKLY')
-                            ->columnSpan(fn ($state) => $state === 'DAILY' ? 2 : 1),
+                            ->columnSpan(fn ($state): int => $state === 'DAILY' ? 2 : 1),
                         Forms\Components\Select::make('by_day')
                             ->live()
                             ->helperText('The day(s) of the week the schedule will repeat.')
@@ -68,7 +68,7 @@ class Schedule
                             ->multiple()
                             ->label('On')
                             ->default('never')
-                            ->default(fn () => [Str::of(today()->format('D'))->substr(0, 2)->upper()->toString()])
+                            ->default(fn (): array => [Str::of(today()->format('D'))->substr(0, 2)->upper()->toString()])
                             ->options([
                                 'SU' => 'Sunday',
                                 'MO' => 'Monday',
@@ -78,7 +78,7 @@ class Schedule
                                 'FR' => 'Friday',
                                 'SA' => 'Saturday',
                             ])
-                            ->hidden(fn (Forms\Get $get) => $get('frequency') === 'DAILY' || $get('frequency') === 'MONTHLY' || $get('frequency') === 'YEARLY'),
+                            ->hidden(fn (Forms\Get $get): bool => $get('frequency') === 'DAILY' || $get('frequency') === 'MONTHLY' || $get('frequency') === 'YEARLY'),
                         Forms\Components\Select::make('by_month_day')
                             ->live()
                             ->helperText('The day of the month the schedule will repeat.')
@@ -92,11 +92,9 @@ class Schedule
                                     'monthOverflow' => false,
                                 ]));
 
-                                return $period->mapWithKeys(function ($value) {
-                                    return [$value->format('j') => $value->format('jS')];
-                                });
+                                return $period->mapWithKeys(fn ($value) => [$value->format('j') => $value->format('jS')]);
                             })
-                            ->hidden(fn (Forms\Get $get) => $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'YEARLY'),
+                            ->hidden(fn (Forms\Get $get): bool => $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'YEARLY'),
                         Forms\Components\Select::make('by_month')
                             ->live()
                             ->helperText('The month of the year the schedule will repeat.')
@@ -117,7 +115,7 @@ class Schedule
                                 '11' => 'November',
                                 '12' => 'December',
                             ])
-                            ->hidden(fn (Forms\Get $get) => $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'MONTHLY'),
+                            ->hidden(fn (Forms\Get $get): bool => $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'MONTHLY'),
                     ]),
                 Forms\Components\Select::make('end_type')
                     ->live()
@@ -125,15 +123,15 @@ class Schedule
                     ->label('Ends')
                     ->default('never')
                     ->options(ScheduleEndType::class)
-                    ->columnSpan(fn ($state) => $state !== 'never' ? 1 : 3),
+                    ->columnSpan(fn ($state): int => $state !== 'never' ? 1 : 3),
                 Forms\Components\TextInput::make('count')
                     ->live()
                     ->columnSpan(2)
                     ->default(1)
                     ->label('Occurrences')
                     ->helperText('The number of occurrences before the recurring schedule ends.')
-                    ->hidden(fn (Forms\Get $get) => $get('end_type') !== 'after')
-                    ->required(fn (Forms\Get $get) => $get('end_type') === 'after')
+                    ->hidden(fn (Forms\Get $get): bool => $get('end_type') !== 'after')
+                    ->required(fn (Forms\Get $get): bool => $get('end_type') === 'after')
                     ->numeric(),
                 Forms\Components\DatePicker::make('until')
                     ->live()
@@ -141,9 +139,9 @@ class Schedule
                     ->default(today()->addMonth())
                     ->label('End Date')
                     ->helperText('The date the recurring schedule will end.')
-                    ->hidden(fn (Forms\Get $get) => ScheduleEndType::from($get('end_type')) !== ScheduleEndType::ON)
-                    ->required(fn (Forms\Get $get) => ScheduleEndType::from($get('end_type')) === ScheduleEndType::ON)
-                    ->dehydrateStateUsing(function ($state, Forms\Get $get) {
+                    ->hidden(fn (Forms\Get $get): bool => ScheduleEndType::from($get('end_type')) !== ScheduleEndType::ON)
+                    ->required(fn (Forms\Get $get): bool => ScheduleEndType::from($get('end_type')) === ScheduleEndType::ON)
+                    ->dehydrateStateUsing(function ($state, Forms\Get $get): Carbon {
                         $start = Carbon::parse($get('start'));
                         $until = Carbon::parse($state);
 

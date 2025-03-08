@@ -19,9 +19,7 @@ class SingleSignOnFeature extends BaseFeature
             App::isAdmin() && ! App::runningInConsole() => false,
             App::isDemo() => true,
             $tenant?->onTrial() => true,
-            optional($tenant->sparkPlan(), static function (Plan $plan) {
-                return in_array(__CLASS__, $plan->options, true);
-            }) === true => true,
+            optional($tenant->sparkPlan(), static fn (Plan $plan): bool => in_array(self::class, $plan->options, true)) === true => true,
             default => false,
         };
     }

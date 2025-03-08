@@ -79,7 +79,7 @@ class TenantResource extends Resource
                                     ->nullable(),
                             ]),
                         Forms\Components\Tabs\Tab::make('Billing')
-                            ->visible(fn ($operation) => $operation !== 'create')
+                            ->visible(fn ($operation): bool => $operation !== 'create')
                             ->icon('heroicon-o-credit-card')
                             ->columns(2)
                             ->schema([
@@ -123,7 +123,7 @@ class TenantResource extends Resource
                                     ->columnSpanFull(),
                             ]),
                         Forms\Components\Tabs\Tab::make('Database')
-                            ->visible(fn ($operation) => $operation !== 'create')
+                            ->visible(fn ($operation): bool => $operation !== 'create')
                             ->icon('heroicon-o-circle-stack')
                             ->schema([
                                 Forms\Components\TextInput::make('tenancy_db_name')
@@ -132,7 +132,7 @@ class TenantResource extends Resource
                                     ->disabled(),
                             ]),
                         Forms\Components\Tabs\Tab::make('Payment')
-                            ->visible(fn ($operation) => $operation !== 'create')
+                            ->visible(fn ($operation): bool => $operation !== 'create')
                             ->icon('heroicon-o-currency-dollar')
                             ->schema([
                                 Forms\Components\TextInput::make('stripe_id')
@@ -153,7 +153,7 @@ class TenantResource extends Resource
                                     ->disabled(),
                             ]),
                         Forms\Components\Tabs\Tab::make('Metadata')
-                            ->visible(fn ($operation) => $operation !== 'create')
+                            ->visible(fn ($operation): bool => $operation !== 'create')
                             ->icon('heroicon-o-code-bracket')
                             ->schema([
                                 CodeEditor::make('data')
@@ -211,13 +211,9 @@ class TenantResource extends Resource
                         Forms\Components\Select::make('user')
                             ->searchable()
                             ->helperText('Select the user to login as.')
-                            ->options(function (Tenant $record) {
-                                return $record->run(function () {
-                                    return User::query()->orderBy('name')->whereHas('roles', function (Builder $query) {
-                                        $query->where('name', Utils::getSuperAdminName());
-                                    })->get()->pluck('name', 'id')->toArray();
-                                });
-                            })
+                            ->options(fn (Tenant $record) => $record->run(fn () => User::query()->orderBy('name')->whereHas('roles', function (Builder $query): void {
+                                $query->where('name', Utils::getSuperAdminName());
+                            })->get()->pluck('name', 'id')->toArray()))
                             ->required(),
                     ])
                     ->action(function (Tables\Actions\Action $action, Tenant $record, array $data) {

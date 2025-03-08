@@ -19,7 +19,7 @@ class TokenControllerTest extends TenantTestCase
 {
     use CryptTrait;
 
-    public function test_token_from_authorization_code_grant_can_be_retrieved()
+    public function test_token_from_authorization_code_grant_can_be_retrieved(): void
     {
         $this->encryptionKey = app('encrypter')->getKey();
 
@@ -67,7 +67,7 @@ class TokenControllerTest extends TenantTestCase
             ]);
     }
 
-    public function test_token_from_refresh_token_grant_can_be_retrieved()
+    public function test_token_from_refresh_token_grant_can_be_retrieved(): void
     {
         $this->encryptionKey = app('encrypter')->getKey();
 
@@ -121,7 +121,7 @@ class TokenControllerTest extends TenantTestCase
             ]);
     }
 
-    public function test_token_from_client_credentials_grant_can_be_retrieved()
+    public function test_token_from_client_credentials_grant_can_be_retrieved(): void
     {
         $this->withoutMiddleware(CheckSubscription::class);
 
@@ -141,7 +141,7 @@ class TokenControllerTest extends TenantTestCase
             ]);
     }
 
-    public function test_token_from_password_grant_can_be_retrieved()
+    public function test_token_from_password_grant_can_be_retrieved(): void
     {
         $this->withoutMiddleware(CheckSubscription::class);
 

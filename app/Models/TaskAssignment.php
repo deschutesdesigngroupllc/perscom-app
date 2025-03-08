@@ -90,12 +90,12 @@ class TaskAssignment extends Pivot
 
     public function scopeAssigned(Builder $query): void
     {
-        $query->whereNull('completed_at')->where(function (Builder $query) {
-            $query->whereNull('expires_at')->orWhere(function (Builder $query) {
+        $query->whereNull('completed_at')->where(function (Builder $query): void {
+            $query->whereNull('expires_at')->orWhere(function (Builder $query): void {
                 $query->whereNotNull('expires_at')->where('expires_at', '>', now());
             });
-        })->where(function (Builder $query) {
-            $query->whereNull('due_at')->orWhere(function (Builder $query) {
+        })->where(function (Builder $query): void {
+            $query->whereNull('due_at')->orWhere(function (Builder $query): void {
                 $query->whereNotNull('due_at')->where('due_at', '>', now());
             });
         });
@@ -103,8 +103,8 @@ class TaskAssignment extends Pivot
 
     public function scopeExpired(Builder $query): void
     {
-        $query->whereNotNull('expires_at')->whereDate('expires_at', '<', now())->where(function (Builder $query) {
-            $query->where(function (Builder $query) {
+        $query->whereNotNull('expires_at')->whereDate('expires_at', '<', now())->where(function (Builder $query): void {
+            $query->where(function (Builder $query): void {
                 $query->whereNotNull('completed_at')->whereDate('completed_at', '>', now());
             })->orWhereNull('completed_at');
         });
@@ -112,10 +112,10 @@ class TaskAssignment extends Pivot
 
     public function scopePastDue(Builder $query): void
     {
-        $query->whereNotNull('due_at')->where(function (Builder $query) {
-            $query->where(function (Builder $query) {
+        $query->whereNotNull('due_at')->where(function (Builder $query): void {
+            $query->where(function (Builder $query): void {
                 $query->whereNull('completed_at')->whereDate('due_at', '<', now());
-            })->orWhere(function (Builder $query) {
+            })->orWhere(function (Builder $query): void {
                 $query->whereNotNull('completed_at')->where('due_at', '<', DB::raw('completed_at'));
             });
         });
@@ -189,9 +189,9 @@ class TaskAssignment extends Pivot
     {
         parent::boot();
 
-        static::creating(function (TaskAssignment $assignment) {
-            $assignment->assigned_by_id = $assignment->assigned_by_id ?? Auth::user()?->getAuthIdentifier() ?? null;
-            $assignment->assigned_at = $assignment->assigned_at ?? now();
+        static::creating(function (TaskAssignment $assignment): void {
+            $assignment->assigned_by_id ??= Auth::user()?->getAuthIdentifier() ?? null;
+            $assignment->assigned_at ??= now();
         });
     }
 

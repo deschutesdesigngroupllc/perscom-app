@@ -16,21 +16,21 @@ trait ClearsApiCache
 {
     protected static function bootClearsApiCache(): void
     {
-        self::created(function (Model $model) {
+        self::created(function (Model $model): void {
             PurgeApiCache::dispatch(
                 tags: collect([ApiCacheService::tagForModel($model), ApiCacheService::tagForModel($model, stripKey: true)]),
                 event: 'created',
             );
         });
 
-        self::updated(function (Model $model) {
+        self::updated(function (Model $model): void {
             PurgeApiCache::dispatch(
                 tags: ApiCacheService::tagForModel($model),
                 event: 'updated'
             );
         });
 
-        self::deleted(function (Model $model) {
+        self::deleted(function (Model $model): void {
             PurgeApiCache::dispatch(
                 tags: ApiCacheService::tagForModel($model),
                 event: 'deleted'

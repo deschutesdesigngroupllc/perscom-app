@@ -11,7 +11,7 @@ class ProcessNotificationSent
 {
     public function handle(NotificationSent $event): void
     {
-        if (is_a($event->notification, NewMessage::class)) {
+        if ($event->notification instanceof NewMessage) {
             $message = $event->notification->message;
 
             $message->forceFill([

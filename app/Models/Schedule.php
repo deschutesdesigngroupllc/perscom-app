@@ -133,14 +133,14 @@ class Schedule extends MorphPivot
 
     protected static function booted(): void
     {
-        static::creating(function (Schedule $schedule) {
+        static::creating(function (Schedule $schedule): void {
             $schedule->forceFill([
                 'next_occurrence' => ScheduleService::nextOccurrence($schedule),
                 'last_occurrence' => ScheduleService::lastOccurrence($schedule),
             ]);
         });
 
-        static::updating(function (Schedule $schedule) {
+        static::updating(function (Schedule $schedule): void {
             $schedule->forceFill([
                 'next_occurrence' => ScheduleService::nextOccurrence($schedule),
                 'last_occurrence' => ScheduleService::lastOccurrence($schedule),

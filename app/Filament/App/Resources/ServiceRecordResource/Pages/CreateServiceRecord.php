@@ -22,7 +22,7 @@ class CreateServiceRecord extends CreateRecord
     {
         $notificationData = data_get($data, 'model_notifications') ?? [];
 
-        $models = $this->performModelCreations(data_forget($data, 'model_notifications'), function (ServiceRecord $record) use ($notificationData) {
+        $models = $this->performModelCreations(data_forget($data, 'model_notifications'), function (ServiceRecord $record) use ($notificationData): void {
             $this->performModelNotificationInserts($record, $notificationData);
         });
 

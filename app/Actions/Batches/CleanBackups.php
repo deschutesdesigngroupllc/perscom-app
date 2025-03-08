@@ -19,7 +19,7 @@ class CleanBackups
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant) => new CleanTenantBackups($tenant->getKey()))
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): CleanTenantBackups => new CleanTenantBackups($tenant->getKey()))
         )->name(
             name: 'Clean Backups'
         )->onQueue(

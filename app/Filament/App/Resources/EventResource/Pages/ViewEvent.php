@@ -25,9 +25,9 @@ class ViewEvent extends ViewRecord
             Actions\Action::make('register')
                 ->color('success')
                 ->label('Register')
-                ->visible(fn (?Event $record) => $record->registration_enabled && ! $record->registration_deadline?->isPast() && ! $record->registrations->contains(Auth::user()))
+                ->visible(fn (?Event $record): bool => $record->registration_enabled && ! $record->registration_deadline?->isPast() && ! $record->registrations->contains(Auth::user()))
                 ->successNotificationTitle('You have successfully registered for the event.')
-                ->action(function (?Event $record, Actions\Action $action) {
+                ->action(function (?Event $record, Actions\Action $action): void {
                     $record->registrations()->attach(Auth::user());
                     $this->dispatch('refreshRegistrations');
                     $action->success();
@@ -37,7 +37,7 @@ class ViewEvent extends ViewRecord
                 ->label('Unregister')
                 ->visible(fn (?Event $record) => $record->registrations->contains(Auth::user()))
                 ->successNotificationTitle('You have successfully unregistered for the event.')
-                ->action(function (?Event $record, Actions\Action $action) {
+                ->action(function (?Event $record, Actions\Action $action): void {
                     $record->registrations()->detach(Auth::user());
                     $this->dispatch('refreshRegistrations');
                     $action->success();

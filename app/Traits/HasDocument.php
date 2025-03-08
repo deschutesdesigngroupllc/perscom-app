@@ -37,11 +37,11 @@ trait HasDocument
         return Attribute::make(
             get: function () {
                 $resource = clone $this;
-                $user = in_array(HasUser::class, class_uses_recursive(get_class($resource))) && method_exists($resource, 'user')
+                $user = in_array(HasUser::class, class_uses_recursive($resource::class)) && method_exists($resource, 'user')
                     ? $resource->user // @phpstan-ignore-line
                     : null;
 
-                return optional($this->document, fn (Document $document) => $document->toHtml($user, $resource));
+                return optional($this->document, fn (Document $document): string => $document->toHtml($user, $resource));
             }
         )->shouldCache();
     }

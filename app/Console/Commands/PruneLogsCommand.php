@@ -26,7 +26,7 @@ class PruneLogsCommand extends Command
 
         $tenants = collect($this->option('tenants'));
 
-        tenancy()->runForMultiple($tenants, function ($tenant) {
+        tenancy()->runForMultiple($tenants, function ($tenant): void {
             $this->line("Tenant: {$tenant->getTenantKey()}");
 
             $this->call('activitylog:clean', [

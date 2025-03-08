@@ -18,17 +18,13 @@ class SparkServiceProvider extends ServiceProvider
 {
     public function boot(): void
     {
-        Spark::billable(Tenant::class)->resolve(function (Request $request) {
-            return tenant();
-        });
+        Spark::billable(Tenant::class)->resolve(fn (Request $request) => tenant());
 
-        Spark::billable(Tenant::class)->authorize(function (Tenant $billable, Request $request) {
-            return tenant() &&
-                tenant()->getTenantKey() === $billable->id &&
-                Feature::active(BillingFeature::class);
-        });
+        Spark::billable(Tenant::class)->authorize(fn (Tenant $billable, Request $request): bool => tenant() &&
+            tenant()->getTenantKey() === $billable->id &&
+            Feature::active(BillingFeature::class));
 
-        Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan) {
+        Spark::billable(Tenant::class)->checkPlanEligibility(function (Tenant $billable, Plan $plan): void {
             //
         });
     }

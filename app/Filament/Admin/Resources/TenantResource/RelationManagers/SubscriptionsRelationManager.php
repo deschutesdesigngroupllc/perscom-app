@@ -49,8 +49,8 @@ class SubscriptionsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('stripe_status')
                     ->label('Status')
                     ->badge()
-                    ->color(fn ($state) => StripeStatus::from($state)->getColor())
-                    ->formatStateUsing(fn ($state) => StripeStatus::from($state)->getLabel())
+                    ->color(fn ($state): string|array|null => StripeStatus::from($state)->getColor())
+                    ->formatStateUsing(fn ($state): ?string => StripeStatus::from($state)->getLabel())
                     ->sortable(),
                 Tables\Columns\TextColumn::make('stripe_price')
                     ->label('Price')

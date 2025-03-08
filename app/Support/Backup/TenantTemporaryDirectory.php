@@ -21,6 +21,6 @@ class TenantTemporaryDirectory extends TemporaryDirectory
             return parent::getFullPath();
         }
 
-        return storage_path("app/backup-temp/tenant$tenantId").(! empty($this->name) ? DIRECTORY_SEPARATOR.$this->name : '');
+        return storage_path("app/backup-temp/tenant$tenantId").($this->name === '' || $this->name === '0' ? '' : DIRECTORY_SEPARATOR.$this->name);
     }
 }

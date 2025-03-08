@@ -29,8 +29,8 @@ trait HasCategories
             ->withPivot('order')
             ->withTimestamps();
 
-        if (static::$categoriesAccessor) {
-            $relationship = $relationship->as(static::$categoriesAccessor);
+        if (filled(static::$categoriesAccessor)) {
+            return $relationship->as(static::$categoriesAccessor);
         }
 
         return $relationship;

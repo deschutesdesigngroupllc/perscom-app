@@ -29,7 +29,7 @@ class ApplicationVersionCommand extends Command
 
     public function setApplicationVersion(string $version): int
     {
-        if (! preg_match("/^(v+)(\d|[1-9]\d*)\.(\d|[1-9]\d*)\.(\d|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/", $version)) {
+        if (in_array(preg_match("/^(v+)(\d|[1-9]\d*)\.(\d|[1-9]\d*)\.(\d|[1-9]\d*)(?:-([0-9A-Za-z-]+(?:\.[0-9A-Za-z-]+)*))?(?:\+[0-9A-Za-z-]+)?$/", $version), [0, false], true)) {
             $this->error('The supplied version is not a valid SemVer version.');
 
             return static::FAILURE;

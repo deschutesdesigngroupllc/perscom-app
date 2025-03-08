@@ -10,18 +10,16 @@ use Livewire\Component;
 
 class AlertBanner extends Component
 {
-    public ?array $alerts;
+    public ?array $alerts = null;
 
     public function mount(): void
     {
-        $this->alerts = Alert::query()->orderBy('order', 'desc')->whereJsonContains('channels', 'dashboard')->get()->map(function (Alert $alert) {
-            return [
-                'title' => $alert->title,
-                'message' => $alert->message,
-                'url' => $alert->url,
-                'link' => $alert->link_text,
-            ];
-        })->toArray();
+        $this->alerts = Alert::query()->orderBy('order', 'desc')->whereJsonContains('channels', 'dashboard')->get()->map(fn (Alert $alert): array => [
+            'title' => $alert->title,
+            'message' => $alert->message,
+            'url' => $alert->url,
+            'link' => $alert->link_text,
+        ])->toArray();
     }
 
     public function render(): View

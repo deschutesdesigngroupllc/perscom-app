@@ -54,7 +54,7 @@ class Permission extends SettingsPage
                                     ->searchable()
                                     ->multiple()
                                     ->options(Role::query()->orderBy('name')->pluck('name', 'id')->toArray())
-                                    ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id) => (int) $id)->toArray())
+                                    ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id): int => (int) $id)->toArray())
                                     ->helperText('The default role(s) a new user will be granted when created.'),
                                 Select::make('default_permissions')
                                     ->label('Permission(s)')
@@ -62,7 +62,7 @@ class Permission extends SettingsPage
                                     ->preload()
                                     ->searchable()
                                     ->options(PermissionModel::query()->orderBy('name')->pluck('name', 'id')->toArray())
-                                    ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id) => (int) $id)->toArray())
+                                    ->dehydrateStateUsing(fn ($state) => collect($state)->map(fn ($id): int => (int) $id)->toArray())
                                     ->helperText('The default permission(s) a new user will be granted when created.'),
                             ]),
                     ]),

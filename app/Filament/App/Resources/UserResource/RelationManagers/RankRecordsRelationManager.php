@@ -39,7 +39,7 @@ class RankRecordsRelationManager extends RelationManager
                     ->sortable()
                     ->action(
                         Action::make('select')
-                            ->visible(fn (?RankRecord $record) => isset($record->document))
+                            ->visible(fn (?RankRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
                             ->modalHeading(fn (?RankRecord $record) => $record->document->name ?? 'Document')

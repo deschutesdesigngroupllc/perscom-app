@@ -20,8 +20,8 @@ readonly class SignedByPerscomOrTenantConstraint implements Constraint
 
     public function assert(Token $token): void
     {
-        $signedByApp = rescue(fn () => $this->signedByApp($token), false, false);
-        $signedByTenant = rescue(fn () => $this->signedByTenant($token), false, false);
+        $signedByApp = rescue(fn (): bool => $this->signedByApp($token), false, false);
+        $signedByTenant = rescue(fn (): bool => $this->signedByTenant($token), false, false);
 
         if (! $signedByApp && ! $signedByTenant) {
             throw new ConstraintViolation('The provided token was not signed by a valid signer.');

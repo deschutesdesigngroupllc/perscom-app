@@ -37,14 +37,14 @@ class AssignmentRecordsRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status.name')
                     ->badge()
-                    ->color(fn (?AssignmentRecord $record) => Color::hex($record->status->color ?? '#2563eb'))
+                    ->color(fn (?AssignmentRecord $record): array => Color::hex($record->status->color ?? '#2563eb'))
                     ->sortable(),
                 Tables\Columns\TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
                         Action::make('select')
-                            ->visible(fn (?AssignmentRecord $record) => isset($record->document))
+                            ->visible(fn (?AssignmentRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
                             ->modalHeading(fn (?AssignmentRecord $record) => $record->document->name ?? 'Document')

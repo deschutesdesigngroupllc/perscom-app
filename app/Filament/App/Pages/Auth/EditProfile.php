@@ -53,7 +53,7 @@ class EditProfile extends BaseEditProfile
                             ->icon('heroicon-o-globe-americas')
                             ->schema([
                                 TextInput::make('discord_user_id')
-                                    ->suffixAction(fn () => Action::make('discord')
+                                    ->suffixAction(fn (): Action => Action::make('discord')
                                         ->url('https://support.discord.com/hc/en-us/articles/206346498-Where-can-I-find-my-User-Server-Message-ID')
                                         ->openUrlInNewTab()
                                         ->icon('heroicon-o-question-mark-circle')

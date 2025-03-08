@@ -22,7 +22,7 @@ class RequestsStats extends BaseWidget
     protected function getStats(): array
     {
         $currentHttp = Metric::average(HttpRequestMetric::class);
-        $previousHttp = Metric::average(HttpRequestMetric::class, function (Builder $query) {
+        $previousHttp = Metric::average(HttpRequestMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->subMonths(2)->startOfMonth(), now()->subMonths(2)->endOfMonth()]);
         });
         $httpDiffPercentage = Number::percentageDifference($previousHttp, $currentHttp);
@@ -36,7 +36,7 @@ class RequestsStats extends BaseWidget
             ->sum('count');
 
         $currentApi = Metric::average(ApiRequestMetric::class);
-        $previousApi = Metric::average(ApiRequestMetric::class, function (Builder $query) {
+        $previousApi = Metric::average(ApiRequestMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->subMonths(2)->startOfMonth(), now()->subMonths(2)->endOfMonth()]);
         });
         $apiDiffPercentage = Number::percentageDifference($previousApi, $currentApi);
@@ -50,7 +50,7 @@ class RequestsStats extends BaseWidget
             ->sum('count');
 
         $currentCli = Metric::average(CliRequestMetric::class);
-        $previousCli = Metric::average(CliRequestMetric::class, function (Builder $query) {
+        $previousCli = Metric::average(CliRequestMetric::class, function (Builder $query): void {
             $query->whereBetween('created_at', [now()->subMonths(2)->startOfMonth(), now()->subMonths(2)->endOfMonth()]);
         });
         $cliDiffPercentage = Number::percentageDifference($previousCli, $currentCli);
@@ -63,11 +63,9 @@ class RequestsStats extends BaseWidget
             ->perMonth()
             ->sum('count');
 
-        $icon = function ($number): string {
-            return match (true) {
-                $number >= 0 => 'heroicon-m-arrow-trending-up',
-                default => 'heroicon-m-arrow-trending-down'
-            };
+        $icon = fn ($number): string => match (true) {
+            $number >= 0 => 'heroicon-m-arrow-trending-up',
+            default => 'heroicon-m-arrow-trending-down'
         };
 
         return [
@@ -75,17 +73,17 @@ class RequestsStats extends BaseWidget
                 ->color('info')
                 ->description(Number::percentage($httpDiffPercentage))
                 ->descriptionIcon($icon($httpDiffPercentage))
-                ->chart($httpData->map(fn (TrendValue $value) => $value->aggregate)->toArray()),
+                ->chart($httpData->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray()),
             Stat::make('Average API requests', $currentApi)
                 ->color('success')
                 ->description(Number::percentage($apiDiffPercentage))
                 ->descriptionIcon($icon($apiDiffPercentage))
-                ->chart($apiData->map(fn (TrendValue $value) => $value->aggregate)->toArray()),
+                ->chart($apiData->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray()),
             Stat::make('Average CLI requests', $currentCli)
                 ->color('danger')
                 ->description(Number::percentage($cliDiffPercentage))
                 ->descriptionIcon($icon($cliDiffPercentage))
-                ->chart($cliData->map(fn (TrendValue $value) => $value->aggregate)->toArray()),
+                ->chart($cliData->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray()),
         ];
     }
 }

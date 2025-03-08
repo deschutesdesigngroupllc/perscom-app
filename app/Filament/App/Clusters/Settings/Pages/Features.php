@@ -113,9 +113,9 @@ class Features extends Page implements HasTable
                     ->successNotificationTitle('The feature has been successfully added to your account and your card on file has been charged. You may cancel at anytime.')
                     ->failureNotificationTitle('We were unable to charge your card on file. Please check your payment method and try again.')
                     ->requiresConfirmation()
-                    ->modalHeading(fn (Feature $record) => "Subscribe to $record->name")
+                    ->modalHeading(fn (Feature $record): string => "Subscribe to $record->name")
                     ->modalSubmitActionLabel('Subscribe')
-                    ->modalDescription(function (Feature $record) use ($tenant) {
+                    ->modalDescription(function (Feature $record) use ($tenant): string {
                         /** @var Subscription $subscription */
                         $subscription = $tenant->subscription();
                         $term = $subscription->renewal_term;
@@ -128,13 +128,13 @@ class Features extends Page implements HasTable
 
                         return "We will charge your card on file $price $term. Please confirm you would like to proceed.";
                     })
-                    ->visible(function (Feature $record) {
+                    ->visible(function (Feature $record): bool {
                         /** @var PremiumFeature|string $feature */
                         $feature = $record->feature;
 
                         return Pennant::inactive($feature) && $feature::canSubscribe();
                     })
-                    ->action(function (Action $action, Feature $record) {
+                    ->action(function (Action $action, Feature $record): void {
                         /** @var Tenant $tenant */
                         $tenant = Filament::getTenant();
 
@@ -152,16 +152,16 @@ class Features extends Page implements HasTable
                     ->successNotificationTitle('The feature has been successfully stopped. Any unused time will be credited to your account balance. You can resubscribe at anytime to resume using the features.')
                     ->failureNotificationTitle('We were unable to stop the subscription. Please reach out to support to assist.')
                     ->requiresConfirmation()
-                    ->modalHeading(fn (Feature $record) => "Unsubscribe from $record->name")
+                    ->modalHeading(fn (Feature $record): string => "Unsubscribe from $record->name")
                     ->modalSubmitActionLabel('Unsubscribe')
-                    ->modalDescription(fn (Feature $record) => "Are you sure you would like to unsubscribe from $record->name? Any unused time will be credited to your account balance.")
-                    ->visible(function (Feature $record) {
+                    ->modalDescription(fn (Feature $record): string => "Are you sure you would like to unsubscribe from $record->name? Any unused time will be credited to your account balance.")
+                    ->visible(function (Feature $record): bool {
                         /** @var PremiumFeature|string $feature */
                         $feature = $record->feature;
 
                         return Pennant::active($feature) && $feature::canUnsubscribe();
                     })
-                    ->action(function (Action $action, Feature $record) {
+                    ->action(function (Action $action, Feature $record): void {
                         /** @var Tenant $tenant */
                         $tenant = Filament::getTenant();
 
@@ -187,7 +187,7 @@ class Features extends Page implements HasTable
 
                         return $settings->$key;
                     })
-                    ->mutateFormDataUsing(function (Feature $record, array $data) {
+                    ->mutateFormDataUsing(function (Feature $record, array $data): array {
                         /** @var PremiumFeature $feature */
                         $feature = $record->feature;
                         $key = $feature::settingsKey();
