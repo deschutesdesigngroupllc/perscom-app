@@ -153,7 +153,7 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User rank(\App\Models\Rank $rank)
  * @method static Builder<static>|User role($roles, $guard = null, $without = false)
  * @method static Builder<static>|User specialty(\App\Models\Specialty $specialty)
- * @method static Builder<static>|User status(?mixed $statuses)
+ * @method static Builder<static>|User status(\App\Models\Status $status)
  * @method static Builder<static>|User unit(\App\Models\Unit $unit)
  * @method static Builder<static>|User whereApproved($value)
  * @method static Builder<static>|User whereCoverPhoto($value)
