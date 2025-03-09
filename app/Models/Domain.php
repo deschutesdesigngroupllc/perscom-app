@@ -21,7 +21,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property bool $is_custom_subdomain
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read mixed $host
+ * @property-read string $host
  * @property-read Tenant $tenant
  * @property-read string $url
  *

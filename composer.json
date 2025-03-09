@@ -11,6 +11,7 @@
     "php": "^8.3",
     "ext-zip": "*",
     "awcodes/filament-quick-create": "^3.6.1",
+    "awcodes/filament-tiptap-editor": "^3.0",
     "aws/aws-sdk-php": "^3.339.19",
     "bezhansalleh/filament-shield": "^3.3.5",
     "calebporzio/sushi": "^2.5.3",

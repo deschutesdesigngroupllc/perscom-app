@@ -6,6 +6,7 @@ export default {
     './app/Filament/Admin/**/*.php',
     './resources/views/filament/render-hooks/**/*.blade.php',
     './resources/views/filament/admin/**/*.blade.php',
-    './vendor/filament/**/*.blade.php'
+    './vendor/filament/**/*.blade.php',
+    './vendor/awcodes/filament-tiptap-editor/resources/**/*.blade.php'
   ]
 }
