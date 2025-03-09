@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Observers\MailObserver;
+use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -34,6 +36,7 @@ use Illuminate\Database\Eloquent\Model;
  *
  * @mixin \Eloquent
  */
+#[ObservedBy(MailObserver::class)]
 class Mail extends Model
 {
     protected $table = 'mail';
@@ -45,6 +48,7 @@ class Mail extends Model
         'links',
         'send_now',
         'send_at',
+        'sent_at',
     ];
 
     protected function casts(): array
@@ -54,6 +58,7 @@ class Mail extends Model
             'links' => 'json',
             'send_now' => 'boolean',
             'send_at' => 'datetime',
+            'sent_at' => 'datetime',
         ];
     }
 }

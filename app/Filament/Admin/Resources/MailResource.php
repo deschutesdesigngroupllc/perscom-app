@@ -51,11 +51,17 @@ class MailResource extends Resource
                                     ->maxLength(255),
                                 TiptapEditor::make('content')
                                     ->required(),
-                            ]),
-                        Forms\Components\Tabs\Tab::make('Links')
-                            ->icon('heroicon-o-link')
-                            ->schema([
-
+                                Forms\Components\Checkbox::make('send_now')
+                                    ->label('Send Now')
+                                    ->default(true)
+                                    ->live()
+                                    ->helperText('If checked, the email will be sent immediately.'),
+                                Forms\Components\DateTimePicker::make('send_at')
+                                    ->label('Send At')
+                                    ->default(now()->addMinutes(5))
+                                    ->visible(fn (Forms\Get $get): bool => ! $get('send_now'))
+                                    ->requiredIf('send_now', false)
+                                    ->helperText('Set the time to send the email.'),
                             ]),
                     ]),
             ]);
@@ -69,6 +75,9 @@ class MailResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sent_at')
+                    ->dateTime()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('send_at')
                     ->dateTime()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
@@ -103,7 +112,7 @@ class MailResource extends Resource
      */
     public static function canEdit(Model $record): bool
     {
-        if (filled($record)->sent_at) {
+        if (filled($record->sent_at)) {
             return false;
         }
 
