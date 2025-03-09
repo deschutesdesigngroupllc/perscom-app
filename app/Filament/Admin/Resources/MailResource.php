@@ -50,6 +50,7 @@ class MailResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 TiptapEditor::make('content')
+                                    ->extraInputAttributes(['style' => 'min-height: 20rem;'])
                                     ->required(),
                                 Forms\Components\Checkbox::make('send_now')
                                     ->label('Send Now')
