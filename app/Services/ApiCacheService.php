@@ -83,7 +83,9 @@ class ApiCacheService
 
     protected function getRelationKeys(Model $model, Collection $tags): void
     {
-        foreach ($model->getRelations() as $relation) {
+        foreach ($model->getRelations() as $relationName => $relation) {
+            $tags->push($this->resolveRelationName($model, $relationName));
+
             if ($relation instanceof Collection) {
                 foreach ($relation as $relatedModel) {
                     $tags->push($this->getCachePrefix($relatedModel));
@@ -101,5 +103,12 @@ class ApiCacheService
     protected function getCachePrefix(Model $model): string
     {
         return strtolower($this->tenant->getKey().':'.class_basename($model));
+    }
+
+    protected function resolveRelationName(Model $model, string $relationName): string
+    {
+        $relation = $model->{$relationName}();
+
+        return $this->getCachePrefix($relation->getRelated());
     }
 }
