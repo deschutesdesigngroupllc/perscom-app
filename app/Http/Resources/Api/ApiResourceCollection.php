@@ -13,6 +13,10 @@ class ApiResourceCollection extends CollectionResource
 {
     public function withResponse(Request $request, JsonResponse $response): void
     {
+        if (! $this->isCacheableRequest($request)) {
+            return;
+        }
+
         $apiCacheService = new ApiCacheService;
 
         $response->withHeaders([
@@ -20,5 +24,14 @@ class ApiResourceCollection extends CollectionResource
                 resource: $this
             )->push($apiCacheService->getTenantCacheTag())->implode(' '),
         ]);
+    }
+
+    protected function isCacheableRequest(Request $request): bool
+    {
+        if ($request->getMethod() === 'GET') {
+            return true;
+        }
+
+        return $request->getMethod() === 'HEAD';
     }
 }

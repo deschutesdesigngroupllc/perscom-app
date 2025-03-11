@@ -53,7 +53,10 @@ class ApiCacheService
             }
         }
 
-        return $tags->unique();
+        return $tags
+            ->filter()
+            ->unique()
+            ->values();
     }
 
     public function purgeCacheForTags(Collection|string $tags): array
@@ -105,8 +108,12 @@ class ApiCacheService
         return strtolower($this->tenant->getKey().':'.class_basename($model));
     }
 
-    protected function resolveRelationName(Model $model, string $relationName): string
+    protected function resolveRelationName(Model $model, string $relationName): ?string
     {
+        if (! method_exists($model, $relationName)) {
+            return null;
+        }
+
         $relation = $model->{$relationName}();
 
         return $this->getCachePrefix($relation->getRelated());
