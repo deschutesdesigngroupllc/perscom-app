@@ -28,7 +28,10 @@ class ApiResourceCollection extends CollectionResource
 
     protected function isCacheableRequest(Request $request): bool
     {
-        return $request->getMethod() === 'GET'
-            || $request->getMethod() === 'HEAD';
+        if ($request->getMethod() === 'GET') {
+            return true;
+        }
+
+        return $request->getMethod() === 'HEAD';
     }
 }

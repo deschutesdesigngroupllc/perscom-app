@@ -28,7 +28,10 @@ class ApiResource extends Resource
 
     protected function isCacheableRequest(Request $request): bool
     {
-        return $request->getMethod() === 'GET'
-            || $request->getMethod() === 'HEAD';
+        if ($request->getMethod() === 'GET') {
+            return true;
+        }
+
+        return $request->getMethod() === 'HEAD';
     }
 }
