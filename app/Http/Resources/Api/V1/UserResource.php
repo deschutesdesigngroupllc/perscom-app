@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Http\Resources\Api\V1;
 
 use App\Http\Resources\Api\ApiResource;
+use Illuminate\Http\Request;
 
 class UserResource extends ApiResource
 {
-    public function toArray(\Illuminate\Http\Request $request): array
+    public function toArray(Request $request): array
     {
         $response = parent::toArray($request);
 
