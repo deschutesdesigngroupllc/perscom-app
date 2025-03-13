@@ -159,7 +159,6 @@ return [
 
     'ignored_models' => [
         Backup::class,
-        Feature::class,
     ],
 
     /*

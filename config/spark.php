@@ -129,13 +129,6 @@ return [
     |
     */
 
-    'premium_features' => [
-        App\Features\GoogleCalendarSyncFeature::class => [
-            'monthly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_MONTH'),
-            'yearly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_YEAR'),
-        ],
-    ],
-
     'billables' => [
         'tenant' => [
             'model' => App\Models\Tenant::class,
