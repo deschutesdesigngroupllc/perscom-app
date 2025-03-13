@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\CombatRecordResource\Pages;
 use App\Filament\App\Resources\CombatRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\CombatRecordResource\RelationManagers\CommentsRelationManager;
@@ -25,7 +24,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class CombatRecordResource extends BaseResource
 {
@@ -194,7 +192,6 @@ class CombatRecordResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(CombatRecordExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

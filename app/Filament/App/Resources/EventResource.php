@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\EventResource\Pages;
 use App\Filament\App\Resources\EventResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationManager;
@@ -30,7 +29,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class EventResource extends BaseResource
 {
@@ -403,7 +401,6 @@ class EventResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(EventExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

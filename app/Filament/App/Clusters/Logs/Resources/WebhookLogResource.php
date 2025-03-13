@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters\Logs\Resources;
 
-use App\Features\WebhookFeature;
 use App\Filament\App\Clusters\Logs;
 use App\Filament\App\Clusters\Logs\Resources\WebhookLogResource\Pages;
 use App\Filament\App\Resources\BaseResource;
@@ -20,7 +19,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Pennant\Feature;
 use Parallax\FilamentSyntaxEntry\SyntaxEntry;
 
 class WebhookLogResource extends BaseResource
@@ -51,7 +49,8 @@ class WebhookLogResource extends BaseResource
                 Tables\Columns\TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(['properties']),
                 Tables\Columns\TextColumn::make('causer.label')
                     ->label('Resource')
                     ->badge()
@@ -67,8 +66,15 @@ class WebhookLogResource extends BaseResource
                 Tables\Columns\TextColumn::make('event')
                     ->sortable()
                     ->color('gray')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('status_code')
+                    ->label('Status')
                     ->badge()
-                    ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('event')),
+                    ->formatStateUsing(fn (WebhookLog $record, $state) => "$state $record->reason_phrase")
+                    ->color(fn ($state): string => match (true) {
+                        (int) $state >= 200 && (int) $state < 300 => 'success',
+                        default => 'danger'
+                    }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable()
@@ -83,7 +89,7 @@ class WebhookLogResource extends BaseResource
                         ->when(
                             filled(data_get($data, 'values')),
                             function (Builder $query) use ($data): void {
-                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->event', $event)));
+                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->payload->event', $event)));
                             },
                         )),
                 Tables\Filters\QueryBuilder::make()
@@ -99,7 +105,7 @@ class WebhookLogResource extends BaseResource
                                                 ->when(filled(data_get($settings, 'text')),
                                                     function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->where('properties->request_id', 'NOT LIKE', "%$text%");
+                                                        $query->where('properties->payload->request_id', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
                                         }
@@ -108,7 +114,7 @@ class WebhookLogResource extends BaseResource
                                             ->when(filled(data_get($settings, 'text')),
                                                 function (Builder $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->where('properties->request_id', 'LIKE', "%$text%");
+                                                    $query->where('properties->payload->request_id', 'LIKE', "%$text%");
                                                 }
                                             );
                                     }),
@@ -124,7 +130,7 @@ class WebhookLogResource extends BaseResource
                                                 ->when(filled(data_get($settings, 'text')),
                                                     function (Builder $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->where('properties->trace_id', 'NOT LIKE', "%$text%");
+                                                        $query->where('properties->payload->trace_id', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
                                         }
@@ -133,7 +139,7 @@ class WebhookLogResource extends BaseResource
                                             ->when(filled(data_get($settings, 'text')),
                                                 function (Builder $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->where('properties->trace_id', 'LIKE', "%$text%");
+                                                    $query->where('properties->payload->trace_id', 'LIKE', "%$text%");
                                                 }
                                             );
                                     }),
@@ -168,6 +174,14 @@ class WebhookLogResource extends BaseResource
                             TextEntry::make('trace_id')
                                 ->copyable()
                                 ->label('Trace ID'),
+                            TextEntry::make('status_code')
+                                ->label('Status')
+                                ->badge()
+                                ->formatStateUsing(fn (WebhookLog $record, $state) => "$state $record->reason_phrase")
+                                ->color(fn ($state): string => match (true) {
+                                    (int) $state >= 200 && (int) $state < 300 => 'success',
+                                    default => 'danger'
+                                }),
                             TextEntry::make('created_at')
                                 ->label('Sent'),
                             TextEntry::make('causer.label')
@@ -188,8 +202,8 @@ class WebhookLogResource extends BaseResource
                     Tabs\Tab::make('Payload')
                         ->icon('heroicon-o-code-bracket')
                         ->schema([
-                            SyntaxEntry::make('data')
-                                ->getStateUsing(fn (WebhookLog $record) => $record->properties)
+                            SyntaxEntry::make('payload')
+                                ->getStateUsing(fn (WebhookLog $record) => $record->getExtraProperty('payload'))
                                 ->hiddenLabel()
                                 ->language('json'),
                         ]),
@@ -203,11 +217,6 @@ class WebhookLogResource extends BaseResource
             'index' => Pages\ListWebhookLogs::route('/'),
             'view' => Pages\ViewWebhookLog::route('/{record}'),
         ];
-    }
-
-    public static function canAccess(): bool
-    {
-        return parent::canAccess() && Feature::active(WebhookFeature::class);
     }
 
     public static function canCreate(): bool

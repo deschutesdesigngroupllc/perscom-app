@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
-use App\Features\BillingFeature;
 use App\Filament\App\Pages\Auth\EditProfile;
 use App\Filament\App\Pages\Auth\EmailVerificationPrompt;
 use App\Filament\App\Pages\Auth\Login;
@@ -55,8 +54,8 @@ use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\AuthenticateSession;
 use Illuminate\Session\Middleware\StartSession;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
-use Laravel\Pennant\Feature;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class AppPanelProvider extends PanelProvider
@@ -183,7 +182,7 @@ class AppPanelProvider extends PanelProvider
                 MenuItem::make()
                     ->label('Billing')
                     ->url(fn () => route('spark.portal'), shouldOpenInNewTab: true)
-                    ->visible(fn () => Feature::active(BillingFeature::class))
+                    ->visible(fn () => Gate::check('billing'))
                     ->icon('heroicon-o-currency-dollar'),
                 MenuItem::make()
                     ->label('Documentation')

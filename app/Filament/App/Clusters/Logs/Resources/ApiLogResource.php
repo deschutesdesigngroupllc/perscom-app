@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters\Logs\Resources;
 
-use App\Features\ApiAccessFeature;
 use App\Filament\App\Clusters\Logs;
 use App\Filament\App\Clusters\Logs\Resources\ApiLogResource\Pages;
 use App\Filament\App\Resources\BaseResource;
@@ -23,7 +22,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 use Parallax\FilamentSyntaxEntry\SyntaxEntry;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -55,7 +53,8 @@ class ApiLogResource extends BaseResource
                 Tables\Columns\TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
-                    ->sortable(),
+                    ->sortable()
+                    ->searchable(['properties']),
                 Tables\Columns\TextColumn::make('log_name')
                     ->label('Log')
                     ->formatStateUsing(fn ($state) => match ($state) {
@@ -314,11 +313,6 @@ class ApiLogResource extends BaseResource
             'index' => Pages\ListApiLogs::route('/'),
             'view' => Pages\ViewApiLog::route('/{record}'),
         ];
-    }
-
-    public static function canAccess(): bool
-    {
-        return parent::canAccess() && Feature::active(ApiAccessFeature::class);
     }
 
     public static function canCreate(): bool

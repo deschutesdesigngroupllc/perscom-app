@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\GroupResource\Pages;
 use App\Filament\App\Resources\GroupResource\RelationManagers;
 use App\Filament\Exports\GroupExporter;
@@ -21,7 +20,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class GroupResource extends BaseResource
 {
@@ -135,7 +133,6 @@ class GroupResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(GroupExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

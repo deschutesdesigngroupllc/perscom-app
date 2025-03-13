@@ -130,17 +130,9 @@ return [
     */
 
     'premium_features' => [
-        App\Features\AdvancedNotificationsFeature::class => [
-            'monthly_id' => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS_MONTH'),
-            'yearly_id' => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS_YEAR'),
-        ],
         App\Features\GoogleCalendarSyncFeature::class => [
             'monthly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_MONTH'),
             'yearly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_YEAR'),
-        ],
-        App\Features\EnhancedAIFeature::class => [
-            'monthly_id' => env('STRIPE_PRODUCT_ENHANCED_AI_SYNC_MONTH'),
-            'yearly_id' => env('STRIPE_PRODUCT_ENHANCED_AI_SYNC_YEAR'),
         ],
     ],
 
@@ -162,9 +154,6 @@ return [
                         'Application provided subdomain',
                         'Community support',
                     ],
-                    'options' => [
-                        App\Features\SocialLoginFeature::class,
-                    ],
                 ],
                 [
                     'name' => 'Pro',
@@ -178,12 +167,6 @@ return [
                         'Custom subdomain',
                         'Ticket and email support',
                     ],
-                    'options' => [
-                        App\Features\SocialLoginFeature::class,
-                        App\Features\ApiAccessFeature::class,
-                        App\Features\CustomSubDomainFeature::class,
-                        App\Features\SupportTicketFeature::class,
-                    ],
                 ],
                 [
                     'name' => 'Enterprise',
@@ -196,19 +179,6 @@ return [
                         'Webhooks and real-time app notifications',
                         'Single sign-on integration',
                         'Priority support',
-                    ],
-                    'options' => [
-                        App\Features\AdvancedNotificationsFeature::class,
-                        App\Features\SocialLoginFeature::class,
-                        App\Features\ApiAccessFeature::class,
-                        App\Features\CustomSubDomainFeature::class,
-                        App\Features\SupportTicketFeature::class,
-                        App\Features\CustomDomainFeature::class,
-                        App\Features\BackupFeature::class,
-                        App\Features\ExportDataFeature::class,
-                        App\Features\OAuth2AccessFeature::class,
-                        App\Features\SingleSignOnFeature::class,
-                        App\Features\WebhookFeature::class,
                     ],
                 ],
             ],

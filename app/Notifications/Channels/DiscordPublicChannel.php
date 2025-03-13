@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Notifications\Channels;
 
-use App\Features\AdvancedNotificationsFeature;
-use App\Settings\FeatureSettings;
+use App\Settings\IntegrationSettings;
 use Illuminate\Notifications\Notification;
 use NotificationChannels\Discord\Discord;
 
@@ -18,12 +17,10 @@ class DiscordPublicChannel
      */
     public function send(object $notifiable, Notification $notification): ?array
     {
-        /** @var FeatureSettings $settings */
-        $settings = app(FeatureSettings::class);
+        /** @var IntegrationSettings $settings */
+        $settings = app(IntegrationSettings::class);
 
-        $key = AdvancedNotificationsFeature::settingsKey();
-
-        $channel = data_get($settings->$key, 'discord_channel') ?? null;
+        $channel = data_get($settings->discord_settings, 'discord_channel') ?? null;
 
         if (! $channel || ! method_exists($notification, 'toDiscord')) {
             return null;

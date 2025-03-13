@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Policies;
 
 use App\Models\User;
+use BezhanSalleh\FilamentShield\Support\Utils;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
@@ -105,5 +106,13 @@ class UserPolicy
     public function reorder(User $user): bool
     {
         return $user->can('reorder_user');
+    }
+
+    /**
+     * Determine whether the user can manage billing.
+     */
+    public function billing(User $user): bool
+    {
+        return $user->hasRole(Utils::getSuperAdminName());
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\AssignmentRecordResource\Pages;
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\CommentsRelationManager;
@@ -29,7 +28,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class AssignmentRecordResource extends BaseResource
 {
@@ -297,7 +295,6 @@ class AssignmentRecordResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(AssignmentRecordExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

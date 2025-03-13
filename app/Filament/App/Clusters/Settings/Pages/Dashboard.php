@@ -6,7 +6,6 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Actions\ResetTenantSubdomain;
 use App\Actions\UpdateTenantSubdomain;
-use App\Features\CustomSubDomainFeature;
 use App\Filament\App\Clusters\Settings;
 use App\Models\Enums\RosterMode;
 use App\Models\Tenant;
@@ -30,7 +29,6 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Validation\Rule;
-use Laravel\Pennant\Feature;
 use Throwable;
 
 class Dashboard extends SettingsPage
@@ -105,7 +103,6 @@ class Dashboard extends SettingsPage
 
                                         return [Rule::unique('mysql.domains', 'domain')->ignore($tenant->custom_domain->id ?? null), new SubdomainRule];
                                     })
-                                    ->visible(fn () => Feature::active(CustomSubDomainFeature::class))
                                     ->helperText('The subdomain for your account. You will be redirected to your new domain if this field is updated when the form is saved. Please understand your account will no longer be accessible using the the domain you are currently using after changing this setting.')
                                     ->prefix(config('app.scheme').'://')
                                     ->suffix(config('app.base_url'))

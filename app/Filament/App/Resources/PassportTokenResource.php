@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ApiAccessFeature;
 use App\Filament\App\Resources\PassportTokenResource\Pages;
 use App\Models\PassportToken;
 use App\Services\UserSettingsService;
@@ -16,7 +15,6 @@ use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Laravel\Passport\Passport;
-use Laravel\Pennant\Feature;
 
 class PassportTokenResource extends BaseResource
 {
@@ -137,10 +135,5 @@ class PassportTokenResource extends BaseResource
             'view' => Pages\ViewPassportToken::route('/{record}'),
             'edit' => Pages\EditPassportToken::route('/{record}/edit'),
         ];
-    }
-
-    public static function canAccess(): bool
-    {
-        return parent::canAccess() && Feature::active(ApiAccessFeature::class);
     }
 }

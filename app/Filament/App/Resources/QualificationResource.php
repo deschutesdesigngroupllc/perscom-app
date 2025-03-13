@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\QualificationResource\Pages;
 use App\Filament\Exports\QualificationExporter;
 use App\Models\Qualification;
@@ -14,7 +13,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class QualificationResource extends BaseResource
 {
@@ -98,7 +96,6 @@ class QualificationResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(QualificationExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

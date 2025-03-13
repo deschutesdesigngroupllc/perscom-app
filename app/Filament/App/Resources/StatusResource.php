@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\StatusResource\Pages;
 use App\Filament\Exports\StatusExporter;
 use App\Models\Status;
@@ -14,7 +13,6 @@ use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Pennant\Feature;
 
 class StatusResource extends BaseResource
 {
@@ -70,7 +68,6 @@ class StatusResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(StatusExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

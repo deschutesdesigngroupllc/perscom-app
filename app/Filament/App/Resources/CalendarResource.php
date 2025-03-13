@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\CalendarResource\Pages;
 use App\Filament\App\Resources\CalendarResource\RelationManagers;
 use App\Filament\Exports\CalendarExporter;
@@ -15,7 +14,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class CalendarResource extends BaseResource
 {
@@ -73,7 +71,6 @@ class CalendarResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(CalendarExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

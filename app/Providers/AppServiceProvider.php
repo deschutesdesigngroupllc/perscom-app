@@ -47,7 +47,6 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
-use Laravel\Pennant\Feature;
 use Laravel\Socialite\Contracts\Factory;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
 use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
@@ -228,9 +227,6 @@ class AppServiceProvider extends ServiceProvider
 
             return value($closure, $field);
         });
-
-        Feature::discover();
-        Feature::resolveScopeUsing(static fn ($driver) => tenant());
 
         FilamentAsset::register([
             AlpineComponent::make('widget-code-generator', __DIR__.'/../../resources/js/dist/components/widget-code-generator/index.js'),

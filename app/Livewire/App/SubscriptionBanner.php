@@ -4,14 +4,13 @@ declare(strict_types=1);
 
 namespace App\Livewire\App;
 
-use App\Features\BillingFeature;
 use App\Models\Tenant;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Pennant\Feature;
+use Illuminate\Support\Facades\Gate;
 use Livewire\Component;
 
 class SubscriptionBanner extends Component
@@ -49,7 +48,7 @@ class SubscriptionBanner extends Component
             default => null
         };
 
-        $this->show = filled($this->message) && Auth::user() && Feature::active(BillingFeature::class);
+        $this->show = filled($this->message) && Auth::user() && Gate::check('billing');
     }
 
     public function render(): View

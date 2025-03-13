@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\FormResource\Pages;
 use App\Filament\App\Resources\FormResource\RelationManagers;
 use App\Filament\Exports\FormExporter;
@@ -17,7 +16,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class FormResource extends BaseResource
 {
@@ -143,7 +141,6 @@ class FormResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(FormExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

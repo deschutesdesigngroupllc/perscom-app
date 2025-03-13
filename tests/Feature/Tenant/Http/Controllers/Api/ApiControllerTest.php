@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
-use App\Features\ApiAccessFeature;
 use App\Http\Middleware\CheckSubscription;
 use App\Models\User;
 use App\Settings\IntegrationSettings;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -48,17 +46,6 @@ class ApiControllerTest extends ApiTestCase
         $this->withToken($this->apiKey())->getJson(route('api.users.index', [
             'version' => config('api.version'),
         ]))->assertSuccessful();
-    }
-
-    public function test_api_cannot_be_reached_without_api_access_feature(): void
-    {
-        $this->withMiddleware(CheckSubscription::class);
-
-        Feature::define(ApiAccessFeature::class, false);
-
-        $this->withToken($this->apiKey())->getJson(route('api.users.index', [
-            'version' => config('api.version'),
-        ]))->assertStatus(402);
     }
 
     public function test_api_cannot_be_reached_with_basic_plan(): void

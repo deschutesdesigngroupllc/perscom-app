@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\AwardRecordResource\Pages;
 use App\Filament\App\Resources\AwardRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\AwardRecordResource\RelationManagers\CommentsRelationManager;
@@ -25,7 +24,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class AwardRecordResource extends BaseResource
 {
@@ -214,7 +212,6 @@ class AwardRecordResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(AwardRecordExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters\Settings\Pages;
 
-use App\Features\BackupFeature;
 use App\Filament\App\Clusters\Settings;
 use App\Jobs\Central\BackupTenantDatabase;
 use App\Models\Backup;
@@ -15,7 +14,6 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
-use Laravel\Pennant\Feature;
 
 class Backups extends Page implements HasTable
 {
@@ -32,11 +30,6 @@ class Backups extends Page implements HasTable
     protected static ?int $navigationSort = 2;
 
     protected ?string $subheading = 'Your most recent account backups.';
-
-    public static function canAccess(): bool
-    {
-        return parent::canAccess() && Feature::active(BackupFeature::class);
-    }
 
     public static function table(Table $table): Table
     {

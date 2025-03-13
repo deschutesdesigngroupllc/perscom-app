@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\OAuth2AccessFeature;
 use App\Filament\App\Resources\PassportClientResource\Pages;
 use App\Models\Enums\PassportClientType;
 use App\Models\PassportClient;
@@ -18,7 +17,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
-use Laravel\Pennant\Feature;
 
 class PassportClientResource extends BaseResource
 {
@@ -220,10 +218,5 @@ class PassportClientResource extends BaseResource
             'edit' => Pages\EditPassportClient::route('/{record}/edit'),
             'view' => Pages\ViewPassportClient::route('/{record}'),
         ];
-    }
-
-    public static function canAccess(): bool
-    {
-        return parent::canAccess() && Feature::active(OAuth2AccessFeature::class);
     }
 }

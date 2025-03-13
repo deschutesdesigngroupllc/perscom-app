@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\UnitResource\Pages;
 use App\Filament\App\Resources\UnitResource\RelationManagers\SlotsRelationManager;
 use App\Filament\Exports\UnitExporter;
@@ -23,7 +22,6 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class UnitResource extends BaseResource
 {
@@ -144,7 +142,6 @@ class UnitResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(UnitExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

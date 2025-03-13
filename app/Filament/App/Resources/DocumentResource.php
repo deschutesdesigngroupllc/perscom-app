@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\DocumentResource\Pages;
 use App\Filament\Exports\DocumentExporter;
 use App\Models\Document;
@@ -16,7 +15,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class DocumentResource extends BaseResource
 {
@@ -100,7 +98,6 @@ class DocumentResource extends BaseResource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
                         ->exporter(DocumentExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

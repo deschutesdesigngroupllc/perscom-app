@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace App\Models\Enums;
 
-use App\Features\AdvancedNotificationsFeature;
 use App\Models\User;
 use App\Notifications\Channels\DiscordPublicChannel;
-use App\Settings\FeatureSettings;
+use App\Settings\IntegrationSettings;
 use Filament\Support\Contracts\HasDescription;
 use Filament\Support\Contracts\HasLabel;
-use Laravel\Pennant\Feature;
 use NotificationChannels\Discord\DiscordChannel;
 use NotificationChannels\Twilio\TwilioChannel;
 
@@ -59,9 +57,8 @@ enum NotificationChannel: string implements HasDescription, HasLabel
 
     public function getEnabled(?User $notifiable = null): bool
     {
-        /** @var FeatureSettings $settings */
-        $settings = app(FeatureSettings::class);
-        $key = AdvancedNotificationsFeature::settingsKey();
+        /** @var IntegrationSettings $settings */
+        $settings = app(IntegrationSettings::class);
 
         if ($this === NotificationChannel::SMS && $notifiable && blank($notifiable->phone_number)) {
             return false;
@@ -72,14 +69,11 @@ enum NotificationChannel: string implements HasDescription, HasLabel
         }
 
         return match ($this) {
-            NotificationChannel::DISCORD_PRIVATE => Feature::active(AdvancedNotificationsFeature::class)
-                && (data_get($settings->$key, 'discord_enabled', false) ?? false),
-            NotificationChannel::DISCORD_PUBLIC => Feature::active(AdvancedNotificationsFeature::class)
-                && (data_get($settings->$key, 'discord_enabled', false) ?? false)
-                && (data_get($settings->$key, 'discord_server') ?? null)
-                && (data_get($settings->$key, 'discord_channel') ?? null),
-            NotificationChannel::SMS => Feature::active(AdvancedNotificationsFeature::class)
-                && (data_get($settings->$key, 'sms_enabled', false) ?? false),
+            NotificationChannel::DISCORD_PRIVATE => filled(data_get($settings->discord_settings, 'discord_enabled')),
+            NotificationChannel::DISCORD_PUBLIC => filled(data_get($settings->discord_settings, 'discord_enabled'))
+                && filled(data_get($settings->discord_settings, 'discord_server'))
+                && filled(data_get($settings->discord_settings, 'discord_channel')),
+            NotificationChannel::SMS => filled(data_get($settings->sms_settings, 'sms_enabled')),
             default => true
         };
     }
