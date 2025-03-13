@@ -70,7 +70,7 @@ class WebhookLogResource extends BaseResource
                 Tables\Columns\TextColumn::make('status_code')
                     ->label('Status')
                     ->badge()
-                    ->formatStateUsing(fn (WebhookLog $record, $state) => "$state $record->reason_phrase")
+                    ->formatStateUsing(fn (WebhookLog $record, $state): string => "$state $record->reason_phrase")
                     ->color(fn ($state): string => match (true) {
                         (int) $state >= 200 && (int) $state < 300 => 'success',
                         default => 'danger'
@@ -177,7 +177,7 @@ class WebhookLogResource extends BaseResource
                             TextEntry::make('status_code')
                                 ->label('Status')
                                 ->badge()
-                                ->formatStateUsing(fn (WebhookLog $record, $state) => "$state $record->reason_phrase")
+                                ->formatStateUsing(fn (WebhookLog $record, $state): string => "$state $record->reason_phrase")
                                 ->color(fn ($state): string => match (true) {
                                     (int) $state >= 200 && (int) $state < 300 => 'success',
                                     default => 'danger'
@@ -203,7 +203,7 @@ class WebhookLogResource extends BaseResource
                         ->icon('heroicon-o-code-bracket')
                         ->schema([
                             SyntaxEntry::make('payload')
-                                ->getStateUsing(fn (WebhookLog $record) => $record->getExtraProperty('payload'))
+                                ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('payload'))
                                 ->hiddenLabel()
                                 ->language('json'),
                         ]),

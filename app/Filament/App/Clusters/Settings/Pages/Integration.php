@@ -121,7 +121,7 @@ class Integration extends SettingsPage
                                     ->visible(fn (Get $get): bool => $get('sms_settings.sms_enabled'))
                                     ->label('Daily SMS Limit')
                                     ->helperText('Each account is limited to a daily limit of SMS text messages. To increase your rate, please reach out to support.')
-                                    ->content(function (?\App\Models\Feature $record): string {
+                                    ->content(function (): string {
                                         /** @var TwilioService $service */
                                         $service = app(TwilioService::class);
 

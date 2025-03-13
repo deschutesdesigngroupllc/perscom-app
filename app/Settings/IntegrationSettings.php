@@ -10,9 +10,9 @@ class IntegrationSettings extends Settings
 {
     public string $single_sign_on_key;
 
-    public ?array $discord_settings;
+    public ?array $discord_settings = null;
 
-    public ?array $sms_settings;
+    public ?array $sms_settings = null;
 
     public static function group(): string
     {
