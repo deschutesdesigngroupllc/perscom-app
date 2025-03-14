@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Landing\FindMyOrganizationController;
 use App\Http\Controllers\Landing\HomeController;
-use App\Http\Controllers\Landing\PrivacyPolicyController;
 use App\Http\Controllers\Landing\RegisterController;
 use Illuminate\Support\Facades\Route;
 use Spatie\Health\Http\Controllers\HealthCheckResultsController;
@@ -25,8 +24,19 @@ Route::group(['middleware' => 'landing', CacheResponse::class], static function 
             ->name('find-my-organization.show');
     });
 
-    Route::get('privacy-policy', [PrivacyPolicyController::class, 'index'])
-        ->name('privacy-policy.index');
+    Route::group(['prefix' => 'legal'], function () {
+        Route::inertia('acceptable-use-policy', 'legal/AcceptableUsePolicy')
+            ->name('acceptable-use-policy');
+
+        Route::inertia('cookie-policy', 'legal/CookiePolicy')
+            ->name('cookie-policy');
+
+        Route::inertia('privacy-policy', 'legal/PrivacyPolicy')
+            ->name('privacy-policy');
+
+        Route::inertia('terms-of-service', 'legal/TermsOfService')
+            ->name('terms-of-service');
+    });
 
     Route::group(['prefix' => 'register'], static function (): void {
         Route::get('/', [RegisterController::class, 'index'])

@@ -16,7 +16,7 @@
 
   @googlefonts
   @viteReactRefresh
-  {{ Vite::useHotFile('landing.hot')->useBuildDirectory('landing')->withEntryPoints(['resources/js/landing/app.jsx', 'resources/css/landing/app.css']) }}
+  @vite(['resources/js/landing/app.jsx', 'resources/css/landing/app.css'])
   @routes
   @inertiaHead
 
