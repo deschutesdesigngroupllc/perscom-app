@@ -62,10 +62,14 @@ export default function Register() {
           </div>
           <div className='flex items-center justify-between'>
             <div className='flex items-center'>
-              <label className='flex items-center'>
-                <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} />
+              <label className='flex items-start'>
+                <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} className='mt-1' />
                 <span className='ml-2 text-sm'>
                   I have read and agree to the{' '}
+                  <a className='underline' target='_blank' rel='noreferrer' href={route('web.terms-of-service')}>
+                    Terms of Service
+                  </a>{' '}
+                  and{' '}
                   <a className='underline' target='_blank' rel='noreferrer' href={route('web.privacy-policy')}>
                     Privacy Policy
                   </a>
