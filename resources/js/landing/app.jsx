@@ -5,6 +5,19 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers'
 
 import.meta.glob(['../../svg/**', '../../../images/landing/landing/**'])
 
+const loadGetTermsScript = () => {
+  const scriptId = 'getterms-embed-js'
+  if (!document.getElementById(scriptId)) {
+    const script = document.createElement('script')
+    script.id = scriptId
+    script.src = 'https://app.getterms.io/dist/js/embed.js'
+    script.async = true
+    document.body.appendChild(script)
+  }
+}
+
+loadGetTermsScript()
+
 createInertiaApp({
   resolve: (name) => resolvePageComponent(`./pages/${name}.jsx`, import.meta.glob('./pages/**/*.jsx')),
   progress: {

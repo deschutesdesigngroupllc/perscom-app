@@ -5,6 +5,9 @@ import clsx from 'clsx'
 import { ButtonLink } from './Button'
 import { Container } from './Container'
 import { Logo } from './Logo'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faGithub } from '@fortawesome/free-brands-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 
 function MobileNavigation() {
   return (
@@ -147,7 +150,7 @@ export function Header() {
                 Support
               </a>
             </li>
-            <li className='ml-auto hidden lg:block'>
+            <li className='ml-auto hidden xl:block'>
               <a
                 href={route('web.find-my-organization.index')}
                 target='_blank'
@@ -157,7 +160,12 @@ export function Header() {
                 Find My Organization
               </a>
             </li>
-            <li className='ml-auto lg:ml-6'>
+            <li className='ml-auto xl:ml-0'>
+              <a href='https://github.com/deschutesdesigngroupllc' target='_blank'>
+                <FontAwesomeIcon className='size-6 text-gray-600 hover:text-gray-500 lg:ml-2' icon={faGithub} />
+              </a>
+            </li>
+            <li className='ml-4'>
               <ButtonLink href={route('web.register.index')} color='blue'>
                 <span>
                   Get started

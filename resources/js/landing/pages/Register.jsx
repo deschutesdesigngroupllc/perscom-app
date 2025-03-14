@@ -66,7 +66,7 @@ export default function Register() {
                 <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} />
                 <span className='ml-2 text-sm'>
                   I have read and agree to the{' '}
-                  <a className='underline' target='_blank' rel='noreferrer' href={route('web.privacy-policy.index')}>
+                  <a className='underline' target='_blank' rel='noreferrer' href={route('web.privacy-policy')}>
                     Privacy Policy
                   </a>
                 </span>
