@@ -48,31 +48,9 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertSuccessful();
     }
 
-    public function test_api_cannot_be_reached_with_basic_plan(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
-
-        $this->withMiddleware(CheckSubscription::class);
-
-        $this->withToken($this->apiKey())->getJson(route('api.users.index', [
-            'version' => config('api.version'),
-        ]))->assertPaymentRequired();
-    }
-
-    public function test_api_can_be_reached_with_complete_pro_subscription(): void
+    public function test_api_can_be_reached_with_subscription(): void
     {
         $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
-
-        $this->withMiddleware(CheckSubscription::class);
-
-        $this->withToken($this->apiKey())->getJson(route('api.users.index', [
-            'version' => config('api.version'),
-        ]))->assertSuccessful();
-    }
-
-    public function test_api_can_be_reached_with_complete_enterprise_subscription(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_ENTERPRISE_MONTH'));
 
         $this->withMiddleware(CheckSubscription::class);
 

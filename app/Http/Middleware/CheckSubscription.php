@@ -17,14 +17,9 @@ class CheckSubscription extends VerifySparkBillableIsSubscribed
     {
         $this->request = $request;
 
-        if (App::isDemo() || App::isAdmin() || tenant()->onTrial()) {
+        if (App::isDemo() || App::isAdmin()) {
             return $next($request);
         }
-
-        abort_if(
-            boolean: $this->request->routeIs('api.*') || $this->request->routeIs('passport.*') || $this->request->routeIs('oidc.*'),
-            code: 402
-        );
 
         return parent::handle($request, $next, $billableType, $plan);
     }
