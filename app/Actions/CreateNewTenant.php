@@ -25,7 +25,7 @@ class CreateNewTenant
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique(Tenant::class, 'email')],
             'privacy' => ['required', 'boolean'],
         ], [
-            'privacy.required' => 'You must agree to the Privacy Policy.',
+            'privacy.required' => 'You must agree to the policies.',
         ])->validate();
 
         $tenant = Tenant::create([

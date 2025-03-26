@@ -31,7 +31,7 @@ export default function Register() {
             <Logo className='sm:h-18 mb-2 h-16 w-auto md:h-20' />
           </a>
         </div>
-        <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-800'>Get started for free.</h1>
+        <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-800'>Get started for free</h1>
         <p className='mt-2 text-sm'>No upfront costs or credit card requirements. Cancel at anytime with no questions asked.</p>
       </div>
       <div className='mt-5'>
@@ -43,6 +43,7 @@ export default function Register() {
               id='organization'
               name='organization'
               type='text'
+              autoComplete='organization'
               required
               value={data.organization}
               onChange={onHandleChange}
@@ -66,20 +67,36 @@ export default function Register() {
                 <Checkbox name='privacy' value={data.privacy} onChange={onHandleChange} className='mt-1' />
                 <span className='ml-2 text-sm'>
                   I have read and agree to the{' '}
-                  <a className='underline' target='_blank' rel='noreferrer' href={route('web.terms-of-service')}>
-                    Terms of Service
+                  <a className='font-semibold' target='_blank' rel='noreferrer' href={route('web.acceptable-use-policy')}>
+                    Acceptable Use Policy
+                  </a>
+                  ,{' '}
+                  <a className='font-semibold' target='_blank' rel='noreferrer' href={route('web.cookie-policy')}>
+                    Cookie Policy
+                  </a>
+                  ,{' '}
+                  <a className='font-semibold' target='_blank' rel='noreferrer' href={route('web.privacy-policy')}>
+                    Privacy Policy
                   </a>{' '}
                   and{' '}
-                  <a className='underline' target='_blank' rel='noreferrer' href={route('web.privacy-policy')}>
-                    Privacy Policy
+                  <a className='font-semibold' target='_blank' rel='noreferrer' href={route('web.terms-of-service')}>
+                    Terms of Service
                   </a>
+                  .
                 </span>
               </label>
             </div>
           </div>
+          <div className='pt-2 text-sm'>
+            Already have an account? Find it{' '}
+            <a href={route('web.find-my-organization.index')} className='font-semibold'>
+              here
+            </a>
+            .
+          </div>
           <div className='pt-5'>
             <Button type='submit' processing={processing} color='blue' className='w-full'>
-              Start free trial <span aria-hidden='true'>&nbsp;&rarr;</span>
+              Continue <span aria-hidden='true'>&nbsp;&rarr;</span>
             </Button>
           </div>
         </form>
