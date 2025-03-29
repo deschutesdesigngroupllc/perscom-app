@@ -26,6 +26,7 @@ trait HasCategories
     {
         /** @var TModel $this */
         $relationship = $this->belongsToMany(Category::class, "{$this->getTable()}_categories")
+            ->where('resource', get_class($this))
             ->withPivot('order')
             ->withTimestamps();
 

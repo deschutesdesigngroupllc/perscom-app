@@ -15,7 +15,7 @@ class FormFactory extends Factory
 {
     public function definition(): array
     {
-        $form = "Form  {$this->faker->unique()->randomNumber()}";
+        $form = "Form {$this->faker->unique()->randomNumber()}";
 
         return [
             'name' => $form,

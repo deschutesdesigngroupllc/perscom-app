@@ -181,6 +181,7 @@ class AttachmentResource extends BaseResource
     {
         return $table
             ->recordTitleAttribute('name')
+            ->description('The attachments that belong to this resource.')
             ->emptyStateDescription('Create an attachment to get started.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')

@@ -68,6 +68,18 @@ class Category extends Model implements HasLabel
     public function awards(): BelongsToMany
     {
         return $this->belongsToMany(Award::class, 'awards_categories')
+            ->where('resource', Award::class)
+            ->withPivot('order')
+            ->withTimestamps();
+    }
+
+    /**
+     * @return BelongsToMany<Competency, $this>
+     */
+    public function competencies(): BelongsToMany
+    {
+        return $this->belongsToMany(Competency::class, 'competencies_categories')
+            ->where('resource', Competency::class)
             ->withPivot('order')
             ->withTimestamps();
     }
@@ -78,6 +90,7 @@ class Category extends Model implements HasLabel
     public function documents(): BelongsToMany
     {
         return $this->belongsToMany(Document::class, 'documents_categories')
+            ->where('resource', Document::class)
             ->withPivot('order')
             ->withTimestamps();
     }
@@ -88,6 +101,7 @@ class Category extends Model implements HasLabel
     public function forms(): BelongsToMany
     {
         return $this->belongsToMany(Form::class, 'forms_categories')
+            ->where('resource', Form::class)
             ->withPivot('order')
             ->withTimestamps();
     }
@@ -98,6 +112,7 @@ class Category extends Model implements HasLabel
     public function qualifications(): BelongsToMany
     {
         return $this->belongsToMany(Qualification::class, 'qualifications_categories')
+            ->where('resource', Qualification::class)
             ->withPivot('order')
             ->withTimestamps();
     }
@@ -108,6 +123,7 @@ class Category extends Model implements HasLabel
     public function ranks(): BelongsToMany
     {
         return $this->belongsToMany(Rank::class, 'ranks_categories')
+            ->where('resource', Rank::class)
             ->withPivot('order')
             ->withTimestamps();
     }

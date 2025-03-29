@@ -26,6 +26,7 @@ use App\Traits\HasServiceRecords;
 use App\Traits\HasSpecialty;
 use App\Traits\HasStatus;
 use App\Traits\HasStatusRecords;
+use App\Traits\HasTrainingRecords;
 use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use Carbon\CarbonInterval;
@@ -213,6 +214,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         HasStatus::status insteadof HasStatusRecords;
         HasStatus::scopeStatus insteadof HasStatusRecords;
     }
+    use HasTrainingRecords;
     use HasUnit;
     use JwtClaims;
     use Notifiable;

@@ -11,12 +11,15 @@ use App\Models\Award;
 use App\Models\AwardRecord;
 use App\Models\Calendar;
 use App\Models\CombatRecord;
+use App\Models\Credential;
 use App\Models\Document;
+use App\Models\Enums\CredentialType;
 use App\Models\Enums\FieldType;
 use App\Models\Event;
 use App\Models\Field;
 use App\Models\Form;
 use App\Models\Group;
+use App\Models\Issuer;
 use App\Models\Position;
 use App\Models\Qualification;
 use App\Models\QualificationRecord;
@@ -27,6 +30,7 @@ use App\Models\Slot;
 use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Task;
+use App\Models\TrainingRecord;
 use App\Models\Unit;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Support\Utils;
@@ -391,6 +395,11 @@ class MilitarySeeder extends Seeder
                 ->for($user, 'author')
                 ->recycle($documents)
                 ->count(5), 'service_records')
+            ->has(TrainingRecord::factory()
+                ->for($user, 'author')
+                ->for($user, 'instructor')
+                ->recycle($documents)
+                ->count(5), 'service_records')
             ->hasAttached($tasks->random(3), ['assigned_by_id' => $user->getKey(), 'assigned_at' => now()])
             ->hasAttached($events->random(3))
             ->hasAttached($fields->take(3))
@@ -408,6 +417,31 @@ class MilitarySeeder extends Seeder
                 ],
             )
             ->hasAttached($fields->random(3))
+            ->create();
+
+        $issuer = Issuer::factory()
+            ->state([
+                'name' => 'Department of the Army',
+            ])
+            ->create();
+
+        Credential::factory()
+            ->count(3)
+            ->for($issuer)
+            ->sequence(
+                [
+                    'name' => 'Emergency Medical Technician (EMT)',
+                    'type' => CredentialType::Certification,
+                ],
+                [
+                    'name' => 'Commercial Driver\'s License (CDL)',
+                    'type' => CredentialType::License,
+                ],
+                [
+                    'name' => 'Top Secret Security Clearance',
+                    'type' => CredentialType::Other,
+                ]
+            )
             ->create();
     }
 }
