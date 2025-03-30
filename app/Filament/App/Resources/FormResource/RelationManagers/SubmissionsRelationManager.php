@@ -28,6 +28,7 @@ class SubmissionsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->description('The submissions for this form.')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable(),

@@ -21,6 +21,7 @@ class RegistrationsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->description('The users that are registered for the event.')
             ->emptyStateHeading('No registrations')
             ->emptyStateDescription('There are no users registered.')
             ->columns([

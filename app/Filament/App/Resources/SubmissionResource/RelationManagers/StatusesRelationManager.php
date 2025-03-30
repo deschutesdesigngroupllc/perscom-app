@@ -19,15 +19,14 @@ class StatusesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->description('The status history for this submission.')
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->badge()
                     ->color(fn (?Status $record): array => Color::hex($record->color ?? '#2563eb')),
-                Tables\Columns\TextColumn::make('created_at'),
-            ])
-            ->filters([
-                //
+                Tables\Columns\TextColumn::make('created_at')
+                    ->toggleable(false),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
