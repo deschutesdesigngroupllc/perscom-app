@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "37f794c74363e6c33c7179e5b3e8c220",
+    "content-hash": "5ba3bc0400d19fbc800780cb727ad357",
     "packages": [
         {
             "name": "amphp/amp",
@@ -12290,6 +12290,73 @@
                 "source": "https://github.com/archtechx/virtualcolumn/tree/v1.4.1"
             },
             "time": "2024-04-07T18:26:29+00:00"
+        },
+        {
+            "name": "staudenmeir/belongs-to-through",
+            "version": "v2.16.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/staudenmeir/belongs-to-through.git",
+                "reference": "451496e4272c11d87b404791acdd352c606f29c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/staudenmeir/belongs-to-through/zipball/451496e4272c11d87b404791acdd352c606f29c0",
+                "reference": "451496e4272c11d87b404791acdd352c606f29c0",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^11.0",
+                "php": "^8.2"
+            },
+            "require-dev": {
+                "barryvdh/laravel-ide-helper": "^3.0",
+                "larastan/larastan": "^3.0",
+                "laravel/framework": "^11.0",
+                "mockery/mockery": "^1.5.1",
+                "orchestra/testbench-core": "^9.5",
+                "phpunit/phpunit": "^11.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Staudenmeir\\BelongsToThrough\\IdeHelperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Znck\\Eloquent\\": "src/",
+                    "Staudenmeir\\BelongsToThrough\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rahul Kadyan",
+                    "email": "hi@znck.me"
+                },
+                {
+                    "name": "Jonas Staudenmeir",
+                    "email": "mail@jonas-staudenmeir.de"
+                }
+            ],
+            "description": "Laravel Eloquent BelongsToThrough relationships",
+            "support": {
+                "issues": "https://github.com/staudenmeir/belongs-to-through/issues",
+                "source": "https://github.com/staudenmeir/belongs-to-through/tree/v2.16.4"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/JonasStaudenmeir",
+                    "type": "custom"
+                }
+            ],
+            "time": "2025-02-20T19:20:43+00:00"
         },
         {
             "name": "stripe/stripe-php",

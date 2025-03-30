@@ -7,16 +7,21 @@ namespace App\Models;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasCategories;
+use App\Traits\HasResourceLabel;
+use App\Traits\HasResourceUrl;
+use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Competency extends Model
+class Competency extends Model implements HasLabel
 {
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasCategories;
     use HasFactory;
+    use HasResourceLabel;
+    use HasResourceUrl;
 
     protected $fillable = [
         'name',

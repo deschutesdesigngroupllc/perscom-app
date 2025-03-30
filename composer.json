@@ -62,6 +62,7 @@
     "stancl/jobpipeline": "v2.0.0-rc4 as v1.6.2",
     "stancl/tenancy": "^3.8.5",
     "stancl/virtualcolumn": "^1.4.1",
+    "staudenmeir/belongs-to-through": "^2.5",
     "tailflow/laravel-orion": "^2.23.0",
     "tightenco/ziggy": "^2.5.1",
     "timokoerber/laravel-one-time-operations": "^1.4.4",

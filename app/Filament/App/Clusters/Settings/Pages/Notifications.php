@@ -91,6 +91,16 @@ class Notifications extends SettingsPage
                                     statePath: ''
                                 ),
                             ]),
+                        Tabs\Tab::make('Training Records')
+                            ->statePath('training_records')
+                            ->icon('heroicon-o-academic-cap')
+                            ->schema([
+                                ModelNotification::make(
+                                    description: 'Enable to send additional notifications when a training record is created.',
+                                    alert: new HtmlString("<div class='font-bold'>Notifications will still be sent to the recipient of the record regardless of the settings below.</div>"),
+                                    statePath: ''
+                                ),
+                            ]),
                     ]),
             ]);
     }

@@ -18,9 +18,13 @@ class SecondaryAssignmentsRelationManager extends RelationManager
 
     protected static ?string $icon = 'heroicon-o-calendar-days';
 
+    protected static ?string $title = 'Training Records';
+
     public function table(Table $table): Table
     {
         return $table
+            ->heading('Secondary Assignment(s)')
+            ->description('The secondary assignment records for the user.')
             ->recordTitleAttribute('type')
             ->columns([
                 Tables\Columns\TextColumn::make('position.name')
@@ -34,10 +38,6 @@ class SecondaryAssignmentsRelationManager extends RelationManager
                     ->color(fn (?AssignmentRecord $record): array => Color::hex($record->status->color ?? '#2563eb'))
                     ->sortable(),
             ])
-            ->filters([
-                //
-            ])
-            ->heading(null)
             ->headerActions([
                 Tables\Actions\CreateAction::make(),
             ])

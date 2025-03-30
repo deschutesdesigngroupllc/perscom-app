@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('type');
             $table->foreignId('issuer_id')->nullable()->constrained()->cascadeOnDelete();
+            $table->integer('order')->default(0);
             $table->timestamps();
         });
     }

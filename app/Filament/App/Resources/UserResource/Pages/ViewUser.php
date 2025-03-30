@@ -32,6 +32,7 @@ class ViewUser extends ViewRecord
         $this->when(! in_array('qualification_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\QualificationRecordsRelationManager::class));
         $this->when(! in_array('rank_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\RankRecordsRelationManager::class));
         $this->when(! in_array('service_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\ServiceRecordsRelationManager::class));
+        $this->when(! in_array('training_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\TrainingRecordsRelationManager::class));
 
         return $relationManagers->toArray();
     }

@@ -10,6 +10,7 @@ use App\Models\Competency;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 
 class CompetencyResource extends BaseResource
@@ -63,13 +64,23 @@ class CompetencyResource extends BaseResource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('categories.name')
+                    ->listWithLineBreaks(),
             ])
             ->filters([
-                //
+                SelectFilter::make('categories.name')
+                    ->relationship('categories', 'name')
+                    ->searchable()
+                    ->preload()
+                    ->multiple(),
             ])
+            ->groups(['categories.name'])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
