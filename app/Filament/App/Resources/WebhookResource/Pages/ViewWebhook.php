@@ -40,6 +40,7 @@ class ViewWebhook extends ViewRecord
                     $action->success();
                 }),
             Actions\EditAction::make(),
+            Actions\DeleteAction::make(),
         ];
     }
 }

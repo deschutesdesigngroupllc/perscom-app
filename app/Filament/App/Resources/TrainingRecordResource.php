@@ -57,8 +57,14 @@ class TrainingRecordResource extends BaseResource
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->columnSpanFull()
                                     ->createOptionForm(fn ($form): Form => UserResource::form($form)),
+                                Forms\Components\Select::make('credentials.name')
+                                    ->required()
+                                    ->helperText('The credentials that were earned.')
+                                    ->preload()
+                                    ->relationship(name: 'credentials', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form): Form => CredentialResource::form($form)),
                                 Forms\Components\RichEditor::make('text')
                                     ->required()
                                     ->helperText('Information about the record.')
@@ -109,9 +115,11 @@ class TrainingRecordResource extends BaseResource
                     ->columnSpanFull()
                     ->tabs([
                         Infolists\Components\Tabs\Tab::make('Training Record')
-                            ->icon('heroicon-o-clipboard-document-list')
+                            ->icon('heroicon-o-academic-cap')
                             ->schema([
                                 Infolists\Components\TextEntry::make('user.name'),
+                                Infolists\Components\TextEntry::make('credentials.name')
+                                    ->listWithLineBreaks(),
                                 Infolists\Components\TextEntry::make('text')
                                     ->html()
                                     ->prose()
@@ -146,6 +154,8 @@ class TrainingRecordResource extends BaseResource
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable()
                     ->searchable(),
+                Tables\Columns\TextColumn::make('credentials.name')
+                    ->listWithLineBreaks(),
                 Tables\Columns\TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
@@ -174,15 +184,22 @@ class TrainingRecordResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->groups(['user.name', 'document.name'])
+            ->groups(['credentials.name', 'document.name', 'user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
-                    ->relationship('user', 'name')
+                Tables\Filters\SelectFilter::make('credentials')
+                    ->relationship('credentials', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
                 Tables\Filters\SelectFilter::make('document')
                     ->relationship('document', 'name')
                     ->preload()
+                    ->searchable()
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
+                    ->preload()
+                    ->searchable()
                     ->multiple(),
             ])
             ->actions([

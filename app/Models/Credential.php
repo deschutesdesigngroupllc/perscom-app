@@ -14,6 +14,7 @@ use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\EloquentSortable\Sortable;
 
 class Credential extends Model implements HasLabel, Sortable
@@ -38,6 +39,15 @@ class Credential extends Model implements HasLabel, Sortable
     public function issuer(): BelongsTo
     {
         return $this->belongsTo(Issuer::class);
+    }
+
+    /**
+     * @return BelongsToMany<TrainingRecord, $this>
+     */
+    public function training_records(): BelongsToMany
+    {
+        return $this->belongsToMany(TrainingRecord::class, 'records_trainings_credentials')
+            ->using(TrainingRecordCredential::class);
     }
 
     protected function casts(): array

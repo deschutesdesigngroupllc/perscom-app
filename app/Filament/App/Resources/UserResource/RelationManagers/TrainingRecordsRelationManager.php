@@ -26,6 +26,8 @@ class TrainingRecordsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable(),
+                Tables\Columns\TextColumn::make('credentials.name')
+                    ->listWithLineBreaks(),
                 Tables\Columns\TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()

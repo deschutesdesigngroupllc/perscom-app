@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5ba3bc0400d19fbc800780cb727ad357",
+    "content-hash": "7885879f0d0b4694e23254b81f5cab8c",
     "packages": [
         {
             "name": "amphp/amp",
@@ -879,6 +879,167 @@
                 "source": "https://github.com/AnourValar/eloquent-serialize/tree/1.2.28"
             },
             "time": "2025-01-27T15:13:13+00:00"
+        },
+        {
+            "name": "archilex/filament-filter-sets",
+            "version": "3.8.5",
+            "dist": {
+                "type": "zip",
+                "url": "https://filament-filter-sets.composer.sh/download/9e8572c2-787d-4171-8290-c875d911a5bf/advanced-tables-for-filament-3.8.5.zip",
+                "reference": "5e44767a4d6491d3d150e225e746a8f4394abd8e",
+                "shasum": "dcfeb91b6eb8ce0ca7a983cbe1264167d924981a"
+            },
+            "require": {
+                "archilex/filament-toggle-icon-column": "^3.0",
+                "filament/filament": "^3.2.118",
+                "illuminate/contracts": "^10.45|^11.0|^12.0",
+                "php": "^8.1",
+                "spatie/eloquent-sortable": "^4.0",
+                "spatie/laravel-package-tools": "^1.13.5",
+                "spatie/once": "^3.1"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "nunomaduro/collision": "^7.0|^8.1",
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "pestphp/pest": "^2.0|^3.0",
+                "pestphp/pest-plugin-laravel": "^2.0|^3.0",
+                "pestphp/pest-plugin-livewire": "^2.0|^3.0",
+                "phpunit/phpunit": "^10.0|^11.5.3",
+                "spatie/laravel-ray": "^1.26"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "AdvancedTables": "Archilex\\AdvancedTables\\Facades\\AdvancedTables"
+                    },
+                    "providers": [
+                        "Archilex\\AdvancedTables\\AdvancedTablesServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Archilex\\AdvancedTables\\": "src",
+                    "Archilex\\AdvancedTables\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Archilex\\AdvancedTables\\Tests\\": "tests"
+                }
+            },
+            "scripts": {
+                "pint": [
+                    "vendor/bin/pint"
+                ],
+                "test": [
+                    "@test:pest",
+                    "@test:phpstan"
+                ],
+                "test:pest": [
+                    "vendor/bin/pest --parallel"
+                ]
+            },
+            "license": [
+                "proprietary"
+            ],
+            "authors": [
+                {
+                    "name": "Kenneth Sese",
+                    "role": "Developer",
+                    "email": "kmsese@gmail.com"
+                }
+            ],
+            "description": "Advanced Tables, previously Filter Sets, supercharges your Filament Tables with advanced tabs, customizable views, reorderable columns, and more",
+            "homepage": "https://github.com/archilex/filament-filter-sets",
+            "keywords": [
+                "advanced-tables",
+                "archilex",
+                "filament",
+                "filters",
+                "laravel",
+                "tables",
+                "views"
+            ],
+            "time": "2025-03-26T03:32:13+00:00"
+        },
+        {
+            "name": "archilex/filament-toggle-icon-column",
+            "version": "v3.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/archilex/filament-toggle-icon-column.git",
+                "reference": "0898857a5517c870b37b073527bc4edfd7185532"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/archilex/filament-toggle-icon-column/zipball/0898857a5517c870b37b073527bc4edfd7185532",
+                "reference": "0898857a5517c870b37b073527bc4edfd7185532",
+                "shasum": ""
+            },
+            "require": {
+                "filament/filament": "^3.2.4",
+                "illuminate/contracts": "^10.45|^11.0|^12.0",
+                "php": "^8.1",
+                "spatie/laravel-package-tools": "^1.13.5"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.0",
+                "orchestra/testbench": "^8.0|^9.0|^10.0",
+                "pestphp/pest": "^2.0|^3.0",
+                "pestphp/pest-plugin-laravel": "^2.0|^3.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "ToggleIconColumn": "Archilex\\ToggleIconColumn\\Facades\\ToggleIconColumn"
+                    },
+                    "providers": [
+                        "Archilex\\ToggleIconColumn\\ToggleIconColumnServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Archilex\\ToggleIconColumn\\": "src",
+                    "Archilex\\ToggleIconColumn\\Database\\Factories\\": "database/factories"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kenneth Sese",
+                    "email": "kmsese@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "A toggle icon column for Filament",
+            "homepage": "https://github.com/archilex/filament-toggle-icon-column",
+            "keywords": [
+                "admin panel",
+                "archilex",
+                "column",
+                "filament-toggle-icon-column",
+                "laravel",
+                "tables"
+            ],
+            "support": {
+                "issues": "https://github.com/archilex/filament-toggle-icon-column/issues",
+                "source": "https://github.com/archilex/filament-toggle-icon-column/tree/v3.2.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/archilex",
+                    "type": "github"
+                }
+            ],
+            "time": "2025-02-25T15:42:44+00:00"
         },
         {
             "name": "awcodes/filament-quick-create",
@@ -12357,6 +12518,114 @@
                 }
             ],
             "time": "2025-02-20T19:20:43+00:00"
+        },
+        {
+            "name": "staudenmeir/eloquent-has-many-deep",
+            "version": "v1.20.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/staudenmeir/eloquent-has-many-deep.git",
+                "reference": "52155a1ac051e0c451f329937e591f9b892f05e2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep/zipball/52155a1ac051e0c451f329937e591f9b892f05e2",
+                "reference": "52155a1ac051e0c451f329937e591f9b892f05e2",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^11.0",
+                "php": "^8.2",
+                "staudenmeir/eloquent-has-many-deep-contracts": "^1.2"
+            },
+            "require-dev": {
+                "awobaz/compoships": "^2.3",
+                "barryvdh/laravel-ide-helper": "^3.0",
+                "korridor/laravel-has-many-merged": "^1.1",
+                "larastan/larastan": "^3.0",
+                "laravel/framework": "^11.0",
+                "mockery/mockery": "^1.6",
+                "orchestra/testbench-core": "^9.5",
+                "phpunit/phpunit": "^11.0",
+                "staudenmeir/eloquent-json-relations": "^1.11",
+                "staudenmeir/laravel-adjacency-list": "^1.21"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Staudenmeir\\EloquentHasManyDeep\\IdeHelperServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Staudenmeir\\EloquentHasManyDeep\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonas Staudenmeir",
+                    "email": "mail@jonas-staudenmeir.de"
+                }
+            ],
+            "description": "Laravel Eloquent HasManyThrough relationships with unlimited levels",
+            "support": {
+                "issues": "https://github.com/staudenmeir/eloquent-has-many-deep/issues",
+                "source": "https://github.com/staudenmeir/eloquent-has-many-deep/tree/v1.20.7"
+            },
+            "funding": [
+                {
+                    "url": "https://paypal.me/JonasStaudenmeir",
+                    "type": "custom"
+                }
+            ],
+            "time": "2025-02-16T14:39:47+00:00"
+        },
+        {
+            "name": "staudenmeir/eloquent-has-many-deep-contracts",
+            "version": "v1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/staudenmeir/eloquent-has-many-deep-contracts.git",
+                "reference": "3ad76c6eeda60042f262d113bf471dcce584d88b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/staudenmeir/eloquent-has-many-deep-contracts/zipball/3ad76c6eeda60042f262d113bf471dcce584d88b",
+                "reference": "3ad76c6eeda60042f262d113bf471dcce584d88b",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": "^11.0",
+                "php": "^8.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Staudenmeir\\EloquentHasManyDeepContracts\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jonas Staudenmeir",
+                    "email": "mail@jonas-staudenmeir.de"
+                }
+            ],
+            "description": "Contracts for staudenmeir/eloquent-has-many-deep",
+            "support": {
+                "issues": "https://github.com/staudenmeir/eloquent-has-many-deep-contracts/issues",
+                "source": "https://github.com/staudenmeir/eloquent-has-many-deep-contracts/tree/v1.2.1"
+            },
+            "time": "2024-09-25T18:24:22+00:00"
         },
         {
             "name": "stripe/stripe-php",

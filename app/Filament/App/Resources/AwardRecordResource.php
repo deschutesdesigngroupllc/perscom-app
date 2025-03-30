@@ -188,19 +188,22 @@ class AwardRecordResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->groups(['user.name', 'award.name', 'document.name'])
+            ->groups(['award.name', 'document.name', 'user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
-                    ->relationship('user', 'name')
-                    ->preload()
-                    ->multiple(),
                 Tables\Filters\SelectFilter::make('award')
                     ->relationship('award', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
                 Tables\Filters\SelectFilter::make('document')
                     ->relationship('document', 'name')
                     ->preload()
+                    ->searchable()
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
+                    ->preload()
+                    ->searchable()
                     ->multiple(),
             ])
             ->actions([

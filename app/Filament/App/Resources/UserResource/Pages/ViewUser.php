@@ -47,6 +47,7 @@ class ViewUser extends ViewRecord
                 ->openUrlInNewTab()
                 ->tooltip(fn (?User $record) => $record->email),
             Actions\EditAction::make(),
+            Actions\DeleteAction::make(),
         ];
     }
 }

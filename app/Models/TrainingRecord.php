@@ -50,6 +50,15 @@ class TrainingRecord extends Model
     }
 
     /**
+     * @return BelongsToMany<Credential, $this>
+     */
+    public function credentials(): BelongsToMany
+    {
+        return $this->belongsToMany(Credential::class, 'records_trainings_credentials')
+            ->using(TrainingRecordCredential::class);
+    }
+
+    /**
      * @return BelongsTo<User, $this>
      */
     public function instructor(): BelongsTo

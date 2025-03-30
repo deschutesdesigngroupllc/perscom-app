@@ -29,6 +29,7 @@ use App\Traits\HasStatusRecords;
 use App\Traits\HasTrainingRecords;
 use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
+use Archilex\AdvancedTables\Concerns\HasViews;
 use Carbon\CarbonInterval;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
@@ -216,6 +217,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     }
     use HasTrainingRecords;
     use HasUnit;
+    use HasViews;
     use JwtClaims;
     use Notifiable;
 

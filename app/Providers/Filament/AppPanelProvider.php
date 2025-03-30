@@ -30,6 +30,7 @@ use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
 use App\Models\Tenant;
+use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
 use Awcodes\FilamentQuickCreate\QuickCreatePlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
@@ -147,7 +148,9 @@ class AppPanelProvider extends PanelProvider
             ->brandName('PERSCOM')
             ->brandLogo(fn () => view('components.logo'))
             ->plugins([
-                new MinimalTheme,
+                AdvancedTablesPlugin::make()
+                    ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
+                MinimalTheme::make(),
                 FilamentShieldPlugin::make(),
                 // TODO: Actions do not take advantage of the handleRecordCreation function so they fail.
                 //                QuickCreatePlugin::make()

@@ -254,33 +254,39 @@ class AssignmentRecordResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->groups(['user.name', 'type', 'status.name', 'unit.name', 'specialty.name', 'position.name', 'document.name'])
+            ->groups(['document.name', 'position.name', 'specialty.name', 'status.name', 'type', 'unit.name', 'user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
-                    ->relationship('user', 'name')
+                Tables\Filters\SelectFilter::make('document')
+                    ->relationship('document', 'name')
                     ->preload()
-                    ->multiple(),
-                Tables\Filters\SelectFilter::make('type')
-                    ->options(AssignmentRecordType::class),
-                Tables\Filters\SelectFilter::make('status')
-                    ->relationship('status', 'name')
-                    ->preload()
-                    ->multiple(),
-                Tables\Filters\SelectFilter::make('unit')
-                    ->relationship('unit', 'name')
-                    ->preload()
-                    ->multiple(),
-                Tables\Filters\SelectFilter::make('specialty')
-                    ->relationship('specialty', 'name')
-                    ->preload()
+                    ->searchable()
                     ->multiple(),
                 Tables\Filters\SelectFilter::make('position')
                     ->relationship('position', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
-                Tables\Filters\SelectFilter::make('document')
-                    ->relationship('document', 'name')
+                Tables\Filters\SelectFilter::make('specialty')
+                    ->relationship('specialty', 'name')
                     ->preload()
+                    ->searchable()
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('status')
+                    ->relationship('status', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('type')
+                    ->options(AssignmentRecordType::class),
+                Tables\Filters\SelectFilter::make('unit')
+                    ->relationship('unit', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
+                    ->preload()
+                    ->searchable()
                     ->multiple(),
             ])
             ->actions([
