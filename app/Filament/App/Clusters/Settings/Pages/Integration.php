@@ -7,6 +7,7 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 use App\Filament\App\Clusters\Settings;
 use App\Filament\App\Resources\PassportClientResource;
 use App\Filament\App\Resources\PassportTokenResource;
+use App\Filament\App\Resources\WebhookResource;
 use App\Services\DiscordService;
 use App\Services\TwilioService;
 use App\Settings\IntegrationSettings;
@@ -145,6 +146,10 @@ class Integration extends SettingsPage
                 ->label('OAuth 2.0 Clients')
                 ->color('gray')
                 ->url(PassportClientResource::getUrl()),
+            \Filament\Actions\Action::make('Webhooks')
+                ->label('Webhooks')
+                ->color('gray')
+                ->url(WebhookResource::getUrl()),
         ];
     }
 }

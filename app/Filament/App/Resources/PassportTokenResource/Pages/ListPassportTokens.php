@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\PassportTokenResource\Pages;
 
-use App\Filament\App\Clusters\Logs\Resources\ApiLogResource;
+use App\Filament\App\Resources\ApiLogResource;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Jobs\PurgeApiCache;
 use App\Services\ApiCacheService;

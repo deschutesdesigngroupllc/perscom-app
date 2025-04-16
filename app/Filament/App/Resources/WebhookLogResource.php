@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Clusters\Logs\Resources;
+namespace App\Filament\App\Resources;
 
-use App\Filament\App\Clusters\Logs;
-use App\Filament\App\Clusters\Logs\Resources\WebhookLogResource\Pages;
-use App\Filament\App\Resources\BaseResource;
-use App\Filament\App\Resources\WebhookResource;
 use App\Models\Enums\WebhookEvent;
 use App\Models\WebhookLog;
 use Filament\Infolists\Components\Tabs;
@@ -27,7 +23,13 @@ class WebhookLogResource extends BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
 
-    protected static ?string $cluster = Logs::class;
+    protected static ?string $navigationParentItem = 'Webhooks';
+
+    protected static ?string $navigationGroup = 'Integrations';
+
+    protected static ?int $navigationSort = 6;
+
+    protected static ?string $navigationLabel = 'Logs';
 
     protected static ?string $label = 'Webhook Logs';
 
@@ -214,8 +216,8 @@ class WebhookLogResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListWebhookLogs::route('/'),
-            'view' => Pages\ViewWebhookLog::route('/{record}'),
+            'index' => WebhookLogResource\Pages\ListWebhookLogs::route('/'),
+            'view' => WebhookLogResource\Pages\ViewWebhookLog::route('/{record}'),
         ];
     }
 

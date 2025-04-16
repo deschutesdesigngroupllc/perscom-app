@@ -7,7 +7,6 @@ namespace App\Filament\App\Pages;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Forms\Components\TorchlightCode;
 use App\Forms\Components\WidgetCodeGenerator;
-use App\Models\PassportToken;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use DateTimeZone;
@@ -88,7 +87,7 @@ class Widgets extends Page
                             ->openUrlInNewTab()
                             ->url(PassportTokenResource::getUrl('create'))
                         )
-                        ->options(fn () => PassportToken::all()->pluck('name', 'token')),
+                        ->options(fn () => PassportTokenResource::getEloquentQuery()->pluck('name', 'token')),
                     Select::make('timezone')
                         ->preload()
                         ->searchable()

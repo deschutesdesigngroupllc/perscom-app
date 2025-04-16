@@ -2,12 +2,8 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\App\Clusters\Logs\Resources;
+namespace App\Filament\App\Resources;
 
-use App\Filament\App\Clusters\Logs;
-use App\Filament\App\Clusters\Logs\Resources\ApiLogResource\Pages;
-use App\Filament\App\Resources\BaseResource;
-use App\Filament\App\Resources\PassportTokenResource;
 use App\Models\ApiLog;
 use App\Models\User;
 use Filament\Infolists\Components\KeyValueEntry;
@@ -31,7 +27,13 @@ class ApiLogResource extends BaseResource
 
     protected static ?string $navigationIcon = 'heroicon-o-key';
 
-    protected static ?string $cluster = Logs::class;
+    protected static ?string $navigationParentItem = 'API Keys';
+
+    protected static ?string $navigationGroup = 'Integrations';
+
+    protected static ?int $navigationSort = 6;
+
+    protected static ?string $navigationLabel = 'Logs';
 
     protected static ?string $label = 'API Logs';
 
@@ -310,8 +312,8 @@ class ApiLogResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListApiLogs::route('/'),
-            'view' => Pages\ViewApiLog::route('/{record}'),
+            'index' => ApiLogResource\Pages\ListApiLogs::route('/'),
+            'view' => ApiLogResource\Pages\ViewApiLog::route('/{record}'),
         ];
     }
 

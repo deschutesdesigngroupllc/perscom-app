@@ -206,8 +206,8 @@ class PassportClientResource extends BaseResource
 
     public static function getEloquentQuery(): Builder
     {
-        return parent::getEloquentQuery()->where('name', '<>', 'Default Personal Access Client')
-            ->where('name', '<>', 'Default Password Grant Client');
+        return parent::getEloquentQuery()->where('name', '<>', PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT)
+            ->where('name', '<>', PassportClient::SYSTEM_PASSWORD_GRANT_CLIENT);
     }
 
     public static function getPages(): array
