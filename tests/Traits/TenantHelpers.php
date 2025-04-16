@@ -14,7 +14,7 @@ trait TenantHelpers
 
     public function withSubscription(string|int|null $priceId = null, string $subscriptionStatus = 'active', $trialExpiresAt = null): void
     {
-        $priceId ??= env('STRIPE_PRODUCT_BASIC_MONTH');
+        $priceId ??= env('STRIPE_PRODUCT_MONTH');
 
         $this->withoutSubscription();
 

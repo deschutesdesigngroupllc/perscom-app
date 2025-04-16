@@ -44,7 +44,7 @@ class TenantObserverTest extends CentralTestCase
             'type' => 'default',
             'stripe_id' => Str::random(10),
             'stripe_status' => 'active',
-            'stripe_price' => env('STRIPE_PRODUCT_BASIC_MONTH'),
+            'stripe_price' => env('STRIPE_PRODUCT_MONTH'),
             'quantity' => 1,
             'trial_ends_at' => now()->addWeek(),
             'ends_at' => null,

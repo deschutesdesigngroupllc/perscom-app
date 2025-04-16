@@ -50,7 +50,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_can_be_reached_with_subscription(): void
     {
-        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
+        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'));
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -61,7 +61,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_with_incomplete_subscription(): void
     {
-        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete');
+        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'), 'incomplete');
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -72,7 +72,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_with_incomplete_expired_subscription(): void
     {
-        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete_expired');
+        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'), 'incomplete_expired');
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -151,25 +151,6 @@ class ApiControllerTest extends ApiTestCase
             ->assertForbidden();
     }
 
-    public function test_api_cannot_be_reached_when_using_perscom_signed_jwt_and_on_basic_plan(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
-
-        $this->withMiddleware(CheckSubscription::class);
-
-        $token = Auth::guard('jwt')->claims([
-            'scopes' => [
-                'view:user',
-            ],
-        ])->login(User::factory()->createQuietly());
-
-        $this->withToken($token)
-            ->getJson(route('api.users.index', [
-                'version' => config('api.version'),
-            ]))
-            ->assertPaymentRequired();
-    }
-
     public function test_api_cannot_be_reached_when_using_tenant_signed_jwt_without_proper_scopes(): void
     {
         /** @var IntegrationSettings $settings */
@@ -194,38 +175,5 @@ class ApiControllerTest extends ApiTestCase
                 'version' => config('api.version'),
             ]))
             ->assertForbidden();
-    }
-
-    public function test_api_cannot_be_reached_when_using_tenant_signed_jwt_and_on_basic_plan(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
-
-        $this->withMiddleware(CheckSubscription::class);
-
-        /** @var IntegrationSettings $settings */
-        $settings = $this->app->make(IntegrationSettings::class);
-
-        $tokenBuilder = (new Builder(new JoseEncoder, ChainedFormatter::default()));
-        $algorithm = new Sha256;
-        $signingKey = InMemory::plainText($settings->single_sign_on_key);
-
-        $token = $tokenBuilder
-            ->issuedBy(config('app.url'))
-            ->relatedTo((string) User::factory()->createQuietly()->getKey())
-            ->identifiedBy(Str::random(10))
-            ->issuedAt(now()->toDateTimeImmutable())
-            ->canOnlyBeUsedAfter(now()->toDateTimeImmutable())
-            ->expiresAt(now()->addHour()->toDateTimeImmutable())
-            ->withClaim('tenant', $this->tenant->getKey())
-            ->withClaim('scopes', [
-                'view:user',
-            ])
-            ->getToken($algorithm, $signingKey);
-
-        $this->withToken($token->toString())
-            ->getJson(route('api.users.index', [
-                'version' => config('api.version'),
-            ]))
-            ->assertPaymentRequired();
     }
 }
