@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
+use App\Filament\Actions\SwapSubscriptionBulkAction;
 use App\Filament\Admin\Resources\TenantResource\Pages;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\DomainsRelationManager;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\SubscriptionsRelationManager;
+use App\Models\Enums\SubscriptionStatus;
 use App\Models\Tenant;
 use App\Models\User;
 use App\Rules\SubdomainRule;
@@ -20,6 +22,8 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
 use Wiebenieuwenhuis\FilamentCodeEditor\Components\CodeEditor;
 
 class TenantResource extends Resource
@@ -186,8 +190,13 @@ class TenantResource extends Resource
                     ->sortable()
                     ->openUrlInNewTab()
                     ->url(fn ($state) => $state),
-                Tables\Columns\TextColumn::make('subscription_plan')
-                    ->label('Subscription')
+                Tables\Columns\TextColumn::make('subscription_status')
+                    ->label('Subscription Status')
+                    ->badge(),
+                Tables\Columns\TextColumn::make('term')
+                    ->label('Subscription Term')
+                    ->color('gray')
+                    ->getStateUsing(fn (Tenant $record) => Str::headline($record->sparkPlan()?->interval ?? 'No Subscription'))
                     ->badge(),
                 Tables\Columns\IconColumn::make('customer')
                     ->boolean()
@@ -227,8 +236,34 @@ class TenantResource extends Resource
                 Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
+            ->filters([
+                Tables\Filters\Filter::make('subscription_status')
+                    ->form([
+                        Forms\Components\Select::make('subscription_status')
+                            ->label('Subscription Status')
+                            ->preload()
+                            ->multiple()
+                            ->options(SubscriptionStatus::class),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        $query->when(filled(data_get($data, 'subscription_status')), function (Builder $query) use ($data) {
+                            $query->whereHas('subscriptions', fn (Builder $query) => $query->whereIn('stripe_status', Arr::wrap(data_get($data, 'subscription_status'))));
+                        });
+                    }),
+                Tables\Filters\Filter::make('subscription_price')
+                    ->form([
+                        Forms\Components\TextInput::make('subscription_price')
+                            ->label('Subscription Price'),
+                    ])
+                    ->query(function (Builder $query, array $data) {
+                        $query->when(filled(data_get($data, 'subscription_price')), function (Builder $query) use ($data) {
+                            $query->whereHas('subscriptions', fn (Builder $query) => $query->whereHas('items', fn (Builder $query) => $query->whereLike('stripe_price', '%'.data_get($data, 'subscription_price').'%')));
+                        });
+                    }),
+            ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    SwapSubscriptionBulkAction::make(),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

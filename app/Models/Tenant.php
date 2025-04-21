@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\SubscriptionPlanType;
+use App\Models\Enums\SubscriptionStatus;
 use App\Observers\TenantObserver;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -122,6 +123,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         'custom_url',
         'fallback_url',
         'setup_completed',
+        'subscription_status',
     ];
 
     public static function getCustomColumns(): array
@@ -275,6 +277,23 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             }
 
             return SubscriptionPlanType::from(Str::lower($plan->name));
+
+        })->shouldCache();
+    }
+
+    /**
+     * @return Attribute<SubscriptionStatus, never>
+     */
+    public function subscriptionStatus(): Attribute
+    {
+        return Attribute::get(function (): SubscriptionStatus {
+            $subscription = $this->subscription();
+
+            if (blank($subscription)) {
+                return SubscriptionStatus::None;
+            }
+
+            return SubscriptionStatus::from($subscription->stripe_status);
 
         })->shouldCache();
     }

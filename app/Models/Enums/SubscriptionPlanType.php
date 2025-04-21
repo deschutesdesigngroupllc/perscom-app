@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 
 enum SubscriptionPlanType: string implements HasColor, HasLabel
 {
+    case PERSCOM = 'perscom';
     case BASIC = 'basic';
     case PRO = 'pro';
     case ENTERPRISE = 'enterprise';
@@ -19,7 +20,7 @@ enum SubscriptionPlanType: string implements HasColor, HasLabel
     {
         return match ($this) {
             SubscriptionPlanType::BASIC => 'warning',
-            SubscriptionPlanType::PRO => 'info',
+            SubscriptionPlanType::PRO, SubscriptionPlanType::PERSCOM => 'info',
             SubscriptionPlanType::ENTERPRISE => 'success',
             SubscriptionPlanType::NONE => 'gray'
         };
