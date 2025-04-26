@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Filament\Actions;
+namespace App\Filament\Admin\Actions;
 
 use App\Models\Tenant;
 use Exception;

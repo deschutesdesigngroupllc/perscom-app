@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Actions\SwapSubscriptionBulkAction;
+use App\Filament\Admin\Actions\SwapSubscriptionBulkAction;
 use App\Filament\Admin\Resources\TenantResource\Pages;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\DomainsRelationManager;
 use App\Filament\Admin\Resources\TenantResource\RelationManagers\SubscriptionsRelationManager;
@@ -327,6 +327,7 @@ class TenantResource extends Resource
     {
         return [
             Action::make('dashboard')
+                ->button()
                 ->openUrlInNewTab()
                 ->url(fn () => $record->url),
         ];
