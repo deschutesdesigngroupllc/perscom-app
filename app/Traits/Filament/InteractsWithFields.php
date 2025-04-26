@@ -53,6 +53,7 @@ trait InteractsWithFields
 
             if ($field->type === FieldType::FIELD_EMAIL && $filamentField instanceof TextInput) {
                 $filamentField = $filamentField
+                    ->autocomplete('email')
                     ->email();
             }
 
@@ -63,11 +64,12 @@ trait InteractsWithFields
 
             if ($field->type === FieldType::FIELD_PASSWORD && $filamentField instanceof TextInput) {
                 $filamentField = $filamentField
+                    ->autocomplete('current-password')
                     ->password()
                     ->revealable();
             }
 
-            if ($field->type->value === 'country' && $filamentField instanceof Select) {
+            if ($field->type === FieldType::FIELD_COUNTRY && $filamentField instanceof Select) {
                 // TODO: Add countries
                 //                    $filamentField = $filamentField
                 //                        ->options();
