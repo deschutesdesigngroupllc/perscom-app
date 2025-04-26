@@ -24,7 +24,7 @@ Route::group(['middleware' => 'landing', CacheResponse::class], static function 
             ->name('find-my-organization.show');
     });
 
-    Route::group(['prefix' => 'legal'], function () {
+    Route::group(['prefix' => 'legal'], function (): void {
         Route::inertia('acceptable-use-policy', 'legal/AcceptableUsePolicy')
             ->name('acceptable-use-policy');
 

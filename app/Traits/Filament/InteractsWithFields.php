@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Traits\Filament;
 
+use App\Models\Enums\FieldOptionsModel;
+use App\Models\Enums\FieldOptionsType;
+use App\Models\Enums\FieldType;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\FileUpload;
 use Filament\Forms\Components\Placeholder;
@@ -39,38 +42,46 @@ trait InteractsWithFields
                 ->helperText($field->help)
                 ->required($field->required);
 
-            if ($field->type->value === 'select' && $filamentField instanceof Select) {
-                $filamentField = $filamentField->options($field->options);
+            if ($field->type === FieldType::FIELD_SELECT && $filamentField instanceof Select) {
+                $filamentField = match ($field->options_type) {
+                    FieldOptionsType::Model => $filamentField->options(optional($field->options_model, fn (FieldOptionsModel $model): array => $model->getOptions()) ?? []),
+                    default => $filamentField->options($field->options),
+                };
+
+                $filamentField = $filamentField->searchable();
             }
 
-            if ($field->type->value === 'email' && $filamentField instanceof TextInput) {
+            if ($field->type === FieldType::FIELD_EMAIL && $filamentField instanceof TextInput) {
                 $filamentField = $filamentField
+                    ->autocomplete('email')
                     ->email();
             }
 
-            if ($field->type->value === 'number' && $filamentField instanceof TextInput) {
+            if ($field->type === FieldType::FIELD_NUMBER && $filamentField instanceof TextInput) {
                 $filamentField = $filamentField
                     ->numeric();
             }
 
-            if ($field->type->value === 'password' && $filamentField instanceof TextInput) {
+            if ($field->type === FieldType::FIELD_PASSWORD && $filamentField instanceof TextInput) {
                 $filamentField = $filamentField
+                    ->autocomplete('current-password')
                     ->password()
                     ->revealable();
             }
 
-            if ($field->type->value === 'country' && $filamentField instanceof Select) {
+            if ($field->type === FieldType::FIELD_COUNTRY && $filamentField instanceof Select) {
                 // TODO: Add countries
                 //                    $filamentField = $filamentField
                 //                        ->options();
             }
 
-            if ($field->type->value === 'timezone' && $filamentField instanceof Select) {
+            if ($field->type === FieldType::FIELD_TIMEZONE && $filamentField instanceof Select) {
                 $filamentField = $filamentField
+                    ->searchable()
                     ->options(collect(timezone_identifiers_list())->mapWithKeys(fn ($timezone) => [$timezone => $timezone]));
             }
 
-            if ($field->type->value === 'file' && $filamentField instanceof FileUpload) {
+            if ($field->type === FieldType::FIELD_FILE && $filamentField instanceof FileUpload) {
                 $filamentField = $filamentField
                     ->previewable()
                     ->openable()

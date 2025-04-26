@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Hideable;
+use App\Models\Enums\FieldOptionsModel;
+use App\Models\Enums\FieldOptionsType;
 use App\Models\Enums\FieldType;
 use App\Traits\CanBeHidden;
 use App\Traits\ClearsApiCache;
@@ -37,6 +39,8 @@ use function in_array;
  * @property bool $readonly
  * @property bool $hidden
  * @property ArrayObject<array-key, mixed>|null $options
+ * @property FieldOptionsType|null $options_type
+ * @property FieldOptionsModel|null $options_model
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms
@@ -65,6 +69,8 @@ use function in_array;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereName($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereNovaType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereOptions($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereOptionsModel($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereOptionsType($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Field wherePlaceholder($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereReadonly($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereRequired($value)
@@ -96,6 +102,8 @@ class Field extends Model implements HasLabel, Hideable
         'rules',
         'readonly',
         'options',
+        'options_type',
+        'options_model',
         'created_at',
         'updated_at',
     ];
@@ -152,6 +160,8 @@ class Field extends Model implements HasLabel, Hideable
             'required' => 'boolean',
             'type' => FieldType::class,
             'options' => AsArrayObject::class,
+            'options_type' => FieldOptionsType::class,
+            'options_model' => FieldOptionsModel::class,
         ];
     }
 }

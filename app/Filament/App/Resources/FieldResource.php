@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\FieldResource\Pages;
+use App\Models\Enums\FieldOptionsModel;
+use App\Models\Enums\FieldOptionsType;
 use App\Models\Enums\FieldType;
 use App\Models\Field;
 use App\Models\Scopes\HiddenScope;
@@ -61,11 +63,29 @@ class FieldResource extends BaseResource
                                     ->required()
                                     ->live()
                                     ->columnSpanFull(),
+                                Forms\Components\Radio::make('options_type')
+                                    ->validationAttribute('type')
+                                    ->default(FieldOptionsType::Array->value)
+                                    ->label('Options Type')
+                                    ->helperText('The source of the options.')
+                                    ->options(FieldOptionsType::class)
+                                    ->visible(fn (Forms\Get $get): bool => $get('type') === FieldType::FIELD_SELECT->value)
+                                    ->requiredIf('type', 'select')
+                                    ->live()
+                                    ->columnSpanFull(),
                                 Forms\Components\KeyValue::make('options')
                                     ->helperText('The options for the input.')
                                     ->columnSpanFull()
-                                    ->visible(fn (Forms\Get $get): bool => $get('type') === 'select')
-                                    ->requiredIf('type', 'select'),
+                                    ->visible(fn (Forms\Get $get): bool => $get('type') === FieldType::FIELD_SELECT->value && $get('options_type') === FieldOptionsType::Array->value)
+                                    ->requiredIf('options_type', FieldOptionsType::Array->value),
+                                Forms\Components\Select::make('options_model')
+                                    ->validationAttribute('resource')
+                                    ->label('Resource')
+                                    ->helperText('The resource to use for the options.')
+                                    ->options(FieldOptionsModel::class)
+                                    ->columnSpanFull()
+                                    ->visible(fn (Forms\Get $get): bool => $get('type') === FieldType::FIELD_SELECT->value && $get('options_type') === FieldOptionsType::Model->value)
+                                    ->requiredIf('options_type', FieldOptionsType::Model->value),
                                 Forms\Components\RichEditor::make('description')
                                     ->helperText('A optional brief description of the field.')
                                     ->nullable()
