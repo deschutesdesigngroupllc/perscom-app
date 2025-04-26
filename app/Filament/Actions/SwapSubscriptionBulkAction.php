@@ -6,6 +6,7 @@ namespace App\Filament\Actions;
 
 use App\Models\Tenant;
 use Exception;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
 use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Collection;
@@ -30,11 +31,18 @@ class SwapSubscriptionBulkAction extends BulkAction
             TextInput::make('price_id')
                 ->required()
                 ->label('Price ID'),
+            Checkbox::make('charge_immediately')
+                ->label('Charge Immediately')
+                ->default(true)
+                ->helperText('Whether to charge the customer immediately or wait until the next billing cycle.'),
         ]);
 
         $this->action(function (SwapSubscriptionBulkAction $action, Collection $records, array $data): void {
             try {
-                $records->each(fn (Tenant $record) => $record->subscription()?->swapAndInvoice(data_get($data, 'price_id')));
+                match (data_get($data, 'charge_immediately') ?? false) {
+                    true => $records->each(fn (Tenant $record) => $record->subscription()?->swapAndInvoice(data_get($data, 'price_id'))),
+                    false => $records->each(fn (Tenant $record) => $record->subscription()?->swap(data_get($data, 'price_id'))),
+                };
             } catch (Exception $e) {
                 $action->failureNotificationTitle($e->getMessage());
                 $action->failure();
