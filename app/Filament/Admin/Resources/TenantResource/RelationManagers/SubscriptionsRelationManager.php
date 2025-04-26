@@ -39,6 +39,8 @@ class SubscriptionsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->description('The subscriptions associated with the tenant.')
+            ->emptyStateDescription('The tenant has no subscriptions.')
             ->recordTitleAttribute('type')
             ->columns([
                 Tables\Columns\TextColumn::make('type')

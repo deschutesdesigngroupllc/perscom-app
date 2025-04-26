@@ -198,6 +198,9 @@ class TenantResource extends Resource
                     ->color('gray')
                     ->getStateUsing(fn (Tenant $record) => Str::headline($record->sparkPlan()?->interval ?? 'No Subscription'))
                     ->badge(),
+                Tables\Columns\IconColumn::make('trial')
+                    ->boolean()
+                    ->getStateUsing(fn (Tenant $record) => $record->onTrial()),
                 Tables\Columns\IconColumn::make('customer')
                     ->boolean()
                     ->getStateUsing(fn (Tenant $record) => $record->hasStripeId()),
@@ -328,8 +331,7 @@ class TenantResource extends Resource
         return [
             Action::make('dashboard')
                 ->button()
-                ->openUrlInNewTab()
-                ->url(fn () => $record->url),
+                ->url(fn () => $record->url, shouldOpenInNewTab: true),
         ];
     }
 }
