@@ -49,7 +49,7 @@ class DocumentResource extends BaseResource
                                 ->modalContent(view('app.model-tags'))
                                 ->modalSubmitAction(false)
                                 ->modalCancelActionLabel('Close')
-                                ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of content. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                                ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
                                 ->slideOver())
                             ->nullable()
                             ->maxLength(65535)

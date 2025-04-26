@@ -63,7 +63,7 @@ class CommentResource extends Resource
     {
         return $table
             ->recordTitleAttribute('comment')
-            ->description('The comments related to this resource.')
+            ->description('The comments associated with this resource.')
             ->emptyStateDescription('Add the first comment!')
             ->columns([
                 Tables\Columns\TextColumn::make('comment')

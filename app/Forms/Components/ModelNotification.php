@@ -107,7 +107,7 @@ class ModelNotification
                                         ->modalContent(view('app.model-tags'))
                                         ->modalSubmitAction(false)
                                         ->modalCancelActionLabel('Close')
-                                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of content. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
                                         ->slideOver())
                                     ->maxLength(255)
                                     ->requiredIfAccepted('enabled')
@@ -127,7 +127,7 @@ class ModelNotification
                                         ->modalContent(view('app.model-tags'))
                                         ->modalSubmitAction(false)
                                         ->modalCancelActionLabel('Close')
-                                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of content. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
                                         ->slideOver())
                                     ->maxLength(65535)
                                     ->requiredIfAccepted('enabled')
@@ -136,6 +136,7 @@ class ModelNotification
                                     ])
                                     ->helperText('The message to use with the notification.'),
                                 CheckboxList::make('channels')
+                                    ->helperText('The channels the notification will be sent to.')
                                     ->default(data_get($defaults, 'channels'))
                                     ->requiredIfAccepted('enabled')
                                     ->validationMessages([

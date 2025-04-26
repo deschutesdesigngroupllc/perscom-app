@@ -24,6 +24,7 @@ class RegistrationsRelationManager extends RelationManager
             ->description('The users that are registered for the event.')
             ->emptyStateHeading('No registrations')
             ->emptyStateDescription('There are no users registered.')
+            ->description('The users registered for the event.')
             ->columns([
                 Tables\Columns\TextColumn::make('registration.user.name'),
                 Tables\Columns\TextColumn::make('registration.created_at')

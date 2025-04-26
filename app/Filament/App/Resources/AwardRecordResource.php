@@ -94,7 +94,7 @@ class AwardRecordResource extends BaseResource
 
                                 return [
                                     ModelNotification::make(
-                                        alert: new HtmlString("<div class='font-bold'>The recipients will already receive a notification about the new record.</div>"),
+                                        alert: new HtmlString("<div class='font-bold max-w-2xl'>The recipients will already receive a notification about the new record. Default notification configuration can be set in your system settings.</div>"),
                                         defaults: data_get($settings->toArray(), 'award_records'),
                                     ),
                                 ];
@@ -149,6 +149,7 @@ class AwardRecordResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('Create a new award record to get started.')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable()
