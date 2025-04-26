@@ -49,6 +49,8 @@ class Submit extends Page implements HasForms
     public function mount(int|string $record): void
     {
         $this->submissionForm = FormModel::findOrFail($record);
+
+        $this->form->fill();
     }
 
     public function getTitle(): string|Htmlable

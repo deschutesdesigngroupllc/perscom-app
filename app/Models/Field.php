@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Hideable;
+use App\Models\Enums\FieldOptionsModel;
+use App\Models\Enums\FieldOptionsType;
 use App\Models\Enums\FieldType;
 use App\Traits\CanBeHidden;
 use App\Traits\ClearsApiCache;
@@ -96,6 +98,8 @@ class Field extends Model implements HasLabel, Hideable
         'rules',
         'readonly',
         'options',
+        'options_type',
+        'options_model',
         'created_at',
         'updated_at',
     ];
@@ -152,6 +156,8 @@ class Field extends Model implements HasLabel, Hideable
             'required' => 'boolean',
             'type' => FieldType::class,
             'options' => AsArrayObject::class,
+            'options_type' => FieldOptionsType::class,
+            'options_model' => FieldOptionsModel::class,
         ];
     }
 }
