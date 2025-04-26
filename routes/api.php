@@ -22,6 +22,7 @@ use App\Http\Controllers\Api\Documents\DocumentsController;
 use App\Http\Controllers\Api\Events\EventsController;
 use App\Http\Controllers\Api\Events\EventsImageController;
 use App\Http\Controllers\Api\Forms\FormsController;
+use App\Http\Controllers\Api\Forms\FormsFieldsController;
 use App\Http\Controllers\Api\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\Groups\GroupsController;
 use App\Http\Controllers\Api\Groups\GroupsImageController;
@@ -138,6 +139,7 @@ Route::group([
 
     Orion::resource('forms', FormsController::class);
     Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
+    Orion::morphToManyResource('forms', 'fields', FormsFieldsController::class);
 
     Orion::resource('groups', GroupsController::class);
     Orion::hasOneResource('groups', 'image', GroupsImageController::class);
