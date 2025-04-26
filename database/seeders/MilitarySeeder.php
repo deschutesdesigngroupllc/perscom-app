@@ -343,13 +343,13 @@ class MilitarySeeder extends Seeder
             ->sequence(
                 [
                     'name' => 'Active',
-                    'color' => '#dcfce7',
+                    'color' => '#16a34a',
                 ], [
                     'name' => 'Inactive',
-                    'color' => '#fee2e2',
+                    'color' => '#dc2626',
                 ], [
                     'name' => 'On Leave',
-                    'color' => '#e0f2fe',
+                    'color' => '#0284c7',
                 ],
             )
             ->create();

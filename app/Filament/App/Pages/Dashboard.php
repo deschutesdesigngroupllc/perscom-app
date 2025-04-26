@@ -19,6 +19,8 @@ class Dashboard extends BaseDashboard
 
     protected ?string $subheading = 'Personnel management made easy for high-performing, results-driven organizations.';
 
+    protected static ?string $navigationIcon = 'heroicon-o-home';
+
     public static function isTenantSubscriptionRequired(Panel $panel): bool
     {
         return false;

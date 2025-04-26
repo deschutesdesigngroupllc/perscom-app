@@ -27,29 +27,29 @@ class RankRecordStatsOverview extends BaseWidget
         $lastYtd = RankRecord::query()->whereBetween('created_at', [now()->subYear()->startOfYear(), now()->subYear()->endOfYear()])->count();
         $percentageYtd = (($currentYtd - $lastYtd) / ($lastYtd === 0 ?: 1));
 
-        //        $mtd = Trend::model(RankRecord::class)
-        //            ->between(
-        //                start: now()->startOfMonth(),
-        //                end: now()->endOfMonth(),
-        //            )
-        //            ->perDay()
-        //            ->count();
-        //
-        //        $qtd = Trend::model(RankRecord::class)
-        //            ->between(
-        //                start: now()->startOfQuarter(),
-        //                end: now()->endOfQuarter(),
-        //            )
-        //            ->perMonth()
-        //            ->count();
-        //
-        //        $ytd = Trend::model(RankRecord::class)
-        //            ->between(
-        //                start: now()->startOfYear(),
-        //                end: now()->endOfYear(),
-        //            )
-        //            ->perMonth()
-        //            ->count();
+        $mtd = Trend::model(RankRecord::class)
+            ->between(
+                start: now()->startOfMonth(),
+                end: now()->endOfMonth(),
+            )
+            ->perDay()
+            ->count();
+
+        $qtd = Trend::model(RankRecord::class)
+            ->between(
+                start: now()->startOfQuarter(),
+                end: now()->endOfQuarter(),
+            )
+            ->perMonth()
+            ->count();
+
+        $ytd = Trend::model(RankRecord::class)
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )
+            ->perMonth()
+            ->count();
 
         return [
             Stat::make('Total Records MTD', (string) $currentMtd)
@@ -59,7 +59,7 @@ class RankRecordStatsOverview extends BaseWidget
                     -1 => 'heroicon-m-arrow-trending-down',
                     default => 'heroicon-m-arrows-right-left',
                 })
-//                ->chart($mtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
+                ->chart($mtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentMtd <=> $lastMtd) {
                     1 => 'success',
                     -1 => 'danger',
@@ -72,7 +72,7 @@ class RankRecordStatsOverview extends BaseWidget
                     -1 => 'heroicon-m-arrow-trending-down',
                     default => 'heroicon-m-arrows-right-left',
                 })
-//                ->chart($qtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
+                ->chart($qtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentQtd <=> $lastQtd) {
                     1 => 'success',
                     -1 => 'danger',
@@ -85,7 +85,7 @@ class RankRecordStatsOverview extends BaseWidget
                     -1 => 'heroicon-m-arrow-trending-down',
                     default => 'heroicon-m-arrows-right-left',
                 })
-//                ->chart($ytd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
+                ->chart($ytd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentYtd <=> $lastYtd) {
                     1 => 'success',
                     -1 => 'danger',

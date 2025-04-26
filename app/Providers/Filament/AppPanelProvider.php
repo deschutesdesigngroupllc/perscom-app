@@ -46,6 +46,7 @@ use Filament\Pages\Auth\Register;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\MaxWidth;
 use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
@@ -149,6 +150,9 @@ class AppPanelProvider extends PanelProvider
             ->brandLogo(fn () => view('components.logo'))
             ->plugins([
                 AdvancedTablesPlugin::make()
+                    ->persistActiveViewInSession()
+                    ->resourceEnabled(false)
+                    ->favoritesBarSize(ActionSize::Small)
                     ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
                 MinimalTheme::make(),
                 FilamentShieldPlugin::make(),

@@ -33,6 +33,7 @@ class QualificationRecordStatsOverview extends BaseWidget
                 end: now()->endOfMonth(),
             )
             ->perDay()
+            ->dateAlias('period')
             ->count();
 
         $qtd = Trend::model(QualificationRecord::class)
@@ -41,6 +42,7 @@ class QualificationRecordStatsOverview extends BaseWidget
                 end: now()->endOfQuarter(),
             )
             ->perMonth()
+            ->dateAlias('period')
             ->count();
 
         $ytd = Trend::model(QualificationRecord::class)
@@ -49,6 +51,7 @@ class QualificationRecordStatsOverview extends BaseWidget
                 end: now()->endOfYear(),
             )
             ->perMonth()
+            ->dateAlias('period')
             ->count();
 
         return [
