@@ -67,9 +67,7 @@ jobs:
         run: composer install --prefer-dist --no-interaction --no-progress
 
       - name: Build Project
-        run: |
-          npm run build
-          npm run build:landing
+        run: npm run build
 
       - name: Rector Cache
         uses: actions/cache@v4
