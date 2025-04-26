@@ -44,8 +44,8 @@ trait InteractsWithFields
 
             if ($field->type === FieldType::FIELD_SELECT && $filamentField instanceof Select) {
                 $filamentField = match ($field->options_type) {
-                    FieldOptionsType::Array => $filamentField->options($field->options),
                     FieldOptionsType::Model => $filamentField->options(optional($field->options_model, fn (FieldOptionsModel $model): array => $model->getOptions()) ?? []),
+                    default => $filamentField->options($field->options),
                 };
 
                 $filamentField = $filamentField->searchable();
