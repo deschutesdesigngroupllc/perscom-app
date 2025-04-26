@@ -248,8 +248,8 @@ class TenantResource extends Resource
                             ->multiple()
                             ->options(SubscriptionStatus::class),
                     ])
-                    ->query(function (Builder $query, array $data) {
-                        $query->when(filled(data_get($data, 'subscription_status')), function (Builder $query) use ($data) {
+                    ->query(function (Builder $query, array $data): void {
+                        $query->when(filled(data_get($data, 'subscription_status')), function (Builder $query) use ($data): void {
                             $query->whereHas('subscriptions', fn (Builder $query) => $query->whereIn('stripe_status', Arr::wrap(data_get($data, 'subscription_status'))));
                         });
                     }),
@@ -258,8 +258,8 @@ class TenantResource extends Resource
                         Forms\Components\TextInput::make('subscription_price')
                             ->label('Subscription Price'),
                     ])
-                    ->query(function (Builder $query, array $data) {
-                        $query->when(filled(data_get($data, 'subscription_price')), function (Builder $query) use ($data) {
+                    ->query(function (Builder $query, array $data): void {
+                        $query->when(filled(data_get($data, 'subscription_price')), function (Builder $query) use ($data): void {
                             $query->whereHas('subscriptions', fn (Builder $query) => $query->whereHas('items', fn (Builder $query) => $query->whereLike('stripe_price', '%'.data_get($data, 'subscription_price').'%')));
                         });
                     }),
