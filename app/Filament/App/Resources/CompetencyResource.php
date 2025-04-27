@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\CompetencyResource\Pages;
+use App\Filament\Exports\CompetencyExporter;
 use App\Models\Category;
 use App\Models\Competency;
 use Filament\Forms;
@@ -83,6 +84,9 @@ class CompetencyResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(CompetencyExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
