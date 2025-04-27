@@ -46,7 +46,7 @@ class CompetencyResource extends BaseResource
                                     ->preload()
                                     ->searchable()
                                     ->multiple()
-                                    ->createOptionForm(fn (Form $form) => CategoryResource::form($form))
+                                    ->createOptionForm(fn (Form $form): Form => CategoryResource::form($form))
                                     ->createOptionUsing(fn (array $data) => Category::create(array_merge($data, [
                                         'resource' => Competency::class,
                                     ]))->getKey()),

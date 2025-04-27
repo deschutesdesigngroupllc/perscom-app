@@ -22,7 +22,7 @@ trait HasCategories
     public function categories(): BelongsToMany
     {
         $relationship = $this->belongsToMany(Category::class, "{$this->getTable()}_categories")
-            ->where('resource', get_class($this))
+            ->where('resource', $this::class)
             ->withPivot('order')
             ->withTimestamps();
 
