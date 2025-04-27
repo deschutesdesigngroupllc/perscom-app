@@ -76,6 +76,7 @@ jobs:
         run: |
           composer config http-basic.spark.laravel.com ${{ secrets.SPARK_USERNAME }} ${{ secrets.SPARK_API_TOKEN }}
           composer config http-basic.whizzy.dev ${{ secrets.FILAMENT_USERNAME }} ${{ secrets.FILAMENT_PASSWORD }}
+          composer config http-basic.filament-filter-sets.composer.sh ${{ secrets.FILTER_SETS_USERNAME }} ${{ secrets.FILTER_SETS_PASSWORD }}
 
       - name: Composer Cache
         uses: actions/cache@v4

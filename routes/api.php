@@ -18,6 +18,8 @@ use App\Http\Controllers\Api\Categories\CategoriesQualificationsController;
 use App\Http\Controllers\Api\Categories\CategoriesRanksController;
 use App\Http\Controllers\Api\CombatRecords\CombatRecordsController;
 use App\Http\Controllers\Api\Comments\CommentsController;
+use App\Http\Controllers\Api\Competencies\CompetenciesController;
+use App\Http\Controllers\Api\Credentials\CredentialsController;
 use App\Http\Controllers\Api\Documents\DocumentsController;
 use App\Http\Controllers\Api\Events\EventsController;
 use App\Http\Controllers\Api\Events\EventsImageController;
@@ -28,6 +30,7 @@ use App\Http\Controllers\Api\Groups\GroupsController;
 use App\Http\Controllers\Api\Groups\GroupsImageController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\Images\ImagesController;
+use App\Http\Controllers\Api\Issuers\IssuersController;
 use App\Http\Controllers\Api\MeController;
 use App\Http\Controllers\Api\Messages\MessagesController;
 use App\Http\Controllers\Api\Newsfeed\NewsfeedController;
@@ -49,6 +52,9 @@ use App\Http\Controllers\Api\Statuses\StatusesController;
 use App\Http\Controllers\Api\Submissions\SubmissionsController;
 use App\Http\Controllers\Api\Submissions\SubmissionsStatusesController;
 use App\Http\Controllers\Api\Tasks\TasksController;
+use App\Http\Controllers\Api\TrainingRecords\TrainingRecordsCompetenciesController;
+use App\Http\Controllers\Api\TrainingRecords\TrainingRecordsController;
+use App\Http\Controllers\Api\TrainingRecords\TrainingRecordsCredentialsController;
 use App\Http\Controllers\Api\Units\UnitsController;
 use App\Http\Controllers\Api\Units\UnitsImageController;
 use App\Http\Controllers\Api\Users\UsersAssignmentRecordsController;
@@ -132,6 +138,10 @@ Route::group([
 
     Orion::resource('comments', CommentsController::class);
 
+    Orion::resource('competencies', CompetenciesController::class);
+
+    Orion::resource('credentials', CredentialsController::class);
+
     Orion::resource('documents', DocumentsController::class);
 
     Orion::resource('events', EventsController::class);
@@ -145,6 +155,8 @@ Route::group([
     Orion::hasOneResource('groups', 'image', GroupsImageController::class);
 
     Orion::resource('images', ImagesController::class);
+
+    Orion::resource('issuers', IssuersController::class);
 
     Orion::resource('messages', MessagesController::class)
         ->middleware('throttle:sms');
@@ -185,6 +197,10 @@ Route::group([
 
     Orion::resource('tasks', TasksController::class);
 
+    Orion::resource('training-records', TrainingRecordsController::class);
+    Orion::belongsToManyResource('training-records', 'competencies', TrainingRecordsCompetenciesController::class);
+    Orion::belongsToManyResource('training-records', 'credentials', TrainingRecordsCredentialsController::class);
+
     Orion::resource('units', UnitsController::class);
     Orion::hasOneResource('units', 'image', UnitsImageController::class);
 
@@ -195,6 +211,7 @@ Route::group([
     Orion::hasManyResource('users', 'qualification-records', UsersQualificationRecordsController::class);
     Orion::hasManyResource('users', 'rank-records', UsersRankRecordsController::class);
     Orion::hasManyResource('users', 'service-records', UsersServiceRecordsController::class);
+    Orion::hasManyResource('users', 'training-records', UsersRankRecordsController::class);
     Orion::belongsToResource('users', 'position', UsersPositionController::class);
     Orion::belongsToResource('users', 'rank', UsersRankController::class);
     Orion::belongsToResource('users', 'specialty', UsersSpecialtyController::class);

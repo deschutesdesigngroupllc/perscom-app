@@ -6,25 +6,21 @@ namespace App\Traits;
 
 use App\Models\Category;
 use Eloquent;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasCategories
 {
     public static ?string $categoriesAccessor = null;
 
     /**
-     * @return BelongsToMany<Category, TModel>
+     * @return BelongsToMany<Category, $this>
      */
     public function categories(): BelongsToMany
     {
-        /** @var TModel $this */
         $relationship = $this->belongsToMany(Category::class, "{$this->getTable()}_categories")
             ->where('resource', get_class($this))
             ->withPivot('order')

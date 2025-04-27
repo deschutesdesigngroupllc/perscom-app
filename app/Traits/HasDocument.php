@@ -8,13 +8,10 @@ use App\Models\Document;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasDocument
 {
@@ -24,11 +21,10 @@ trait HasDocument
     }
 
     /**
-     * @return BelongsTo<Document, TModel>
+     * @return BelongsTo<Document, $this>
      */
     public function document(): BelongsTo
     {
-        /** @var TModel $this */
         return $this->belongsTo(Document::class);
     }
 

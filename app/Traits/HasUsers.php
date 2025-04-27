@@ -6,22 +6,18 @@ namespace App\Traits;
 
 use App\Models\User;
 use Eloquent;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasUsers
 {
     /**
-     * @return HasMany<User, TModel>
+     * @return HasMany<User, $this>
      */
     public function users(): HasMany
     {
-        /** @var TModel $this */
         return $this->hasMany(User::class);
     }
 }

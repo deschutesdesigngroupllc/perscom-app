@@ -7,13 +7,10 @@ namespace App\Traits;
 use App\Models\Unit;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasUnit
 {
@@ -23,11 +20,10 @@ trait HasUnit
     }
 
     /**
-     * @return BelongsTo<Unit, TModel>
+     * @return BelongsTo<Unit, $this>
      */
     public function unit(): BelongsTo
     {
-        /** @var TModel $this */
         return $this->belongsTo(Unit::class);
     }
 

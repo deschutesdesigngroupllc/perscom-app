@@ -7,13 +7,10 @@ namespace App\Traits;
 use App\Models\Slot;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasSlot
 {
@@ -23,11 +20,10 @@ trait HasSlot
     }
 
     /**
-     * @return BelongsTo<Slot, TModel>
+     * @return BelongsTo<Slot, $this>
      */
     public function slot(): BelongsTo
     {
-        /** @var TModel $this */
         return $this->belongsTo(Slot::class);
     }
 

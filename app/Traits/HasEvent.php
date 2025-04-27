@@ -7,13 +7,10 @@ namespace App\Traits;
 use App\Models\Event;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasEvent
 {
@@ -23,11 +20,10 @@ trait HasEvent
     }
 
     /**
-     * @return BelongsTo<Event, TModel>
+     * @return BelongsTo<Event, $this>
      */
     public function event(): BelongsTo
     {
-        /** @var Model $this */
         return $this->belongsTo(Event::class);
     }
 

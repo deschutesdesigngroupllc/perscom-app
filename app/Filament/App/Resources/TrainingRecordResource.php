@@ -65,8 +65,16 @@ class TrainingRecordResource extends BaseResource
                                     ->relationship(name: 'credentials', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form): Form => CredentialResource::form($form)),
-                                Forms\Components\RichEditor::make('text')
+                                Forms\Components\Select::make('instructor_id')
+                                    ->columnSpanFull()
                                     ->required()
+                                    ->default(Auth::user()->getAuthIdentifier())
+                                    ->helperText('The instructor of the training.')
+                                    ->preload()
+                                    ->relationship(name: 'instructor', titleAttribute: 'name')
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
+                                Forms\Components\RichEditor::make('text')
                                     ->helperText('Information about the record.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
@@ -118,6 +126,7 @@ class TrainingRecordResource extends BaseResource
                             ->icon('heroicon-o-academic-cap')
                             ->schema([
                                 Infolists\Components\TextEntry::make('user.name'),
+                                Infolists\Components\TextEntry::make('instructor.name'),
                                 Infolists\Components\TextEntry::make('credentials.name')
                                     ->listWithLineBreaks(),
                                 Infolists\Components\TextEntry::make('text')

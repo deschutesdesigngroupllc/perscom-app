@@ -7,13 +7,10 @@ namespace App\Traits;
 use App\Models\Specialty;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasSpecialty
 {
@@ -23,11 +20,10 @@ trait HasSpecialty
     }
 
     /**
-     * @return BelongsTo<Specialty, TModel>
+     * @return BelongsTo<Specialty, $this>
      */
     public function specialty(): BelongsTo
     {
-        /** @var TModel $this */
         return $this->belongsTo(Specialty::class);
     }
 
