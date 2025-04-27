@@ -235,7 +235,7 @@ class AppServiceProvider extends ServiceProvider
             return value($closure, $field);
         });
 
-        ExportAction::configureUsing(fn (ExportAction $action) => $action->fileDisk('s3'));
+        ExportAction::configureUsing(fn (ExportAction $action): ExportAction => $action->fileDisk('s3'));
 
         FilamentAsset::register([
             AlpineComponent::make('widget-code-generator', __DIR__.'/../../resources/js/dist/components/widget-code-generator/index.js'),
