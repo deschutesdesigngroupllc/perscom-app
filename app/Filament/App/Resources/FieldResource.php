@@ -13,10 +13,12 @@ use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Support\Enums\MaxWidth;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Collection;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
 
@@ -77,7 +79,8 @@ class FieldResource extends BaseResource
                                     ->helperText('The options for the input.')
                                     ->columnSpanFull()
                                     ->visible(fn (Forms\Get $get): bool => $get('type') === FieldType::FIELD_SELECT->value && $get('options_type') === FieldOptionsType::Array->value)
-                                    ->requiredIf('options_type', FieldOptionsType::Array->value),
+                                    ->requiredIf('options_type', FieldOptionsType::Array->value)
+                                    ->dehydrateStateUsing(fn ($state): array => Collection::wrap($state)->filter()->toArray()),
                                 Forms\Components\Select::make('options_model')
                                     ->validationAttribute('resource')
                                     ->label('Resource')
@@ -197,11 +200,19 @@ class FieldResource extends BaseResource
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make()
+                    ->label('Add field')
+                    ->modalHeading('Add Field')
+                    ->modalWidth(MaxWidth::TwoExtraLarge)
+                    ->modalSubmitActionLabel('Add')
+                    ->attachAnother(false)
+                    ->multiple()
                     ->modalDescription('Attach a custom field to this resource.')
                     ->preloadRecordSelect(),
             ])
             ->actions([
-                Tables\Actions\DetachAction::make(),
+                Tables\Actions\DetachAction::make()
+                    ->modalHeading('Remove Field')
+                    ->label('Remove field'),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

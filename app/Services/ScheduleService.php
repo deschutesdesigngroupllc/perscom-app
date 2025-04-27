@@ -6,7 +6,6 @@ namespace App\Services;
 
 use App\Models\Enums\ScheduleEndType;
 use App\Models\Enums\ScheduleFrequency;
-use App\Models\Event;
 use App\Models\Schedule;
 use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterface;
@@ -21,12 +20,12 @@ class ScheduleService
     /**
      * @return RRule<DateTime>|null
      */
-    public static function generateRecurringRule(Schedule|Event $repeatable): ?RRule
+    public static function generateRecurringRule(Schedule $repeatable): ?RRule
     {
         $payload = [
             'DTSTART' => $repeatable->start->toDateTime(),
             'FREQ' => $repeatable->frequency->value,
-            'INTERVAL' => $repeatable->interval,
+            'INTERVAL' => max(1, $repeatable->interval),
         ];
 
         switch ($repeatable->frequency) {

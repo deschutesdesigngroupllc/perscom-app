@@ -27,6 +27,7 @@ class BackupCentralDatabase implements ShouldQueue
 
         $exit = Artisan::call('backup:run', [
             '--only-to-disk' => 'backups',
+            '--only-db' => true,
             '--timeout' => 1800,
         ]);
 
