@@ -24,7 +24,7 @@ class SecondaryAssignmentsRelationManager extends RelationManager
     {
         return $table
             ->heading('Secondary Assignment(s)')
-            ->description('The secondary assignment records for the user.')
+            ->description('The user\'s secondary assignments.')
             ->recordTitleAttribute('type')
             ->columns([
                 Tables\Columns\TextColumn::make('position.name')
