@@ -57,7 +57,7 @@ class SubmissionRequest extends Request
 
         /** @var Form|null $form */
         $form = $routeFormId ? Form::find($routeFormId) : null;
-        $form ??= $routeSubmissionId ? Submission::find($routeSubmissionId)->form : null;
+        $form ??= Submission::find($routeSubmissionId)->form ?? null;
         $form ??= $inputFormId ? Form::find($inputFormId) : null;
 
         if (blank($form)) {
