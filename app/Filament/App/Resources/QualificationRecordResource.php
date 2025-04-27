@@ -188,19 +188,22 @@ class QualificationRecordResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->groups(['user.name', 'qualification.name', 'document.name'])
+            ->groups(['document.name', 'qualification.name', 'user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
-                    ->relationship('user', 'name')
+                Tables\Filters\SelectFilter::make('document')
+                    ->relationship('document', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
                 Tables\Filters\SelectFilter::make('qualification')
                     ->relationship('qualification', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
-                Tables\Filters\SelectFilter::make('document')
-                    ->relationship('document', 'name')
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
             ])
             ->actions([

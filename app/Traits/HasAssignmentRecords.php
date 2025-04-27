@@ -7,22 +7,18 @@ namespace App\Traits;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use Eloquent;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasAssignmentRecords
 {
     /**
-     * @return HasMany<AssignmentRecord, TModel>
+     * @return HasMany<AssignmentRecord, $this>
      */
     public function assignment_records(): HasMany
     {
-        /** @var TModel $this */
         return $this->hasMany(AssignmentRecord::class);
     }
 

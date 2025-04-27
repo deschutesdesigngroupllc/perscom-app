@@ -36,6 +36,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read User|null $author
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AwardRecord> $award_records
  * @property-read int|null $award_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Award> $awards
+ * @property-read int|null $awards_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
  * @property-read int|null $categories_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, CombatRecord> $combat_records
@@ -45,6 +47,8 @@ use Illuminate\Database\Eloquent\Model;
  * @property-read int|null $primary_assignment_records_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Qualification> $qualifications
+ * @property-read int|null $qualifications_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, RankRecord> $rank_records
  * @property-read int|null $rank_records_count
  * @property-read string|null $relative_url

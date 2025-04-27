@@ -20,6 +20,8 @@ class NotificationSettings extends Settings
 
     public ?array $service_records = null;
 
+    public ?array $training_records = null;
+
     public static function group(): string
     {
         return 'notifications';

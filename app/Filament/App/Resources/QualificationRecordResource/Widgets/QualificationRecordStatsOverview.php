@@ -7,6 +7,8 @@ namespace App\Filament\App\Resources\QualificationRecordResource\Widgets;
 use App\Models\QualificationRecord;
 use Filament\Widgets\StatsOverviewWidget as BaseWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
+use Flowframe\Trend\Trend;
+use Flowframe\Trend\TrendValue;
 use Illuminate\Support\Number;
 
 class QualificationRecordStatsOverview extends BaseWidget
@@ -25,6 +27,33 @@ class QualificationRecordStatsOverview extends BaseWidget
         $lastYtd = QualificationRecord::query()->whereBetween('created_at', [now()->subYear()->startOfYear(), now()->subYear()->endOfYear()])->count();
         $percentageYtd = (($currentYtd - $lastYtd) / ($lastYtd === 0 ?: 1));
 
+        $mtd = Trend::model(QualificationRecord::class)
+            ->between(
+                start: now()->startOfMonth(),
+                end: now()->endOfMonth(),
+            )
+            ->perDay()
+            ->dateAlias('period')
+            ->count();
+
+        $qtd = Trend::model(QualificationRecord::class)
+            ->between(
+                start: now()->startOfQuarter(),
+                end: now()->endOfQuarter(),
+            )
+            ->perMonth()
+            ->dateAlias('period')
+            ->count();
+
+        $ytd = Trend::model(QualificationRecord::class)
+            ->between(
+                start: now()->startOfYear(),
+                end: now()->endOfYear(),
+            )
+            ->perMonth()
+            ->dateAlias('period')
+            ->count();
+
         return [
             Stat::make('Total Records MTD', (string) $currentMtd)
                 ->description(Number::percentage($percentageMtd))
@@ -33,6 +62,7 @@ class QualificationRecordStatsOverview extends BaseWidget
                     -1 => 'heroicon-m-arrow-trending-down',
                     default => 'heroicon-m-arrows-right-left',
                 })
+                ->chart($mtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentMtd <=> $lastMtd) {
                     1 => 'success',
                     -1 => 'danger',
@@ -45,6 +75,7 @@ class QualificationRecordStatsOverview extends BaseWidget
                     -1 => 'heroicon-m-arrow-trending-down',
                     default => 'heroicon-m-arrows-right-left',
                 })
+                ->chart($qtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentQtd <=> $lastQtd) {
                     1 => 'success',
                     -1 => 'danger',
@@ -57,6 +88,7 @@ class QualificationRecordStatsOverview extends BaseWidget
                     -1 => 'heroicon-m-arrow-trending-down',
                     default => 'heroicon-m-arrows-right-left',
                 })
+                ->chart($ytd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color(match ($currentYtd <=> $lastYtd) {
                     1 => 'success',
                     -1 => 'danger',

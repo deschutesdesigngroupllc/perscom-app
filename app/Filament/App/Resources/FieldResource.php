@@ -183,6 +183,7 @@ class FieldResource extends BaseResource
     public static function relationTable(Table $table): Table
     {
         return $table
+            ->description('The custom fields that belong to this resource.')
             ->emptyStateDescription('Attach or create a new field to get started.')
             ->modifyQueryUsing(function (Builder $query): void {
                 $query->withoutGlobalScopes([

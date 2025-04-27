@@ -34,6 +34,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string $label
  * @property-read \Illuminate\Database\Eloquent\Collection<int, QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Qualification> $qualifications
+ * @property-read int|null $qualifications_count
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *

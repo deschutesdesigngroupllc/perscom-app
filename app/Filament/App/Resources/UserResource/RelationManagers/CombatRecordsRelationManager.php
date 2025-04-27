@@ -21,6 +21,7 @@ class CombatRecordsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->description('The combat records for the user.')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable(false)

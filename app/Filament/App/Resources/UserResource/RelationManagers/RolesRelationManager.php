@@ -17,6 +17,7 @@ class RolesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->description('The current roles assigned to the user.')
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')

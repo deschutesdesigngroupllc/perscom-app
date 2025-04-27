@@ -6,25 +6,21 @@ namespace App\Traits;
 
 use App\Models\Tag;
 use Eloquent;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Support\Str;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasTags
 {
     public static ?string $tagsAccessor = null;
 
     /**
-     * @return BelongsToMany<Tag, TModel>
+     * @return BelongsToMany<Tag, $this>
      */
     public function tags(): BelongsToMany
     {
-        /** @var TModel $this */
         $relationship = $this->belongsToMany(Tag::class, "{$this->getTable()}_tags")
             ->withPivot('order')
             ->withTimestamps();

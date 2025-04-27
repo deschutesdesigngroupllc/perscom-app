@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\ServiceRecordResource\Pages;
 
 use App\Filament\App\Resources\ServiceRecordResource;
+use Archilex\AdvancedTables\AdvancedTables;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListServiceRecords extends ListRecords
 {
+    use AdvancedTables;
+
     protected static string $resource = ServiceRecordResource::class;
 
     protected ?string $subheading = 'Maintain general records that don’t fit into any specific category.';

@@ -9,15 +9,12 @@ use App\Models\StatusRecord;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasStatusRecords
 {
@@ -32,11 +29,10 @@ trait HasStatusRecords
     }
 
     /**
-     * @return MorphToMany<Status, TModel>
+     * @return MorphToMany<Status, $this>
      */
     public function statuses(): MorphToMany
     {
-        /** @var TModel $this */
         return $this->morphToMany(Status::class, 'model', 'model_has_statuses')
             ->withPivot('text', 'created_at')
             ->withTimestamps()

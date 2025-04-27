@@ -173,15 +173,17 @@ class ServiceRecordResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->groups(['user.name', 'document.name'])
+            ->groups(['document.name', 'user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
-                    ->relationship('user', 'name')
-                    ->preload()
-                    ->multiple(),
                 Tables\Filters\SelectFilter::make('document')
                     ->relationship('document', 'name')
                     ->preload()
+                    ->searchable()
+                    ->multiple(),
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
+                    ->preload()
+                    ->searchable()
                     ->multiple(),
             ])
             ->actions([

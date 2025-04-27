@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\QualificationRecordResource\Pages;
 
 use App\Filament\App\Resources\QualificationRecordResource;
+use Archilex\AdvancedTables\AdvancedTables;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
 class ListQualificationRecords extends ListRecords
 {
+    use AdvancedTables;
+
     protected static string $resource = QualificationRecordResource::class;
 
     protected ?string $subheading = 'Keep track of a users capabilities, qualifications, training and certifications.';

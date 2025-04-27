@@ -200,19 +200,27 @@ class RankRecordResource extends BaseResource
                 Tables\Columns\TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->groups(['user.name', 'type', 'rank.name', 'document.name'])
+            ->groups(['document.name', 'rank.name', 'type', 'user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('user')
-                    ->relationship('user', 'name')
+                Tables\Filters\SelectFilter::make('document')
+                    ->relationship('document', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
                 Tables\Filters\SelectFilter::make('rank')
                     ->relationship('rank', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
-                Tables\Filters\SelectFilter::make('document')
-                    ->relationship('document', 'name')
+                Tables\Filters\SelectFilter::make('type')
+                    ->options(RankRecordType::class)
+                    ->multiple()
+                    ->searchable()
+                    ->preload(),
+                Tables\Filters\SelectFilter::make('user')
+                    ->relationship('user', 'name')
                     ->preload()
+                    ->searchable()
                     ->multiple(),
             ])
             ->actions([

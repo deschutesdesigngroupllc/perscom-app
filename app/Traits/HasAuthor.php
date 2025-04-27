@@ -7,14 +7,11 @@ namespace App\Traits;
 use App\Models\User;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Auth;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasAuthor
 {
@@ -24,11 +21,10 @@ trait HasAuthor
     }
 
     /**
-     * @return BelongsTo<User, TModel>
+     * @return BelongsTo<User, $this>
      */
     public function author(): BelongsTo
     {
-        /** @var TModel $this */
         return $this->belongsTo(User::class, 'author_id');
     }
 

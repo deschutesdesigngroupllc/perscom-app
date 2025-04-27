@@ -156,7 +156,7 @@ class UserResource extends BaseResource
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
-                                    ->label('Last Seen')
+                                    ->label('Last Online')
                                     ->helperText('The date the user last logged in.'),
                                 Forms\Components\DateTimePicker::make('email_verified_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
@@ -165,7 +165,7 @@ class UserResource extends BaseResource
 
                                         return $settings->timezone ?? config('app.timezone');
                                     }))
-                                    ->label('Email Verified At')
+                                    ->label('Email Verified')
                                     ->helperText('The date the user\'s email was verified. Set this to bypass user email verification.'),
                             ]),
                         Forms\Components\Tabs\Tab::make('Notes')
@@ -260,7 +260,7 @@ class UserResource extends BaseResource
                                     ->hidden(fn (): bool => in_array('time_in_service', $hiddenFields))
                                     ->formatStateUsing(fn ($state): string => CarbonInterval::make($state)->forHumans()),
                                 TextEntry::make('last_seen_at')
-                                    ->label('Last Seen')
+                                    ->label('Last Online')
                                     ->dateTime()
                                     ->hidden(fn (): bool => in_array('last_seen_at', $hiddenFields)),
                             ]),
@@ -271,14 +271,17 @@ class UserResource extends BaseResource
                                     ->columns(3)
                                     ->schema([
                                         TextEntry::make('position.name')
+                                            ->label('Current Position')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('position_id', $hiddenFields)),
                                         TextEntry::make('specialty.name')
+                                            ->label('Current Specialty')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('specialty_id', $hiddenFields)),
                                         TextEntry::make('unit.name')
+                                            ->label('Current Unit')
                                             ->badge()
                                             ->color('gray')
                                             ->hidden(fn (): bool => in_array('unit_id', $hiddenFields)),
@@ -293,7 +296,7 @@ class UserResource extends BaseResource
                                             ->hidden(fn (User $record): bool => in_array('last_assignment_change_date', $hiddenFields) || is_null($record->last_assignment_change_date))
                                             ->columnSpanFull(),
                                     ]),
-                                Section::make('Secondary Assignment(s)')
+                                Section::make()
                                     ->hidden(fn (): bool => in_array('secondary_assignment_records', $hiddenFields))
                                     ->schema([
                                         Livewire::make(RelationManagers\SecondaryAssignmentsRelationManager::class, fn (?User $record): array => [
@@ -302,11 +305,33 @@ class UserResource extends BaseResource
                                         ]),
                                     ]),
                             ]),
+                        Tab::make('Awards')
+                            ->icon('heroicon-o-trophy')
+                            ->schema([
+                                TextEntry::make('awards.name')
+                                    ->label('List of Awards')
+                                    ->listWithLineBreaks(),
+                            ]),
+                        Tab::make('Credentials')
+                            ->icon('heroicon-o-identification')
+                            ->schema([
+                                TextEntry::make('credentials.name')
+                                    ->label('List of Credentials')
+                                    ->listWithLineBreaks(),
+                            ]),
+                        Tab::make('Qualifications')
+                            ->icon('heroicon-o-star')
+                            ->schema([
+                                TextEntry::make('qualifications.name')
+                                    ->label('List of Qualifications')
+                                    ->listWithLineBreaks(),
+                            ]),
                         Tab::make('Rank')
                             ->icon('heroicon-o-chevron-double-up')
                             ->columns()
                             ->schema([
                                 TextEntry::make('rank.name')
+                                    ->label('Current Rank')
                                     ->badge()
                                     ->color('gray')
                                     ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))

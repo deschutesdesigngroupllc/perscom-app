@@ -6,22 +6,18 @@ namespace App\Traits;
 
 use App\Models\Schedule;
 use Eloquent;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphOne;
 
 /**
  * @mixin Eloquent
- *
- * @template TModel of Model
  */
 trait HasSchedule
 {
     /**
-     * @return MorphOne<Schedule, TModel>
+     * @return MorphOne<Schedule, $this>
      */
     public function schedule(): MorphOne
     {
-        /** @var TModel $this */
         return $this->morphOne(Schedule::class, 'repeatable');
     }
 
