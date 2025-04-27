@@ -27,7 +27,7 @@ class RsvpAction extends Action
         $this->successNotificationTitle('You have successully RSVP\'d for the event.');
         $this->visible(fn (Event $record): bool => $record->registration_enabled && ! $record->registration_deadline?->isPast());
 
-        $this->fillForm(fn (Event $record) => [
+        $this->fillForm(fn (Event $record): array => [
             'status' => $record->registrations->firstWhere('id', Auth::user()->getKey())?->registration->status?->value ?? EventRegistrationStatus::Going->value,
         ]);
 
