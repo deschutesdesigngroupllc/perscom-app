@@ -10,6 +10,7 @@ use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationMa
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
 use App\Forms\Components\Schedule;
+use App\Models\Enums\EventRegistrationStatus;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
@@ -330,7 +331,7 @@ class EventResource extends BaseResource
                                     ->url(fn (?Event $record) => $record->url),
                             ]),
                         Tabs\Tab::make('Registration')
-                            ->badge(fn (?Event $record) => $record->registration_enabled ? $record->registrations()->count() : null)
+                            ->badge(fn (?Event $record) => $record->registration_enabled ? $record->registrations()->whereStatus(EventRegistrationStatus::Going)->count() : null)
                             ->badgeColor('info')
                             ->icon('heroicon-o-user-plus')
                             ->visible(fn (?Event $record) => $record->registration_enabled)

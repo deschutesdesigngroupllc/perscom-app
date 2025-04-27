@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Models\Enums\EventRegistrationStatus;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasUser;
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property int $id
  * @property int $user_id
  * @property int $event_id
+ * @property EventRegistrationStatus|null $status
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read Event $event
@@ -33,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder<static>|EventRegistration whereCreatedAt($value)
  * @method static Builder<static>|EventRegistration whereEventId($value)
  * @method static Builder<static>|EventRegistration whereId($value)
+ * @method static Builder<static>|EventRegistration whereStatus($value)
  * @method static Builder<static>|EventRegistration whereUpdatedAt($value)
  * @method static Builder<static>|EventRegistration whereUserId($value)
  *
@@ -49,6 +52,7 @@ class EventRegistration extends Pivot
 
     protected $fillable = [
         'event_id',
+        'status',
     ];
 
     public static function boot(): void
@@ -90,6 +94,7 @@ class EventRegistration extends Pivot
     protected function casts(): array
     {
         return [
+            'status' => EventRegistrationStatus::class,
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];

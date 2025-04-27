@@ -26,9 +26,14 @@ class RegistrationsRelationManager extends RelationManager
             ->emptyStateDescription('There are no users registered.')
             ->description('The users registered for the event.')
             ->columns([
-                Tables\Columns\TextColumn::make('registration.user.name'),
+                Tables\Columns\TextColumn::make('registration.user.name')
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('registration.status')
+                    ->label('Status')
+                    ->badge(),
                 Tables\Columns\TextColumn::make('registration.created_at')
-                    ->label('Registered at')
+                    ->sortable()
+                    ->label('Registered')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
                         $settings = app(OrganizationSettings::class);
@@ -36,18 +41,6 @@ class RegistrationsRelationManager extends RelationManager
                         return $settings->timezone ?? config('app.timezone');
                     }))
                     ->dateTime(),
-            ])
-            ->headerActions([
-                Tables\Actions\CreateAction::make(),
-            ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
-            ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
             ])
             ->defaultSort('events_registrations.created_at', 'desc');
     }

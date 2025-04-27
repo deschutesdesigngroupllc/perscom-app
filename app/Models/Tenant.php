@@ -66,6 +66,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read Optional|string|null|null $slug
  * @property-read string|null $stripe_url
  * @property-read SubscriptionPlanType $subscription_plan
+ * @property-read SubscriptionStatus $subscription_status
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  * @property-read Optional|string|null|null $url

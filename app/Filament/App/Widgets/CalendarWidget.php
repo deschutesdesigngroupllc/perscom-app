@@ -12,7 +12,7 @@ use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterface;
 use Closure;
 use Filament\Actions\Action;
-use Guava\Calendar\ValueObjects\Event as EventObject;
+use Guava\Calendar\ValueObjects\CalendarEvent;
 use Guava\Calendar\Widgets\CalendarWidget as BaseCalendarWidget;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
@@ -82,7 +82,7 @@ class CalendarWidget extends BaseCalendarWidget
     }
 
     /**
-     * @return Collection|array<EventObject>
+     * @return Collection|array<CalendarEvent>
      */
     public function getEvents(array $fetchInfo = []): Collection|array
     {
@@ -102,7 +102,7 @@ class CalendarWidget extends BaseCalendarWidget
     }
 
     /**
-     * @return array<EventObject>
+     * @return array<CalendarEvent>
      */
     private function getRepeatingEvents(string $timezone, CarbonInterface $calendarStart, CarbonInterface $calendarEnd): array
     {
@@ -112,11 +112,11 @@ class CalendarWidget extends BaseCalendarWidget
 
         return $this->events
             ->filter(fn (Event $event): bool => $event->repeats && filled($event->schedule))
-            ->flatMap(fn (Event $event) => collect(ScheduleService::occurrenceBetween($event->schedule, $calendarStart, $calendarEnd))->map(function (Carbon $occurrence) use ($timezone, $event): EventObject {
+            ->flatMap(fn (Event $event) => collect(ScheduleService::occurrenceBetween($event->schedule, $calendarStart, $calendarEnd))->map(function (Carbon $occurrence) use ($timezone, $event): CalendarEvent {
                 $start = $occurrence->setTimezone($timezone)->shiftTimezone('UTC');
                 $end = $start->copy()->addHours($event->schedule->duration);
 
-                return EventObject::make()
+                return CalendarEvent::make()
                     ->title($event->name)
                     ->start($start)
                     ->end($end)
@@ -129,7 +129,7 @@ class CalendarWidget extends BaseCalendarWidget
     }
 
     /**
-     * @return array<EventObject>
+     * @return array<CalendarEvent>
      */
     private function getOneTimeEvents(string $timezone): array
     {
@@ -137,11 +137,11 @@ class CalendarWidget extends BaseCalendarWidget
             return [];
         }
 
-        return $this->events->reject->repeats->map(function (Event $event) use ($timezone): EventObject {
+        return $this->events->reject->repeats->map(function (Event $event) use ($timezone): CalendarEvent {
             $start = $event->starts->setTimezone($timezone)->shiftTimezone('UTC');
             $end = $event->ends->setTimezone($timezone)->shiftTimezone('UTC');
 
-            return EventObject::make()
+            return CalendarEvent::make()
                 ->title($event->name)
                 ->start($start)
                 ->end($end)
