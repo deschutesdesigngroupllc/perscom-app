@@ -10,6 +10,7 @@
   "require": {
     "php": "^8.3",
     "ext-zip": "*",
+    "archilex/filament-filter-sets": "^3.8.5",
     "awcodes/filament-quick-create": "^3.6.2",
     "awcodes/filament-tiptap-editor": "^3.5.12",
     "aws/aws-sdk-php": "^3.342.35",
@@ -62,6 +63,8 @@
     "stancl/jobpipeline": "v2.0.0-rc4 as v1.6.2",
     "stancl/tenancy": "^3.8.5",
     "stancl/virtualcolumn": "^1.5.0",
+    "staudenmeir/belongs-to-through": "^2.16.4",
+    "staudenmeir/eloquent-has-many-deep": "^1.20.7",
     "tailflow/laravel-orion": "^2.23.0",
     "tightenco/ziggy": "^2.5.2",
     "timokoerber/laravel-one-time-operations": "^1.4.5",
@@ -95,6 +98,10 @@
     {
       "type": "composer",
       "url": "https://spark.laravel.com"
+    },
+    {
+      "type": "composer",
+      "url": "https://filament-filter-sets.composer.sh"
     }
   ],
   "autoload": {
