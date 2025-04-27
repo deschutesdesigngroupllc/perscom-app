@@ -17,8 +17,12 @@ class SendMassEmail
     /**
      * @throws Throwable
      */
-    public static function handle(Mail $mail): Batch
+    public static function handle(Mail $mail): ?Batch
     {
+        if (filled($mail->sent_at) || (! $mail->send_now && blank($mail->send_at))) {
+            return null;
+        }
+
         /** @var Collection<Tenant> $recipients */
         $recipients = filled($mail->recipients)
             ? Collection::wrap($mail->recipients)->map(fn ($tenantId): Tenant => Tenant::find($tenantId))

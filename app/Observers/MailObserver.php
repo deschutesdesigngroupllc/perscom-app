@@ -17,4 +17,12 @@ class MailObserver
     {
         SendMassEmail::handle($mail);
     }
+
+    /**
+     * @throws Throwable
+     */
+    public function updated(Mail $mail): void
+    {
+        SendMassEmail::handle($mail);
+    }
 }

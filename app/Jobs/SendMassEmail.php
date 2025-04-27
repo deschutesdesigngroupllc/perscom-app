@@ -11,11 +11,14 @@ use App\Models\User;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
+use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Mail as MailFacade;
 
 class SendMassEmail implements ShouldQueue
 {
-    use Batchable, Queueable;
+    use Batchable, Queueable, SerializesModels;
+
+    public bool $deleteWhenMissingModels = true;
 
     public function __construct(protected Tenant|User $notifiable, protected Mail $mail)
     {
