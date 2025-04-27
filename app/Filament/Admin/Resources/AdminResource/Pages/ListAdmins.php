@@ -12,6 +12,8 @@ class ListAdmins extends ListRecords
 {
     protected static string $resource = AdminResource::class;
 
+    protected ?string $subheading = 'Manage all PERSCOM administrator accounts.';
+
     protected function getHeaderActions(): array
     {
         return [

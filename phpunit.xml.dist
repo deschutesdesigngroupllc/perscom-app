@@ -58,9 +58,8 @@
     <env name="QUEUE_CONNECTION" value="sync"/>
     <env name="RESPONSE_CACHE_ENABLED" value="false"/>
     <env name="SESSION_DRIVER" value="array"/>
-    <env name="STRIPE_PRODUCT_BASIC_MONTH" value="price_1LGWsjGt8lrL0dgCSh82mHu3"/>
-    <env name="STRIPE_PRODUCT_ENTERPRISE_MONTH" value="price_1LGWuVGt8lrL0dgCA8GM8Bpw"/>
-    <env name="STRIPE_PRODUCT_PRO_MONTH" value="price_1LGWtYGt8lrL0dgCAfBx95kG"/>
+    <env name="STRIPE_PRODUCT_MONTH" value="price_1REMW6Gt8lrL0dgCpyHaco4P"/>
+    <env name="STRIPE_PRODUCT_YEARLY" value="price_1REMW6Gt8lrL0dgCKBUlqymC"/>
     <env name="TELESCOPE_ENABLED" value="false"/>
     <env name="VIEW_CACHE" value="false"/>
   </php>

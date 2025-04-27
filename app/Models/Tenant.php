@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\SubscriptionPlanType;
+use App\Models\Enums\SubscriptionStatus;
 use App\Observers\TenantObserver;
 use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -65,6 +66,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property-read Optional|string|null|null $slug
  * @property-read string|null $stripe_url
  * @property-read SubscriptionPlanType $subscription_plan
+ * @property-read SubscriptionStatus $subscription_status
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  * @property-read Optional|string|null|null $url
@@ -122,6 +124,7 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         'custom_url',
         'fallback_url',
         'setup_completed',
+        'subscription_status',
     ];
 
     public static function getCustomColumns(): array
@@ -275,6 +278,23 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
             }
 
             return SubscriptionPlanType::from(Str::lower($plan->name));
+
+        })->shouldCache();
+    }
+
+    /**
+     * @return Attribute<SubscriptionStatus, never>
+     */
+    public function subscriptionStatus(): Attribute
+    {
+        return Attribute::get(function (): SubscriptionStatus {
+            $subscription = $this->subscription();
+
+            if (blank($subscription)) {
+                return SubscriptionStatus::None;
+            }
+
+            return SubscriptionStatus::from($subscription->stripe_status);
 
         })->shouldCache();
     }

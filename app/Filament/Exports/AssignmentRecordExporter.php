@@ -25,7 +25,8 @@ class AssignmentRecordExporter extends Exporter
             ExportColumn::make('specialty.name'),
             ExportColumn::make('document.name'),
             ExportColumn::make('author.name'),
-            ExportColumn::make('type'),
+            ExportColumn::make('type')
+                ->formatStateUsing(fn ($state) => $state?->value),
             ExportColumn::make('text'),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),

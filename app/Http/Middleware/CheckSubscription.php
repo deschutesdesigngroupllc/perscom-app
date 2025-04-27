@@ -4,12 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Features\ApiAccessFeature;
-use App\Features\OAuth2AccessFeature;
 use Filament\Billing\Providers\Http\Middleware\VerifySparkBillableIsSubscribed;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\App;
-use Laravel\Pennant\Feature;
 use Symfony\Component\HttpFoundation\Response;
 
 class CheckSubscription extends VerifySparkBillableIsSubscribed
@@ -23,9 +20,6 @@ class CheckSubscription extends VerifySparkBillableIsSubscribed
         if (App::isDemo() || App::isAdmin()) {
             return $next($request);
         }
-
-        abort_if((Feature::inactive(ApiAccessFeature::class)) && $this->request->routeIs('api.*'), 402);
-        abort_if((Feature::inactive(OAuth2AccessFeature::class)) && ($this->request->routeIs('passport.*') || $this->request->routeIs('oidc.*')), 402);
 
         return parent::handle($request, $next, $billableType, $plan);
     }

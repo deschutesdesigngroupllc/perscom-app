@@ -27,10 +27,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
- * @property-read mixed|null $data
  * @property-read \Illuminate\Support\Collection $changes
+ * @property-read mixed|null $payload
+ * @property-read mixed|null $reason_phrase
  * @property-read string|null $request_id
  * @property-read string|null $resource_url
+ * @property-read mixed|null $status_code
  * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
  * @property-read string|null $trace_id
  *
@@ -64,10 +66,10 @@ class WebhookLog extends Activity
     /**
      * @return Attribute<mixed, never>
      */
-    public function data(): Attribute
+    public function payload(): Attribute
     {
         return Attribute::make(
-            get: fn (): mixed => $this->getExtraProperty('data')
+            get: fn (): mixed => $this->getExtraProperty('payload')
         )->shouldCache();
     }
 
@@ -77,7 +79,7 @@ class WebhookLog extends Activity
     public function event(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?WebhookEvent => optional($this->getExtraProperty('event'), fn ($event): WebhookEvent => WebhookEvent::from($event))
+            get: fn (): ?WebhookEvent => optional(data_get($this->payload, 'event'), fn ($event): WebhookEvent => WebhookEvent::from($event))
         )->shouldCache();
     }
 
@@ -87,7 +89,7 @@ class WebhookLog extends Activity
     public function requestId(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('request_id')
+            get: fn (): ?string => data_get($this->payload, 'request_id')
         )->shouldCache();
     }
 
@@ -97,7 +99,7 @@ class WebhookLog extends Activity
     public function traceId(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('trace_id')
+            get: fn (): ?string => data_get($this->payload, 'trace_id')
         )->shouldCache();
     }
 
@@ -128,5 +130,25 @@ class WebhookLog extends Activity
 
             return null;
         })->shouldCache();
+    }
+
+    /**
+     * @return Attribute<mixed, never>
+     */
+    public function statusCode(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): mixed => $this->getExtraProperty('status_code')
+        )->shouldCache();
+    }
+
+    /**
+     * @return Attribute<mixed, never>
+     */
+    public function reasonPhrase(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): mixed => $this->getExtraProperty('reason_phrase')
+        )->shouldCache();
     }
 }

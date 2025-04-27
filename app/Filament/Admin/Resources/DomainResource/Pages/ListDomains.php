@@ -12,6 +12,8 @@ class ListDomains extends ListRecords
 {
     protected static string $resource = DomainResource::class;
 
+    protected ?string $subheading = 'Manage all PERSCOM domains that are associated with tenant accounts.';
+
     protected function getHeaderActions(): array
     {
         return [

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\AssignmentRecordResource\Pages;
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\AssignmentRecordResource\RelationManagers\CommentsRelationManager;
@@ -29,7 +28,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class AssignmentRecordResource extends BaseResource
 {
@@ -66,7 +64,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn ($form): Form => UserResource::form($form)),
                                 Forms\Components\Select::make('type')
-                                    ->helperText('The type of assignment record. A primary assignment record will update the user\'s assigned unit, position, and specialty. A secondary assignment will simply add a new record to the list user\'s secondary assignments.')
+                                    ->helperText('The type of assignment record. A primary assignment record will update the user\'s assigned unit, position, and specialty. A secondary assignment will simply add a new record to the user\'s list of secondary assignments.')
                                     ->required()
                                     ->live()
                                     ->options(AssignmentRecordType::class)
@@ -146,7 +144,7 @@ class AssignmentRecordResource extends BaseResource
 
                                 return [
                                     ModelNotification::make(
-                                        alert: new HtmlString("<div class='font-bold'>The recipients will already receive a notification about the new record.</div>"),
+                                        alert: new HtmlString("<div class='font-bold max-w-2xl'>The recipients will already receive a notification about the new record. Default notification configuration can be set in your system settings.</div>"),
                                         defaults: data_get($settings->toArray(), 'assignment_records'),
                                     ),
                                 ];
@@ -206,6 +204,7 @@ class AssignmentRecordResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('Create a new assignment record to get started.')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable()
@@ -295,10 +294,10 @@ class AssignmentRecordResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(AssignmentRecordExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(AssignmentRecordExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

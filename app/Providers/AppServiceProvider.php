@@ -7,6 +7,7 @@ namespace App\Providers;
 use App\Console\Commands\BackupCommand;
 use App\Dispatchers\Bus\Dispatcher;
 use App\Filament\App\Pages\Dashboard;
+use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Models\Admin;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
@@ -22,6 +23,7 @@ use App\Support\Orion\KeyResolver;
 use App\Support\Passport\AccessToken;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Actions\ExportAction;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Field;
 use Filament\Infolists\Components\Entry;
@@ -47,7 +49,6 @@ use Illuminate\Support\Str;
 use Inertia\Inertia;
 use Laravel\Cashier\Cashier;
 use Laravel\Passport\Passport;
-use Laravel\Pennant\Feature;
 use Laravel\Socialite\Contracts\Factory;
 use Orion\Contracts\KeyResolver as KeyResolverContract;
 use Orion\Drivers\Standard\ComponentsResolver as ComponentsResolverContract;
@@ -58,8 +59,13 @@ use function tenant;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * @throws BindingResolutionException
+     */
     public function register(): void
     {
+        App::make('router')->middlewareGroup('filament.actions', ['auth', 'web', InitializeTenancyBySubdomain::class]);
+
         Cashier::useCustomerModel(Tenant::class);
         Cashier::useSubscriptionModel(Subscription::class);
 
@@ -229,8 +235,7 @@ class AppServiceProvider extends ServiceProvider
             return value($closure, $field);
         });
 
-        Feature::discover();
-        Feature::resolveScopeUsing(static fn ($driver) => tenant());
+        ExportAction::configureUsing(fn (ExportAction $action): ExportAction => $action->fileDisk('s3'));
 
         FilamentAsset::register([
             AlpineComponent::make('widget-code-generator', __DIR__.'/../../resources/js/dist/components/widget-code-generator/index.js'),

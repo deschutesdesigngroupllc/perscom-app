@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\TrainingRecordResource\Pages;
 use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\TrainingRecordResource\RelationManagers\CommentsRelationManager;
@@ -26,7 +25,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class TrainingRecordResource extends BaseResource
 {
@@ -218,10 +216,10 @@ class TrainingRecordResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(TrainingRecordExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(TrainingRecordExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

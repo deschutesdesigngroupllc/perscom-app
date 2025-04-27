@@ -59,7 +59,7 @@ class ErrorApiTest extends TenantTestCase
     public function test_404_exception_is_thrown_and_error_is_returned(): void
     {
         $this->getJson('/test-route')
-            ->assertJsonPath('error.message', 'The requested resource could not be found.')
+            ->assertJsonPath('error.message', 'The requested resource or endpoint could not be found.')
             ->assertJsonPath('error.type', 'NotFoundHttpException')
             ->assertStatus(404);
     }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\WebhookResource\Pages;
 
-use App\Filament\App\Clusters\Logs\Resources\WebhookLogResource;
+use App\Filament\App\Resources\WebhookLogResource;
 use App\Filament\App\Resources\WebhookResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;

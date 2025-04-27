@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\SubmissionResource\Pages;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\SubmissionResource\RelationManagers\StatusesRelationManager;
@@ -20,7 +19,6 @@ use Filament\Infolists\Infolist;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
 use Filament\Tables\Table;
-use Laravel\Pennant\Feature;
 
 class SubmissionResource extends BaseResource
 {
@@ -117,10 +115,10 @@ class SubmissionResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(SubmissionExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(SubmissionExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

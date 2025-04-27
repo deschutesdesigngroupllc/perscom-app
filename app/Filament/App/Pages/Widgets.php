@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Pages;
 
-use App\Features\ApiAccessFeature;
 use App\Filament\App\Resources\PassportTokenResource;
 use App\Forms\Components\TorchlightCode;
 use App\Forms\Components\WidgetCodeGenerator;
-use App\Models\PassportToken;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use DateTimeZone;
 use Filament\Actions\Action;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
@@ -21,7 +18,6 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
-use Laravel\Pennant\Feature;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class Widgets extends Page
@@ -39,12 +35,6 @@ class Widgets extends Page
     protected static string $view = 'filament.app.pages.widgets';
 
     protected ?string $subheading = 'Widgets offer a visual representation of your personnel data that can be embedded into any external website. Use the widget explorer below to interact with the widgets in real-time.';
-
-    public static function canAccess(): bool
-    {
-        return Filament::auth()->user()->can(static::getPermissionName())
-            && Feature::active(ApiAccessFeature::class);
-    }
 
     public function mount(): void
     {
@@ -97,7 +87,7 @@ class Widgets extends Page
                             ->openUrlInNewTab()
                             ->url(PassportTokenResource::getUrl('create'))
                         )
-                        ->options(fn () => PassportToken::all()->pluck('name', 'token')),
+                        ->options(fn () => PassportTokenResource::getEloquentQuery()->pluck('name', 'token')),
                     Select::make('timezone')
                         ->preload()
                         ->searchable()

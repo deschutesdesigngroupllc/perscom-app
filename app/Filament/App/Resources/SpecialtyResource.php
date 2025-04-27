@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\SpecialtyResource\Pages;
 use App\Filament\Exports\SpecialtyExporter;
 use App\Models\Specialty;
@@ -14,7 +13,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class SpecialtyResource extends BaseResource
 {
@@ -77,10 +75,10 @@ class SpecialtyResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(SpecialtyExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(SpecialtyExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])

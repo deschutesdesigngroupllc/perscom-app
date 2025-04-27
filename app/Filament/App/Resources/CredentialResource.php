@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\CredentialResource\Pages;
+use App\Filament\Exports\CredentialExporter;
 use App\Models\Credential;
 use App\Models\Enums\CredentialType;
 use Filament\Forms;
@@ -87,6 +88,9 @@ class CredentialResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(CredentialExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

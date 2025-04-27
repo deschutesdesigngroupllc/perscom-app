@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\EventResource\Pages;
 
+use App\Filament\App\Actions\Events\RsvpAction;
 use App\Filament\App\Resources\EventResource;
 use App\Models\Event;
 use Filament\Actions;
 use Filament\Resources\Pages\ViewRecord;
-use Illuminate\Support\Facades\Auth;
 
 class ViewEvent extends ViewRecord
 {
@@ -22,26 +22,7 @@ class ViewEvent extends ViewRecord
                 ->openUrlInNewTab()
                 ->color('gray')
                 ->label('Open'),
-            Actions\Action::make('register')
-                ->color('success')
-                ->label('Register')
-                ->visible(fn (?Event $record): bool => $record->registration_enabled && ! $record->registration_deadline?->isPast() && ! $record->registrations->contains(Auth::user()))
-                ->successNotificationTitle('You have successfully registered for the event.')
-                ->action(function (?Event $record, Actions\Action $action): void {
-                    $record->registrations()->attach(Auth::user());
-                    $this->dispatch('refreshRegistrations');
-                    $action->success();
-                }),
-            Actions\Action::make('unregister')
-                ->color('danger')
-                ->label('Unregister')
-                ->visible(fn (?Event $record) => $record->registrations->contains(Auth::user()))
-                ->successNotificationTitle('You have successfully unregistered for the event.')
-                ->action(function (?Event $record, Actions\Action $action): void {
-                    $record->registrations()->detach(Auth::user());
-                    $this->dispatch('refreshRegistrations');
-                    $action->success();
-                }),
+            RsvpAction::make(),
             Actions\EditAction::make(),
             Actions\DeleteAction::make(),
         ];

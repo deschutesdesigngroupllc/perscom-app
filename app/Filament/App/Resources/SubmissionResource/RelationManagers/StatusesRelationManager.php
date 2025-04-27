@@ -21,6 +21,7 @@ class StatusesRelationManager extends RelationManager
         return $table
             ->description('The status history for this submission.')
             ->recordTitleAttribute('name')
+            ->description('The status history of this form submission.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->badge()

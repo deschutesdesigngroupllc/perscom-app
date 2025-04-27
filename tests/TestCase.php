@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests;
 
-use App\Features\BaseFeature;
 use App\Jobs\PurgeApiCache;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -25,7 +24,6 @@ abstract class TestCase extends BaseTestCase
 
         Queue::fake([PurgeApiCache::class]);
         Http::preventStrayRequests();
-        BaseFeature::resetTenant();
 
         $this->withoutMiddleware([ThrottleRequestsWithRedis::class, CacheResponse::class]);
     }

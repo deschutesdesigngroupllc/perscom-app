@@ -12,6 +12,8 @@ class ListMails extends ListRecords
 {
     protected static string $resource = MailResource::class;
 
+    protected ?string $subheading = 'Send updates and notifications to all PERSCOM accounts.';
+
     protected function getHeaderActions(): array
     {
         return [

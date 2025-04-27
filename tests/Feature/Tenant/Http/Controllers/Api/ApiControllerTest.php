@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Http\Controllers\Api;
 
-use App\Features\ApiAccessFeature;
 use App\Http\Middleware\CheckSubscription;
 use App\Models\User;
 use App\Settings\IntegrationSettings;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 use Lcobucci\JWT\Encoding\ChainedFormatter;
 use Lcobucci\JWT\Encoding\JoseEncoder;
 use Lcobucci\JWT\Signer\Hmac\Sha256;
@@ -50,42 +48,9 @@ class ApiControllerTest extends ApiTestCase
         ]))->assertSuccessful();
     }
 
-    public function test_api_cannot_be_reached_without_api_access_feature(): void
+    public function test_api_can_be_reached_with_subscription(): void
     {
-        $this->withMiddleware(CheckSubscription::class);
-
-        Feature::define(ApiAccessFeature::class, false);
-
-        $this->withToken($this->apiKey())->getJson(route('api.users.index', [
-            'version' => config('api.version'),
-        ]))->assertStatus(402);
-    }
-
-    public function test_api_cannot_be_reached_with_basic_plan(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
-
-        $this->withMiddleware(CheckSubscription::class);
-
-        $this->withToken($this->apiKey())->getJson(route('api.users.index', [
-            'version' => config('api.version'),
-        ]))->assertPaymentRequired();
-    }
-
-    public function test_api_can_be_reached_with_complete_pro_subscription(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'));
-
-        $this->withMiddleware(CheckSubscription::class);
-
-        $this->withToken($this->apiKey())->getJson(route('api.users.index', [
-            'version' => config('api.version'),
-        ]))->assertSuccessful();
-    }
-
-    public function test_api_can_be_reached_with_complete_enterprise_subscription(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_ENTERPRISE_MONTH'));
+        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'));
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -96,7 +61,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_with_incomplete_subscription(): void
     {
-        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete');
+        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'), 'incomplete');
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -107,7 +72,7 @@ class ApiControllerTest extends ApiTestCase
 
     public function test_api_cannot_be_reached_with_incomplete_expired_subscription(): void
     {
-        $this->withSubscription(env('STRIPE_PRODUCT_PRO_MONTH'), 'incomplete_expired');
+        $this->withSubscription(env('STRIPE_PRODUCT_MONTH'), 'incomplete_expired');
 
         $this->withMiddleware(CheckSubscription::class);
 
@@ -186,25 +151,6 @@ class ApiControllerTest extends ApiTestCase
             ->assertForbidden();
     }
 
-    public function test_api_cannot_be_reached_when_using_perscom_signed_jwt_and_on_basic_plan(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
-
-        $this->withMiddleware(CheckSubscription::class);
-
-        $token = Auth::guard('jwt')->claims([
-            'scopes' => [
-                'view:user',
-            ],
-        ])->login(User::factory()->createQuietly());
-
-        $this->withToken($token)
-            ->getJson(route('api.users.index', [
-                'version' => config('api.version'),
-            ]))
-            ->assertPaymentRequired();
-    }
-
     public function test_api_cannot_be_reached_when_using_tenant_signed_jwt_without_proper_scopes(): void
     {
         /** @var IntegrationSettings $settings */
@@ -229,38 +175,5 @@ class ApiControllerTest extends ApiTestCase
                 'version' => config('api.version'),
             ]))
             ->assertForbidden();
-    }
-
-    public function test_api_cannot_be_reached_when_using_tenant_signed_jwt_and_on_basic_plan(): void
-    {
-        $this->withSubscription(env('STRIPE_PRODUCT_BASIC_MONTH'));
-
-        $this->withMiddleware(CheckSubscription::class);
-
-        /** @var IntegrationSettings $settings */
-        $settings = $this->app->make(IntegrationSettings::class);
-
-        $tokenBuilder = (new Builder(new JoseEncoder, ChainedFormatter::default()));
-        $algorithm = new Sha256;
-        $signingKey = InMemory::plainText($settings->single_sign_on_key);
-
-        $token = $tokenBuilder
-            ->issuedBy(config('app.url'))
-            ->relatedTo((string) User::factory()->createQuietly()->getKey())
-            ->identifiedBy(Str::random(10))
-            ->issuedAt(now()->toDateTimeImmutable())
-            ->canOnlyBeUsedAfter(now()->toDateTimeImmutable())
-            ->expiresAt(now()->addHour()->toDateTimeImmutable())
-            ->withClaim('tenant', $this->tenant->getKey())
-            ->withClaim('scopes', [
-                'view:user',
-            ])
-            ->getToken($algorithm, $signingKey);
-
-        $this->withToken($token->toString())
-            ->getJson(route('api.users.index', [
-                'version' => config('api.version'),
-            ]))
-            ->assertPaymentRequired();
     }
 }

@@ -19,7 +19,7 @@ class EventsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->description('The events assigned to this calendar.')
+            ->description('The events assigned to the calendar.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),

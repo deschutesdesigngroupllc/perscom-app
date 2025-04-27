@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 use App\Models\Settings;
 use App\Settings\DashboardSettings;
-use App\Settings\FeatureSettings;
 use App\Settings\IntegrationSettings;
 use App\Settings\OrganizationSettings;
 use App\Settings\PermissionSettings;
@@ -19,7 +18,6 @@ return [
      */
     'settings' => [
         DashboardSettings::class,
-        FeatureSettings::class,
         IntegrationSettings::class,
         OrganizationSettings::class,
         PermissionSettings::class,

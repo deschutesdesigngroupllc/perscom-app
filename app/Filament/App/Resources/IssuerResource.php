@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\IssuerResource\Pages;
+use App\Filament\Exports\IssuerExporter;
 use App\Models\Issuer;
 use Filament\Forms;
 use Filament\Forms\Form;
@@ -55,6 +56,9 @@ class IssuerResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(IssuerExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),

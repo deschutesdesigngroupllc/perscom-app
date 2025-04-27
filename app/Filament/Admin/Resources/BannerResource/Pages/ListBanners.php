@@ -12,6 +12,8 @@ class ListBanners extends ListRecords
 {
     protected static string $resource = BannerResource::class;
 
+    protected ?string $subheading = 'Manage banners to display important messages or announcements.';
+
     protected function getHeaderActions(): array
     {
         return [

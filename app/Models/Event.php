@@ -194,7 +194,7 @@ class Event extends Model implements HasLabel
     public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')
-            ->withPivot(['id', 'user_id', 'event_id'])
+            ->withPivot(['id', 'user_id', 'event_id', 'status'])
             ->as('registration')
             ->using(EventRegistration::class)
             ->withTimestamps();

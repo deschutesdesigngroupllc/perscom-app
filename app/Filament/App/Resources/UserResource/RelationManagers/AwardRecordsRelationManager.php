@@ -21,7 +21,7 @@ class AwardRecordsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
-            ->description('The assignment records for the user.')
+            ->description('The award records for the user.')
             ->columns([
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable(false)

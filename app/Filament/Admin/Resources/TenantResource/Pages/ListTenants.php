@@ -12,6 +12,8 @@ class ListTenants extends ListRecords
 {
     protected static string $resource = TenantResource::class;
 
+    protected ?string $subheading = 'Manage all PERSCOM tenant accounts.';
+
     protected function getHeaderActions(): array
     {
         return [

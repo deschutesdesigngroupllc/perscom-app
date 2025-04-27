@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\DocumentResource\Pages;
 use App\Filament\Exports\DocumentExporter;
 use App\Models\Document;
@@ -16,7 +15,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class DocumentResource extends BaseResource
 {
@@ -51,7 +49,7 @@ class DocumentResource extends BaseResource
                                 ->modalContent(view('app.model-tags'))
                                 ->modalSubmitAction(false)
                                 ->modalCancelActionLabel('Close')
-                                ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of content. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                                ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
                                 ->slideOver())
                             ->nullable()
                             ->maxLength(65535)
@@ -98,10 +96,10 @@ class DocumentResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(DocumentExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(DocumentExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

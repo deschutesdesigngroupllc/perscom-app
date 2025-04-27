@@ -129,21 +129,6 @@ return [
     |
     */
 
-    'premium_features' => [
-        App\Features\AdvancedNotificationsFeature::class => [
-            'monthly_id' => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS_MONTH'),
-            'yearly_id' => env('STRIPE_PRODUCT_ADVANCED_NOTIFICATIONS_YEAR'),
-        ],
-        App\Features\GoogleCalendarSyncFeature::class => [
-            'monthly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_MONTH'),
-            'yearly_id' => env('STRIPE_PRODUCT_GOOGLE_CALENDAR_SYNC_YEAR'),
-        ],
-        App\Features\EnhancedAIFeature::class => [
-            'monthly_id' => env('STRIPE_PRODUCT_ENHANCED_AI_SYNC_MONTH'),
-            'yearly_id' => env('STRIPE_PRODUCT_ENHANCED_AI_SYNC_YEAR'),
-        ],
-    ],
-
     'billables' => [
         'tenant' => [
             'model' => App\Models\Tenant::class,
@@ -151,64 +136,19 @@ return [
             'default_interval' => 'yearly',
             'plans' => [
                 [
-                    'name' => 'Basic',
-                    'short_description' => 'For small organizations who need core personnel management services without the need to share and exchange personnel data.',
-                    'monthly_id' => env('STRIPE_PRODUCT_BASIC_MONTH'),
-                    'yearly_id' => env('STRIPE_PRODUCT_BASIC_YEAR'),
+                    'name' => 'PERSCOM',
+                    'short_description' => 'Personnel management made easy for high-performing, results-driven organizations.',
+                    'monthly_id' => env('STRIPE_PRODUCT_MONTH'),
+                    'yearly_id' => env('STRIPE_PRODUCT_YEAR'),
                     'features' => [
-                        'All core features',
-                        'No premium features',
                         'Social login support',
                         'Application provided subdomain',
-                        'Community support',
-                    ],
-                    'options' => [
-                        App\Features\SocialLoginFeature::class,
-                    ],
-                ],
-                [
-                    'name' => 'Pro',
-                    'short_description' => 'For growing organizations who wish to integrate their personnel data into third-party services without enterprise level complexity.',
-                    'monthly_id' => env('STRIPE_PRODUCT_PRO_MONTH'),
-                    'yearly_id' => env('STRIPE_PRODUCT_PRO_YEAR'),
-                    'features' => [
                         'Access to powerful API',
-                        'Optional paid premium features',
                         'Widgets and website integration',
-                        'Custom subdomain',
-                        'Ticket and email support',
-                    ],
-                    'options' => [
-                        App\Features\SocialLoginFeature::class,
-                        App\Features\ApiAccessFeature::class,
-                        App\Features\CustomSubDomainFeature::class,
-                        App\Features\SupportTicketFeature::class,
-                    ],
-                ],
-                [
-                    'name' => 'Enterprise',
-                    'short_description' => 'For large organizations that rely on powerful personnel management solutions and require personnel data communication between essential business services.',
-                    'monthly_id' => env('STRIPE_PRODUCT_ENTERPRISE_MONTH'),
-                    'yearly_id' => env('STRIPE_PRODUCT_ENTERPRISE_YEAR'),
-                    'features' => [
-                        'All premium features included',
-                        'Export and backup all account data',
                         'Webhooks and real-time app notifications',
-                        'Single sign-on integration',
-                        'Priority support',
-                    ],
-                    'options' => [
-                        App\Features\AdvancedNotificationsFeature::class,
-                        App\Features\SocialLoginFeature::class,
-                        App\Features\ApiAccessFeature::class,
-                        App\Features\CustomSubDomainFeature::class,
-                        App\Features\SupportTicketFeature::class,
-                        App\Features\CustomDomainFeature::class,
-                        App\Features\BackupFeature::class,
-                        App\Features\ExportDataFeature::class,
-                        App\Features\OAuth2AccessFeature::class,
-                        App\Features\SingleSignOnFeature::class,
-                        App\Features\WebhookFeature::class,
+                        'Export and backup all account data',
+                        'Single sign-on (SSO)',
+                        'Ticket and email support',
                     ],
                 ],
             ],

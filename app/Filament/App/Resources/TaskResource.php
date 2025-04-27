@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\TaskResource\Pages;
 use App\Filament\App\Resources\TaskResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\Exports\TaskExporter;
@@ -15,7 +14,6 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class TaskResource extends BaseResource
 {
@@ -90,10 +88,10 @@ class TaskResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(TaskExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(TaskExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

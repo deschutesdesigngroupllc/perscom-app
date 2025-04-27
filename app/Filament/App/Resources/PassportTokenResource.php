@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ApiAccessFeature;
 use App\Filament\App\Resources\PassportTokenResource\Pages;
+use App\Models\PassportClient;
 use App\Models\PassportToken;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
@@ -15,8 +15,8 @@ use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
-use Laravel\Pennant\Feature;
 
 class PassportTokenResource extends BaseResource
 {
@@ -129,6 +129,12 @@ class PassportTokenResource extends BaseResource
             ]);
     }
 
+    public static function getEloquentQuery(): Builder
+    {
+        return parent::getEloquentQuery()
+            ->whereDoesntHave('client', fn (Builder $query) => $query->where('name', '<>', PassportClient::SYSTEM_PERSONAL_ACCESS_CLIENT));
+    }
+
     public static function getPages(): array
     {
         return [
@@ -137,10 +143,5 @@ class PassportTokenResource extends BaseResource
             'view' => Pages\ViewPassportToken::route('/{record}'),
             'edit' => Pages\EditPassportToken::route('/{record}/edit'),
         ];
-    }
-
-    public static function canAccess(): bool
-    {
-        return parent::canAccess() && Feature::active(ApiAccessFeature::class);
     }
 }

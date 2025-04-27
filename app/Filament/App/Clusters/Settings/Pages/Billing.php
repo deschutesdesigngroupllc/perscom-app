@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Clusters\Settings\Pages;
 
-use App\Features\BillingFeature;
 use App\Filament\App\Clusters\Settings;
 use Filament\Pages\Page;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Model;
-use Laravel\Pennant\Feature;
+use Illuminate\Support\Facades\Gate;
 
 class Billing extends Page
 {
@@ -33,6 +32,6 @@ class Billing extends Page
 
     public static function canAccess(): bool
     {
-        return Feature::active(BillingFeature::class);
+        return Gate::check('billing');
     }
 }

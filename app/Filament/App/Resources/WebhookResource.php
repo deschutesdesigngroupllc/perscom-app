@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\WebhookFeature;
 use App\Filament\App\Resources\WebhookResource\Pages;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Enums\WebhookMethod;
@@ -17,7 +16,6 @@ use Filament\Infolists\Infolist;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class WebhookResource extends BaseResource
 {
@@ -143,10 +141,5 @@ class WebhookResource extends BaseResource
             'edit' => Pages\EditWebhook::route('/{record}/edit'),
             'view' => Pages\ViewWebhook::route('/{record}'),
         ];
-    }
-
-    public static function canAccess(): bool
-    {
-        return parent::canAccess() && Feature::active(WebhookFeature::class);
     }
 }

@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
+use App\Actions\Batches\SendMassEmail;
 use App\Filament\Admin\Resources\MailResource\Pages;
 use App\Models\Mail;
 use App\Models\Tenant;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -58,10 +61,12 @@ class MailResource extends Resource
                                     ->live()
                                     ->helperText('If checked, the email will be sent immediately.'),
                                 Forms\Components\DateTimePicker::make('send_at')
+                                    ->hintActions([
+                                        Forms\Components\Actions\Action::make('now')->action(fn (Forms\Set $set): mixed => $set('send_at', now()->toDateTimeString())),
+                                        Forms\Components\Actions\Action::make('clear')->action(fn (Forms\Set $set): mixed => $set('send_at', null)),
+                                    ])
                                     ->label('Send At')
-                                    ->default(now()->addMinutes(5))
                                     ->visible(fn (Forms\Get $get): bool => ! $get('send_now'))
-                                    ->requiredIf('send_now', false)
                                     ->helperText('Set the time to send the email.'),
                             ]),
                     ]),
@@ -73,7 +78,7 @@ class MailResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('subject')
-                    ->searchable()
+                    ->searchable(['subject', 'content'])
                     ->sortable(),
                 Tables\Columns\TextColumn::make('sent_at')
                     ->dateTime()
@@ -86,10 +91,20 @@ class MailResource extends Resource
                     ->dateTime()
                     ->sortable(),
             ])
-            ->filters([
-                //
-            ])
             ->actions([
+                Tables\Actions\Action::make('retry')
+                    ->successNotificationTitle('The email has been queued for sending.')
+                    ->icon('heroicon-o-arrow-path')
+                    ->action(function (Mail $record, Tables\Actions\Action $action): void {
+                        SendMassEmail::handle($record);
+                        $action->success();
+                    })
+                    ->visible(fn (Mail $record): bool => (
+                        ($record->send_now && blank($record->send_at)) || (filled($record->send_at) && $record->send_at->isPast()))
+                        && blank($record->sent_at)
+                    ),
+                Tables\Actions\ViewAction::make(),
+                Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
@@ -99,12 +114,33 @@ class MailResource extends Resource
             ]);
     }
 
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->columns(1)
+            ->schema([
+                TextEntry::make('content')
+                    ->hiddenLabel()
+                    ->html()
+                    ->prose(),
+                TextEntry::make('send_at')
+                    ->label('Send At')
+                    ->dateTime()
+                    ->visible(fn ($state, Mail $record): bool => filled($state) && ! $record->sent_at),
+                TextEntry::make('sent_at')
+                    ->label('Sent At')
+                    ->dateTime()
+                    ->visible(fn ($state): bool => filled($state)),
+            ]);
+    }
+
     public static function getPages(): array
     {
         return [
             'index' => Pages\ListMails::route('/'),
             'create' => Pages\CreateMail::route('/create'),
             'edit' => Pages\EditMail::route('/{record}/edit'),
+            'view' => Pages\ViewMail::route('/{record}'),
         ];
     }
 
@@ -113,7 +149,7 @@ class MailResource extends Resource
      */
     public static function canEdit(Model $record): bool
     {
-        if (filled($record->sent_at)) {
+        if (filled($record->sent_at) || $record->send_now) {
             return false;
         }
 

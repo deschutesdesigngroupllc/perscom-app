@@ -27,81 +27,6 @@ class MessageResource extends BaseResource
 
     public static function form(Form $form): Form
     {
-        $message = [
-            Forms\Components\RichEditor::make('message')
-                ->helperText('Enter the message you would like to send.')
-                ->required()
-                ->hiddenLabel(),
-        ];
-
-        $channels = [
-            Forms\Components\CheckboxList::make('channels')
-                ->required()
-                ->searchable()
-                ->hiddenLabel()
-                ->bulkToggleable()
-                ->descriptions(fn () => collect(NotificationChannel::cases())
-                    ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
-                    ->toArray())
-                ->options(fn () => collect(NotificationChannel::cases())
-                    ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
-                    ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
-                    ->toArray()),
-        ];
-
-        $details = [
-            Forms\Components\Select::make('recipients')
-                ->helperText('Select the recipients. Leave blank to send to everyone.')
-                ->preload()
-                ->multiple()
-                ->searchable()
-                ->nullable()
-                ->options(User::query()->orderBy('name')->pluck('name', 'id')),
-        ];
-
-        $schedule = [
-            Forms\Components\DateTimePicker::make('send_at')
-                ->timezone(UserSettingsService::get('timezone', function () {
-                    /** @var OrganizationSettings $settings */
-                    $settings = app(OrganizationSettings::class);
-
-                    return $settings->timezone ?? config('app.timezone');
-                }))
-                ->minDate(fn ($component) => now()
-                    ->subDay()
-                    ->shiftTimezone($component->getTimezone())
-                    ->setTimezone(config('app.timezone')))
-                ->columnSpanFull()
-                ->helperText('Set a time to send the message in the future. Leave blank to send now.')
-                ->hidden(fn (Forms\Get $get): mixed => $get('repeats')),
-            Forms\Components\Toggle::make('repeats')
-                ->live()
-                ->helperText('Enable to send the message on a recurring schedule.'),
-            Schedule::make(shiftScheduleTimezone: true)
-                ->visible(fn (Forms\Get $get): mixed => $get('repeats')),
-        ];
-
-        if ($form->getOperation() === 'create') {
-            return $form->schema([
-                Forms\Components\Wizard::make([
-                    Forms\Components\Wizard\Step::make('Message')
-                        ->completedIcon('heroicon-m-hand-thumb-up')
-                        ->schema($message),
-                    Forms\Components\Wizard\Step::make('Channels')
-                        ->completedIcon('heroicon-m-hand-thumb-up')
-                        ->schema($channels),
-                    Forms\Components\Wizard\Step::make('Details')
-                        ->completedIcon('heroicon-m-hand-thumb-up')
-                        ->schema($details),
-                    Forms\Components\Wizard\Step::make('Schedule')
-                        ->completedIcon('heroicon-m-hand-thumb-up')
-                        ->schema($schedule),
-                ])
-                    ->persistStepInQueryString()
-                    ->columnSpanFull(),
-            ]);
-        }
-
         return $form
             ->schema([
                 Forms\Components\Tabs::make()
@@ -109,17 +34,17 @@ class MessageResource extends BaseResource
                     ->tabs([
                         Forms\Components\Tabs\Tab::make('Message')
                             ->icon('heroicon-o-chat-bubble-left-right')
-                            ->schema($message),
+                            ->schema(static::messageSchema()),
                         Forms\Components\Tabs\Tab::make('Channels')
                             ->icon('heroicon-o-queue-list')
-                            ->schema($channels),
+                            ->schema(static::channelSchema()),
                         Forms\Components\Tabs\Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
-                            ->schema($details),
+                            ->schema(static::detailsSchema()),
                         Forms\Components\Tabs\Tab::make('Schedule')
                             ->visible(fn (Forms\Get $get): mixed => $get('repeats'))
                             ->icon('heroicon-o-arrow-path')
-                            ->schema($schedule),
+                            ->schema(static::scheduleSchema()),
                     ]),
             ]);
     }
@@ -192,6 +117,72 @@ class MessageResource extends BaseResource
         return [
             'index' => Pages\ListMessages::route('/'),
             'create' => Pages\CreateMessage::route('/create'),
+        ];
+    }
+
+    public static function messageSchema(): array
+    {
+        return [
+            Forms\Components\RichEditor::make('message')
+                ->helperText('Enter the message you would like to send.')
+                ->required()
+                ->hiddenLabel(),
+        ];
+    }
+
+    public static function channelSchema(): array
+    {
+        return [
+            Forms\Components\CheckboxList::make('channels')
+                ->required()
+                ->searchable()
+                ->hiddenLabel()
+                ->bulkToggleable()
+                ->descriptions(fn () => collect(NotificationChannel::cases())
+                    ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
+                    ->toArray())
+                ->options(fn () => collect(NotificationChannel::cases())
+                    ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
+                    ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
+                    ->toArray()),
+        ];
+    }
+
+    public static function detailsSchema(): array
+    {
+        return [
+            Forms\Components\Select::make('recipients')
+                ->helperText('Select the recipients. Leave blank to send to everyone.')
+                ->preload()
+                ->multiple()
+                ->searchable()
+                ->nullable()
+                ->options(User::query()->orderBy('name')->pluck('name', 'id')),
+        ];
+    }
+
+    public static function scheduleSchema(): array
+    {
+        return [
+            Forms\Components\DateTimePicker::make('send_at')
+                ->timezone(UserSettingsService::get('timezone', function () {
+                    /** @var OrganizationSettings $settings */
+                    $settings = app(OrganizationSettings::class);
+
+                    return $settings->timezone ?? config('app.timezone');
+                }))
+                ->minDate(fn ($component) => now()
+                    ->subDay()
+                    ->shiftTimezone($component->getTimezone())
+                    ->setTimezone(config('app.timezone')))
+                ->columnSpanFull()
+                ->helperText('Set a time to send the message in the future. Leave blank to send now.')
+                ->hidden(fn (Forms\Get $get): mixed => $get('repeats')),
+            Forms\Components\Toggle::make('repeats')
+                ->live()
+                ->helperText('Enable to send the message on a recurring schedule.'),
+            Schedule::make(shiftScheduleTimezone: true)
+                ->visible(fn (Forms\Get $get): mixed => $get('repeats')),
         ];
     }
 }

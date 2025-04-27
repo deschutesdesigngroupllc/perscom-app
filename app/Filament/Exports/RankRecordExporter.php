@@ -8,6 +8,7 @@ use App\Models\RankRecord;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
+use Illuminate\Support\Str;
 
 class RankRecordExporter extends Exporter
 {
@@ -23,7 +24,8 @@ class RankRecordExporter extends Exporter
             ExportColumn::make('document.name'),
             ExportColumn::make('author.name'),
             ExportColumn::make('text'),
-            ExportColumn::make('type'),
+            ExportColumn::make('type')
+                ->formatStateUsing(fn ($state) => Str::lower($state?->name ?? '')),
             ExportColumn::make('created_at'),
             ExportColumn::make('updated_at'),
         ];

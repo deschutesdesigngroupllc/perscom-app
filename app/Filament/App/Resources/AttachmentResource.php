@@ -183,6 +183,7 @@ class AttachmentResource extends BaseResource
             ->recordTitleAttribute('name')
             ->description('The attachments that belong to this resource.')
             ->emptyStateDescription('Create an attachment to get started.')
+            ->description('The attachments associated with this resource.')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->sortable(),

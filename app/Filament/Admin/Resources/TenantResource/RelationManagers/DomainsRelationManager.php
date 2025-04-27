@@ -39,6 +39,8 @@ class DomainsRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return $table
+            ->description('The domains associated with the tenant.')
+            ->emptyStateDescription('The tenant has no domains.')
             ->recordTitleAttribute('domain')
             ->columns([
                 Tables\Columns\TextColumn::make('domain')

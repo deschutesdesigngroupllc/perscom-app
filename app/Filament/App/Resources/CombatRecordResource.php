@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\CombatRecordResource\Pages;
 use App\Filament\App\Resources\CombatRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\CombatRecordResource\RelationManagers\CommentsRelationManager;
@@ -25,7 +24,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class CombatRecordResource extends BaseResource
 {
@@ -91,7 +89,7 @@ class CombatRecordResource extends BaseResource
 
                                 return [
                                     ModelNotification::make(
-                                        alert: new HtmlString("<div class='font-bold'>The recipients will already receive a notification about the new record.</div>"),
+                                        alert: new HtmlString("<div class='font-bold max-w-2xl'>The recipients will already receive a notification about the new record. Default notification configuration can be set in your system settings.</div>"),
                                         defaults: data_get($settings->toArray(), 'combat_records'),
                                     ),
                                 ];
@@ -141,6 +139,7 @@ class CombatRecordResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('Create a new combat record to get started.')
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->sortable()
@@ -192,10 +191,10 @@ class CombatRecordResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(CombatRecordExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(CombatRecordExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

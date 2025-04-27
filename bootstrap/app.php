@@ -163,7 +163,7 @@ return Application::configure(basePath: dirname(__DIR__))
                             $status === Response::HTTP_UNAUTHORIZED => 'You are not authenticated. Please provide a valid API key that contains your PERSCOM ID to continue.',
                             $status === Response::HTTP_PAYMENT_REQUIRED => 'A valid subscription is required to complete this request.',
                             $status === Response::HTTP_FORBIDDEN => 'The API key provided does not have the correct permissions and/or scopes to perform the requested action.',
-                            $status === Response::HTTP_NOT_FOUND => 'The requested resource could not be found.',
+                            $status === Response::HTTP_NOT_FOUND => 'The requested resource or endpoint could not be found.',
                             $status === Response::HTTP_INTERNAL_SERVER_ERROR => 'There was a server error with your last request. Please try again.',
                             $status === Response::HTTP_TOO_MANY_REQUESTS => 'You have exceeded the API rate limit. Please wait a minute before trying again.',
                             $status === Response::HTTP_SERVICE_UNAVAILABLE => 'The API is currently down for maintenance. Please check back later.',

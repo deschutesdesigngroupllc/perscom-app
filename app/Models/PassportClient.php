@@ -60,6 +60,18 @@ class PassportClient extends BaseClientModel
 {
     use HasImages;
 
+    /**
+     * The system OAuth client that is used to issue API keys. This should
+     * never be edited or deleted.
+     */
+    public const string SYSTEM_PERSONAL_ACCESS_CLIENT = 'Default Personal Access Client';
+
+    /**
+     * The system OAuth client that is used to issue password grant API keys. This
+     * should never be edited or deleted.
+     */
+    public const string SYSTEM_PASSWORD_GRANT_CLIENT = 'Default Password Grant Client';
+
     protected $attributes = [
         'personal_access_client' => false,
         'password_client' => false,

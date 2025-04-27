@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\AnnouncementResource\Pages;
 use App\Filament\Exports\AnnouncementExporter;
 use App\Forms\Components\ModelNotification;
@@ -20,7 +19,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class AnnouncementResource extends BaseResource
 {
@@ -130,10 +128,10 @@ class AnnouncementResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(AnnouncementExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(AnnouncementExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

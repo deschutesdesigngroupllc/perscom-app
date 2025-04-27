@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\PassportClientResource\Pages;
 
-use App\Filament\App\Clusters\Logs\Resources\ApiLogResource;
+use App\Filament\App\Resources\ApiLogResource;
 use App\Filament\App\Resources\PassportClientResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;

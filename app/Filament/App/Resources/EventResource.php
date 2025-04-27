@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Features\ExportDataFeature;
 use App\Filament\App\Resources\EventResource\Pages;
 use App\Filament\App\Resources\EventResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
 use App\Filament\Exports\EventExporter;
 use App\Forms\Components\Schedule;
+use App\Models\Enums\EventRegistrationStatus;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationInterval;
 use App\Models\Event;
@@ -30,7 +30,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Laravel\Pennant\Feature;
 
 class EventResource extends BaseResource
 {
@@ -332,7 +331,7 @@ class EventResource extends BaseResource
                                     ->url(fn (?Event $record) => $record->url),
                             ]),
                         Tabs\Tab::make('Registration')
-                            ->badge(fn (?Event $record) => $record->registration_enabled ? $record->registrations()->count() : null)
+                            ->badge(fn (?Event $record) => $record->registration_enabled ? $record->registrations()->whereStatus(EventRegistrationStatus::Going)->count() : null)
                             ->badgeColor('info')
                             ->icon('heroicon-o-user-plus')
                             ->visible(fn (?Event $record) => $record->registration_enabled)
@@ -401,10 +400,10 @@ class EventResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(EventExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->visible(Feature::active(ExportDataFeature::class))
-                        ->exporter(EventExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

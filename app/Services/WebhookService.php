@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use App\Models\Webhook;
+use App\Models\WebhookLog;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Bus\PendingDispatch;
 use Illuminate\Support\Facades\Auth;
@@ -31,14 +32,20 @@ class WebhookService
             data_set($payload, 'changes', $model->getChanges());
         }
 
-        activity('webhook')
-            ->withProperties($payload)
+        /** @var WebhookLog $log */
+        $log = activity('webhook')
+            ->withProperties([
+                'payload' => $payload,
+            ])
             ->when($model instanceof Model, fn (ActivityLogger $activity): ActivityLogger => $activity->causedBy($model))
             ->when(is_array($model), fn (ActivityLogger $activity): ActivityLogger => $activity->causedBy(Auth::user()))
             ->performedOn($webhook)
             ->log($webhook->url);
 
         return WebhookCall::create()
+            ->meta([
+                'model_id' => $log->getKey(),
+            ])
             ->url($webhook->url)
             ->useHttpVerb($webhook->method->value)
             ->useSecret($webhook->secret)
