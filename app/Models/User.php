@@ -89,6 +89,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read int|null $attachments_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AwardRecord> $award_records
  * @property-read int|null $award_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Award> $awards
+ * @property-read int|null $awards_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportClient> $clients
  * @property-read int|null $clients_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, CombatRecord> $combat_records
@@ -102,6 +104,10 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedPresetView> $managedPresetViews
+ * @property-read int|null $managed_preset_views_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\UserView> $managedUserViews
+ * @property-read int|null $managed_user_views_count
  * @property-read ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications
  * @property-read int|null $model_notifications_count
@@ -116,6 +122,8 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $profile_photo_url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, QualificationRecord> $qualification_records
  * @property-read int|null $qualification_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Qualification> $qualifications
+ * @property-read int|null $qualifications_count
  * @property-read Rank|null $rank
  * @property-read \Illuminate\Database\Eloquent\Collection<int, RankRecord> $rank_records
  * @property-read int|null $rank_records_count
@@ -141,9 +149,13 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read CarbonInterval $time_in_service
  * @property-read \Illuminate\Database\Eloquent\Collection<int, PassportToken> $tokens
  * @property-read int|null $tokens_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, TrainingRecord> $training_records
+ * @property-read int|null $training_records_count
  * @property-read Unit|null $unit
  * @property-read UnitSlot|null $unit_slot
  * @property-read string|null $url
+ * @property-read \Illuminate\Database\Eloquent\Collection|Credential[] $credentials
+ * @property-read int|null $credentials_count
  *
  * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
  * @method static Builder<static>|User newModelQuery()

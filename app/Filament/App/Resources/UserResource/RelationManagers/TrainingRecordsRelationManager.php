@@ -28,6 +28,8 @@ class TrainingRecordsRelationManager extends RelationManager
                     ->sortable(),
                 Tables\Columns\TextColumn::make('credentials.name')
                     ->listWithLineBreaks(),
+                Tables\Columns\TextColumn::make('competencies.name')
+                    ->listWithLineBreaks(),
                 Tables\Columns\TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()

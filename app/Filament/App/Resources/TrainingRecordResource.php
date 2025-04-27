@@ -58,15 +58,7 @@ class TrainingRecordResource extends BaseResource
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
                                     ->createOptionForm(fn ($form): Form => UserResource::form($form)),
-                                Forms\Components\Select::make('credentials.name')
-                                    ->required()
-                                    ->helperText('The credentials that were earned.')
-                                    ->preload()
-                                    ->relationship(name: 'credentials', titleAttribute: 'name')
-                                    ->searchable()
-                                    ->createOptionForm(fn ($form): Form => CredentialResource::form($form)),
                                 Forms\Components\Select::make('instructor_id')
-                                    ->columnSpanFull()
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The instructor of the training.')
@@ -74,6 +66,15 @@ class TrainingRecordResource extends BaseResource
                                     ->relationship(name: 'instructor', titleAttribute: 'name')
                                     ->searchable()
                                     ->createOptionForm(fn ($form): Form => UserResource::form($form)),
+                                Forms\Components\Select::make('credentials.name')
+                                    ->columnSpanFull()
+                                    ->required()
+                                    ->helperText('The credentials that were earned.')
+                                    ->preload()
+                                    ->relationship(name: 'credentials', titleAttribute: 'name')
+                                    ->multiple()
+                                    ->searchable()
+                                    ->createOptionForm(fn ($form): Form => CredentialResource::form($form)),
                                 Forms\Components\RichEditor::make('text')
                                     ->helperText('Information about the record.')
                                     ->maxLength(65535)

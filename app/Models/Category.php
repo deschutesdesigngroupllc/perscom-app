@@ -22,6 +22,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Award> $awards
  * @property-read int|null $awards_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Competency> $competencies
+ * @property-read int|null $competencies_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Document> $documents
  * @property-read int|null $documents_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms

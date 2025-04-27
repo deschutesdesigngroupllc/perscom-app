@@ -31,6 +31,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $activities_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, AwardRecord> $award_records
  * @property-read int|null $award_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, Award> $awards
+ * @property-read int|null $awards_count
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
  * @property-read int|null $categories_count
  * @property-read Image|null $image
