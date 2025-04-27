@@ -26,8 +26,11 @@ return [
                  * Directories used by the backup process will automatically be excluded.
                  */
                 'exclude' => [
+                    base_path('.github'),
+                    base_path('public'),
                     base_path('vendor'),
                     base_path('node_modules'),
+                    base_path('tests'),
                 ],
 
                 /*
