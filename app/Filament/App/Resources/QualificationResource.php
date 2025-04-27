@@ -94,9 +94,10 @@ class QualificationResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(QualificationExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->exporter(QualificationExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])

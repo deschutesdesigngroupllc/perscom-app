@@ -96,9 +96,10 @@ class DocumentResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(DocumentExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->exporter(DocumentExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

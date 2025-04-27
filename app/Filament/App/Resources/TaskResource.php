@@ -88,9 +88,10 @@ class TaskResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(TaskExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->exporter(TaskExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

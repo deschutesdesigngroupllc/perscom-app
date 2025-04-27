@@ -128,9 +128,10 @@ class AnnouncementResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(AnnouncementExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->exporter(AnnouncementExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

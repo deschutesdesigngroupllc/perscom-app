@@ -69,9 +69,10 @@ class CalendarResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(CalendarExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->exporter(CalendarExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);

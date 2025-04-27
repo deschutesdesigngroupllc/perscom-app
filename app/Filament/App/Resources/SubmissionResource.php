@@ -115,9 +115,10 @@ class SubmissionResource extends BaseResource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
+                Tables\Actions\ExportBulkAction::make()
+                    ->exporter(SubmissionExporter::class)
+                    ->icon('heroicon-o-document-arrow-down'),
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\ExportAction::make()
-                        ->exporter(SubmissionExporter::class),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ]);
