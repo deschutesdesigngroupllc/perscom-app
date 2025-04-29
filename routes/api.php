@@ -73,6 +73,7 @@ use App\Http\Controllers\Api\Users\UsersStatusController;
 use App\Http\Controllers\Api\Users\UsersStatusRecordsController;
 use App\Http\Controllers\Api\Users\UsersTasksController;
 use App\Http\Controllers\Api\Users\UsersUnitController;
+use App\Http\Controllers\Api\Widgets\WidgetAwardsController;
 use App\Http\Middleware\ApiHeaders;
 use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\InitializeTenancyByRequestData;
@@ -221,6 +222,8 @@ Route::group([
     Orion::morphToManyResource('users', 'fields', UsersFieldsController::class);
     Orion::morphToManyResource('users', 'status-records', UsersStatusRecordsController::class);
     Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
+
+    Orion::resource('widgets/awards', WidgetAwardsController::class)->only('index');
 });
 
 Route::fallback(static function (): void {

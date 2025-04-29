@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Laravel\Passport\Passport;
 use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Token\Parser;
 use Lcobucci\JWT\Token\Plain;
 use Stancl\Tenancy\Middleware\InitializeTenancyByRequestData as BaseInitializeTenancyByRequestData;
@@ -35,23 +37,21 @@ class InitializeTenancyByRequestData extends BaseInitializeTenancyByRequestData
             $tenant = $request->get(static::$queryParameter);
         } elseif (static::$header && $request->hasHeader(static::$header)) {
             $tenant = $request->header(static::$header);
-        } elseif ($request->bearerToken()) {
-            $tenant = $this->getTenantFromToken($request);
+        } elseif ($jwt = $request->bearerToken()) {
+            $tenant = $this->getTenantFromToken($jwt);
+        } elseif ($request->hasCookie('perscom_api_key')) {
+            $tenant = $this->getTenantFromToken($request->cookie(Passport::$cookie));
         }
 
         return $tenant;
     }
 
-    protected function getTenantFromToken(Request $request): ?string
+    protected function getTenantFromToken(string $jwt): ?string
     {
-        if (! $request->bearerToken()) {
-            return null;
-        }
-
         $parser = new Parser(new JoseEncoder);
 
         /** @var Plain|null $token */
-        $token = rescue(fn (): \Lcobucci\JWT\Token => $parser->parse($request->bearerToken()), report: false);
+        $token = rescue(fn (): Token => $parser->parse($jwt), report: false);
 
         if (is_null($token)) {
             return null;

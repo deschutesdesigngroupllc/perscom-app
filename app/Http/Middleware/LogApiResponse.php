@@ -10,12 +10,17 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class LogApiResponse
 {
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
+
+        if ($response instanceof StreamedResponse) {
+            return $response;
+        }
 
         $logId = $request->attributes->get('activity_id');
 
