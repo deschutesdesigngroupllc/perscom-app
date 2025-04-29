@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Livewire\Widgets;
 
-use App\Models\Award;
+use App\Models\Specialty;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Support\Enums\FontWeight;
@@ -16,21 +16,21 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class Awards extends Component implements HasForms, HasTable
+class Specialties extends Component implements HasForms, HasTable
 {
     use InteractsWithForms;
     use InteractsWithTable;
 
     public function render(): View
     {
-        return view('livewire.widgets.awards');
+        return view('livewire.widgets.specialties');
     }
 
     public function table(Table $table): Table
     {
         return $table
-            ->query(Award::query())
-            ->heading('Awards')
+            ->query(Specialty::query())
+            ->heading('Specialties')
             ->paginated(false)
             ->columns([
                 Stack::make([

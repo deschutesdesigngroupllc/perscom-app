@@ -74,6 +74,10 @@ use App\Http\Controllers\Api\Users\UsersStatusRecordsController;
 use App\Http\Controllers\Api\Users\UsersTasksController;
 use App\Http\Controllers\Api\Users\UsersUnitController;
 use App\Http\Controllers\Api\Widgets\WidgetAwardsController;
+use App\Http\Controllers\Api\Widgets\WidgetPositionsController;
+use App\Http\Controllers\Api\Widgets\WidgetQualificationsController;
+use App\Http\Controllers\Api\Widgets\WidgetRanksController;
+use App\Http\Controllers\Api\Widgets\WidgetSpecialtiesController;
 use App\Http\Middleware\ApiHeaders;
 use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\InitializeTenancyByRequestData;
@@ -224,6 +228,10 @@ Route::group([
     Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
 
     Orion::resource('widgets/awards', WidgetAwardsController::class)->only('index');
+    Orion::resource('widgets/positions', WidgetPositionsController::class)->only('index');
+    Orion::resource('widgets/qualifications', WidgetQualificationsController::class)->only('index');
+    Orion::resource('widgets/ranks', WidgetRanksController::class)->only('index');
+    Orion::resource('widgets/specialties', WidgetSpecialtiesController::class)->only('index');
 });
 
 Route::fallback(static function (): void {

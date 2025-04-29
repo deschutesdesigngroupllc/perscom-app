@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8" />
+  <meta name="csrf-token" content="{{ csrf_token() }}">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <meta name="description"
     content="Mission-critical tools built specifically to meet the unique needs of police, fire, EMS, military, and public safety agencies. Optimize your agency's communications, streamline data management, and improve overall efficiency with PERSCOM.io." />
@@ -14,15 +15,31 @@
 
   <title>PERSCOM Personnel Management System</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@iframe-resizer/child@5.3.2" type="text/javascript" async></script>
+  @php
+    $apiKey = request()->input('apikey') ?? request()->bearerToken()
+  @endphp
+
+  <script>
+    document.addEventListener('livewire:init', () => {
+      Livewire.hook('request', ({ options}) => {
+        @if(filled($apiKey))
+          options.headers = {
+            'Authorization': 'Bearer {{$apiKey}}'
+          }
+        @endif
+      })
+    })
+  </script>
 
   @googlefonts
   @vite(['resources/js/widgets/app.js', 'resources/css/widgets/app.css'])
   @filamentStyles
 </head>
 
-<body class="font-sans bg-gray-100">
-  {{ $slot }}
+<body class="font-sans bg-transparent">
+  <div class="m-4">
+    {{ $slot }}
+  </div>
   @filamentScripts
 </body>
 

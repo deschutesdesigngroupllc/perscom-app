@@ -8,6 +8,7 @@
     "format:test": "prettier './resources/**/*.{blade.php,js,jsx}' './*.{js,json}' --check --config ./.prettierrc"
   },
   "devDependencies": {
+    "@iframe-resizer/child": "5.3.2",
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
     "@fortawesome/free-solid-svg-icons": "^6.7.2",

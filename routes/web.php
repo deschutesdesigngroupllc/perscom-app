@@ -59,8 +59,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin', 'as' => 'admin.
 });
 
 // TODO: Remove
-Route::get('testawards', function () {
-    \Illuminate\Support\Facades\Auth::login(\App\Models\User::first());
+Route::get('test/{widget}', function ($widget) {
+    Illuminate\Support\Facades\Auth::login(App\Models\User::first());
 
-    return view('widgets.awards');
-})->middleware(\App\Http\Middleware\InitializeTenancyByRequestData::class);
+    return view("widgets.$widget");
+})->middleware(App\Http\Middleware\InitializeTenancyByRequestData::class);
