@@ -17,10 +17,11 @@
   <script src="https://cdn.jsdelivr.net/npm/@iframe-resizer/child@5.3.2" type="text/javascript" async></script>
 
   @googlefonts
+  @vite(['resources/js/widgets/app.js', 'resources/css/widgets/app.css'])
   @filamentStyles
 </head>
 
-<body>
+<body class="font-sans bg-gray-100">
   {{ $slot }}
   @filamentScripts
 </body>

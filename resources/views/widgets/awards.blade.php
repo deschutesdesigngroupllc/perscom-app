@@ -1,3 +1,5 @@
 <x-widgets.layout>
-  @livewire('widgets.awards')
+  <div class="p-4">
+    @livewire('widgets.awards')
+  </div>
 </x-widgets.layout>
