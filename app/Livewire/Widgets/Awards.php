@@ -33,7 +33,7 @@ class Awards extends Component implements HasForms, HasTable
         return $table
             ->query(Award::query())
             ->heading('Awards')
-            ->paginated(false)
+            ->paginated()
             ->columns([
                 Split::make([
                     ImageColumn::make('image.image_url')

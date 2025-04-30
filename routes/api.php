@@ -81,6 +81,7 @@ use App\Http\Middleware\LogApiRequest;
 use App\Http\Middleware\LogApiResponse;
 use App\Http\Middleware\SentryContext;
 use Illuminate\Support\Facades\Route;
+use Livewire\Mechanisms\HandleRequests\HandleRequests;
 use Orion\Facades\Orion;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -223,7 +224,15 @@ Route::group([
         Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
     });
 
-    Route::get('widgets/{widget}', WidgetController::class)->name('widget');
+    Route::group(['prefix' => 'widgets'], function () {
+        Route::post('livewire/update', [HandleRequests::class, 'handleUpdate'])
+            ->middleware([InitializeTenancyByRequestData::class, 'auth_api'])
+            ->name('livewire');
+
+        Route::get('{widget}', WidgetController::class)
+            ->middleware('web')
+            ->name('widget');
+    });
 });
 
 Route::fallback(static function (): void {

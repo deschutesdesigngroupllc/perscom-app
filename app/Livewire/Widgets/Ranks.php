@@ -33,7 +33,7 @@ class Ranks extends Component implements HasForms, HasTable
         return $table
             ->query(Rank::query())
             ->heading('Ranks')
-            ->paginated(false)
+            ->paginated()
             ->columns([
                 Split::make([
                     ImageColumn::make('image.image_url')

@@ -33,7 +33,7 @@ class Qualifications extends Component implements HasForms, HasTable
         return $table
             ->query(Qualification::query())
             ->heading('Qualifications')
-            ->paginated(false)
+            ->paginated()
             ->columns([
                 Split::make([
                     ImageColumn::make('image.image_url')

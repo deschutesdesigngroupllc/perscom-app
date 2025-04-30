@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full scroll-smooth bg-gray-50 antialiased">
+<html lang="en" class="h-full scroll-smooth antialiased">
 
 <head>
   <meta charset="utf-8" />
@@ -16,15 +16,22 @@
   <title>PERSCOM Personnel Management System</title>
 
   @php
-    $apiKey = request()->input('apikey') ?? request()->bearerToken()
+    $apiKey = request()->input('apikey') ?? request()->bearerToken();
   @endphp
 
   <script>
     document.addEventListener('livewire:init', () => {
-      Livewire.hook('request', ({ options}) => {
-        @if(filled($apiKey))
+      Livewire.hook('request', ({
+        url,
+        options,
+        payload
+      }) => {
+        @if (filled($apiKey))
           options.headers = {
-            'Authorization': 'Bearer {{$apiKey}}'
+            ...options.headers || {},
+            ...{
+              'Authorization': 'Bearer {{ $apiKey }}',
+            }
           }
         @endif
       })
@@ -32,15 +39,17 @@
   </script>
 
   @googlefonts
-  @vite(['resources/js/widgets/app.js', 'resources/css/widgets/app.css'])
+  @vite(['resources/css/widgets/app.css'])
   @filamentStyles
 </head>
 
-<body class="font-sans bg-transparent">
-  <div class="m-4">
+<body class="font-sans">
+  <div style="margin: 1px">
     {{ $slot }}
   </div>
   @filamentScripts
+  @livewireScriptConfig
+  @vite(['resources/js/widgets/app.js'])
 </body>
 
 </html>

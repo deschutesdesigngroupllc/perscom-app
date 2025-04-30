@@ -31,7 +31,7 @@ class Specialties extends Component implements HasForms, HasTable
         return $table
             ->query(Specialty::query())
             ->heading('Specialties')
-            ->paginated(false)
+            ->paginated()
             ->columns([
                 Stack::make([
                     TextColumn::make('name')
