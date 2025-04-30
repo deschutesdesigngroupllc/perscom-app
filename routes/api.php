@@ -229,8 +229,7 @@ Route::group([
             ->middleware([InitializeTenancyByRequestData::class, 'auth_api'])
             ->name('livewire');
 
-        Route::get('{widget}', WidgetController::class)
-            ->middleware('web')
+        Route::get('{widget}/{resource?}', WidgetController::class)
             ->name('widget');
     });
 });

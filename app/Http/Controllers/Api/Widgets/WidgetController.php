@@ -10,8 +10,10 @@ use Illuminate\Http\Response;
 
 class WidgetController extends Controller
 {
-    public function __invoke(Request $request, string $apiVersion, string $widget): Response
+    public function __invoke(Request $request, string $apiVersion, string $widget, ?string $resourceId = null): Response
     {
-        return response()->view("widgets.$widget");
+        return response()->view("widgets.$widget", [
+            'resourceId' => $resourceId,
+        ]);
     }
 }

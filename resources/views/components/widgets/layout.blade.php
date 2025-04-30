@@ -22,9 +22,7 @@
   <script>
     document.addEventListener('livewire:init', () => {
       Livewire.hook('request', ({
-        url,
         options,
-        payload
       }) => {
         @if (filled($apiKey))
           options.headers = {
@@ -35,10 +33,20 @@
           }
         @endif
       })
+
+      Livewire.on('iframe:navigate', function(event) {
+        if (event.path) {
+          window.parent.postMessage({
+            type: 'widget:navigate',
+            path: event.path
+          }, '*')
+        }
+      })
     })
   </script>
 
   @googlefonts
+  @livewireStyles
   @vite(['resources/css/widgets/app.css'])
   @filamentStyles
 </head>
