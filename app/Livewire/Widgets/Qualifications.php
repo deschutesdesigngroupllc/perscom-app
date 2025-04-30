@@ -8,6 +8,8 @@ use App\Models\Qualification;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Support\Enums\FontWeight;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\Layout\Split;
 use Filament\Tables\Columns\Layout\Stack;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
@@ -33,11 +35,18 @@ class Qualifications extends Component implements HasForms, HasTable
             ->heading('Qualifications')
             ->paginated(false)
             ->columns([
-                Stack::make([
-                    TextColumn::make('name')
-                        ->weight(FontWeight::Bold),
-                    TextColumn::make('description'),
-                ]),
+                Split::make([
+                    ImageColumn::make('image.image_url')
+                        ->visible(fn (?Qualification $record) => filled($record?->image))
+                        ->grow(false)
+                        ->disk('s3'),
+                    Stack::make([
+                        TextColumn::make('name')
+                            ->weight(FontWeight::Bold),
+                        TextColumn::make('description')
+                            ->html(),
+                    ]),
+                ])->from('sm'),
             ]);
     }
 }

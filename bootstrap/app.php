@@ -178,6 +178,10 @@ return Application::configure(basePath: dirname(__DIR__))
                 if (config('app.debug', false)) {
                     $response['error']['file'] = $e->getFile();
                     $response['error']['line'] = $e->getLine();
+                    $response['error']['route'] = [
+                        'name' => Route::currentRouteName(),
+                        'action' => Route::currentRouteAction(),
+                    ];
                 }
 
                 return response()->json($response, $status);

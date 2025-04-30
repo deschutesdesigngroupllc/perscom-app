@@ -36,7 +36,8 @@ class Specialties extends Component implements HasForms, HasTable
                 Stack::make([
                     TextColumn::make('name')
                         ->weight(FontWeight::Bold),
-                    TextColumn::make('description'),
+                    TextColumn::make('description')
+                        ->html(),
                 ]),
             ]);
     }
