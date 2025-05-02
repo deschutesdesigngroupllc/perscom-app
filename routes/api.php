@@ -79,6 +79,7 @@ use App\Http\Middleware\CheckApiVersion;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequest;
 use App\Http\Middleware\LogApiResponse;
+use App\Http\Middleware\MoveApiKeyQueryParameterToHeader;
 use App\Http\Middleware\SentryContext;
 use Illuminate\Support\Facades\Route;
 use Livewire\Mechanisms\HandleRequests\HandleRequests;
@@ -96,19 +97,17 @@ Route::get('spec.json', [SpecController::class, 'index'])
 
 Route::group([
     'middleware' => [
+        'auth_api',
         InitializeTenancyByRequestData::class,
         PreventAccessFromCentralDomains::class,
         CheckApiVersion::class,
-        ApiHeaders::class,
-        LogApiRequest::class,
-        LogApiResponse::class,
         SentryContext::class,
         'subscribed',
         'approved',
     ],
     'prefix' => '{version}',
 ], static function (): void {
-    Route::group(['middleware' => ['auth_api', CacheResponse::class]], function () {
+    Route::group(['middleware' => [CacheResponse::class, LogApiRequest::class, LogApiResponse::class, ApiHeaders::class]], function () {
         Orion::resource('me', MeController::class)
             ->only('index');
 
@@ -224,12 +223,12 @@ Route::group([
         Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
     });
 
-    Route::group(['prefix' => 'widgets'], function () {
+    Route::group(['as' => 'widgets.', 'prefix' => 'widgets'], function () {
         Route::post('livewire/update', [HandleRequests::class, 'handleUpdate'])
-            ->middleware([InitializeTenancyByRequestData::class, 'auth_api'])
             ->name('livewire');
 
         Route::get('{widget}/{resource?}', WidgetController::class)
+            ->middleware(MoveApiKeyQueryParameterToHeader::class)
             ->name('widget');
     });
 });
