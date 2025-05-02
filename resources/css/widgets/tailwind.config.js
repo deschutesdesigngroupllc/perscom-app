@@ -5,6 +5,7 @@ export default {
   darkMode: 'class',
   content: [
     './app/Livewire/Widgets/**/*.php',
+    './resources/views/components/**/*.blade.php',
     './resources/views/widgets/**/*.blade.php',
     './resources/views/components/widgets/**/*.blade.php',
     './resources/views/livewire/widgets/**/*.blade.php',
