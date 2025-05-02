@@ -18,6 +18,7 @@ use Filament\Resources\Pages\Concerns\InteractsWithRecord;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\HtmlString;
 use Livewire\Component;
+use Livewire\Features\SupportEvents\Event;
 
 /**
  * @property Form $form;
@@ -53,11 +54,22 @@ class Create extends Component implements HasForms
                 Section::make($formModel->name)
                     ->description($formModel->description)
                     ->schema(array_merge([
-                        Placeholder::make('Instructions')
+                        Placeholder::make('instructions')
                             ->hiddenLabel()
                             ->content(new HtmlString($formModel->instructions)),
+                        Placeholder::make('success')
+                            ->hiddenLabel()
+                            ->visible(fn ($state) => filled($state))
+                            ->content(fn ($state) => new HtmlString(<<<HTML
+<div class="text-green-600 font-bold">$state</div>
+HTML
+                            )),
                     ], Submit::getFormSchemaFromFields($this->record), [
                         Actions::make([
+                            Actions\Action::make('back')
+                                ->button()
+                                ->color('gray')
+                                ->action(fn (): Event => $this->dispatch('iframe:navigate', path: 'forms')),
                             Actions\Action::make('submit')
                                 ->action('submitForm'),
                         ])->alignCenter(),
@@ -69,6 +81,12 @@ class Create extends Component implements HasForms
     {
         $data = $this->form->getState();
 
-        dd($data);
+        /** @var FormModel $form */
+        $form = $this->record;
+        $form->submissions()->create(data_get($data, 'data'));
+
+        $this->form->fill([
+            'success' => $form->success_message ?? null,
+        ]);
     }
 }
