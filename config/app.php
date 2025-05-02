@@ -61,6 +61,7 @@ return [
     'asset_url' => env('ASSET_URL', null),
     'scheme' => env('APP_SCHEME', 'http'),
     'mix_url' => env('ASSET_URL', null),
+    'widget_url' => env('WIDGET_URL', null),
 
     /*
     |--------------------------------------------------------------------------

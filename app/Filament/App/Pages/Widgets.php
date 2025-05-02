@@ -9,7 +9,6 @@ use App\Forms\Components\TorchlightCode;
 use App\Forms\Components\WidgetCodeGenerator;
 use App\Models\User;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
-use DateTimeZone;
 use Filament\Actions\Action;
 use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\Checkbox;
@@ -18,6 +17,7 @@ use Filament\Forms\Get;
 use Filament\Forms\Set;
 use Filament\Pages\Page;
 use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Url;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
 
 class Widgets extends Page
@@ -26,15 +26,29 @@ class Widgets extends Page
 
     public ?string $apiKey = null;
 
+    #[Url]
+    public string $widget = 'roster';
+
     protected static ?string $navigationIcon = 'heroicon-o-code-bracket';
 
     protected static ?string $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
     protected static string $view = 'filament.app.pages.widgets';
 
     protected ?string $subheading = 'Widgets offer a visual representation of your personnel data that can be embedded into any external website. Use the widget explorer below to interact with the widgets in real-time.';
+
+    protected static array $widgets = [
+        'awards' => 'Awards',
+        'calendar' => 'Calendar',
+        'forms' => 'Forms',
+        'positions' => 'Positions',
+        'qualifications' => 'Qualifications',
+        'ranks' => 'Ranks',
+        'roster' => 'Roster',
+        'specialties' => 'Specialties',
+    ];
 
     public function mount(): void
     {
@@ -52,6 +66,27 @@ class Widgets extends Page
     protected function getHeaderActions(): array
     {
         return [
+            Action::make('switch')
+                ->label('Choose Widget')
+                ->color('gray')
+                ->modalDescription('Choose the widget you would like to preview.')
+                ->modalSubmitActionLabel('Preview Widget')
+                ->modalCancelAction(false)
+                ->modalCloseButton(false)
+                ->closeModalByEscaping(false)
+                ->closeModalByClickingAway(false)
+                ->form([
+                    Select::make('widget')
+                        ->required()
+                        ->default($this->widget)
+                        ->options(static::$widgets),
+                ])
+                ->action(function (array $data) {
+                    $this->widget = data_get($data, 'widget');
+                    $this->redirect(Widgets::getUrl([
+                        'widget' => $this->widget,
+                    ]));
+                }),
             Action::make('code')
                 ->label('Get Widget Code')
                 ->slideOver()
@@ -66,15 +101,7 @@ class Widgets extends Page
                         ->preload()
                         ->live()
                         ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
-                        ->options([
-                            'roster' => 'Roster',
-                            'awards' => 'Awards',
-                            'calendar' => 'Calendar',
-                            'forms' => 'Forms',
-                            'newsfeed' => 'Newsfeed',
-                            'qualifications' => 'Qualifications',
-                            'ranks' => 'Ranks',
-                        ]),
+                        ->options(static::$widgets),
                     Select::make('api_key')
                         ->label('API Key')
                         ->helperText('The API key to use.')
@@ -88,14 +115,6 @@ class Widgets extends Page
                             ->url(PassportTokenResource::getUrl('create'))
                         )
                         ->options(fn () => PassportTokenResource::getEloquentQuery()->pluck('name', 'token')),
-                    Select::make('timezone')
-                        ->preload()
-                        ->searchable()
-                        ->live()
-                        ->default('UTC')
-                        ->helperText('The timezone to use. By default all times are stored in UTC. Select a timezone to convert dates and times to your desired timezone.')
-                        ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
-                        ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($value, $key) => [$value => $value])),
                     Checkbox::make('dark_mode')
                         ->helperText('Check to enable dark mode.')
                         ->label('Dark Mode')
@@ -120,7 +139,6 @@ class Widgets extends Page
             widget: $get('widget'),
             apiKey: $get('api_key'),
             darkMode: $get('dark_mode') ? 'true' : 'false',
-            timezone: $get('timezone'),
         );
 
         $set('widget_code', $code);
@@ -128,7 +146,7 @@ class Widgets extends Page
         $this->dispatch('update-code', code: $code);
     }
 
-    protected function generateCodeSnippet(?string $widget = null, ?string $apiKey = null, string $darkMode = 'false', string $timezone = 'UTC'): string
+    protected function generateCodeSnippet(?string $widget = null, ?string $apiKey = null, string $darkMode = 'false'): string
     {
         return <<<HTML
 <div id="perscom_widget_wrapper">
@@ -137,7 +155,6 @@ class Widgets extends Page
         data-apikey="$apiKey"
         data-widget="$widget"
         data-dark="$darkMode"
-        data-timezone="$timezone"
         src="https://widget.perscom.io/widget.js"
         type="text/javascript"
     ></script>

@@ -1,7 +1,6 @@
 <x-filament-panels::page>
-  <div class="bg-gray-50 p-4">
-    <div id="perscom_widget_wrapper">
-      <script id="perscom_widget" data-apikey="{{ $this->apiKey }}" src="https://widget.perscom.io/widget.js" type="text/javascript"></script>
-    </div>
+  <div id="perscom_widget_wrapper">
+    <script id="perscom_widget" data-apikey="{{ $this->apiKey }}" data-widget={{ $this->widget }} src="{{ config('app.widget_url') }}"
+      type="text/javascript"></script>
   </div>
 </x-filament-panels::page>
