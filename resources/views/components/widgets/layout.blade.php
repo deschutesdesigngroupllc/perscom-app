@@ -1,5 +1,10 @@
+@php
+  $apiKey = request()->input('apikey') ?? request()->bearerToken();
+  $darkMode = request()->input('dark', false);
+@endphp
+
 <!DOCTYPE html>
-<html lang="en" class="h-full scroll-smooth antialiased">
+<html lang="en" {{ $attributes->class(['h-full scroll-smooth antialiased', 'dark' => $darkMode || $darkMode === 'true']) }}>
 
 <head>
   <meta charset="utf-8" />
@@ -14,10 +19,6 @@
   <link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
 
   <title>PERSCOM Personnel Management System</title>
-
-  @php
-    $apiKey = request()->input('apikey') ?? request()->bearerToken();
-  @endphp
 
   <script>
     document.addEventListener('livewire:init', () => {

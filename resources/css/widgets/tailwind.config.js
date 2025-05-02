@@ -2,6 +2,7 @@ import preset from '../../../vendor/filament/filament/tailwind.config.preset'
 
 export default {
   presets: [preset],
+  darkMode: 'class',
   content: [
     './app/Livewire/Widgets/**/*.php',
     './resources/views/widgets/**/*.blade.php',
