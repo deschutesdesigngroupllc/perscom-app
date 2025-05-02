@@ -1,0 +1,26 @@
+@import '/vendor/filament/filament/resources/css/index.css';
+@import '/vendor/archilex/filament-filter-sets/resources/css/plugin.css';
+@import '../calendar.css';
+
+@config 'tailwind.config.js';
+
+@layer base {
+    :root {
+        --font-family: 'Inter';
+        --sidebar-width: 20rem;
+        --collapsed-sidebar-width: 4.5rem;
+        --default-theme-mode: system;
+
+        --primary-50: 239, 246, 255;
+        --primary-100: 219, 234, 254;
+        --primary-200: 191, 219, 254;
+        --primary-300: 147, 197, 253;
+        --primary-400: 96, 165, 250;
+        --primary-500: 59, 130, 246;
+        --primary-600: 37, 99, 235;
+        --primary-700: 29, 78, 216;
+        --primary-800: 30, 64, 175;
+        --primary-900: 30, 58, 138;
+        --primary-950: 23, 37, 84;
+    }
+}

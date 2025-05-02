@@ -14,7 +14,7 @@ Route::group(['middleware' => [InitializeTenancyBySubdomain::class, PreventAcces
         Route::get('.well-known/openid-configuration', [DiscoveryController::class, 'index'])
             ->name('discovery');
 
-        Route::group(['prefix' => 'oauth', 'middleware' => ['auth', 'subscribed']], static function (): void {
+        Route::group(['prefix' => 'oauth', 'middleware' => ['auth:web,api', 'subscribed']], static function (): void {
             Route::get('logout', [LogoutController::class, 'index'])
                 ->name('logout');
         });

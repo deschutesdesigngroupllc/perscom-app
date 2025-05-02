@@ -73,13 +73,19 @@ use App\Http\Controllers\Api\Users\UsersStatusController;
 use App\Http\Controllers\Api\Users\UsersStatusRecordsController;
 use App\Http\Controllers\Api\Users\UsersTasksController;
 use App\Http\Controllers\Api\Users\UsersUnitController;
+use App\Http\Controllers\Api\Widgets\WidgetController;
 use App\Http\Middleware\ApiHeaders;
+use App\Http\Middleware\AuthenticateApi;
 use App\Http\Middleware\CheckApiVersion;
+use App\Http\Middleware\CheckSubscription;
+use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequest;
 use App\Http\Middleware\LogApiResponse;
+use App\Http\Middleware\MoveApiKeyQueryParameterToHeader;
 use App\Http\Middleware\SentryContext;
 use Illuminate\Support\Facades\Route;
+use Livewire\Mechanisms\HandleRequests\HandleRequests;
 use Orion\Facades\Orion;
 use Spatie\ResponseCache\Middlewares\CacheResponse;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
@@ -94,133 +100,140 @@ Route::get('spec.json', [SpecController::class, 'index'])
 
 Route::group([
     'middleware' => [
-        'auth_api',
-        CacheResponse::class,
+        AuthenticateApi::class,
         InitializeTenancyByRequestData::class,
         PreventAccessFromCentralDomains::class,
+        MoveApiKeyQueryParameterToHeader::class,
         CheckApiVersion::class,
-        ApiHeaders::class,
-        LogApiRequest::class,
-        LogApiResponse::class,
         SentryContext::class,
-        'subscribed',
-        'approved',
+        CheckSubscription::class,
+        CheckUserApprovalStatus::class,
     ],
     'prefix' => '{version}',
 ], static function (): void {
-    Orion::resource('me', MeController::class)
-        ->only('index');
+    Route::group(['middleware' => [CacheResponse::class, LogApiRequest::class, LogApiResponse::class, ApiHeaders::class]], function (): void {
+        Orion::resource('me', MeController::class)
+            ->only('index');
 
-    Orion::resource('announcements', AnnouncementsController::class);
+        Orion::resource('announcements', AnnouncementsController::class);
 
-    Orion::resource('assignment-records', AssignmentRecordsController::class);
+        Orion::resource('assignment-records', AssignmentRecordsController::class);
 
-    Orion::resource('attachments', AttachmentsController::class);
+        Orion::resource('attachments', AttachmentsController::class);
 
-    Orion::resource('awards', AwardsController::class);
-    Orion::hasOneResource('awards', 'image', AwardsImageController::class);
+        Orion::resource('awards', AwardsController::class);
+        Orion::hasOneResource('awards', 'image', AwardsImageController::class);
 
-    Orion::resource('award-records', AwardRecordsController::class);
+        Orion::resource('award-records', AwardRecordsController::class);
 
-    Orion::resource('calendars', CalendarsController::class);
+        Orion::resource('calendars', CalendarsController::class);
 
-    Orion::resource('categories', CategoriesController::class);
-    Orion::belongsToManyResource('categories', 'awards', CategoriesAwardsController::class);
-    Orion::belongsToManyResource('categories', 'documents', CategoriesDocumentsController::class);
-    Orion::belongsToManyResource('categories', 'forms', CategoriesFormsController::class);
-    Orion::belongsToManyResource('categories', 'qualifications', CategoriesQualificationsController::class);
-    Orion::belongsToManyResource('categories', 'ranks', CategoriesRanksController::class);
+        Orion::resource('categories', CategoriesController::class);
+        Orion::belongsToManyResource('categories', 'awards', CategoriesAwardsController::class);
+        Orion::belongsToManyResource('categories', 'documents', CategoriesDocumentsController::class);
+        Orion::belongsToManyResource('categories', 'forms', CategoriesFormsController::class);
+        Orion::belongsToManyResource('categories', 'qualifications', CategoriesQualificationsController::class);
+        Orion::belongsToManyResource('categories', 'ranks', CategoriesRanksController::class);
 
-    Route::post('cache', CacheController::class)
-        ->name('cache');
+        Route::post('cache', CacheController::class)
+            ->name('cache');
 
-    Orion::resource('combat-records', CombatRecordsController::class);
+        Orion::resource('combat-records', CombatRecordsController::class);
 
-    Orion::resource('comments', CommentsController::class);
+        Orion::resource('comments', CommentsController::class);
 
-    Orion::resource('competencies', CompetenciesController::class);
+        Orion::resource('competencies', CompetenciesController::class);
 
-    Orion::resource('credentials', CredentialsController::class);
+        Orion::resource('credentials', CredentialsController::class);
 
-    Orion::resource('documents', DocumentsController::class);
+        Orion::resource('documents', DocumentsController::class);
 
-    Orion::resource('events', EventsController::class);
-    Orion::hasManyResource('events', 'image', EventsImageController::class);
+        Orion::resource('events', EventsController::class);
+        Orion::hasManyResource('events', 'image', EventsImageController::class);
 
-    Orion::resource('forms', FormsController::class);
-    Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
-    Orion::morphToManyResource('forms', 'fields', FormsFieldsController::class);
+        Orion::resource('forms', FormsController::class);
+        Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
+        Orion::morphToManyResource('forms', 'fields', FormsFieldsController::class);
 
-    Orion::resource('groups', GroupsController::class);
-    Orion::hasOneResource('groups', 'image', GroupsImageController::class);
+        Orion::resource('groups', GroupsController::class);
+        Orion::hasOneResource('groups', 'image', GroupsImageController::class);
 
-    Orion::resource('images', ImagesController::class);
+        Orion::resource('images', ImagesController::class);
 
-    Orion::resource('issuers', IssuersController::class);
+        Orion::resource('issuers', IssuersController::class);
 
-    Orion::resource('messages', MessagesController::class)
-        ->middleware('throttle:sms');
+        Orion::resource('messages', MessagesController::class)
+            ->middleware('throttle:sms');
 
-    Orion::resource('newsfeed', NewsfeedController::class)
-        ->only(['index']);
-    Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)
-        ->only(['index', 'attach', 'detach', 'sync']);
+        Orion::resource('newsfeed', NewsfeedController::class)
+            ->only(['index']);
+        Orion::morphToManyResource('newsfeed', 'likes', NewsfeedLikesController::class)
+            ->only(['index', 'attach', 'detach', 'sync']);
 
-    Orion::resource('positions', PositionsController::class);
+        Orion::resource('positions', PositionsController::class);
 
-    Orion::resource('qualifications', QualificationsController::class);
-    Orion::hasOneResource('qualifications', 'image', QualificationsImageController::class);
+        Orion::resource('qualifications', QualificationsController::class);
+        Orion::hasOneResource('qualifications', 'image', QualificationsImageController::class);
 
-    Orion::resource('qualification-records', QualificationRecordsController::class);
+        Orion::resource('qualification-records', QualificationRecordsController::class);
 
-    Orion::resource('ranks', RanksController::class);
-    Orion::hasOneResource('ranks', 'image', RanksImageController::class);
+        Orion::resource('ranks', RanksController::class);
+        Orion::hasOneResource('ranks', 'image', RanksImageController::class);
 
-    Orion::resource('rank-records', RankRecordsController::class);
+        Orion::resource('rank-records', RankRecordsController::class);
 
-    Orion::resource('roster', RosterController::class)
-        ->only(['index', 'show']);
+        Orion::resource('roster', RosterController::class)
+            ->only(['index', 'show']);
 
-    Orion::resource('service-records', ServiceRecordsController::class);
+        Orion::resource('service-records', ServiceRecordsController::class);
 
-    Orion::resource('settings', SettingsController::class)
-        ->only('index');
+        Orion::resource('settings', SettingsController::class)
+            ->only('index');
 
-    Orion::resource('slots', SlotsController::class);
+        Orion::resource('slots', SlotsController::class);
 
-    Orion::resource('specialties', SpecialtiesController::class);
+        Orion::resource('specialties', SpecialtiesController::class);
 
-    Orion::resource('statuses', StatusesController::class);
+        Orion::resource('statuses', StatusesController::class);
 
-    Orion::resource('submissions', SubmissionsController::class);
-    Orion::morphToManyResource('submissions', 'statuses', SubmissionsStatusesController::class);
+        Orion::resource('submissions', SubmissionsController::class);
+        Orion::morphToManyResource('submissions', 'statuses', SubmissionsStatusesController::class);
 
-    Orion::resource('tasks', TasksController::class);
+        Orion::resource('tasks', TasksController::class);
 
-    Orion::resource('training-records', TrainingRecordsController::class);
-    Orion::belongsToManyResource('training-records', 'competencies', TrainingRecordsCompetenciesController::class);
-    Orion::belongsToManyResource('training-records', 'credentials', TrainingRecordsCredentialsController::class);
+        Orion::resource('training-records', TrainingRecordsController::class);
+        Orion::belongsToManyResource('training-records', 'competencies', TrainingRecordsCompetenciesController::class);
+        Orion::belongsToManyResource('training-records', 'credentials', TrainingRecordsCredentialsController::class);
 
-    Orion::resource('units', UnitsController::class);
-    Orion::hasOneResource('units', 'image', UnitsImageController::class);
+        Orion::resource('units', UnitsController::class);
+        Orion::hasOneResource('units', 'image', UnitsImageController::class);
 
-    Orion::resource('users', UsersController::class);
-    Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);
-    Orion::hasManyResource('users', 'award-records', UsersAwardRecordsController::class);
-    Orion::hasManyResource('users', 'combat-records', UsersCombatRecordsController::class);
-    Orion::hasManyResource('users', 'qualification-records', UsersQualificationRecordsController::class);
-    Orion::hasManyResource('users', 'rank-records', UsersRankRecordsController::class);
-    Orion::hasManyResource('users', 'service-records', UsersServiceRecordsController::class);
-    Orion::hasManyResource('users', 'training-records', UsersRankRecordsController::class);
-    Orion::belongsToResource('users', 'position', UsersPositionController::class);
-    Orion::belongsToResource('users', 'rank', UsersRankController::class);
-    Orion::belongsToResource('users', 'specialty', UsersSpecialtyController::class);
-    Orion::belongsToResource('users', 'unit', UsersUnitController::class);
-    Orion::belongsToResource('users', 'status', UsersStatusController::class);
-    Orion::morphToManyResource('users', 'attachments', UsersAttachmentsController::class);
-    Orion::morphToManyResource('users', 'fields', UsersFieldsController::class);
-    Orion::morphToManyResource('users', 'status-records', UsersStatusRecordsController::class);
-    Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
+        Orion::resource('users', UsersController::class);
+        Orion::hasManyResource('users', 'assignment-records', UsersAssignmentRecordsController::class);
+        Orion::hasManyResource('users', 'award-records', UsersAwardRecordsController::class);
+        Orion::hasManyResource('users', 'combat-records', UsersCombatRecordsController::class);
+        Orion::hasManyResource('users', 'qualification-records', UsersQualificationRecordsController::class);
+        Orion::hasManyResource('users', 'rank-records', UsersRankRecordsController::class);
+        Orion::hasManyResource('users', 'service-records', UsersServiceRecordsController::class);
+        Orion::hasManyResource('users', 'training-records', UsersRankRecordsController::class);
+        Orion::belongsToResource('users', 'position', UsersPositionController::class);
+        Orion::belongsToResource('users', 'rank', UsersRankController::class);
+        Orion::belongsToResource('users', 'specialty', UsersSpecialtyController::class);
+        Orion::belongsToResource('users', 'unit', UsersUnitController::class);
+        Orion::belongsToResource('users', 'status', UsersStatusController::class);
+        Orion::morphToManyResource('users', 'attachments', UsersAttachmentsController::class);
+        Orion::morphToManyResource('users', 'fields', UsersFieldsController::class);
+        Orion::morphToManyResource('users', 'status-records', UsersStatusRecordsController::class);
+        Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
+    });
+
+    Route::group(['as' => 'widgets.', 'prefix' => 'widgets'], function (): void {
+        Route::post('livewire/update', [HandleRequests::class, 'handleUpdate'])
+            ->name('livewire');
+
+        Route::get('{widget}/{resource?}', WidgetController::class)
+            ->name('widget');
+    });
 });
 
 Route::fallback(static function (): void {

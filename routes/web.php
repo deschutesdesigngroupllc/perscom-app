@@ -57,3 +57,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin', 'as' => 'admin.
     Route::get('health', HealthCheckResultsController::class)
         ->name('health');
 });
+
+// TODO: Remove
+Route::get('test/{widget}', function ($widget) {
+    Illuminate\Support\Facades\Auth::login(App\Models\User::first());
+
+    return view("widgets.$widget");
+})->middleware(App\Http\Middleware\InitializeTenancyByRequestData::class);

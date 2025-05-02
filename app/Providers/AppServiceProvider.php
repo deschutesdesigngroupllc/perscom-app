@@ -69,6 +69,8 @@ class AppServiceProvider extends ServiceProvider
         Cashier::useCustomerModel(Tenant::class);
         Cashier::useSubscriptionModel(Subscription::class);
 
+        Passport::$cookie = 'perscom_api_key';
+        Passport::$decryptsCookies = false;
         Passport::enablePasswordGrant();
         Passport::enableImplicitGrant();
         Passport::ignoreRoutes();

@@ -14,6 +14,7 @@ use App\Http\Middleware\IncrementMetrics;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\LogApiRequest;
 use App\Http\Middleware\LogApiResponse;
+use App\Http\Middleware\MoveApiKeyQueryParameterToHeader;
 use App\Http\Middleware\SentryContext;
 use App\Jobs\RemoveInactiveAccounts;
 use App\Jobs\ResetDemoAccount;
@@ -131,6 +132,8 @@ return Application::configure(basePath: dirname(__DIR__))
             ThrottleRequests::class,
             ThrottleRequestsWithRedis::class,
             SubstituteBindings::class,
+            MoveApiKeyQueryParameterToHeader::class,
+            AuthenticateApi::class,
             AuthenticatesRequests::class,
             Authorize::class,
             CheckApiVersion::class,
@@ -178,6 +181,17 @@ return Application::configure(basePath: dirname(__DIR__))
                 if (config('app.debug', false)) {
                     $response['error']['file'] = $e->getFile();
                     $response['error']['line'] = $e->getLine();
+                    $response['error']['route'] = [
+                        'name' => Route::currentRouteName(),
+                        'action' => Route::currentRouteAction(),
+                    ];
+                }
+
+                if ($request->routeIs('api.widgets.*')) {
+                    return response()->view('widgets.error', [
+                        'status' => $statusCode,
+                        'message' => data_get($response, 'error.message') ?? 'Unknown error.',
+                    ]);
                 }
 
                 return response()->json($response, $status);
