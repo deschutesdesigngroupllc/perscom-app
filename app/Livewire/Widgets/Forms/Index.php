@@ -45,7 +45,7 @@ class Index extends Component implements HasForms, HasTable
                 Action::make('open')
                     ->button()
                     ->color('primary')
-                    ->action(function (Form $record) {
+                    ->action(function (Form $record): void {
                         $this->dispatch('iframe:navigate', path: "forms/{$record->getKey()}");
                     }),
             ]);

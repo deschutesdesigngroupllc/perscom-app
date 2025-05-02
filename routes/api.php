@@ -111,7 +111,7 @@ Route::group([
     ],
     'prefix' => '{version}',
 ], static function (): void {
-    Route::group(['middleware' => [CacheResponse::class, LogApiRequest::class, LogApiResponse::class, ApiHeaders::class]], function () {
+    Route::group(['middleware' => [CacheResponse::class, LogApiRequest::class, LogApiResponse::class, ApiHeaders::class]], function (): void {
         Orion::resource('me', MeController::class)
             ->only('index');
 
@@ -227,7 +227,7 @@ Route::group([
         Orion::belongsToManyResource('users', 'tasks', UsersTasksController::class);
     });
 
-    Route::group(['as' => 'widgets.', 'prefix' => 'widgets'], function () {
+    Route::group(['as' => 'widgets.', 'prefix' => 'widgets'], function (): void {
         Route::post('livewire/update', [HandleRequests::class, 'handleUpdate'])
             ->name('livewire');
 

@@ -81,7 +81,7 @@ class Widgets extends Page
                         ->default($this->widget)
                         ->options(static::$widgets),
                 ])
-                ->action(function (array $data) {
+                ->action(function (array $data): void {
                     $this->widget = data_get($data, 'widget');
                     $this->redirect(Widgets::getUrl([
                         'widget' => $this->widget,
