@@ -75,7 +75,10 @@ use App\Http\Controllers\Api\Users\UsersTasksController;
 use App\Http\Controllers\Api\Users\UsersUnitController;
 use App\Http\Controllers\Api\Widgets\WidgetController;
 use App\Http\Middleware\ApiHeaders;
+use App\Http\Middleware\AuthenticateApi;
 use App\Http\Middleware\CheckApiVersion;
+use App\Http\Middleware\CheckSubscription;
+use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\InitializeTenancyByRequestData;
 use App\Http\Middleware\LogApiRequest;
 use App\Http\Middleware\LogApiResponse;
@@ -97,13 +100,14 @@ Route::get('spec.json', [SpecController::class, 'index'])
 
 Route::group([
     'middleware' => [
-        'auth_api',
+        AuthenticateApi::class,
         InitializeTenancyByRequestData::class,
         PreventAccessFromCentralDomains::class,
+        MoveApiKeyQueryParameterToHeader::class,
         CheckApiVersion::class,
         SentryContext::class,
-        'subscribed',
-        'approved',
+        CheckSubscription::class,
+        CheckUserApprovalStatus::class,
     ],
     'prefix' => '{version}',
 ], static function (): void {
@@ -228,7 +232,6 @@ Route::group([
             ->name('livewire');
 
         Route::get('{widget}/{resource?}', WidgetController::class)
-            ->middleware(MoveApiKeyQueryParameterToHeader::class)
             ->name('widget');
     });
 });
