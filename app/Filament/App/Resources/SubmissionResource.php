@@ -30,6 +30,17 @@ class SubmissionResource extends BaseResource
 
     protected static ?int $navigationSort = 2;
 
+    public static function getNavigationBadge(): ?string
+    {
+        $count = Submission::query()
+            ->unread()
+            ->count();
+
+        return $count > 0
+            ? (string) $count
+            : null;
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -71,6 +82,9 @@ class SubmissionResource extends BaseResource
                         Tabs\Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
+                                TextEntry::make('read_at')
+                                    ->dateTime()
+                                    ->label('Read'),
                                 TextEntry::make('created_at'),
                                 TextEntry::make('updated_at'),
                             ]),
@@ -97,6 +111,10 @@ class SubmissionResource extends BaseResource
                     ->badge()
                     ->color(fn (?Submission $record): array => Color::hex($record->status->color ?? '#2563eb'))
                     ->sortable(),
+                Tables\Columns\TextColumn::make('read_at')
+                    ->label('Read')
+                    ->dateTime()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->sortable(),
                 Tables\Columns\TextColumn::make('updated_at')
@@ -104,6 +122,9 @@ class SubmissionResource extends BaseResource
             ])
             ->groups(['user.name'])
             ->filters([
+                Tables\Filters\TernaryFilter::make('read_at')
+                    ->label('Read')
+                    ->nullable(),
                 Tables\Filters\SelectFilter::make('user')
                     ->relationship('user', 'name')
                     ->preload()

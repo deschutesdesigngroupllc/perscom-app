@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Observers\SubmissionObserver;
+use App\Traits\CanBeRead;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasComments;
@@ -26,6 +27,7 @@ use Stringable;
  * @property int $form_id
  * @property int $user_id
  * @property array<array-key, mixed>|null $data
+ * @property string|null $read_at
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
@@ -44,11 +46,14 @@ use Stringable;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission query()
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission read()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission status(?mixed $statuses)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission unread()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereData($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereFormId($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereReadAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereUserId($value)
  *
@@ -57,6 +62,7 @@ use Stringable;
 #[ObservedBy(SubmissionObserver::class)]
 class Submission extends Model implements HasLabel, Htmlable, Stringable
 {
+    use CanBeRead;
     use ClearsApiCache;
     use ClearsResponseCache;
     use HasComments;
@@ -98,6 +104,7 @@ class Submission extends Model implements HasLabel, Htmlable, Stringable
             'id',
             'form_id',
             'user_id',
+            'read_at',
             'created_at',
             'updated_at',
         ];
