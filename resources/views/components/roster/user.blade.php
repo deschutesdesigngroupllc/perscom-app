@@ -1,6 +1,6 @@
 @props(['user', 'mode' => 'automatic'])
 
-<a class="flex flex-row items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
+<a class="flex flex-row items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-800/50"
   href="{{ \App\Filament\App\Resources\UserResource::getUrl('view', ['record' => $user]) }}" target="_blank">
   @if (!in_array('rank_id', $hiddenFields))
     <div class="w-10 overflow-hidden">

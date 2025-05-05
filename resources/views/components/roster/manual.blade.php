@@ -13,7 +13,7 @@
     </x-filament::tabs>
 
     @forelse($groups as $index => $group)
-      <div x-show="activeTab === 'tab{{ $index }}'" class="text-sm mt-1">
+      <div x-show="activeTab === 'tab{{ $index }}'" class="text-sm mt-2">
         @forelse($group->units as $unit)
           @include('components.roster.unit-header', ['unit' => $unit])
           <div>
