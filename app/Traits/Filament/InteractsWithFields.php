@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Traits\Filament;
 
+use App\Models\Country;
 use App\Models\Enums\FieldOptionsModel;
 use App\Models\Enums\FieldOptionsType;
 use App\Models\Enums\FieldType;
@@ -70,9 +71,10 @@ trait InteractsWithFields
             }
 
             if ($field->type === FieldType::FIELD_COUNTRY && $filamentField instanceof Select) {
-                // TODO: Add countries
-                //                    $filamentField = $filamentField
-                //                        ->options();
+                $filamentField = $filamentField
+                    ->preload()
+                    ->searchable()
+                    ->options(Country::query()->orderBy('official_name')->pluck('official_name', 'official_name')->toArray());
             }
 
             if ($field->type === FieldType::FIELD_TIMEZONE && $filamentField instanceof Select) {

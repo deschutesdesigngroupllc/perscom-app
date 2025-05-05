@@ -7,6 +7,9 @@ namespace App\Traits;
 use App\Models\Scopes\VisibleScope;
 use Illuminate\Database\Eloquent\Builder;
 
+/**
+ * @mixin \Eloquent
+ */
 trait CanBeHidden
 {
     public function scopeHidden(Builder $query): void
