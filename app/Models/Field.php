@@ -13,9 +13,9 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use ArrayObject;
+use ArrayObject as ArrayObjectAlias;
 use Filament\Support\Contracts\HasLabel;
-use Illuminate\Database\Eloquent\Casts\AsArrayObject;
+use Illuminate\Database\Eloquent\Casts\ArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -109,6 +109,24 @@ class Field extends Model implements HasLabel, Hideable
     ];
 
     /**
+     * @return Attribute<ArrayObject, never>
+     */
+    public function options(): Attribute
+    {
+        return Attribute::get(function ($value, $attributes = null): ArrayObject {
+            if (filled($value) && data_get($attributes, 'options_type') === FieldOptionsType::Array->value) {
+                return new ArrayObject(json_decode($value), ArrayObjectAlias::ARRAY_AS_PROPS);
+            }
+
+            if (filled(data_get($attributes, 'options_model')) && $this->options_model instanceof FieldOptionsModel && data_get($attributes, 'options_type') === FieldOptionsType::Model->value) {
+                return new ArrayObject($this->options_model->getOptions(), ArrayObjectAlias::ARRAY_AS_PROPS);
+            }
+
+            return new ArrayObject([], ArrayObjectAlias::ARRAY_AS_PROPS);
+        })->shouldCache();
+    }
+
+    /**
      * @return Attribute<?string, never>
      */
     public function validationRules(): Attribute
@@ -159,7 +177,6 @@ class Field extends Model implements HasLabel, Hideable
             'readonly' => 'boolean',
             'required' => 'boolean',
             'type' => FieldType::class,
-            'options' => AsArrayObject::class,
             'options_type' => FieldOptionsType::class,
             'options_model' => FieldOptionsModel::class,
         ];

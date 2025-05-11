@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Traits\Filament;
 
 use App\Models\Country;
-use App\Models\Enums\FieldOptionsModel;
-use App\Models\Enums\FieldOptionsType;
 use App\Models\Enums\FieldType;
 use Filament\Forms\Components\Field;
 use Filament\Forms\Components\FileUpload;
@@ -44,12 +42,9 @@ trait InteractsWithFields
                 ->required($field->required);
 
             if ($field->type === FieldType::FIELD_SELECT && $filamentField instanceof Select) {
-                $filamentField = match ($field->options_type) {
-                    FieldOptionsType::Model => $filamentField->options(optional($field->options_model, fn (FieldOptionsModel $model): array => $model->getOptions()) ?? []),
-                    default => $filamentField->options($field->options),
-                };
-
-                $filamentField = $filamentField->searchable();
+                $filamentField = $filamentField
+                    ->options($field->options)
+                    ->searchable();
             }
 
             if ($field->type === FieldType::FIELD_EMAIL && $filamentField instanceof TextInput) {
