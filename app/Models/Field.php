@@ -17,6 +17,7 @@ use ArrayObject as ArrayObjectAlias;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Casts\ArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
@@ -43,12 +44,12 @@ use function in_array;
  * @property FieldOptionsModel|null $options_model
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Form> $forms
+ * @property-read Collection<int, Form> $forms
  * @property-read int|null $forms_count
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read string|null $url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  * @property-read string|null $validation_rules
  *
@@ -120,6 +121,12 @@ class Field extends Model implements HasLabel, Hideable
 
             if (filled(data_get($attributes, 'options_model')) && $this->options_model instanceof FieldOptionsModel && data_get($attributes, 'options_type') === FieldOptionsType::Model->value) {
                 return new ArrayObject($this->options_model->getOptions(), ArrayObjectAlias::ARRAY_AS_PROPS);
+            }
+
+            if (data_get($attributes, 'type') === FieldType::FIELD_TIMEZONE->value) {
+                return new ArrayObject(Collection::wrap(timezone_identifiers_list())
+                    ->mapWithKeys(fn ($timezone) => [$timezone => $timezone])
+                    ->toArray(), ArrayObjectAlias::ARRAY_AS_PROPS);
             }
 
             return new ArrayObject([], ArrayObjectAlias::ARRAY_AS_PROPS);
