@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
 use App\Filament\App\Resources\RankRecordResource;
 use App\Models\RankRecord;
+use App\Models\User;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -54,7 +55,14 @@ class RankRecordsRelationManager extends RelationManager
             ->emptyStateActions([
                 Action::make('create')
                     ->label('New rank record')
-                    ->url(RankRecordResource::getUrl('create'))
+                    ->url(function (): string {
+                        /** @var User $user */
+                        $user = $this->getOwnerRecord();
+
+                        return RankRecordResource::getUrl('create', [
+                            'user_id' => $user->getKey(),
+                        ]);
+                    })
                     ->button(),
             ]);
     }

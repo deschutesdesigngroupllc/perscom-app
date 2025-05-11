@@ -6,6 +6,8 @@ namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
 use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Models\AssignmentRecord;
+use App\Models\Enums\AssignmentRecordType;
+use App\Models\User;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables;
@@ -64,7 +66,15 @@ class AssignmentRecordsRelationManager extends RelationManager
             ->emptyStateActions([
                 Action::make('create')
                     ->label('New assignment record')
-                    ->url(AssignmentRecordResource::getUrl('create'))
+                    ->url(function (): string {
+                        /** @var User $user */
+                        $user = $this->getOwnerRecord();
+
+                        return AssignmentRecordResource::getUrl('create', [
+                            'user_id' => $user->getKey(),
+                            'type' => AssignmentRecordType::PRIMARY,
+                        ]);
+                    })
                     ->button(),
             ]);
     }

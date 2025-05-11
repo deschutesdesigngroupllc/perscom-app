@@ -10,6 +10,7 @@ use App\Traits\Filament\InteractsWithBatchRecords;
 use App\Traits\Filament\InteractsWithModelNotifications;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class CreateRankRecord extends CreateRecord
 {
@@ -17,6 +18,15 @@ class CreateRankRecord extends CreateRecord
     use InteractsWithModelNotifications;
 
     protected static string $resource = RankRecordResource::class;
+
+    public function mount(): void
+    {
+        parent::mount();
+
+        $this->form->fill([
+            'user_id' => Arr::wrap(request()->query('user_id')),
+        ]);
+    }
 
     protected function handleRecordCreation(array $data): Model
     {
