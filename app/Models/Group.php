@@ -21,7 +21,9 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\EloquentSortable\Sortable;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 
 /**
  * @property int $id
@@ -100,7 +102,23 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ->when(! is_null($groupId), fn (Builder $query) => $query->where('groups.id', $groupId))
             ->with([
                 'units.users' => function ($query): void {
-                    /** @var User $query */
+                    /** @var User|HasMany $query */
+                    /** @phpstan-ignore larastan.relationExistence */
+                    $query
+                        ->orderForRoster()
+                        ->with([
+                            'position',
+                            'specialty',
+                            'unit',
+                            'rank',
+                            'rank.image',
+                            'status',
+                        ]);
+                },
+            ])
+            ->with([
+                'units.secondary_assignment_records.user' => function ($query): void {
+                    /** @var User|HasManyDeep $query */
                     $query->orderForRoster();
                 },
             ]);
@@ -113,6 +131,12 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ->with([
                 'units.slots.users' => function ($query): void {
                     /** @var User $query */
+                    $query->orderForRoster();
+                },
+            ])
+            ->with([
+                'units.secondary_assignment_records.user' => function ($query): void {
+                    /** @var User|HasManyDeep $query */
                     $query->orderForRoster();
                 },
             ]);

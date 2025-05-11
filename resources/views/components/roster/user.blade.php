@@ -17,26 +17,24 @@
     @if (!in_array('name', $hiddenFields))
       <div class="dark:text-white font-bold">{{ $user->name }}</div>
     @endif
-    @if ($mode === 'automatic')
-      <div class="flex flex-col md:flex-row md:items-center md:space-x-2">
-        @if (!in_array('specialty_id', $hiddenFields))
-          @if ($specialty = $user->specialty)
-            <div class="text-gray-700 dark:text-gray-400 font-medium">
-              {{ $specialty->abbreviation }} - {{ $specialty->name }}</div>
-            @if (!in_array('position_id', $hiddenFields) && $user->position)
-              <div class="hidden md:block">
-                <svg viewBox="0 0 2 2" class="mx-2 inline h-0.5 w-0.5 fill-current" aria-hidden="true">
-                  <circle cx="1" cy="1" r="1" />
-                </svg>
-              </div>
-            @endif
+    <div class="flex flex-col md:flex-row md:items-center md:space-x-2">
+      @if (!in_array('specialty_id', $hiddenFields))
+        @if ($specialty = $user->specialty)
+          <div class="text-gray-700 dark:text-gray-400 font-medium">
+            {{ $specialty->abbreviation }} - {{ $specialty->name }}</div>
+          @if (!in_array('position_id', $hiddenFields) && $user->position)
+            <div class="hidden md:block">
+              <svg viewBox="0 0 2 2" class="mx-2 inline h-0.5 w-0.5 fill-current" aria-hidden="true">
+                <circle cx="1" cy="1" r="1" />
+              </svg>
+            </div>
           @endif
         @endif
-        @if (!in_array('position_id', $hiddenFields) && ($position = $user->position))
-          <div class="text-gray-500">{{ $position->name }}</div>
-        @endif
-      </div>
-    @endif
+      @endif
+      @if (!in_array('position_id', $hiddenFields) && ($position = $user->position))
+        <div class="text-gray-500">{{ $position->name }}</div>
+      @endif
+    </div>
   </div>
   <div class="flex-0">
     <div class="flex flex-row space-x-2">

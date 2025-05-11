@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Models\Credential;
 use App\Models\User;
 use App\Settings\OrganizationSettings;
-use App\Traits\HasAuthor;
 use App\Traits\HasUser;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
@@ -18,10 +19,10 @@ class ModelTextParserService
     public function __construct(
         protected string $content,
         protected ?User $user = null,
-        protected mixed $attachedModel = null
+        protected ?Model $attachedModel = null
     ) {}
 
-    public static function parse(string $content, ?User $user = null, mixed $attachedModel = null): ?string
+    public static function parse(string $content, ?User $user = null, ?Model $attachedModel = null): ?string
     {
         $result = with(new ModelTextParserService($content, $user, $attachedModel), fn (ModelTextParserService $service) => Str::replaceMatches('/\{(.*?)}/', fn (array $matches) => $service->resolveTag($matches[0]) ?? $matches[0], $service->content));
 
@@ -35,6 +36,7 @@ class ModelTextParserService
     protected function resolveTag(string $tag): mixed
     {
         if (blank($this->user) && (filled($this->attachedModel) && in_array(HasUser::class, class_uses_recursive($this->attachedModel::class)))) {
+            /** @phpstan-ignore property.notFound */
             $this->user = $this->attachedModel->user;
         }
 
@@ -42,21 +44,23 @@ class ModelTextParserService
 
         return value(match (true) {
             $tag === '{user_name}' => data_get($this->user, 'name'),
-            $tag === '{user_email}' => $this->user->email ?? null,
+            $tag === '{user_email}' => data_get($this->user, 'email'),
             $tag === '{user_email_verified_at}' => optional($this->user)->email_verified_at ? Carbon::parse($this->user?->email_verified_at)->toDayDateTimeString() : null,
-            $tag === '{user_status}' => $this->user->status->name ?? null,
+            $tag === '{user_status}' => data_get($this->user, 'status.name'),
             $tag === '{user_online}' => optional($this->user)->online ? 'True' : 'False',
-            $tag === '{user_assignment_position}' => $this->user->position->name ?? null,
-            $tag === '{user_assignment_specialty}' => $this->user->specialty->name ?? null,
-            $tag === '{user_assignment_unit}' => $this->user->unit->name ?? null,
-            $tag === '{user_rank}' => $this->user->rank->name ?? null,
-            $tag === '{assignment_record_status}' => $this->attachedModel->status->name ?? null,
-            $tag === '{assignment_record_unit}' => $this->attachedModel->unit->name ?? null,
-            $tag === '{assignment_record_position}' => $this->attachedModel->position->name ?? null,
-            $tag === '{assignment_record_speciality}' => $this->attachedModel->specialty->name ?? null,
-            $tag === '{assignment_record_text}', $tag === '{award_record_text}', $tag === '{combat_record_text}', $tag === '{qualification_record_text}', $tag === '{service_record_text}', $tag === '{rank_record_text}' => $this->attachedModel->text ?? null,
-            $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{service_record_date}', $tag === '{rank_record_date}' => function ($user, $attachedModel): ?string {
-                $createdAt = $attachedModel->created_at ?? null;
+            $tag === '{user_assignment_position}' => data_get($this->user, 'position.name'),
+            $tag === '{user_assignment_specialty}' => data_get($this->user, 'specialty.name'),
+            $tag === '{user_assignment_unit}' => data_get($this->user, 'unit.name'),
+            $tag === '{user_rank}' => data_get($this->user, 'rank.name'),
+            $tag === '{user_rank_abbreviation}' => data_get($this->user, 'rank.abbreviation'),
+            $tag === '{assignment_record_status}' => data_get($this->attachedModel, 'status.name'),
+            $tag === '{assignment_record_unit}' => data_get($this->attachedModel, 'unit.name'),
+            $tag === '{assignment_record_position}' => data_get($this->attachedModel, 'position.name'),
+            $tag === '{assignment_record_speciality}' => data_get($this->attachedModel, 'specialty.name'),
+            $tag === '{assignment_record_type}' => optional($this->attachedModel->type ?? null)->getLabel() ?? null,
+            $tag === '{assignment_record_text}', $tag === '{award_record_text}', $tag === '{combat_record_text}', $tag === '{qualification_record_text}', $tag === '{service_record_text}', $tag === '{rank_record_text}', $tag === '{training_record_text}' => data_get($this->attachedModel, 'text'),
+            $tag === '{assignment_record_date}', $tag === '{award_record_date}', $tag === '{combat_record_date}', $tag === '{qualification_record_date}', $tag === '{service_record_date}', $tag === '{rank_record_date}', $tag === '{training_record_date}' => function ($user, $attachedModel): ?string {
+                $createdAt = data_get($this->attachedModel, 'created_at');
 
                 if (blank($createdAt)) {
                     return null;
@@ -77,10 +81,10 @@ class ModelTextParserService
                     ->setTimezone($timezone)
                     ->toDayDateTimeString();
             },
-            $tag === '{award_record_award}' => $this->attachedModel->award->name ?? null,
+            $tag === '{award_record_award}' => data_get($this->attachedModel, 'award.name'),
             $tag === '{award_record_award_image}' => function ($user, $attachedModel): ?HtmlString {
-                $imageUrl = $attachedModel->award->image->image_url ?? null;
-                $imageName = $attachedModel->award->name ?? 'Image';
+                $imageUrl = data_get($attachedModel, 'award.image.image_url');
+                $imageName = data_get($attachedModel, 'award.name') ?? 'Image';
 
                 if (blank($imageUrl)) {
                     return null;
@@ -88,10 +92,10 @@ class ModelTextParserService
 
                 return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
             },
-            $tag === '{qualification_record_qualification}' => $this->attachedModel->qualification->name ?? null,
+            $tag === '{qualification_record_qualification}' => data_get($this->attachedModel, 'qualification.name'),
             $tag === '{qualification_record_qualification_image}' => function ($user, $attachedModel): ?HtmlString {
-                $imageUrl = $attachedModel->qualification->image->image_url ?? null;
-                $imageName = $attachedModel->qualification->name ?? 'Image';
+                $imageUrl = data_get($attachedModel, 'qualification.image.image_url');
+                $imageName = data_get($attachedModel, 'qualification.name') ?? 'Image';
 
                 if (blank($imageUrl)) {
                     return null;
@@ -99,10 +103,11 @@ class ModelTextParserService
 
                 return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
             },
-            $tag === '{rank_record_rank}' => $this->attachedModel->rank->name ?? null,
+            $tag === '{rank_record_rank}' => data_get($this->attachedModel, 'rank.name'),
+            $tag === '{rank_record_rank_abbreviation}' => data_get($this->attachedModel, 'rank.abbreviation'),
             $tag === '{rank_record_rank_image}' => function ($user, $attachedModel): ?HtmlString {
-                $imageUrl = $attachedModel->rank->image->image_url ?? null;
-                $imageName = $attachedModel->rank->name ?? 'Image';
+                $imageUrl = data_get($attachedModel, 'rank.image.image_url');
+                $imageName = data_get($attachedModel, 'rank.name') ?? 'Image';
 
                 if (blank($imageUrl)) {
                     return null;
@@ -110,8 +115,10 @@ class ModelTextParserService
 
                 return new HtmlString("<img src='$imageUrl' alt='$imageName' style='height: 40px;' />");
             },
-            $tag === '{rank_record_type}' => optional($this->attachedModel->type ?? null)->getLabel() ?? null,
-            $tag === '{author_resource_name}' => filled($this->attachedModel) && in_array(HasAuthor::class, class_uses_recursive($this->attachedModel::class)) ? optional($this->attachedModel->author)->name : null,
+            $tag === '{rank_record_type}' => data_get($this->attachedModel, 'type')->getLabel() ?? null,
+            $tag === '{training_record_credentials}' => collect(data_get($this->attachedModel, 'credentials'))->map(fn (Credential $credential) => $credential->name)->implode(','),
+            $tag === '{training_record_instructor_name}' => data_get($this->attachedModel, 'instructor.name'),
+            $tag === '{author_resource_name}' => data_get($this->attachedModel, 'author.name'),
             default => null
         }, $this->user, $this->attachedModel);
     }

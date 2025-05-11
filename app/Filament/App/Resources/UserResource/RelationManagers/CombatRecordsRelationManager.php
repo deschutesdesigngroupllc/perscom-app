@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
 use App\Filament\App\Resources\CombatRecordResource;
 use App\Models\CombatRecord;
+use App\Models\User;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Actions\Action;
@@ -50,7 +51,14 @@ class CombatRecordsRelationManager extends RelationManager
             ->emptyStateActions([
                 Action::make('create')
                     ->label('New combat record')
-                    ->url(CombatRecordResource::getUrl('create'))
+                    ->url(function (): string {
+                        /** @var User $user */
+                        $user = $this->getOwnerRecord();
+
+                        return CombatRecordResource::getUrl('create', [
+                            'user_id' => $user->getKey(),
+                        ]);
+                    })
                     ->button(),
             ]);
     }

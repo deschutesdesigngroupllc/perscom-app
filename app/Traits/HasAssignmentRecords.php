@@ -24,11 +24,13 @@ trait HasAssignmentRecords
 
     public function primary_assignment_records(): HasMany
     {
-        return $this->assignment_records()->where('type', AssignmentRecordType::PRIMARY);
+        return $this->assignment_records()
+            ->where('type', AssignmentRecordType::PRIMARY);
     }
 
     public function secondary_assignment_records(): HasMany
     {
-        return $this->assignment_records()->where('type', AssignmentRecordType::SECONDARY);
+        return $this->assignment_records()
+            ->where('type', AssignmentRecordType::SECONDARY);
     }
 }

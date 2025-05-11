@@ -9,6 +9,7 @@ export default {
     './resources/views/filament/app/**/*.blade.php',
     './resources/views/livewire/app/**/*.blade.php',
     './resources/views/models/**/*.blade.php',
+    './resources/views/components/**/*.blade.php',
     './vendor/filament/**/*.blade.php',
     './vendor/awcodes/filament-quick-create/resources/**/*.blade.php',
     './vendor/archilex/filament-filter-sets/**/*.php'

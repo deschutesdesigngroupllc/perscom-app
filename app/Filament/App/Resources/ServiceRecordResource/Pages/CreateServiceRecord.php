@@ -10,6 +10,7 @@ use App\Traits\Filament\InteractsWithBatchRecords;
 use App\Traits\Filament\InteractsWithModelNotifications;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class CreateServiceRecord extends CreateRecord
 {
@@ -17,6 +18,15 @@ class CreateServiceRecord extends CreateRecord
     use InteractsWithModelNotifications;
 
     protected static string $resource = ServiceRecordResource::class;
+
+    public function mount(): void
+    {
+        parent::mount();
+
+        $livewire = $this->form->getLivewire();
+        $statePath = $this->form->getStatePath();
+        data_set($livewire, "$statePath.user_id", Arr::wrap(request()->query('user_id')));
+    }
 
     protected function handleRecordCreation(array $data): Model
     {

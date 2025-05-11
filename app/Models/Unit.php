@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Hideable;
+use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\UnitScope;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
@@ -23,6 +24,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Spatie\EloquentSortable\Sortable;
+use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
+use Staudenmeir\EloquentHasManyDeep\HasRelationships;
 
 /**
  * @property int $id
@@ -55,6 +58,8 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read string|null $url
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
  * @property-read int|null $users_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $usersViaSecondaryAssignmentRecords
+ * @property-read int|null $users_via_secondary_assignment_records_count
  *
  * @method static \Database\Factories\UnitFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Unit hidden()
@@ -87,6 +92,7 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
     use HasFactory;
     use HasIcon;
     use HasImages;
+    use HasRelationships;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUsers;
@@ -122,5 +128,15 @@ class Unit extends Model implements HasLabel, Hideable, Sortable
             ->withPivot(['id'])
             ->using(UnitSlot::class)
             ->withTimestamps();
+    }
+
+    /**
+     * @return HasManyDeep<User, $this>
+     */
+    public function usersViaSecondaryAssignmentRecords(): HasManyDeep
+    {
+        return $this->hasManyDeep(User::class, [AssignmentRecord::class], ['unit_id', 'id'], ['id', 'user_id'])
+            ->with('secondary_assignment_records')
+            ->where('records_assignments.type', AssignmentRecordType::SECONDARY);
     }
 }

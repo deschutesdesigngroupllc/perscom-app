@@ -6,6 +6,7 @@ namespace App\Filament\App\Pages;
 
 use App\Models\Enums\RosterMode;
 use App\Models\Group;
+use App\Services\RosterService;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
@@ -47,14 +48,17 @@ class Roster extends Page
     {
         $settings = app(DashboardSettings::class);
         if ($settings->roster_mode === RosterMode::MANUAL) {
-            $groups = Group::query()->forManualRoster()->get();
+            $groups = RosterService::mergeSecondaryAssignmentRecordsForManualRoster(
+                groups: Group::query()->forManualRoster()->get()
+            );
         } else {
-            $groups = Group::query()->forAutomaticRoster()->get();
+            $groups = RosterService::mergeSecondaryAssignmentRecordsForAutomaticRoster(
+                groups: Group::query()->forAutomaticRoster()->get()
+            );
         }
 
         return [
             'groups' => $groups,
-            'mode' => $settings->roster_mode->value ?? 'automatic',
         ];
     }
 }
