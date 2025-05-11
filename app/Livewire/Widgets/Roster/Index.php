@@ -6,6 +6,7 @@ namespace App\Livewire\Widgets\Roster;
 
 use App\Models\Enums\RosterMode;
 use App\Models\Group;
+use App\Services\RosterService;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
 use Illuminate\Contracts\View\View;
@@ -27,9 +28,13 @@ class Index extends Component
     {
         $settings = app(DashboardSettings::class);
         if ($settings->roster_mode === RosterMode::MANUAL) {
-            $groups = Group::query()->forManualRoster()->get();
+            $groups = RosterService::mergeSecondaryAssignmentRecordsForManualRoster(
+                groups: Group::query()->forManualRoster()->get()
+            );
         } else {
-            $groups = Group::query()->forAutomaticRoster()->get();
+            $groups = RosterService::mergeSecondaryAssignmentRecordsForAutomaticRoster(
+                groups: Group::query()->forAutomaticRoster()->get()
+            );
         }
 
         return view('livewire.widgets.roster.index', [
