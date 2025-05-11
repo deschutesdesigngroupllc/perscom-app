@@ -17,7 +17,6 @@
     @if (!in_array('name', $hiddenFields))
       <div class="dark:text-white font-bold">{{ $user->name }}</div>
     @endif
-    @if ($mode === 'automatic')
       <div class="flex flex-col md:flex-row md:items-center md:space-x-2">
         @if (!in_array('specialty_id', $hiddenFields))
           @if ($specialty = $user->specialty)
@@ -36,7 +35,6 @@
           <div class="text-gray-500">{{ $position->name }}</div>
         @endif
       </div>
-    @endif
   </div>
   <div class="flex-0">
     <div class="flex flex-row space-x-2">

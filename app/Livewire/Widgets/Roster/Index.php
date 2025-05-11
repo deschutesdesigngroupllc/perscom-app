@@ -34,7 +34,6 @@ class Index extends Component
 
         return view('livewire.widgets.roster.index', [
             'groups' => $groups,
-            'mode' => $settings->roster_mode->value ?? 'automatic',
         ]);
     }
 }

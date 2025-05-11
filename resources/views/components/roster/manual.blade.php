@@ -20,7 +20,7 @@
             @forelse($unit->slots as $slot)
               @include('components.roster.slot-header', ['slot' => $slot])
               @forelse($slot->users as $user)
-                @include('components.roster.user', ['user' => $user, 'mode' => $mode])
+                @include('components.roster.user', ['user' => $user])
               @empty
                 <div class="flex items-start">
                   @include('components.roster.no-personnel-assigned', [

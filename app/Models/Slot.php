@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Contracts\Hideable;
+use App\Models\Enums\AssignmentRecordType;
 use App\Models\Scopes\SlotScope;
 use App\Traits\CanBeHidden;
 use App\Traits\CanBeOrdered;
@@ -36,6 +37,10 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read int|null $assignment_records_count
  * @property-read string $label
  * @property-read Position|null $position
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $primary_assignment_records
+ * @property-read int|null $primary_assignment_records_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
+ * @property-read int|null $secondary_assignment_records_count
  * @property-read Specialty|null $specialty
  * @property-read UnitSlot|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $units
@@ -90,6 +95,24 @@ class Slot extends Model implements Hideable, Sortable
     public function assignment_records(): HasManyThrough
     {
         return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id');
+    }
+
+    /**
+     * @return HasManyThrough<AssignmentRecord, UnitSlot, $this>
+     */
+    public function primary_assignment_records(): HasManyThrough
+    {
+        return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id')
+            ->where('records_assignments.type', AssignmentRecordType::PRIMARY);
+    }
+
+    /**
+     * @return HasManyThrough<AssignmentRecord, UnitSlot, $this>
+     */
+    public function secondary_assignment_records(): HasManyThrough
+    {
+        return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id')
+            ->where('records_assignments.type', AssignmentRecordType::SECONDARY);
     }
 
     /**
