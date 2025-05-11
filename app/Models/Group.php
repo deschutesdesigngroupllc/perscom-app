@@ -103,6 +103,7 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ->with([
                 'units.users' => function ($query): void {
                     /** @var User|HasMany $query */
+                    /** @phpstan-ignore larastan.relationExistence */
                     $query
                         ->orderForRoster()
                         ->with([

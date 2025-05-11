@@ -36,6 +36,7 @@ class ModelTextParserService
     protected function resolveTag(string $tag): mixed
     {
         if (blank($this->user) && (filled($this->attachedModel) && in_array(HasUser::class, class_uses_recursive($this->attachedModel::class)))) {
+            /** @phpstan-ignore property.notFound */
             $this->user = $this->attachedModel->user;
         }
 
