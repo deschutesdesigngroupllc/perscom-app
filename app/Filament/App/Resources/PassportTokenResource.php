@@ -26,7 +26,7 @@ class PassportTokenResource extends BaseResource
 
     protected static ?string $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 5;
 
     protected static ?string $pluralModelLabel = 'API keys';
 
