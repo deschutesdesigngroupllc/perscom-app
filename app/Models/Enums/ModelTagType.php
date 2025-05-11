@@ -16,6 +16,8 @@ enum ModelTagType: string implements HasDescription, HasLabel
     case QUALIFICATION_RECORD = 'qualification_record';
     case RANK_RECORD = 'rank_record';
     case SERVICE_RECORD = 'service_record';
+
+    case TRAINING_RECORD = 'training_record';
     case USER = 'user';
 
     public function getLabel(): ?string
@@ -35,6 +37,7 @@ enum ModelTagType: string implements HasDescription, HasLabel
             ModelTagType::QUALIFICATION_RECORD => 'For content that is attached to a qualification record.',
             ModelTagType::RANK_RECORD => 'For content that is attached to a rank record.',
             ModelTagType::SERVICE_RECORD => 'For content that is attached to a service record.',
+            ModelTagType::TRAINING_RECORD => 'For content that is attached to a training record.',
             ModelTagType::USER => 'For content that revolves around a user. This most often is either the recipient of some time of record (assignment/award etc.) or the currently logged in user viewing the content.'
         };
     }

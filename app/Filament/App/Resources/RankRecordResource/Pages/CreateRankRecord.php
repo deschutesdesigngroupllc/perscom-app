@@ -23,9 +23,9 @@ class CreateRankRecord extends CreateRecord
     {
         parent::mount();
 
-        $this->form->fill([
-            'user_id' => Arr::wrap(request()->query('user_id')),
-        ]);
+        $livewire = $this->form->getLivewire();
+        $statePath = $this->form->getStatePath();
+        data_set($livewire, "$statePath.user_id", Arr::wrap(request()->query('user_id')));
     }
 
     protected function handleRecordCreation(array $data): Model

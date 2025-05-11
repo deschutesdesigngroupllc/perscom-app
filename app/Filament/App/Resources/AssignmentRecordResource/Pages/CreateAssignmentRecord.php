@@ -23,10 +23,11 @@ class CreateAssignmentRecord extends CreateRecord
     {
         parent::mount();
 
-        $this->form->fill([
-            'user_id' => Arr::wrap(request()->query('user_id')),
-            'type' => Arr::get(request()->query(), 'type'),
-        ]);
+        $livewire = $this->form->getLivewire();
+        $statePath = $this->form->getStatePath();
+        data_set($livewire, "$statePath.user_id", Arr::wrap(request()->query('user_id')));
+        data_set($livewire, "$statePath.type", request()->query('type'));
+
     }
 
     protected function handleRecordCreation(array $data): Model

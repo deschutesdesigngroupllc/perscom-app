@@ -80,6 +80,11 @@ class ModelTag extends Model
                 'type' => ModelTagType::USER,
             ],
             [
+                'tag' => '{user_rank_abbreviation}',
+                'description' => 'The user\'s current rank as an abbreviation.',
+                'type' => ModelTagType::USER,
+            ],
+            [
                 'tag' => '{assignment_record_status}',
                 'description' => 'The status of the assignment record.',
                 'type' => ModelTagType::ASSIGNMENT_RECORD,
@@ -97,6 +102,11 @@ class ModelTag extends Model
             [
                 'tag' => '{assignment_record_speciality}',
                 'description' => 'The specialty of the assignment record.',
+                'type' => ModelTagType::ASSIGNMENT_RECORD,
+            ],
+            [
+                'tag' => '{assignment_record_type}',
+                'description' => 'The type of assignment record, either Primary or Secondary.',
                 'type' => ModelTagType::ASSIGNMENT_RECORD,
             ],
             [
@@ -165,6 +175,11 @@ class ModelTag extends Model
                 'type' => ModelTagType::RANK_RECORD,
             ],
             [
+                'tag' => '{rank_record_rank_abbreviation}',
+                'description' => 'The rank of the rank record as an abbreviation.',
+                'type' => ModelTagType::RANK_RECORD,
+            ],
+            [
                 'tag' => '{rank_record_rank_image}',
                 'description' => 'The rank image of the rank record.',
                 'type' => ModelTagType::RANK_RECORD,
@@ -193,6 +208,26 @@ class ModelTag extends Model
                 'tag' => '{service_record_date}',
                 'description' => 'The date of the service record.',
                 'type' => ModelTagType::SERVICE_RECORD,
+            ],
+            [
+                'tag' => '{training_record_credentials}',
+                'description' => 'A comma-delimited list of training credentials that were earned.',
+                'type' => ModelTagType::TRAINING_RECORD,
+            ],
+            [
+                'tag' => '{training_record_instructor_name}',
+                'description' => 'The name of the training instructor.',
+                'type' => ModelTagType::TRAINING_RECORD,
+            ],
+            [
+                'tag' => '{training_record_text}',
+                'description' => 'The text of the training record.',
+                'type' => ModelTagType::TRAINING_RECORD,
+            ],
+            [
+                'tag' => '{training_record_date}',
+                'description' => 'The date of the training record.',
+                'type' => ModelTagType::TRAINING_RECORD,
             ],
             [
                 'tag' => '{author_resource_name}',

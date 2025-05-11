@@ -39,6 +39,11 @@ class DocumentResource extends BaseResource
                             ->columnSpanFull(),
                         Forms\Components\RichEditor::make('description')
                             ->helperText('A brief description of the document.')
+                            ->nullable()
+                            ->maxLength(65535)
+                            ->columnSpanFull(),
+                        Forms\Components\RichEditor::make('content')
+                            ->helperText('The content of the document. Use content tags to dynamically inject data from attached resources.')
                             ->hintIconTooltip('View available content tags.')
                             ->hint('Content Tags')
                             ->hintColor('gray')
@@ -51,11 +56,6 @@ class DocumentResource extends BaseResource
                                 ->modalCancelActionLabel('Close')
                                 ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
                                 ->slideOver())
-                            ->nullable()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Forms\Components\RichEditor::make('content')
-                            ->helperText('The content of the document.')
                             ->required()
                             ->maxLength(65535)
                             ->columnSpanFull(),
