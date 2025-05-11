@@ -119,7 +119,16 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ->with([
                 'units.secondary_assignment_records.user' => function ($query): void {
                     /** @var User|HasManyDeep $query */
-                    $query->orderForRoster();
+                    /** @phpstan-ignore larastan.relationExistence */
+                    $query->orderForRoster()
+                        ->with([
+                            'position',
+                            'specialty',
+                            'unit',
+                            'rank',
+                            'rank.image',
+                            'status',
+                        ]);
                 },
             ]);
     }

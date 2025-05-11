@@ -76,14 +76,14 @@ class MilitarySeeder extends Seeder
         $positions = Position::factory()
             ->count(8)
             ->sequence(
-                ['name' => 'Detachment Commander'],
-                ['name' => 'Assistant Detachment Commander'],
-                ['name' => 'Operations Sergeant'],
-                ['name' => 'Assistant Operations and Intelligence Sergeant'],
-                ['name' => 'Weapons Sergeant'],
-                ['name' => 'Communications Sergeant'],
-                ['name' => 'Medical Sergeant'],
-                ['name' => 'Engineering Sergeant'],
+                ['name' => 'Detachment Commander', 'order' => 1],
+                ['name' => 'Assistant Detachment Commander', 'order' => 2],
+                ['name' => 'Operations Sergeant', 'order' => 3],
+                ['name' => 'Assistant Operations and Intelligence Sergeant', 'order' => 4],
+                ['name' => 'Weapons Sergeant', 'order' => 5],
+                ['name' => 'Communications Sergeant', 'order' => 6],
+                ['name' => 'Medical Sergeant', 'order' => 7],
+                ['name' => 'Engineering Sergeant', 'order' => 8],
             )
             ->create();
 
@@ -94,18 +94,22 @@ class MilitarySeeder extends Seeder
                     'name' => 'Special Forces Officer',
                     'abbreviation' => '18A',
                     'description' => 'Commands an ODA, responsible for planning, executing, and leading Special Forces operations worldwide.',
+                    'order' => 1,
                 ], [
                     'name' => 'Special Forces Warrant Officer',
                     'abbreviation' => '180A',
                     'description' => 'Serves as the assistant detachment commander, specializing in mission planning, unconventional warfare, and operational leadership.',
+                    'order' => 2,
                 ], [
                     'name' => 'Special Forces Operations Sergeant',
                     'abbreviation' => '18Z',
                     'description' => 'A senior enlisted leader of an ODA, responsible for mission planning, training, and operational execution.',
+                    'order' => 3,
                 ], [
                     'name' => 'Special Forces Weapons Sergeant',
                     'abbreviation' => '18B',
                     'description' => 'Expert in U.S. and foreign weapons, small-unit tactics, and training partner forces in combat operations.',
+                    'order' => 4,
                 ], [
                     'name' => 'Special Forces Engineer Sergeant',
                     'abbreviation' => '18C',
@@ -114,14 +118,17 @@ class MilitarySeeder extends Seeder
                     'name' => 'Special Forces Medical Sergeant',
                     'abbreviation' => '18D',
                     'description' => 'Provides advanced trauma care, prolonged field care, and medical training in austere environments.',
+                    'order' => 5,
                 ], [
                     'name' => 'Special Forces Communications Sergeant',
                     'abbreviation' => '18E',
                     'description' => 'Manages radio, satellite, and cyber communications to ensure secure and reliable team connectivity.',
+                    'order' => 6,
                 ], [
                     'name' => 'Special Forces Intelligence Sergeant',
                     'abbreviation' => '18F',
                     'description' => 'Conducts intelligence gathering, analysis, and target development to support mission planning and execution.',
+                    'order' => 7,
                 ],
             )
             ->create();
@@ -130,30 +137,30 @@ class MilitarySeeder extends Seeder
             ->count(5)
             ->hasAttached(Slot::factory()
                 ->sequence(
-                    ['name' => 'Group Commander', 'specialty_id' => 1, 'position_id' => null],
-                    ['name' => 'Executive Officer', 'specialty_id' => 1, 'position_id' => null],
-                    ['name' => 'Group Command Sergeant Major', 'specialty_id' => null, 'position_id' => null],
-                    ['name' => 'Company Commander', 'specialty_id' => 1, 'position_id' => null],
-                    ['name' => 'Executive Officer', 'specialty_id' => 1, 'position_id' => null],
-                    ['name' => 'First Sergeant', 'specialty_id' => null, 'position_id' => null],
-                    ['name' => 'Detachment Commander', 'specialty_id' => 1, 'position_id' => 1],
-                    ['name' => 'Assistant Detachment Commander', 'specialty_id' => 2, 'position_id' => 2],
-                    ['name' => 'Operations Sergeant', 'specialty_id' => 3, 'position_id' => 3],
-                    ['name' => 'Detachment Commander', 'specialty_id' => 1,  'position_id' => 1],
-                    ['name' => 'Operations Sergeant', 'specialty_id' => 3, 'position_id' => 3],
-                    ['name' => 'Weapons Sergeant', 'specialty_id' => 4, 'position_id' => 5],
-                    ['name' => 'Detachment Commander', 'specialty_id' => 1,  'position_id' => 1],
-                    ['name' => 'Engineering Sergeant', 'specialty_id' => 5, 'position_id' => 8],
-                    ['name' => 'Medical Sergeant', 'specialty_id' => 6, 'position_id' => 7],
+                    ['name' => 'Group Commander', 'specialty_id' => 1, 'position_id' => null, 'order' => 1],
+                    ['name' => 'Executive Officer', 'specialty_id' => 1, 'position_id' => null, 'order' => 2],
+                    ['name' => 'Group Command Sergeant Major', 'specialty_id' => null, 'position_id' => null, 'order' => 3],
+                    ['name' => 'Company Commander', 'specialty_id' => 1, 'position_id' => null, 'order' => 4],
+                    ['name' => 'Executive Officer', 'specialty_id' => 1, 'position_id' => null, 'order' => 5],
+                    ['name' => 'First Sergeant', 'specialty_id' => null, 'position_id' => null, 'order' => 6],
+                    ['name' => 'Detachment Commander', 'specialty_id' => 1, 'position_id' => 1, 'order' => 7],
+                    ['name' => 'Assistant Detachment Commander', 'specialty_id' => 2, 'position_id' => 2, 'order' => 8],
+                    ['name' => 'Operations Sergeant', 'specialty_id' => 3, 'position_id' => 3, 'order' => 9],
+                    ['name' => 'Detachment Commander', 'specialty_id' => 1,  'position_id' => 1, 'order' => 10],
+                    ['name' => 'Operations Sergeant', 'specialty_id' => 3, 'position_id' => 3, 'order' => 11],
+                    ['name' => 'Weapons Sergeant', 'specialty_id' => 4, 'position_id' => 5, 'order' => 12],
+                    ['name' => 'Detachment Commander', 'specialty_id' => 1,  'position_id' => 1, 'order' => 13],
+                    ['name' => 'Engineering Sergeant', 'specialty_id' => 5, 'position_id' => 8, 'order' => 14],
+                    ['name' => 'Medical Sergeant', 'specialty_id' => 6, 'position_id' => 7, 'order' => 15],
                 )
                 ->count(3)
             )
             ->sequence(
-                ['name' => 'Headquarters and Headquarters Company, 5th Special Forces Group'],
-                ['name' => 'Alpha Company, 1st Btn, 5th SFG'],
-                ['name' => 'ODB 5110, A Co, 1st Btn, 5th SFG'],
-                ['name' => 'ODA 5111, A Co, 1st Btn, 5th SFG'],
-                ['name' => 'ODA 5112, A Co, 1st Btn, 5th SFG'],
+                ['name' => 'Headquarters and Headquarters Company, 5th Special Forces Group', 'order' => 1],
+                ['name' => 'Alpha Company, 1st Btn, 5th SFG', 'order' => 2],
+                ['name' => 'ODB 5110, A Co, 1st Btn, 5th SFG', 'order' => 3],
+                ['name' => 'ODA 5111, A Co, 1st Btn, 5th SFG', 'order' => 4],
+                ['name' => 'ODA 5112, A Co, 1st Btn, 5th SFG', 'order' => 5],
             )
             ->create();
 
@@ -161,6 +168,7 @@ class MilitarySeeder extends Seeder
             ->state([
                 'name' => 'Operations',
                 'icon' => 'heroicon-o-fire',
+                'order' => 1,
             ])
             ->hasAttached($units)
             ->create();
@@ -169,10 +177,12 @@ class MilitarySeeder extends Seeder
             ->state([
                 'name' => 'Training',
                 'icon' => 'heroicon-o-academic-cap',
+                'order' => 2,
             ])
             ->hasAttached(Unit::factory()
                 ->state([
                     'name' => 'TRADOC',
+                    'order' => 6,
                 ])
                 ->hasAttached(Slot::factory()
                     ->state([
@@ -291,30 +301,37 @@ class MilitarySeeder extends Seeder
                     'name' => 'Sergeant',
                     'abbreviation' => 'SGT',
                     'paygrade' => 'E-5',
+                    'order' => 7,
                 ], [
                     'name' => 'Staff Sergeant',
                     'abbreviation' => 'SSG',
                     'paygrade' => 'E-6',
+                    'order' => 6,
                 ], [
                     'name' => 'Sergeant First Class',
                     'abbreviation' => 'SFC',
                     'paygrade' => 'E-7',
+                    'order' => 5,
                 ], [
                     'name' => 'Master Sergeant',
                     'abbreviation' => 'MSG',
                     'paygrade' => 'E-8',
+                    'order' => 4,
                 ], [
                     'name' => 'First Sergeant',
                     'abbreviation' => '1SG',
                     'paygrade' => 'E-8',
+                    'order' => 3,
                 ], [
                     'name' => 'Sergeant Major',
                     'abbreviation' => 'SGM',
                     'paygrade' => 'E-9',
+                    'order' => 2,
                 ], [
                     'name' => 'Command Sergeant Major',
                     'abbreviation' => 'CSM',
                     'paygrade' => 'E-9',
+                    'order' => 1,
                 ],
             )
             ->create()
