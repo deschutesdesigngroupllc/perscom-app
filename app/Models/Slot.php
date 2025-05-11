@@ -102,7 +102,7 @@ class Slot extends Model implements Hideable, Sortable
      */
     public function primary_assignment_records(): HasManyThrough
     {
-        return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id')
+        return $this->assignment_records()
             ->where('records_assignments.type', AssignmentRecordType::PRIMARY);
     }
 
@@ -111,7 +111,7 @@ class Slot extends Model implements Hideable, Sortable
      */
     public function secondary_assignment_records(): HasManyThrough
     {
-        return $this->hasManyThrough(AssignmentRecord::class, UnitSlot::class, 'slot_id', 'unit_slot_id')
+        return $this->assignment_records()
             ->where('records_assignments.type', AssignmentRecordType::SECONDARY);
     }
 
