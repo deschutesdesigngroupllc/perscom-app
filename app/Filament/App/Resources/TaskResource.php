@@ -100,7 +100,7 @@ class TaskResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            AttachmentsRelationManager::make(),
+            AttachmentsRelationManager::class,
         ];
     }
 

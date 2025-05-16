@@ -85,10 +85,6 @@ class GroupResource extends BaseResource
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\Livewire::make(RelationManagers\UnitsRelationManager::class, fn (?Group $record): array => [
-                                    'ownerRecord' => $record,
-                                    'pageClass' => Pages\EditGroup::class,
-                                ])->visibleOn('edit'),
                             ]),
                     ]),
             ]);
@@ -148,6 +144,13 @@ class GroupResource extends BaseResource
                 VisibleScope::class,
                 HiddenScope::class,
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            RelationManagers\UnitsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

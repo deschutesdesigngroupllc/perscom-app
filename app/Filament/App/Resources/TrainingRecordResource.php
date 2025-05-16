@@ -228,9 +228,9 @@ class TrainingRecordResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            AttachmentsRelationManager::make(),
-            CommentsRelationManager::make(),
-            CompetenciesRelationManager::make(),
+            AttachmentsRelationManager::class,
+            CommentsRelationManager::class,
+            CompetenciesRelationManager::class,
         ];
     }
 
