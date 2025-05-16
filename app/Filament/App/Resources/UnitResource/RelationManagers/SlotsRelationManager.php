@@ -5,14 +5,26 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\UnitResource\RelationManagers;
 
 use App\Filament\App\Resources\SlotResource;
+use App\Models\Enums\RosterMode;
+use App\Settings\DashboardSettings;
 use Filament\Forms\Form;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Tables;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Model;
 
 class SlotsRelationManager extends RelationManager
 {
     protected static string $relationship = 'slots';
+
+    public static function canViewForRecord(Model $ownerRecord, string $pageClass): bool
+    {
+        /** @var DashboardSettings $settings */
+        $settings = app(DashboardSettings::class);
+
+        return parent::canViewForRecord($ownerRecord, $pageClass)
+            && $settings->roster_mode === RosterMode::MANUAL;
+    }
 
     public function form(Form $form): Form
     {
