@@ -148,8 +148,8 @@ class SubmissionResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            CommentsRelationManager::make(),
-            StatusesRelationManager::make(),
+            CommentsRelationManager::class,
+            StatusesRelationManager::class,
         ];
     }
 

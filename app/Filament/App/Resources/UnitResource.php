@@ -7,11 +7,9 @@ namespace App\Filament\App\Resources;
 use App\Filament\App\Resources\UnitResource\Pages;
 use App\Filament\App\Resources\UnitResource\RelationManagers\SlotsRelationManager;
 use App\Filament\Exports\UnitExporter;
-use App\Models\Enums\RosterMode;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
 use App\Models\Unit;
-use App\Settings\DashboardSettings;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Tables;
@@ -87,17 +85,6 @@ class UnitResource extends BaseResource
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\Livewire::make(SlotsRelationManager::class, fn (?Unit $record): array => [
-                                    'ownerRecord' => $record,
-                                    'pageClass' => Pages\EditUnit::class,
-                                ])
-                                    ->visible(function (): bool {
-                                        /** @var DashboardSettings $settings */
-                                        $settings = app(DashboardSettings::class);
-
-                                        return $settings->roster_mode === RosterMode::MANUAL;
-                                    })
-                                    ->visibleOn('edit'),
                             ]),
                     ]),
             ]);
@@ -158,6 +145,13 @@ class UnitResource extends BaseResource
                 VisibleScope::class,
                 HiddenScope::class,
             ]);
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            SlotsRelationManager::class,
+        ];
     }
 
     public static function getPages(): array

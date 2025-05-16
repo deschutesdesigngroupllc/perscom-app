@@ -203,8 +203,8 @@ class ServiceRecordResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            AttachmentsRelationManager::make(),
-            CommentsRelationManager::make(),
+            AttachmentsRelationManager::class,
+            CommentsRelationManager::class,
         ];
     }
 
