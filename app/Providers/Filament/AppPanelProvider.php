@@ -8,17 +8,7 @@ use App\Filament\App\Pages\Auth\EditProfile;
 use App\Filament\App\Pages\Auth\EmailVerificationPrompt;
 use App\Filament\App\Pages\Auth\Login;
 use App\Filament\App\Pages\Dashboard;
-use App\Filament\App\Resources\AnnouncementResource;
 use App\Filament\App\Resources\AnnouncementResource\Widgets\RecentAnnouncements;
-use App\Filament\App\Resources\AssignmentRecordResource;
-use App\Filament\App\Resources\AwardRecordResource;
-use App\Filament\App\Resources\CombatRecordResource;
-use App\Filament\App\Resources\EventResource;
-use App\Filament\App\Resources\MessageResource;
-use App\Filament\App\Resources\QualificationRecordResource;
-use App\Filament\App\Resources\RankRecordResource;
-use App\Filament\App\Resources\ServiceRecordResource;
-use App\Filament\App\Resources\UserResource;
 use App\Filament\App\Resources\UserResource\Widgets\UsersOverview;
 use App\Filament\App\Widgets\AccountWidget;
 use App\Filament\App\Widgets\OrganizationInfoWidget;
@@ -28,10 +18,11 @@ use App\Http\Middleware\CheckUserApprovalStatus;
 use App\Http\Middleware\InitializeTenancyBySubdomain;
 use App\Http\Middleware\RedirectSocialProvider;
 use App\Http\Middleware\SentryContext;
+use App\Models\SocialiteUser;
 use App\Models\Tenant;
 use Archilex\AdvancedTables\Plugin\AdvancedTablesPlugin;
-use Awcodes\FilamentQuickCreate\QuickCreatePlugin;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
+use DutchCodingCompany\FilamentSocialite\Exceptions\ImplementationException;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
 use Filament\FontProviders\SpatieGoogleFontProvider;
@@ -47,7 +38,6 @@ use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\ActionSize;
 use Filament\Support\Enums\MaxWidth;
-use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -60,6 +50,9 @@ use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
 
 class AppPanelProvider extends PanelProvider
 {
+    /**
+     * @throws ImplementationException
+     */
     public function panel(Panel $panel): Panel
     {
         $registration = $this->app->environment('demo')
@@ -155,24 +148,8 @@ class AppPanelProvider extends PanelProvider
                     ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
                 MinimalTheme::make(),
                 FilamentShieldPlugin::make(),
-                // TODO: Actions do not take advantage of the handleRecordCreation function so they fail.
-                //                QuickCreatePlugin::make()
-                //                    ->renderUsingHook(PanelsRenderHook::GLOBAL_SEARCH_AFTER)
-                //                    ->alwaysShowModal()
-                //                    ->includes([
-                //                        AnnouncementResource::class,
-                //                        AssignmentRecordResource::class,
-                //                        AwardRecordResource::class,
-                //                        CombatRecordResource::class,
-                //                        EventResource::class,
-                //                        MessageResource::class,
-                //                        QualificationRecordResource::class,
-                //                        RankRecordResource::class,
-                //                        ServiceRecordResource::class,
-                //                        UserResource::class,
-                //                    ])
-                //                    ->slideOver(),
                 FilamentSocialitePlugin::make()
+                    ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration()
                     ->providers($socialProviders),
             ])

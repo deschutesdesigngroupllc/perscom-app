@@ -30,6 +30,10 @@ class UserRequest extends Request
             'profile_photo' => 'nullable|image|min:1|max:10000',
             'cover_photo' => 'nullable|image|min:1|max:10000',
             'last_seen_at' => 'nullable|date',
+            'facebook_user_id' => 'nullable|string',
+            'github_user_id' => 'nullable|string',
+            'google_user_id' => 'nullable|string',
+            'discord_user_id' => 'nullable|string',
             'updated_at' => 'date',
             'created_at' => 'date',
         ], $this->getFieldRules());

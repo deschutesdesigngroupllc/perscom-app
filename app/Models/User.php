@@ -29,6 +29,7 @@ use App\Traits\HasStatusRecords;
 use App\Traits\HasTrainingRecords;
 use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
+use App\Traits\SocialRelationships;
 use Archilex\AdvancedTables\Concerns\HasViews;
 use Carbon\CarbonInterval;
 use Exception;
@@ -78,6 +79,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @property string|null $profile_photo
  * @property string|null $cover_photo
  * @property Carbon|null $last_seen_at
+ * @property string|null $facebook_user_id
+ * @property string|null $github_user_id
+ * @property string|null $google_user_id
  * @property string|null $discord_user_id
  * @property string|null $discord_private_channel_id
  * @property array<array-key, mixed>|null $data
@@ -96,11 +100,19 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, CombatRecord> $combat_records
  * @property-read int|null $combat_records_count
  * @property-read string|null $cover_photo_url
+ * @property-read bool $discord_connected
+ * @property-read SocialiteUser|null $discordUser
  * @property-read EventRegistration|null $registration
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Event> $events
  * @property-read int|null $events_count
+ * @property-read bool $facebook_connected
+ * @property-read SocialiteUser|null $facebookUser
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Field> $fields
  * @property-read int|null $fields_count
+ * @property-read bool $github_connected
+ * @property-read SocialiteUser|null $githubUser
+ * @property-read bool $google_connected
+ * @property-read SocialiteUser|null $googleUser
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
@@ -177,6 +189,9 @@ use Spatie\Permission\Traits\HasRoles;
  * @method static Builder<static>|User whereDiscordUserId($value)
  * @method static Builder<static>|User whereEmail($value)
  * @method static Builder<static>|User whereEmailVerifiedAt($value)
+ * @method static Builder<static>|User whereFacebookUserId($value)
+ * @method static Builder<static>|User whereGithubUserId($value)
+ * @method static Builder<static>|User whereGoogleUserId($value)
  * @method static Builder<static>|User whereId($value)
  * @method static Builder<static>|User whereLastSeenAt($value)
  * @method static Builder<static>|User whereName($value)
@@ -232,6 +247,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
     use HasViews;
     use JwtClaims;
     use Notifiable;
+    use SocialRelationships;
 
     protected $fillable = [
         'name',
@@ -246,6 +262,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         'profile_photo',
         'cover_photo',
         'last_seen_at',
+        'facebook_user_id',
+        'github_user_id',
+        'google_user_id',
         'discord_user_id',
         'discord_private_channel_id',
         'created_at',
@@ -291,6 +310,9 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             'profile_photo',
             'cover_photo',
             'last_seen_at',
+            'facebook_user_id',
+            'github_user_id',
+            'google_user_id',
             'discord_user_id',
             'discord_private_channel_id',
             'created_at',
