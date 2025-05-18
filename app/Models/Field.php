@@ -39,7 +39,7 @@ use function in_array;
  * @property string|null $rules
  * @property bool $readonly
  * @property bool $hidden
- * @property ArrayObject<array-key, mixed>|null $options
+ * @property ArrayObject $options
  * @property FieldOptionsType|null $options_type
  * @property FieldOptionsModel|null $options_model
  * @property \Illuminate\Support\Carbon|null $created_at
