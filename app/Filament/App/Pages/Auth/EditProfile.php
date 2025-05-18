@@ -152,6 +152,7 @@ class EditProfile extends BaseEditProfile
                         Tabs\Tab::make('Password')
                             ->icon('heroicon-o-lock-closed')
                             ->schema([
+                                /** @phpstan-ignore method.notFound */
                                 $this->getPasswordFormComponent()
                                     ->helperText('Set a new password for your account.')
                                     ->label('New Password'),
