@@ -85,6 +85,11 @@ class ModelTag extends Model
                 'type' => ModelTagType::USER,
             ],
             [
+                'tag' => '{user_discord_tag}',
+                'description' => 'This will replace the user\'s name with their Discord name and tag them.',
+                'type' => ModelTagType::USER,
+            ],
+            [
                 'tag' => '{assignment_record_status}',
                 'description' => 'The status of the assignment record.',
                 'type' => ModelTagType::ASSIGNMENT_RECORD,
