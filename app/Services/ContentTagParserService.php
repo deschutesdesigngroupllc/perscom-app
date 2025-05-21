@@ -39,7 +39,7 @@ class ContentTagParserService
         return value(match (true) {
             $tag === '{user_name}' => data_get($user, 'name'),
             $tag === '{user_email}' => data_get($user, 'email'),
-            $tag === '{user_email_verified_at}' => optional($user)->email_verified_at ? Carbon::parse($user?->email_verified_at)->toDayDateTimeString() : null,
+            $tag === '{user_email_verified_at}' => data_get($user, 'email_verified_at') ? Carbon::parse($user?->email_verified_at)->toDayDateTimeString() : null,
             $tag === '{user_status}' => data_get($user, 'status.name'),
             $tag === '{user_online}' => optional($user)->online ? 'True' : 'False',
             $tag === '{user_assignment_position}' => data_get($user, 'position.name'),
@@ -47,7 +47,7 @@ class ContentTagParserService
             $tag === '{user_assignment_unit}' => data_get($user, 'unit.name'),
             $tag === '{user_rank}' => data_get($user, 'rank.name'),
             $tag === '{user_rank_abbreviation}' => data_get($user, 'rank.abbreviation'),
-            $tag === '{user_discord_tag}' => "<@{$user->discord_user_id}>",
+            $tag === '{user_discord_tag}' => filled($user->discord_user_id) ? "<@$user->discord_user_id>" : null,
             $tag === '{assignment_record_status}' => data_get($attachedModel, 'status.name'),
             $tag === '{assignment_record_unit}' => data_get($attachedModel, 'unit.name'),
             $tag === '{assignment_record_position}' => data_get($attachedModel, 'position.name'),
