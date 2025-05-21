@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Services\ModelTextParserService;
+use App\Facades\ContentTagParser;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
@@ -102,6 +102,6 @@ class Document extends Model implements HasLabel, Htmlable
 
     public function toHtml(?User $user = null, mixed $attachedModel = null): string
     {
-        return ModelTextParserService::parse($this->content, $user, $attachedModel) ?? '';
+        return ContentTagParser::parse($this->content, $user, $attachedModel) ?? '';
     }
 }

@@ -12,7 +12,7 @@ on:
 jobs:
   test-application:
     name: Run PHPUnit Tests
-    runs-on: ubuntu-22.04-16
+    runs-on: ubuntu-latest
     if: ${{ !contains(github.event.head_commit.message, '[skip tests]') }}
     env:
       CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}

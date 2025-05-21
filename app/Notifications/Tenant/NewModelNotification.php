@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Notifications\Tenant;
 
+use App\Facades\ContentTagParser;
 use App\Models\Enums\NotificationChannel;
 use App\Models\ModelNotification;
 use App\Models\User;
-use App\Services\ModelTextParserService;
+use App\Pipes\ConvertHtmlToMarkdown;
 use App\Services\TwilioService;
 use Filament\Notifications\Notification as FilamentNotification;
 use Filament\Support\Colors\Color;
@@ -19,8 +20,8 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Pipeline;
 use Illuminate\Support\HtmlString;
-use League\HTMLToMarkdown\HtmlConverter;
 use NotificationChannels\Discord\DiscordMessage;
 use NotificationChannels\Twilio\TwilioMessage;
 use NotificationChannels\Twilio\TwilioSmsMessage;
@@ -38,12 +39,12 @@ class NewModelNotification extends Notification implements ShouldQueue
 
     public function __construct(protected ModelNotification $modelNotification)
     {
-        $this->subject = ModelTextParserService::parse(
+        $this->subject = ContentTagParser::parse(
             content: $this->modelNotification->subject ?? 'Unable to parse notification subject.',
             attachedModel: $this->modelNotification->model
         ) ?? 'Unable to parse notification subject.';
 
-        $this->message = ModelTextParserService::parse(
+        $this->message = ContentTagParser::parse(
             content: $this->modelNotification->message ?? 'Unable to parse notification message.',
             attachedModel: $this->modelNotification->model
         ) ?? 'Unable to parse notification message.';
@@ -103,17 +104,18 @@ class NewModelNotification extends Notification implements ShouldQueue
 
     public function toDiscord(): DiscordMessage
     {
-        $converter = new HtmlConverter([
-            'strip_tags' => true,
-            'remove_nodes' => true,
-        ]);
-
-        $html = <<<HTML
+        $text = <<<HTML
 <p>$this->subject</p>
 {$this->message}
 HTML;
+        $message = Pipeline::send($text)
+            ->through([
+                ConvertHtmlToMarkdown::class,
+            ])->thenReturn();
 
-        return DiscordMessage::create($converter->convert($html));
+        return DiscordMessage::create(
+            body: $message
+        );
     }
 
     public function toTwilio(): TwilioSmsMessage|TwilioMessage|null

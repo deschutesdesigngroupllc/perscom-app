@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Tenant\Services;
 
+use App\Facades\ContentTagParser;
 use App\Models\AssignmentRecord;
 use App\Models\AwardRecord;
 use App\Models\CombatRecord;
@@ -15,10 +16,9 @@ use App\Models\Specialty;
 use App\Models\Status;
 use App\Models\Unit;
 use App\Models\User;
-use App\Services\ModelTextParserService;
 use Tests\Feature\Tenant\TenantTestCase;
 
-class ModelTextParserServiceTest extends TenantTestCase
+class ContentTagParserServiceTest extends TenantTestCase
 {
     public function test_it_correctly_replaces_user_text(): void
     {
@@ -26,7 +26,7 @@ class ModelTextParserServiceTest extends TenantTestCase
 
         $user = User::factory()->createQuietly();
 
-        $replaced = ModelTextParserService::parse($content, $user);
+        $replaced = ContentTagParser::parse($content, $user);
 
         $this->assertSame($replaced, "$user->name $user->email {$user->email_verified_at->toDayDateTimeString()} {$user->status->name} {$user->position->name} {$user->specialty->name} {$user->unit->name} {$user->rank->name}");
     }
@@ -43,7 +43,7 @@ class ModelTextParserServiceTest extends TenantTestCase
             'specialty_id' => Specialty::factory(),
         ])->createQuietly();
 
-        $replaced = ModelTextParserService::parse(
+        $replaced = ContentTagParser::parse(
             content: $content,
             attachedModel: $record
         );
@@ -57,7 +57,7 @@ class ModelTextParserServiceTest extends TenantTestCase
 
         $record = AwardRecord::factory()->createQuietly();
 
-        $replaced = ModelTextParserService::parse(
+        $replaced = ContentTagParser::parse(
             content: $content,
             attachedModel: $record
         );
@@ -71,7 +71,7 @@ class ModelTextParserServiceTest extends TenantTestCase
 
         $record = CombatRecord::factory()->createQuietly();
 
-        $replaced = ModelTextParserService::parse(
+        $replaced = ContentTagParser::parse(
             content: $content,
             attachedModel: $record
         );
@@ -85,7 +85,7 @@ class ModelTextParserServiceTest extends TenantTestCase
 
         $record = QualificationRecord::factory()->createQuietly();
 
-        $replaced = ModelTextParserService::parse(
+        $replaced = ContentTagParser::parse(
             content: $content,
             attachedModel: $record
         );
@@ -99,7 +99,7 @@ class ModelTextParserServiceTest extends TenantTestCase
 
         $record = RankRecord::factory()->createQuietly();
 
-        $replaced = ModelTextParserService::parse(
+        $replaced = ContentTagParser::parse(
             content: $content,
             attachedModel: $record
         );
@@ -113,7 +113,7 @@ class ModelTextParserServiceTest extends TenantTestCase
 
         $record = ServiceRecord::factory()->createQuietly();
 
-        $replaced = ModelTextParserService::parse(
+        $replaced = ContentTagParser::parse(
             content: $content,
             attachedModel: $record
         );
@@ -127,7 +127,7 @@ class ModelTextParserServiceTest extends TenantTestCase
 
         $record = ServiceRecord::factory()->createQuietly();
 
-        $replaced = ModelTextParserService::parse(
+        $replaced = ContentTagParser::parse(
             content: $content,
             attachedModel: $record
         );
