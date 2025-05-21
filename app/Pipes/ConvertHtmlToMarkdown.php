@@ -22,10 +22,8 @@ class ConvertHtmlToMarkdown
     public function __invoke(string $html, Closure $next): string
     {
         $markdown = Str::of($html)
-            ->replaceMatches('/<@(\d+)>/', function ($matches) {
-                return '{{MENTION_'.$matches[1].'}}';
-            })
-            ->pipe(fn (Stringable $content) => $this->htmlConverter->convert($content->toString()))
+            ->replaceMatches('/<@(\d+)>/', fn ($matches): string => '{{MENTION_'.$matches[1].'}}')
+            ->pipe(fn (Stringable $content): string => $this->htmlConverter->convert($content->toString()))
             ->replaceMatches('/\{\{MENTION\\\\_(\d+)\}\}/', '<@$1>')
             ->toString();
 
