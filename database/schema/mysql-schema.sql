@@ -9,11 +9,11 @@ DROP TABLE IF EXISTS `admins`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admins` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `remember_token` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -25,10 +25,10 @@ DROP TABLE IF EXISTS `alerts`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `alerts` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `link_text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `link_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `channels` json DEFAULT NULL,
   `enabled` tinyint(1) NOT NULL DEFAULT '0',
   `order` int NOT NULL DEFAULT '0',
@@ -42,15 +42,35 @@ DROP TABLE IF EXISTS `banners`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `banners` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `message` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `link_url` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `link_text` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `background_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `text_color` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `message` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `link_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `link_text` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `background_color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `text_color` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `cache`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cache` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `cache_locks`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `cache_locks` (
+  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `owner` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `expiration` int NOT NULL,
+  PRIMARY KEY (`key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `domains`;
@@ -58,7 +78,7 @@ DROP TABLE IF EXISTS `domains`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `domains` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `domain` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `domain` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tenant_id` bigint unsigned NOT NULL,
   `is_custom_subdomain` tinyint(1) NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
@@ -74,11 +94,11 @@ DROP TABLE IF EXISTS `failed_jobs`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `failed_jobs` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `connection` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `queue` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payload` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `exception` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`)
@@ -89,14 +109,14 @@ DROP TABLE IF EXISTS `health_check_result_history_items`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `health_check_result_history_items` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `check_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `check_label` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notification_message` text COLLATE utf8mb4_unicode_ci,
-  `short_summary` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `check_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `check_label` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notification_message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `short_summary` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `meta` json NOT NULL,
   `ended_at` timestamp NOT NULL,
-  `batch` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -108,16 +128,154 @@ DROP TABLE IF EXISTS `job_batches`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `job_batches` (
-  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `total_jobs` int NOT NULL,
   `pending_jobs` int NOT NULL,
   `failed_jobs` int NOT NULL,
-  `failed_job_ids` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `options` mediumtext COLLATE utf8mb4_unicode_ci,
+  `failed_job_ids` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `options` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `cancelled_at` int DEFAULT NULL,
   `created_at` int NOT NULL,
   `finished_at` int DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `lc_countries`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lc_countries` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key: auto-incremented country ID.',
+  `lc_region_id` tinyint unsigned NOT NULL COMMENT 'Foreign key referencing the region this country belongs to.',
+  `uid` char(26) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'Unique ULID for the country, sortable and lexicographically unique.',
+  `official_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'The official name of the country (e.g., "United States of America").',
+  `capital` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Capital city of the country.',
+  `iso_alpha_2` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ISO 3166-1 alpha-2 code (e.g., "US" for the United States).',
+  `iso_alpha_3` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ISO 3166-1 alpha-3 code (e.g., "USA" for the United States).',
+  `iso_numeric` smallint DEFAULT NULL COMMENT 'ISO 3166-1 numeric code for the country.',
+  `international_phone` varchar(150) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'International dialing code (e.g., +1 for the United States).',
+  `geoname_id` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Geonames ID for geographical reference.',
+  `wmo` varchar(10) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'World Meteorological Organization (WMO) abbreviation.',
+  `independence_day` date DEFAULT NULL COMMENT 'Year the country gained independence.',
+  `population` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The country’s population.',
+  `area` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Area of the country in square kilometers (km²).',
+  `gdp` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Gross Domestic Product (GDP) in billions of US dollars.',
+  `languages` json DEFAULT NULL COMMENT 'List of official languages spoken in the country.',
+  `tld` json DEFAULT NULL COMMENT 'Top-level domain(s) used by the country (e.g., ".us" for the United States).',
+  `alternative_tld` json DEFAULT NULL COMMENT 'Alternative top-level domains the country may use.',
+  `borders` json DEFAULT NULL COMMENT 'List of neighboring countries sharing borders.',
+  `timezones` json DEFAULT NULL COMMENT 'Main and other timezones used in the country.',
+  `currency` json DEFAULT NULL COMMENT 'Currency details including name, code, symbol, banknotes, coins, and unit conversions.',
+  `flag_emoji` json DEFAULT NULL COMMENT 'Emoji representation of the country’s flag.',
+  `flag_colors` json DEFAULT NULL COMMENT 'Base colors of the country’s flag.',
+  `flag_colors_web` json DEFAULT NULL COMMENT 'Web-safe color codes for the country’s flag.',
+  `flag_colors_contrast` json DEFAULT NULL COMMENT 'Contrasting colors for use with flag colors for readability.',
+  `flag_colors_hex` json DEFAULT NULL COMMENT 'Hexadecimal color codes for the country’s flag.',
+  `flag_colors_rgb` json DEFAULT NULL COMMENT 'RGB color values for the country’s flag.',
+  `flag_colors_cmyk` json DEFAULT NULL COMMENT 'CMYK color values for the country’s flag.',
+  `flag_colors_hsl` json DEFAULT NULL COMMENT 'HSL (Hue, Saturation, Lightness) color values for the flag.',
+  `flag_colors_hsv` json DEFAULT NULL COMMENT 'HSV (Hue, Saturation, Value) color values for the flag.',
+  `flag_colors_pantone` json DEFAULT NULL COMMENT 'Pantone color codes for the country’s flag.',
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1' COMMENT 'Visibility flag to determine if the country is publicly visible.',
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `lc_countries_lc_region_id_iso_alpha_2_unique` (`lc_region_id`,`iso_alpha_2`),
+  UNIQUE KEY `lc_countries_uid_unique` (`uid`),
+  CONSTRAINT `lc_countries_lc_region_id_foreign` FOREIGN KEY (`lc_region_id`) REFERENCES `lc_regions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `lc_countries_coordinates`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lc_countries_coordinates` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `lc_country_id` int unsigned NOT NULL,
+  `latitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `longitude` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `degrees_with_decimal` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `degrees_minutes_seconds` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `degrees_and_decimal_minutes` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `gps` json DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lc_countries_coordinates_lc_country_id_foreign` (`lc_country_id`),
+  CONSTRAINT `lc_countries_coordinates_lc_country_id_foreign` FOREIGN KEY (`lc_country_id`) REFERENCES `lc_countries` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `lc_countries_extras`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lc_countries_extras` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT COMMENT 'Primary key: auto-incremented extra information ID.',
+  `lc_country_id` int unsigned NOT NULL COMMENT 'Foreign key linking to the lc_countries table.',
+  `national_sport` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'The national sport of the country, if applicable.',
+  `cybersecurity_agency` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL COMMENT 'Name of the country''s national cybersecurity agency.',
+  `popular_technologies` json DEFAULT NULL COMMENT 'A list of popular technologies used in the country (e.g., programming languages, platforms).',
+  `internet` json DEFAULT NULL COMMENT 'Information about the country''s internet infrastructure, including speed and penetration.',
+  `religions` json DEFAULT NULL COMMENT 'A list of religions practiced in the country.',
+  `international_organizations` json DEFAULT NULL COMMENT 'A list of international organizations the country is a member of (e.g., UN, WTO).',
+  PRIMARY KEY (`id`),
+  KEY `lc_countries_extras_lc_country_id_foreign` (`lc_country_id`),
+  CONSTRAINT `lc_countries_extras_lc_country_id_foreign` FOREIGN KEY (`lc_country_id`) REFERENCES `lc_countries` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `lc_countries_geographical`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lc_countries_geographical` (
+  `id` int unsigned NOT NULL AUTO_INCREMENT,
+  `lc_country_id` int unsigned NOT NULL,
+  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `features_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `properties` json NOT NULL,
+  `geometry` json NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `lc_countries_geographical_lc_country_id_foreign` (`lc_country_id`),
+  CONSTRAINT `lc_countries_geographical_lc_country_id_foreign` FOREIGN KEY (`lc_country_id`) REFERENCES `lc_countries` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `lc_countries_translations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lc_countries_translations` (
+  `id` bigint unsigned NOT NULL AUTO_INCREMENT,
+  `lc_country_id` int unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `locale` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `lc_countries_translations_lc_country_id_locale_unique` (`lc_country_id`,`locale`),
+  UNIQUE KEY `lc_countries_translations_slug_locale_unique` (`slug`,`locale`),
+  KEY `lc_countries_translations_locale_index` (`locale`),
+  CONSTRAINT `lc_countries_translations_lc_country_id_foreign` FOREIGN KEY (`lc_country_id`) REFERENCES `lc_countries` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `lc_region_translations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lc_region_translations` (
+  `id` tinyint unsigned NOT NULL AUTO_INCREMENT,
+  `lc_region_id` tinyint unsigned NOT NULL,
+  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `locale` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `lc_region_translations_lc_region_id_locale_unique` (`lc_region_id`,`locale`),
+  UNIQUE KEY `lc_region_translations_slug_locale_unique` (`slug`,`locale`),
+  KEY `lc_region_translations_locale_index` (`locale`),
+  CONSTRAINT `lc_region_translations_lc_region_id_foreign` FOREIGN KEY (`lc_region_id`) REFERENCES `lc_regions` (`id`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `lc_regions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `lc_regions` (
+  `id` tinyint unsigned NOT NULL AUTO_INCREMENT,
+  `iso_alpha_2` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'ISO 3166-1 Alpha-2 code',
+  `icao` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'International Civil Aviation Organization (ICAO) region',
+  `iucn` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'International Union for Conservation of Nature (IUCN) region',
+  `tdwg` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL COMMENT 'World Geographical Scheme for Recording Plant Distributions code',
+  `is_visible` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -126,8 +284,8 @@ DROP TABLE IF EXISTS `mail`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `mail` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `subject` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `subject` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `recipients` json NOT NULL,
   `links` json DEFAULT NULL,
   `send_now` tinyint(1) NOT NULL DEFAULT '1',
@@ -143,7 +301,7 @@ DROP TABLE IF EXISTS `metrics`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `metrics` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `key` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `count` int NOT NULL DEFAULT '0',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -155,7 +313,7 @@ DROP TABLE IF EXISTS `migrations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `migrations` (
   `id` int unsigned NOT NULL AUTO_INCREMENT,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `batch` int NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -165,7 +323,7 @@ DROP TABLE IF EXISTS `model_has_permissions`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `model_has_permissions` (
   `permission_id` bigint unsigned NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
   KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`),
@@ -177,7 +335,7 @@ DROP TABLE IF EXISTS `model_has_roles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `model_has_roles` (
   `role_id` bigint unsigned NOT NULL,
-  `model_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `model_id` bigint unsigned NOT NULL,
   PRIMARY KEY (`role_id`,`model_id`,`model_type`),
   KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`),
@@ -188,11 +346,11 @@ DROP TABLE IF EXISTS `notifications`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `notifications` (
-  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notifiable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `notifiable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `notifiable_id` bigint unsigned NOT NULL,
-  `data` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `data` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `read_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -205,8 +363,8 @@ DROP TABLE IF EXISTS `operations`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `operations` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `dispatched` enum('sync','async') COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `dispatched` enum('sync','async') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `processed_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -215,8 +373,8 @@ DROP TABLE IF EXISTS `password_reset_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   KEY `password_resets_email_index` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -226,9 +384,9 @@ DROP TABLE IF EXISTS `permissions`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `permissions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `guard_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -240,11 +398,11 @@ DROP TABLE IF EXISTS `personal_access_tokens`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `personal_access_tokens` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tokenable_id` bigint unsigned NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `abilities` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -260,10 +418,10 @@ CREATE TABLE `pulse_aggregates` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `bucket` int unsigned NOT NULL,
   `period` mediumint unsigned NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `key` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `key_hash` binary(16) GENERATED ALWAYS AS (unhex(md5(`key`))) VIRTUAL,
-  `aggregate` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `aggregate` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `value` decimal(20,2) NOT NULL,
   `count` int unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -279,8 +437,8 @@ DROP TABLE IF EXISTS `pulse_entries`;
 CREATE TABLE `pulse_entries` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `timestamp` int unsigned NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `key` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `key_hash` binary(16) GENERATED ALWAYS AS (unhex(md5(`key`))) VIRTUAL,
   `value` bigint DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -296,10 +454,10 @@ DROP TABLE IF EXISTS `pulse_values`;
 CREATE TABLE `pulse_values` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `timestamp` int unsigned NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `key` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `key_hash` binary(16) GENERATED ALWAYS AS (unhex(md5(`key`))) VIRTUAL,
-  `value` mediumtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `value` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `pulse_values_type_key_hash_unique` (`type`,`key_hash`),
   KEY `pulse_values_timestamp_index` (`timestamp`),
@@ -312,9 +470,9 @@ DROP TABLE IF EXISTS `receipts`;
 CREATE TABLE `receipts` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `tenant_id` bigint unsigned NOT NULL,
-  `provider_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `amount` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tax` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `provider_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `amount` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tax` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `paid_at` timestamp NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -340,13 +498,28 @@ DROP TABLE IF EXISTS `roles`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `roles` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `description` text COLLATE utf8mb4_unicode_ci,
-  `guard_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `guard_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+DROP TABLE IF EXISTS `sessions`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `sessions` (
+  `id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `user_id` bigint unsigned DEFAULT NULL,
+  `ip_address` varchar(45) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `user_agent` text COLLATE utf8mb4_unicode_ci,
+  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `last_activity` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `sessions_user_id_index` (`user_id`),
+  KEY `sessions_last_activity_index` (`last_activity`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 DROP TABLE IF EXISTS `subscription_items`;
@@ -355,9 +528,9 @@ DROP TABLE IF EXISTS `subscription_items`;
 CREATE TABLE `subscription_items` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `subscription_id` bigint unsigned NOT NULL,
-  `stripe_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stripe_product` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `stripe_price` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_product` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `stripe_price` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `quantity` int NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -372,10 +545,10 @@ DROP TABLE IF EXISTS `subscriptions`;
 CREATE TABLE `subscriptions` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
   `tenant_id` bigint unsigned NOT NULL,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stripe_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stripe_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `stripe_price` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_status` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_price` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `quantity` int DEFAULT NULL,
   `trial_ends_at` timestamp NULL DEFAULT NULL,
   `ends_at` timestamp NULL DEFAULT NULL,
@@ -390,7 +563,7 @@ DROP TABLE IF EXISTS `tax_rates`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tax_rates` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `stripe_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `stripe_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `percentage` double NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -404,12 +577,12 @@ DROP TABLE IF EXISTS `telescope_entries`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `telescope_entries` (
   `sequence` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `batch_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `family_hash` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `batch_id` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `family_hash` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `should_display_on_index` tinyint(1) NOT NULL DEFAULT '1',
-  `type` varchar(20) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime DEFAULT NULL,
   PRIMARY KEY (`sequence`),
   UNIQUE KEY `telescope_entries_uuid_unique` (`uuid`),
@@ -423,8 +596,8 @@ DROP TABLE IF EXISTS `telescope_entries_tags`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `telescope_entries_tags` (
-  `entry_uuid` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `tag` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `entry_uuid` char(36) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`entry_uuid`,`tag`),
   KEY `telescope_entries_tags_tag_index` (`tag`),
   CONSTRAINT `telescope_entries_tags_entry_uuid_foreign` FOREIGN KEY (`entry_uuid`) REFERENCES `telescope_entries` (`uuid`) ON DELETE CASCADE
@@ -434,7 +607,7 @@ DROP TABLE IF EXISTS `telescope_monitoring`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `telescope_monitoring` (
-  `tag` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tag` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`tag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -442,11 +615,11 @@ DROP TABLE IF EXISTS `tenant_user_impersonation_tokens`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tenant_user_impersonation_tokens` (
-  `token` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(128) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `tenant_id` bigint unsigned NOT NULL,
   `user_id` bigint unsigned NOT NULL,
-  `auth_guard` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `redirect_url` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `auth_guard` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `redirect_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NOT NULL,
   PRIMARY KEY (`token`),
   KEY `tenant_user_impersonation_tokens_tenant_id_foreign` (`tenant_id`),
@@ -458,23 +631,23 @@ DROP TABLE IF EXISTS `tenants`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `tenants` (
   `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `website` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `stripe_id` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pm_type` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pm_last_four` varchar(4) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pm_expiration` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `extra_billing_information` text COLLATE utf8mb4_unicode_ci,
+  `name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `website` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `stripe_id` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pm_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pm_last_four` varchar(4) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pm_expiration` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `extra_billing_information` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `trial_ends_at` timestamp NULL DEFAULT NULL,
-  `billing_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_address_line_2` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_city` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_state` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `billing_postal_code` varchar(25) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `vat_id` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `invoice_emails` text COLLATE utf8mb4_unicode_ci,
-  `billing_country` varchar(2) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `billing_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `billing_address_line_2` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `billing_city` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `billing_state` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `billing_postal_code` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `vat_id` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `invoice_emails` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+  `billing_country` varchar(2) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `data` json DEFAULT NULL,
   `last_login_at` datetime DEFAULT NULL,
   `setup_completed_at` timestamp NULL DEFAULT NULL,
@@ -533,3 +706,12 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (38,'2024_10_13_211
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (39,'2024_10_24_020719_add_channels_to_alerts_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (40,'2024_12_29_022644_create_metrics_table',1);
 INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (41,'2024_12_29_160938_remove_soft_deletes',1);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (42,'2025_05_02_215143_create_cache_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (43,'2025_05_02_215200_create_sessions_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (44,'2025_05_04_221507_create_lc_regions_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (45,'2025_05_04_221508_create_lc_region_translations_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (46,'2025_05_04_221509_create_lc_countries_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (47,'2025_05_04_221510_create_lc_countries_translations_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (48,'2025_05_04_221511_create_lc_countries_geographical_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (49,'2025_05_04_221512_create_lc_countries_extras_table',2);
+INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES (50,'2025_05_04_221513_create_lc_countries_coordinates_table',2);
