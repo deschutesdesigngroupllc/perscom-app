@@ -25,6 +25,7 @@ class Login extends BaseLogin
             ->schema([
                 $email->placeholder(fn (): ?string => $demo ? 'demo@perscom.io' : null),
                 $password->placeholder(fn (): ?string => $demo ? 'password' : null),
+                App\Filament\Forms\Components\Turnstile::make('turnstile'),
                 $this->getRememberFormComponent(),
             ]);
     }

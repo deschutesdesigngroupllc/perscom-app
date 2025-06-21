@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers\Filament;
 
+use App\Filament\Admin\Pages\Auth\Login;
 use App\Http\Middleware\AttachTraceAndRequestId;
 use App\Http\Middleware\SentryContext;
 use Filament\FontProviders\SpatieGoogleFontProvider;
@@ -33,7 +34,7 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->domain(config('app.url'))
-            ->login()
+            ->login(Login::class)
             ->emailVerification()
             ->colors([
                 'primary' => Color::Blue,
