@@ -66,6 +66,7 @@
     "stancl/virtualcolumn": "^1.5.0",
     "staudenmeir/belongs-to-through": "^2.16.4",
     "staudenmeir/eloquent-has-many-deep": "^1.20.7",
+    "staudenmeir/eloquent-json-relations": "^1.13",
     "tailflow/laravel-orion": "^2.23.0",
     "tightenco/ziggy": "^2.5.3",
     "timokoerber/laravel-one-time-operations": "^1.4.5",

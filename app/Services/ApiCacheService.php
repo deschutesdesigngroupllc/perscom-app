@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace App\Services;
 
+use App\Events\ApiPurgedFailed;
+use App\Events\ApiPurgedSuccessful;
 use App\Http\Resources\Api\ApiResource;
 use App\Http\Resources\Api\ApiResourceCollection;
 use App\Models\Tenant;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Client\Pool;
+use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
@@ -59,7 +62,7 @@ class ApiCacheService
             ->values();
     }
 
-    public function purgeCacheForTags(Collection|string $tags): array
+    public function purgeCacheForTags(Collection|string $tags, string $event): array
     {
         $tags = collect($tags);
 
@@ -72,11 +75,27 @@ class ApiCacheService
             'Fastly-Soft-Purge' => 1,
         ];
 
-        return Http::pool(fn (Pool $pool) => $tags->map(fn ($tag) => $pool
+        $responses = Http::pool(fn (Pool $pool) => $tags->map(fn ($tag) => $pool
             ->baseUrl($url)
             ->withHeaders($headers)
             ->post($tag)
         )->toArray());
+
+        foreach ($responses as $response) {
+            if ($response instanceof Response && ! $response->successful()) {
+                event(new ApiPurgedFailed(
+                    tags: $tags->toArray(),
+                    event: $event,
+                ));
+            } else {
+                event(new ApiPurgedSuccessful(
+                    tags: $tags->toArray(),
+                    event: $event,
+                ));
+            }
+        }
+
+        return $responses;
     }
 
     public function getTenantCacheTag(): string

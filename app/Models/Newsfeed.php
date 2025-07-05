@@ -30,7 +30,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|null $causer
  * @property-read string|null $color
  * @property-read \Illuminate\Support\Collection $changes
  * @property-read string|null $headline
@@ -38,7 +38,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property-read ModelLike|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $likes
  * @property-read int|null $likes_count
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|null $subject
  * @property-read string|null $text
  *
  * @method static Builder<static>|Newsfeed causedBy(\Illuminate\Database\Eloquent\Model $causer)

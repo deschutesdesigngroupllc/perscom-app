@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Resources\ApiLogResource\RelationManagers\PurgesRelationManager;
 use App\Models\ApiLog;
 use App\Models\User;
 use Filament\Infolists\Components\KeyValueEntry;
@@ -55,7 +56,6 @@ class ApiLogResource extends BaseResource
                 Tables\Columns\TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
-                    ->sortable()
                     ->searchable(['properties']),
                 Tables\Columns\TextColumn::make('log_name')
                     ->label('Log')
@@ -82,6 +82,8 @@ class ApiLogResource extends BaseResource
                     })
                     ->badge()
                     ->suffix(fn ($state): string => ' '.Response::$statusTexts[(int) $state]),
+                Tables\Columns\TextColumn::make('duration')
+                    ->suffix(' ms'),
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable()
@@ -309,6 +311,13 @@ class ApiLogResource extends BaseResource
         ]);
     }
 
+    public static function getRelations(): array
+    {
+        return [
+            PurgesRelationManager::make(),
+        ];
+    }
+
     public static function getPages(): array
     {
         return [
@@ -330,5 +339,23 @@ class ApiLogResource extends BaseResource
     public static function canDelete(Model $record): bool
     {
         return false;
+    }
+
+    /**
+     * @param  ApiLog  $record
+     */
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'ID' => $record->id,
+            'Endpoint' => $record->endpoint,
+            'Method' => $record->method,
+            'Status' => $record->status,
+        ];
+    }
+
+    public static function getGlobalSearchEloquentQuery(): Builder
+    {
+        return parent::getGlobalSearchEloquentQuery()->whereJsonContains('properties->request_id');
     }
 }

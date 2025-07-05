@@ -10,6 +10,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Http\Client\ConnectionException;
+use Illuminate\Http\Client\Response;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\Skip;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
@@ -46,10 +47,13 @@ class PurgeApiCache implements ShouldQueue
     {
         $apiService = new ApiCacheService;
 
-        $responses = $apiService->purgeCacheForTags($this->tags);
+        $responses = $apiService->purgeCacheForTags(
+            tags: $this->tags,
+            event: $this->event
+        );
 
         foreach ($responses as $response) {
-            if (! $response->successful()) {
+            if ($response instanceof Response && ! $response->successful()) {
                 $this->fail(new ApiCacheException(
                     body: $response->json()
                 ));
