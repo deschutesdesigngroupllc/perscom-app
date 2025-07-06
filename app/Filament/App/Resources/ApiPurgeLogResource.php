@@ -4,19 +4,30 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Resources\ApiLogResource\Pages\ViewApiLog;
 use App\Models\ApiPurgeLog;
 use Filament\Panel;
+use Filament\Support\Enums\IconPosition;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class ApiPurgeLogResource extends BaseResource
 {
     protected static ?string $model = ApiPurgeLog::class;
 
-    protected static ?string $label = 'Cache Purge Log';
+    protected static ?string $navigationLabel = 'Purges';
 
-    protected static bool $shouldRegisterNavigation = false;
+    protected static ?string $navigationIcon = 'heroicon-o-key';
+
+    protected static ?string $navigationParentItem = 'API Keys';
+
+    protected static ?string $navigationGroup = 'Integrations';
+
+    protected static ?int $navigationSort = 6;
+
+    protected static ?string $label = 'API Cache Purge Log';
 
     public static function isTenantSubscriptionRequired(Panel $panel): bool
     {
@@ -27,18 +38,37 @@ class ApiPurgeLogResource extends BaseResource
     {
         return $table
             ->columns([
+                Tables\Columns\TextColumn::make('apiLog.id')
+                    ->label('API Log ID')
+                    ->icon('heroicon-o-arrow-top-right-on-square')
+                    ->iconPosition(IconPosition::After)
+                    ->url(function (ApiPurgeLog $record): ?string {
+                        if (blank($apiLogs = $record->apiLog)) {
+                            return null;
+                        }
+
+                        return ViewApiLog::getUrl([
+                            'record' => $apiLogs->first(),
+                        ]);
+                    }, shouldOpenInNewTab: true),
                 Tables\Columns\TextColumn::make('trace_id')
                     ->copyable()
+                    ->searchable(['properties'])
                     ->label('Trace ID'),
+                Tables\Columns\TextColumn::make('description')
+                    ->label('Event')
+                    ->searchable()
+                    ->formatStateUsing(fn ($state) => Str::title($state))
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('tags')
                     ->label('Cache Tags')
                     ->badge()
                     ->listWithLineBreaks(),
                 Tables\Columns\TextColumn::make('status')
                     ->badge()
-                    ->color(fn ($state) => match ($state) {
+                    ->color(fn ($state): string => match ($state) {
                         'Success' => 'success',
-                        'Failure' => 'danger',
+                        default => 'danger',
                     }),
                 Tables\Columns\TextColumn::make('created_at')
                     ->toggleable(false)

@@ -15,9 +15,10 @@ class PurgesRelationManager extends RelationManager
     public function table(Table $table): Table
     {
         return ApiPurgeLogResource::table($table)
+            ->searchable(false)
             ->heading('Cache Purge Logs')
             ->emptyStateHeading('No API cache purge requests')
             ->description('The cache purge requests associated with this API request.')
-            ->emptyStateDescription('There are not API cache purges associated with this request.');
+            ->emptyStateDescription('There are no API cache purges associated with this request.');
     }
 }

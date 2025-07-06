@@ -17,6 +17,7 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use Parallax\FilamentSyntaxEntry\SyntaxEntry;
@@ -53,6 +54,11 @@ class ApiLogResource extends BaseResource
             ])
             ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
             ->columns([
+                Tables\Columns\TextColumn::make('id')
+                    ->copyable()
+                    ->label('Log ID')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
@@ -83,8 +89,12 @@ class ApiLogResource extends BaseResource
                     ->badge()
                     ->suffix(fn ($state): string => ' '.Response::$statusTexts[(int) $state]),
                 Tables\Columns\TextColumn::make('duration')
+                    ->default('0')
+                    ->numeric()
                     ->suffix(' ms'),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->since()
                     ->toggleable(false)
                     ->sortable()
                     ->label('Requested'),
@@ -251,6 +261,10 @@ class ApiLogResource extends BaseResource
                                 ->label('Trace ID'),
                             TextEntry::make('causer.name')
                                 ->label('Author'),
+                            TextEntry::make('duration')
+                                ->default('0')
+                                ->numeric()
+                                ->suffix(' ms'),
                             TextEntry::make('created_at')
                                 ->label('Requested'),
                             TextEntry::make('ip_address')
@@ -354,8 +368,33 @@ class ApiLogResource extends BaseResource
         ];
     }
 
-    public static function getGlobalSearchEloquentQuery(): Builder
+    public static function getGloballySearchableAttributes(): array
     {
-        return parent::getGlobalSearchEloquentQuery()->whereJsonContains('properties->request_id');
+        return array_merge(parent::getGloballySearchableAttributes(), [
+            'request_id',
+            'trace_id',
+        ]);
+    }
+
+    protected static function applyGlobalSearchAttributeConstraint(Builder $query, string $search, array $searchAttributes, bool &$isFirst): Builder
+    {
+        $originalSearchAttributes = $searchAttributes;
+
+        $searchAttributes = array_filter(Arr::pluck($searchAttributes, [
+            'request_id',
+            'trace_id',
+        ]));
+
+        $query = parent::applyGlobalSearchAttributeConstraint($query, $search, $searchAttributes, $isFirst);
+
+        if (in_array('request_id', $originalSearchAttributes)) {
+            $query->orWhereJsonContains('properties->request_id', $search);
+        }
+
+        if (in_array('trace_id', $originalSearchAttributes)) {
+            $query->orWhereJsonContains('properties->trace_id', $search);
+        }
+
+        return $query;
     }
 }

@@ -78,6 +78,8 @@ class WebhookLogResource extends BaseResource
                         default => 'danger'
                     }),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->dateTime()
+                    ->since()
                     ->toggleable(false)
                     ->sortable()
                     ->label('Sent'),

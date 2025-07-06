@@ -18,8 +18,6 @@ class LogApiRequest
 {
     public function handle(Request $request, Closure $next): Response
     {
-        $request->attributes->set('api_request_start_time', microtime(true));
-
         $response = $next($request);
 
         if (! tenancy()->initialized) {

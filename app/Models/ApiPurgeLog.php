@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use Staudenmeir\EloquentJsonRelations\Relations\BelongsToJson;
 
 /**
  * @property int $id
@@ -32,6 +34,8 @@ use Illuminate\Support\Str;
  * @property-read \Illuminate\Database\Eloquent\Model|null $subject
  * @property-read array $tags
  * @property-read string|null $trace_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|ApiLog[] $apiLog
+ * @property-read int|null $api_log_count
  *
  * @method static Builder<static>|ApiPurgeLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder<static>|ApiPurgeLog forBatch(string $batchUuid)
@@ -60,14 +64,14 @@ use Illuminate\Support\Str;
 #[ScopedBy(ApiPurgeLogScope::class)]
 class ApiPurgeLog extends Activity
 {
+    use HasJsonRelationships;
+
     /**
-     * @return Attribute<?string, never>
+     * @return BelongsToJson<ApiLog, $this>
      */
-    public function event(): Attribute
+    public function apiLog(): BelongsToJson
     {
-        return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('event')
-        )->shouldCache();
+        return $this->belongsToJson(ApiLog::class, 'properties->request_id', 'properties->request_id');
     }
 
     /**

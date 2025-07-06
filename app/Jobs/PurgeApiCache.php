@@ -9,7 +9,6 @@ use App\Services\ApiCacheService;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Foundation\Queue\Queueable;
-use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\Client\Response;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\Skip;
@@ -40,9 +39,6 @@ class PurgeApiCache implements ShouldQueue
         ];
     }
 
-    /**
-     * @throws ConnectionException
-     */
     public function handle(): void
     {
         $apiService = new ApiCacheService;
