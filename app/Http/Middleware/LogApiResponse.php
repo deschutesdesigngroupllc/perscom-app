@@ -9,11 +9,15 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
+use JsonException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class LogApiResponse
 {
+    /**
+     * @throws JsonException
+     */
     public function handle(Request $request, Closure $next): Response
     {
         $response = $next($request);
@@ -41,6 +45,7 @@ class LogApiResponse
             'properties' => $properties
                 ->put('status', $response->getStatusCode())
                 ->put('response_headers', iterator_to_array($response->headers->getIterator()))
+                ->put('duration', (string) round((microtime(true) - LARAVEL_START) * 1000))
                 ->put('content', optional($response->getContent(), static function ($content) {
                     if (Str::isJson($content)) {
                         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);

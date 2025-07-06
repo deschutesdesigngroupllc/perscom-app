@@ -9,6 +9,8 @@ use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
+use Staudenmeir\EloquentJsonRelations\Relations\HasManyJson;
 
 /**
  * @property int $id
@@ -24,8 +26,9 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read mixed|null $body
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|null $causer
  * @property-read mixed|null $content
+ * @property-read string|null $duration
  * @property-read string|null $endpoint
  * @property-read mixed|null $files
  * @property-read \Illuminate\Support\Collection $changes
@@ -35,8 +38,10 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property-read string|null $request_id
  * @property-read mixed|null $response_headers
  * @property-read string|int|null|null $status
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|null $subject
  * @property-read string|null $trace_id
+ * @property-read \Illuminate\Database\Eloquent\Collection|ApiPurgeLog[] $purges
+ * @property-read int|null $purges_count
  *
  * @method static Builder<static>|ApiLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder<static>|ApiLog forBatch(string $batchUuid)
@@ -65,6 +70,8 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 #[ScopedBy(ApiLogScope::class)]
 class ApiLog extends Activity
 {
+    use HasJsonRelationships;
+
     /**
      * @return Attribute<?string, never>
      */
@@ -126,6 +133,16 @@ class ApiLog extends Activity
     }
 
     /**
+     * @return Attribute<?string, never>
+     */
+    public function duration(): Attribute
+    {
+        return Attribute::make(
+            get: fn (): ?string => $this->getExtraProperty('duration')
+        )->shouldCache();
+    }
+
+    /**
      * @return Attribute<string|int|null, never>
      */
     public function status(): Attribute
@@ -173,6 +190,14 @@ class ApiLog extends Activity
         return Attribute::make(
             get: fn (): ?string => $this->getExtraProperty('trace_id')
         )->shouldCache();
+    }
+
+    /**
+     * @return HasManyJson<ApiPurgeLog, $this>
+     */
+    public function purges(): HasManyJson
+    {
+        return $this->hasManyJson(ApiPurgeLog::class, 'properties->request_id', 'properties->request_id');
     }
 
     /**

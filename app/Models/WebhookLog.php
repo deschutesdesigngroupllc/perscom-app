@@ -26,14 +26,14 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property string|null $batch_uuid
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $causer
+ * @property-read \Illuminate\Database\Eloquent\Model|null $causer
  * @property-read \Illuminate\Support\Collection $changes
  * @property-read mixed|null $payload
  * @property-read mixed|null $reason_phrase
  * @property-read string|null $request_id
  * @property-read string|null $resource_url
  * @property-read mixed|null $status_code
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent|null $subject
+ * @property-read \Illuminate\Database\Eloquent\Model|null $subject
  * @property-read string|null $trace_id
  *
  * @method static Builder<static>|WebhookLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
