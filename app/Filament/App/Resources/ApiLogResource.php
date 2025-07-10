@@ -53,6 +53,7 @@ class ApiLogResource extends BaseResource
                     ->url(PassportTokenResource::getUrl('create')),
             ])
             ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
+            ->modifyQueryUsing(fn (Builder $query): Builder => $query->select(['id', 'log_name', 'created_at', 'causer_id', 'causer_type', 'event']))
             ->columns([
                 Tables\Columns\TextColumn::make('id')
                     ->copyable()
@@ -62,7 +63,7 @@ class ApiLogResource extends BaseResource
                 Tables\Columns\TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
-                    ->searchable(['properties']),
+                    ->searchable(query: fn (Builder|ApiLog $query, string $search) => $query->whereMeta('request_id', 'LIKE', "%$search%")->orWhereMeta('trace_id', 'like', "%$search%")->orWhereMeta('trace_id', 'like', "%$search%")),
                 Tables\Columns\TextColumn::make('log_name')
                     ->label('Log')
                     ->formatStateUsing(fn ($state) => match ($state) {
@@ -71,6 +72,7 @@ class ApiLogResource extends BaseResource
                         default => Str::title($state)
                     })
                     ->sortable()
+                    ->searchable()
                     ->badge()
                     ->color('gray'),
                 Tables\Columns\TextColumn::make('causer.name')
@@ -130,11 +132,11 @@ class ApiLogResource extends BaseResource
                         'PATCH' => 'PATCH',
                         'DELETE' => 'DELETE',
                     ])
-                    ->query(fn (Builder $query, array $data): Builder => $query
+                    ->query(fn (Builder|ApiLog $query, array $data): Builder => $query
                         ->when(
                             filled(data_get($data, 'values')),
-                            function (Builder $query) use ($data): void {
-                                $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($method) => $query->orWhereJsonContains('properties->method', $method)));
+                            function (Builder|ApiLog $query) use ($data): void {
+                                $query->where(fn (Builder|ApiLog $query) => collect(data_get($data, 'values'))->each(fn ($method) => $query->orWhereMeta('method', $method)));
                             },
                         )),
                 Tables\Filters\QueryBuilder::make()
@@ -148,18 +150,18 @@ class ApiLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings): void {
+                                                    function (Builder|ApiLog $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->where('properties->request_id', 'NOT LIKE', "%$text%");
+                                                        $query->whereMeta('request_id', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
                                         }
 
                                         return $query
                                             ->when(filled(data_get($settings, 'text')),
-                                                function (Builder $query) use ($settings): void {
+                                                function (Builder|ApiLog $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->where('properties->request_id', 'LIKE', "%$text%");
+                                                    $query->whereMeta('request_id', 'LIKE', "%$text%");
                                                 }
                                             );
                                     }),
@@ -173,18 +175,18 @@ class ApiLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings): void {
+                                                    function (Builder|ApiLog $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->where('properties->trace_id', 'NOT LIKE', "%$text%");
+                                                        $query->whereMeta('trace_id', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
                                         }
 
                                         return $query
                                             ->when(filled(data_get($settings, 'text')),
-                                                function (Builder $query) use ($settings): void {
+                                                function (Builder|ApiLog $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->where('properties->trace_id', 'LIKE', "%$text%");
+                                                    $query->whereMeta('trace_id', 'LIKE', "%$text%");
                                                 }
                                             );
                                     }),
@@ -197,18 +199,18 @@ class ApiLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings): void {
+                                                    function (Builder|ApiLog $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->where('properties->endpoint', 'NOT LIKE', "%$text%");
+                                                        $query->whereMeta('endpoint', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
                                         }
 
                                         return $query
                                             ->when(filled(data_get($settings, 'text')),
-                                                function (Builder $query) use ($settings): void {
+                                                function (Builder|ApiLog $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->where('properties->endpoint', 'LIKE', "%$text%");
+                                                    $query->whereMeta('endpoint', 'LIKE', "%$text%");
                                                 }
                                             );
                                     }),
@@ -223,18 +225,18 @@ class ApiLogResource extends BaseResource
                                         if ($isInverse) {
                                             return $query
                                                 ->when(filled(data_get($settings, 'text')),
-                                                    function (Builder $query) use ($settings): void {
+                                                    function (Builder|ApiLog $query) use ($settings): void {
                                                         $text = data_get($settings, 'text');
-                                                        $query->where('properties->status', 'NOT LIKE', "%$text%");
+                                                        $query->whereMeta('status', 'NOT LIKE', "%$text%");
                                                     }
                                                 );
                                         }
 
                                         return $query
                                             ->when(filled(data_get($settings, 'text')),
-                                                function (Builder $query) use ($settings): void {
+                                                function (Builder|ApiLog $query) use ($settings): void {
                                                     $text = data_get($settings, 'text');
-                                                    $query->where('properties->status', 'LIKE', "%$text%");
+                                                    $query->whereMeta('status', 'LIKE', "%$text%");
                                                 }
                                             );
 
@@ -385,14 +387,15 @@ class ApiLogResource extends BaseResource
             'trace_id',
         ]));
 
+        /** @var Builder|ApiLog $query */
         $query = parent::applyGlobalSearchAttributeConstraint($query, $search, $searchAttributes, $isFirst);
 
         if (in_array('request_id', $originalSearchAttributes)) {
-            $query->orWhereJsonContains('properties->request_id', $search);
+            $query->orWhereMeta('request_id', $search);
         }
 
         if (in_array('trace_id', $originalSearchAttributes)) {
-            $query->orWhereJsonContains('properties->trace_id', $search);
+            $query->orWhereMeta('trace_id', $search);
         }
 
         return $query;

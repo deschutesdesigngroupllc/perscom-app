@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ac73fed1f7123c8c54062a72629cbfd0",
+    "content-hash": "1c7c352076ec2a73f42ac42ee05dee90",
     "packages": [
         {
             "name": "amphp/amp",
@@ -16460,6 +16460,70 @@
                 "source": "https://github.com/sweebee/filament-code-editor/tree/1.2.0"
             },
             "time": "2025-04-14T19:32:31+00:00"
+        },
+        {
+            "name": "zoha/laravel-meta",
+            "version": "dev-feature/publish-migrations",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ZohaBanam/laravel-meta.git",
+                "reference": "0ac3f7b"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/jonerickson/laravel-meta/zipball/8cb3acf128acc329db599f87a91c525f95e389c3",
+                "reference": "8cb3acf128acc329db599f87a91c525f95e389c3",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": ">=8.0"
+            },
+            "require-dev": {
+                "orchestra/testbench": ">=6.0",
+                "php": ">=8",
+                "phpunit/phpunit": "^9"
+            },
+            "type": "package",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Zoha\\Meta\\MetaServiceProvider"
+                    ],
+                    "aliases": {
+                        "Meta": "Zoha\\Meta\\Facades\\MetaFacade"
+                    }
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zoha\\": "src/"
+                }
+            },
+            "autoload-dev": {
+                "psr-4": {
+                    "Zoha\\Meta\\Tests\\": "tests/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Zoha Banam",
+                    "email": "zoha.banam@gmail.com"
+                }
+            ],
+            "description": "a package for working with models meta",
+            "keywords": [
+                "data",
+                "laravel",
+                "meta",
+                "package"
+            ],
+            "support": {
+                "source": "https://github.com/jonerickson/laravel-meta/tree/feature/publish-migrations"
+            },
+            "time": "2025-07-10T16:36:24+00:00"
         }
     ],
     "packages-dev": [
@@ -20931,7 +20995,8 @@
     ],
     "minimum-stability": "stable",
     "stability-flags": {
-        "stancl/jobpipeline": 5
+        "stancl/jobpipeline": 5,
+        "zoha/laravel-meta": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,
