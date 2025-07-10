@@ -7,7 +7,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Zoha\Meta\Helpers\MetaHelper as Meta;
 
-class CreateMetaTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the Migrations.
@@ -62,4 +62,4 @@ class CreateMetaTable extends Migration
             }
         }
     }
-}
+};
