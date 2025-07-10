@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Middleware;
 
-use App\Models\Activity;
+use App\Models\ApiLog;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -32,7 +32,7 @@ class LogApiResponse
             return $response;
         }
 
-        $log = Activity::find($logId);
+        $log = ApiLog::find($logId);
 
         if (blank($log)) {
             return $response;
@@ -43,9 +43,7 @@ class LogApiResponse
 
         $log->forceFill([
             'properties' => $properties
-                ->put('status', $response->getStatusCode())
                 ->put('response_headers', iterator_to_array($response->headers->getIterator()))
-                ->put('duration', (string) round((microtime(true) - LARAVEL_START) * 1000))
                 ->put('content', optional($response->getContent(), static function ($content) {
                     if (Str::isJson($content)) {
                         return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
@@ -58,6 +56,11 @@ class LogApiResponse
                     return $content;
                 })),
         ])->save();
+
+        $log->setMeta([
+            'status' => $response->getStatusCode(),
+            'duration' => (string) round((microtime(true) - LARAVEL_START) * 1000),
+        ]);
 
         return $response;
     }

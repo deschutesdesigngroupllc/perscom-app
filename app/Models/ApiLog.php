@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Staudenmeir\EloquentJsonRelations\HasJsonRelationships;
 use Staudenmeir\EloquentJsonRelations\Relations\HasManyJson;
+use Zoha\Metable;
 
 /**
  * @property int $id
@@ -28,7 +29,7 @@ use Staudenmeir\EloquentJsonRelations\Relations\HasManyJson;
  * @property-read mixed|null $body
  * @property-read \Illuminate\Database\Eloquent\Model|null $causer
  * @property-read mixed|null $content
- * @property-read string|null $duration
+ * @property-read string|int|null|null $duration
  * @property-read string|null $endpoint
  * @property-read mixed|null $files
  * @property-read \Illuminate\Support\Collection $changes
@@ -51,6 +52,16 @@ use Staudenmeir\EloquentJsonRelations\Relations\HasManyJson;
  * @method static Builder<static>|ApiLog inLog(...$logNames)
  * @method static Builder<static>|ApiLog newModelQuery()
  * @method static Builder<static>|ApiLog newQuery()
+ * @method static Builder<static>|ApiLog orWhereMeta($key, $operator = null, $value = null)
+ * @method static Builder<static>|ApiLog orWhereMetaBetween($key, $values = [])
+ * @method static Builder<static>|ApiLog orWhereMetaDoesntHave($key = null, $countNull = false, $type = null)
+ * @method static Builder<static>|ApiLog orWhereMetaHas($key = null, $countNull = false, $type = null)
+ * @method static Builder<static>|ApiLog orWhereMetaIn($key, $values = [])
+ * @method static Builder<static>|ApiLog orWhereMetaNotBetween($key, $values = [])
+ * @method static Builder<static>|ApiLog orWhereMetaNotIn($key, $values = [])
+ * @method static Builder<static>|ApiLog orWhereMetaNotNull($key)
+ * @method static Builder<static>|ApiLog orWhereMetaNull($key)
+ * @method static Builder<static>|ApiLog orderByMeta(string $key, string $direction = 'asc')
  * @method static Builder<static>|ApiLog query()
  * @method static Builder<static>|ApiLog whereBatchUuid($value)
  * @method static Builder<static>|ApiLog whereCauserId($value)
@@ -60,10 +71,20 @@ use Staudenmeir\EloquentJsonRelations\Relations\HasManyJson;
  * @method static Builder<static>|ApiLog whereEvent($value)
  * @method static Builder<static>|ApiLog whereId($value)
  * @method static Builder<static>|ApiLog whereLogName($value)
+ * @method static Builder<static>|ApiLog whereMeta($key, $operator = 'NOVALUEFORPARAMETER', $value = 'NOVALUEFORPARAMETER', $orWhere = false)
+ * @method static Builder<static>|ApiLog whereMetaBetween($key, $values = [], $orWhere = false)
+ * @method static Builder<static>|ApiLog whereMetaDoesntHave($key = null, $countNull = false, $type = null, $orWhere = false)
+ * @method static Builder<static>|ApiLog whereMetaHas($key = null, $countNull = false, $type = null, $orWhere = false)
+ * @method static Builder<static>|ApiLog whereMetaIn($key, $values = [], $orWhere = false)
+ * @method static Builder<static>|ApiLog whereMetaNotBetween($key, $values = [], $orWhere = false)
+ * @method static Builder<static>|ApiLog whereMetaNotIn($key, $values = [], $orWhere = false)
+ * @method static Builder<static>|ApiLog whereMetaNotNull($key, $orWhere = false)
+ * @method static Builder<static>|ApiLog whereMetaNull($key, $orWhere = false)
  * @method static Builder<static>|ApiLog whereProperties($value)
  * @method static Builder<static>|ApiLog whereSubjectId($value)
  * @method static Builder<static>|ApiLog whereSubjectType($value)
  * @method static Builder<static>|ApiLog whereUpdatedAt($value)
+ * @method static Builder<static>|ApiLog withMeta()
  *
  * @mixin Eloquent
  */
@@ -71,6 +92,7 @@ use Staudenmeir\EloquentJsonRelations\Relations\HasManyJson;
 class ApiLog extends Activity
 {
     use HasJsonRelationships;
+    use Metable;
 
     /**
      * @return Attribute<?string, never>
@@ -78,7 +100,7 @@ class ApiLog extends Activity
     public function ipAddress(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('ip')
+            get: fn (): ?string => $this->getMeta('ip')
         )->shouldCache();
     }
 
@@ -88,7 +110,7 @@ class ApiLog extends Activity
     public function method(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('method')
+            get: fn (): ?string => $this->getMeta('method')
         )->shouldCache();
     }
 
@@ -98,7 +120,7 @@ class ApiLog extends Activity
     public function endpoint(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('endpoint')
+            get: fn (): ?string => $this->getMeta('endpoint')
         )->shouldCache();
     }
 
@@ -133,12 +155,12 @@ class ApiLog extends Activity
     }
 
     /**
-     * @return Attribute<?string, never>
+     * @return Attribute<string|int|null, never>
      */
     public function duration(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('duration')
+            get: fn (): string|int|null => $this->getMeta('duration')
         )->shouldCache();
     }
 
@@ -148,7 +170,7 @@ class ApiLog extends Activity
     public function status(): Attribute
     {
         return Attribute::make(
-            get: fn (): string|int|null => $this->getExtraProperty('status')
+            get: fn (): string|int|null => $this->getMeta('status')
         )->shouldCache();
     }
 
@@ -178,7 +200,7 @@ class ApiLog extends Activity
     public function requestId(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('request_id')
+            get: fn (): ?string => $this->getMeta('request_id')
         )->shouldCache();
     }
 
@@ -188,7 +210,7 @@ class ApiLog extends Activity
     public function traceId(): Attribute
     {
         return Attribute::make(
-            get: fn (): ?string => $this->getExtraProperty('trace_id')
+            get: fn (): ?string => $this->getMeta('trace_id')
         )->shouldCache();
     }
 
@@ -208,6 +230,8 @@ class ApiLog extends Activity
         return array_merge(parent::casts(), parent::getCasts(), [
             'request_headers' => 'array',
             'response_headers' => 'array',
+            'duration' => 'integer',
+            'status' => 'integer',
         ]);
     }
 }
