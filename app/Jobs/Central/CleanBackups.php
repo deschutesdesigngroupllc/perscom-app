@@ -8,9 +8,8 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Config;
 
-class BackupCentralDatabase implements ShouldQueue
+class CleanBackups implements ShouldQueue
 {
     use InteractsWithQueue;
     use Queueable;
@@ -23,13 +22,7 @@ class BackupCentralDatabase implements ShouldQueue
 
     public function handle(): void
     {
-        Config::set('backup.backup.source.databases', ['mysql']);
-
-        $exit = Artisan::call('backup:run', [
-            '--only-to-disk' => 'backups',
-            '--only-db' => true,
-            '--timeout' => 1800,
-        ]);
+        $exit = Artisan::call('backup:clean');
 
         if ($exit !== 0) {
             $this->fail(Artisan::output());

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Batches;
 
-use App\Jobs\SendMassEmail as SendMassEmailJob;
+use App\Jobs\SendMassEmail;
 use App\Models\Mail;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
@@ -12,7 +12,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class SendMassEmail
+class SendTenantMassEmails
 {
     /**
      * @throws Throwable
@@ -29,9 +29,9 @@ class SendMassEmail
             : Tenant::all();
 
         return Bus::batch(
-            jobs: $recipients->map(fn (Tenant $tenant): SendMassEmailJob => new SendMassEmailJob($tenant, $mail))
+            jobs: $recipients->map(fn (Tenant $tenant): SendMassEmail => new SendMassEmail($tenant, $mail))
         )->name(
-            name: 'Send Mass Email'
+            name: 'Send Tenant Mass Emails'
         )->onConnection(
             connection: 'central'
         )->dispatch();

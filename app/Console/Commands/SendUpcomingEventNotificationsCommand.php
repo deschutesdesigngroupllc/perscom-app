@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\SendUpcomingEventNotifications as SendUpcomingEventNotificationsAction;
+use App\Actions\Batches\SendTenantUpcomingEventNotifications;
 use Illuminate\Console\Command;
 use Throwable;
 
-class SendUpcomingEventNotifications extends Command
+class SendUpcomingEventNotificationsCommand extends Command
 {
     protected $signature = 'perscom:event-notifications';
 
@@ -19,7 +19,7 @@ class SendUpcomingEventNotifications extends Command
      */
     public function handle(): int
     {
-        SendUpcomingEventNotificationsAction::handle();
+        SendTenantUpcomingEventNotifications::handle();
 
         $this->info('The event notification job has been dispatched.');
 

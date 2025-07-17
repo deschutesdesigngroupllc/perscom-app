@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Jobs\RemoveInactiveAccounts as RemoveInactiveAccountsJob;
+use App\Jobs\RemoveInactiveAccounts;
 use Illuminate\Console\Command;
 
 class RemoveInactiveAccountsCommand extends Command
@@ -15,7 +15,7 @@ class RemoveInactiveAccountsCommand extends Command
 
     public function handle(): int
     {
-        RemoveInactiveAccountsJob::dispatch();
+        RemoveInactiveAccounts::dispatch();
 
         $this->info('The remove inactive accounts job has been dispatched to the queue.');
 

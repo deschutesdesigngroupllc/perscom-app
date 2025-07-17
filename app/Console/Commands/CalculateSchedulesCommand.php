@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\CalculateSchedules as CalculateSchedulesAction;
+use App\Actions\Batches\CalculateTenantSchedules;
 use Illuminate\Console\Command;
 use Throwable;
 
-class CalculateSchedules extends Command
+class CalculateSchedulesCommand extends Command
 {
     protected $signature = 'perscom:calculate-schedules';
 
@@ -19,7 +19,7 @@ class CalculateSchedules extends Command
      */
     public function handle(): int
     {
-        CalculateSchedulesAction::handle();
+        CalculateTenantSchedules::handle();
 
         $this->info('The schedule job has been dispatched.');
 

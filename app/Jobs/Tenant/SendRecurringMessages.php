@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs\Central;
+namespace App\Jobs\Tenant;
 
 use App\Actions\Messages\SendMessage;
 use App\Models\Message;

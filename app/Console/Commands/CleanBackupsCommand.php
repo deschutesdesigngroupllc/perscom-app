@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\CleanBackups as CleanBackupsAction;
-use App\Jobs\Central\CleanCentralBackups;
+use App\Actions\Batches\CleanTenantBackups;
+use App\Jobs\Central\CleanBackups;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\Isolatable;
 use Throwable;
 
-class CleanBackups extends Command
+class CleanBackupsCommand extends Command implements Isolatable
 {
     protected $signature = 'perscom:backup-clean';
 
@@ -20,9 +21,9 @@ class CleanBackups extends Command
      */
     public function handle(): int
     {
-        CleanBackupsAction::handle();
+        CleanTenantBackups::handle();
 
-        CleanCentralBackups::dispatch();
+        CleanBackups::dispatch();
 
         $this->info('The database cleanup jobs have been dispatched.');
 

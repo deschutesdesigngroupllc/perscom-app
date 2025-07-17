@@ -2,23 +2,22 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs\Central;
+namespace App\Jobs\Tenant;
 
-use App\Models\Schedule;
 use App\Models\Tenant;
-use App\Services\ScheduleService;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Support\Facades\Artisan;
 
-class CalculateSchedules implements ShouldQueue
+class PurgeActivityLogs implements ShouldQueue
 {
     use Batchable;
     use InteractsWithQueue;
     use Queueable;
 
-    public function __construct(public int $tenantKey)
+    public function __construct(public int $tenantKey, public int $days = 30)
     {
         $this->onConnection('central');
     }
@@ -30,12 +29,14 @@ class CalculateSchedules implements ShouldQueue
         }
 
         Tenant::findOrFail($this->tenantKey)->run(function (): void {
-            Schedule::all()->each(function (Schedule $schedule): void {
-                $schedule->updateQuietly([
-                    'next_occurrence' => ScheduleService::nextOccurrence($schedule),
-                    'last_occurrence' => ScheduleService::lastOccurrence($schedule),
-                ]);
-            });
+            $exit = Artisan::call('activitylog:clean', [
+                '--days' => $this->days,
+                '--force' => true,
+            ]);
+
+            if ($exit !== 0) {
+                $this->fail(Artisan::output());
+            }
         });
     }
 }

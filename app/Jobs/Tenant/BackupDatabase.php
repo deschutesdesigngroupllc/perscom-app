@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs\Central;
+namespace App\Jobs\Tenant;
 
 use App\Models\Tenant;
 use Illuminate\Bus\Batchable;
@@ -11,7 +11,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\Artisan;
 
-class CleanTenantBackups implements ShouldQueue
+class BackupDatabase implements ShouldQueue
 {
     use Batchable;
     use InteractsWithQueue;
@@ -29,10 +29,12 @@ class CleanTenantBackups implements ShouldQueue
             return;
         }
 
-        /** @var Tenant $tenant */
-        $tenant = Tenant::findOrFail($this->tenantKey);
-        $tenant->run(function (): void {
-            $exit = Artisan::call('backup:clean');
+        Tenant::findOrFail($this->tenantKey)->run(function (): void {
+            $exit = Artisan::call('backup:run', [
+                '--only-to-disk' => 'backups',
+                '--only-db' => true,
+                '--timeout' => 1800,
+            ]);
 
             if ($exit !== 0) {
                 $this->fail(Artisan::output());

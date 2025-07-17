@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\SendRecurringMessages as SendRecurringMessagesAction;
+use App\Actions\Batches\SendTenantRecurringMessages;
 use Illuminate\Console\Command;
 use Throwable;
 
-class SendRecurringMessages extends Command
+class SendRecurringMessagesCommand extends Command
 {
     protected $signature = 'perscom:recurring-messages';
 
@@ -19,7 +19,7 @@ class SendRecurringMessages extends Command
      */
     public function handle(): int
     {
-        SendRecurringMessagesAction::handle();
+        SendTenantRecurringMessages::handle();
 
         $this->info('The recurring messages job has been dispatched.');
 

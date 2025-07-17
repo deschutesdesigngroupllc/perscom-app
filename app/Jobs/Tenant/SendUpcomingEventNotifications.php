@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Jobs\Central;
+namespace App\Jobs\Tenant;
 
 use App\Actions\Events\SendUpcomingEventNotification;
 use App\Models\Enums\NotificationInterval;

@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Actions\Batches\BackupTenantDatabases;
-use App\Jobs\Central\BackupCentralDatabase;
+use App\Jobs\Central\BackupDatabase;
 use Illuminate\Console\Command;
+use Illuminate\Contracts\Console\Isolatable;
 use Throwable;
 
-class BackupDatabases extends Command
+class BackupDatabasesCommand extends Command implements Isolatable
 {
     protected $signature = 'perscom:backup';
 
@@ -22,7 +23,7 @@ class BackupDatabases extends Command
     {
         BackupTenantDatabases::handle();
 
-        BackupCentralDatabase::dispatch();
+        BackupDatabase::dispatch();
 
         $this->info('The database backup jobs have been dispatched.');
 

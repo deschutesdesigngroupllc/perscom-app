@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions\Batches;
 
-use App\Jobs\Central\CleanTenantBackups;
+use App\Jobs\Tenant\CalculateSchedules;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class CleanBackups
+class CalculateTenantSchedules
 {
     /**
      * @throws Throwable
@@ -19,11 +19,13 @@ class CleanBackups
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): CleanTenantBackups => new CleanTenantBackups($tenant->getKey()))
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): CalculateSchedules => new CalculateSchedules(
+                tenantKey: $tenant->getKey()
+            ))
         )->name(
-            name: 'Clean Backups'
+            name: 'Calculate Tenant Schedules'
         )->onQueue(
-            queue: 'backup'
+            queue: 'default'
         )->onConnection(
             connection: 'central'
         )->dispatch();

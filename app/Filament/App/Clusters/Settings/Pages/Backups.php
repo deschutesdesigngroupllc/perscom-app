@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Filament\App\Clusters\Settings;
-use App\Jobs\Central\BackupTenantDatabase;
+use App\Jobs\Tenant\BackupDatabase;
 use App\Models\Backup;
 use Filament\Actions;
 use Filament\Pages\Page;
@@ -60,7 +60,7 @@ class Backups extends Page implements HasTable
             Actions\Action::make('backup_now')
                 ->successNotificationTitle('The backup has been requested. Please check back later for the latest copy.')
                 ->action(function (Actions\Action $action): void {
-                    BackupTenantDatabase::dispatch(
+                    BackupDatabase::dispatch(
                         tenantKey: tenant()->getKey(),
                     );
 

@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Actions\Batches;
 
-use App\Jobs\Tenant\BackupDatabase;
+use App\Jobs\Tenant\PurgeActivityLogs;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class BackupTenantDatabases
+class PurgeTenantActivityLogs
 {
     /**
      * @throws Throwable
@@ -19,15 +19,11 @@ class BackupTenantDatabases
     public static function handle(): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): BackupDatabase => new BackupDatabase(
-                tenantKey: $tenant->getKey()
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): PurgeActivityLogs => new PurgeActivityLogs(
+                tenantKey: $tenant->getKey(),
             ))
         )->name(
-            name: 'Backup Tenant Databases'
-        )->onQueue(
-            queue: 'backup'
-        )->onConnection(
-            connection: 'central'
+            name: 'Purge Tenant Activity Logs'
         )->dispatch();
     }
 }
