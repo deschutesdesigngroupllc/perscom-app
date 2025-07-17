@@ -19,7 +19,7 @@ class CleanBackups implements ShouldQueue
 
     public function __construct(public int $tenantKey)
     {
-        $this->onQueue('backup');
+        $this->onQueue('clean');
         $this->onConnection('central');
     }
 

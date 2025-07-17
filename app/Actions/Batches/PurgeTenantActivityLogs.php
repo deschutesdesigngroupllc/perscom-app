@@ -24,6 +24,10 @@ class PurgeTenantActivityLogs
             ))
         )->name(
             name: 'Purge Tenant Activity Logs'
+        )->onQueue(
+            queue: 'clean'
+        )->onConnection(
+            connection: 'central'
         )->dispatch();
     }
 }

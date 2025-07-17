@@ -214,7 +214,7 @@ return [
 
         'supervisor-3' => [
             'connection' => 'central',
-            'queue' => ['backup'],
+            'queue' => ['backup', 'clean'],
             'balance' => 'auto',
             'autoScalingStrategy' => 'size',
             'maxProcesses' => 1,

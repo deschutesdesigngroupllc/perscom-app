@@ -19,6 +19,7 @@ class PurgeActivityLogs implements ShouldQueue
 
     public function __construct(public int $tenantKey, public int $days = 30)
     {
+        $this->onQueue('central');
         $this->onConnection('central');
     }
 
