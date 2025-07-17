@@ -17,6 +17,10 @@ return new class extends OneTimeOperation
         tenancy()->runForMultiple(Tenant::all(), function (): void {
             $min = ApiLog::query()->min('id');
 
+            if (blank($min)) {
+                return;
+            }
+
             DB::query()
                 ->from('meta')
                 ->where('owner_type', ApiLog::class)
