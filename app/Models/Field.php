@@ -146,6 +146,10 @@ class Field extends Model implements HasLabel, Hideable
                     $rules[] = 'required';
                 }
 
+                if (data_get($attributes, 'type') === FieldType::FIELD_FILE->value) {
+                    $rules[] = 'file';
+                }
+
                 return filled($rules)
                     ? implode('|', array_unique(array_filter($rules)))
                     : null;
