@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace App\Jobs\Tenant;
 
+use App\Models\ApiLog;
 use App\Models\Tenant;
+use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 
-class PurgeActivityLogs implements ShouldQueue
+class PruneApiLogs implements ShouldQueue
 {
     use Batchable;
     use InteractsWithQueue;
@@ -30,14 +32,21 @@ class PurgeActivityLogs implements ShouldQueue
         }
 
         Tenant::findOrFail($this->tenantKey)->run(function (): void {
-            $exit = Artisan::call('activitylog:clean', [
-                '--days' => $this->days,
-                '--force' => true,
-            ]);
+            $cutOffDate = Carbon::now()->subDays($this->days)->format('Y-m-d H:i:s');
 
-            if ($exit !== 0) {
-                $this->fail(Artisan::output());
-            }
+            $idsToDelete = ApiLog::query()
+                ->where('created_at', '<', $cutOffDate)
+                ->pluck('id');
+
+            DB::query()
+                ->from('meta')
+                ->where('owner_type', ApiLog::class)
+                ->whereIn('owner_id', $idsToDelete)
+                ->delete();
+
+            ApiLog::query()
+                ->whereIn('id', $idsToDelete)
+                ->delete();
         });
     }
 }

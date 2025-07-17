@@ -4,26 +4,27 @@ declare(strict_types=1);
 
 namespace App\Actions\Batches;
 
-use App\Jobs\Tenant\PurgeActivityLogs;
+use App\Jobs\Tenant\PruneApiLogs;
 use App\Models\Tenant;
 use Illuminate\Bus\Batch;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Bus;
 use Throwable;
 
-class PurgeTenantActivityLogs
+class PruneTenantApiLogs
 {
     /**
      * @throws Throwable
      */
-    public static function handle(): Batch
+    public static function handle(int $days = 30): Batch
     {
         return Bus::batch(
-            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): PurgeActivityLogs => new PurgeActivityLogs(
+            jobs: Tenant::all()->map(fn (Tenant|Model $tenant): PruneApiLogs => new PruneApiLogs(
                 tenantKey: $tenant->getKey(),
+                days: $days,
             ))
         )->name(
-            name: 'Purge Tenant Activity Logs'
+            name: 'Prune Tenant API Logs'
         )->onQueue(
             queue: 'clean'
         )->onConnection(

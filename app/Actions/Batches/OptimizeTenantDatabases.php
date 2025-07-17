@@ -25,7 +25,7 @@ class OptimizeTenantDatabases
         )->name(
             name: 'Optimize Tenant Database'
         )->onQueue(
-            queue: 'backup'
+            queue: 'clean'
         )->onConnection(
             connection: 'central'
         )->dispatch();

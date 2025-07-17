@@ -25,7 +25,7 @@ class OptimizeDatabasesCommand extends Command implements Isolatable
     public function handle(): int
     {
         if (! $this->confirmToProceed()) {
-            return 1;
+            return Command::FAILURE;
         }
 
         OptimizeTenantDatabases::handle();

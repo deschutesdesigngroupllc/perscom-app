@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Console\Commands;
 
-use App\Actions\Batches\PurgeTenantActivityLogs;
+use App\Actions\Batches\PruneTenantApiLogs;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Throwable;
@@ -25,12 +25,22 @@ class PruneActivityLogsCommand extends Command
     public function handle(): int
     {
         if (! $this->confirmToProceed()) {
-            return 1;
+            return Command::FAILURE;
         }
 
-        PurgeTenantActivityLogs::handle();
+        $days = intval($this->option('days') ?? 30);
 
-        $this->info('The purge activity logs job has been dispatched to the queue.');
+        if ($days < 0) {
+            $this->error('The days argument must not be negative.');
+
+            return Command::FAILURE;
+        }
+
+        PruneTenantApiLogs::handle(
+            days: $days,
+        );
+
+        $this->info('The prune activity logs job has been dispatched to the queue.');
 
         return static::SUCCESS;
     }
