@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Actions\Batches\PruneTenantApiLogs;
+use App\Actions\Batches\PruneTenantApiPurgeLogs;
 use Illuminate\Console\Command;
 use Illuminate\Console\ConfirmableTrait;
 use Throwable;
@@ -37,6 +38,10 @@ class PruneActivityLogsCommand extends Command
         }
 
         PruneTenantApiLogs::handle(
+            days: $days,
+        );
+
+        PruneTenantApiPurgeLogs::handle(
             days: $days,
         );
 
