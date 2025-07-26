@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Jobs\Tenant;
 
-use App\Models\ApiLog;
+use App\Models\ApiPurgeLog;
 use App\Models\Tenant;
 use Carbon\Carbon;
 use Illuminate\Bus\Batchable;
@@ -13,7 +13,7 @@ use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Facades\DB;
 
-class PruneApiLogs implements ShouldQueue
+class PruneApiPurgeLogs implements ShouldQueue
 {
     use Batchable;
     use InteractsWithQueue;
@@ -34,17 +34,17 @@ class PruneApiLogs implements ShouldQueue
         Tenant::findOrFail($this->tenantKey)->run(function (): void {
             $cutOffDate = Carbon::now()->subDays($this->days)->format('Y-m-d H:i:s');
 
-            $idsToDelete = ApiLog::query()
+            $idsToDelete = ApiPurgeLog::query()
                 ->where('created_at', '<', $cutOffDate)
                 ->pluck('id');
 
             DB::query()
                 ->from('meta')
-                ->where('owner_type', ApiLog::class)
+                ->where('owner_type', ApiPurgeLog::class)
                 ->whereIn('owner_id', $idsToDelete)
                 ->delete();
 
-            ApiLog::query()
+            ApiPurgeLog::query()
                 ->whereIn('id', $idsToDelete)
                 ->delete();
         });
