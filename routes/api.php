@@ -28,6 +28,7 @@ use App\Http\Controllers\Api\Forms\FormsFieldsController;
 use App\Http\Controllers\Api\Forms\FormsSubmissionsController;
 use App\Http\Controllers\Api\Groups\GroupsController;
 use App\Http\Controllers\Api\Groups\GroupsImageController;
+use App\Http\Controllers\Api\Groups\GroupsUnitsController;
 use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\Images\ImagesController;
 use App\Http\Controllers\Api\Issuers\IssuersController;
@@ -150,6 +151,7 @@ Route::group([
 
         Orion::resource('events', EventsController::class);
         Orion::hasManyResource('events', 'image', EventsImageController::class);
+        Orion::belongsToManyResource('groups', 'units', GroupsUnitsController::class);
 
         Orion::resource('forms', FormsController::class);
         Orion::hasManyResource('forms', 'submissions', FormsSubmissionsController::class);
