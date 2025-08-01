@@ -44,7 +44,7 @@ Visit our documentation [here](https://docs.perscom.io) to get started.
 - **Database**: MySQL with multi-tenant architecture
 - **Admin Panel**: Filament 3.x for administrative interfaces
 - **API**: Laravel Orion for RESTful endpoints with automatic CRUD generation
-- **Authentication**: JWT via php-open-source-saver/jwt-auth + Laravel Passport for OAuth
+- **Authentication**: Self-signed JWTs via php-open-source-saver/jwt-auth + Laravel Passport for OAuth/App-signed JWTs
 - **Queue System**: Laravel Horizon with Redis for background job processing
 - **Frontend**: Vite + React for modern asset compilation and interactive components
 
@@ -92,7 +92,7 @@ Visit our documentation [here](https://docs.perscom.io) to get started.
    DB_USERNAME=root
    DB_PASSWORD=
 
-   # Multi-tenant domains
+   # App domains
    APP_URL=http://perscom-app.test
    BASE_URL=.perscom-app.test
    API_URL=http://api.perscom-app.test
@@ -121,10 +121,10 @@ composer dev  # Start Horizon + Pail logs + Vite dev server
 composer test              # Run all tests (parallel)
 composer test-coverage     # Run tests with coverage
 composer test-filter User  # Run specific test pattern
-composer cs-fix           # Fix code style with Laravel Pint
-composer analyze          # Run PHPStan static analysis
-composer rector           # Apply automated refactoring
-composer test-suite       # Static analysis + tests
+composer cs-fix            # Fix code style with Laravel Pint
+composer analyze           # Run PHPStan static analysis
+composer rector            # Apply automated refactoring
+composer test-suite        # Static analysis + tests
 ```
 
 **Frontend Development**
@@ -151,7 +151,7 @@ php artisan tenants:run cache:clear  # All tenants
 
 **Seeders**
 ```bash
-php artisan db:seed                    # Central database
+php artisan db:seed                   # Central database
 php artisan tenants:seed              # All tenants
 composer shield:seeder                # Reseed permissions for tenant 1
 ```
@@ -182,11 +182,14 @@ composer shield:seeder                # Reseed permissions for tenant 1
 **Test Structure**
 ```
 tests/
-├── Architecture/     # Architectural constraints
+├── Architecture/    # Architectural tests
+├── Contracts/       # Test contracts
 ├── Feature/         # Feature tests
 │   ├── Central/     # Central app tests
+│   ├── Console/     # Console tests
 │   └── Tenant/      # Tenant-specific tests
-└── Unit/           # Unit tests
+├── Traits/          # Testing helpers
+└── Unit/            # Unit tests
 ```
 
 **Writing Tests**
@@ -198,25 +201,29 @@ tests/
 
 **Background Jobs**
 - Monitor via Horizon dashboard: `{app_url}/admin/horizon`
-- Queues: `default`, `system`, `notifications`
+- Queues: `default`, `tenant`, `system`, `api`, `backup`, `clean`
 
 **Custom Commands**
 ```bash
-php artisan perscom:prune         # Clean old data
-php artisan perscom:optimize      # Optimize databases
-php artisan perscom:backup        # Manual backup
-php artisan perscom:calculate-schedules  # Update recurring events
+php artisan perscom:reset                 # Reset local environment back to default
+php artisan perscom:prune                 # Clean old data
+php artisan perscom:optimize              # Optimize databases
+php artisan perscom:backup                # Manual backup
+php artisan perscom:backup-clean          # Clean old backups
+php artisan perscom:calculate-schedules   # Update recurring events
+php artisan perscom:recurring-messages    # Schedule upcoming messages
+php artisan perscom:event-notifications   # Schedule upcoming event notifications
 ```
 
 **Development Tools**
-- **Laravel Horizon**: Queue monitoring at `/admin/horizon`
-- **Laravel Telescope**: Debugging at `/admin/telescope` (local only)
-- **API Specification**: Available at `/api/spec.json`
-- **Health Monitoring**: System health checks at `/up`
+- **Laravel Horizon**: Queue monitoring at `{app_url}/admin/horizon`
+- **Laravel Telescope**: Debugging at `{app_url}/admin/telescope` (local only)
+- **API Specification**: Available at `{app_url}/api/spec.json`
+- **Health Monitoring**: System health checks at `{app_url}/up`
 
 ### Contributing
 
-1. Follow PSR-12 coding standards
+1. Follow PSR-12/Laravel coding standards
 2. Write tests for new features
 3. Use strict type declarations
 4. Follow existing architectural patterns
@@ -224,4 +231,4 @@ php artisan perscom:calculate-schedules  # Update recurring events
 
 ---
 
-**Built with ❤️ using Laravel, Filament, and modern web technologies.**
+**Built with ❤️ using Laravel, Filament, React, Livewire and modern web technologies.**
