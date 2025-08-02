@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Console\Commands;
 
 use App\Models\Tenant;
+use Database\Seeders\ApiKeySeeder;
 use Database\Seeders\CentralDatabaseSeeder;
 use Database\Seeders\FireServiceSeeder;
 use Database\Seeders\MilitarySeeder;
@@ -16,7 +17,7 @@ use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
 class ResetCommand extends Command implements Isolatable
 {
-    protected $signature = 'perscom:reset 
+    protected $signature = 'perscom:reset
                             {--seeder=military : The seeder to use. Default: military}';
 
     protected $description = 'Reset\'s the perscom application.';
@@ -107,14 +108,21 @@ class ResetCommand extends Command implements Isolatable
         }
 
         $this->call('tenants:migrate-fresh', [
-            '--tenants' => [$tenant->getKey()],
+            '--tenants' => $tenant->getTenantKey(),
         ]);
+
         $this->call('tenants:seed', [
-            '--tenants' => [$tenant->getKey()],
+            '--tenants' => $tenant->getTenantKey(),
         ]);
+
         $this->call('tenants:seed', [
-            '--tenants' => [$tenant->getKey()],
+            '--tenants' => $tenant->getTenantKey(),
             '--class' => TenantDatabaseSeeder::class,
+        ]);
+
+        $this->call('tenants:seed', [
+            '--tenants' => $tenant->getTenantKey(),
+            '--class' => ApiKeySeeder::class,
         ]);
 
         return static::SUCCESS;
