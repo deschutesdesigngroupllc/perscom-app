@@ -31,6 +31,8 @@ class NewModelNotification extends Notification implements ShouldQueue
     use Queueable;
     use SerializesModels;
 
+    public $deleteWhenMissingModels = true;
+
     protected FilamentNotification $notification;
 
     protected string $subject;
