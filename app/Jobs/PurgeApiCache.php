@@ -13,7 +13,6 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\Middleware\Skip;
 use Illuminate\Queue\Middleware\WithoutOverlapping;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 
@@ -22,6 +21,8 @@ class PurgeApiCache implements ShouldQueue
     use Dispatchable;
     use InteractsWithQueue;
     use Queueable;
+
+    public int $tries = 3;
 
     protected string $overlapHash;
 
@@ -55,11 +56,6 @@ class PurgeApiCache implements ShouldQueue
                 ));
             }
         }
-    }
-
-    public function retryUntil(): Carbon
-    {
-        return now()->addHour();
     }
 
     public function backoff(): array
