@@ -61,7 +61,7 @@ class SubmissionRequest extends Request
         $form ??= $inputFormId ? Form::find($inputFormId) : null;
 
         if (blank($form)) {
-            return [];
+            return ['*' => ''];
         }
 
         return FieldService::getValidationRules($form->fields)->toArray();

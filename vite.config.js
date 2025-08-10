@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite'
 import laravel from 'laravel-vite-plugin'
+import { ViteImageOptimizer } from 'vite-plugin-image-optimizer'
 
 export default defineConfig({
   build: {
@@ -28,6 +29,7 @@ export default defineConfig({
         'resources/js/widgets/app.js'
       ],
       refresh: true
-    })
+    }),
+    ViteImageOptimizer()
   ]
 })

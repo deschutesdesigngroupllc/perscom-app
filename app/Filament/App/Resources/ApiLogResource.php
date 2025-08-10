@@ -8,7 +8,6 @@ use App\Filament\App\Resources\ApiLogResource\RelationManagers\PurgesRelationMan
 use App\Models\ApiLog;
 use App\Models\User;
 use Filament\Infolists\Components\KeyValueEntry;
-use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Infolist;
@@ -18,7 +17,6 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
-use Illuminate\Support\Number;
 use Illuminate\Support\Str;
 use Parallax\FilamentSyntaxEntry\SyntaxEntry;
 use Symfony\Component\HttpFoundation\Response;
@@ -296,14 +294,6 @@ class ApiLogResource extends BaseResource
                                 ),
                             SyntaxEntry::make('body')
                                 ->language('json'),
-                            RepeatableEntry::make('files')
-                                ->visible(fn (?ApiLog $record) => filled($record->files))
-                                ->schema([
-                                    TextEntry::make('key'),
-                                    TextEntry::make('name'),
-                                    TextEntry::make('size')
-                                        ->formatStateUsing(fn ($state) => Number::fileSize($state ?? 0)),
-                                ]),
                         ]),
                     Tabs\Tab::make('Response')
                         ->icon('heroicon-o-cloud-arrow-down')

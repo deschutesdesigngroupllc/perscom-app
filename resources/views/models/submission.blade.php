@@ -35,7 +35,13 @@
   @forelse($submission->form->fields as $field)
     <dl class="grid gap-y-2">
       <dt class="text-sm font-semibold leading-6">{{ $field->name }}</dt>
-      <dd class="text-sm leading-6">{{ data_get($submission, $field->key, 'No Value') }}</dd>
+      @if ($field->type === \App\Models\Enums\FieldType::FIELD_FILE)
+        <dd class="text-sm leading-6">
+          <a href="{{ data_get($submission, "{$field->key}_url", '#') }}" target="_blank">Open File</a>
+        </dd>
+      @else
+        <dd class="text-sm leading-6">{{ data_get($submission, $field->key, 'No Value') }}</dd>
+      @endif
     </dl>
   @empty
     <div>There are no elements for this form.</div>
