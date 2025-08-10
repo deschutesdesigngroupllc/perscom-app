@@ -37,6 +37,7 @@ use Illuminate\Routing\Middleware\ThrottleRequestsWithRedis;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Laravel\Passport\Http\Middleware\CheckForAnyScope;
 use Laravel\Pennant\Middleware\EnsureFeaturesAreActive;
@@ -186,6 +187,10 @@ return Application::configure(basePath: dirname(__DIR__))
                         'name' => Route::currentRouteName(),
                         'action' => Route::currentRouteAction(),
                     ];
+                }
+
+                if ($e instanceof ValidationException) {
+                    $response['error']['errors'] = $e->errors();
                 }
 
                 if ($request->routeIs('api.widgets.*')) {
