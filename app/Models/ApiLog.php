@@ -31,7 +31,6 @@ use Zoha\Metable;
  * @property-read mixed|null $content
  * @property-read string|int|null|null $duration
  * @property-read string|null $endpoint
- * @property-read mixed|null $files
  * @property-read \Illuminate\Support\Collection $changes
  * @property-read string|null $ip_address
  * @property-read string|null $method
@@ -131,16 +130,6 @@ class ApiLog extends Activity
     {
         return Attribute::make(
             get: fn (): mixed => $this->getExtraProperty('body')
-        )->shouldCache();
-    }
-
-    /**
-     * @return Attribute<mixed, never>
-     */
-    public function files(): Attribute
-    {
-        return Attribute::make(
-            get: fn (): mixed => $this->getExtraProperty('files')
         )->shouldCache();
     }
 

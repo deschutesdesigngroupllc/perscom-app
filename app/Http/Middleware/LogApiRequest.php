@@ -54,23 +54,7 @@ class LogApiRequest
         $activity = activity($name)->withProperties([
             'client' => $client->id ?? null,
             'request_headers' => iterator_to_array($request->headers->getIterator()),
-            'files' => optional($request->allFiles(), fn (array $files) => collect($files)->map(fn (UploadedFile $file, $key): array => [
-                'key' => $key,
-                'name' => $file->getClientOriginalName(),
-                'size' => $file->getSize(),
-                'extension' => $file->getClientOriginalExtension(),
-            ])),
-            'body' => optional($request->getContent(), static function ($content) {
-                if (Str::isJson($content)) {
-                    return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
-                }
-
-                if (! mb_check_encoding($content, 'UTF-8')) {
-                    return null;
-                }
-
-                return $content;
-            }),
+            'body' => $this->captureRequestBody($request),
         ])->causedBy($causer)->log($request->getPathInfo());
 
         $activity->setMeta([
@@ -88,5 +72,49 @@ class LogApiRequest
         config()->set('activitylog.activity_model', $currentActivityModel);
 
         return $response;
+    }
+
+    /**
+     * @throws JsonException
+     */
+    private function captureRequestBody(Request $request): mixed
+    {
+        $contentType = $request->header('Content-Type', '');
+
+        if (Str::startsWith($contentType, 'multipart/form-data')) {
+            return $this->processMultipartData($request->all());
+        }
+
+        $content = $request->getContent();
+
+        if (Str::isJson($content)) {
+            return json_decode($content, true, 512, JSON_THROW_ON_ERROR);
+        }
+
+        if (! mb_check_encoding($content, 'UTF-8')) {
+            return null;
+        }
+
+        return $content;
+    }
+
+    private function processMultipartData(mixed $data): mixed
+    {
+        if ($data instanceof UploadedFile) {
+            return [
+                'type' => 'file',
+                'name' => $data->getClientOriginalName(),
+                'size' => $data->getSize(),
+                'mime_type' => $data->getMimeType(),
+            ];
+        }
+
+        if (is_array($data)) {
+            return array_map(function ($value) {
+                return $this->processMultipartData($value);
+            }, $data);
+        }
+
+        return $data;
     }
 }
