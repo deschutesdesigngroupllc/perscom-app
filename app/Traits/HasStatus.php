@@ -19,9 +19,6 @@ trait HasStatus
         $query->whereBelongsTo($status);
     }
 
-    /**
-     * @return BelongsTo<Status, $this>
-     */
     public function status(): BelongsTo
     {
         return $this->belongsTo(Status::class);

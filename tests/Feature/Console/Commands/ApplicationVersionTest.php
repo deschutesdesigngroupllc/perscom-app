@@ -26,7 +26,7 @@ class ApplicationVersionTest extends TestCase
         $envVars = Collection::make(explode("\n", file_get_contents(App::environmentFilePath())))
             ->map(fn ($line): array => explode('=', $line, 2))
             ->filter(fn ($parts): bool => count($parts) === 2 && trim($parts[0]) !== '')
-            ->mapWithKeys(fn (array $parts): array => [trim((string) $parts[0]) => trim((string) $parts[1])]);
+            ->mapWithKeys(fn (array $parts): array => [trim($parts[0]) => trim($parts[1])]);
 
         $this->assertSame($version, $envVars->get('APP_VERSION'));
 

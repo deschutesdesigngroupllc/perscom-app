@@ -19,9 +19,6 @@ trait HasSpecialty
         $query->whereBelongsTo($specialty);
     }
 
-    /**
-     * @return BelongsTo<Specialty, $this>
-     */
     public function specialty(): BelongsTo
     {
         return $this->belongsTo(Specialty::class);

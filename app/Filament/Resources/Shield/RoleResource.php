@@ -111,8 +111,10 @@ class RoleResource extends Resource implements HasShieldPermissions
                 //
             ])
             ->recordActions([
-                EditAction::make(),
-                DeleteAction::make(),
+                EditAction::make()
+                    ->visible(fn (Role $record): bool => static::canEdit($record)),
+                DeleteAction::make()
+                    ->visible(fn (Role $record): bool => static::canDelete($record)),
             ])
             ->toolbarActions([
                 DeleteBulkAction::make(),

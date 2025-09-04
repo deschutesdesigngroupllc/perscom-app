@@ -101,9 +101,6 @@ class QualificationRecord extends Model implements HasLabel, SendsModelNotificat
         'updated_at',
     ];
 
-    /**
-     * @return BelongsTo<Qualification, $this>
-     */
     public function qualification(): BelongsTo
     {
         return $this->belongsTo(Qualification::class);

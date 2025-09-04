@@ -13,9 +13,6 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  */
 trait HasSchedule
 {
-    /**
-     * @return MorphOne<Schedule, $this>
-     */
     public function schedule(): MorphOne
     {
         return $this->morphOne(Schedule::class, 'repeatable');

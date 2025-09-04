@@ -78,9 +78,6 @@ class Alert extends Model implements Enableable, Sortable
         'updated_at',
     ];
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

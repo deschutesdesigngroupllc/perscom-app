@@ -58,9 +58,6 @@ class Activity extends BaseActivity
 {
     use HasFactory;
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return array_merge(parent::casts(), parent::getCasts(), [

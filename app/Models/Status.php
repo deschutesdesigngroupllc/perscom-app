@@ -78,9 +78,6 @@ class Status extends Model implements HasColor, HasLabel, Sortable
         'updated_at',
     ];
 
-    /**
-     * @return MorphToMany<Submission, $this>
-     */
     public function submissions(): MorphToMany
     {
         return $this->morphedByMany(Submission::class, 'model', 'model_has_statuses');

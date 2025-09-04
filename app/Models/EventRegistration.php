@@ -80,17 +80,11 @@ class EventRegistration extends Pivot
         });
     }
 
-    /**
-     * @return BelongsTo<Event, $this>
-     */
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

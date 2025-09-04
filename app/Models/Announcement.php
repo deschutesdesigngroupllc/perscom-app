@@ -106,9 +106,6 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
         );
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

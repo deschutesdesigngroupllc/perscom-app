@@ -19,9 +19,6 @@ trait HasUnit
         $query->whereBelongsTo($unit);
     }
 
-    /**
-     * @return BelongsTo<Unit, $this>
-     */
     public function unit(): BelongsTo
     {
         return $this->belongsTo(Unit::class);

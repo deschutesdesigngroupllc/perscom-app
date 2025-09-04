@@ -68,9 +68,6 @@ class Task extends Model implements HasLabel
         'updated_at',
     ];
 
-    /**
-     * @return BelongsTo<Form, $this>
-     */
     public function form(): BelongsTo
     {
         return $this->belongsTo(Form::class);

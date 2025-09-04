@@ -69,9 +69,6 @@ class Credential extends Model implements HasLabel, Sortable
         'issuer_id',
     ];
 
-    /**
-     * @return BelongsTo<Issuer, $this>
-     */
     public function issuer(): BelongsTo
     {
         return $this->belongsTo(Issuer::class);

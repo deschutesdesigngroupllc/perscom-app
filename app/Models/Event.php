@@ -173,9 +173,6 @@ class Event extends Model implements HasLabel
         })->shouldCache();
     }
 
-    /**
-     * @return BelongsTo<Calendar, $this>
-     */
     public function calendar(): BelongsTo
     {
         return $this->belongsTo(Calendar::class);
@@ -190,9 +187,6 @@ class Event extends Model implements HasLabel
             ->withTimestamps();
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         $casts = [

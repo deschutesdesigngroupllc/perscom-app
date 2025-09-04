@@ -96,9 +96,6 @@ class PassportClient extends BaseClientModel
         return parent::hasScope($scope);
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

@@ -310,9 +310,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return parent::resolveRouteBinding($value, $field);
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

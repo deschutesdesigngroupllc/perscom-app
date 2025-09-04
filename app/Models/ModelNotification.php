@@ -184,9 +184,6 @@ class ModelNotification extends MorphPivot
         return collect();
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

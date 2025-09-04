@@ -107,9 +107,6 @@ class TrainingRecord extends Model
             ->using(TrainingRecordCredential::class);
     }
 
-    /**
-     * @return BelongsTo<User, $this>
-     */
     public function instructor(): BelongsTo
     {
         return $this->belongsTo(User::class, 'instructor_id');

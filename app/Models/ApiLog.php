@@ -214,9 +214,6 @@ class ApiLog extends Activity
         return $this->hasManyJson(ApiPurgeLog::class, 'properties->request_id', 'properties->request_id');
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return array_merge(parent::casts(), parent::getCasts(), [

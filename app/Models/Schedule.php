@@ -151,9 +151,6 @@ class Schedule extends MorphPivot
         });
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

@@ -5,6 +5,7 @@
 
 @source '../../../../app/Filament/App/**/*';
 @source '../../../../resources/views/filament/**/*';
+@source '../../../../resources/views/forms/components/**/*';
 @source '../../../../resources/views/livewire/app/**/*';
 @source '../../../../resources/views/components/**/*';
 @source '../../../../vendor/guava/filament-icon-picker/resources/**/*';

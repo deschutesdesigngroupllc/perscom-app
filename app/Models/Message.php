@@ -77,9 +77,6 @@ class Message extends Model implements HasLabel
         'updated_at',
     ];
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

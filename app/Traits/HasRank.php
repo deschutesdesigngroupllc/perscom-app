@@ -19,9 +19,6 @@ trait HasRank
         $query->whereBelongsTo($rank);
     }
 
-    /**
-     * @return BelongsTo<Rank, $this>
-     */
     public function rank(): BelongsTo
     {
         return $this->belongsTo(Rank::class);
