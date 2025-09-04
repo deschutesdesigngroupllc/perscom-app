@@ -19,13 +19,10 @@ use Illuminate\Support\Collection;
  */
 trait HasStatusRecords
 {
-    /**
-     * @return Attribute<Status|Model|null, never>
-     */
     public function status(): Attribute
     {
         return Attribute::make(
-            get: fn (): Model|Status => $this->statuses()->first()
+            get: fn (): Model|Status|null => $this->statuses()->first()
         );
     }
 
