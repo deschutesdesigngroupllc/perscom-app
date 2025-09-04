@@ -36,10 +36,10 @@
       @endif
     </div>
   </div>
-  <div class="flex-0">
-    <div class="flex flex-row space-x-2">
+  <div class="flex-shrink-0">
+    <div class="flex flex-row space-x-2 items-center">
       @if (!in_array('online', $hiddenFields))
-        <div class="hidden sm:flex">
+        <div class="hidden sm:flex whitespace-nowrap">
           @if ($user->online)
             <x-filament::badge color="success">Online</x-filament::badge>
           @else
@@ -48,7 +48,9 @@
         </div>
       @endif
       @if (!in_array('status_id', $hiddenFields))
-        <x-filament::badge :color="\Filament\Support\Colors\Color::hex($user->status->color ?? '#2563eb')">{{ $user->status->name ?? 'No Status Set' }}</x-filament::badge>
+        <div class="whitespace-nowrap">
+          <x-filament::badge :color="\Filament\Support\Colors\Color::hex($user->status->color ?? '#2563eb')">{{ $user->status->name ?? 'No Status Set' }}</x-filament::badge>
+        </div>
       @endif
     </div>
   </div>
