@@ -27,7 +27,7 @@ class ListUsers extends ListRecords
             $status->id => PresetView::make()
                 ->favorite()
                 ->label($status->name)
-                ->color(Color::generateV3Palette($status->color))
+                ->color(Color::generatePalette($status->color))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status_id', $status->id)),
         ])->toArray();
     }

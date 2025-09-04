@@ -10,6 +10,7 @@ use App\Models\Subscription;
 use App\Models\Tenant;
 use BackedEnum;
 use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\TextColumn;
@@ -76,6 +77,7 @@ class SubscriptionsRelationManager extends RelationManager
                     ->color(Color::generateV3Palette('#5167FC'))
                     ->openUrlInNewTab()
                     ->url(fn (Subscription $record) => $record->stripe_url),
+                DeleteAction::make(),
             ])
             ->headerActions([
                 Action::make('billing')
@@ -101,7 +103,7 @@ class SubscriptionsRelationManager extends RelationManager
     protected function can(string $action, ?Model $record = null): bool
     {
         return match ($action) {
-            'edit', 'delete', 'create' => false,
+            'edit', 'create' => false,
             default => parent::can($action, $record),
         };
     }

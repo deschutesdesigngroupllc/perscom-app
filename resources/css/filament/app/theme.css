@@ -9,7 +9,7 @@
 @source '../../../../resources/views/livewire/app/**/*';
 @source '../../../../resources/views/components/**/*';
 @source '../../../../vendor/guava/filament-icon-picker/resources/**/*';
-@source '../../../../vendor/archilex/filament-filter-sets/resources/css/**/*';
+@source '../../../../vendor/archilex/filament-filter-sets/resources/views/**/*';
 
 .user-cover-photo {
     @apply flex-1 items-center justify-center
