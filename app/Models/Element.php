@@ -8,8 +8,11 @@ use App\Traits\CanBeOrdered;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -20,21 +23,21 @@ use Spatie\EloquentSortable\Sortable;
  * @property string $model_type
  * @property int $model_id
  * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $model
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|Eloquent $model
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereFieldId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Element whereUpdatedAt($value)
+ * @method static Builder<static>|Element newModelQuery()
+ * @method static Builder<static>|Element newQuery()
+ * @method static Builder<static>|Element ordered(string $direction = 'asc')
+ * @method static Builder<static>|Element query()
+ * @method static Builder<static>|Element whereCreatedAt($value)
+ * @method static Builder<static>|Element whereFieldId($value)
+ * @method static Builder<static>|Element whereId($value)
+ * @method static Builder<static>|Element whereModelId($value)
+ * @method static Builder<static>|Element whereModelType($value)
+ * @method static Builder<static>|Element whereOrder($value)
+ * @method static Builder<static>|Element whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

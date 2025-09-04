@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\AssignmentRecordResource\Pages;
 
 use App\Filament\App\Resources\AssignmentRecordResource;
+use App\Filament\App\Resources\AssignmentRecordResource\Widgets\AssignmentRecordStatsOverview;
 use App\Models\Enums\AssignmentRecordType;
 use Archilex\AdvancedTables\AdvancedTables;
 use Archilex\AdvancedTables\Components\PresetView;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
@@ -35,14 +36,14 @@ class ListAssignmentRecords extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 
     protected function getHeaderWidgets(): array
     {
         return [
-            AssignmentRecordResource\Widgets\AssignmentRecordStatsOverview::class,
+            AssignmentRecordStatsOverview::class,
         ];
     }
 }

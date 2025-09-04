@@ -9,6 +9,7 @@ use App\Models\Group;
 use App\Services\RosterService;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Pages\Page;
 
@@ -21,7 +22,7 @@ class Roster extends Page
      */
     public array $hiddenFields;
 
-    protected static ?string $navigationIcon = 'heroicon-o-queue-list';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-queue-list';
 
     protected static ?int $navigationSort = 4;
 

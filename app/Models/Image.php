@@ -8,14 +8,17 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\ImageFactory;
 use Eloquent;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 
 /**
@@ -26,8 +29,8 @@ use Illuminate\Support\Facades\Storage;
  * @property string|null $model_type
  * @property int|null $model_id
  * @property string $path
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read string|null $image_url
  * @property-read string $label
  * @property-read Model|Eloquent|null $model
@@ -35,19 +38,19 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *
- * @method static \Database\Factories\ImageFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereFilename($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image wherePath($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Image whereUpdatedAt($value)
+ * @method static ImageFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Image newModelQuery()
+ * @method static Builder<static>|Image newQuery()
+ * @method static Builder<static>|Image query()
+ * @method static Builder<static>|Image whereCreatedAt($value)
+ * @method static Builder<static>|Image whereDescription($value)
+ * @method static Builder<static>|Image whereFilename($value)
+ * @method static Builder<static>|Image whereId($value)
+ * @method static Builder<static>|Image whereModelId($value)
+ * @method static Builder<static>|Image whereModelType($value)
+ * @method static Builder<static>|Image whereName($value)
+ * @method static Builder<static>|Image wherePath($value)
+ * @method static Builder<static>|Image whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

@@ -4,52 +4,68 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\ImageResource\Pages;
+use App\Filament\App\Resources\ImageResource\Pages\CreateImage;
+use App\Filament\App\Resources\ImageResource\Pages\EditImage;
+use App\Filament\App\Resources\ImageResource\Pages\ListImages;
+use App\Filament\App\Resources\ImageResource\Pages\ViewImage;
 use App\Models\Award;
 use App\Models\Image;
 use App\Models\Qualification;
 use App\Models\Rank;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MorphToSelect;
+use Filament\Forms\Components\MorphToSelect\Type;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconPosition;
-use Filament\Tables;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class ImageResource extends BaseResource
 {
     protected static ?string $model = Image::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-photo';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-photo';
 
-    protected static ?string $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 7;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Image')
+                        Tab::make('Image')
                             ->icon('heroicon-o-photo')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->required()
                                     ->helperText('The name of the image.')
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
                                     ->helperText('A brief description of the image.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\FileUpload::make('path')
+                                FileUpload::make('path')
                                     ->required()
                                     ->label('Image')
                                     ->image()
@@ -60,18 +76,18 @@ class ImageResource extends BaseResource
                                     ->visibility('public')
                                     ->storeFileNamesIn('filename'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Resource')
+                        Tab::make('Resource')
                             ->icon('heroicon-o-document')
                             ->schema([
-                                Forms\Components\MorphToSelect::make('model')
+                                MorphToSelect::make('model')
                                     ->preload()
                                     ->hiddenLabel()
                                     ->types([
-                                        Forms\Components\MorphToSelect\Type::make(Award::class)
+                                        Type::make(Award::class)
                                             ->titleAttribute('name'),
-                                        Forms\Components\MorphToSelect\Type::make(Qualification::class)
+                                        Type::make(Qualification::class)
                                             ->titleAttribute('name'),
-                                        Forms\Components\MorphToSelect\Type::make(Rank::class)
+                                        Type::make(Rank::class)
                                             ->titleAttribute('name'),
                                     ]),
                             ]),
@@ -79,14 +95,14 @@ class ImageResource extends BaseResource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Image')
+                        Tab::make('Image')
                             ->icon('heroicon-o-photo')
                             ->schema([
                                 TextEntry::make('name'),
@@ -100,7 +116,7 @@ class ImageResource extends BaseResource
                                 ImageEntry::make('path')
                                     ->label('Image'),
                             ]),
-                        Tabs\Tab::make('Resource')
+                        Tab::make('Resource')
                             ->icon('heroicon-o-document')
                             ->schema([
                                 TextEntry::make('model.label')
@@ -119,18 +135,18 @@ class ImageResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('path')
+                ImageColumn::make('path')
                     ->label(''),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('image_url')
+                TextColumn::make('image_url')
                     ->label('URL')
                     ->url(fn ($state) => $state)
                     ->openUrlInNewTab()
@@ -138,33 +154,33 @@ class ImageResource extends BaseResource
                     ->iconPosition(IconPosition::After)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('model.label')
+                TextColumn::make('model.label')
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->iconPosition(IconPosition::After)
                     ->url(fn (Image $record) => $record->model_url),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\Action::make('open')
+            ->recordActions([
+                Action::make('open')
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->color('gray')
                     ->url(fn (?Image $record) => $record->image_url)
                     ->openUrlInNewTab(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
@@ -173,10 +189,10 @@ class ImageResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListImages::route('/'),
-            'create' => Pages\CreateImage::route('/create'),
-            'edit' => Pages\EditImage::route('/{record}/edit'),
-            'view' => Pages\ViewImage::route('/{record}'),
+            'index' => ListImages::route('/'),
+            'create' => CreateImage::route('/create'),
+            'edit' => EditImage::route('/{record}/edit'),
+            'view' => ViewImage::route('/{record}'),
         ];
     }
 }

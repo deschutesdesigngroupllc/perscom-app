@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\AnnouncementResource\Pages;
+use App\Filament\App\Resources\AnnouncementResource\Pages\CreateAnnouncement;
+use App\Filament\App\Resources\AnnouncementResource\Pages\EditAnnouncement;
+use App\Filament\App\Resources\AnnouncementResource\Pages\ListAnnouncements;
 use App\Filament\Exports\AnnouncementExporter;
 use App\Forms\Components\ModelNotification;
 use App\Models\Announcement;
@@ -12,54 +14,72 @@ use App\Models\Scopes\DisabledScope;
 use App\Models\Scopes\EnabledScope;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\ColorColumn;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class AnnouncementResource extends BaseResource
 {
     protected static ?string $model = Announcement::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-megaphone';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-megaphone';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Announcement')
+                        Tab::make('Announcement')
                             ->icon('heroicon-o-megaphone')
                             ->schema([
-                                Forms\Components\TextInput::make('title')
-                                    ->afterStateUpdated(fn (Forms\Set $set, $state): mixed => $set('model_notifications.subject', $state))
+                                TextInput::make('title')
+                                    ->afterStateUpdated(fn (Set $set, $state): mixed => $set('model_notifications.subject', $state))
                                     ->live(onBlur: true)
                                     ->helperText('The announcement title.')
                                     ->columnSpanFull()
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('content')
-                                    ->afterStateUpdated(fn (Forms\Set $set, $state): mixed => $set('model_notifications.message', $state))
+                                RichEditor::make('content')
+                                    ->afterStateUpdated(fn (Set $set, $state): mixed => $set('model_notifications.message', $state))
                                     ->live(onBlur: true)
                                     ->helperText('The announcement content.')
                                     ->required()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\ColorPicker::make('color')
+                                ColorPicker::make('color')
                                     ->helperText('Add some color to the announcement.')
                                     ->required(),
-                                Forms\Components\Checkbox::make('global')
+                                Checkbox::make('global')
                                     ->helperText('If checked, the announcement will be displayed at the top of all pages.'),
-                                Forms\Components\DateTimePicker::make('expires_at')
+                                DateTimePicker::make('expires_at')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
                                         $settings = app(OrganizationSettings::class);
@@ -69,7 +89,7 @@ class AnnouncementResource extends BaseResource
                                     ->label('Expiration')
                                     ->helperText('If set, the announcement will disappear after this date.'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Notifications')
+                        Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')
                             ->icon('heroicon-o-bell')
                             ->schema([
@@ -83,23 +103,23 @@ class AnnouncementResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('content')
+                TextColumn::make('content')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->sortable()
                     ->html()
                     ->wrap()
                     ->searchable(),
-                Tables\Columns\ColorColumn::make('color')
+                ColorColumn::make('color')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('global')
+                IconColumn::make('global')
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('enabled')
+                ToggleColumn::make('enabled')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('expires_at')
+                TextColumn::make('expires_at')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
                         $settings = app(OrganizationSettings::class);
@@ -109,9 +129,9 @@ class AnnouncementResource extends BaseResource
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->recordClasses(fn (?Announcement $record): ?string => match ($record->enabled) {
@@ -120,19 +140,19 @@ class AnnouncementResource extends BaseResource
             })
             ->groups(['enabled', 'global'])
             ->filters([
-                Tables\Filters\TernaryFilter::make('enabled'),
-                Tables\Filters\TernaryFilter::make('global'),
+                TernaryFilter::make('enabled'),
+                TernaryFilter::make('global'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(AnnouncementExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -149,9 +169,9 @@ class AnnouncementResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAnnouncements::route('/'),
-            'create' => Pages\CreateAnnouncement::route('/create'),
-            'edit' => Pages\EditAnnouncement::route('/{record}/edit'),
+            'index' => ListAnnouncements::route('/'),
+            'create' => CreateAnnouncement::route('/create'),
+            'edit' => EditAnnouncement::route('/{record}/edit'),
         ];
     }
 

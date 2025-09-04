@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\AnnouncementResource\Widgets;
 
 use App\Models\Announcement;
+use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Support\Colors\Color;
 use Filament\Support\Enums\FontWeight;
-use Filament\Tables;
+use Filament\Tables\Columns\Layout\Stack;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Filament\Widgets\TableWidget as BaseWidget;
 
@@ -31,26 +33,26 @@ class RecentAnnouncements extends BaseWidget
             )
             ->recordAction('view')
             ->columns([
-                Tables\Columns\Layout\Stack::make([
-                    Tables\Columns\TextColumn::make('title')
-                        ->color(fn (?Announcement $record): array => Color::hex($record->color))
+                Stack::make([
+                    TextColumn::make('title')
+                        ->color(fn (?Announcement $record): array => Color::generateV3Palette($record->color))
                         ->weight(FontWeight::Bold),
-                    Tables\Columns\TextColumn::make('content')
+                    TextColumn::make('content')
                         ->html()
                         ->wrap(),
                 ]),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable(false)
                     ->color(Color::Gray),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make()
+            ->recordActions([
+                ViewAction::make()
                     ->icon(null)
                     ->hiddenLabel()
-                    ->infolist([
+                    ->schema([
                         TextEntry::make('title')
                             ->hiddenLabel()
-                            ->color(fn (?Announcement $record): array => Color::hex($record->color))
+                            ->color(fn (?Announcement $record): array => Color::generateV3Palette($record->color))
                             ->weight(FontWeight::Bold),
                         TextEntry::make('content')
                             ->hiddenLabel()

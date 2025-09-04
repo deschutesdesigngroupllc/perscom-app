@@ -14,10 +14,14 @@ use App\Traits\HasRankRecords;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
+use Database\Factories\RankFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -27,34 +31,34 @@ use Spatie\EloquentSortable\Sortable;
  * @property string|null $abbreviation
  * @property string|null $paygrade
  * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
  * @property-read Image|null $image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
+ * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, RankRecord> $rank_records
+ * @property-read Collection<int, RankRecord> $rank_records
  * @property-read int|null $rank_records_count
  * @property-read string|null $relative_url
  * @property-read string|null $url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
- * @method static \Database\Factories\RankFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereAbbreviation($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank wherePaygrade($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Rank whereUpdatedAt($value)
+ * @method static RankFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Rank newModelQuery()
+ * @method static Builder<static>|Rank newQuery()
+ * @method static Builder<static>|Rank ordered(string $direction = 'asc')
+ * @method static Builder<static>|Rank query()
+ * @method static Builder<static>|Rank whereAbbreviation($value)
+ * @method static Builder<static>|Rank whereCreatedAt($value)
+ * @method static Builder<static>|Rank whereDescription($value)
+ * @method static Builder<static>|Rank whereId($value)
+ * @method static Builder<static>|Rank whereName($value)
+ * @method static Builder<static>|Rank whereOrder($value)
+ * @method static Builder<static>|Rank wherePaygrade($value)
+ * @method static Builder<static>|Rank whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

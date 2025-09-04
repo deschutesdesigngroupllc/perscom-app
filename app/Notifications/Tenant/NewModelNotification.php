@@ -60,7 +60,7 @@ class NewModelNotification extends Notification implements ShouldQueue
             $color = $model->getColor();
 
             match (true) {
-                is_string($color) => $this->notification->color(Color::hex($color)),
+                is_string($color) => $this->notification->color(Color::generateV3Palette($color)),
                 is_array($color) => $this->notification->color($color),
                 default => $this->notification->info()
             };

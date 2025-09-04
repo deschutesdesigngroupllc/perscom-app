@@ -6,27 +6,29 @@ namespace App\Filament\App\Resources\CalendarResource\RelationManagers;
 
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
+use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class EventsRelationManager extends RelationManager
 {
     protected static string $relationship = 'events';
 
-    protected static ?string $icon = 'heroicon-o-calendar-days';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-calendar-days';
 
     public function table(Table $table): Table
     {
         return $table
             ->description('The events assigned to the calendar.')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('author.name')
+                TextColumn::make('author.name')
                     ->label('Organizer')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('start')
+                TextColumn::make('start')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
                         $settings = app(OrganizationSettings::class);
@@ -35,7 +37,7 @@ class EventsRelationManager extends RelationManager
                     }))
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('end')
+                TextColumn::make('end')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
                         $settings = app(OrganizationSettings::class);
@@ -44,11 +46,11 @@ class EventsRelationManager extends RelationManager
                     }))
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\IconColumn::make('all_day')
+                IconColumn::make('all_day')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('repeats')
+                IconColumn::make('repeats')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('has_passed')
+                IconColumn::make('has_passed')
                     ->sortable(),
             ]);
     }

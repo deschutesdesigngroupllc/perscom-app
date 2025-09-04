@@ -5,7 +5,10 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   darkMode: ['class'],
   mode: 'jit',
-  content: ['./resources/**/*.{js,jsx,php}'],
+  content: [
+    './resources/**/*.{js,jsx,php}',
+    './vendor/archilex/filament-filter-sets/**/*.php'
+  ],
   theme: {
     fontSize: {
       xs: [

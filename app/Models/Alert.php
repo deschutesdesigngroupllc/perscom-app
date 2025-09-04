@@ -15,6 +15,8 @@ use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
@@ -27,11 +29,11 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property string $message
  * @property string|null $link_text
  * @property string|null $url
- * @property \Illuminate\Support\Collection<int, AlertChannel>|null $channels
+ * @property Collection<int, AlertChannel>|null $channels
  * @property bool $enabled
  * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
  * @method static Builder<static>|Alert disabled()
  * @method static Builder<static>|Alert enabled()

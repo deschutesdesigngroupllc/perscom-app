@@ -19,12 +19,16 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
+use Database\Factories\AwardRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -33,42 +37,42 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $document_id
  * @property int|null $author_id
  * @property string|null $text
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activities
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
+ * @property-read Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read User|null $author
  * @property-read Award|null $award
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
+ * @property-read Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Document|null $document
  * @property-read mixed $document_parsed
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $logs
+ * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, ModelNotification> $modelNotifications
+ * @property-read Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read string|null $relative_url
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord author(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord document(\App\Models\Document $document)
- * @method static \Database\Factories\AwardRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereAwardId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardRecord whereUserId($value)
+ * @method static Builder<static>|AwardRecord author(User $user)
+ * @method static Builder<static>|AwardRecord document(Document $document)
+ * @method static AwardRecordFactory factory($count = null, $state = [])
+ * @method static Builder<static>|AwardRecord newModelQuery()
+ * @method static Builder<static>|AwardRecord newQuery()
+ * @method static Builder<static>|AwardRecord query()
+ * @method static Builder<static>|AwardRecord user(User $user)
+ * @method static Builder<static>|AwardRecord whereAuthorId($value)
+ * @method static Builder<static>|AwardRecord whereAwardId($value)
+ * @method static Builder<static>|AwardRecord whereCreatedAt($value)
+ * @method static Builder<static>|AwardRecord whereDocumentId($value)
+ * @method static Builder<static>|AwardRecord whereId($value)
+ * @method static Builder<static>|AwardRecord whereText($value)
+ * @method static Builder<static>|AwardRecord whereUpdatedAt($value)
+ * @method static Builder<static>|AwardRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */

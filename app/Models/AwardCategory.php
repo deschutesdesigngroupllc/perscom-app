@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $award_id
  * @property int $category_id
  * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereAwardId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AwardCategory whereUpdatedAt($value)
+ * @method static Builder<static>|AwardCategory newModelQuery()
+ * @method static Builder<static>|AwardCategory newQuery()
+ * @method static Builder<static>|AwardCategory query()
+ * @method static Builder<static>|AwardCategory whereAwardId($value)
+ * @method static Builder<static>|AwardCategory whereCategoryId($value)
+ * @method static Builder<static>|AwardCategory whereCreatedAt($value)
+ * @method static Builder<static>|AwardCategory whereId($value)
+ * @method static Builder<static>|AwardCategory whereOrder($value)
+ * @method static Builder<static>|AwardCategory whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

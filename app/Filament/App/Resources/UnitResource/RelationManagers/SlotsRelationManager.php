@@ -7,9 +7,14 @@ namespace App\Filament\App\Resources\UnitResource\RelationManagers;
 use App\Filament\App\Resources\SlotResource;
 use App\Models\Enums\RosterMode;
 use App\Settings\DashboardSettings;
-use Filament\Forms\Form;
+use Filament\Actions\AttachAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\DetachAction;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
@@ -26,9 +31,9 @@ class SlotsRelationManager extends RelationManager
             && $settings->roster_mode === RosterMode::MANUAL;
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return SlotResource::form($form);
+        return SlotResource::form($schema);
     }
 
     public function table(Table $table): Table
@@ -39,14 +44,14 @@ class SlotsRelationManager extends RelationManager
             ->description('The available slots for the unit.')
             ->emptyStateDescription('Attach a slot to the unit to get started.')
             ->columns([
-                Tables\Columns\TextColumn::make('name'),
+                TextColumn::make('name'),
             ])
             ->filters([
                 //
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
-                Tables\Actions\AttachAction::make()
+                CreateAction::make(),
+                AttachAction::make()
                     ->label('Add slot')
                     ->multiple()
                     ->modalHeading('Add slot')
@@ -54,13 +59,13 @@ class SlotsRelationManager extends RelationManager
                     ->modalSubmitActionLabel('Add')
                     ->preloadRecordSelect(),
             ])
-            ->actions([
-                Tables\Actions\DetachAction::make()
+            ->recordActions([
+                DetachAction::make()
                     ->label('Remove slot'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('slots.order');

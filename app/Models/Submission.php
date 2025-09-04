@@ -13,12 +13,16 @@ use App\Traits\HasCustomFieldData;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasStatusRecords;
+use Database\Factories\SubmissionFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Stringable;
 
@@ -28,34 +32,34 @@ use Stringable;
  * @property int $user_id
  * @property array<array-key, mixed>|null $data
  * @property string|null $read_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Form $form
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read Status|null $status
  * @property-read StatusRecord|null $record
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Status> $statuses
+ * @property-read Collection<int, Status> $statuses
  * @property-read int|null $statuses_count
  * @property-read string|null $url
  * @property-read User $user
  *
- * @method static \Database\Factories\SubmissionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission read()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission status(?mixed $statuses)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission unread()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereData($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereFormId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereReadAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Submission whereUserId($value)
+ * @method static SubmissionFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Submission newModelQuery()
+ * @method static Builder<static>|Submission newQuery()
+ * @method static Builder<static>|Submission query()
+ * @method static Builder<static>|Submission read()
+ * @method static Builder<static>|Submission status(?mixed $statuses)
+ * @method static Builder<static>|Submission unread()
+ * @method static Builder<static>|Submission whereCreatedAt($value)
+ * @method static Builder<static>|Submission whereData($value)
+ * @method static Builder<static>|Submission whereFormId($value)
+ * @method static Builder<static>|Submission whereId($value)
+ * @method static Builder<static>|Submission whereReadAt($value)
+ * @method static Builder<static>|Submission whereUpdatedAt($value)
+ * @method static Builder<static>|Submission whereUserId($value)
  *
  * @mixin \Eloquent
  */

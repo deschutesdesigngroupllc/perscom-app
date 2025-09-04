@@ -7,9 +7,11 @@ namespace App\Filament\App\Resources\UserResource\RelationManagers;
 use App\Filament\App\Resources\AwardRecordResource;
 use App\Models\AwardRecord;
 use App\Models\User;
+use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -17,26 +19,26 @@ class AwardRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'award_records';
 
-    protected static ?string $icon = 'heroicon-o-trophy';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-trophy';
 
     public function table(Table $table): Table
     {
         return $table
             ->description('The award records for the user.')
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('award.name')
+                TextColumn::make('award.name')
                     ->sortable(),
-                Tables\Columns\ImageColumn::make('award.image.path')
+                ImageColumn::make('award.image.path')
                     ->label(''),
-                Tables\Columns\TextColumn::make('text')
+                TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('document.name')
+                TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(

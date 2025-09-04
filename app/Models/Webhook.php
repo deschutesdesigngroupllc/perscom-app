@@ -6,8 +6,12 @@ namespace App\Models;
 
 use App\Models\Enums\WebhookMethod;
 use App\Traits\HasLogs;
+use Database\Factories\WebhookFactory;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -16,25 +20,25 @@ use Illuminate\Database\Eloquent\Model;
  * @property WebhookMethod $method
  * @property array<array-key, mixed> $events
  * @property string $secret
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activities
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $logs
+ * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
  *
- * @method static \Database\Factories\WebhookFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereEvents($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereMethod($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereSecret($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Webhook whereUrl($value)
+ * @method static WebhookFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Webhook newModelQuery()
+ * @method static Builder<static>|Webhook newQuery()
+ * @method static Builder<static>|Webhook query()
+ * @method static Builder<static>|Webhook whereCreatedAt($value)
+ * @method static Builder<static>|Webhook whereDescription($value)
+ * @method static Builder<static>|Webhook whereEvents($value)
+ * @method static Builder<static>|Webhook whereId($value)
+ * @method static Builder<static>|Webhook whereMethod($value)
+ * @method static Builder<static>|Webhook whereSecret($value)
+ * @method static Builder<static>|Webhook whereUpdatedAt($value)
+ * @method static Builder<static>|Webhook whereUrl($value)
  *
  * @mixin \Eloquent
  */

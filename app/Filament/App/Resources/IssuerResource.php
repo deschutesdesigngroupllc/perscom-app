@@ -4,36 +4,47 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\IssuerResource\Pages;
+use App\Filament\App\Resources\IssuerResource\Pages\CreateIssuer;
+use App\Filament\App\Resources\IssuerResource\Pages\EditIssuer;
+use App\Filament\App\Resources\IssuerResource\Pages\ListIssuers;
 use App\Filament\Exports\IssuerExporter;
 use App\Models\Issuer;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class IssuerResource extends BaseResource
 {
     protected static ?string $model = Issuer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
 
-    protected static ?string $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Training';
 
     protected static ?int $navigationSort = 5;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Issuer')
+                        Tab::make('Issuer')
                             ->columns()
                             ->icon('heroicon-o-briefcase')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the issuer.')
                                     ->required()
                                     ->maxLength(255)
@@ -47,20 +58,20 @@ class IssuerResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(IssuerExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -68,9 +79,9 @@ class IssuerResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListIssuers::route('/'),
-            'create' => Pages\CreateIssuer::route('/create'),
-            'edit' => Pages\EditIssuer::route('/{record}/edit'),
+            'index' => ListIssuers::route('/'),
+            'create' => CreateIssuer::route('/create'),
+            'edit' => EditIssuer::route('/{record}/edit'),
         ];
     }
 }

@@ -31,7 +31,10 @@ use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use App\Traits\SocialRelationships;
 use Archilex\AdvancedTables\Concerns\HasViews;
+use Archilex\AdvancedTables\Models\ManagedPresetView;
+use Archilex\AdvancedTables\Models\UserView;
 use Carbon\CarbonInterval;
+use Database\Factories\UserFactory;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
@@ -49,6 +52,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -116,14 +121,14 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedPresetView> $managedPresetViews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ManagedPresetView> $managedPresetViews
  * @property-read int|null $managed_preset_views_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\UserView> $managedUserViews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, UserView> $managedUserViews
  * @property-read int|null $managed_user_views_count
  * @property-read ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications
  * @property-read int|null $model_notifications_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read mixed $online
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
@@ -169,18 +174,18 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read \Illuminate\Database\Eloquent\Collection|Credential[] $credentials
  * @property-read int|null $credentials_count
  *
- * @method static \Database\Factories\UserFactory factory($count = null, $state = [])
+ * @method static UserFactory factory($count = null, $state = [])
  * @method static Builder<static>|User newModelQuery()
  * @method static Builder<static>|User newQuery()
  * @method static Builder<static>|User orderForRoster()
  * @method static Builder<static>|User permission($permissions, $without = false)
- * @method static Builder<static>|User position(\App\Models\Position $position)
+ * @method static Builder<static>|User position(Position $position)
  * @method static Builder<static>|User query()
- * @method static Builder<static>|User rank(\App\Models\Rank $rank)
+ * @method static Builder<static>|User rank(Rank $rank)
  * @method static Builder<static>|User role($roles, $guard = null, $without = false)
- * @method static Builder<static>|User specialty(\App\Models\Specialty $specialty)
- * @method static Builder<static>|User status(\App\Models\Status $status)
- * @method static Builder<static>|User unit(\App\Models\Unit $unit)
+ * @method static Builder<static>|User specialty(Specialty $specialty)
+ * @method static Builder<static>|User status(Status $status)
+ * @method static Builder<static>|User unit(Unit $unit)
  * @method static Builder<static>|User whereApproved($value)
  * @method static Builder<static>|User whereCoverPhoto($value)
  * @method static Builder<static>|User whereCreatedAt($value)

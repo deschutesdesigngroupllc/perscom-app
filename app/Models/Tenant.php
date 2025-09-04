@@ -8,13 +8,18 @@ use App\Models\Enums\SubscriptionPlanType;
 use App\Models\Enums\SubscriptionStatus;
 use App\Observers\TenantObserver;
 use App\Traits\ClearsResponseCache;
+use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Optional;
 use Illuminate\Support\Str;
@@ -26,6 +31,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
+use Stancl\Tenancy\Database\TenantCollection;
 
 /**
  * @property int $id
@@ -37,7 +43,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property string|null $pm_last_four
  * @property string|null $pm_expiration
  * @property string|null $extra_billing_information
- * @property \Illuminate\Support\Carbon|null $trial_ends_at
+ * @property Carbon|null $trial_ends_at
  * @property string|null $billing_address
  * @property string|null $billing_address_line_2
  * @property string|null $billing_city
@@ -47,33 +53,33 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property array $invoice_emails
  * @property string|null $billing_country
  * @property array<array-key, mixed>|null $data
- * @property \Illuminate\Support\Carbon|null $last_login_at
- * @property \Illuminate\Support\Carbon|null $setup_completed_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $last_login_at
+ * @property Carbon|null $setup_completed_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Domain|null $custom_domain
  * @property-read Optional|string|null|null $custom_url
  * @property-read string $database_status
  * @property-read Domain|null $domain
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Domain> $domains
+ * @property-read Collection<int, Domain> $domains
  * @property-read int|null $domains_count
  * @property-read Domain|null $fallback_domain
  * @property-read Optional|string|null|null $fallback_url
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read bool $setup_completed
  * @property-read Optional|string|null|null $slug
  * @property-read string|null $stripe_url
  * @property-read SubscriptionPlanType $subscription_plan
  * @property-read SubscriptionStatus $subscription_status
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Subscription> $subscriptions
+ * @property-read Collection<int, Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
  * @property-read Optional|string|null|null $url
  * @property string|null $tenancy_db_name
  *
- * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
- * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
- * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> get($columns = ['*'])
+ * @method static TenantCollection<int, static> all($columns = ['*'])
+ * @method static TenantFactory factory($count = null, $state = [])
+ * @method static TenantCollection<int, static> get($columns = ['*'])
  * @method static Builder<static>|Tenant hasExpiredGenericTrial()
  * @method static Builder<static>|Tenant newModelQuery()
  * @method static Builder<static>|Tenant newQuery()

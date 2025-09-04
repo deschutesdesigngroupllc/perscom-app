@@ -6,8 +6,12 @@ namespace App\Models;
 
 use App\Observers\SubscriptionObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Laravel\Cashier\Database\Factories\SubscriptionFactory;
 use Laravel\Cashier\Subscription as BaseSubscription;
 use Laravel\Cashier\SubscriptionItem;
 use Spark\Plan;
@@ -22,44 +26,44 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property string $stripe_status
  * @property string|null $stripe_price
  * @property int|null $quantity
- * @property \Illuminate\Support\Carbon|null $trial_ends_at
- * @property \Illuminate\Support\Carbon|null $ends_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, SubscriptionItem> $items
+ * @property Carbon|null $trial_ends_at
+ * @property Carbon|null $ends_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, SubscriptionItem> $items
  * @property-read int|null $items_count
  * @property-read Tenant|null $owner
  * @property-read string|null $renewal_term
  * @property-read string|null $stripe_url
  * @property-read Tenant|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription active()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription canceled()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription ended()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription expiredTrial()
- * @method static \Laravel\Cashier\Database\Factories\SubscriptionFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription incomplete()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notCanceled()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notOnGracePeriod()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notOnTrial()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onGracePeriod()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onTrial()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription pastDue()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription recurring()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereEndsAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripeStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereTenantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereTrialEndsAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereUpdatedAt($value)
+ * @method static Builder<static>|Subscription active()
+ * @method static Builder<static>|Subscription canceled()
+ * @method static Builder<static>|Subscription ended()
+ * @method static Builder<static>|Subscription expiredTrial()
+ * @method static SubscriptionFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Subscription incomplete()
+ * @method static Builder<static>|Subscription newModelQuery()
+ * @method static Builder<static>|Subscription newQuery()
+ * @method static Builder<static>|Subscription notCanceled()
+ * @method static Builder<static>|Subscription notOnGracePeriod()
+ * @method static Builder<static>|Subscription notOnTrial()
+ * @method static Builder<static>|Subscription onGracePeriod()
+ * @method static Builder<static>|Subscription onTrial()
+ * @method static Builder<static>|Subscription pastDue()
+ * @method static Builder<static>|Subscription query()
+ * @method static Builder<static>|Subscription recurring()
+ * @method static Builder<static>|Subscription whereCreatedAt($value)
+ * @method static Builder<static>|Subscription whereEndsAt($value)
+ * @method static Builder<static>|Subscription whereId($value)
+ * @method static Builder<static>|Subscription whereQuantity($value)
+ * @method static Builder<static>|Subscription whereStripeId($value)
+ * @method static Builder<static>|Subscription whereStripePrice($value)
+ * @method static Builder<static>|Subscription whereStripeStatus($value)
+ * @method static Builder<static>|Subscription whereTenantId($value)
+ * @method static Builder<static>|Subscription whereTrialEndsAt($value)
+ * @method static Builder<static>|Subscription whereType($value)
+ * @method static Builder<static>|Subscription whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

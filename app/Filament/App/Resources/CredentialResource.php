@@ -4,51 +4,65 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\CredentialResource\Pages;
+use App\Filament\App\Resources\CredentialResource\Pages\CreateCredential;
+use App\Filament\App\Resources\CredentialResource\Pages\EditCredential;
+use App\Filament\App\Resources\CredentialResource\Pages\ListCredentials;
 use App\Filament\Exports\CredentialExporter;
 use App\Models\Credential;
 use App\Models\Enums\CredentialType;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class CredentialResource extends BaseResource
 {
     protected static ?string $model = Credential::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-identification';
 
-    protected static ?string $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Training';
 
     protected static ?int $navigationSort = 5;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Credential')
+                        Tab::make('Credential')
                             ->columns()
                             ->icon('heroicon-o-identification')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the credential.')
                                     ->required()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
-                                Forms\Components\Select::make('type')
+                                Select::make('type')
                                     ->helperText('The type of the credential.')
                                     ->options(CredentialType::class)
                                     ->required(),
-                                Forms\Components\Select::make('issuer_id')
+                                Select::make('issuer_id')
                                     ->helperText('The issuer of the credential.')
                                     ->searchable()
                                     ->relationship('issuer', 'name')
                                     ->required(),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
                                     ->helperText('A brief description of the credential.')
                                     ->nullable()
                                     ->maxLength(65535)
@@ -62,37 +76,37 @@ class CredentialResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('issuer.name')
+                TextColumn::make('issuer.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->badge()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('issuer')
+                SelectFilter::make('issuer')
                     ->relationship('issuer', 'name')
                     ->multiple()
                     ->preload(),
-                Tables\Filters\SelectFilter::make('type')
+                SelectFilter::make('type')
                     ->options(CredentialType::class)
                     ->multiple()
                     ->preload(),
             ])
             ->groups(['issuer.name', 'type'])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(CredentialExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('order')
@@ -102,9 +116,9 @@ class CredentialResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCredentials::route('/'),
-            'create' => Pages\CreateCredential::route('/create'),
-            'edit' => Pages\EditCredential::route('/{record}/edit'),
+            'index' => ListCredentials::route('/'),
+            'create' => CreateCredential::route('/create'),
+            'edit' => EditCredential::route('/{record}/edit'),
         ];
     }
 }

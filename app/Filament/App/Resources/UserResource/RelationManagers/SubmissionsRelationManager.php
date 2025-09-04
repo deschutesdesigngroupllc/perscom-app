@@ -4,24 +4,25 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources\UserResource\RelationManagers;
 
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
+use BackedEnum;
+use Filament\Infolists\Components\TextEntry;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class SubmissionsRelationManager extends RelationManager
 {
     protected static string $relationship = 'submissions';
 
-    protected static ?string $icon = 'heroicon-o-folder-plus';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-folder-plus';
 
-    public function infolist(Infolist $infolist): Infolist
+    public function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Infolists\Components\TextEntry::make('created_at'),
-                Infolists\Components\TextEntry::make('updated_at'),
+        return $schema
+            ->components([
+                TextEntry::make('created_at'),
+                TextEntry::make('updated_at'),
             ]);
     }
 
@@ -30,9 +31,9 @@ class SubmissionsRelationManager extends RelationManager
         return $table
             ->description('The forms the user has submitted.')
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ]);
     }

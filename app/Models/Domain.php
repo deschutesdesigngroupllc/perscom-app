@@ -6,9 +6,12 @@ namespace App\Models;
 
 use App\Observers\DomainObserver;
 use App\Traits\ClearsResponseCache;
+use Database\Factories\DomainFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 use Spatie\Url\Url;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
@@ -19,22 +22,22 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property string $domain
  * @property int $tenant_id
  * @property bool $is_custom_subdomain
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read string $host
  * @property-read Tenant $tenant
  * @property-read string $url
  *
- * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereDomain($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereIsCustomSubdomain($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereTenantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Domain whereUpdatedAt($value)
+ * @method static DomainFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Domain newModelQuery()
+ * @method static Builder<static>|Domain newQuery()
+ * @method static Builder<static>|Domain query()
+ * @method static Builder<static>|Domain whereCreatedAt($value)
+ * @method static Builder<static>|Domain whereDomain($value)
+ * @method static Builder<static>|Domain whereId($value)
+ * @method static Builder<static>|Domain whereIsCustomSubdomain($value)
+ * @method static Builder<static>|Domain whereTenantId($value)
+ * @method static Builder<static>|Domain whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

@@ -4,54 +4,67 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\CompetencyResource\Pages;
+use App\Filament\App\Resources\CompetencyResource\Pages\CreateCompetency;
+use App\Filament\App\Resources\CompetencyResource\Pages\EditCompetency;
+use App\Filament\App\Resources\CompetencyResource\Pages\ListCompetencies;
 use App\Filament\Exports\CompetencyExporter;
 use App\Models\Category;
 use App\Models\Competency;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class CompetencyResource extends BaseResource
 {
     protected static ?string $model = Competency::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-numbered-list';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-numbered-list';
 
-    protected static ?string $navigationGroup = 'Training';
+    protected static string|UnitEnum|null $navigationGroup = 'Training';
 
     protected static ?int $navigationSort = 5;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Competency')
+                        Tab::make('Competency')
                             ->columns()
                             ->icon('heroicon-o-numbered-list')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the competency.')
                                     ->required()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
-                                Forms\Components\Select::make('categories')
+                                Select::make('categories')
                                     ->helperText('An optional category for the competency to assist with organization.')
                                     ->columnSpanFull()
                                     ->relationship('categories', 'name')
                                     ->preload()
                                     ->searchable()
                                     ->multiple()
-                                    ->createOptionForm(fn (Form $form): Form => CategoryResource::form($form))
+                                    ->createOptionForm(fn (Schema $schema): Schema => CategoryResource::form($schema))
                                     ->createOptionUsing(fn (array $data) => Category::create(array_merge($data, [
                                         'resource' => Competency::class,
                                     ]))->getKey()),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
                                     ->helperText('A brief description of the competency.')
                                     ->nullable()
                                     ->maxLength(65535)
@@ -65,10 +78,10 @@ class CompetencyResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('categories.name')
+                TextColumn::make('categories.name')
                     ->listWithLineBreaks(),
             ])
             ->filters([
@@ -79,16 +92,16 @@ class CompetencyResource extends BaseResource
                     ->multiple(),
             ])
             ->groups(['categories.name'])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(CompetencyExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -96,9 +109,9 @@ class CompetencyResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCompetencies::route('/'),
-            'create' => Pages\CreateCompetency::route('/create'),
-            'edit' => Pages\EditCompetency::route('/{record}/edit'),
+            'index' => ListCompetencies::route('/'),
+            'create' => CreateCompetency::route('/create'),
+            'edit' => EditCompetency::route('/{record}/edit'),
         ];
     }
 }

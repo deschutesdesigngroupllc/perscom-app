@@ -6,7 +6,7 @@ namespace App\Support\JwtAuth\Providers;
 
 use App\Settings\IntegrationSettings;
 use App\Support\JwtAuth\Validation\SignedByPerscomOrTenantConstraint;
-use Lcobucci\JWT\Signer;
+use Lcobucci\JWT\Signer\Hmac\Sha256;
 use Lcobucci\JWT\Signer\Key\InMemory;
 use PHPOpenSourceSaver\JWTAuth\Providers\JWT\Lcobucci;
 
@@ -26,7 +26,7 @@ class CustomJwtProvider extends Lcobucci
         $this->config->setValidationConstraints(new SignedByPerscomOrTenantConstraint(
             appSigner: $this->signer,
             appKey: $this->getVerificationKey(),
-            tenantSigner: new Signer\Hmac\Sha256,
+            tenantSigner: new Sha256,
             tenantKey: InMemory::plainText($settings->single_sign_on_key)
         ));
     }

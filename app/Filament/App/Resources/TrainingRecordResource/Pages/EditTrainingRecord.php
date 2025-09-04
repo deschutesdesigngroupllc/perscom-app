@@ -6,7 +6,8 @@ namespace App\Filament\App\Resources\TrainingRecordResource\Pages;
 
 use App\Filament\App\Resources\TrainingRecordResource;
 use App\Traits\Filament\InteractsWithModelNotifications;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditTrainingRecord extends EditRecord
@@ -18,8 +19,8 @@ class EditTrainingRecord extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            ViewAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

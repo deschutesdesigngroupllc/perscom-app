@@ -5,27 +5,29 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasRank;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $rank_id
  * @property int $category_id
  * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Rank $rank
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory rank(\App\Models\Rank $rank)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereRankId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|RankCategory whereUpdatedAt($value)
+ * @method static Builder<static>|RankCategory newModelQuery()
+ * @method static Builder<static>|RankCategory newQuery()
+ * @method static Builder<static>|RankCategory query()
+ * @method static Builder<static>|RankCategory rank(Rank $rank)
+ * @method static Builder<static>|RankCategory whereCategoryId($value)
+ * @method static Builder<static>|RankCategory whereCreatedAt($value)
+ * @method static Builder<static>|RankCategory whereId($value)
+ * @method static Builder<static>|RankCategory whereOrder($value)
+ * @method static Builder<static>|RankCategory whereRankId($value)
+ * @method static Builder<static>|RankCategory whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

@@ -4,27 +4,40 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\PassportTokenResource\Pages;
+use App\Filament\App\Resources\PassportTokenResource\Pages\CreatePassportToken;
+use App\Filament\App\Resources\PassportTokenResource\Pages\EditPassportToken;
+use App\Filament\App\Resources\PassportTokenResource\Pages\ListPassportTokens;
+use App\Filament\App\Resources\PassportTokenResource\Pages\ViewPassportToken;
 use App\Models\PassportClient;
 use App\Models\PassportToken;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Tables;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
+use UnitEnum;
 
 class PassportTokenResource extends BaseResource
 {
     protected static ?string $model = PassportToken::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
 
-    protected static ?string $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
     protected static ?int $navigationSort = 5;
 
@@ -32,17 +45,17 @@ class PassportTokenResource extends BaseResource
 
     protected static ?string $modelLabel = 'API key';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('API Key Information')
+        return $schema
+            ->components([
+                Section::make('API Key Information')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->helperText('An identifying name for the API key')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\Select::make('scopes')
+                        Select::make('scopes')
                             ->helperText(fn ($operation): string => match ($operation) {
                                 'edit' => 'Please create a new API key to change the scopes.',
                                 default => 'The scopes that the API key will have access to.'
@@ -51,8 +64,8 @@ class PassportTokenResource extends BaseResource
                             ->live()
                             ->disabled(fn ($operation): bool => $operation !== 'create')
                             ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                            ->hidden(fn (Forms\Get $get): mixed => $get('all_scopes')),
-                        Forms\Components\Checkbox::make('all_scopes')
+                            ->hidden(fn (Get $get): mixed => $get('all_scopes')),
+                        Checkbox::make('all_scopes')
                             ->visibleOn('create')
                             ->default(true)
                             ->live()
@@ -62,10 +75,10 @@ class PassportTokenResource extends BaseResource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
+        return $schema
+            ->components([
                 TextEntry::make('name'),
                 TextEntry::make('expires_at')
                     ->timezone(UserSettingsService::get('timezone', function () {
@@ -96,15 +109,15 @@ class PassportTokenResource extends BaseResource
         return $table
             ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('scopes')
+                TextColumn::make('scopes')
                     ->badge()
                     ->listWithLineBreaks()
                     ->limitList()
                     ->expandableLimitedList()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('expires_at')
+                TextColumn::make('expires_at')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
                         $settings = app(OrganizationSettings::class);
@@ -113,18 +126,18 @@ class PassportTokenResource extends BaseResource
                     }))
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -138,10 +151,10 @@ class PassportTokenResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPassportTokens::route('/'),
-            'create' => Pages\CreatePassportToken::route('/create'),
-            'view' => Pages\ViewPassportToken::route('/{record}'),
-            'edit' => Pages\EditPassportToken::route('/{record}/edit'),
+            'index' => ListPassportTokens::route('/'),
+            'create' => CreatePassportToken::route('/create'),
+            'view' => ViewPassportToken::route('/{record}'),
+            'edit' => EditPassportToken::route('/{record}/edit'),
         ];
     }
 }

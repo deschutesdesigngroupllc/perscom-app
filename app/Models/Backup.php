@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
@@ -18,10 +19,10 @@ use Sushi\Sushi;
  * @property string|null $url
  * @property Carbon|null $created_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder|Backup newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Backup newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Backup query()
- * @method static \Illuminate\Database\Eloquent\Builder|Backup whereId($value)
+ * @method static Builder|Backup newModelQuery()
+ * @method static Builder|Backup newQuery()
+ * @method static Builder|Backup query()
+ * @method static Builder|Backup whereId($value)
  *
  * @mixin \Eloquent
  */

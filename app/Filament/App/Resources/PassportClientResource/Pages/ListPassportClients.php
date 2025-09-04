@@ -6,7 +6,8 @@ namespace App\Filament\App\Resources\PassportClientResource\Pages;
 
 use App\Filament\App\Resources\ApiLogResource;
 use App\Filament\App\Resources\PassportClientResource;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListPassportClients extends ListRecords
@@ -18,11 +19,11 @@ class ListPassportClients extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('logs')
+            Action::make('logs')
                 ->label('View logs')
                 ->color('gray')
                 ->url(fn (): string => ApiLogResource::getUrl()),
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

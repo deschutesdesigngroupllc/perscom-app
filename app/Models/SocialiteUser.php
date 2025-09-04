@@ -8,7 +8,9 @@ use DutchCodingCompany\FilamentSocialite\Exceptions\ImplementationException;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Models\SocialiteUser as BaseSocialiteUser;
 use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Laravel\Socialite\Contracts\User as SocialiteUserContract;
 
 /**
@@ -16,19 +18,19 @@ use Laravel\Socialite\Contracts\User as SocialiteUserContract;
  * @property int $user_id
  * @property string $provider
  * @property string $provider_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read User $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser whereProvider($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser whereProviderId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|SocialiteUser whereUserId($value)
+ * @method static Builder<static>|SocialiteUser newModelQuery()
+ * @method static Builder<static>|SocialiteUser newQuery()
+ * @method static Builder<static>|SocialiteUser query()
+ * @method static Builder<static>|SocialiteUser whereCreatedAt($value)
+ * @method static Builder<static>|SocialiteUser whereId($value)
+ * @method static Builder<static>|SocialiteUser whereProvider($value)
+ * @method static Builder<static>|SocialiteUser whereProviderId($value)
+ * @method static Builder<static>|SocialiteUser whereUpdatedAt($value)
+ * @method static Builder<static>|SocialiteUser whereUserId($value)
  *
  * @mixin \Eloquent
  */

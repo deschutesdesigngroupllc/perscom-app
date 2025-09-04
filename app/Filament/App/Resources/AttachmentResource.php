@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\AttachmentResource\Pages;
+use App\Filament\App\Resources\AttachmentResource\Pages\CreateAttachment;
+use App\Filament\App\Resources\AttachmentResource\Pages\EditAttachment;
+use App\Filament\App\Resources\AttachmentResource\Pages\ListAttachments;
+use App\Filament\App\Resources\AttachmentResource\Pages\ViewAttachment;
 use App\Models\AssignmentRecord;
 use App\Models\Attachment;
 use App\Models\AwardRecord;
@@ -14,41 +17,53 @@ use App\Models\QualificationRecord;
 use App\Models\RankRecord;
 use App\Models\ServiceRecord;
 use App\Models\Task;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\MorphToSelect;
+use Filament\Forms\Components\MorphToSelect\Type;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\ImageEntry;
-use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconPosition;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class AttachmentResource extends BaseResource
 {
     protected static ?string $model = Attachment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-paper-clip';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-paper-clip';
 
-    protected static ?string $navigationGroup = 'System';
+    protected static string|UnitEnum|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 7;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Attachment')
+                        Tab::make('Attachment')
                             ->icon('heroicon-o-paper-clip')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->required()
                                     ->helperText('The name of the attachment.')
                                     ->maxLength(255),
-                                Forms\Components\FileUpload::make('path')
+                                FileUpload::make('path')
                                     ->required()
                                     ->label('File')
                                     ->previewable()
@@ -57,33 +72,33 @@ class AttachmentResource extends BaseResource
                                     ->visibility('public')
                                     ->storeFileNamesIn('filename'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Resource')
+                        Tab::make('Resource')
                             ->icon('heroicon-o-document')
                             ->schema([
-                                Forms\Components\MorphToSelect::make('model')
+                                MorphToSelect::make('model')
                                     ->preload()
                                     ->hiddenLabel()
                                     ->types([
-                                        Forms\Components\MorphToSelect\Type::make(Task::class)
+                                        Type::make(Task::class)
                                             ->titleAttribute('title'),
-                                        Forms\Components\MorphToSelect\Type::make(Event::class)
+                                        Type::make(Event::class)
                                             ->titleAttribute('name'),
-                                        Forms\Components\MorphToSelect\Type::make(AssignmentRecord::class)
+                                        Type::make(AssignmentRecord::class)
                                             ->titleAttribute('id')
                                             ->getOptionLabelFromRecordUsing(fn (AssignmentRecord $record): string => $record->getLabel()),
-                                        Forms\Components\MorphToSelect\Type::make(AwardRecord::class)
+                                        Type::make(AwardRecord::class)
                                             ->titleAttribute('id')
                                             ->getOptionLabelFromRecordUsing(fn (AwardRecord $record): string => $record->getLabel()),
-                                        Forms\Components\MorphToSelect\Type::make(CombatRecord::class)
+                                        Type::make(CombatRecord::class)
                                             ->titleAttribute('id')
                                             ->getOptionLabelFromRecordUsing(fn (CombatRecord $record): string => $record->getLabel()),
-                                        Forms\Components\MorphToSelect\Type::make(QualificationRecord::class)
+                                        Type::make(QualificationRecord::class)
                                             ->titleAttribute('id')
                                             ->getOptionLabelFromRecordUsing(fn (QualificationRecord $record): string => $record->getLabel()),
-                                        Forms\Components\MorphToSelect\Type::make(RankRecord::class)
+                                        Type::make(RankRecord::class)
                                             ->titleAttribute('id')
                                             ->getOptionLabelFromRecordUsing(fn (RankRecord $record): string => $record->getLabel()),
-                                        Forms\Components\MorphToSelect\Type::make(ServiceRecord::class)
+                                        Type::make(ServiceRecord::class)
                                             ->titleAttribute('id')
                                             ->getOptionLabelFromRecordUsing(fn (ServiceRecord $record): string => $record->getLabel()),
                                     ]),
@@ -92,14 +107,14 @@ class AttachmentResource extends BaseResource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Attachment')
+                        Tab::make('Attachment')
                             ->icon('heroicon-o-photo')
                             ->schema([
                                 TextEntry::make('name'),
@@ -111,7 +126,7 @@ class AttachmentResource extends BaseResource
                                 ImageEntry::make('path')
                                     ->label('Attachment'),
                             ]),
-                        Tabs\Tab::make('Resource')
+                        Tab::make('Resource')
                             ->icon('heroicon-o-document')
                             ->schema([
                                 TextEntry::make('model.label')
@@ -132,13 +147,13 @@ class AttachmentResource extends BaseResource
             ->recordTitleAttribute('name')
             ->emptyStateDescription('Create an attachment to get started.')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('filename')
+                TextColumn::make('filename')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('attachment_url')
+                TextColumn::make('attachment_url')
                     ->label('URL')
                     ->url(fn ($state) => $state)
                     ->openUrlInNewTab()
@@ -146,33 +161,33 @@ class AttachmentResource extends BaseResource
                     ->iconPosition(IconPosition::After)
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('model.label')
+                TextColumn::make('model.label')
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->iconPosition(IconPosition::After)
                     ->url(fn (Attachment $record) => $record->model_url),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\Action::make('download')
+            ->recordActions([
+                Action::make('download')
                     ->icon('heroicon-o-cloud-arrow-down')
                     ->color('gray')
                     ->url(fn (?Attachment $record) => $record->attachment_url)
                     ->openUrlInNewTab(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -185,11 +200,11 @@ class AttachmentResource extends BaseResource
             ->emptyStateDescription('Create an attachment to get started.')
             ->description('The attachments associated with this resource.')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('filename')
+                TextColumn::make('filename')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('attachment_url')
+                TextColumn::make('attachment_url')
                     ->label('URL')
                     ->url(fn ($state) => $state)
                     ->openUrlInNewTab()
@@ -198,21 +213,21 @@ class AttachmentResource extends BaseResource
                     ->sortable(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('download')
+            ->recordActions([
+                Action::make('download')
                     ->icon('heroicon-o-cloud-arrow-down')
                     ->color('gray')
                     ->url(fn (?Attachment $record) => $record->attachment_url)
                     ->openUrlInNewTab(),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('created_at', 'desc');
@@ -221,10 +236,10 @@ class AttachmentResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAttachments::route('/'),
-            'create' => Pages\CreateAttachment::route('/create'),
-            'edit' => Pages\EditAttachment::route('/{record}/edit'),
-            'view' => Pages\ViewAttachment::route('/{record}'),
+            'index' => ListAttachments::route('/'),
+            'create' => CreateAttachment::route('/create'),
+            'edit' => EditAttachment::route('/{record}/edit'),
+            'view' => ViewAttachment::route('/{record}'),
         ];
     }
 }

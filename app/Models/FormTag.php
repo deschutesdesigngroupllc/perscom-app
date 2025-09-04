@@ -4,17 +4,18 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
  * @property int $tag_id
  * @property int $form_id
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag whereFormId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormTag whereTagId($value)
+ * @method static Builder<static>|FormTag newModelQuery()
+ * @method static Builder<static>|FormTag newQuery()
+ * @method static Builder<static>|FormTag query()
+ * @method static Builder<static>|FormTag whereFormId($value)
+ * @method static Builder<static>|FormTag whereTagId($value)
  *
  * @mixin \Eloquent
  */

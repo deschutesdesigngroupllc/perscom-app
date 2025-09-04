@@ -8,7 +8,7 @@ use App\Filament\App\Resources\UserResource;
 use App\Models\Status;
 use Archilex\AdvancedTables\AdvancedTables;
 use Archilex\AdvancedTables\Components\PresetView;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Support\Colors\Color;
 use Illuminate\Database\Eloquent\Builder;
@@ -27,7 +27,7 @@ class ListUsers extends ListRecords
             $status->id => PresetView::make()
                 ->favorite()
                 ->label($status->name)
-                ->color(Color::hex($status->color))
+                ->color(Color::generateV3Palette($status->color))
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status_id', $status->id)),
         ])->toArray();
     }
@@ -35,7 +35,7 @@ class ListUsers extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

@@ -6,6 +6,7 @@ namespace App\Filament\App\Resources\UserResource\Widgets;
 
 use App\Models\User;
 use Filament\Widgets\StatsOverviewWidget;
+use Filament\Widgets\StatsOverviewWidget\Stat;
 use Flowframe\Trend\Trend;
 use Flowframe\Trend\TrendValue;
 
@@ -42,13 +43,13 @@ class UsersOverview extends StatsOverviewWidget
             ->count();
 
         return [
-            StatsOverviewWidget\Stat::make('New Users MTD', User::query()->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->count())
+            Stat::make('New Users MTD', User::query()->whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->count())
                 ->chart($dataMtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color('success'),
-            StatsOverviewWidget\Stat::make('New Users QTD', User::query()->whereBetween('created_at', [now()->startOfQuarter(), now()->endOfQuarter()])->count())
+            Stat::make('New Users QTD', User::query()->whereBetween('created_at', [now()->startOfQuarter(), now()->endOfQuarter()])->count())
                 ->chart($dataQtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color('warning'),
-            StatsOverviewWidget\Stat::make('New Users YTD', User::query()->whereBetween('created_at', [now()->startOfYear(), now()->endOfYear()])->count())
+            Stat::make('New Users YTD', User::query()->whereBetween('created_at', [now()->startOfYear(), now()->endOfYear()])->count())
                 ->chart($dataYtd->map(fn (TrendValue $value): mixed => $value->aggregate)->toArray())
                 ->color('danger'),
         ];

@@ -17,7 +17,7 @@ class AccountRequiresApproval extends SimplePage
 
     protected static ?string $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string $view = 'filament.app.pages.account-requires-approval';
+    protected string $view = 'filament.app.pages.account-requires-approval';
 
     public function mount(): void
     {

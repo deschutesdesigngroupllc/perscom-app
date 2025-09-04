@@ -6,7 +6,7 @@ namespace App\Notifications\Admin;
 
 use App\Filament\Admin\Resources\TenantResource;
 use App\Mail\Admin\TenantDeletedMail;
-use Filament\Notifications\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;

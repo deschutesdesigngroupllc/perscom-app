@@ -12,19 +12,21 @@ use App\Models\Tenant;
 use App\Rules\SubdomainRule;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
+use Filament\Actions\Action;
 use Filament\Facades\Filament;
-use Filament\Forms\Components\Actions\Action;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\SettingsPage;
 use Filament\Panel;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
@@ -35,7 +37,7 @@ class Dashboard extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
 
     protected static ?string $navigationLabel = 'Dashboard';
 
@@ -59,14 +61,14 @@ class Dashboard extends SettingsPage
             && ! App::isDemo();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Home Page')
+                        Tab::make('Home Page')
                             ->icon('heroicon-o-home')
                             ->schema([
                                 TextInput::make('title')
@@ -77,7 +79,7 @@ class Dashboard extends SettingsPage
                                     ->maxLength(255)
                                     ->helperText('This is the subheading text that will be displayed under the main heading on the dashboard home page.'),
                             ]),
-                        Tabs\Tab::make('Domain')
+                        Tab::make('Domain')
                             ->icon('heroicon-o-globe-alt')
                             ->badgeColor('gray')
                             ->badge(function () {
@@ -116,7 +118,7 @@ class Dashboard extends SettingsPage
                                         ->tooltip('Reset subdomain')
                                     ),
                             ]),
-                        Tabs\Tab::make('User Profile')
+                        Tab::make('User Profile')
                             ->icon('heroicon-o-user')
                             ->schema([
                                 TextInput::make('cover_photo_height')
@@ -163,7 +165,7 @@ class Dashboard extends SettingsPage
                                         'updated_at' => 'Last Updated At',
                                     ])->sort()->toArray()),
                             ]),
-                        Tabs\Tab::make('Roster')
+                        Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')
                             ->schema([
                                 Radio::make('roster_mode')

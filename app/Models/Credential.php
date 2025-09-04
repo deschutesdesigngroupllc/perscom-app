@@ -10,11 +10,15 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\CredentialFactory;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -24,29 +28,29 @@ use Spatie\EloquentSortable\Sortable;
  * @property CredentialType $type
  * @property int|null $issuer_id
  * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Issuer|null $issuer
  * @property-read string $label
  * @property-read string|null $relative_url
  * @property-read TrainingRecordCredential|null $pivot
- * @property-read \Illuminate\Database\Eloquent\Collection<int, TrainingRecord> $training_records
+ * @property-read Collection<int, TrainingRecord> $training_records
  * @property-read int|null $training_records_count
  * @property-read string|null $url
  *
- * @method static \Database\Factories\CredentialFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential whereIssuerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Credential whereUpdatedAt($value)
+ * @method static CredentialFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Credential newModelQuery()
+ * @method static Builder<static>|Credential newQuery()
+ * @method static Builder<static>|Credential ordered(string $direction = 'asc')
+ * @method static Builder<static>|Credential query()
+ * @method static Builder<static>|Credential whereCreatedAt($value)
+ * @method static Builder<static>|Credential whereDescription($value)
+ * @method static Builder<static>|Credential whereId($value)
+ * @method static Builder<static>|Credential whereIssuerId($value)
+ * @method static Builder<static>|Credential whereName($value)
+ * @method static Builder<static>|Credential whereOrder($value)
+ * @method static Builder<static>|Credential whereType($value)
+ * @method static Builder<static>|Credential whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

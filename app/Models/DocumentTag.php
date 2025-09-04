@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Traits\HasDocument;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
@@ -13,12 +14,12 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read Document $document
  * @property-read mixed $document_parsed
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag document(\App\Models\Document $document)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|DocumentTag whereTagId($value)
+ * @method static Builder<static>|DocumentTag document(Document $document)
+ * @method static Builder<static>|DocumentTag newModelQuery()
+ * @method static Builder<static>|DocumentTag newQuery()
+ * @method static Builder<static>|DocumentTag query()
+ * @method static Builder<static>|DocumentTag whereDocumentId($value)
+ * @method static Builder<static>|DocumentTag whereTagId($value)
  *
  * @mixin \Eloquent
  */

@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\NewsfeedResource\Pages;
 
 use App\Filament\App\Resources\NewsfeedResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewNewsfeed extends ViewRecord
@@ -15,8 +16,8 @@ class ViewNewsfeed extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

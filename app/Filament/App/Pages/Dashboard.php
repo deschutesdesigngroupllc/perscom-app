@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Pages;
 
 use App\Filament\Actions\CopyAction;
+use BackedEnum;
 use Filament\Pages\Dashboard as BaseDashboard;
 use Filament\Panel;
 use Filament\Support\Enums\IconPosition;
@@ -19,7 +20,7 @@ class Dashboard extends BaseDashboard
 
     protected ?string $subheading = 'Personnel management made easy for high-performing, results-driven organizations.';
 
-    protected static ?string $navigationIcon = 'heroicon-o-home';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-home';
 
     public static function isTenantSubscriptionRequired(Panel $panel): bool
     {

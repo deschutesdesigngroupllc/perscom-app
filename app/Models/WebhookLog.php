@@ -12,6 +12,9 @@ use Filament\Resources\Resource;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -22,24 +25,24 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  * @property int|null $subject_id
  * @property string|null $causer_type
  * @property string|null $causer_id
- * @property \Illuminate\Support\Collection<array-key, mixed>|null $properties
+ * @property Collection<array-key, mixed>|null $properties
  * @property string|null $batch_uuid
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|null $causer
- * @property-read \Illuminate\Support\Collection $changes
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|null $causer
+ * @property-read Collection $changes
  * @property-read mixed|null $payload
  * @property-read mixed|null $reason_phrase
  * @property-read string|null $request_id
  * @property-read string|null $resource_url
  * @property-read mixed|null $status_code
- * @property-read \Illuminate\Database\Eloquent\Model|null $subject
+ * @property-read Model|null $subject
  * @property-read string|null $trace_id
  *
- * @method static Builder<static>|WebhookLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static Builder<static>|WebhookLog causedBy(Model $causer)
  * @method static Builder<static>|WebhookLog forBatch(string $batchUuid)
  * @method static Builder<static>|WebhookLog forEvent(string $event)
- * @method static Builder<static>|WebhookLog forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder<static>|WebhookLog forSubject(Model $subject)
  * @method static Builder<static>|WebhookLog hasBatch()
  * @method static Builder<static>|WebhookLog inLog(...$logNames)
  * @method static Builder<static>|WebhookLog newModelQuery()

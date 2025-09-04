@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\PassportTokenResource\Pages;
 
 use App\Filament\App\Resources\PassportTokenResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -16,8 +17,8 @@ class EditPassportToken extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            ViewAction::make(),
+            DeleteAction::make(),
         ];
     }
 

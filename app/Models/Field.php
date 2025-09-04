@@ -14,13 +14,16 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use ArrayObject as ArrayObjectAlias;
+use Database\Factories\FieldFactory;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\ArrayObject;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphToMany;
+use Illuminate\Support\Carbon;
 
 use function in_array;
 
@@ -42,8 +45,8 @@ use function in_array;
  * @property ArrayObject $options
  * @property FieldOptionsType|null $options_type
  * @property FieldOptionsModel|null $options_model
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Collection<int, Form> $forms
  * @property-read int|null $forms_count
  * @property-read string $label
@@ -53,31 +56,31 @@ use function in_array;
  * @property-read int|null $users_count
  * @property-read string|null $validation_rules
  *
- * @method static \Database\Factories\FieldFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field hidden()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field visible()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereCast($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereDefault($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereHelp($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereHidden($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereNovaType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereOptions($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereOptionsModel($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereOptionsType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field wherePlaceholder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereReadonly($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereRequired($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereRules($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Field whereUpdatedAt($value)
+ * @method static FieldFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Field hidden()
+ * @method static Builder<static>|Field newModelQuery()
+ * @method static Builder<static>|Field newQuery()
+ * @method static Builder<static>|Field query()
+ * @method static Builder<static>|Field visible()
+ * @method static Builder<static>|Field whereCast($value)
+ * @method static Builder<static>|Field whereCreatedAt($value)
+ * @method static Builder<static>|Field whereDefault($value)
+ * @method static Builder<static>|Field whereDescription($value)
+ * @method static Builder<static>|Field whereHelp($value)
+ * @method static Builder<static>|Field whereHidden($value)
+ * @method static Builder<static>|Field whereId($value)
+ * @method static Builder<static>|Field whereKey($value)
+ * @method static Builder<static>|Field whereName($value)
+ * @method static Builder<static>|Field whereNovaType($value)
+ * @method static Builder<static>|Field whereOptions($value)
+ * @method static Builder<static>|Field whereOptionsModel($value)
+ * @method static Builder<static>|Field whereOptionsType($value)
+ * @method static Builder<static>|Field wherePlaceholder($value)
+ * @method static Builder<static>|Field whereReadonly($value)
+ * @method static Builder<static>|Field whereRequired($value)
+ * @method static Builder<static>|Field whereRules($value)
+ * @method static Builder<static>|Field whereType($value)
+ * @method static Builder<static>|Field whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

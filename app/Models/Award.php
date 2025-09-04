@@ -14,10 +14,14 @@ use App\Traits\HasImages;
 use App\Traits\HasLogs;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\AwardFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -25,36 +29,36 @@ use Spatie\EloquentSortable\Sortable;
  * @property string $name
  * @property string|null $description
  * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activities
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, AwardRecord> $award_records
+ * @property-read Collection<int, AwardRecord> $award_records
  * @property-read int|null $award_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Award> $awards
+ * @property-read Collection<int, Award> $awards
  * @property-read int|null $awards_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
+ * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
  * @property-read Image|null $image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
+ * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $logs
+ * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *
- * @method static \Database\Factories\AwardFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Award whereUpdatedAt($value)
+ * @method static AwardFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Award newModelQuery()
+ * @method static Builder<static>|Award newQuery()
+ * @method static Builder<static>|Award ordered(string $direction = 'asc')
+ * @method static Builder<static>|Award query()
+ * @method static Builder<static>|Award whereCreatedAt($value)
+ * @method static Builder<static>|Award whereDescription($value)
+ * @method static Builder<static>|Award whereId($value)
+ * @method static Builder<static>|Award whereName($value)
+ * @method static Builder<static>|Award whereOrder($value)
+ * @method static Builder<static>|Award whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

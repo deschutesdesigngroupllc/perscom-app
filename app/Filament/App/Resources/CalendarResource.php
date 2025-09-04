@@ -4,43 +4,56 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\CalendarResource\Pages;
-use App\Filament\App\Resources\CalendarResource\RelationManagers;
+use App\Filament\App\Resources\CalendarResource\Pages\CreateCalendar;
+use App\Filament\App\Resources\CalendarResource\Pages\EditCalendar;
+use App\Filament\App\Resources\CalendarResource\Pages\ListCalendars;
+use App\Filament\App\Resources\CalendarResource\RelationManagers\EventsRelationManager;
 use App\Filament\Exports\CalendarExporter;
 use App\Models\Calendar;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\ColorColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class CalendarResource extends BaseResource
 {
     protected static ?string $model = Calendar::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar';
 
-    protected static ?string $navigationGroup = 'Calendar';
+    protected static string|UnitEnum|null $navigationGroup = 'Calendar';
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Calendar Information')
+        return $schema
+            ->components([
+                Section::make('Calendar Information')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->helperText('The name of the calendar.')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\RichEditor::make('description')
+                        RichEditor::make('description')
                             ->helperText('The description of the calendar.')
                             ->nullable()
                             ->maxLength(65535)
                             ->columnSpanFull(),
-                        Forms\Components\ColorPicker::make('color')
+                        ColorPicker::make('color')
                             ->helperText('The color of the calendar.')
                             ->required(),
                     ]),
@@ -51,29 +64,29 @@ class CalendarResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ColorColumn::make('color')
+                ColorColumn::make('color')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(CalendarExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -81,16 +94,16 @@ class CalendarResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\EventsRelationManager::class,
+            EventsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListCalendars::route('/'),
-            'create' => Pages\CreateCalendar::route('/create'),
-            'edit' => Pages\EditCalendar::route('/{record}/edit'),
+            'index' => ListCalendars::route('/'),
+            'create' => CreateCalendar::route('/create'),
+            'edit' => EditCalendar::route('/{record}/edit'),
         ];
     }
 

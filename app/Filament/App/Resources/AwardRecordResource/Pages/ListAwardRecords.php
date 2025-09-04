@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\AwardRecordResource\Pages;
 
 use App\Filament\App\Resources\AwardRecordResource;
+use App\Filament\App\Resources\AwardRecordResource\Widgets\AwardRecordStatsOverview;
 use Archilex\AdvancedTables\AdvancedTables;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListAwardRecords extends ListRecords
@@ -20,14 +21,14 @@ class ListAwardRecords extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 
     protected function getHeaderWidgets(): array
     {
         return [
-            AwardRecordResource\Widgets\AwardRecordStatsOverview::class,
+            AwardRecordStatsOverview::class,
         ];
     }
 }

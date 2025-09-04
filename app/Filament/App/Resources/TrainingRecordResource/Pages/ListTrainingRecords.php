@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\TrainingRecordResource\Pages;
 
 use App\Filament\App\Resources\TrainingRecordResource;
+use App\Filament\App\Resources\TrainingRecordResource\Widgets\TrainingRecordStatsOverview;
 use Archilex\AdvancedTables\AdvancedTables;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListTrainingRecords extends ListRecords
@@ -20,14 +21,14 @@ class ListTrainingRecords extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 
     protected function getHeaderWidgets(): array
     {
         return [
-            TrainingRecordResource\Widgets\TrainingRecordStatsOverview::class,
+            TrainingRecordStatsOverview::class,
         ];
     }
 }

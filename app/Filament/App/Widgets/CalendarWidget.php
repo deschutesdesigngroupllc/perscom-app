@@ -10,10 +10,12 @@ use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
 use Carbon\CarbonInterface;
+use Carbon\WeekDay;
 use Closure;
 use Filament\Actions\Action;
+use Guava\Calendar\Filament\CalendarWidget as BaseCalendarWidget;
 use Guava\Calendar\ValueObjects\CalendarEvent;
-use Guava\Calendar\Widgets\CalendarWidget as BaseCalendarWidget;
+use Guava\Calendar\ValueObjects\FetchInfo;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
@@ -24,9 +26,9 @@ class CalendarWidget extends BaseCalendarWidget
 {
     protected static ?int $sort = -1;
 
-    protected string|Closure|HtmlString|null $heading = '';
+    protected string|HtmlString|null|bool $heading = '';
 
-    protected int $firstDay = 0;
+    protected WeekDay $firstDay = WeekDay::Sunday;
 
     protected bool $eventClickEnabled = true;
 
@@ -84,7 +86,7 @@ class CalendarWidget extends BaseCalendarWidget
     /**
      * @return Collection|array<CalendarEvent>
      */
-    public function getEvents(array $fetchInfo = []): Collection|array
+    public function getEvents(array|FetchInfo $info = []): Collection|array
     {
         $timezone = UserSettingsService::get('timezone', function () {
             /** @var OrganizationSettings $settings */
@@ -93,8 +95,8 @@ class CalendarWidget extends BaseCalendarWidget
             return $settings->timezone ?? config('app.timezone');
         });
 
-        $calendarStart = Carbon::parse(data_get($fetchInfo, 'start'));
-        $calendarEnd = Carbon::parse(data_get($fetchInfo, 'end'));
+        $calendarStart = Carbon::parse(data_get($info, 'start'));
+        $calendarEnd = Carbon::parse(data_get($info, 'end'));
 
         $this->events = CalendarWidget::query($calendarStart, $calendarEnd)->get();
 

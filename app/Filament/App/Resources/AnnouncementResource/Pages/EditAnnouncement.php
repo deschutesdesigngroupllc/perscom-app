@@ -6,7 +6,7 @@ namespace App\Filament\App\Resources\AnnouncementResource\Pages;
 
 use App\Filament\App\Resources\AnnouncementResource;
 use App\Traits\Filament\InteractsWithModelNotifications;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditAnnouncement extends EditRecord
@@ -18,7 +18,7 @@ class EditAnnouncement extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

@@ -4,31 +4,43 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\DomainResource\Pages;
+use App\Filament\Admin\Resources\DomainResource\Pages\CreateDomain;
+use App\Filament\Admin\Resources\DomainResource\Pages\EditDomain;
+use App\Filament\Admin\Resources\DomainResource\Pages\ListDomains;
 use App\Models\Domain;
 use App\Rules\SubdomainRule;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class DomainResource extends Resource
 {
     protected static ?string $model = Domain::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
 
-    protected static ?string $navigationGroup = 'Application';
+    protected static string|UnitEnum|null $navigationGroup = 'Application';
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->columns(1)
-            ->schema([
-                Forms\Components\TextInput::make('domain')
+            ->components([
+                TextInput::make('domain')
                     ->helperText('The tenant\'s subdomain.')
                     ->required()
                     ->rule(new SubdomainRule)
@@ -36,13 +48,13 @@ class DomainResource extends Resource
                     ->prefix(config('app.scheme').'://')
                     ->suffix(config('app.base_url'))
                     ->maxLength(255),
-                Forms\Components\Select::make('tenant_id')
+                Select::make('tenant_id')
                     ->helperText('The tenant the domain will resolve to.')
                     ->relationship('tenant', 'name')
                     ->searchable()
                     ->preload()
                     ->required(),
-                Forms\Components\Toggle::make('is_custom_subdomain')
+                Toggle::make('is_custom_subdomain')
                     ->helperText('Is the domain a custom domain.')
                     ->label('Custom Subdomain')
                     ->required(),
@@ -53,13 +65,13 @@ class DomainResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('tenant.name')
+                TextColumn::make('tenant.name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('domain')
+                TextColumn::make('domain')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->badge()
                     ->color(fn ($state): string => match ($state) {
                         'Custom Domain' => 'success',
@@ -69,29 +81,29 @@ class DomainResource extends Resource
                         true => 'Custom Domain',
                         false => 'Fallback Domain'
                     }),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->groups(['tenant.name'])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_custom_subdomain')
+                TernaryFilter::make('is_custom_subdomain')
                     ->label('Custom subdomain'),
-                Tables\Filters\SelectFilter::make('tenant_id')
+                SelectFilter::make('tenant_id')
                     ->label('Tenant')
                     ->multiple()
                     ->searchable()
                     ->preload()
                     ->relationship('tenant', 'name'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -99,9 +111,9 @@ class DomainResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDomains::route('/'),
-            'create' => Pages\CreateDomain::route('/create'),
-            'edit' => Pages\EditDomain::route('/{record}/edit'),
+            'index' => ListDomains::route('/'),
+            'create' => CreateDomain::route('/create'),
+            'edit' => EditDomain::route('/{record}/edit'),
         ];
     }
 }

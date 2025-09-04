@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Filament\App\Pages\Auth;
 
 use App;
+use App\Filament\Forms\Components\Turnstile;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Pages\Auth\Login as BaseLogin;
+use Filament\Schemas\Schema;
 
-class Login extends BaseLogin
+class Login extends \Filament\Auth\Pages\Login
 {
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
         $demo = App::isDemo();
 
@@ -21,11 +21,11 @@ class Login extends BaseLogin
         /** @var TextInput $password */
         $password = $this->getPasswordFormComponent();
 
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 $email->placeholder(fn (): ?string => $demo ? 'demo@perscom.io' : null),
                 $password->placeholder(fn (): ?string => $demo ? 'password' : null),
-                App\Filament\Forms\Components\Turnstile::make('turnstile'),
+                Turnstile::make('turnstile'),
                 $this->getRememberFormComponent(),
             ]);
     }

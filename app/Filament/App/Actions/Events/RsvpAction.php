@@ -31,7 +31,7 @@ class RsvpAction extends Action
             'status' => $record->registrations->firstWhere('id', Auth::user()->getKey())?->registration->status?->value ?? EventRegistrationStatus::Going->value,
         ]);
 
-        $this->form([
+        $this->schema([
             Select::make('status')
                 ->default(EventRegistrationStatus::Going->value)
                 ->helperText('Select your RSVP status for the event.')

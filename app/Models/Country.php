@@ -4,7 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 use Lwwcas\LaravelCountries\Models\Country as BaseCountry;
+use Lwwcas\LaravelCountries\Models\CountryCoordinates;
+use Lwwcas\LaravelCountries\Models\CountryExtras;
+use Lwwcas\LaravelCountries\Models\CountryGeographical;
+use Lwwcas\LaravelCountries\Models\CountryRegion;
+use Lwwcas\LaravelCountries\Models\CountryTranslation;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
@@ -19,7 +27,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property string|null $international_phone International dialing code (e.g., +1 for the United States).
  * @property string|null $geoname_id Geonames ID for geographical reference.
  * @property string|null $wmo World Meteorological Organization (WMO) abbreviation.
- * @property \Illuminate\Support\Carbon|null $independence_day Year the country gained independence.
+ * @property Carbon|null $independence_day Year the country gained independence.
  * @property string|null $population The country’s population.
  * @property string|null $area Area of the country in square kilometers (km²).
  * @property string|null $gdp Gross Domestic Product (GDP) in billions of US dollars.
@@ -40,21 +48,21 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property array<array-key, mixed>|null $flag_colors_hsv HSV (Hue, Saturation, Value) color values for the flag.
  * @property array<array-key, mixed>|null $flag_colors_pantone Pantone color codes for the country’s flag.
  * @property bool $is_visible Visibility flag to determine if the country is publicly visible.
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Lwwcas\LaravelCountries\Models\CountryCoordinates|null $coordinates
- * @property-read \Lwwcas\LaravelCountries\Models\CountryExtras|null $extras
- * @property-read \Lwwcas\LaravelCountries\Models\CountryGeographical|null $geographical
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read CountryCoordinates|null $coordinates
+ * @property-read CountryExtras|null $extras
+ * @property-read CountryGeographical|null $geographical
  * @property-read mixed $iso_alpha2
  * @property-read mixed $iso_alpha3
- * @property-read \Lwwcas\LaravelCountries\Models\CountryRegion $region
- * @property-read \Lwwcas\LaravelCountries\Models\CountryTranslation|null $translation
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Lwwcas\LaravelCountries\Models\CountryTranslation> $translations
+ * @property-read CountryRegion $region
+ * @property-read CountryTranslation|null $translation
+ * @property-read Collection<int, CountryTranslation> $translations
  * @property-read int|null $translations_count
  *
  * @method static Builder<static>|Country listsTranslations(string $translationField)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country newQuery()
+ * @method static Builder<static>|Country newModelQuery()
+ * @method static Builder<static>|Country newQuery()
  * @method static Builder<static>|Country notTranslatedIn(?string $locale = null)
  * @method static Builder<static>|Country orWhereGeoname($geonameId)
  * @method static Builder<static>|Country orWhereIso(string $iso)
@@ -72,18 +80,18 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Country orWhereUid($uid)
  * @method static Builder<static>|Country orderByName(string $sortMethod = 'asc')
  * @method static Builder<static>|Country orderByTranslation(string $translationField, string $sortMethod = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country query()
+ * @method static Builder<static>|Country query()
  * @method static Builder<static>|Country translated()
  * @method static Builder<static>|Country translatedIn(?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereAlternativeTld($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereArea($value)
+ * @method static Builder<static>|Country whereAlternativeTld($value)
+ * @method static Builder<static>|Country whereArea($value)
  * @method static Builder<static>|Country whereAreaKm2(string $area)
  * @method static Builder<static>|Country whereBorder(string $board)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereBorders($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereCapital($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereCreatedAt($value)
+ * @method static Builder<static>|Country whereBorders($value)
+ * @method static Builder<static>|Country whereCapital($value)
+ * @method static Builder<static>|Country whereCreatedAt($value)
  * @method static Builder<static>|Country whereCurrencies(array $currencies)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereCurrency($value)
+ * @method static Builder<static>|Country whereCurrency($value)
  * @method static Builder<static>|Country whereCurrencyCode(string $currency)
  * @method static Builder<static>|Country whereCurrencyCodes(array $currencies)
  * @method static Builder<static>|Country whereCurrencyName(string $currency)
@@ -102,51 +110,51 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static Builder<static>|Country whereFlagColorPantone(array|string $pantone)
  * @method static Builder<static>|Country whereFlagColorRGB(array|string $rgb)
  * @method static Builder<static>|Country whereFlagColorWeb(array|string $name)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColors($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColorsCmyk($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColorsContrast($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColorsHex($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColorsHsl($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColorsHsv($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColorsPantone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColorsRgb($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagColorsWeb($value)
+ * @method static Builder<static>|Country whereFlagColors($value)
+ * @method static Builder<static>|Country whereFlagColorsCmyk($value)
+ * @method static Builder<static>|Country whereFlagColorsContrast($value)
+ * @method static Builder<static>|Country whereFlagColorsHex($value)
+ * @method static Builder<static>|Country whereFlagColorsHsl($value)
+ * @method static Builder<static>|Country whereFlagColorsHsv($value)
+ * @method static Builder<static>|Country whereFlagColorsPantone($value)
+ * @method static Builder<static>|Country whereFlagColorsRgb($value)
+ * @method static Builder<static>|Country whereFlagColorsWeb($value)
  * @method static Builder<static>|Country whereFlagContrast(array|string $contrast)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereFlagEmoji($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereGdp($value)
+ * @method static Builder<static>|Country whereFlagEmoji($value)
+ * @method static Builder<static>|Country whereGdp($value)
  * @method static Builder<static>|Country whereGeoname(int $geonameId)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereGeonameId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereId($value)
+ * @method static Builder<static>|Country whereGeonameId($value)
+ * @method static Builder<static>|Country whereId($value)
  * @method static Builder<static>|Country whereIndependenceAfter(string $date)
  * @method static Builder<static>|Country whereIndependenceBefore(string $date)
  * @method static Builder<static>|Country whereIndependenceBetweenDates($startDate, $endDate)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereIndependenceDay($value)
+ * @method static Builder<static>|Country whereIndependenceDay($value)
  * @method static Builder<static>|Country whereIndependenceMonth(int $month)
  * @method static Builder<static>|Country whereIndependenceYear(int $year)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereInternationalPhone($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereIsVisible($value)
+ * @method static Builder<static>|Country whereInternationalPhone($value)
+ * @method static Builder<static>|Country whereIsVisible($value)
  * @method static Builder<static>|Country whereIso(string $iso)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereIsoAlpha2($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereIsoAlpha3($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereIsoNumeric($value)
+ * @method static Builder<static>|Country whereIsoAlpha2($value)
+ * @method static Builder<static>|Country whereIsoAlpha3($value)
+ * @method static Builder<static>|Country whereIsoNumeric($value)
  * @method static Builder<static>|Country whereLanguage(string $language)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereLanguages($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereLcRegionId($value)
+ * @method static Builder<static>|Country whereLanguages($value)
+ * @method static Builder<static>|Country whereLcRegionId($value)
  * @method static Builder<static>|Country whereName(string $name)
  * @method static Builder<static>|Country whereNameLike(string $name)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereOfficialName($value)
+ * @method static Builder<static>|Country whereOfficialName($value)
  * @method static Builder<static>|Country whereOficialName(string $officialName)
  * @method static Builder<static>|Country whereOficialNameLike(string $officialName)
  * @method static Builder<static>|Country wherePhoneCode(string $internationalPhone)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country wherePopulation($value)
+ * @method static Builder<static>|Country wherePopulation($value)
  * @method static Builder<static>|Country whereSlug(string $slug)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereTimezones($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereTld($value)
+ * @method static Builder<static>|Country whereTimezones($value)
+ * @method static Builder<static>|Country whereTld($value)
  * @method static Builder<static>|Country whereTranslation(string $translationField, $value, ?string $locale = null, string $method = 'whereHas', string $operator = '=')
  * @method static Builder<static>|Country whereTranslationLike(string $translationField, $value, ?string $locale = null)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereUid($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Country whereWmo($value)
+ * @method static Builder<static>|Country whereUid($value)
+ * @method static Builder<static>|Country whereUpdatedAt($value)
+ * @method static Builder<static>|Country whereWmo($value)
  * @method static Builder<static>|Country whereWmoCode(string $wmo)
  * @method static Builder<static>|Country whereWorldMeteorologicalOrganizationCode(string $wmo)
  * @method static Builder<static>|Country withTranslation(?string $locale = null)

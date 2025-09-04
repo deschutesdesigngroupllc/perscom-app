@@ -31,7 +31,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @method static Builder<static>|EventRegistration newModelQuery()
  * @method static Builder<static>|EventRegistration newQuery()
  * @method static Builder<static>|EventRegistration query()
- * @method static Builder<static>|EventRegistration user(\App\Models\User $user)
+ * @method static Builder<static>|EventRegistration user(User $user)
  * @method static Builder<static>|EventRegistration whereCreatedAt($value)
  * @method static Builder<static>|EventRegistration whereEventId($value)
  * @method static Builder<static>|EventRegistration whereId($value)

@@ -8,7 +8,9 @@ use App\Filament\App\Resources\WebhookResource;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Webhook;
 use App\Services\WebhookService;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Wiebenieuwenhuis\FilamentCodeEditor\Components\CodeEditor;
 
@@ -19,9 +21,9 @@ class ViewWebhook extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('test')
+            Action::make('test')
                 ->label('Test webhook')
-                ->form([
+                ->schema([
                     CodeEditor::make('payload')
                         ->required()
                         ->default(fn () => json_encode([
@@ -34,13 +36,13 @@ class ViewWebhook extends ViewRecord
                 ->modalHeading('Send a test webhook payload')
                 ->modalSubmitActionLabel('Send')
                 ->successNotificationTitle('The test webhook has been successfully sent.')
-                ->action(function (array $data, Actions\Action $action, Webhook $record): void {
+                ->action(function (array $data, Action $action, Webhook $record): void {
                     WebhookService::dispatch($record, WebhookEvent::TEST_WEBHOOK->value, json_decode(data_get($data, 'payload', []) ?? [], true));
 
                     $action->success();
                 }),
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

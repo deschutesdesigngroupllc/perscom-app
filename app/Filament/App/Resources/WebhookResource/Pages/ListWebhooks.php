@@ -6,7 +6,9 @@ namespace App\Filament\App\Resources\WebhookResource\Pages;
 
 use App\Filament\App\Resources\WebhookLogResource;
 use App\Filament\App\Resources\WebhookResource;
-use Filament\Actions;
+use App\Filament\App\Resources\WebhookResource\Widgets\WebhookRequests;
+use Filament\Actions\Action;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListWebhooks extends ListRecords
@@ -18,18 +20,18 @@ class ListWebhooks extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('logs')
+            Action::make('logs')
                 ->label('View logs')
                 ->color('gray')
                 ->url(fn (): string => WebhookLogResource::getUrl()),
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 
     protected function getHeaderWidgets(): array
     {
         return [
-            WebhookResource\Widgets\WebhookRequests::class,
+            WebhookRequests::class,
         ];
     }
 }

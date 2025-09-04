@@ -15,13 +15,16 @@ use App\Traits\HasIcon;
 use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
+use Database\Factories\GroupFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
 
@@ -33,21 +36,21 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
  * @property int $order
  * @property bool $hidden
  * @property string|null $icon
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Image|null $image
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Image> $images
+ * @property-read Collection<int, Image> $images
  * @property-read int|null $images_count
  * @property-read string $label
  * @property-read ModelNotification|null $pivot
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Group> $modelNotifications
+ * @property-read Collection<int, Group> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read string|null $relative_url
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $units
+ * @property-read Collection<int, Unit> $units
  * @property-read int|null $units_count
  * @property-read string|null $url
  *
- * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
+ * @method static GroupFactory factory($count = null, $state = [])
  * @method static Builder<static>|Group forAutomaticRoster(?string $groupId = null)
  * @method static Builder<static>|Group forManualRoster(?string $groupId = null)
  * @method static Builder<static>|Group hidden()

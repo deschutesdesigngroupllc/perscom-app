@@ -13,11 +13,15 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
+use Database\Factories\FormFactory;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -28,37 +32,37 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * @property bool $is_public
  * @property string|null $description
  * @property string|null $instructions
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Category> $categories
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Category> $categories
  * @property-read int|null $categories_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Field> $fields
+ * @property-read Collection<int, Field> $fields
  * @property-read int|null $fields_count
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, ModelNotification> $modelNotifications
+ * @property-read Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read string|null $relative_url
  * @property-read Status|null $submission_status
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Submission> $submissions
+ * @property-read Collection<int, Submission> $submissions
  * @property-read int|null $submissions_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Tag> $tags
+ * @property-read Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  * @property-read string|null $url
  *
- * @method static \Database\Factories\FormFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereInstructions($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereIsPublic($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereSlug($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereSubmissionStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereSuccessMessage($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Form whereUpdatedAt($value)
+ * @method static FormFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Form newModelQuery()
+ * @method static Builder<static>|Form newQuery()
+ * @method static Builder<static>|Form query()
+ * @method static Builder<static>|Form whereCreatedAt($value)
+ * @method static Builder<static>|Form whereDescription($value)
+ * @method static Builder<static>|Form whereId($value)
+ * @method static Builder<static>|Form whereInstructions($value)
+ * @method static Builder<static>|Form whereIsPublic($value)
+ * @method static Builder<static>|Form whereName($value)
+ * @method static Builder<static>|Form whereSlug($value)
+ * @method static Builder<static>|Form whereSubmissionStatusId($value)
+ * @method static Builder<static>|Form whereSuccessMessage($value)
+ * @method static Builder<static>|Form whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

@@ -5,16 +5,21 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\SubmissionResource\RelationManagers;
 
 use App\Models\Status;
+use BackedEnum;
+use Filament\Actions\AttachAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class StatusesRelationManager extends RelationManager
 {
     protected static string $relationship = 'statuses';
 
-    protected static ?string $icon = 'heroicon-o-scale';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-scale';
 
     public function table(Table $table): Table
     {
@@ -23,22 +28,22 @@ class StatusesRelationManager extends RelationManager
             ->recordTitleAttribute('name')
             ->description('The status history of this form submission.')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->badge()
-                    ->color(fn (?Status $record): array => Color::hex($record->color ?? '#2563eb')),
-                Tables\Columns\TextColumn::make('created_at')
+                    ->color(fn (?Status $record): array => Color::generateV3Palette($record->color ?? '#2563eb')),
+                TextColumn::make('created_at')
                     ->toggleable(false),
             ])
             ->headerActions([
-                Tables\Actions\AttachAction::make()
+                AttachAction::make()
                     ->preloadRecordSelect(),
             ])
-            ->actions([
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('model_has_statuses.created_at', 'desc');

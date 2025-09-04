@@ -19,12 +19,16 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
+use Database\Factories\QualificationRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -33,42 +37,42 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $document_id
  * @property int|null $author_id
  * @property string|null $text
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activities
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
+ * @property-read Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read User|null $author
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
+ * @property-read Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Document|null $document
  * @property-read mixed $document_parsed
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $logs
+ * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, ModelNotification> $modelNotifications
+ * @property-read Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read Qualification|null $qualification
  * @property-read string|null $relative_url
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord author(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord document(\App\Models\Document $document)
- * @method static \Database\Factories\QualificationRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereQualificationId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|QualificationRecord whereUserId($value)
+ * @method static Builder<static>|QualificationRecord author(User $user)
+ * @method static Builder<static>|QualificationRecord document(Document $document)
+ * @method static QualificationRecordFactory factory($count = null, $state = [])
+ * @method static Builder<static>|QualificationRecord newModelQuery()
+ * @method static Builder<static>|QualificationRecord newQuery()
+ * @method static Builder<static>|QualificationRecord query()
+ * @method static Builder<static>|QualificationRecord user(User $user)
+ * @method static Builder<static>|QualificationRecord whereAuthorId($value)
+ * @method static Builder<static>|QualificationRecord whereCreatedAt($value)
+ * @method static Builder<static>|QualificationRecord whereDocumentId($value)
+ * @method static Builder<static>|QualificationRecord whereId($value)
+ * @method static Builder<static>|QualificationRecord whereQualificationId($value)
+ * @method static Builder<static>|QualificationRecord whereText($value)
+ * @method static Builder<static>|QualificationRecord whereUpdatedAt($value)
+ * @method static Builder<static>|QualificationRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */

@@ -6,6 +6,7 @@ namespace App\Traits;
 
 use App\Contracts\ShouldGenerateNewsfeedItems;
 use App\Models\Activity;
+use App\Models\User;
 use Eloquent;
 use Illuminate\Database\Eloquent\Relations\MorphMany;
 use Illuminate\Support\Str;
@@ -53,7 +54,7 @@ trait HasLogs
         $activity = activity('newsfeed')
             ->withProperties($properties);
 
-        if (($recipient = $model->recipientForNewsfeedItem()) instanceof \App\Models\User) {
+        if (($recipient = $model->recipientForNewsfeedItem()) instanceof User) {
             $activity = $activity->performedOn($recipient);
         }
 

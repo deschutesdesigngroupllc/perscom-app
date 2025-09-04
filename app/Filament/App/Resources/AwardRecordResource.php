@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\AwardRecordResource\Pages;
+use App\Filament\App\Resources\AwardRecordResource\Pages\CreateAwardRecord;
+use App\Filament\App\Resources\AwardRecordResource\Pages\EditAwardRecord;
+use App\Filament\App\Resources\AwardRecordResource\Pages\ListAwardRecords;
+use App\Filament\App\Resources\AwardRecordResource\Pages\ViewAwardRecord;
 use App\Filament\App\Resources\AwardRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\AwardRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\AwardRecordExporter;
@@ -13,40 +16,56 @@ use App\Livewire\App\ViewDocument;
 use App\Models\AwardRecord;
 use App\Models\User;
 use App\Settings\NotificationSettings;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Livewire;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class AwardRecordResource extends BaseResource
 {
     protected static ?string $model = AwardRecord::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-trophy';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-trophy';
 
-    protected static ?string $navigationGroup = 'Records';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
     protected static ?int $navigationSort = 5;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Details')
+                        Tab::make('Details')
                             ->columns()
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                Forms\Components\Select::make('user_id')
+                                Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
@@ -54,38 +73,38 @@ class AwardRecordResource extends BaseResource
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
-                                Forms\Components\Select::make('award_id')
+                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                Select::make('award_id')
                                     ->required()
                                     ->helperText('The award for this record.')
                                     ->preload()
                                     ->relationship(name: 'award', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => AwardResource::form($form)),
-                                Forms\Components\RichEditor::make('text')
+                                    ->createOptionForm(fn ($form): Schema => AwardResource::form($form)),
+                                RichEditor::make('text')
                                     ->helperText('Optional information about the record.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\DateTimePicker::make('created_at')
+                                DateTimePicker::make('created_at')
                                     ->columnSpanFull()
                                     ->default(now())
                                     ->required(),
-                                Forms\Components\Select::make('document_id')
+                                Select::make('document_id')
                                     ->helperText('The document for this record.')
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => DocumentResource::form($form)),
-                                Forms\Components\Select::make('author_id')
+                                    ->createOptionForm(fn ($form): Schema => DocumentResource::form($form)),
+                                Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the record.')
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
+                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Notifications')
+                        Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
@@ -103,40 +122,40 @@ class AwardRecordResource extends BaseResource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Infolists\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Infolists\Components\Tabs\Tab::make('Award Record')
+                        Tab::make('Award Record')
                             ->icon('heroicon-o-trophy')
                             ->schema([
-                                Infolists\Components\TextEntry::make('user.name'),
-                                Infolists\Components\TextEntry::make('award.name'),
-                                Infolists\Components\ImageEntry::make('award.image.path')
+                                TextEntry::make('user.name'),
+                                TextEntry::make('award.name'),
+                                ImageEntry::make('award.image.path')
                                     ->visible(fn (?AwardRecord $record): bool => isset($record->award->image))
                                     ->height(32)
                                     ->hiddenLabel(),
-                                Infolists\Components\TextEntry::make('text')
+                                TextEntry::make('text')
                                     ->html()
                                     ->prose()
                                     ->columnSpanFull(),
                             ]),
-                        Infolists\Components\Tabs\Tab::make('Details')
+                        Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                Infolists\Components\TextEntry::make('author.name'),
-                                Infolists\Components\TextEntry::make('created_at'),
-                                Infolists\Components\TextEntry::make('updated_at'),
+                                TextEntry::make('author.name'),
+                                TextEntry::make('created_at'),
+                                TextEntry::make('updated_at'),
                             ]),
-                        Infolists\Components\Tabs\Tab::make('Document')
+                        Tab::make('Document')
                             ->visible(fn (?AwardRecord $record): bool => $record->document !== null)
                             ->label(fn (?AwardRecord $record) => $record->document->name ?? 'Document')
                             ->icon('heroicon-o-document')
                             ->schema([
-                                Infolists\Components\Livewire::make(ViewDocument::class, fn (?AwardRecord $record): array => [
+                                Livewire::make(ViewDocument::class, fn (?AwardRecord $record): array => [
                                     'document' => $record->document,
                                     'user' => $record->user,
                                     'model' => $record,
@@ -151,20 +170,20 @@ class AwardRecordResource extends BaseResource
         return $table
             ->emptyStateDescription('Create a new award record to get started.')
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('award.name')
+                TextColumn::make('award.name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('award.image.path')
+                ImageColumn::make('award.image.path')
                     ->label(''),
-                Tables\Columns\TextColumn::make('document.name')
+                TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->searchable()
                     ->action(
-                        Tables\Actions\Action::make('select')
+                        Action::make('select')
                             ->visible(fn (?AwardRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
@@ -175,47 +194,47 @@ class AwardRecordResource extends BaseResource
                                 'model' => $record,
                             ])),
                     ),
-                Tables\Columns\TextColumn::make('text')
+                TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->groups(['award.name', 'document.name', 'user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('award')
+                SelectFilter::make('award')
                     ->relationship('award', 'name')
                     ->preload()
                     ->searchable()
                     ->multiple(),
-                Tables\Filters\SelectFilter::make('document')
+                SelectFilter::make('document')
                     ->relationship('document', 'name')
                     ->preload()
                     ->searchable()
                     ->multiple(),
-                Tables\Filters\SelectFilter::make('user')
+                SelectFilter::make('user')
                     ->relationship('user', 'name')
                     ->preload()
                     ->searchable()
                     ->multiple(),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(AwardRecordExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -231,10 +250,10 @@ class AwardRecordResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAwardRecords::route('/'),
-            'create' => Pages\CreateAwardRecord::route('/create'),
-            'view' => Pages\ViewAwardRecord::route('/{record}'),
-            'edit' => Pages\EditAwardRecord::route('/{record}/edit'),
+            'index' => ListAwardRecords::route('/'),
+            'create' => CreateAwardRecord::route('/create'),
+            'view' => ViewAwardRecord::route('/{record}'),
+            'edit' => EditAwardRecord::route('/{record}/edit'),
         ];
     }
 

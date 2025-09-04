@@ -4,41 +4,52 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\SpecialtyResource\Pages;
+use App\Filament\App\Resources\SpecialtyResource\Pages\CreateSpecialty;
+use App\Filament\App\Resources\SpecialtyResource\Pages\EditSpecialty;
+use App\Filament\App\Resources\SpecialtyResource\Pages\ListSpecialties;
 use App\Filament\Exports\SpecialtyExporter;
 use App\Models\Specialty;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class SpecialtyResource extends BaseResource
 {
     protected static ?string $model = Specialty::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-briefcase';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-briefcase';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Specialty Information')
+        return $schema
+            ->components([
+                Section::make('Specialty Information')
                     ->schema([
-                        Forms\Components\TextInput::make('name')
+                        TextInput::make('name')
                             ->helperText('The name of the specialty.')
                             ->required()
                             ->maxLength(255),
-                        Forms\Components\TextInput::make('abbreviation')
+                        TextInput::make('abbreviation')
                             ->helperText('The abbreviation of the specialty.')
                             ->nullable()
                             ->maxLength(255),
-                        Forms\Components\RichEditor::make('description')
+                        RichEditor::make('description')
                             ->helperText('A brief description of the specialty.')
                             ->nullable()
                             ->maxLength(65535)
@@ -51,35 +62,35 @@ class SpecialtyResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('abbreviation')
+                TextColumn::make('abbreviation')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(SpecialtyExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('order')
@@ -89,9 +100,9 @@ class SpecialtyResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSpecialties::route('/'),
-            'create' => Pages\CreateSpecialty::route('/create'),
-            'edit' => Pages\EditSpecialty::route('/{record}/edit'),
+            'index' => ListSpecialties::route('/'),
+            'create' => CreateSpecialty::route('/create'),
+            'edit' => EditSpecialty::route('/{record}/edit'),
         ];
     }
 

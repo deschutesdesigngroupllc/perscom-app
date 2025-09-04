@@ -4,26 +4,29 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\MetricFactory;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 
 /**
  * @property int $id
  * @property string $key
  * @property int $count
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
- * @method static \Database\Factories\MetricFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Metric newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Metric newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Metric query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Metric whereCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Metric whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Metric whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Metric whereKey($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Metric whereUpdatedAt($value)
+ * @method static MetricFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Metric newModelQuery()
+ * @method static Builder<static>|Metric newQuery()
+ * @method static Builder<static>|Metric query()
+ * @method static Builder<static>|Metric whereCount($value)
+ * @method static Builder<static>|Metric whereCreatedAt($value)
+ * @method static Builder<static>|Metric whereId($value)
+ * @method static Builder<static>|Metric whereKey($value)
+ * @method static Builder<static>|Metric whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

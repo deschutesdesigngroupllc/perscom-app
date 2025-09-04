@@ -4,8 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Database\Factories\ActivityFactory;
 use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Spatie\Activitylog\Models\Activity as BaseActivity;
 
 /**
@@ -17,36 +22,36 @@ use Spatie\Activitylog\Models\Activity as BaseActivity;
  * @property int|null $subject_id
  * @property string|null $causer_type
  * @property string|null $causer_id
- * @property \Illuminate\Support\Collection<array-key, mixed>|null $properties
+ * @property Collection<array-key, mixed>|null $properties
  * @property string|null $batch_uuid
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|null $causer
- * @property-read \Illuminate\Support\Collection $changes
- * @property-read \Illuminate\Database\Eloquent\Model|null $subject
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|null $causer
+ * @property-read Collection $changes
+ * @property-read Model|null $subject
  *
- * @method static Builder<static>|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
- * @method static \Database\Factories\ActivityFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Activity causedBy(Model $causer)
+ * @method static ActivityFactory factory($count = null, $state = [])
  * @method static Builder<static>|Activity forBatch(string $batchUuid)
  * @method static Builder<static>|Activity forEvent(string $event)
- * @method static Builder<static>|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
+ * @method static Builder<static>|Activity forSubject(Model $subject)
  * @method static Builder<static>|Activity hasBatch()
  * @method static Builder<static>|Activity inLog(...$logNames)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereBatchUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereCauserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereCauserType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereEvent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereLogName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereProperties($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereSubjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereSubjectType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Activity whereUpdatedAt($value)
+ * @method static Builder<static>|Activity newModelQuery()
+ * @method static Builder<static>|Activity newQuery()
+ * @method static Builder<static>|Activity query()
+ * @method static Builder<static>|Activity whereBatchUuid($value)
+ * @method static Builder<static>|Activity whereCauserId($value)
+ * @method static Builder<static>|Activity whereCauserType($value)
+ * @method static Builder<static>|Activity whereCreatedAt($value)
+ * @method static Builder<static>|Activity whereDescription($value)
+ * @method static Builder<static>|Activity whereEvent($value)
+ * @method static Builder<static>|Activity whereId($value)
+ * @method static Builder<static>|Activity whereLogName($value)
+ * @method static Builder<static>|Activity whereProperties($value)
+ * @method static Builder<static>|Activity whereSubjectId($value)
+ * @method static Builder<static>|Activity whereSubjectType($value)
+ * @method static Builder<static>|Activity whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

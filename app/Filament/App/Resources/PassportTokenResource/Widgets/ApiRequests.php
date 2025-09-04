@@ -11,17 +11,17 @@ use Flowframe\Trend\TrendValue;
 
 class ApiRequests extends ChartWidget
 {
-    protected static ?string $heading = 'Live API Requests';
+    protected ?string $heading = 'Live API Requests';
 
-    protected static ?string $description = 'Your account\'s API request history over the last year.';
+    protected ?string $description = 'Your account\'s API request history over the last year.';
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $maxHeight = '150px';
+    protected ?string $maxHeight = '150px';
 
-    protected static ?string $pollingInterval = '10s';
+    protected ?string $pollingInterval = '10s';
 
-    protected static ?array $options = [
+    protected ?array $options = [
         'plugins' => [
             'legend' => [
                 'display' => false,

@@ -4,63 +4,74 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\BannerResource\Pages;
+use App\Filament\Admin\Resources\BannerResource\Pages\CreateBanner;
+use App\Filament\Admin\Resources\BannerResource\Pages\EditBanner;
+use App\Filament\Admin\Resources\BannerResource\Pages\ListBanners;
 use App\Models\Banner;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class BannerResource extends Resource
 {
     protected static ?string $model = Banner::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-bell';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bell';
 
-    protected static ?string $navigationGroup = 'Communications';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Banner')
+                        Tab::make('Banner')
                             ->icon('heroicon-o-bell')
                             ->schema([
-                                Forms\Components\TextInput::make('title')
+                                TextInput::make('title')
                                     ->required()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
-                                Forms\Components\TextInput::make('message')
+                                TextInput::make('message')
                                     ->columnSpanFull()
                                     ->required()
                                     ->maxLength(255),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Style')
+                        Tab::make('Style')
                             ->icon('heroicon-o-paint-brush')
                             ->schema([
-                                Forms\Components\ColorPicker::make('text_color')
+                                ColorPicker::make('text_color')
                                     ->label('Text Color')
                                     ->required()
                                     ->default('#ffffff'),
-                                Forms\Components\ColorPicker::make('background_color')
+                                ColorPicker::make('background_color')
                                     ->label('Background Color')
                                     ->required()
                                     ->default('#2563eb'),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Link')
+                        Tab::make('Link')
                             ->icon('heroicon-o-link')
                             ->schema([
-                                Forms\Components\TextInput::make('link_text')
+                                TextInput::make('link_text')
                                     ->requiredWith('link_url')
                                     ->label('Text')
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('link_url')
+                                TextInput::make('link_url')
                                     ->label('URL')
                                     ->url()
                                     ->maxLength(255),
@@ -73,26 +84,26 @@ class BannerResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('message')
+                TextColumn::make('message')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -100,9 +111,9 @@ class BannerResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListBanners::route('/'),
-            'create' => Pages\CreateBanner::route('/create'),
-            'edit' => Pages\EditBanner::route('/{record}/edit'),
+            'index' => ListBanners::route('/'),
+            'create' => CreateBanner::route('/create'),
+            'edit' => EditBanner::route('/{record}/edit'),
         ];
     }
 }

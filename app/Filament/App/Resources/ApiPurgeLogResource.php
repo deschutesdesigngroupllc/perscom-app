@@ -5,13 +5,16 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources;
 
 use App\Filament\App\Resources\ApiLogResource\Pages\ViewApiLog;
+use App\Filament\App\Resources\ApiPurgeLogResource\Pages\ListApiPurgeLogs;
 use App\Models\ApiPurgeLog;
+use BackedEnum;
 use Filament\Panel;
 use Filament\Support\Enums\IconPosition;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class ApiPurgeLogResource extends BaseResource
 {
@@ -19,11 +22,11 @@ class ApiPurgeLogResource extends BaseResource
 
     protected static ?string $navigationLabel = 'Purges';
 
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
 
     protected static ?string $navigationParentItem = 'API Keys';
 
-    protected static ?string $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
     protected static ?int $navigationSort = 6;
 
@@ -38,7 +41,7 @@ class ApiPurgeLogResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('apiLog.id')
+                TextColumn::make('apiLog.id')
                     ->label('API Log ID')
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->iconPosition(IconPosition::After)
@@ -51,26 +54,26 @@ class ApiPurgeLogResource extends BaseResource
                             'record' => $apiLogs->first(),
                         ]);
                     }, shouldOpenInNewTab: true),
-                Tables\Columns\TextColumn::make('trace_id')
+                TextColumn::make('trace_id')
                     ->copyable()
                     ->searchable(['properties'])
                     ->label('Trace ID'),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->label('Event')
                     ->searchable()
                     ->formatStateUsing(fn ($state) => Str::title($state))
                     ->sortable(),
-                Tables\Columns\TextColumn::make('tags')
+                TextColumn::make('tags')
                     ->label('Cache Tags')
                     ->badge()
                     ->listWithLineBreaks(),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->badge()
                     ->color(fn ($state): string => match ($state) {
                         'Success' => 'success',
                         default => 'danger',
                     }),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable()
                     ->dateTime()
@@ -82,7 +85,7 @@ class ApiPurgeLogResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => ApiPurgeLogResource\Pages\ListApiPurgeLogs::route('/'),
+            'index' => ListApiPurgeLogs::route('/'),
         ];
     }
 

@@ -7,20 +7,21 @@ namespace App\Filament\App\Pages\Forms;
 use App\Models\Form as FormModel;
 use App\Models\Submission;
 use App\Traits\Filament\InteractsWithFields;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Notifications\Notification;
 use Filament\Pages\Concerns\HasUnsavedDataChangesAlert;
 use Filament\Pages\Concerns\InteractsWithFormActions;
 use Filament\Pages\Page;
+use Filament\Schemas\Schema;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Support\HtmlString;
 
 /**
- * @property Form $form
+ * @property Schema $form
  */
 class Submit extends Page implements HasForms
 {
@@ -36,9 +37,9 @@ class Submit extends Page implements HasForms
 
     protected static ?string $slug = '/forms/submit/{record}';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
-    protected static string $view = 'filament.app.pages.forms.submit';
+    protected string $view = 'filament.app.pages.forms.submit';
 
     protected static ?string $navigationLabel = 'Forms';
 
@@ -63,11 +64,11 @@ class Submit extends Page implements HasForms
         return new HtmlString($this->submissionForm->description ?? '');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
+        return $schema
             ->statePath('data')
-            ->schema(Submit::getFormSchemaFromFields($this->submissionForm));
+            ->components(Submit::getFormSchemaFromFields($this->submissionForm));
     }
 
     public function submit(): void
