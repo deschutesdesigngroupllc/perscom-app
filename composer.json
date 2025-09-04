@@ -41,6 +41,7 @@
     "league/html-to-markdown": "^5.1.1",
     "lwwcas/laravel-countries": "^4.12.0.1",
     "owenvoke/blade-fontawesome": "^2.9.1",
+    "phiki/phiki": "^2.0",
     "php-open-source-saver/jwt-auth": "^2.8.2",
     "pusher/pusher-php-server": "^7.2.7",
     "rlanvin/php-rrule": "^2.6.0",

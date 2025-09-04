@@ -22,7 +22,6 @@ use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
@@ -48,30 +47,28 @@ class PassportTokenResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('API Key Information')
-                    ->schema([
-                        TextInput::make('name')
-                            ->helperText('An identifying name for the API key')
-                            ->required()
-                            ->maxLength(255),
-                        Select::make('scopes')
-                            ->helperText(fn ($operation): string => match ($operation) {
-                                'edit' => 'Please create a new API key to change the scopes.',
-                                default => 'The scopes that the API key will have access to.'
-                            })
-                            ->multiple()
-                            ->live()
-                            ->disabled(fn ($operation): bool => $operation !== 'create')
-                            ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                            ->hidden(fn (Get $get): mixed => $get('all_scopes')),
-                        Checkbox::make('all_scopes')
-                            ->visibleOn('create')
-                            ->default(true)
-                            ->live()
-                            ->inline()
-                            ->helperText('Select to allow access to all scopes.'),
-                    ]),
+                TextInput::make('name')
+                    ->helperText('An identifying name for the API key')
+                    ->required()
+                    ->maxLength(255),
+                Select::make('scopes')
+                    ->helperText(fn ($operation): string => match ($operation) {
+                        'edit' => 'Please create a new API key to change the scopes.',
+                        default => 'The scopes that the API key will have access to.'
+                    })
+                    ->multiple()
+                    ->live()
+                    ->disabled(fn ($operation): bool => $operation !== 'create')
+                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                    ->hidden(fn (Get $get): mixed => $get('all_scopes')),
+                Checkbox::make('all_scopes')
+                    ->visibleOn('create')
+                    ->default(true)
+                    ->live()
+                    ->inline()
+                    ->helperText('Select to allow access to all scopes.'),
             ]);
     }
 

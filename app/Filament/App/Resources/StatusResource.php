@@ -17,7 +17,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\ColorColumn;
@@ -39,18 +38,16 @@ class StatusResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Status Information')
-                    ->schema([
-                        TextInput::make('name')
-                            ->helperText('The name of the status.')
-                            ->required()
-                            ->maxLength(255)
-                            ->columnSpanFull(),
-                        ColorPicker::make('color')
-                            ->helperText('The color of the status.')
-                            ->required(),
-                    ]),
+                TextInput::make('name')
+                    ->helperText('The name of the status.')
+                    ->required()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                ColorPicker::make('color')
+                    ->helperText('The color of the status.')
+                    ->required(),
             ]);
     }
 

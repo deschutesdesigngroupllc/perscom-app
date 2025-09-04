@@ -58,6 +58,7 @@ class SubmissionResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
                 Select::make('form_id')
                     ->preload()

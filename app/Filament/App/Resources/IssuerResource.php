@@ -16,8 +16,6 @@ use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -36,21 +34,13 @@ class IssuerResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Tabs::make()
-                    ->columnSpanFull()
-                    ->tabs([
-                        Tab::make('Issuer')
-                            ->columns()
-                            ->icon('heroicon-o-briefcase')
-                            ->schema([
-                                TextInput::make('name')
-                                    ->helperText('The name of the issuer.')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->columnSpanFull(),
-                            ]),
-                    ]),
+                TextInput::make('name')
+                    ->helperText('The name of the issuer.')
+                    ->required()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
             ]);
     }
 

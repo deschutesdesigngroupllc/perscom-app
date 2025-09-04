@@ -21,7 +21,6 @@ use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -43,39 +42,37 @@ class WebhookResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Webhook Information')
-                    ->schema([
-                        TextInput::make('url')
-                            ->helperText('The URL that the data will be sent to.')
-                            ->label('URL')
-                            ->url()
-                            ->required()
-                            ->maxLength(255),
-                        RichEditor::make('description')
-                            ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                            ->helperText('A brief description of the webhook.')
-                            ->nullable()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Select::make('method')
-                            ->helperText('The HTTP method that will be used to send the data.')
-                            ->options(WebhookMethod::class)
-                            ->required()
-                            ->default(WebhookMethod::POST),
-                        Select::make('events')
-                            ->helperText('The events that will trigger the webhook.')
-                            ->multiple()
-                            ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event) => [$event->value => $event->value])->toArray())
-                            ->required(),
-                        TextInput::make('secret')
-                            ->revealable()
-                            ->default(Str::random(32))
-                            ->helperText('A secret key that will be used to sign the data.')
-                            ->password()
-                            ->required()
-                            ->maxLength(255),
-                    ]),
+                TextInput::make('url')
+                    ->helperText('The URL that the data will be sent to.')
+                    ->label('URL')
+                    ->url()
+                    ->required()
+                    ->maxLength(255),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the webhook.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Select::make('method')
+                    ->helperText('The HTTP method that will be used to send the data.')
+                    ->options(WebhookMethod::class)
+                    ->required()
+                    ->default(WebhookMethod::POST),
+                Select::make('events')
+                    ->helperText('The events that will trigger the webhook.')
+                    ->multiple()
+                    ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event) => [$event->value => $event->value])->toArray())
+                    ->required(),
+                TextInput::make('secret')
+                    ->revealable()
+                    ->default(Str::random(32))
+                    ->helperText('A secret key that will be used to sign the data.')
+                    ->password()
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 

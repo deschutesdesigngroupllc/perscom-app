@@ -52,46 +52,39 @@ class PassportClientResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Tabs::make()
-                    ->columnSpanFull()
-                    ->tabs([
-                        Tab::make('Application')
-                            ->icon('heroicon-o-computer-desktop')
-                            ->schema([
-                                TextInput::make('name')
-                                    ->helperText('An identifying name for the client.')
-                                    ->maxLength(255)
-                                    ->required(),
-                                Radio::make('type')
-                                    ->disabled(fn ($operation): bool => $operation !== 'create')
-                                    ->live()
-                                    ->options(PassportClientType::class)
-                                    ->required(),
-                                TextInput::make('redirect')
-                                    ->maxLength(255)
-                                    ->label('Redirect URL')
-                                    ->url()
-                                    ->helperText('The URL to redirect to after authorization.')
-                                    ->required(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE->value, PassportClientType::IMPLICIT->value]))
-                                    ->visible(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE->value, PassportClientType::IMPLICIT->value])),
-                                Textarea::make('description')
-                                    ->maxLength(65535)
-                                    ->helperText('An optional description of the client'),
-                                Select::make('scopes')
-                                    ->helperText('The scopes that the client application will have access to.')
-                                    ->searchable()
-                                    ->multiple()
-                                    ->live()
-                                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                                    ->hidden(fn (Get $get): mixed => $get('all_scopes')),
-                                Checkbox::make('all_scopes')
-                                    ->default(true)
-                                    ->live()
-                                    ->inline()
-                                    ->helperText('Select to allow access to all scopes.'),
-                            ]),
-                    ]),
+                TextInput::make('name')
+                    ->helperText('An identifying name for the client.')
+                    ->maxLength(255)
+                    ->required(),
+                Radio::make('type')
+                    ->disabled(fn ($operation): bool => $operation !== 'create')
+                    ->live()
+                    ->options(PassportClientType::class)
+                    ->required(),
+                TextInput::make('redirect')
+                    ->maxLength(255)
+                    ->label('Redirect URL')
+                    ->url()
+                    ->helperText('The URL to redirect to after authorization.')
+                    ->required(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
+                    ->visible(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT])),
+                Textarea::make('description')
+                    ->maxLength(65535)
+                    ->helperText('An optional description of the client'),
+                Select::make('scopes')
+                    ->helperText('The scopes that the client application will have access to.')
+                    ->searchable()
+                    ->multiple()
+                    ->live()
+                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                    ->hidden(fn (Get $get): mixed => $get('all_scopes')),
+                Checkbox::make('all_scopes')
+                    ->default(true)
+                    ->live()
+                    ->inline()
+                    ->helperText('Select to allow access to all scopes.'),
             ]);
     }
 

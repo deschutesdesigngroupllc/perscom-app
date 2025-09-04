@@ -19,7 +19,6 @@ use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\ColorPicker;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\TextColumn;
@@ -41,23 +40,21 @@ class CalendarResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Calendar Information')
-                    ->schema([
-                        TextInput::make('name')
-                            ->helperText('The name of the calendar.')
-                            ->required()
-                            ->maxLength(255),
-                        RichEditor::make('description')
-                            ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                            ->helperText('The description of the calendar.')
-                            ->nullable()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        ColorPicker::make('color')
-                            ->helperText('The color of the calendar.')
-                            ->required(),
-                    ]),
+                TextInput::make('name')
+                    ->helperText('The name of the calendar.')
+                    ->required()
+                    ->maxLength(255),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('The description of the calendar.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                ColorPicker::make('color')
+                    ->helperText('The color of the calendar.')
+                    ->required(),
             ]);
     }
 

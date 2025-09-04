@@ -12,6 +12,7 @@ use App\Models\User;
 use BackedEnum;
 use Filament\Actions\Action;
 use Filament\Actions\ViewAction;
+use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Panel;
@@ -29,7 +30,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Parallax\FilamentSyntaxEntry\SyntaxEntry;
+use Phiki\Grammar\Grammar;
 use Symfony\Component\HttpFoundation\Response;
 use UnitEnum;
 
@@ -260,6 +261,7 @@ class ApiLogResource extends BaseResource
     {
         return $schema->components([
             Tabs::make()
+                ->persistTabInQueryString()
                 ->columnSpanFull()
                 ->tabs([
                     Tab::make('Client')
@@ -304,8 +306,9 @@ class ApiLogResource extends BaseResource
                                     ]))
                                     ->mapWithKeys(fn ($value, $header) => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->toArray()
                                 ),
-                            SyntaxEntry::make('body')
-                                ->language('json'),
+                            CodeEntry::make('body')
+                                ->copyable()
+                                ->grammar(Grammar::Json),
                         ]),
                     Tab::make('Response')
                         ->icon('heroicon-o-cloud-arrow-down')
@@ -322,8 +325,9 @@ class ApiLogResource extends BaseResource
                                 ->keyLabel('Header')
                                 ->valueLabel('Value')
                                 ->getStateUsing(fn (?ApiLog $record) => collect($record->response_headers)->mapWithKeys(fn ($value, $header) => [$header => collect($value)->join(', ')])->toArray()),
-                            SyntaxEntry::make('content')
-                                ->language('json'),
+                            CodeEntry::make('content')
+                                ->copyable()
+                                ->grammar(Grammar::Json),
                         ]),
                 ]),
         ]);

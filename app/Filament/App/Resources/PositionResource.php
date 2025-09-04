@@ -17,7 +17,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
@@ -38,20 +37,18 @@ class PositionResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Section::make('Position Information')
-                    ->schema([
-                        TextInput::make('name')
-                            ->helperText('The name of the position.')
-                            ->required()
-                            ->maxLength(255),
-                        RichEditor::make('description')
-                            ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                            ->helperText('A brief description of the position.')
-                            ->nullable()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                    ]),
+                TextInput::make('name')
+                    ->helperText('The name of the position.')
+                    ->required()
+                    ->maxLength(255),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the position.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 

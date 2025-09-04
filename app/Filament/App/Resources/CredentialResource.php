@@ -19,8 +19,6 @@ use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -40,36 +38,28 @@ class CredentialResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Tabs::make()
-                    ->columnSpanFull()
-                    ->tabs([
-                        Tab::make('Credential')
-                            ->columns()
-                            ->icon('heroicon-o-identification')
-                            ->schema([
-                                TextInput::make('name')
-                                    ->helperText('The name of the credential.')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->columnSpanFull(),
-                                Select::make('type')
-                                    ->helperText('The type of the credential.')
-                                    ->options(CredentialType::class)
-                                    ->required(),
-                                Select::make('issuer_id')
-                                    ->helperText('The issuer of the credential.')
-                                    ->searchable()
-                                    ->relationship('issuer', 'name')
-                                    ->required(),
-                                RichEditor::make('description')
-                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                                    ->helperText('A brief description of the credential.')
-                                    ->nullable()
-                                    ->maxLength(65535)
-                                    ->columnSpanFull(),
-                            ]),
-                    ]),
+                TextInput::make('name')
+                    ->helperText('The name of the credential.')
+                    ->required()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                Select::make('type')
+                    ->helperText('The type of the credential.')
+                    ->options(CredentialType::class)
+                    ->required(),
+                Select::make('issuer_id')
+                    ->helperText('The issuer of the credential.')
+                    ->searchable()
+                    ->relationship('issuer', 'name')
+                    ->required(),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the credential.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 
