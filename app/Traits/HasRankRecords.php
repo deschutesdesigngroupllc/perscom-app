@@ -13,9 +13,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 trait HasRankRecords
 {
-    /**
-     * @return HasMany<RankRecord, $this>
-     */
     public function rank_records(): HasMany
     {
         return $this->hasMany(RankRecord::class);

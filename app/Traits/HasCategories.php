@@ -16,9 +16,6 @@ trait HasCategories
 {
     public static ?string $categoriesAccessor = null;
 
-    /**
-     * @return BelongsToMany<Category, $this>
-     */
     public function categories(): BelongsToMany
     {
         $relationship = $this->belongsToMany(Category::class, "{$this->getTable()}_categories")

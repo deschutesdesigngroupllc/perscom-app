@@ -4,64 +4,80 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\RankResource\Pages;
+use App\Filament\App\Resources\RankResource\Pages\CreateRank;
+use App\Filament\App\Resources\RankResource\Pages\EditRank;
+use App\Filament\App\Resources\RankResource\Pages\ListRanks;
 use App\Filament\Exports\RankExporter;
 use App\Models\Rank;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class RankResource extends BaseResource
 {
     protected static ?string $model = Rank::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-chevron-double-up';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chevron-double-up';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Rank')
+                        Tab::make('Rank')
                             ->icon('heroicon-o-chevron-double-up')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the rank.')
                                     ->columnSpanFull()
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('abbreviation')
+                                TextInput::make('abbreviation')
                                     ->helperText('The abbreviation of the rank.')
                                     ->nullable()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('paygrade')
+                                TextInput::make('paygrade')
                                     ->helperText('The paygrade of the rank.')
                                     ->nullable()
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the rank.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Image')
+                        Tab::make('Image')
                             ->visibleOn('edit')
                             ->icon('heroicon-o-photo')
                             ->schema([
-                                Forms\Components\Section::make()
+                                Section::make()
                                     ->hiddenLabel()
                                     ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
                                     ->schema([
-                                        Forms\Components\FileUpload::make('path')
+                                        FileUpload::make('path')
                                             ->hiddenLabel()
                                             ->image()
                                             ->imageEditor()
@@ -81,40 +97,40 @@ class RankResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image.path')
+                ImageColumn::make('image.path')
                     ->label('Image'),
-                Tables\Columns\TextColumn::make('abbreviation')
+                TextColumn::make('abbreviation')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('paygrade')
+                TextColumn::make('paygrade')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(RankExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('order')
@@ -124,9 +140,9 @@ class RankResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListRanks::route('/'),
-            'create' => Pages\CreateRank::route('/create'),
-            'edit' => Pages\EditRank::route('/{record}/edit'),
+            'index' => ListRanks::route('/'),
+            'create' => CreateRank::route('/create'),
+            'edit' => EditRank::route('/{record}/edit'),
         ];
     }
 

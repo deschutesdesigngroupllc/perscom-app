@@ -75,22 +75,16 @@ class EventRegistration extends Pivot
     public function scopeFuture(Builder $query): void
     {
         $query->whereRelation('event', function (Builder $query): void {
-            /** @var static $query */
+            /** @phpstan-ignore-next-line **/
             $query->future();
         });
     }
 
-    /**
-     * @return BelongsTo<Event, $this>
-     */
     public function event(): BelongsTo
     {
         return $this->belongsTo(Event::class);
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

@@ -1,8 +1,6 @@
-@import '/vendor/filament/filament/resources/css/index.css';
-@import '/vendor/archilex/filament-filter-sets/resources/css/plugin.css';
+@import '../../../vendor/filament/filament/resources/css/theme.css';
+@import '../../../vendor/archilex/filament-filter-sets/resources/css/plugin.css';
 @import '../calendar.css';
-
-@config 'tailwind.config.js';
 
 @layer base {
     :root {

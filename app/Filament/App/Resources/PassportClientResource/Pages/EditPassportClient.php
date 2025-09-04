@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\PassportClientResource\Pages;
 
 use App\Filament\App\Resources\PassportClientResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditPassportClient extends EditRecord
@@ -15,8 +16,8 @@ class EditPassportClient extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            ViewAction::make(),
+            DeleteAction::make(),
         ];
     }
 

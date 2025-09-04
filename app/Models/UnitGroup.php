@@ -8,27 +8,29 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasGroup;
 use App\Traits\HasUnit;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $unit_id
  * @property int $group_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Group $group
  * @property-read Unit $unit
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup group(\App\Models\Group $group)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup unit(\App\Models\Unit $unit)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereGroupId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitGroup whereUpdatedAt($value)
+ * @method static Builder<static>|UnitGroup group(\App\Models\Group $group)
+ * @method static Builder<static>|UnitGroup newModelQuery()
+ * @method static Builder<static>|UnitGroup newQuery()
+ * @method static Builder<static>|UnitGroup query()
+ * @method static Builder<static>|UnitGroup unit(\App\Models\Unit $unit)
+ * @method static Builder<static>|UnitGroup whereCreatedAt($value)
+ * @method static Builder<static>|UnitGroup whereGroupId($value)
+ * @method static Builder<static>|UnitGroup whereId($value)
+ * @method static Builder<static>|UnitGroup whereUnitId($value)
+ * @method static Builder<static>|UnitGroup whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

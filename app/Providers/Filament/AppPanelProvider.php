@@ -27,17 +27,17 @@ use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
 use DutchCodingCompany\FilamentSocialite\Exceptions\ImplementationException;
 use DutchCodingCompany\FilamentSocialite\FilamentSocialitePlugin;
 use DutchCodingCompany\FilamentSocialite\Provider;
+use Filament\Actions\Action;
 use Filament\FontProviders\SpatieGoogleFontProvider;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\DisableBladeIconComponents;
 use Filament\Http\Middleware\DispatchServingFilamentEvent;
-use Filament\MinimalTheme;
-use Filament\Navigation\MenuItem;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
-use Filament\Support\Enums\ActionSize;
-use Filament\Support\Enums\MaxWidth;
+use Filament\Support\Enums\Size;
+use Filament\Support\Enums\Width;
+use FilamentThemes\Minimal\Theme;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
@@ -47,6 +47,7 @@ use Illuminate\Session\Middleware\StartSession;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use Stancl\Tenancy\Middleware\PreventAccessFromCentralDomains;
+use Torchlight\Middleware\RenderTorchlight;
 
 class AppPanelProvider extends PanelProvider
 {
@@ -132,11 +133,12 @@ class AppPanelProvider extends PanelProvider
                 CheckUserApprovalStatus::class,
                 PreventAccessFromCentralDomains::class,
                 RedirectSocialProvider::class,
+                RenderTorchlight::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
             ])
-            ->maxContentWidth(MaxWidth::Full)
+            ->maxContentWidth(Width::Full)
             ->viteTheme('resources/css/filament/app/theme.css')
             ->brandName('PERSCOM')
             ->brandLogo(fn () => view('components.logo'))
@@ -144,9 +146,9 @@ class AppPanelProvider extends PanelProvider
                 AdvancedTablesPlugin::make()
                     ->persistActiveViewInSession()
                     ->resourceEnabled(false)
-                    ->favoritesBarSize(ActionSize::Small)
+                    ->favoritesBarSize(Size::Small)
                     ->favoritesBarTheme(config('advanced-tables.favorites_bar.theme')),
-                MinimalTheme::make(),
+                Theme::make(),
                 FilamentShieldPlugin::make(),
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)
@@ -156,24 +158,20 @@ class AppPanelProvider extends PanelProvider
             ->databaseNotifications()
             ->sidebarCollapsibleOnDesktop()
             ->userMenuItems([
-                MenuItem::make()
+                Action::make('billing')
                     ->label('Billing')
                     ->url(fn () => route('spark.portal'), shouldOpenInNewTab: true)
                     ->visible(fn () => Gate::check('billing'))
                     ->icon('heroicon-o-currency-dollar'),
-                MenuItem::make()
+                Action::make('docs')
                     ->label('Documentation')
                     ->url('https://docs.perscom.io', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-book-open'),
-                MenuItem::make()
-                    ->label('Feedback')
-                    ->url('https://feedback.perscom.io', shouldOpenInNewTab: true)
-                    ->icon('heroicon-o-face-smile'),
-                MenuItem::make()
+                Action::make('support')
                     ->label('Support')
                     ->url('https://perscom.io/slack', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-question-mark-circle'),
-                MenuItem::make()
+                Action::make('status')
                     ->label('System Status')
                     ->url('https://status.perscom.io', shouldOpenInNewTab: true)
                     ->icon('heroicon-o-command-line'),

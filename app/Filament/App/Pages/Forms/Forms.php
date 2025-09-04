@@ -5,11 +5,12 @@ declare(strict_types=1);
 namespace App\Filament\App\Pages\Forms;
 
 use App\Models\Form;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
+use Filament\Actions\Action;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Pages\Page;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
@@ -23,13 +24,13 @@ class Forms extends Page implements HasForms, HasTable
 
     protected static ?string $slug = 'forms/list';
 
-    protected static ?string $navigationIcon = 'heroicon-o-document-text';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document-text';
 
     protected static ?int $navigationSort = 3;
 
     protected static ?string $navigationLabel = 'Forms';
 
-    protected static string $view = 'filament.app.pages.forms.list';
+    protected string $view = 'filament.app.pages.forms.list';
 
     protected static ?string $title = 'Forms';
 
@@ -46,7 +47,7 @@ class Forms extends Page implements HasForms, HasTable
             ->recordUrl(fn (?Form $record): string => Submit::getUrl([
                 'record' => $record,
             ]))
-            ->actions([
+            ->recordActions([
                 Action::make('open')
                     ->icon('heroicon-o-pencil')
                     ->url(fn (?Form $record): string => Submit::getUrl([

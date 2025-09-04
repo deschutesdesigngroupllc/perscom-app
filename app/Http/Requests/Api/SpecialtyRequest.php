@@ -8,9 +8,6 @@ use Orion\Http\Requests\Request;
 
 class SpecialtyRequest extends Request
 {
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return [
@@ -23,9 +20,6 @@ class SpecialtyRequest extends Request
         ];
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         return [

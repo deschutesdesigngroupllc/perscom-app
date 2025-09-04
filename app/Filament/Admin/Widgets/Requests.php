@@ -15,17 +15,17 @@ class Requests extends ChartWidget
 {
     protected static ?int $sort = 2;
 
-    protected static ?string $heading = 'Application Requests';
+    protected ?string $heading = 'Application Requests';
 
-    protected static ?string $description = 'The requests handled by the application.';
+    protected ?string $description = 'The requests handled by the application.';
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $maxHeight = '150px';
+    protected ?string $maxHeight = '150px';
 
-    protected static ?string $pollingInterval = '10s';
+    protected ?string $pollingInterval = '10s';
 
-    protected static ?array $options = [
+    protected ?array $options = [
         'plugins' => [
             'legend' => [
                 'display' => false,

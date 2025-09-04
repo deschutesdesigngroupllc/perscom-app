@@ -16,6 +16,7 @@ class CreateNewsfeed extends CreateRecord
     protected function handleRecordCreation(array $data): Model
     {
         /** @var Model $activity */
+        /** @phpstan-ignore varTag.nativeType */
         $activity = activity('newsfeed')
             ->causedBy(User::findOrFail(data_get($data, 'causer_id')))
             ->withProperties([

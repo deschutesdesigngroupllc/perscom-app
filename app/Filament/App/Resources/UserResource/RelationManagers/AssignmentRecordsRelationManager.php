@@ -8,10 +8,11 @@ use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\User;
+use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -19,30 +20,30 @@ class AssignmentRecordsRelationManager extends RelationManager
 {
     protected static string $relationship = 'assignment_records';
 
-    protected static ?string $icon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-rectangle-stack';
 
     public function table(Table $table): Table
     {
         return $table
             ->description('The assignment records for the user.')
             ->columns([
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->badge()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('position.name')
+                TextColumn::make('position.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('specialty.name')
+                TextColumn::make('specialty.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('unit.name')
+                TextColumn::make('unit.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status.name')
+                TextColumn::make('status.name')
                     ->badge()
-                    ->color(fn (?AssignmentRecord $record): array => Color::hex($record->status->color ?? '#2563eb'))
+                    ->color(fn (?AssignmentRecord $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                     ->sortable(),
-                Tables\Columns\TextColumn::make('document.name')
+                TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->action(
@@ -57,7 +58,7 @@ class AssignmentRecordsRelationManager extends RelationManager
                                 'model' => $record,
                             ])),
                     ),
-                Tables\Columns\TextColumn::make('text')
+                TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()

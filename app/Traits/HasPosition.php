@@ -19,9 +19,6 @@ trait HasPosition
         $query->whereBelongsTo($position);
     }
 
-    /**
-     * @return BelongsTo<Position, $this>
-     */
     public function position(): BelongsTo
     {
         return $this->belongsTo(Position::class);

@@ -7,7 +7,7 @@ import backgroundImage from '../../../images/landing/background-call-to-action.j
 export function CallToAction() {
   return (
     <section id='call-to-action' className='relative overflow-hidden bg-blue-600 py-20 sm:py-32'>
-      <div className='-trangray-x-[50%] -trangray-y-[50%] absolute left-1/2 top-1/2'>
+      <div className='-trangray-x-[50%] -trangray-y-[50%] absolute top-1/2 left-1/2'>
         <img src={backgroundImage} alt='' width={2347} height={1244} aria-hidden='true' />
       </div>
       <Container className='relative'>

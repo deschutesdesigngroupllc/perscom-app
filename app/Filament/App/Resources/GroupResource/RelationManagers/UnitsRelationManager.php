@@ -5,20 +5,27 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\GroupResource\RelationManagers;
 
 use App\Filament\App\Resources\UnitResource;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\AttachAction;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DetachAction;
+use Filament\Actions\DetachBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class UnitsRelationManager extends RelationManager
 {
     protected static string $relationship = 'units';
 
-    protected static ?string $icon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-rectangle-stack';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return UnitResource::form($form);
+        return UnitResource::form($schema);
     }
 
     public function table(Table $table): Table
@@ -28,12 +35,12 @@ class UnitsRelationManager extends RelationManager
             ->description('The group\'s assigned units.')
             ->emptyStateDescription('Attach a unit to the group to get started.')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
-                Tables\Actions\AttachAction::make()
+                CreateAction::make(),
+                AttachAction::make()
                     ->label('Add unit')
                     ->attachAnother(false)
                     ->multiple()
@@ -42,14 +49,14 @@ class UnitsRelationManager extends RelationManager
                     ->modalSubmitActionLabel('Add')
                     ->preloadRecordSelect(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DetachAction::make()
+            ->recordActions([
+                EditAction::make(),
+                DetachAction::make()
                     ->label('Remove unit'),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DetachBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DetachBulkAction::make(),
                 ]),
             ])
             ->defaultSort('units.order');

@@ -4,42 +4,51 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\PositionResource\Pages;
+use App\Filament\App\Resources\PositionResource\Pages\CreatePosition;
+use App\Filament\App\Resources\PositionResource\Pages\EditPosition;
+use App\Filament\App\Resources\PositionResource\Pages\ListPositions;
 use App\Filament\Exports\PositionExporter;
 use App\Models\Position;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class PositionResource extends BaseResource
 {
     protected static ?string $model = Position::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-identification';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Position Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->helperText('The name of the position.')
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('description')
-                            ->helperText('A brief description of the position.')
-                            ->nullable()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                    ]),
+        return $schema
+            ->columns(1)
+            ->components([
+                TextInput::make('name')
+                    ->helperText('The name of the position.')
+                    ->required()
+                    ->maxLength(255),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the position.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -47,32 +56,32 @@ class PositionResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(PositionExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('order')
@@ -82,9 +91,9 @@ class PositionResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPositions::route('/'),
-            'create' => Pages\CreatePosition::route('/create'),
-            'edit' => Pages\EditPosition::route('/{record}/edit'),
+            'index' => ListPositions::route('/'),
+            'create' => CreatePosition::route('/create'),
+            'edit' => EditPosition::route('/{record}/edit'),
         ];
     }
 

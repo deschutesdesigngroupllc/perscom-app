@@ -4,45 +4,61 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\MessageResource\Pages;
+use App\Filament\App\Resources\MessageResource\Pages\CreateMessage;
+use App\Filament\App\Resources\MessageResource\Pages\ListMessages;
 use App\Forms\Components\Schedule;
 use App\Models\Enums\NotificationChannel;
 use App\Models\Message;
 use App\Models\User;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 class MessageResource extends BaseResource
 {
     protected static ?string $model = Message::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
-    protected static ?string $navigationGroup = 'Communications';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Message')
+                        Tab::make('Message')
                             ->icon('heroicon-o-chat-bubble-left-right')
                             ->schema(static::messageSchema()),
-                        Forms\Components\Tabs\Tab::make('Channels')
+                        Tab::make('Channels')
                             ->icon('heroicon-o-queue-list')
                             ->schema(static::channelSchema()),
-                        Forms\Components\Tabs\Tab::make('Details')
+                        Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema(static::detailsSchema()),
-                        Forms\Components\Tabs\Tab::make('Schedule')
-                            ->visible(fn (Forms\Get $get): mixed => $get('repeats'))
+                        Tab::make('Schedule')
+                            ->visible(fn (Get $get): mixed => $get('repeats'))
                             ->icon('heroicon-o-arrow-path')
                             ->schema(static::scheduleSchema()),
                     ]),
@@ -53,16 +69,16 @@ class MessageResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('message')
+                TextColumn::make('message')
                     ->searchable()
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->icon(fn (Message $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null),
-                Tables\Columns\TextColumn::make('channels')
+                TextColumn::make('channels')
                     ->badge()
                     ->color('gray'),
-                Tables\Columns\TextColumn::make('send_at')
+                TextColumn::make('send_at')
                     ->label('Send')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
@@ -72,7 +88,7 @@ class MessageResource extends BaseResource
                     }))
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('sent_at')
+                TextColumn::make('sent_at')
                     ->label('Sent')
                     ->timezone(UserSettingsService::get('timezone', function () {
                         /** @var OrganizationSettings $settings */
@@ -82,25 +98,25 @@ class MessageResource extends BaseResource
                     }))
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->groups(['repeats'])
             ->filters([
-                Tables\Filters\SelectFilter::make('channels')
+                SelectFilter::make('channels')
                     ->options(NotificationChannel::class)
                     ->modifyQueryUsing(fn (Builder $query, $data) => $query->when(! is_null(data_get($data, 'value')))->whereJsonContains('channels', data_get($data, 'value'))),
-                Tables\Filters\TernaryFilter::make('repeats'),
+                TernaryFilter::make('repeats'),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -108,15 +124,16 @@ class MessageResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMessages::route('/'),
-            'create' => Pages\CreateMessage::route('/create'),
+            'index' => ListMessages::route('/'),
+            'create' => CreateMessage::route('/create'),
         ];
     }
 
     public static function messageSchema(): array
     {
         return [
-            Forms\Components\RichEditor::make('message')
+            RichEditor::make('message')
+                ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                 ->helperText('Enter the message you would like to send.')
                 ->required()
                 ->hiddenLabel(),
@@ -126,17 +143,17 @@ class MessageResource extends BaseResource
     public static function channelSchema(): array
     {
         return [
-            Forms\Components\CheckboxList::make('channels')
+            CheckboxList::make('channels')
                 ->required()
                 ->searchable()
                 ->hiddenLabel()
                 ->bulkToggleable()
                 ->descriptions(fn () => collect(NotificationChannel::cases())
-                    ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
+                    ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])
                     ->toArray())
                 ->options(fn () => collect(NotificationChannel::cases())
                     ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
-                    ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
+                    ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])
                     ->toArray()),
         ];
     }
@@ -144,7 +161,7 @@ class MessageResource extends BaseResource
     public static function detailsSchema(): array
     {
         return [
-            Forms\Components\Select::make('recipients')
+            Select::make('recipients')
                 ->helperText('Select the recipients. Leave blank to send to everyone.')
                 ->preload()
                 ->multiple()
@@ -157,7 +174,7 @@ class MessageResource extends BaseResource
     public static function scheduleSchema(): array
     {
         return [
-            Forms\Components\DateTimePicker::make('send_at')
+            DateTimePicker::make('send_at')
                 ->timezone(UserSettingsService::get('timezone', function () {
                     /** @var OrganizationSettings $settings */
                     $settings = app(OrganizationSettings::class);
@@ -170,12 +187,12 @@ class MessageResource extends BaseResource
                     ->setTimezone(config('app.timezone')))
                 ->columnSpanFull()
                 ->helperText('Set a time to send the message in the future. Leave blank to send now.')
-                ->hidden(fn (Forms\Get $get): mixed => $get('repeats')),
-            Forms\Components\Toggle::make('repeats')
+                ->hidden(fn (Get $get): mixed => $get('repeats')),
+            Toggle::make('repeats')
                 ->live()
                 ->helperText('Enable to send the message on a recurring schedule.'),
             Schedule::make(shiftScheduleTimezone: true)
-                ->visible(fn (Forms\Get $get): mixed => $get('repeats')),
+                ->visible(fn (Get $get): mixed => $get('repeats')),
         ];
     }
 }

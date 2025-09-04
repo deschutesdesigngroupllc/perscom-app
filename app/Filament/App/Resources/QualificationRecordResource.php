@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\QualificationRecordResource\Pages;
+use App\Filament\App\Resources\QualificationRecordResource\Pages\CreateQualificationRecord;
+use App\Filament\App\Resources\QualificationRecordResource\Pages\EditQualificationRecord;
+use App\Filament\App\Resources\QualificationRecordResource\Pages\ListQualificationRecords;
+use App\Filament\App\Resources\QualificationRecordResource\Pages\ViewQualificationRecord;
 use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\QualificationRecordResource\RelationManagers\CommentsRelationManager;
 use App\Filament\Exports\QualificationRecordExporter;
@@ -13,40 +16,56 @@ use App\Livewire\App\ViewDocument;
 use App\Models\QualificationRecord;
 use App\Models\User;
 use App\Settings\NotificationSettings;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists;
-use Filament\Infolists\Infolist;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Infolists\Components\ImageEntry;
+use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Livewire;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class QualificationRecordResource extends BaseResource
 {
     protected static ?string $model = QualificationRecord::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-star';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-star';
 
-    protected static ?string $navigationGroup = 'Records';
+    protected static string|UnitEnum|null $navigationGroup = 'Records';
 
     protected static ?int $navigationSort = 5;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Details')
+                        Tab::make('Details')
                             ->columns()
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                Forms\Components\Select::make('user_id')
+                                Select::make('user_id')
                                     ->label(fn ($operation): string => $operation === 'create' ? 'User(s)' : 'User')
                                     ->multiple(fn ($operation): bool => $operation === 'create')
                                     ->required()
@@ -54,38 +73,39 @@ class QualificationRecordResource extends BaseResource
                                     ->preload()
                                     ->options(fn () => User::orderBy('name')->get()->pluck('name', 'id'))
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
-                                Forms\Components\Select::make('qualification_id')
+                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                Select::make('qualification_id')
                                     ->required()
                                     ->helperText('The qualification for this record.')
                                     ->preload()
                                     ->relationship(name: 'qualification', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => QualificationResource::form($form)),
-                                Forms\Components\RichEditor::make('text')
+                                    ->createOptionForm(fn ($form): Schema => QualificationResource::form($form)),
+                                RichEditor::make('text')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Optional information about the record.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\DateTimePicker::make('created_at')
+                                DateTimePicker::make('created_at')
                                     ->columnSpanFull()
                                     ->default(now())
                                     ->required(),
-                                Forms\Components\Select::make('document_id')
+                                Select::make('document_id')
                                     ->helperText('The document for this record.')
                                     ->preload()
                                     ->relationship(name: 'document', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => DocumentResource::form($form)),
-                                Forms\Components\Select::make('author_id')
+                                    ->createOptionForm(fn ($form): Schema => DocumentResource::form($form)),
+                                Select::make('author_id')
                                     ->required()
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->helperText('The author of the record.')
                                     ->preload()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
+                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Notifications')
+                        Tab::make('Notifications')
                             ->visible(fn ($operation): bool => $operation === 'create')
                             ->icon('heroicon-o-bell')
                             ->schema(function (): array {
@@ -103,40 +123,40 @@ class QualificationRecordResource extends BaseResource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
-                Infolists\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Infolists\Components\Tabs\Tab::make('Qualification Record')
+                        Tab::make('Qualification Record')
                             ->icon('heroicon-o-star')
                             ->schema([
-                                Infolists\Components\TextEntry::make('user.name'),
-                                Infolists\Components\TextEntry::make('qualification.name'),
-                                Infolists\Components\ImageEntry::make('qualification.image.path')
+                                TextEntry::make('user.name'),
+                                TextEntry::make('qualification.name'),
+                                ImageEntry::make('qualification.image.path')
                                     ->visible(fn (?QualificationRecord $record): bool => isset($record->qualification->image))
                                     ->height(32)
                                     ->hiddenLabel(),
-                                Infolists\Components\TextEntry::make('text')
+                                TextEntry::make('text')
                                     ->html()
                                     ->prose()
                                     ->columnSpanFull(),
                             ]),
-                        Infolists\Components\Tabs\Tab::make('Details')
+                        Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                Infolists\Components\TextEntry::make('author.name'),
-                                Infolists\Components\TextEntry::make('created_at'),
-                                Infolists\Components\TextEntry::make('updated_at'),
+                                TextEntry::make('author.name'),
+                                TextEntry::make('created_at'),
+                                TextEntry::make('updated_at'),
                             ]),
-                        Infolists\Components\Tabs\Tab::make('Document')
+                        Tab::make('Document')
                             ->visible(fn (?QualificationRecord $record): bool => $record->document !== null)
                             ->label(fn (?QualificationRecord $record) => $record->document->name ?? 'Document')
                             ->icon('heroicon-o-document')
                             ->schema([
-                                Infolists\Components\Livewire::make(ViewDocument::class, fn (?QualificationRecord $record): array => [
+                                Livewire::make(ViewDocument::class, fn (?QualificationRecord $record): array => [
                                     'document' => $record->document,
                                     'user' => $record->user,
                                     'model' => $record,
@@ -151,20 +171,20 @@ class QualificationRecordResource extends BaseResource
         return $table
             ->emptyStateDescription('Create a new qualification record to get started.')
             ->columns([
-                Tables\Columns\TextColumn::make('user.name')
+                TextColumn::make('user.name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('qualification.name')
+                TextColumn::make('qualification.name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('qualification.image.path')
+                ImageColumn::make('qualification.image.path')
                     ->label(''),
-                Tables\Columns\TextColumn::make('document.name')
+                TextColumn::make('document.name')
                     ->icon('heroicon-o-document')
                     ->sortable()
                     ->searchable()
                     ->action(
-                        Tables\Actions\Action::make('select')
+                        Action::make('select')
                             ->visible(fn (?QualificationRecord $record): bool => $record->document !== null)
                             ->modalSubmitAction(false)
                             ->modalCancelActionLabel('Close')
@@ -175,47 +195,47 @@ class QualificationRecordResource extends BaseResource
                                 'model' => $record,
                             ])),
                     ),
-                Tables\Columns\TextColumn::make('text')
+                TextColumn::make('text')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->groups(['document.name', 'qualification.name', 'user.name'])
             ->filters([
-                Tables\Filters\SelectFilter::make('document')
+                SelectFilter::make('document')
                     ->relationship('document', 'name')
                     ->preload()
                     ->searchable()
                     ->multiple(),
-                Tables\Filters\SelectFilter::make('qualification')
+                SelectFilter::make('qualification')
                     ->relationship('qualification', 'name')
                     ->preload()
                     ->searchable()
                     ->multiple(),
-                Tables\Filters\SelectFilter::make('user')
+                SelectFilter::make('user')
                     ->relationship('user', 'name')
                     ->preload()
                     ->searchable()
                     ->multiple(),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(QualificationRecordExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -231,10 +251,10 @@ class QualificationRecordResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListQualificationRecords::route('/'),
-            'create' => Pages\CreateQualificationRecord::route('/create'),
-            'view' => Pages\ViewQualificationRecord::route('/{record}'),
-            'edit' => Pages\EditQualificationRecord::route('/{record}/edit'),
+            'index' => ListQualificationRecords::route('/'),
+            'create' => CreateQualificationRecord::route('/create'),
+            'view' => ViewQualificationRecord::route('/{record}'),
+            'edit' => EditQualificationRecord::route('/{record}/edit'),
         ];
     }
 

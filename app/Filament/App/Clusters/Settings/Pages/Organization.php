@@ -6,14 +6,16 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Filament\App\Clusters\Settings;
 use App\Settings\OrganizationSettings;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use DateTimeZone;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
 use Filament\Panel;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 
@@ -21,7 +23,7 @@ class Organization extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-building-office';
 
     protected static ?string $navigationLabel = 'Organization';
 
@@ -43,14 +45,14 @@ class Organization extends SettingsPage
             && ! App::isDemo();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Account')
+                        Tab::make('Account')
                             ->icon('heroicon-o-building-office')
                             ->schema([
                                 TextInput::make('name')
@@ -65,7 +67,7 @@ class Organization extends SettingsPage
                                 Select::make('timezone')
                                     ->searchable()
                                     ->preload()
-                                    ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($timezone) => [$timezone => $timezone])->all())
+                                    ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($timezone): array => [$timezone => $timezone])->all())
                                     ->required()
                                     ->helperText('The timezone that will be used for all dates and times. Note: A user can still override the system timezone on a per-account basis.'),
                             ]),

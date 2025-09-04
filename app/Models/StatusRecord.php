@@ -10,9 +10,12 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasStatus;
 use Eloquent;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * App\Models\StatusRecord
@@ -22,23 +25,23 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string $model_type
  * @property int $model_id
  * @property string|null $text
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|Eloquent $model
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|Eloquent $model
  * @property-read Status $status
  *
  * @method static \Database\Factories\StatusRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord status(\App\Models\Status $status)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|StatusRecord whereUpdatedAt($value)
+ * @method static Builder<static>|StatusRecord newModelQuery()
+ * @method static Builder<static>|StatusRecord newQuery()
+ * @method static Builder<static>|StatusRecord query()
+ * @method static Builder<static>|StatusRecord status(\App\Models\Status $status)
+ * @method static Builder<static>|StatusRecord whereCreatedAt($value)
+ * @method static Builder<static>|StatusRecord whereId($value)
+ * @method static Builder<static>|StatusRecord whereModelId($value)
+ * @method static Builder<static>|StatusRecord whereModelType($value)
+ * @method static Builder<static>|StatusRecord whereStatusId($value)
+ * @method static Builder<static>|StatusRecord whereText($value)
+ * @method static Builder<static>|StatusRecord whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

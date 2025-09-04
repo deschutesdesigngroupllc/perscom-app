@@ -4,66 +4,82 @@ declare(strict_types=1);
 
 namespace App\Filament\Admin\Resources;
 
-use App\Filament\Admin\Resources\AlertResource\Pages;
+use App\Filament\Admin\Resources\AlertResource\Pages\CreateAlert;
+use App\Filament\Admin\Resources\AlertResource\Pages\EditAlert;
+use App\Filament\Admin\Resources\AlertResource\Pages\ListAlerts;
 use App\Models\Alert;
 use App\Models\Enums\AlertChannel;
 use App\Models\Scopes\EnabledScope;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use UnitEnum;
 
 class AlertResource extends Resource
 {
     protected static ?string $model = Alert::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left-right';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-chat-bubble-left-right';
 
-    protected static ?string $navigationGroup = 'Communications';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Alert')
+                        Tab::make('Alert')
                             ->icon('heroicon-o-chat-bubble-left-right')
                             ->schema([
-                                Forms\Components\TextInput::make('title')
+                                TextInput::make('title')
                                     ->columnSpanFull()
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('message')
+                                RichEditor::make('message')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->maxLength(65535)
                                     ->required()
                                     ->columnSpanFull(),
-                                Forms\Components\Toggle::make('enabled')
+                                Toggle::make('enabled')
                                     ->default(true)
                                     ->required(),
-                                Forms\Components\CheckboxList::make('channels')
+                                CheckboxList::make('channels')
                                     ->hiddenLabel()
                                     ->required()
                                     ->bulkToggleable()
                                     ->descriptions(fn () => collect(AlertChannel::cases())
-                                        ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getDescription()])
+                                        ->mapWithKeys(fn (AlertChannel $channel): array => [$channel->value => $channel->getDescription()])
                                         ->toArray())
                                     ->options(fn () => collect(AlertChannel::cases())
-                                        ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getLabel()])
+                                        ->mapWithKeys(fn (AlertChannel $channel): array => [$channel->value => $channel->getLabel()])
                                         ->toArray()),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Link')
+                        Tab::make('Link')
                             ->icon('heroicon-o-link')
                             ->schema([
-                                Forms\Components\TextInput::make('link_text')
+                                TextInput::make('link_text')
                                     ->label('Text')
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('url')
+                                TextInput::make('url')
                                     ->url()
                                     ->label('URL')
                                     ->requiredWith('link_text')
@@ -76,36 +92,37 @@ class AlertResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no alerts to display.')
             ->columns([
-                Tables\Columns\TextColumn::make('title')
+                TextColumn::make('title')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('message')
+                TextColumn::make('message')
                     ->html()
                     ->wrap()
                     ->limit()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ToggleColumn::make('enabled')
+                ToggleColumn::make('enabled')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('channels')
+                TextColumn::make('channels')
                     ->badge(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->groups(['enabled'])
             ->filters([
-                Tables\Filters\TernaryFilter::make('enabled'),
+                TernaryFilter::make('enabled'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('order', 'desc')
@@ -115,9 +132,9 @@ class AlertResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAlerts::route('/'),
-            'create' => Pages\CreateAlert::route('/create'),
-            'edit' => Pages\EditAlert::route('/{record}/edit'),
+            'index' => ListAlerts::route('/'),
+            'create' => CreateAlert::route('/create'),
+            'edit' => EditAlert::route('/{record}/edit'),
         ];
     }
 

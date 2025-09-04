@@ -4,27 +4,44 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\PassportClientResource\Pages;
+use App\Filament\App\Resources\PassportClientResource\Pages\CreatePassportClient;
+use App\Filament\App\Resources\PassportClientResource\Pages\EditPassportClient;
+use App\Filament\App\Resources\PassportClientResource\Pages\ListPassportClients;
+use App\Filament\App\Resources\PassportClientResource\Pages\ViewPassportClient;
 use App\Models\Enums\PassportClientType;
 use App\Models\PassportClient;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\Radio;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\KeyValueEntry;
-use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Tables;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Laravel\Passport\Passport;
+use UnitEnum;
 
 class PassportClientResource extends BaseResource
 {
     protected static ?string $model = PassportClient::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
-    protected static ?string $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
     protected static ?int $navigationSort = 6;
 
@@ -32,59 +49,52 @@ class PassportClientResource extends BaseResource
 
     protected static ?string $modelLabel = 'client';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
-                    ->columnSpanFull()
-                    ->tabs([
-                        Forms\Components\Tabs\Tab::make('Application')
-                            ->icon('heroicon-o-computer-desktop')
-                            ->schema([
-                                Forms\Components\TextInput::make('name')
-                                    ->helperText('An identifying name for the client.')
-                                    ->maxLength(255)
-                                    ->required(),
-                                Forms\Components\Radio::make('type')
-                                    ->disabled(fn ($operation): bool => $operation !== 'create')
-                                    ->live()
-                                    ->options(PassportClientType::class)
-                                    ->required(),
-                                Forms\Components\TextInput::make('redirect')
-                                    ->maxLength(255)
-                                    ->label('Redirect URL')
-                                    ->url()
-                                    ->helperText('The URL to redirect to after authorization.')
-                                    ->required(fn (Forms\Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE->value, PassportClientType::IMPLICIT->value]))
-                                    ->visible(fn (Forms\Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE->value, PassportClientType::IMPLICIT->value])),
-                                Forms\Components\Textarea::make('description')
-                                    ->maxLength(65535)
-                                    ->helperText('An optional description of the client'),
-                                Forms\Components\Select::make('scopes')
-                                    ->helperText('The scopes that the client application will have access to.')
-                                    ->searchable()
-                                    ->multiple()
-                                    ->live()
-                                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
-                                    ->hidden(fn (Forms\Get $get): mixed => $get('all_scopes')),
-                                Forms\Components\Checkbox::make('all_scopes')
-                                    ->default(true)
-                                    ->live()
-                                    ->inline()
-                                    ->helperText('Select to allow access to all scopes.'),
-                            ]),
-                    ]),
+        return $schema
+            ->columns(1)
+            ->components([
+                TextInput::make('name')
+                    ->helperText('An identifying name for the client.')
+                    ->maxLength(255)
+                    ->required(),
+                Radio::make('type')
+                    ->disabled(fn ($operation): bool => $operation !== 'create')
+                    ->live()
+                    ->options(PassportClientType::class)
+                    ->required(),
+                TextInput::make('redirect')
+                    ->maxLength(255)
+                    ->label('Redirect URL')
+                    ->url()
+                    ->helperText('The URL to redirect to after authorization.')
+                    ->required(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT]))
+                    ->visible(fn (Get $get): bool => in_array($get('type'), [PassportClientType::AUTHORIZATION_CODE, PassportClientType::IMPLICIT])),
+                Textarea::make('description')
+                    ->maxLength(65535)
+                    ->helperText('An optional description of the client'),
+                Select::make('scopes')
+                    ->helperText('The scopes that the client application will have access to.')
+                    ->searchable()
+                    ->multiple()
+                    ->live()
+                    ->options(fn () => Passport::scopes()->pluck('id', 'id')->sort())
+                    ->hidden(fn (Get $get): mixed => $get('all_scopes')),
+                Checkbox::make('all_scopes')
+                    ->default(true)
+                    ->live()
+                    ->inline()
+                    ->helperText('Select to allow access to all scopes.'),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             Tabs::make()
                 ->columnSpanFull()
                 ->tabs([
-                    Tabs\Tab::make('Client')
+                    Tab::make('Client')
                         ->icon('heroicon-o-rectangle-stack')
                         ->schema([
                             TextEntry::make('name'),
@@ -123,7 +133,7 @@ class PassportClientResource extends BaseResource
                                 ->expandableLimitedList()
                                 ->badge(),
                         ]),
-                    Tabs\Tab::make('Endpoints')
+                    Tab::make('Endpoints')
                         ->icon('heroicon-o-link')
                         ->schema([
                             KeyValueEntry::make('endpoints')
@@ -157,49 +167,49 @@ class PassportClientResource extends BaseResource
         return $table
             ->emptyStateDescription('Create your first OAuth 2.0 client to start integrating with PERSCOM\'s powerful API.')
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->label('Client ID')
                     ->sortable()
                     ->badge()
                     ->color('gray')
                     ->copyable(),
-                Tables\Columns\TextColumn::make('secret')
+                TextColumn::make('secret')
                     ->label('Client Secret')
                     ->sortable()
                     ->badge()
                     ->color('gray')
                     ->copyable(),
-                Tables\Columns\TextColumn::make('scopes')
+                TextColumn::make('scopes')
                     ->badge()
                     ->listWithLineBreaks()
                     ->limitList()
                     ->expandableLimitedList()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('revoked')
+                ToggleColumn::make('revoked')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('type')
+                TextColumn::make('type')
                     ->badge()
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('type')
+                SelectFilter::make('type')
                     ->preload()
                     ->multiple()
                     ->options(PassportClientType::class),
             ])
             ->groups(['type'])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -213,10 +223,10 @@ class PassportClientResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListPassportClients::route('/'),
-            'create' => Pages\CreatePassportClient::route('/create'),
-            'edit' => Pages\EditPassportClient::route('/{record}/edit'),
-            'view' => Pages\ViewPassportClient::route('/{record}'),
+            'index' => ListPassportClients::route('/'),
+            'create' => CreatePassportClient::route('/create'),
+            'edit' => EditPassportClient::route('/{record}/edit'),
+            'view' => ViewPassportClient::route('/{record}'),
         ];
     }
 }

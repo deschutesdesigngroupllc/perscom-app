@@ -7,7 +7,7 @@ namespace App\Notifications\Tenant;
 use App\Filament\App\Resources\UserResource;
 use App\Mail\Tenant\NewTaskAssignmentMail;
 use App\Models\TaskAssignment;
-use Filament\Notifications\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;

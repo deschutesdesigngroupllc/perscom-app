@@ -7,7 +7,7 @@ function AcceptableUsePolicy() {
   return (
     <>
       <Header />
-      <Container className='prose pb-8 pt-4 text-sm sm:text-base lg:pt-16'>
+      <Container className='prose pt-4 pb-8 text-sm sm:text-base lg:pt-16'>
         <h1 className='text-xl sm:text-2xl lg:text-3xl'>PERSCOM Acceptable Use Policy</h1>
         <p>
           This acceptable use policy covers the products, services, and technologies (collectively referred to as the "Products") provided

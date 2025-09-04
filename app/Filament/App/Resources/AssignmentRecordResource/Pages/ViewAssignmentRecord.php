@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\AssignmentRecordResource\Pages;
 
 use App\Filament\App\Resources\AssignmentRecordResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewAssignmentRecord extends ViewRecord
@@ -15,8 +16,8 @@ class ViewAssignmentRecord extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

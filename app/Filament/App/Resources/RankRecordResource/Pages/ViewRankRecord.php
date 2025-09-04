@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\RankRecordResource\Pages;
 
 use App\Filament\App\Resources\RankRecordResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewRankRecord extends ViewRecord
@@ -15,8 +16,8 @@ class ViewRankRecord extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

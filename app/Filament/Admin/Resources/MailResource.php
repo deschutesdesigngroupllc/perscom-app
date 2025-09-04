@@ -5,26 +5,43 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Resources;
 
 use App\Actions\Batches\SendTenantMassEmails;
-use App\Filament\Admin\Resources\MailResource\Pages;
+use App\Filament\Admin\Resources\MailResource\Pages\CreateMail;
+use App\Filament\Admin\Resources\MailResource\Pages\EditMail;
+use App\Filament\Admin\Resources\MailResource\Pages\ListMails;
+use App\Filament\Admin\Resources\MailResource\Pages\ViewMail;
 use App\Models\Mail;
 use App\Models\Tenant;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Model;
+use UnitEnum;
 
 class MailResource extends Resource
 {
     protected static ?string $model = Mail::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-envelope';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-envelope';
 
-    protected static ?string $navigationGroup = 'Communications';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
     protected static ?string $navigationLabel = 'Mail';
 
@@ -32,41 +49,41 @@ class MailResource extends Resource
 
     protected static ?int $navigationSort = 2;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Email')
+                        Tab::make('Email')
                             ->icon('heroicon-o-envelope')
                             ->schema([
-                                Forms\Components\Select::make('recipients')
+                                Select::make('recipients')
                                     ->helperText('Leave blank to send to all tenants.')
                                     ->multiple()
                                     ->searchable()
                                     ->required()
                                     ->nullable()
                                     ->options(Tenant::query()->orderBy('name')->pluck('name', 'id')),
-                                Forms\Components\TextInput::make('subject')
+                                TextInput::make('subject')
                                     ->required()
                                     ->maxLength(255),
-                                TiptapEditor::make('content')
+                                RichEditor::make('content')
                                     ->extraInputAttributes(['style' => 'min-height: 20rem;'])
                                     ->required(),
-                                Forms\Components\Checkbox::make('send_now')
+                                Checkbox::make('send_now')
                                     ->label('Send Now')
                                     ->default(true)
                                     ->live()
                                     ->helperText('If checked, the email will be sent immediately.'),
-                                Forms\Components\DateTimePicker::make('send_at')
+                                DateTimePicker::make('send_at')
                                     ->hintActions([
-                                        Forms\Components\Actions\Action::make('now')->action(fn (Forms\Set $set): mixed => $set('send_at', now()->toDateTimeString())),
-                                        Forms\Components\Actions\Action::make('clear')->action(fn (Forms\Set $set): mixed => $set('send_at', null)),
+                                        Action::make('now')->action(fn (Set $set): mixed => $set('send_at', now()->toDateTimeString())),
+                                        Action::make('clear')->action(fn (Set $set): mixed => $set('send_at', null)),
                                     ])
                                     ->label('Send At')
-                                    ->visible(fn (Forms\Get $get): bool => ! $get('send_now'))
+                                    ->visible(fn (Get $get): bool => ! $get('send_now'))
                                     ->helperText('Set the time to send the email.'),
                             ]),
                     ]),
@@ -76,26 +93,27 @@ class MailResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no emails to display.')
             ->columns([
-                Tables\Columns\TextColumn::make('subject')
+                TextColumn::make('subject')
                     ->searchable(['subject', 'content'])
                     ->sortable(),
-                Tables\Columns\TextColumn::make('sent_at')
+                TextColumn::make('sent_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('send_at')
+                TextColumn::make('send_at')
                     ->dateTime()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable()
                     ->dateTime()
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\Action::make('retry')
+            ->recordActions([
+                Action::make('retry')
                     ->successNotificationTitle('The email has been queued for sending.')
                     ->icon('heroicon-o-arrow-path')
-                    ->action(function (Mail $record, Tables\Actions\Action $action): void {
+                    ->action(function (Mail $record, Action $action): void {
                         SendTenantMassEmails::handle($record);
                         $action->success();
                     })
@@ -103,22 +121,22 @@ class MailResource extends Resource
                         ($record->send_now && blank($record->send_at)) || (filled($record->send_at) && $record->send_at->isPast()))
                         && blank($record->sent_at)
                     ),
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
+        return $schema
             ->columns(1)
-            ->schema([
+            ->components([
                 TextEntry::make('content')
                     ->hiddenLabel()
                     ->html()
@@ -137,10 +155,10 @@ class MailResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListMails::route('/'),
-            'create' => Pages\CreateMail::route('/create'),
-            'edit' => Pages\EditMail::route('/{record}/edit'),
-            'view' => Pages\ViewMail::route('/{record}'),
+            'index' => ListMails::route('/'),
+            'create' => CreateMail::route('/create'),
+            'edit' => EditMail::route('/{record}/edit'),
+            'view' => ViewMail::route('/{record}'),
         ];
     }
 

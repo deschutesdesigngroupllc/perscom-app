@@ -110,9 +110,7 @@ class LogApiRequest
         }
 
         if (is_array($data)) {
-            return array_map(function ($value) {
-                return $this->processMultipartData($value);
-            }, $data);
+            return array_map(fn ($value): mixed => $this->processMultipartData($value), $data);
         }
 
         return $data;

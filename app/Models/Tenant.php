@@ -11,22 +11,26 @@ use App\Traits\ClearsResponseCache;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Optional;
 use Illuminate\Support\Str;
 use Laravel\Pennant\Concerns\HasFeatures;
 use Laravel\Pennant\Contracts\FeatureScopeable;
 use Spark\Billable;
-use Spark\Plan;
 use Stancl\Tenancy\Contracts\TenantWithDatabase;
 use Stancl\Tenancy\Database\Concerns\CentralConnection;
 use Stancl\Tenancy\Database\Concerns\HasDatabase;
 use Stancl\Tenancy\Database\Concerns\HasDomains;
 use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
+use Stancl\Tenancy\Database\TenantCollection;
 
 /**
  * @property int $id
@@ -38,7 +42,7 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property string|null $pm_last_four
  * @property string|null $pm_expiration
  * @property string|null $extra_billing_information
- * @property \Illuminate\Support\Carbon|null $trial_ends_at
+ * @property Carbon|null $trial_ends_at
  * @property string|null $billing_address
  * @property string|null $billing_address_line_2
  * @property string|null $billing_city
@@ -48,33 +52,33 @@ use Stancl\Tenancy\Database\Models\Tenant as BaseTenant;
  * @property array $invoice_emails
  * @property string|null $billing_country
  * @property array<array-key, mixed>|null $data
- * @property \Illuminate\Support\Carbon|null $last_login_at
- * @property \Illuminate\Support\Carbon|null $setup_completed_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $last_login_at
+ * @property Carbon|null $setup_completed_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read Domain|null $custom_domain
  * @property-read Optional|string|null|null $custom_url
  * @property-read string $database_status
  * @property-read Domain|null $domain
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Domain> $domains
+ * @property-read Collection<int, Domain> $domains
  * @property-read int|null $domains_count
  * @property-read Domain|null $fallback_domain
  * @property-read Optional|string|null|null $fallback_url
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read bool $setup_completed
  * @property-read Optional|string|null|null $slug
  * @property-read string|null $stripe_url
  * @property-read SubscriptionPlanType $subscription_plan
  * @property-read SubscriptionStatus $subscription_status
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Subscription> $subscriptions
+ * @property-read Collection<int, Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
- * @property-read Optional|string|null|null $url
+ * @property-read string|null $url
  * @property string|null $tenancy_db_name
  *
- * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> all($columns = ['*'])
+ * @method static TenantCollection<int, static> all($columns = ['*'])
  * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
- * @method static \Stancl\Tenancy\Database\TenantCollection<int, static> get($columns = ['*'])
+ * @method static TenantCollection<int, static> get($columns = ['*'])
  * @method static Builder<static>|Tenant hasExpiredGenericTrial()
  * @method static Builder<static>|Tenant newModelQuery()
  * @method static Builder<static>|Tenant newQuery()
@@ -155,9 +159,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         ];
     }
 
-    /**
-     * @return Attribute<string, never>
-     */
     public function databaseStatus(): Attribute
     {
         return Attribute::make(
@@ -165,9 +166,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?Domain, never>
-     */
     public function customDomain(): Attribute
     {
         return Attribute::make(
@@ -177,9 +175,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?Domain, never>
-     */
     public function fallbackDomain(): Attribute
     {
         return Attribute::make(
@@ -189,9 +184,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?Domain, never>
-     */
     public function domain(): Attribute
     {
         return Attribute::make(
@@ -199,9 +191,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<Optional|string|null, never>
-     */
     public function customUrl(): Attribute
     {
         return Attribute::make(
@@ -209,9 +198,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<Optional|string|null, never>
-     */
     public function fallbackUrl(): Attribute
     {
         return Attribute::make(
@@ -219,18 +205,12 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function setupCompleted(): Attribute
     {
         return Attribute::get(fn (): bool => ! is_null($this->setup_completed_at))
             ->shouldCache();
     }
 
-    /**
-     * @return Attribute<Optional|string|null, never>
-     */
     public function slug(): Attribute
     {
         return Attribute::make(
@@ -238,9 +218,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function stripeUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
@@ -256,12 +233,12 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, never>
+     * @return Attribute<string|null, never>
      */
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn (): Optional|string|null => $this->custom_url ?? $this->fallback_url
+            get: fn (): ?string => $this->custom_url ?? $this->fallback_url
         )->shouldCache();
     }
 
@@ -333,9 +310,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         return parent::resolveRouteBinding($value, $field);
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

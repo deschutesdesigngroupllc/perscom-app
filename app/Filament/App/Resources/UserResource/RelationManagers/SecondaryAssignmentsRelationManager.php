@@ -8,17 +8,23 @@ use App\Filament\App\Resources\AssignmentRecordResource;
 use App\Models\AssignmentRecord;
 use App\Models\Enums\AssignmentRecordType;
 use App\Models\User;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Support\Colors\Color;
-use Filament\Tables;
-use Filament\Tables\Actions\Action;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class SecondaryAssignmentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'secondary_assignment_records';
 
-    protected static ?string $icon = 'heroicon-o-calendar-days';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-calendar-days';
 
     protected static ?string $title = 'Training Records';
 
@@ -29,27 +35,27 @@ class SecondaryAssignmentsRelationManager extends RelationManager
             ->description('The user\'s secondary assignments.')
             ->recordTitleAttribute('type')
             ->columns([
-                Tables\Columns\TextColumn::make('position.name')
+                TextColumn::make('position.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('specialty.name')
+                TextColumn::make('specialty.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('unit.name')
+                TextColumn::make('unit.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('status.name')
+                TextColumn::make('status.name')
                     ->badge()
-                    ->color(fn (?AssignmentRecord $record): array => Color::hex($record->status->color ?? '#2563eb'))
+                    ->color(fn (?AssignmentRecord $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))
                     ->sortable(),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->emptyStateHeading('No secondary assignments found')

@@ -8,7 +8,7 @@ function Plan({ name, price, description, href, features, featured = false }) {
   return (
     <section
       className={clsx('flex flex-col rounded-3xl px-6 sm:px-8', {
-        'order-first bg-blue-600 py-8 lg:order-none': featured,
+        'order-first bg-blue-600 py-8 lg:order-0': featured,
         'lg:py-8': !featured
       })}
     >
@@ -80,7 +80,7 @@ export function Pricing() {
               <svg
                 aria-hidden='true'
                 viewBox='0 0 281 40'
-                className='absolute left-0 top-1/2 h-[1em] w-full fill-blue-400'
+                className='absolute top-1/2 left-0 h-[1em] w-full fill-blue-400'
                 preserveAspectRatio='none'
               >
                 <path

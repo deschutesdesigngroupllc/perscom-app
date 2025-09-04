@@ -7,7 +7,7 @@ function PrivacyPolicy() {
   return (
     <>
       <Header />
-      <Container className='prose pb-8 pt-4 text-sm sm:text-base lg:pt-16'>
+      <Container className='prose pt-4 pb-8 text-sm sm:text-base lg:pt-16'>
         <h1 className='text-xl sm:text-2xl lg:text-3xl'>PERSCOM Privacy Policy </h1>
         <p>
           Your privacy is important to us. It is PERSCOM's policy to respect your privacy and comply with any applicable law and regulation

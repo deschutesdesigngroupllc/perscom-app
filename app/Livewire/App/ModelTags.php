@@ -6,6 +6,8 @@ namespace App\Livewire\App;
 
 use App\Models\Enums\ModelTagType;
 use App\Models\ModelTag;
+use Filament\Actions\Concerns\InteractsWithActions;
+use Filament\Actions\Contracts\HasActions;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
 use Filament\Tables\Columns\Layout\Split;
@@ -18,8 +20,9 @@ use Filament\Tables\Table;
 use Illuminate\Contracts\View\View;
 use Livewire\Component;
 
-class ModelTags extends Component implements HasForms, HasTable
+class ModelTags extends Component implements HasActions, HasForms, HasTable
 {
+    use InteractsWithActions;
     use InteractsWithForms;
     use InteractsWithTable;
 

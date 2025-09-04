@@ -11,16 +11,18 @@ use App\Filament\App\Resources\WebhookResource;
 use App\Services\DiscordService;
 use App\Services\TwilioService;
 use App\Settings\IntegrationSettings;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Form;
-use Filament\Forms\Get;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -29,7 +31,7 @@ class Integration extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
 
     protected static ?string $navigationLabel = 'Integrations';
 
@@ -46,14 +48,14 @@ class Integration extends SettingsPage
             && ! App::isDemo();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Discord')
+                        Tab::make('Discord')
                             ->icon('fab-discord')
                             ->schema([
                                 Toggle::make('discord_settings.discord_enabled')
@@ -71,7 +73,7 @@ class Integration extends SettingsPage
                                     ->preload()
                                     ->live(onBlur: true)
                                     ->label('Server')
-                                    ->options(fn () => collect(DiscordService::getGuilds())->mapWithKeys(fn ($data) => [data_get($data, 'id') => data_get($data, 'name')]))
+                                    ->options(fn () => collect(DiscordService::getGuilds())->mapWithKeys(fn ($data): array => [data_get($data, 'id') => data_get($data, 'name')]))
                                     ->helperText(fn (): string => 'Use the button to the right to add the PERSCOM bot to your community Discord server to send automated notifications for everyone to see.'),
                                 Select::make('discord_settings.discord_channel')
                                     ->visible(fn (Get $get): bool => $get('discord_settings.discord_enabled'))
@@ -87,11 +89,11 @@ class Integration extends SettingsPage
 
                                         return collect(DiscordService::getChannels($guildId))
                                             ->filter(fn ($data): bool => (string) data_get($data, 'type') === '0')
-                                            ->mapWithKeys(fn ($data) => [data_get($data, 'id') => data_get($data, 'name')]);
+                                            ->mapWithKeys(fn ($data): array => [data_get($data, 'id') => data_get($data, 'name')]);
                                     })
                                     ->helperText('Select the channel the notifications will be posted to.'),
                             ]),
-                        Tabs\Tab::make('Single Sign-On (SSO)')
+                        Tab::make('Single Sign-On (SSO)')
                             ->icon('heroicon-o-key')
                             ->schema([
                                 TextInput::make('single_sign_on_key')
@@ -111,7 +113,7 @@ class Integration extends SettingsPage
                                             $this->fillForm();
                                         })),
                             ]),
-                        Tabs\Tab::make('SMS')
+                        Tab::make('SMS')
                             ->icon('heroicon-o-phone')
                             ->schema([
                                 Toggle::make('sms_settings.sms_enabled')
@@ -138,15 +140,15 @@ class Integration extends SettingsPage
     protected function getHeaderActions(): array
     {
         return [
-            \Filament\Actions\Action::make('API Keys')
+            Action::make('API Keys')
                 ->label('API Keys')
                 ->color('gray')
                 ->url(PassportTokenResource::getUrl()),
-            \Filament\Actions\Action::make('OAuth 2.0 Clients')
+            Action::make('OAuth 2.0 Clients')
                 ->label('OAuth 2.0 Clients')
                 ->color('gray')
                 ->url(PassportClientResource::getUrl()),
-            \Filament\Actions\Action::make('Webhooks')
+            Action::make('Webhooks')
                 ->label('Webhooks')
                 ->color('gray')
                 ->url(WebhookResource::getUrl()),

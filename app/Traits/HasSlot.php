@@ -19,9 +19,6 @@ trait HasSlot
         $query->whereBelongsTo($slot);
     }
 
-    /**
-     * @return BelongsTo<Slot, $this>
-     */
     public function slot(): BelongsTo
     {
         return $this->belongsTo(Slot::class);

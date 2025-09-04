@@ -15,17 +15,11 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
  */
 trait HasQualificationRecords
 {
-    /**
-     * @return HasMany<QualificationRecord, $this>
-     */
     public function qualification_records(): HasMany
     {
         return $this->hasMany(QualificationRecord::class);
     }
 
-    /**
-     * @return HasManyThrough<Qualification, QualificationRecord, $this>
-     */
     public function qualifications(): HasManyThrough
     {
         return $this->hasManyThrough(Qualification::class, QualificationRecord::class, 'user_id', 'id', 'id', 'qualification_id')

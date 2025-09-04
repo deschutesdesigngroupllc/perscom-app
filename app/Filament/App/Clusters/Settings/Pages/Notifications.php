@@ -7,16 +7,19 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 use App\Filament\App\Clusters\Settings;
 use App\Forms\Components\ModelNotification;
 use App\Settings\NotificationSettings;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Form;
+use BackedEnum;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Illuminate\Support\HtmlString;
+use UnitEnum;
 
 class Notifications extends SettingsPage
 {
-    protected static ?string $navigationIcon = 'heroicon-o-bell';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-bell';
 
-    protected static ?string $navigationGroup = 'Dashboard';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard';
 
     protected static string $settings = NotificationSettings::class;
 
@@ -24,14 +27,14 @@ class Notifications extends SettingsPage
 
     protected ?string $subheading = 'Manage your default notification settings.';
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Assignment Records')
+                        Tab::make('Assignment Records')
                             ->statePath('assignment_records')
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
@@ -41,7 +44,7 @@ class Notifications extends SettingsPage
                                     statePath: ''
                                 ),
                             ]),
-                        Tabs\Tab::make('Award Records')
+                        Tab::make('Award Records')
                             ->statePath('award_records')
                             ->icon('heroicon-o-trophy')
                             ->schema([
@@ -51,7 +54,7 @@ class Notifications extends SettingsPage
                                     statePath: ''
                                 ),
                             ]),
-                        Tabs\Tab::make('Combat Records')
+                        Tab::make('Combat Records')
                             ->statePath('combat_records')
                             ->icon('heroicon-o-fire')
                             ->schema([
@@ -61,7 +64,7 @@ class Notifications extends SettingsPage
                                     statePath: ''
                                 ),
                             ]),
-                        Tabs\Tab::make('Qualification Records')
+                        Tab::make('Qualification Records')
                             ->statePath('qualification_records')
                             ->icon('heroicon-o-star')
                             ->schema([
@@ -71,7 +74,7 @@ class Notifications extends SettingsPage
                                     statePath: ''
                                 ),
                             ]),
-                        Tabs\Tab::make('Rank Records')
+                        Tab::make('Rank Records')
                             ->statePath('rank_records')
                             ->icon('heroicon-o-chevron-double-up')
                             ->schema([
@@ -81,7 +84,7 @@ class Notifications extends SettingsPage
                                     statePath: ''
                                 ),
                             ]),
-                        Tabs\Tab::make('Service Records')
+                        Tab::make('Service Records')
                             ->statePath('service_records')
                             ->icon('heroicon-o-clipboard-document-list')
                             ->schema([
@@ -91,7 +94,7 @@ class Notifications extends SettingsPage
                                     statePath: ''
                                 ),
                             ]),
-                        Tabs\Tab::make('Training Records')
+                        Tab::make('Training Records')
                             ->statePath('training_records')
                             ->icon('heroicon-o-academic-cap')
                             ->schema([

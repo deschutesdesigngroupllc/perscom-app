@@ -10,9 +10,11 @@ use App\Traits\HasAuthor;
 use App\Traits\HasResourceLabel;
 use Eloquent;
 use Filament\Support\Contracts\HasLabel;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -20,24 +22,24 @@ use Illuminate\Database\Eloquent\Relations\MorphTo;
  * @property string|null $model_type
  * @property int|null $model_id
  * @property string $comment
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read User|null $author
  * @property-read Model|Eloquent|null $commentable
  * @property-read string $label
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment author(\App\Models\User $user)
+ * @method static Builder<static>|Comment author(\App\Models\User $user)
  * @method static \Database\Factories\CommentFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereComment($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereModelId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereModelType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Comment whereUpdatedAt($value)
+ * @method static Builder<static>|Comment newModelQuery()
+ * @method static Builder<static>|Comment newQuery()
+ * @method static Builder<static>|Comment query()
+ * @method static Builder<static>|Comment whereAuthorId($value)
+ * @method static Builder<static>|Comment whereComment($value)
+ * @method static Builder<static>|Comment whereCreatedAt($value)
+ * @method static Builder<static>|Comment whereId($value)
+ * @method static Builder<static>|Comment whereModelId($value)
+ * @method static Builder<static>|Comment whereModelType($value)
+ * @method static Builder<static>|Comment whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

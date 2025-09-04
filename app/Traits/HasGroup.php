@@ -19,9 +19,6 @@ trait HasGroup
         $query->whereBelongsTo($group);
     }
 
-    /**
-     * @return BelongsTo<Group, $this>
-     */
     public function group(): BelongsTo
     {
         return $this->belongsTo(Group::class);

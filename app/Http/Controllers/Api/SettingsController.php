@@ -26,7 +26,7 @@ class SettingsController extends Controller
     {
         /** @var Collection $settings */
         $settings = $entities->getCollection()->transform(fn (Settings $setting) => $setting->forceFill([
-            'payload' => json_decode($setting->payload),
+            'payload' => json_decode((string) $setting->payload),
         ]));
 
         $paginator = new LengthAwarePaginator($settings, $settings->count(), $this->paginator->resolvePaginationLimit($request));

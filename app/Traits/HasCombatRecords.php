@@ -13,9 +13,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 trait HasCombatRecords
 {
-    /**
-     * @return HasMany<CombatRecord, $this>
-     */
     public function combat_records(): HasMany
     {
         return $this->hasMany(CombatRecord::class);

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\AttachmentResource\Pages;
 
 use App\Filament\App\Resources\AttachmentResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListAttachments extends ListRecords
@@ -17,7 +17,7 @@ class ListAttachments extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

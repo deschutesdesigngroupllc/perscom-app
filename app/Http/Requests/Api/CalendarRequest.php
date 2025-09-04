@@ -8,9 +8,6 @@ use Orion\Http\Requests\Request;
 
 class CalendarRequest extends Request
 {
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return [
@@ -22,9 +19,6 @@ class CalendarRequest extends Request
         ];
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         return [

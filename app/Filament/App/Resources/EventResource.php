@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\EventResource\Pages;
+use App\Filament\App\Resources\EventResource\Pages\CreateEvent;
+use App\Filament\App\Resources\EventResource\Pages\EditEvent;
+use App\Filament\App\Resources\EventResource\Pages\ListEvents;
+use App\Filament\App\Resources\EventResource\Pages\ViewEvent;
 use App\Filament\App\Resources\EventResource\RelationManagers\AttachmentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\CommentsRelationManager;
 use App\Filament\App\Resources\EventResource\RelationManagers\RegistrationsRelationManager;
@@ -17,62 +20,83 @@ use App\Models\Event;
 use App\Services\ScheduleService;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists\Components\Livewire;
-use Filament\Infolists\Components\Tabs;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
+use Filament\Schemas\Components\Livewire;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
-use Filament\Tables;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\SelectFilter;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class EventResource extends BaseResource
 {
     protected static ?string $model = Event::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-calendar-days';
 
-    protected static ?string $navigationGroup = 'Calendar';
+    protected static string|UnitEnum|null $navigationGroup = 'Calendar';
 
     protected static ?int $navigationSort = 1;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Event')
+                        Tab::make('Event')
                             ->icon('heroicon-o-calendar-days')
                             ->columns()
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the event.')
                                     ->required()
                                     ->maxLength(255)
                                     ->columnSpanFull(),
-                                Forms\Components\Select::make('calendar_id')
+                                Select::make('calendar_id')
                                     ->preload()
                                     ->helperText('The calendar the event belongs to.')
                                     ->required()
                                     ->relationship(name: 'calendar', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => CalendarResource::form($form)),
-                                Forms\Components\Select::make('author_id')
+                                    ->createOptionForm(fn ($form): Schema => CalendarResource::form($form)),
+                                Select::make('author_id')
                                     ->default(Auth::user()->getAuthIdentifier())
                                     ->preload()
                                     ->helperText('The author of the event.')
                                     ->required()
                                     ->relationship(name: 'author', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
-                                Forms\Components\DateTimePicker::make('starts')
+                                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
+                                DateTimePicker::make('starts')
                                     ->helperText('The date and time the event starts.')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
@@ -83,7 +107,7 @@ class EventResource extends BaseResource
                                     ->default(now()->addHour()->startOfHour())
                                     ->live(onBlur: true)
                                     ->required()
-                                    ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, $state, $component): void {
+                                    ->afterStateUpdated(function (Set $set, Get $get, $state, $component): void {
                                         $date = Carbon::parse($state)
                                             ->shiftTimezone($component->getTimezone())
                                             ->setTimezone(config('app.timezone'));
@@ -99,8 +123,8 @@ class EventResource extends BaseResource
                                             $set('ends', $start->copy()->addHour()->toDateTimeString());
                                         }
                                     })
-                                    ->time(fn (Forms\Get $get): bool => ! $get('all_day')),
-                                Forms\Components\DateTimePicker::make('ends')
+                                    ->time(fn (Get $get): bool => ! $get('all_day')),
+                                DateTimePicker::make('ends')
                                     ->helperText('The date and time the event ends.')
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
@@ -112,7 +136,7 @@ class EventResource extends BaseResource
                                     ->afterOrEqual('starts')
                                     ->live(onBlur: true)
                                     ->required()
-                                    ->afterStateUpdated(function (Forms\Set $set, Forms\Get $get, $state, $component): void {
+                                    ->afterStateUpdated(function (Set $set, Get $get, $state, $component): void {
                                         $start = Carbon::parse($get('starts'))
                                             ->shiftTimezone($component->getTimezone())
                                             ->setTimezone(config('app.timezone'));
@@ -123,23 +147,24 @@ class EventResource extends BaseResource
 
                                         $set('schedule.duration', $start->diffInHours($end));
                                     })
-                                    ->time(fn (Forms\Get $get): bool => ! $get('all_day')),
-                                Forms\Components\Toggle::make('all_day')
+                                    ->time(fn (Get $get): bool => ! $get('all_day')),
+                                Toggle::make('all_day')
                                     ->helperText('Check if the event does not have a start and end time.')
                                     ->columnSpanFull()
                                     ->live()
                                     ->required(),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('The description of the event.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\Textarea::make('location')
+                                Textarea::make('location')
                                     ->helperText('The location of the event.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\TextInput::make('url')
+                                TextInput::make('url')
                                     ->label('URL')
                                     ->helperText('An optional URL for the event.')
                                     ->url()
@@ -147,25 +172,26 @@ class EventResource extends BaseResource
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Details')
+                        Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
-                                Forms\Components\RichEditor::make('content')
+                                RichEditor::make('content')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->hiddenLabel()
                                     ->helperText('The informational content of the event.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Image')
+                        Tab::make('Image')
                             ->visibleOn('edit')
                             ->icon('heroicon-o-photo')
                             ->schema([
-                                Forms\Components\Section::make()
+                                Section::make()
                                     ->hiddenLabel()
                                     ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
                                     ->schema([
-                                        Forms\Components\FileUpload::make('path')
+                                        FileUpload::make('path')
                                             ->hiddenLabel()
                                             ->image()
                                             ->imageEditor()
@@ -177,35 +203,35 @@ class EventResource extends BaseResource
                                             ->helperText('Add an optional image for the event.'),
                                     ]),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Notifications')
+                        Tab::make('Notifications')
                             ->icon('heroicon-o-bell')
                             ->schema([
-                                Forms\Components\Toggle::make('notifications_enabled')
+                                Toggle::make('notifications_enabled')
                                     ->live()
                                     ->label('Enabled')
                                     ->validationAttribute('enabled notifications')
                                     ->default(false)
                                     ->helperText('Send reminder notifications to all registered users.'),
-                                Forms\Components\Select::make('notifications_interval')
-                                    ->visible(fn (Forms\Get $get): mixed => $get('notifications_enabled'))
+                                Select::make('notifications_interval')
+                                    ->visible(fn (Get $get): mixed => $get('notifications_enabled'))
                                     ->label('Alert')
                                     ->helperText('When should the notifications be sent.')
                                     ->requiredIf('notifications_enabled', true)
                                     ->multiple()
                                     ->options(NotificationInterval::class),
-                                Forms\Components\CheckboxList::make('notifications_channels')
-                                    ->visible(fn (Forms\Get $get): mixed => $get('notifications_enabled'))
+                                CheckboxList::make('notifications_channels')
+                                    ->visible(fn (Get $get): mixed => $get('notifications_enabled'))
                                     ->label('Channels')
                                     ->requiredIf('notifications_enabled', true)
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])->toArray())
-                                    ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])->toArray()),
+                                    ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->toArray())
+                                    ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->toArray()),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Schedule')
+                        Tab::make('Schedule')
                             ->icon('heroicon-o-arrow-path')
                             ->columns()
-                            ->schema(fn (Forms\Get $get): array => [
-                                Forms\Components\Toggle::make('repeats')
+                            ->schema(fn (Get $get): array => [
+                                Toggle::make('repeats')
                                     ->helperText('Check if the event repeats.')
                                     ->columnSpanFull()
                                     ->default(false)
@@ -215,16 +241,16 @@ class EventResource extends BaseResource
                                     allDay: $get('all_day') ?? false
                                 )->visible($get('repeats') ?? false),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Registration')
+                        Tab::make('Registration')
                             ->icon('heroicon-o-user-plus')
                             ->schema([
-                                Forms\Components\Toggle::make('registration_enabled')
+                                Toggle::make('registration_enabled')
                                     ->live()
                                     ->label('Enabled')
                                     ->helperText('Whether registration is enabled for the event.')
                                     ->default(false),
-                                Forms\Components\DateTimePicker::make('registration_deadline')
-                                    ->visible(fn (Forms\Get $get): mixed => $get('registration_enabled'))
+                                DateTimePicker::make('registration_deadline')
+                                    ->visible(fn (Get $get): mixed => $get('registration_enabled'))
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
                                         $settings = app(OrganizationSettings::class);
@@ -239,27 +265,27 @@ class EventResource extends BaseResource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Event')
+                        Tab::make('Event')
                             ->badge(fn (?Event $record): ?string => $record->all_day ? 'All Day' : null)
                             ->badgeColor('success')
                             ->icon('heroicon-o-calendar-days')
                             ->schema([
                                 TextEntry::make('name')
                                     ->badge()
-                                    ->color(fn (?Event $record): array => Color::hex($record->calendar?->color)),
+                                    ->color(fn (?Event $record): array => Color::generateV3Palette($record->calendar?->color)),
                                 TextEntry::make('description')
                                     ->hidden(fn ($state): bool => is_null($state))
                                     ->hiddenLabel()
                                     ->html(),
                                 TextEntry::make('starts')
-                                    ->visible(fn (?Event $record, Forms\Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
+                                    ->visible(fn (?Event $record, Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
                                     ->icon(fn (?Event $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null)
                                     ->suffix(fn (?Event $record) => filled($record->length) && $record->length->total('seconds') > 0 ? " ({$record->length->forHumans(['parts' => 1])})" : null)
                                     ->timezone(UserSettingsService::get('timezone', function () {
@@ -267,23 +293,15 @@ class EventResource extends BaseResource
                                         $settings = app(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->getStateUsing(fn (?Event $record, $component): string => match ($record->all_day) {
-                                        true => Carbon::parse($record->starts)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
-                                        false => Carbon::parse($record->starts)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
-                                    }),
+                                    })),
                                 TextEntry::make('ends')
-                                    ->visible(fn (?Event $record, Forms\Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
+                                    ->visible(fn (?Event $record, Get $get): bool => ! is_null($record->ends) && ! $record->repeats)
                                     ->timezone(UserSettingsService::get('timezone', function () {
                                         /** @var OrganizationSettings $settings */
                                         $settings = app(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->getStateUsing(fn (?Event $record, TextEntry $component): string => match ($record->all_day) {
-                                        true => Carbon::parse($record->ends)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
-                                        false => Carbon::parse($record->ends)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
-                                    }),
+                                    })),
                                 TextEntry::make('next_occurrence')
                                     ->label('Next Occurrence')
                                     ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->next_occurrence))
@@ -293,11 +311,7 @@ class EventResource extends BaseResource
                                         $settings = app(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->getStateUsing(fn (?Event $record, TextEntry $component): string => match ($record->all_day) {
-                                        true => Carbon::parse($record->schedule->next_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
-                                        false => Carbon::parse($record->schedule->next_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
-                                    }),
+                                    })),
                                 TextEntry::make('last_occurrence')
                                     ->label('Last Occurrence')
                                     ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule) && filled($record->schedule->last_occurrence))
@@ -306,17 +320,13 @@ class EventResource extends BaseResource
                                         $settings = app(OrganizationSettings::class);
 
                                         return $settings->timezone ?? config('app.timezone');
-                                    }))
-                                    ->getStateUsing(fn (?Event $record, TextEntry $component): string => match ($record->all_day) {
-                                        true => Carbon::parse($record->schedule->last_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateDisplayFormat),
-                                        false => Carbon::parse($record->schedule->last_occurrence)->setTimezone($component->getTimezone())->translatedFormat(Infolist::$defaultDateTimeDisplayFormat)
-                                    }),
+                                    })),
                                 TextEntry::make('rule_readable')
                                     ->visible(fn (?Event $record): bool => $record->repeats && filled($record->schedule))
                                     ->label('Schedule')
                                     ->getStateUsing(fn (?Event $record): ?string => ScheduleService::getSchedulePattern($record->schedule, $record->all_day)),
                             ]),
-                        Tabs\Tab::make('Details')
+                        Tab::make('Details')
                             ->icon('heroicon-o-information-circle')
                             ->schema([
                                 TextEntry::make('content')
@@ -330,7 +340,7 @@ class EventResource extends BaseResource
                                     ->label('URL')
                                     ->url(fn (?Event $record) => $record->url),
                             ]),
-                        Tabs\Tab::make('Registration')
+                        Tab::make('Registration')
                             ->badge(fn (?Event $record) => $record->registration_enabled ? $record->registrations()->whereStatus(EventRegistrationStatus::Going)->count() : null)
                             ->badgeColor('info')
                             ->icon('heroicon-o-user-plus')
@@ -348,7 +358,7 @@ class EventResource extends BaseResource
                                     ->dateTime(),
                                 Livewire::make(RegistrationsRelationManager::class, fn (?Event $record): array => [
                                     'ownerRecord' => $record,
-                                    'pageClass' => Pages\ViewEvent::class,
+                                    'pageClass' => ViewEvent::class,
                                 ])->key('event-registrations'),
                             ]),
                     ]),
@@ -359,52 +369,52 @@ class EventResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable()
                     ->icon(fn (Event $record): ?string => $record->repeats ? 'heroicon-o-arrow-path' : null),
-                Tables\Columns\TextColumn::make('calendar.name')
+                TextColumn::make('calendar.name')
                     ->badge()
-                    ->color(fn (Event $record): array => Color::hex($record->calendar?->color)),
-                Tables\Columns\TextColumn::make('author.name')
+                    ->color(fn (Event $record): array => Color::generateV3Palette($record->calendar?->color)),
+                TextColumn::make('author.name')
                     ->label('Organizer')
                     ->sortable(),
-                Tables\Columns\IconColumn::make('all_day')
+                IconColumn::make('all_day')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->recordClasses(fn (Event $record): ?string => match ($record->has_passed) {
-                true => '!border-s-2 !border-s-red-600',
+                true => 'border-s-2! border-s-red-600!',
                 default => null,
             })
             ->groups(['all_day', 'repeats'])
             ->filters([
-                Tables\Filters\TernaryFilter::make('all_day'),
-                Tables\Filters\SelectFilter::make('calendar')
+                TernaryFilter::make('all_day'),
+                SelectFilter::make('calendar')
                     ->preload()
                     ->multiple()
                     ->relationship('calendar', 'name'),
-                Tables\Filters\SelectFilter::make('author')
+                SelectFilter::make('author')
                     ->label('Organizer')
                     ->preload()
                     ->multiple()
                     ->relationship('author', 'name'),
-                Tables\Filters\TernaryFilter::make('repeats'),
+                TernaryFilter::make('repeats'),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(EventExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -420,10 +430,10 @@ class EventResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListEvents::route('/'),
-            'create' => Pages\CreateEvent::route('/create'),
-            'edit' => Pages\EditEvent::route('/{record}/edit'),
-            'view' => Pages\ViewEvent::route('/{record}'),
+            'index' => ListEvents::route('/'),
+            'create' => CreateEvent::route('/create'),
+            'edit' => EditEvent::route('/{record}/edit'),
+            'view' => ViewEvent::route('/{record}'),
         ];
     }
 

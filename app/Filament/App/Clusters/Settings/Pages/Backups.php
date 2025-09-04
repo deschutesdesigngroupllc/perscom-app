@@ -7,23 +7,24 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 use App\Filament\App\Clusters\Settings;
 use App\Jobs\Tenant\BackupDatabase;
 use App\Models\Backup;
-use Filament\Actions;
+use BackedEnum;
+use Filament\Actions\Action;
 use Filament\Pages\Page;
-use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Concerns\InteractsWithTable;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class Backups extends Page implements HasTable
 {
     use InteractsWithTable;
 
-    protected static ?string $navigationIcon = 'heroicon-o-circle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-circle-stack';
 
-    protected static ?string $navigationGroup = 'Dashboard';
+    protected static string|UnitEnum|null $navigationGroup = 'Dashboard';
 
-    protected static string $view = 'filament.app.clusters.settings.pages.backups';
+    protected string $view = 'filament.app.clusters.settings.pages.backups';
 
     protected static ?string $cluster = Settings::class;
 
@@ -46,7 +47,7 @@ class Backups extends Page implements HasTable
                     ->toggleable(false)
                     ->sortable(),
             ])
-            ->actions([
+            ->recordActions([
                 Action::make('download')
                     ->icon('heroicon-o-cloud-arrow-down')
                     ->openUrlInNewTab()
@@ -57,9 +58,9 @@ class Backups extends Page implements HasTable
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('backup_now')
+            Action::make('backup_now')
                 ->successNotificationTitle('The backup has been requested. Please check back later for the latest copy.')
-                ->action(function (Actions\Action $action): void {
+                ->action(function (Action $action): void {
                     BackupDatabase::dispatch(
                         tenantKey: tenant()->getKey(),
                     );

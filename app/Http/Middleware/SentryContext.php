@@ -11,9 +11,10 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Context;
 use Illuminate\Support\Facades\Route;
-use Sentry;
 use Sentry\State\Scope;
 use Symfony\Component\HttpFoundation\Response;
+
+use function Sentry\configureScope;
 
 class SentryContext
 {
@@ -29,13 +30,13 @@ class SentryContext
                 default => 'web',
             };
 
-            Sentry\configureScope(function (Scope $scope) use ($request): void {
+            configureScope(function (Scope $scope) use ($request): void {
                 $scope->setTag('request.route', (string) Route::currentRouteName());
                 $scope->setTag('request.method', $request->method());
                 $scope->setTag('request.url', $request->url());
             });
 
-            Sentry\configureScope(function (Scope $scope): void {
+            configureScope(function (Scope $scope): void {
                 $requestId = Context::get('request_id');
                 $traceId = Context::get('trace_id');
 
@@ -49,7 +50,7 @@ class SentryContext
             });
 
             if (Auth::guard($guard)->check()) {
-                Sentry\configureScope(function (Scope $scope) use ($guard): void {
+                configureScope(function (Scope $scope) use ($guard): void {
                     $scope->setUser([
                         'id' => Auth::guard($guard)->user()->getAuthIdentifier(),
                         'name' => Auth::guard($guard)->user()->name,
@@ -59,7 +60,7 @@ class SentryContext
             }
 
             if (tenant()) {
-                Sentry\configureScope(function (Scope $scope): void {
+                configureScope(function (Scope $scope): void {
                     $scope->setTag('tenant.id', (string) tenant()->getTenantKey());
                     $scope->setTag('tenant.name', (string) tenant('name'));
                     $scope->setTag('tenant.email', (string) tenant('email'));
@@ -74,19 +75,19 @@ class SentryContext
             }
 
             if ($request->routeIs('api.*')) {
-                Sentry\configureScope(function (Scope $scope): void {
+                configureScope(function (Scope $scope): void {
                     $scope->setTag('api', 'true');
                 });
             }
 
             if ($request->header('X-Perscom-Widget') === 'true') {
-                Sentry\configureScope(function (Scope $scope): void {
+                configureScope(function (Scope $scope): void {
                     $scope->setTag('widget', 'true');
                 });
             }
 
             if ($request->header('X-Perscom-Sdk') === 'true') {
-                Sentry\configureScope(function (Scope $scope) use ($request): void {
+                configureScope(function (Scope $scope) use ($request): void {
                     $scope->setTag('sdk', 'true');
 
                     $scope->setContext('SDK', [

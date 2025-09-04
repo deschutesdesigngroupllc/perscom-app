@@ -10,9 +10,6 @@ use Orion\Http\Requests\Request;
 
 class UserRequest extends Request
 {
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return array_merge([
@@ -39,9 +36,6 @@ class UserRequest extends Request
         ], $this->getFieldRules());
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         return array_merge([
@@ -50,9 +44,6 @@ class UserRequest extends Request
         ], $this->getFieldRules());
     }
 
-    /**
-     * @return string[]
-     */
     protected function getFieldRules(): array
     {
         $user = $this->route('user');

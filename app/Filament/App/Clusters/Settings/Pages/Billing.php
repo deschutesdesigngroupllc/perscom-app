@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Clusters\Settings\Pages;
 
 use App\Filament\App\Clusters\Settings;
+use BackedEnum;
 use Filament\Pages\Page;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Model;
@@ -12,9 +13,9 @@ use Illuminate\Support\Facades\Gate;
 
 class Billing extends Page
 {
-    protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-currency-dollar';
 
-    protected static string $view = 'filament.app.clusters.settings.pages.billing';
+    protected string $view = 'filament.app.clusters.settings.pages.billing';
 
     protected static ?int $navigationSort = 4;
 

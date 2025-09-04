@@ -4,41 +4,50 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\StatusResource\Pages;
+use App\Filament\App\Resources\StatusResource\Pages\CreateStatus;
+use App\Filament\App\Resources\StatusResource\Pages\EditStatus;
+use App\Filament\App\Resources\StatusResource\Pages\ListStatuses;
 use App\Filament\Exports\StatusExporter;
 use App\Models\Status;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\ColorPicker;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Schema;
 use Filament\Support\Colors\Color;
-use Filament\Tables;
+use Filament\Tables\Columns\ColorColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
+use UnitEnum;
 
 class StatusResource extends BaseResource
 {
     protected static ?string $model = Status::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-scale';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-scale';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Status Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->helperText('The name of the status.')
-                            ->required()
-                            ->maxLength(255)
-                            ->columnSpanFull(),
-                        Forms\Components\ColorPicker::make('color')
-                            ->helperText('The color of the status.')
-                            ->required(),
-                    ]),
+        return $schema
+            ->columns(1)
+            ->components([
+                TextInput::make('name')
+                    ->helperText('The name of the status.')
+                    ->required()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                ColorPicker::make('color')
+                    ->helperText('The color of the status.')
+                    ->required(),
             ]);
     }
 
@@ -46,31 +55,31 @@ class StatusResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->badge()
-                    ->color(fn (?Status $record): array => Color::hex($record->color))
+                    ->color(fn (?Status $record): array => Color::generateV3Palette($record->color))
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ColorColumn::make('color')
+                ColorColumn::make('color')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(StatusExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('order')
@@ -80,9 +89,9 @@ class StatusResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListStatuses::route('/'),
-            'create' => Pages\CreateStatus::route('/create'),
-            'edit' => Pages\EditStatus::route('/{record}/edit'),
+            'index' => ListStatuses::route('/'),
+            'create' => CreateStatus::route('/create'),
+            'edit' => EditStatus::route('/{record}/edit'),
         ];
     }
 

@@ -4,23 +4,36 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\NewsfeedResource\Pages;
+use App\Filament\App\Resources\NewsfeedResource\Pages\CreateNewsfeed;
+use App\Filament\App\Resources\NewsfeedResource\Pages\EditNewsfeed;
+use App\Filament\App\Resources\NewsfeedResource\Pages\ListNewsfeeds;
+use App\Filament\App\Resources\NewsfeedResource\Pages\ViewNewsfeed;
 use App\Models\Newsfeed;
 use App\Models\User;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Support\Enums\TextSize;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class NewsfeedResource extends BaseResource
 {
     protected static ?string $model = Newsfeed::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-newspaper';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-newspaper';
 
     protected static ?string $modelLabel = 'item';
 
@@ -28,32 +41,33 @@ class NewsfeedResource extends BaseResource
 
     protected static ?string $navigationLabel = 'Newsfeed';
 
-    protected static ?string $navigationGroup = 'Communications';
+    protected static string|UnitEnum|null $navigationGroup = 'Communications';
 
     protected static ?string $slug = 'newsfeed';
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\TextInput::make('headline')
+        return $schema
+            ->components([
+                TextInput::make('headline')
                     ->columnSpanFull()
                     ->helperText('The newsfeed item\'s headline.')
                     ->required()
                     ->maxValue(255),
-                Forms\Components\RichEditor::make('text')
+                RichEditor::make('text')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->columnSpanFull()
                     ->helperText('The newsfeed item\'s content.')
                     ->required()
                     ->maxLength(65535),
-                Forms\Components\DateTimePicker::make('created_at')
+                DateTimePicker::make('created_at')
                     ->helperText('The date of the newsfeed item.')
                     ->default(now())
                     ->required(),
-                Forms\Components\TextInput::make('causer_type')
+                TextInput::make('causer_type')
                     ->default(User::class)
                     ->hidden(),
-                Forms\Components\Select::make('causer_id')
+                Select::make('causer_id')
                     ->label('Author')
                     ->required()
                     ->default(Auth::user()->getAuthIdentifier())
@@ -61,7 +75,7 @@ class NewsfeedResource extends BaseResource
                     ->preload()
                     ->options(User::query()->orderBy('name')->pluck('name', 'id')->all())
                     ->searchable()
-                    ->createOptionForm(fn ($form): Form => UserResource::form($form)),
+                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
             ]);
     }
 
@@ -69,46 +83,46 @@ class NewsfeedResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('headline'),
-                Tables\Columns\TextColumn::make('text')
+                TextColumn::make('headline'),
+                TextColumn::make('text')
                     ->html()
                     ->wrap()
                     ->formatStateUsing(fn ($state) => Str::limit($state)),
-                Tables\Columns\TextColumn::make('causer.name')
+                TextColumn::make('causer.name')
                     ->label('Author'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist
+        return $schema
             ->columns(1)
-            ->schema([
+            ->components([
                 TextEntry::make('headline')
                     ->hiddenLabel()
-                    ->size(TextEntry\TextEntrySize::Large)
+                    ->size(TextSize::Large)
                     ->extraAttributes([
                         'class' => 'font-bold',
                     ]),
                 TextEntry::make('created_at')
                     ->hiddenLabel()
-                    ->size(TextEntry\TextEntrySize::Small)
+                    ->size(TextSize::Small)
                     ->extraAttributes([
-                        'class' => '-mt-6 !text-gray-700',
+                        'class' => '-mt-6 text-gray-700!',
                     ]),
                 TextEntry::make('text')
                     ->hiddenLabel()
@@ -119,10 +133,10 @@ class NewsfeedResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListNewsfeeds::route('/'),
-            'create' => Pages\CreateNewsfeed::route('/create'),
-            'view' => Pages\ViewNewsfeed::route('/{record}'),
-            'edit' => Pages\EditNewsfeed::route('/{record}/edit'),
+            'index' => ListNewsfeeds::route('/'),
+            'create' => CreateNewsfeed::route('/create'),
+            'view' => ViewNewsfeed::route('/{record}'),
+            'edit' => EditNewsfeed::route('/{record}/edit'),
         ];
     }
 }

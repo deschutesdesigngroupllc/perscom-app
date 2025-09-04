@@ -14,7 +14,7 @@ function MobileNavigation() {
     <Popover>
       {({ open, close }) => (
         <>
-          <Popover.Button className='relative z-10 flex h-8 w-8 items-center justify-center [&:not(:focus-visible)]:focus:outline-none'>
+          <Popover.Button className='relative z-10 flex h-8 w-8 items-center justify-center not-focus-visible:focus:outline-none'>
             <span className='sr-only'>Toggle Navigation</span>
             <svg
               aria-hidden='true'

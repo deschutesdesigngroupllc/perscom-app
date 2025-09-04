@@ -145,8 +145,8 @@ return Application::configure(basePath: dirname(__DIR__))
         Integration::handles($exceptions);
 
         $exceptions->context(fn (): array => [
-            'requestId' => Context::get('request_id'),
-            'traceId' => Context::get('trace_id'),
+            'requestId' => context()->get('request_id'),
+            'traceId' => context()->get('trace_id'),
         ]);
 
         $exceptions->shouldRenderJsonWhen(fn (Request $request): bool => $request->routeIs('api.*') || $request->expectsJson());

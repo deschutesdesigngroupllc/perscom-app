@@ -11,61 +11,64 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Carbon\CarbonInterval;
 use Eloquent;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\MorphPivot;
 use Illuminate\Database\Eloquent\Relations\MorphTo;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
  * @property string|null $repeatable_type
  * @property int|null $repeatable_id
- * @property \Illuminate\Support\Carbon $start
+ * @property Carbon $start
  * @property int $duration
  * @property ScheduleFrequency $frequency
  * @property int $interval
  * @property ScheduleEndType|null $end_type
  * @property int|null $count
- * @property \Illuminate\Support\Carbon|null $until
- * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_day
- * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_month
+ * @property Carbon|null $until
+ * @property Collection<array-key, mixed>|null $by_day
+ * @property Collection<array-key, mixed>|null $by_month
  * @property string|null $by_set_position
- * @property \Illuminate\Support\Collection<array-key, mixed>|null $by_month_day
+ * @property Collection<array-key, mixed>|null $by_month_day
  * @property string|null $by_year_day
  * @property string|null $rrule
- * @property \Illuminate\Support\Carbon|null $next_occurrence
- * @property \Illuminate\Support\Carbon|null $last_occurrence
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $next_occurrence
+ * @property Carbon|null $last_occurrence
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read bool $has_passed
  * @property-read CarbonInterval $length
  * @property-read Model|Eloquent|null $repeatable
  *
  * @method static \Database\Factories\ScheduleFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereByDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereByMonth($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereByMonthDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereBySetPosition($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereByYearDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereCount($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereDuration($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereEndType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereFrequency($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereInterval($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereLastOccurrence($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereNextOccurrence($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereRepeatableId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereRepeatableType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereRrule($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereStart($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereUntil($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Schedule whereUpdatedAt($value)
+ * @method static Builder<static>|Schedule newModelQuery()
+ * @method static Builder<static>|Schedule newQuery()
+ * @method static Builder<static>|Schedule query()
+ * @method static Builder<static>|Schedule whereByDay($value)
+ * @method static Builder<static>|Schedule whereByMonth($value)
+ * @method static Builder<static>|Schedule whereByMonthDay($value)
+ * @method static Builder<static>|Schedule whereBySetPosition($value)
+ * @method static Builder<static>|Schedule whereByYearDay($value)
+ * @method static Builder<static>|Schedule whereCount($value)
+ * @method static Builder<static>|Schedule whereCreatedAt($value)
+ * @method static Builder<static>|Schedule whereDuration($value)
+ * @method static Builder<static>|Schedule whereEndType($value)
+ * @method static Builder<static>|Schedule whereFrequency($value)
+ * @method static Builder<static>|Schedule whereId($value)
+ * @method static Builder<static>|Schedule whereInterval($value)
+ * @method static Builder<static>|Schedule whereLastOccurrence($value)
+ * @method static Builder<static>|Schedule whereNextOccurrence($value)
+ * @method static Builder<static>|Schedule whereRepeatableId($value)
+ * @method static Builder<static>|Schedule whereRepeatableType($value)
+ * @method static Builder<static>|Schedule whereRrule($value)
+ * @method static Builder<static>|Schedule whereStart($value)
+ * @method static Builder<static>|Schedule whereUntil($value)
+ * @method static Builder<static>|Schedule whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */
@@ -148,9 +151,6 @@ class Schedule extends MorphPivot
         });
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

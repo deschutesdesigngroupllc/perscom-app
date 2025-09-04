@@ -27,9 +27,12 @@ use App\Traits\HasUser;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
@@ -43,21 +46,21 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int|null $author_id
  * @property AssignmentRecordType|null $type
  * @property string|null $text
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $activities
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, Activity> $activities
  * @property-read int|null $activities_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
+ * @property-read Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read User|null $author
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Comment> $comments
+ * @property-read Collection<int, Comment> $comments
  * @property-read int|null $comments_count
  * @property-read Document|null $document
  * @property-read mixed $document_parsed
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Activity> $logs
+ * @property-read Collection<int, Activity> $logs
  * @property-read int|null $logs_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, ModelNotification> $modelNotifications
+ * @property-read Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read Position|null $position
  * @property-read string|null $relative_url
@@ -68,30 +71,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord author(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord document(\App\Models\Document $document)
+ * @method static Builder<static>|AssignmentRecord author(\App\Models\User $user)
+ * @method static Builder<static>|AssignmentRecord document(\App\Models\Document $document)
  * @method static \Database\Factories\AssignmentRecordFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord position(\App\Models\Position $position)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord specialty(\App\Models\Specialty $specialty)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord status(\App\Models\Status $status)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord unit(\App\Models\Unit $unit)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord user(\App\Models\User $user)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereDocumentId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord wherePositionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereSpecialtyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereStatusId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereText($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereUnitSlotId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|AssignmentRecord whereUserId($value)
+ * @method static Builder<static>|AssignmentRecord newModelQuery()
+ * @method static Builder<static>|AssignmentRecord newQuery()
+ * @method static Builder<static>|AssignmentRecord position(\App\Models\Position $position)
+ * @method static Builder<static>|AssignmentRecord query()
+ * @method static Builder<static>|AssignmentRecord specialty(\App\Models\Specialty $specialty)
+ * @method static Builder<static>|AssignmentRecord status(\App\Models\Status $status)
+ * @method static Builder<static>|AssignmentRecord unit(\App\Models\Unit $unit)
+ * @method static Builder<static>|AssignmentRecord user(\App\Models\User $user)
+ * @method static Builder<static>|AssignmentRecord whereAuthorId($value)
+ * @method static Builder<static>|AssignmentRecord whereCreatedAt($value)
+ * @method static Builder<static>|AssignmentRecord whereDocumentId($value)
+ * @method static Builder<static>|AssignmentRecord whereId($value)
+ * @method static Builder<static>|AssignmentRecord wherePositionId($value)
+ * @method static Builder<static>|AssignmentRecord whereSpecialtyId($value)
+ * @method static Builder<static>|AssignmentRecord whereStatusId($value)
+ * @method static Builder<static>|AssignmentRecord whereText($value)
+ * @method static Builder<static>|AssignmentRecord whereType($value)
+ * @method static Builder<static>|AssignmentRecord whereUnitId($value)
+ * @method static Builder<static>|AssignmentRecord whereUnitSlotId($value)
+ * @method static Builder<static>|AssignmentRecord whereUpdatedAt($value)
+ * @method static Builder<static>|AssignmentRecord whereUserId($value)
  *
  * @mixin \Eloquent
  */
@@ -173,17 +176,11 @@ class AssignmentRecord extends Model implements HasLabel, SendsModelNotification
         return $this->user;
     }
 
-    /**
-     * @return BelongsTo<UnitSlot, $this>
-     */
     public function unit_slot(): BelongsTo
     {
         return $this->belongsTo(UnitSlot::class);
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

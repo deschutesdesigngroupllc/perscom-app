@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
 /**
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TrainingRecordCompetency newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TrainingRecordCompetency newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|TrainingRecordCompetency query()
+ * @method static Builder<static>|TrainingRecordCompetency newModelQuery()
+ * @method static Builder<static>|TrainingRecordCompetency newQuery()
+ * @method static Builder<static>|TrainingRecordCompetency query()
  *
  * @mixin \Eloquent
  */

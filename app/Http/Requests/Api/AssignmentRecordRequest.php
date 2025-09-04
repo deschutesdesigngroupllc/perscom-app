@@ -6,14 +6,10 @@ namespace App\Http\Requests\Api;
 
 use App\Models\Enums\AssignmentRecordType;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 use Orion\Http\Requests\Request;
 
 class AssignmentRecordRequest extends Request
 {
-    /**
-     * @return array<string, string|array<string|Enum>>
-     */
     public function commonRules(): array
     {
         return [
@@ -31,9 +27,6 @@ class AssignmentRecordRequest extends Request
         ];
     }
 
-    /**
-     * @return array<string, string|array<string|Enum>>
-     */
     public function storeRules(): array
     {
         $rules = [];

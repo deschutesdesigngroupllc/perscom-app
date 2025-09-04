@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\CompetencyResource\Pages;
 
 use App\Filament\App\Resources\CompetencyResource;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListCompetencies extends ListRecords
@@ -17,7 +17,7 @@ class ListCompetencies extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 }

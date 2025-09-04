@@ -5,24 +5,25 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\AwardRecordResource\RelationManagers;
 
 use App\Filament\App\Resources\CommentResource;
-use Filament\Forms\Form;
+use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
+use Filament\Schemas\Schema;
 use Filament\Tables\Table;
 
 class CommentsRelationManager extends RelationManager
 {
     protected static string $relationship = 'comments';
 
-    protected static ?string $icon = 'heroicon-o-chat-bubble-left';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-chat-bubble-left';
 
     public function isReadOnly(): bool
     {
         return false;
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return CommentResource::form($form);
+        return CommentResource::form($schema);
     }
 
     public function table(Table $table): Table

@@ -20,9 +20,6 @@ trait HasDocument
         $query->whereBelongsTo($document);
     }
 
-    /**
-     * @return BelongsTo<Document, $this>
-     */
     public function document(): BelongsTo
     {
         return $this->belongsTo(Document::class);
@@ -33,7 +30,7 @@ trait HasDocument
         return Attribute::make(
             get: function () {
                 $resource = clone $this;
-                $user = in_array(HasUser::class, class_uses_recursive($resource::class)) && method_exists($resource, 'user')
+                $user = in_array(HasUser::class, class_uses_recursive($resource::class))
                     ? $resource->user // @phpstan-ignore-line
                     : null;
 

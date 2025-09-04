@@ -53,11 +53,11 @@ const navigation = {
 export function Footer() {
   return (
     <footer className='bg-white'>
-      <Container className='pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32'>
+      <Container className='pt-16 pb-8 sm:pt-24 lg:px-8 lg:pt-32'>
         <div className='xl:grid xl:grid-cols-3 xl:gap-8'>
           <div className='space-y-8'>
             <Logo />
-            <p className='text-balance text-sm/6'>Personnel management made easy for high-performing, results-driven organizations.</p>
+            <p className='text-sm/6 text-balance'>Personnel management made easy for high-performing, results-driven organizations.</p>
             <div className='flex gap-x-6'>
               {navigation.social.map((item) => (
                 <a key={item.name} href={item.href} className='hover:text-gray-800'>

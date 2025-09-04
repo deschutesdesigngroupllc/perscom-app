@@ -1,4 +1,5 @@
-@import '/vendor/filament/minimal-theme/resources/css/index.css';
-@import '/vendor/awcodes/filament-tiptap-editor/resources/css/plugin.css';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+@import '../../../../vendor/filament-themes/minimal';
 
-@config 'tailwind.config.js';
+@source '../../../../app/Filament/Admin/**/*';
+@source '../../../../resources/views/filament/**/*';

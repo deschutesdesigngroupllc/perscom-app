@@ -4,25 +4,27 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int $form_id
  * @property int $category_id
  * @property int $order
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereCategoryId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereFormId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|FormCategory whereUpdatedAt($value)
+ * @method static Builder<static>|FormCategory newModelQuery()
+ * @method static Builder<static>|FormCategory newQuery()
+ * @method static Builder<static>|FormCategory query()
+ * @method static Builder<static>|FormCategory whereCategoryId($value)
+ * @method static Builder<static>|FormCategory whereCreatedAt($value)
+ * @method static Builder<static>|FormCategory whereFormId($value)
+ * @method static Builder<static>|FormCategory whereId($value)
+ * @method static Builder<static>|FormCategory whereOrder($value)
+ * @method static Builder<static>|FormCategory whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */

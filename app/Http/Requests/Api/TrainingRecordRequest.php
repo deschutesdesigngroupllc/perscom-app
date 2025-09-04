@@ -4,14 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api;
 
-use Illuminate\Validation\Rules\Enum;
 use Orion\Http\Requests\Request;
 
 class TrainingRecordRequest extends Request
 {
-    /**
-     * @return array<string, string|Enum>
-     */
     public function commonRules(): array
     {
         return [
@@ -25,9 +21,6 @@ class TrainingRecordRequest extends Request
         ];
     }
 
-    /**
-     * @return array<string, string|array<string|Enum>>
-     */
     public function storeRules(): array
     {
         $rules = [];

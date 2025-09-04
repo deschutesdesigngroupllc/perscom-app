@@ -6,7 +6,8 @@ namespace App\Filament\App\Resources\NewsfeedResource\Pages;
 
 use App\Filament\App\Resources\NewsfeedResource;
 use App\Models\Newsfeed;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -18,8 +19,8 @@ class EditNewsfeed extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            ViewAction::make(),
+            DeleteAction::make(),
         ];
     }
 

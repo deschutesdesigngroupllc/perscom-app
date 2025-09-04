@@ -14,17 +14,11 @@ use Illuminate\Database\Eloquent\Relations\MorphOne;
  */
 trait HasImages
 {
-    /**
-     * @return MorphOne<Image, $this>
-     */
     public function image(): MorphOne
     {
         return $this->morphOne(Image::class, 'model')->latest();
     }
 
-    /**
-     * @return MorphMany<Image, $this>
-     */
     public function images(): MorphMany
     {
         return $this->morphMany(Image::class, 'model');

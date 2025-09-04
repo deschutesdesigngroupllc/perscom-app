@@ -24,6 +24,7 @@ trait InteractsWithModelNotifications
 
         $data = $this->fillModelNotificationData($this->record, $data);
 
+        /** @phpstan-ignore-next-line  */
         return parent::mutateFormDataBeforeFill($data);
     }
 
@@ -35,6 +36,7 @@ trait InteractsWithModelNotifications
 
         $this->performModelNotificationInserts($record, data_get($data, 'model_notifications') ?? []);
 
+        /** @phpstan-ignore-next-line  */
         return parent::handleRecordUpdate($record, data_forget($data, 'model_notifications'));
     }
 

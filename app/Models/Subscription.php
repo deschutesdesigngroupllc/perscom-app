@@ -6,7 +6,10 @@ namespace App\Models;
 
 use App\Observers\SubscriptionObserver;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
 use Laravel\Cashier\Subscription as BaseSubscription;
 use Laravel\Cashier\SubscriptionItem;
@@ -22,11 +25,11 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property string $stripe_status
  * @property string|null $stripe_price
  * @property int|null $quantity
- * @property \Illuminate\Support\Carbon|null $trial_ends_at
- * @property \Illuminate\Support\Carbon|null $ends_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, SubscriptionItem> $items
+ * @property Carbon|null $trial_ends_at
+ * @property Carbon|null $ends_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, SubscriptionItem> $items
  * @property-read int|null $items_count
  * @property-read Tenant|null $owner
  * @property-read string|null $renewal_term
@@ -39,27 +42,27 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription expiredTrial()
  * @method static \Laravel\Cashier\Database\Factories\SubscriptionFactory factory($count = null, $state = [])
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription incomplete()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription newQuery()
+ * @method static Builder<static>|Subscription newModelQuery()
+ * @method static Builder<static>|Subscription newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notCanceled()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notOnGracePeriod()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription notOnTrial()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onGracePeriod()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription onTrial()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription pastDue()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription query()
+ * @method static Builder<static>|Subscription query()
  * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription recurring()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereEndsAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereQuantity($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripeId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripePrice($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereStripeStatus($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereTenantId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereTrialEndsAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Subscription whereUpdatedAt($value)
+ * @method static Builder<static>|Subscription whereCreatedAt($value)
+ * @method static Builder<static>|Subscription whereEndsAt($value)
+ * @method static Builder<static>|Subscription whereId($value)
+ * @method static Builder<static>|Subscription whereQuantity($value)
+ * @method static Builder<static>|Subscription whereStripeId($value)
+ * @method static Builder<static>|Subscription whereStripePrice($value)
+ * @method static Builder<static>|Subscription whereStripeStatus($value)
+ * @method static Builder<static>|Subscription whereTenantId($value)
+ * @method static Builder<static>|Subscription whereTrialEndsAt($value)
+ * @method static Builder<static>|Subscription whereType($value)
+ * @method static Builder<static>|Subscription whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -73,9 +76,6 @@ class Subscription extends BaseSubscription
         return true;
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function stripePrice(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ?string {
@@ -94,9 +94,6 @@ class Subscription extends BaseSubscription
         })->shouldCache();
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function stripeUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
@@ -111,13 +108,10 @@ class Subscription extends BaseSubscription
         });
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function renewalTerm(): Attribute
     {
         return Attribute::get(function (): ?string {
-            $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan) => [$plan->id => $plan->interval]);
+            $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan): array => [$plan->id => $plan->interval]);
 
             return data_get($plans, $this->stripe_price);
         })->shouldCache();

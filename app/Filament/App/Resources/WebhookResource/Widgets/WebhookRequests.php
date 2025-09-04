@@ -11,17 +11,17 @@ use Flowframe\Trend\TrendValue;
 
 class WebhookRequests extends ChartWidget
 {
-    protected static ?string $heading = 'Live Webhook Requests';
+    protected ?string $heading = 'Live Webhook Requests';
 
-    protected static ?string $description = 'Your account\'s webhook request history over the last year.';
+    protected ?string $description = 'Your account\'s webhook request history over the last year.';
 
     protected int|string|array $columnSpan = 'full';
 
-    protected static ?string $maxHeight = '150px';
+    protected ?string $maxHeight = '150px';
 
-    protected static ?string $pollingInterval = '10s';
+    protected ?string $pollingInterval = '10s';
 
-    protected static ?array $options = [
+    protected ?array $options = [
         'plugins' => [
             'legend' => [
                 'display' => false,

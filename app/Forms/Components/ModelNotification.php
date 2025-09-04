@@ -9,16 +9,17 @@ use App\Models\Group;
 use App\Models\Unit;
 use App\Models\User;
 use Closure;
-use Filament\Forms\Components\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\RichEditor;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
-use Filament\Forms\Get;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Get;
 use Illuminate\Support\HtmlString;
 
 class ModelNotification
@@ -44,7 +45,7 @@ class ModelNotification
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Recipients')
+                        Tab::make('Recipients')
                             ->visible(fn (Get $get): mixed => $get('enabled'))
                             ->icon('heroicon-o-users')
                             ->schema([
@@ -91,7 +92,7 @@ class ModelNotification
                                         },
                                     ]),
                             ]),
-                        Tabs\Tab::make('Notification')
+                        Tab::make('Notification')
                             ->visible(fn (Get $get): mixed => $get('enabled'))
                             ->icon('heroicon-o-bell')
                             ->schema([
@@ -116,6 +117,7 @@ class ModelNotification
                                     ])
                                     ->helperText('The subject to use with the notification.'),
                                 RichEditor::make('message')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->default(data_get($defaults, 'message'))
                                     ->hintIconTooltip('View available content tags.')
                                     ->hint('Content Tags')
@@ -145,11 +147,11 @@ class ModelNotification
                                     ->searchable()
                                     ->bulkToggleable()
                                     ->descriptions(fn () => collect(NotificationChannel::cases())
-                                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
+                                        ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])
                                         ->toArray())
                                     ->options(fn () => collect(NotificationChannel::cases())
                                         ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
-                                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
+                                        ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])
                                         ->toArray()),
                             ]),
                     ]),

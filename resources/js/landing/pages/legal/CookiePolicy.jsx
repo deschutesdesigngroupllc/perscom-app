@@ -7,7 +7,7 @@ function CookiePolicy() {
   return (
     <>
       <Header />
-      <Container className='prose pb-8 pt-4 text-sm sm:text-base lg:pt-16'>
+      <Container className='prose pt-4 pb-8 text-sm sm:text-base lg:pt-16'>
         <h1 className='text-xl sm:text-2xl lg:text-3xl'>PERSCOM Cookie Policy</h1>
         <p>Effective Date: February 5, 2023</p>
         <p>

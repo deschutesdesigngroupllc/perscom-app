@@ -6,14 +6,10 @@ namespace App\Http\Requests\Api;
 
 use App\Models\Enums\NotificationChannel;
 use Illuminate\Validation\Rule;
-use Illuminate\Validation\Rules\Enum;
 use Orion\Http\Requests\Request;
 
 class MessageRequest extends Request
 {
-    /**
-     * @return array<string, string|Enum>
-     */
     public function commonRules(): array
     {
         return [
@@ -27,9 +23,6 @@ class MessageRequest extends Request
         ];
     }
 
-    /**
-     * @return array<string, string|array<string|Enum>>
-     */
     public function storeRules(): array
     {
         return [

@@ -16,10 +16,13 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasSpecialty;
 use App\Traits\HasUsers;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use Illuminate\Support\Carbon;
 use Spatie\EloquentSortable\Sortable;
 
 /**
@@ -31,42 +34,42 @@ use Spatie\EloquentSortable\Sortable;
  * @property string|null $empty
  * @property int $order
  * @property bool $hidden
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read string $label
  * @property-read Position|null $position
- * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $primary_assignment_records
+ * @property-read Collection<int, AssignmentRecord> $primary_assignment_records
  * @property-read int|null $primary_assignment_records_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $secondary_assignment_records
+ * @property-read Collection<int, AssignmentRecord> $secondary_assignment_records
  * @property-read int|null $secondary_assignment_records_count
  * @property-read Specialty|null $specialty
  * @property-read UnitSlot|null $pivot
- * @property-read \Illuminate\Database\Eloquent\Collection<int, Unit> $units
+ * @property-read Collection<int, Unit> $units
  * @property-read int|null $units_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $users
+ * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
  * @method static \Database\Factories\SlotFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot hidden()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot ordered(string $direction = 'asc')
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot position(\App\Models\Position $position)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot specialty(\App\Models\Specialty $specialty)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot visible()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereEmpty($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereHidden($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereOrder($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot wherePositionId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereSpecialtyId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Slot whereUpdatedAt($value)
+ * @method static Builder<static>|Slot hidden()
+ * @method static Builder<static>|Slot newModelQuery()
+ * @method static Builder<static>|Slot newQuery()
+ * @method static Builder<static>|Slot ordered(string $direction = 'asc')
+ * @method static Builder<static>|Slot position(\App\Models\Position $position)
+ * @method static Builder<static>|Slot query()
+ * @method static Builder<static>|Slot specialty(\App\Models\Specialty $specialty)
+ * @method static Builder<static>|Slot visible()
+ * @method static Builder<static>|Slot whereCreatedAt($value)
+ * @method static Builder<static>|Slot whereDescription($value)
+ * @method static Builder<static>|Slot whereEmpty($value)
+ * @method static Builder<static>|Slot whereHidden($value)
+ * @method static Builder<static>|Slot whereId($value)
+ * @method static Builder<static>|Slot whereName($value)
+ * @method static Builder<static>|Slot whereOrder($value)
+ * @method static Builder<static>|Slot wherePositionId($value)
+ * @method static Builder<static>|Slot whereSpecialtyId($value)
+ * @method static Builder<static>|Slot whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -115,9 +118,6 @@ class Slot extends Model implements Hideable, Sortable
             ->where('records_assignments.type', AssignmentRecordType::SECONDARY);
     }
 
-    /**
-     * @return BelongsToMany<Unit, $this>
-     */
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'units_slots')

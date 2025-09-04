@@ -8,17 +8,18 @@ use App\Filament\App\Resources\PassportTokenResource;
 use App\Forms\Components\TorchlightCode;
 use App\Forms\Components\WidgetCodeGenerator;
 use App\Models\User;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Traits\HasPageShield;
 use Filament\Actions\Action;
-use Filament\Forms\Components\Actions\Action as FormAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Get;
-use Filament\Forms\Set;
 use Filament\Pages\Page;
+use Filament\Schemas\Components\Utilities\Get;
+use Filament\Schemas\Components\Utilities\Set;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Url;
 use PHPOpenSourceSaver\JWTAuth\JWTGuard;
+use UnitEnum;
 
 class Widgets extends Page
 {
@@ -29,13 +30,13 @@ class Widgets extends Page
     #[Url]
     public string $widget = 'roster';
 
-    protected static ?string $navigationIcon = 'heroicon-o-code-bracket';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-code-bracket';
 
-    protected static ?string $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
     protected static ?int $navigationSort = 7;
 
-    protected static string $view = 'filament.app.pages.widgets';
+    protected string $view = 'filament.app.pages.widgets';
 
     protected ?string $subheading = 'Widgets offer a visual representation of your personnel data that can be embedded into any external website. Use the widget explorer below to interact with the widgets in real-time.';
 
@@ -75,7 +76,7 @@ class Widgets extends Page
                 ->modalCloseButton(false)
                 ->closeModalByEscaping(false)
                 ->closeModalByClickingAway(false)
-                ->form([
+                ->schema([
                     Select::make('widget')
                         ->required()
                         ->default($this->widget)
@@ -94,7 +95,7 @@ class Widgets extends Page
                 ->modalSubmitAction(false)
                 ->modalCancelActionLabel('Close')
                 ->formId('widget-generator')
-                ->form([
+                ->schema([
                     Select::make('widget')
                         ->helperText('The widget to display.')
                         ->searchable()
@@ -109,7 +110,7 @@ class Widgets extends Page
                         ->preload()
                         ->live()
                         ->afterStateUpdated(fn (Set $set, Get $get) => $this->updateCodeSnippet($get, $set))
-                        ->suffixAction(FormAction::make('open')
+                        ->suffixAction(Action::make('open')
                             ->icon('heroicon-o-plus')
                             ->openUrlInNewTab()
                             ->url(PassportTokenResource::getUrl('create'))

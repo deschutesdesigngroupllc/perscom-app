@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\EventResource\Pages;
 
 use App\Filament\App\Resources\EventResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditEvent extends EditRecord
@@ -15,8 +16,8 @@ class EditEvent extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            ViewAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

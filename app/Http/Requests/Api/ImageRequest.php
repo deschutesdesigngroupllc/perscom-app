@@ -8,9 +8,6 @@ use Orion\Http\Requests\Request;
 
 class ImageRequest extends Request
 {
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return [
@@ -25,9 +22,6 @@ class ImageRequest extends Request
         ];
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         return [

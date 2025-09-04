@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\QualificationRecordResource\Pages;
 
 use App\Filament\App\Resources\QualificationRecordResource;
+use App\Filament\App\Resources\QualificationRecordResource\Widgets\QualificationRecordStatsOverview;
 use Archilex\AdvancedTables\AdvancedTables;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListQualificationRecords extends ListRecords
@@ -20,14 +21,14 @@ class ListQualificationRecords extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 
     protected function getHeaderWidgets(): array
     {
         return [
-            QualificationRecordResource\Widgets\QualificationRecordStatsOverview::class,
+            QualificationRecordStatsOverview::class,
         ];
     }
 }

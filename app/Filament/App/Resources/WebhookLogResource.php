@@ -4,28 +4,44 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Resources\WebhookLogResource\Pages\ListWebhookLogs;
+use App\Filament\App\Resources\WebhookLogResource\Pages\ViewWebhookLog;
 use App\Models\Enums\WebhookEvent;
 use App\Models\WebhookLog;
-use Filament\Infolists\Components\Tabs;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Panel;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Filament\Support\Enums\IconPosition;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Parallax\FilamentSyntaxEntry\SyntaxEntry;
+use Phiki\Grammar\Grammar;
+use UnitEnum;
 
 class WebhookLogResource extends BaseResource
 {
     protected static ?string $model = WebhookLog::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
 
     protected static ?string $navigationParentItem = 'Webhooks';
 
-    protected static ?string $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
     protected static ?int $navigationSort = 6;
 
@@ -42,34 +58,34 @@ class WebhookLogResource extends BaseResource
     {
         return $table
             ->emptyStateActions([
-                Tables\Actions\Action::make('new')
+                Action::make('new')
                     ->label('New webhook')
                     ->url(WebhookResource::getUrl('create')),
             ])
             ->emptyStateDescription('Create your first webhook to start sending real-time notifications.')
             ->columns([
-                Tables\Columns\TextColumn::make('request_id')
+                TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
                     ->sortable()
                     ->searchable(['properties']),
-                Tables\Columns\TextColumn::make('causer.label')
+                TextColumn::make('causer.label')
                     ->label('Resource')
                     ->badge()
                     ->openUrlInNewTab()
                     ->icon('heroicon-o-arrow-top-right-on-square')
                     ->iconPosition(IconPosition::After)
                     ->url(fn (WebhookLog $record) => $record->resource_url),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->label('Webhook')
                     ->sortable()
                     ->color('gray')
                     ->badge(),
-                Tables\Columns\TextColumn::make('event')
+                TextColumn::make('event')
                     ->sortable()
                     ->color('gray')
                     ->badge(),
-                Tables\Columns\TextColumn::make('status_code')
+                TextColumn::make('status_code')
                     ->label('Status')
                     ->badge()
                     ->formatStateUsing(fn (WebhookLog $record, $state): string => "$state $record->reason_phrase")
@@ -77,7 +93,7 @@ class WebhookLogResource extends BaseResource
                         (int) $state >= 200 && (int) $state < 300 => 'success',
                         default => 'danger'
                     }),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->since()
                     ->toggleable(false)
@@ -85,7 +101,7 @@ class WebhookLogResource extends BaseResource
                     ->label('Sent'),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('event')
+                SelectFilter::make('event')
                     ->searchable()
                     ->multiple()
                     ->options(WebhookEvent::class)
@@ -96,13 +112,13 @@ class WebhookLogResource extends BaseResource
                                 $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn (string $event) => $query->orWhereJsonContains('properties->payload->event', $event)));
                             },
                         )),
-                Tables\Filters\QueryBuilder::make()
+                QueryBuilder::make()
                     ->constraints([
-                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('request_id')
+                        Constraint::make('request_id')
                             ->label('Request ID')
                             ->icon('heroicon-o-cloud-arrow-up')
                             ->operators([
-                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
                                         if ($isInverse) {
                                             return $query
@@ -123,11 +139,11 @@ class WebhookLogResource extends BaseResource
                                             );
                                     }),
                             ]),
-                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('trace_id')
+                        Constraint::make('trace_id')
                             ->label('Trace ID')
                             ->icon('heroicon-o-cloud-arrow-up')
                             ->operators([
-                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
                                         if ($isInverse) {
                                             return $query
@@ -148,28 +164,28 @@ class WebhookLogResource extends BaseResource
                                             );
                                     }),
                             ]),
-                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('created_at')
+                        DateConstraint::make('created_at')
                             ->label('Sent'),
                     ]),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             Tabs::make()
                 ->columnSpanFull()
                 ->tabs([
-                    Tabs\Tab::make('Webhook')
+                    Tab::make('Webhook')
                         ->icon('heroicon-o-cloud-arrow-up')
                         ->schema([
                             TextEntry::make('request_id')
@@ -203,13 +219,13 @@ class WebhookLogResource extends BaseResource
                                 ->badge()
                                 ->color('gray'),
                         ]),
-                    Tabs\Tab::make('Payload')
+                    Tab::make('Payload')
                         ->icon('heroicon-o-code-bracket')
                         ->schema([
-                            SyntaxEntry::make('payload')
+                            CodeEntry::make('payload')
                                 ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('payload'))
                                 ->hiddenLabel()
-                                ->language('json'),
+                                ->grammar(Grammar::Json),
                         ]),
                 ]),
         ]);
@@ -218,8 +234,8 @@ class WebhookLogResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => WebhookLogResource\Pages\ListWebhookLogs::route('/'),
-            'view' => WebhookLogResource\Pages\ViewWebhookLog::route('/{record}'),
+            'index' => ListWebhookLogs::route('/'),
+            'view' => ViewWebhookLog::route('/{record}'),
         ];
     }
 

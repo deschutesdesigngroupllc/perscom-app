@@ -24,7 +24,7 @@ class TenantLoginAction extends Action
         $this->modalDescription('Login to the tenant using the user below.');
         $this->modalSubmitActionLabel('Login');
 
-        $this->form([
+        $this->schema([
             Select::make('user')
                 ->searchable()
                 ->helperText('Select the user to login as.')

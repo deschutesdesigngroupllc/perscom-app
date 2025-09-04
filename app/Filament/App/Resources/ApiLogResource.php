@@ -4,32 +4,45 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
+use App\Filament\App\Resources\ApiLogResource\Pages\ListApiLogs;
+use App\Filament\App\Resources\ApiLogResource\Pages\ViewApiLog;
 use App\Filament\App\Resources\ApiLogResource\RelationManagers\PurgesRelationManager;
 use App\Models\ApiLog;
 use App\Models\User;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\ViewAction;
+use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\KeyValueEntry;
-use Filament\Infolists\Components\Tabs;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
 use Filament\Panel;
-use Filament\Tables;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\QueryBuilder;
+use Filament\Tables\Filters\QueryBuilder\Constraints\Constraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\DateConstraint;
+use Filament\Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Parallax\FilamentSyntaxEntry\SyntaxEntry;
+use Phiki\Grammar\Grammar;
 use Symfony\Component\HttpFoundation\Response;
+use UnitEnum;
 
 class ApiLogResource extends BaseResource
 {
     protected static ?string $model = ApiLog::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-key';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-key';
 
     protected static ?string $navigationParentItem = 'API Keys';
 
-    protected static ?string $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
     protected static ?int $navigationSort = 6;
 
@@ -46,23 +59,23 @@ class ApiLogResource extends BaseResource
     {
         return $table
             ->emptyStateActions([
-                Tables\Actions\Action::make('new')
+                Action::make('new')
                     ->label('New API key')
                     ->url(PassportTokenResource::getUrl('create')),
             ])
             ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
             ->modifyQueryUsing(fn (Builder $query): Builder => $query->select(['id', 'log_name', 'created_at', 'causer_id', 'causer_type', 'event']))
             ->columns([
-                Tables\Columns\TextColumn::make('id')
+                TextColumn::make('id')
                     ->copyable()
                     ->label('Log ID')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('request_id')
+                TextColumn::make('request_id')
                     ->copyable()
                     ->label('Request ID')
                     ->searchable(query: fn (Builder|ApiLog $query, string $search) => $query->whereMeta('request_id', 'LIKE', "%$search%")->orWhereMeta('trace_id', 'like', "%$search%")->orWhereMeta('trace_id', 'like', "%$search%")),
-                Tables\Columns\TextColumn::make('log_name')
+                TextColumn::make('log_name')
                     ->label('Log')
                     ->formatStateUsing(fn ($state) => match ($state) {
                         'api' => 'API',
@@ -73,37 +86,37 @@ class ApiLogResource extends BaseResource
                     ->searchable()
                     ->badge()
                     ->color('gray'),
-                Tables\Columns\TextColumn::make('causer.name')
+                TextColumn::make('causer.name')
                     ->label('Author')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('method')
+                TextColumn::make('method')
                     ->badge(),
-                Tables\Columns\TextColumn::make('endpoint')
+                TextColumn::make('endpoint')
                     ->badge()
                     ->color('gray'),
-                Tables\Columns\TextColumn::make('status')
+                TextColumn::make('status')
                     ->color(fn ($state): string => match (true) {
                         $state >= 200 && $state < 300 => 'success',
                         default => 'danger',
                     })
                     ->badge()
                     ->suffix(fn ($state): string => ' '.Response::$statusTexts[(int) $state]),
-                Tables\Columns\TextColumn::make('duration')
+                TextColumn::make('duration')
                     ->default('0')
                     ->numeric()
                     ->suffix(' ms'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->dateTime()
                     ->since()
                     ->toggleable(false)
                     ->sortable()
                     ->label('Requested'),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
+            ->recordActions([
+                ViewAction::make(),
             ])
             ->filters([
-                Tables\Filters\SelectFilter::make('author')
+                SelectFilter::make('author')
                     ->searchable()
                     ->preload()
                     ->multiple()
@@ -115,13 +128,13 @@ class ApiLogResource extends BaseResource
                                 $query->where(fn (Builder $query) => collect(data_get($data, 'values'))->each(fn ($id) => $query->orWhereMorphRelation('causer', User::class, 'causer_id', '=', $id)));
                             },
                         )),
-                Tables\Filters\SelectFilter::make('log_name')
+                SelectFilter::make('log_name')
                     ->label('Log')
                     ->options([
                         'api' => 'API',
                         'oauth' => 'OAuth',
                     ]),
-                Tables\Filters\SelectFilter::make('method')
+                SelectFilter::make('method')
                     ->multiple()
                     ->options([
                         'GET' => 'GET',
@@ -137,13 +150,13 @@ class ApiLogResource extends BaseResource
                                 $query->where(fn (Builder|ApiLog $query) => collect(data_get($data, 'values'))->each(fn ($method) => $query->orWhereMeta('method', $method)));
                             },
                         )),
-                Tables\Filters\QueryBuilder::make()
+                QueryBuilder::make()
                     ->constraints([
-                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('request_id')
+                        Constraint::make('request_id')
                             ->label('Request ID')
                             ->icon('heroicon-o-cloud-arrow-up')
                             ->operators([
-                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
                                         if ($isInverse) {
                                             return $query
@@ -164,11 +177,11 @@ class ApiLogResource extends BaseResource
                                             );
                                     }),
                             ]),
-                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('trace_id')
+                        Constraint::make('trace_id')
                             ->label('Trace ID')
                             ->icon('heroicon-o-cloud-arrow-up')
                             ->operators([
-                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
                                         if ($isInverse) {
                                             return $query
@@ -189,10 +202,10 @@ class ApiLogResource extends BaseResource
                                             );
                                     }),
                             ]),
-                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('endpoint')
+                        Constraint::make('endpoint')
                             ->icon('heroicon-o-globe-alt')
                             ->operators([
-                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
                                         if ($isInverse) {
                                             return $query
@@ -213,12 +226,12 @@ class ApiLogResource extends BaseResource
                                             );
                                     }),
                             ]),
-                        Tables\Filters\QueryBuilder\Constraints\DateConstraint::make('created_at')
+                        DateConstraint::make('created_at')
                             ->label('Requested'),
-                        Tables\Filters\QueryBuilder\Constraints\Constraint::make('status')
+                        Constraint::make('status')
                             ->icon('heroicon-o-flag')
                             ->operators([
-                                Tables\Filters\QueryBuilder\Constraints\TextConstraint\Operators\ContainsOperator::make()
+                                ContainsOperator::make()
                                     ->modifyBaseQueryUsing(function (Builder $query, array $settings, bool $isInverse) {
                                         if ($isInverse) {
                                             return $query
@@ -244,13 +257,14 @@ class ApiLogResource extends BaseResource
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             Tabs::make()
+                ->persistTabInQueryString()
                 ->columnSpanFull()
                 ->tabs([
-                    Tabs\Tab::make('Client')
+                    Tab::make('Client')
                         ->icon('heroicon-o-user')
                         ->schema([
                             TextEntry::make('request_id')
@@ -270,7 +284,7 @@ class ApiLogResource extends BaseResource
                             TextEntry::make('ip_address')
                                 ->label('IP Address'),
                         ]),
-                    Tabs\Tab::make('Request')
+                    Tab::make('Request')
                         ->icon('heroicon-o-cloud-arrow-up')
                         ->schema([
                             TextEntry::make('method')
@@ -290,12 +304,13 @@ class ApiLogResource extends BaseResource
                                         'x-csrf-token',
                                         'x-xsrf-token',
                                     ]))
-                                    ->mapWithKeys(fn ($value, $header) => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->toArray()
+                                    ->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->toArray()
                                 ),
-                            SyntaxEntry::make('body')
-                                ->language('json'),
+                            CodeEntry::make('body')
+                                ->copyable()
+                                ->grammar(Grammar::Json),
                         ]),
-                    Tabs\Tab::make('Response')
+                    Tab::make('Response')
                         ->icon('heroicon-o-cloud-arrow-down')
                         ->schema([
                             TextEntry::make('status')
@@ -309,9 +324,10 @@ class ApiLogResource extends BaseResource
                                 ->label('Headers')
                                 ->keyLabel('Header')
                                 ->valueLabel('Value')
-                                ->getStateUsing(fn (?ApiLog $record) => collect($record->response_headers)->mapWithKeys(fn ($value, $header) => [$header => collect($value)->join(', ')])->toArray()),
-                            SyntaxEntry::make('content')
-                                ->language('json'),
+                                ->getStateUsing(fn (?ApiLog $record) => collect($record->response_headers)->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->join(', ')])->toArray()),
+                            CodeEntry::make('content')
+                                ->copyable()
+                                ->grammar(Grammar::Json),
                         ]),
                 ]),
         ]);
@@ -327,8 +343,8 @@ class ApiLogResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => ApiLogResource\Pages\ListApiLogs::route('/'),
-            'view' => ApiLogResource\Pages\ViewApiLog::route('/{record}'),
+            'index' => ListApiLogs::route('/'),
+            'view' => ViewApiLog::route('/{record}'),
         ];
     }
 
@@ -353,10 +369,10 @@ class ApiLogResource extends BaseResource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'ID' => $record->id,
-            'Endpoint' => $record->endpoint,
-            'Method' => $record->method,
-            'Status' => $record->status,
+            'ID' => (string) $record->id,
+            'Endpoint' => $record->endpoint ?? 'Unknown',
+            'Method' => $record->method ?? 'Unknown',
+            'Status' => (string) $record->status,
         ];
     }
 

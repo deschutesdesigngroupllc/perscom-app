@@ -12,7 +12,7 @@ use App\Models\Enums\NotificationChannel;
 use App\Models\Enums\NotificationGroup;
 use App\Models\User;
 use App\Services\TwilioService;
-use Filament\Notifications\Actions\Action;
+use Filament\Actions\Action;
 use Filament\Notifications\Notification as FilamentNotification;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;

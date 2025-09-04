@@ -8,30 +8,33 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasSlot;
 use App\Traits\HasUnit;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Support\Carbon;
 
 /**
  * @property int $id
  * @property int|null $unit_id
  * @property int|null $slot_id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Collection<int, AssignmentRecord> $assignment_records
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Collection<int, AssignmentRecord> $assignment_records
  * @property-read int|null $assignment_records_count
  * @property-read Slot|null $slot
  * @property-read Unit|null $unit
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot slot(\App\Models\Slot $slot)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot unit(\App\Models\Unit $unit)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot whereSlotId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot whereUnitId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|UnitSlot whereUpdatedAt($value)
+ * @method static Builder<static>|UnitSlot newModelQuery()
+ * @method static Builder<static>|UnitSlot newQuery()
+ * @method static Builder<static>|UnitSlot query()
+ * @method static Builder<static>|UnitSlot slot(\App\Models\Slot $slot)
+ * @method static Builder<static>|UnitSlot unit(\App\Models\Unit $unit)
+ * @method static Builder<static>|UnitSlot whereCreatedAt($value)
+ * @method static Builder<static>|UnitSlot whereId($value)
+ * @method static Builder<static>|UnitSlot whereSlotId($value)
+ * @method static Builder<static>|UnitSlot whereUnitId($value)
+ * @method static Builder<static>|UnitSlot whereUpdatedAt($value)
  *
  * @mixin \Eloquent
  */
@@ -44,9 +47,6 @@ class UnitSlot extends Pivot
 
     protected $table = 'units_slots';
 
-    /**
-     * @return HasMany<AssignmentRecord, $this>
-     */
     public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class, 'unit_slot_id');

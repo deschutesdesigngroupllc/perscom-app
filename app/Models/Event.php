@@ -16,15 +16,17 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
 use App\Traits\HasTags;
-use Carbon\CarbonInterval;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\AsEnumCollection;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * @property int $id
@@ -36,16 +38,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property string $url
  * @property int|null $author_id
  * @property bool $all_day
- * @property \Illuminate\Support\Carbon $starts
- * @property \Illuminate\Support\Carbon|null $ends
+ * @property Carbon $starts
+ * @property Carbon|null $ends
  * @property bool $repeats
  * @property bool $registration_enabled
- * @property \Illuminate\Support\Carbon|null $registration_deadline
+ * @property Carbon|null $registration_deadline
  * @property bool $notifications_enabled
  * @property array<array-key, mixed>|null $notifications_interval
- * @property \Illuminate\Support\Collection<int, NotificationChannel>|null $notifications_channels
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Collection<int, NotificationChannel>|null $notifications_channels
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Attachment> $attachments
  * @property-read int|null $attachments_count
  * @property-read User|null $author
@@ -67,30 +69,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event author(\App\Models\User $user)
+ * @method static Builder<static>|Event author(\App\Models\User $user)
  * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereAllDay($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereAuthorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCalendarId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereContent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereEnds($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereLocation($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereNotificationsChannels($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereNotificationsEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereNotificationsInterval($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereRegistrationDeadline($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereRegistrationEnabled($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereRepeats($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereStarts($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Event whereUrl($value)
+ * @method static Builder<static>|Event newModelQuery()
+ * @method static Builder<static>|Event newQuery()
+ * @method static Builder<static>|Event query()
+ * @method static Builder<static>|Event whereAllDay($value)
+ * @method static Builder<static>|Event whereAuthorId($value)
+ * @method static Builder<static>|Event whereCalendarId($value)
+ * @method static Builder<static>|Event whereContent($value)
+ * @method static Builder<static>|Event whereCreatedAt($value)
+ * @method static Builder<static>|Event whereDescription($value)
+ * @method static Builder<static>|Event whereEnds($value)
+ * @method static Builder<static>|Event whereId($value)
+ * @method static Builder<static>|Event whereLocation($value)
+ * @method static Builder<static>|Event whereName($value)
+ * @method static Builder<static>|Event whereNotificationsChannels($value)
+ * @method static Builder<static>|Event whereNotificationsEnabled($value)
+ * @method static Builder<static>|Event whereNotificationsInterval($value)
+ * @method static Builder<static>|Event whereRegistrationDeadline($value)
+ * @method static Builder<static>|Event whereRegistrationEnabled($value)
+ * @method static Builder<static>|Event whereRepeats($value)
+ * @method static Builder<static>|Event whereStarts($value)
+ * @method static Builder<static>|Event whereUpdatedAt($value)
+ * @method static Builder<static>|Event whereUrl($value)
  *
  * @mixin \Eloquent
  */
@@ -138,9 +140,6 @@ class Event extends Model implements HasLabel
         'updated_at',
     ];
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function hasPassed(): Attribute
     {
         return Attribute::make(
@@ -156,9 +155,6 @@ class Event extends Model implements HasLabel
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?CarbonInterval, never>
-     */
     public function length(): Attribute
     {
         return Attribute::get(
@@ -166,9 +162,6 @@ class Event extends Model implements HasLabel
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<string, never>
-     */
     public function url(): Attribute
     {
         return Attribute::get(function ($value): string {
@@ -180,17 +173,11 @@ class Event extends Model implements HasLabel
         })->shouldCache();
     }
 
-    /**
-     * @return BelongsTo<Calendar, $this>
-     */
     public function calendar(): BelongsTo
     {
         return $this->belongsTo(Calendar::class);
     }
 
-    /**
-     * @return BelongsToMany<User, $this>
-     */
     public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')
@@ -200,9 +187,6 @@ class Event extends Model implements HasLabel
             ->withTimestamps();
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         $casts = [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Models;
 
 use App\Models\Enums\ModelTagType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Sushi\Sushi;
 
@@ -14,13 +15,13 @@ use Sushi\Sushi;
  * @property string|null $description
  * @property ModelTagType|null $type
  *
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag whereTag($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|ModelTag whereType($value)
+ * @method static Builder<static>|ModelTag newModelQuery()
+ * @method static Builder<static>|ModelTag newQuery()
+ * @method static Builder<static>|ModelTag query()
+ * @method static Builder<static>|ModelTag whereDescription($value)
+ * @method static Builder<static>|ModelTag whereId($value)
+ * @method static Builder<static>|ModelTag whereTag($value)
+ * @method static Builder<static>|ModelTag whereType($value)
  *
  * @mixin \Eloquent
  */
@@ -28,9 +29,6 @@ class ModelTag extends Model
 {
     use Sushi;
 
-    /**
-     * @return array<array<string,string>>
-     */
     protected function getRows(): array
     {
         return [
@@ -242,9 +240,6 @@ class ModelTag extends Model
         ];
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

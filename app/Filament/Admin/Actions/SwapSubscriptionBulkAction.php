@@ -6,9 +6,9 @@ namespace App\Filament\Admin\Actions;
 
 use App\Models\Tenant;
 use Exception;
+use Filament\Actions\BulkAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\TextInput;
-use Filament\Tables\Actions\BulkAction;
 use Illuminate\Support\Collection;
 
 class SwapSubscriptionBulkAction extends BulkAction

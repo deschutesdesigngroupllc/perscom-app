@@ -8,23 +8,26 @@ use App\Filament\App\Clusters\Settings;
 use App\Models\Permission as PermissionModel;
 use App\Models\Role;
 use App\Settings\PermissionSettings;
+use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Forms\Components\Select;
-use Filament\Forms\Components\Tabs;
-use Filament\Forms\Form;
 use Filament\Pages\SettingsPage;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use UnitEnum;
 
 class Permission extends SettingsPage
 {
     protected static ?string $cluster = Settings::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-identification';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-identification';
 
     protected static ?string $navigationLabel = 'Permissions';
 
-    protected static ?string $navigationGroup = 'Users';
+    protected static string|UnitEnum|null $navigationGroup = 'Users';
 
     protected static string $settings = PermissionSettings::class;
 
@@ -39,14 +42,14 @@ class Permission extends SettingsPage
             && ! App::isDemo();
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Tabs\Tab::make('Defaults')
+                        Tab::make('Defaults')
                             ->icon('heroicon-o-identification')
                             ->schema([
                                 Select::make('default_roles')

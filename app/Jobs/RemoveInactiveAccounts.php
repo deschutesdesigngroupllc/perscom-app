@@ -30,7 +30,6 @@ class RemoveInactiveAccounts implements ShouldQueue
 
     public function handle(): void
     {
-        /** @phpstan-ignore-next-line */
         Tenant::all()->each(function (Tenant $tenant): void {
             $dateToCompare = match (true) {
                 $tenant->last_login_at !== null => $tenant->last_login_at,

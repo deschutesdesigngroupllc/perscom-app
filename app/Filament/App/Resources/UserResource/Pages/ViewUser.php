@@ -5,11 +5,19 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\UserResource\Pages;
 
 use App\Filament\App\Resources\UserResource;
-use App\Filament\App\Resources\UserResource\RelationManagers;
+use App\Filament\App\Resources\UserResource\RelationManagers\AssignmentRecordsRelationManager;
+use App\Filament\App\Resources\UserResource\RelationManagers\AwardRecordsRelationManager;
+use App\Filament\App\Resources\UserResource\RelationManagers\CombatRecordsRelationManager;
+use App\Filament\App\Resources\UserResource\RelationManagers\QualificationRecordsRelationManager;
+use App\Filament\App\Resources\UserResource\RelationManagers\RankRecordsRelationManager;
+use App\Filament\App\Resources\UserResource\RelationManagers\ServiceRecordsRelationManager;
+use App\Filament\App\Resources\UserResource\RelationManagers\TrainingRecordsRelationManager;
 use App\Models\User;
 use App\Services\SettingsService;
 use App\Settings\DashboardSettings;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Traits\Conditionable;
@@ -26,13 +34,13 @@ class ViewUser extends ViewRecord
 
         $hiddenFields = Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []));
 
-        $this->when(! in_array('assignment_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\AssignmentRecordsRelationManager::class));
-        $this->when(! in_array('award_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\AwardRecordsRelationManager::class));
-        $this->when(! in_array('combat_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\CombatRecordsRelationManager::class));
-        $this->when(! in_array('qualification_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\QualificationRecordsRelationManager::class));
-        $this->when(! in_array('rank_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\RankRecordsRelationManager::class));
-        $this->when(! in_array('service_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\ServiceRecordsRelationManager::class));
-        $this->when(! in_array('training_records', $hiddenFields), fn () => $relationManagers->push(RelationManagers\TrainingRecordsRelationManager::class));
+        $this->when(! in_array('assignment_records', $hiddenFields), fn () => $relationManagers->push(AssignmentRecordsRelationManager::class));
+        $this->when(! in_array('award_records', $hiddenFields), fn () => $relationManagers->push(AwardRecordsRelationManager::class));
+        $this->when(! in_array('combat_records', $hiddenFields), fn () => $relationManagers->push(CombatRecordsRelationManager::class));
+        $this->when(! in_array('qualification_records', $hiddenFields), fn () => $relationManagers->push(QualificationRecordsRelationManager::class));
+        $this->when(! in_array('rank_records', $hiddenFields), fn () => $relationManagers->push(RankRecordsRelationManager::class));
+        $this->when(! in_array('service_records', $hiddenFields), fn () => $relationManagers->push(ServiceRecordsRelationManager::class));
+        $this->when(! in_array('training_records', $hiddenFields), fn () => $relationManagers->push(TrainingRecordsRelationManager::class));
 
         return $relationManagers->toArray();
     }
@@ -40,14 +48,14 @@ class ViewUser extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('email')
+            Action::make('email')
                 ->hidden(fn (): bool => in_array('email', Arr::wrap(SettingsService::get(DashboardSettings::class, 'user_hidden_fields', []))))
                 ->color('gray')
                 ->url(fn (?User $record): string => "mailto:$record->email")
                 ->openUrlInNewTab()
                 ->tooltip(fn (?User $record) => $record->email),
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

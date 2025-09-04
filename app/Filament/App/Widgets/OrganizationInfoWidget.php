@@ -16,7 +16,7 @@ class OrganizationInfoWidget extends Widget
 
     protected static bool $isLazy = false;
 
-    protected static string $view = 'filament.app.widgets.organization-info-widget';
+    protected string $view = 'filament.app.widgets.organization-info-widget';
 
     protected ?string $title = null;
 

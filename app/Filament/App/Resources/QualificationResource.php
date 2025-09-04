@@ -4,55 +4,71 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\QualificationResource\Pages;
+use App\Filament\App\Resources\QualificationResource\Pages\CreateQualification;
+use App\Filament\App\Resources\QualificationResource\Pages\EditQualification;
+use App\Filament\App\Resources\QualificationResource\Pages\ListQualifications;
 use App\Filament\Exports\QualificationExporter;
 use App\Models\Qualification;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class QualificationResource extends BaseResource
 {
     protected static ?string $model = Qualification::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-star';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-star';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Qualification')
+                        Tab::make('Qualification')
                             ->icon('heroicon-o-star')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the qualification.')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the qualification.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Image')
+                        Tab::make('Image')
                             ->visibleOn('edit')
                             ->icon('heroicon-o-photo')
                             ->schema([
-                                Forms\Components\Section::make()
+                                Section::make()
                                     ->hiddenLabel()
                                     ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
                                     ->schema([
-                                        Forms\Components\FileUpload::make('path')
+                                        FileUpload::make('path')
                                             ->hiddenLabel()
                                             ->image()
                                             ->imageEditor()
@@ -72,33 +88,33 @@ class QualificationResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image.path')
+                ImageColumn::make('image.path')
                     ->label('Image'),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(QualificationExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('order')
@@ -108,9 +124,9 @@ class QualificationResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListQualifications::route('/'),
-            'create' => Pages\CreateQualification::route('/create'),
-            'edit' => Pages\EditQualification::route('/{record}/edit'),
+            'index' => ListQualifications::route('/'),
+            'create' => CreateQualification::route('/create'),
+            'edit' => EditQualification::route('/{record}/edit'),
         ];
     }
 

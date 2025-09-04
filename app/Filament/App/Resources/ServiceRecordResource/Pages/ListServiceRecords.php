@@ -5,8 +5,9 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\ServiceRecordResource\Pages;
 
 use App\Filament\App\Resources\ServiceRecordResource;
+use App\Filament\App\Resources\ServiceRecordResource\Widgets\ServiceRecordStatsOverview;
 use Archilex\AdvancedTables\AdvancedTables;
-use Filament\Actions;
+use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
 
 class ListServiceRecords extends ListRecords
@@ -20,14 +21,14 @@ class ListServiceRecords extends ListRecords
     protected function getHeaderActions(): array
     {
         return [
-            Actions\CreateAction::make(),
+            CreateAction::make(),
         ];
     }
 
     protected function getHeaderWidgets(): array
     {
         return [
-            ServiceRecordResource\Widgets\ServiceRecordStatsOverview::class,
+            ServiceRecordStatsOverview::class,
         ];
     }
 }

@@ -4,74 +4,85 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\WebhookResource\Pages;
+use App\Filament\App\Resources\WebhookResource\Pages\CreateWebhook;
+use App\Filament\App\Resources\WebhookResource\Pages\EditWebhook;
+use App\Filament\App\Resources\WebhookResource\Pages\ListWebhooks;
+use App\Filament\App\Resources\WebhookResource\Pages\ViewWebhook;
 use App\Models\Enums\WebhookEvent;
 use App\Models\Enums\WebhookMethod;
 use App\Models\Webhook;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Infolists\Components\Tabs;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ViewAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Infolists\Infolist;
-use Filament\Tables;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class WebhookResource extends BaseResource
 {
     protected static ?string $model = Webhook::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-globe-alt';
 
-    protected static ?string $navigationGroup = 'Integrations';
+    protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
     protected static ?int $navigationSort = 6;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Webhook Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('url')
-                            ->helperText('The URL that the data will be sent to.')
-                            ->label('URL')
-                            ->url()
-                            ->required()
-                            ->maxLength(255),
-                        Forms\Components\RichEditor::make('description')
-                            ->helperText('A brief description of the webhook.')
-                            ->nullable()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Forms\Components\Select::make('method')
-                            ->helperText('The HTTP method that will be used to send the data.')
-                            ->options(WebhookMethod::class)
-                            ->required()
-                            ->default(WebhookMethod::POST),
-                        Forms\Components\Select::make('events')
-                            ->helperText('The events that will trigger the webhook.')
-                            ->multiple()
-                            ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event) => [$event->value => $event->value])->toArray())
-                            ->required(),
-                        Forms\Components\TextInput::make('secret')
-                            ->revealable()
-                            ->default(Str::random(32))
-                            ->helperText('A secret key that will be used to sign the data.')
-                            ->password()
-                            ->required()
-                            ->maxLength(255),
-                    ]),
+        return $schema
+            ->columns(1)
+            ->components([
+                TextInput::make('url')
+                    ->helperText('The URL that the data will be sent to.')
+                    ->label('URL')
+                    ->url()
+                    ->required()
+                    ->maxLength(255),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the webhook.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Select::make('method')
+                    ->helperText('The HTTP method that will be used to send the data.')
+                    ->options(WebhookMethod::class)
+                    ->required()
+                    ->default(WebhookMethod::POST),
+                Select::make('events')
+                    ->helperText('The events that will trigger the webhook.')
+                    ->multiple()
+                    ->options(fn () => collect(WebhookEvent::cases())->mapWithKeys(fn (WebhookEvent $event): array => [$event->value => $event->value])->toArray())
+                    ->required(),
+                TextInput::make('secret')
+                    ->revealable()
+                    ->default(Str::random(32))
+                    ->helperText('A secret key that will be used to sign the data.')
+                    ->password()
+                    ->required()
+                    ->maxLength(255),
             ]);
     }
 
-    public static function infolist(Infolist $infolist): Infolist
+    public static function infolist(Schema $schema): Schema
     {
-        return $infolist->schema([
+        return $schema->components([
             Tabs::make()
                 ->columnSpanFull()
                 ->tabs([
-                    Tabs\Tab::make('Webhook')
+                    Tab::make('Webhook')
                         ->icon('heroicon-o-globe-alt')
                         ->schema([
                             TextEntry::make('url')
@@ -100,35 +111,35 @@ class WebhookResource extends BaseResource
         return $table
             ->emptyStateDescription('Create your first webhook to start sending real-time notifications.')
             ->columns([
-                Tables\Columns\TextColumn::make('url')
+                TextColumn::make('url')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->sortable()
                     ->html()
                     ->wrap(),
-                Tables\Columns\TextColumn::make('method')
+                TextColumn::make('method')
                     ->badge()
                     ->sortable()
                     ->color('gray'),
-                Tables\Columns\TextColumn::make('events')
+                TextColumn::make('events')
                     ->listWithLineBreaks()
                     ->expandableLimitedList()
                     ->limitList()
                     ->sortable()
                     ->badge(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->toggleable(false)
                     ->sortable(),
             ])
-            ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                ViewAction::make(),
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -136,10 +147,10 @@ class WebhookResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListWebhooks::route('/'),
-            'create' => Pages\CreateWebhook::route('/create'),
-            'edit' => Pages\EditWebhook::route('/{record}/edit'),
-            'view' => Pages\ViewWebhook::route('/{record}'),
+            'index' => ListWebhooks::route('/'),
+            'create' => CreateWebhook::route('/create'),
+            'edit' => EditWebhook::route('/{record}/edit'),
+            'view' => ViewWebhook::route('/{record}'),
         ];
     }
 }

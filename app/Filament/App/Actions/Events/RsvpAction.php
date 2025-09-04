@@ -31,16 +31,16 @@ class RsvpAction extends Action
             'status' => $record->registrations->firstWhere('id', Auth::user()->getKey())?->registration->status?->value ?? EventRegistrationStatus::Going->value,
         ]);
 
-        $this->form([
+        $this->schema([
             Select::make('status')
-                ->default(EventRegistrationStatus::Going->value)
+                ->default(EventRegistrationStatus::Going)
                 ->helperText('Select your RSVP status for the event.')
                 ->options(EventRegistrationStatus::class)
                 ->required(),
         ]);
 
         $this->action(function (Event $record, Action $action, array $data): void {
-            $status = data_get($data, 'status') ?? EventRegistrationStatus::Going->value;
+            $status = data_get($data, 'status') ?? EventRegistrationStatus::Going;
 
             if ($record->registrations->contains(Auth::user())) {
                 $record->registrations()->updateExistingPivot(Auth::user(), ['status' => $status]);

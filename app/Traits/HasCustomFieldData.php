@@ -49,7 +49,7 @@ trait HasCustomFieldData
             return;
         }
 
-        /** @var Form $form */
+        /** @var ?Form $form */
         $form = $this->form;
         if (! $form) {
             return;

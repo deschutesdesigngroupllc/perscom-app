@@ -31,6 +31,8 @@ use App\Traits\HasUnit;
 use App\Traits\JwtClaims;
 use App\Traits\SocialRelationships;
 use Archilex\AdvancedTables\Concerns\HasViews;
+use Archilex\AdvancedTables\Models\ManagedPresetView;
+use Archilex\AdvancedTables\Models\UserView;
 use Carbon\CarbonInterval;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
@@ -49,6 +51,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\DatabaseNotification;
+use Illuminate\Notifications\DatabaseNotificationCollection;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -116,14 +120,16 @@ use Spatie\Permission\Traits\HasRoles;
  * @property-read string $label
  * @property-read Carbon|null $last_assignment_change_date
  * @property-read Carbon|null $last_rank_change_date
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedPresetView> $managedPresetViews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\ManagedDefaultView> $managedDefaultViews
+ * @property-read int|null $managed_default_views_count
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, ManagedPresetView> $managedPresetViews
  * @property-read int|null $managed_preset_views_count
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \Archilex\AdvancedTables\Models\UserView> $managedUserViews
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, UserView> $managedUserViews
  * @property-read int|null $managed_user_views_count
  * @property-read ModelNotification|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $modelNotifications
  * @property-read int|null $model_notifications_count
- * @property-read \Illuminate\Notifications\DatabaseNotificationCollection<int, \Illuminate\Notifications\DatabaseNotification> $notifications
+ * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  * @property-read mixed $online
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Permission> $permissions
@@ -460,9 +466,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         )->shouldCache();
     }
 
-    /**
-     * @return BelongsToMany<Event, $this>
-     */
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'events_registrations')
@@ -472,17 +475,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             ->using(EventRegistration::class);
     }
 
-    /**
-     * @return HasMany<Submission, $this>
-     */
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
-    /**
-     * @return BelongsToMany<Task, $this>
-     */
     public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class, 'users_tasks')
@@ -492,9 +489,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             ->withTimestamps();
     }
 
-    /**
-     * @return BelongsTo<UnitSlot, $this>
-     */
     public function unit_slot(): BelongsTo
     {
         return $this->belongsTo(UnitSlot::class);
@@ -505,9 +499,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return 'web';
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

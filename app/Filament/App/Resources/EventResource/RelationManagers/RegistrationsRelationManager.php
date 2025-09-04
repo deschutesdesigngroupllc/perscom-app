@@ -6,15 +6,16 @@ namespace App\Filament\App\Resources\EventResource\RelationManagers;
 
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
+use BackedEnum;
 use Filament\Resources\RelationManagers\RelationManager;
-use Filament\Tables;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 
 class RegistrationsRelationManager extends RelationManager
 {
     protected static string $relationship = 'registrations';
 
-    protected static ?string $icon = 'heroicon-o-user-plus';
+    protected static string|BackedEnum|null $icon = 'heroicon-o-user-plus';
 
     protected $listeners = ['refreshRegistrations' => '$refresh'];
 
@@ -26,12 +27,12 @@ class RegistrationsRelationManager extends RelationManager
             ->emptyStateDescription('There are no users registered.')
             ->description('The users registered for the event.')
             ->columns([
-                Tables\Columns\TextColumn::make('registration.user.name')
+                TextColumn::make('registration.user.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('registration.status')
+                TextColumn::make('registration.status')
                     ->label('Status')
                     ->badge(),
-                Tables\Columns\TextColumn::make('registration.created_at')
+                TextColumn::make('registration.created_at')
                     ->sortable()
                     ->label('Registered')
                     ->timezone(UserSettingsService::get('timezone', function () {

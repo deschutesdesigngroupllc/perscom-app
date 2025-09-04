@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Filament\App\Resources\WebhookResource\Pages;
 
 use App\Filament\App\Resources\WebhookResource;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditWebhook extends EditRecord
@@ -15,8 +16,8 @@ class EditWebhook extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
+            ViewAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

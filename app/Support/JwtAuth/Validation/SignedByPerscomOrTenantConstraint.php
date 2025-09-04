@@ -5,17 +5,19 @@ declare(strict_types=1);
 namespace App\Support\JwtAuth\Validation;
 
 use Lcobucci\JWT\Signer;
+use Lcobucci\JWT\Signer\Key;
 use Lcobucci\JWT\Token;
 use Lcobucci\JWT\Validation\Constraint;
+use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\ConstraintViolation;
 
 readonly class SignedByPerscomOrTenantConstraint implements Constraint
 {
     public function __construct(
         private Signer $appSigner,
-        private Signer\Key $appKey,
+        private Key $appKey,
         private Signer $tenantSigner,
-        private Signer\Key $tenantKey
+        private Key $tenantKey
     ) {}
 
     public function assert(Token $token): void
@@ -30,7 +32,7 @@ readonly class SignedByPerscomOrTenantConstraint implements Constraint
 
     private function signedByApp(Token $token): bool
     {
-        $constraint = new Constraint\SignedWith($this->appSigner, $this->appKey);
+        $constraint = new SignedWith($this->appSigner, $this->appKey);
         $constraint->assert($token);
 
         return true;
@@ -38,7 +40,7 @@ readonly class SignedByPerscomOrTenantConstraint implements Constraint
 
     private function signedByTenant(Token $token): bool
     {
-        $constraint = new Constraint\SignedWith($this->tenantSigner, $this->tenantKey);
+        $constraint = new SignedWith($this->tenantSigner, $this->tenantKey);
         $constraint->assert($token);
 
         return true;

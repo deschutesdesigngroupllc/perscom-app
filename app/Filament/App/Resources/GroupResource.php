@@ -4,62 +4,81 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\GroupResource\Pages;
-use App\Filament\App\Resources\GroupResource\RelationManagers;
+use App\Filament\App\Resources\GroupResource\Pages\CreateGroup;
+use App\Filament\App\Resources\GroupResource\Pages\EditGroup;
+use App\Filament\App\Resources\GroupResource\Pages\ListGroups;
+use App\Filament\App\Resources\GroupResource\RelationManagers\UnitsRelationManager;
 use App\Filament\Exports\GroupExporter;
 use App\Models\Group;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Guava\FilamentIconPicker\Forms\IconPicker;
-use Guava\FilamentIconPicker\Tables\IconColumn;
+use Guava\IconPicker\Forms\Components\IconPicker;
+use Guava\IconPicker\Tables\Columns\IconColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class GroupResource extends BaseResource
 {
     protected static ?string $model = Group::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-group';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-group';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Group')
+                        Tab::make('Group')
                             ->icon('heroicon-o-rectangle-group')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the group.')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the group.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Image')
+                        Tab::make('Image')
                             ->visibleOn('edit')
                             ->icon('heroicon-o-photo')
                             ->schema([
-                                Forms\Components\Section::make()
+                                Section::make()
                                     ->hiddenLabel()
                                     ->relationship('image', fn ($state) => filled(data_get($state, 'path')))
                                     ->schema([
-                                        Forms\Components\FileUpload::make('path')
+                                        FileUpload::make('path')
                                             ->hiddenLabel()
                                             ->image()
                                             ->imageEditor()
@@ -71,15 +90,16 @@ class GroupResource extends BaseResource
                                             ->helperText('Add an optional image for the group.'),
                                     ]),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Roster')
+                        Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')
                             ->schema([
-                                Forms\Components\Toggle::make('hidden')
+                                Toggle::make('hidden')
                                     ->helperText('Hide this group from the roster.')
                                     ->required(),
                                 IconPicker::make('icon')
                                     ->helperText(new HtmlString('An optional icon for the group. A list of icons can be found <a href="https://heroicons.com/" target="_blank" class="underline">here</a>.')),
-                                Forms\Components\RichEditor::make('empty')
+                                RichEditor::make('empty')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->label('Empty Message')
                                     ->helperText('Display a message when no units occupy the group.')
                                     ->nullable()
@@ -94,44 +114,44 @@ class GroupResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ImageColumn::make('image.path')
+                ImageColumn::make('image.path')
                     ->label('Image'),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\ToggleColumn::make('hidden')
+                ToggleColumn::make('hidden')
                     ->sortable(),
                 IconColumn::make('icon')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->recordClasses(fn (?Group $record): ?string => match ($record->hidden) {
-                true => '!border-s-2 !border-s-red-600',
+                true => 'border-s-2! border-s-red-600!',
                 default => null,
             })
             ->groups(['hidden'])
             ->filters([
-                Tables\Filters\TernaryFilter::make('hidden'),
+                TernaryFilter::make('hidden'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(GroupExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->reorderable('groups.order');
@@ -149,16 +169,16 @@ class GroupResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\UnitsRelationManager::class,
+            UnitsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListGroups::route('/'),
-            'create' => Pages\CreateGroup::route('/create'),
-            'edit' => Pages\EditGroup::route('/{record}/edit'),
+            'index' => ListGroups::route('/'),
+            'create' => CreateGroup::route('/create'),
+            'edit' => EditGroup::route('/{record}/edit'),
         ];
     }
 

@@ -12,8 +12,12 @@ use App\Traits\HasLikes;
 use Eloquent;
 use Filament\Support\Contracts\HasColor;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 /**
  * App\Models\Newsfeed
@@ -26,19 +30,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int|null $subject_id
  * @property string|null $causer_type
  * @property string|null $causer_id
- * @property \Illuminate\Support\Collection<array-key, mixed>|null $properties
+ * @property Collection<array-key, mixed>|null $properties
  * @property string|null $batch_uuid
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \Illuminate\Database\Eloquent\Model|null $causer
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
+ * @property-read Model|null $causer
  * @property-read string|null $color
- * @property-read \Illuminate\Support\Collection $changes
+ * @property-read Collection $changes
  * @property-read string|null $headline
  * @property-read string|null $item
  * @property-read ModelLike|null $pivot
  * @property-read \Illuminate\Database\Eloquent\Collection<int, User> $likes
  * @property-read int|null $likes_count
- * @property-read \Illuminate\Database\Eloquent\Model|null $subject
+ * @property-read Model|null $subject
  * @property-read string|null $text
  *
  * @method static Builder<static>|Newsfeed causedBy(\Illuminate\Database\Eloquent\Model $causer)
@@ -48,21 +52,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder<static>|Newsfeed forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder<static>|Newsfeed hasBatch()
  * @method static Builder<static>|Newsfeed inLog(...$logNames)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed query()
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereBatchUuid($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereCauserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereCauserType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereDescription($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereEvent($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereLogName($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereProperties($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereSubjectId($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereSubjectType($value)
- * @method static \Illuminate\Database\Eloquent\Builder<static>|Newsfeed whereUpdatedAt($value)
+ * @method static Builder<static>|Newsfeed newModelQuery()
+ * @method static Builder<static>|Newsfeed newQuery()
+ * @method static Builder<static>|Newsfeed query()
+ * @method static Builder<static>|Newsfeed whereBatchUuid($value)
+ * @method static Builder<static>|Newsfeed whereCauserId($value)
+ * @method static Builder<static>|Newsfeed whereCauserType($value)
+ * @method static Builder<static>|Newsfeed whereCreatedAt($value)
+ * @method static Builder<static>|Newsfeed whereDescription($value)
+ * @method static Builder<static>|Newsfeed whereEvent($value)
+ * @method static Builder<static>|Newsfeed whereId($value)
+ * @method static Builder<static>|Newsfeed whereLogName($value)
+ * @method static Builder<static>|Newsfeed whereProperties($value)
+ * @method static Builder<static>|Newsfeed whereSubjectId($value)
+ * @method static Builder<static>|Newsfeed whereSubjectType($value)
+ * @method static Builder<static>|Newsfeed whereUpdatedAt($value)
  *
  * @mixin Eloquent
  */

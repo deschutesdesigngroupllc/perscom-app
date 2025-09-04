@@ -6,7 +6,8 @@ namespace App\Filament\App\Resources\SubmissionResource\Pages;
 
 use App\Filament\App\Resources\SubmissionResource;
 use App\Models\Submission;
-use Filament\Actions;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewSubmission extends ViewRecord
@@ -25,8 +26,8 @@ class ViewSubmission extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

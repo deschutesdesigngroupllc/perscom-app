@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\CommentResource\Pages;
+use App\Filament\App\Resources\CommentResource\Pages\CreateComment;
+use App\Filament\App\Resources\CommentResource\Pages\EditComment;
+use App\Filament\App\Resources\CommentResource\Pages\ListComments;
 use App\Models\Comment;
-use Filament\Forms;
-use Filament\Forms\Form;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\CreateAction;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\RichEditor;
 use Filament\Resources\Resource;
-use Filament\Tables;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
@@ -17,15 +25,16 @@ class CommentResource extends Resource
 {
     protected static ?string $model = Comment::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-rectangle-stack';
 
     protected static bool $shouldRegisterNavigation = false;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\RichEditor::make('comment')
+        return $schema
+            ->components([
+                RichEditor::make('comment')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->columnSpanFull()
                     ->required()
                     ->maxLength(65535),
@@ -37,23 +46,23 @@ class CommentResource extends Resource
         return $table
             ->recordTitleAttribute('comment')
             ->columns([
-                Tables\Columns\TextColumn::make('comment')
+                TextColumn::make('comment')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap(),
-                Tables\Columns\TextColumn::make('author.name'),
-                Tables\Columns\TextColumn::make('created_at'),
+                TextColumn::make('author.name'),
+                TextColumn::make('created_at'),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('comments.created_at', 'desc');
@@ -66,25 +75,25 @@ class CommentResource extends Resource
             ->description('The comments associated with this resource.')
             ->emptyStateDescription('Add the first comment!')
             ->columns([
-                Tables\Columns\TextColumn::make('comment')
+                TextColumn::make('comment')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap(),
-                Tables\Columns\TextColumn::make('author.name'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('author.name'),
+                TextColumn::make('created_at')
                     ->label('Commented')
                     ->toggleable(false),
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
+                CreateAction::make(),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->defaultSort('comments.created_at', 'desc');
@@ -93,9 +102,9 @@ class CommentResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListComments::route('/'),
-            'create' => Pages\CreateComment::route('/create'),
-            'edit' => Pages\EditComment::route('/{record}/edit'),
+            'index' => ListComments::route('/'),
+            'create' => CreateComment::route('/create'),
+            'edit' => EditComment::route('/{record}/edit'),
         ];
     }
 }

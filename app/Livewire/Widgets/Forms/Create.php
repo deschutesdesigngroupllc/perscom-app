@@ -8,20 +8,21 @@ use App\Filament\App\Pages\Forms\Submit;
 use App\Models\Form as FormModel;
 use App\Models\Submission;
 use App\Traits\Filament\InteractsWithFields;
-use Filament\Forms\Components\Actions;
+use Filament\Actions\Action;
 use Filament\Forms\Components\Placeholder;
-use Filament\Forms\Components\Section;
 use Filament\Forms\Concerns\InteractsWithForms;
 use Filament\Forms\Contracts\HasForms;
-use Filament\Forms\Form;
 use Filament\Resources\Pages\Concerns\InteractsWithRecord;
+use Filament\Schemas\Components\Actions;
+use Filament\Schemas\Components\Section;
+use Filament\Schemas\Schema;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\HtmlString;
 use Livewire\Component;
 use Livewire\Features\SupportEvents\Event;
 
 /**
- * @property Form $form;
+ * @property Schema $form ;
  */
 class Create extends Component implements HasForms
 {
@@ -42,15 +43,15 @@ class Create extends Component implements HasForms
         return view('livewire.widgets.forms.create');
     }
 
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
         /** @var FormModel $formModel */
         $formModel = $this->record;
 
-        return $form
+        return $schema
             ->model(Submission::class)
             ->statePath('data')
-            ->schema([
+            ->components([
                 Section::make($formModel->name)
                     ->description($formModel->description)
                     ->schema(array_merge([
@@ -66,11 +67,11 @@ HTML
                             )),
                     ], Submit::getFormSchemaFromFields($this->record), [
                         Actions::make([
-                            Actions\Action::make('back')
+                            Action::make('back')
                                 ->button()
                                 ->color('gray')
                                 ->action(fn (): Event => $this->dispatch('iframe:navigate', path: 'forms')),
-                            Actions\Action::make('submit')
+                            Action::make('submit')
                                 ->action('submitForm'),
                         ])->alignCenter(),
                     ])),

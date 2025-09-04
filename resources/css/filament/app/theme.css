@@ -1,9 +1,15 @@
-@import '/vendor/filament/minimal-theme/resources/css/index.css';
-@import '/vendor/archilex/filament-filter-sets/resources/css/plugin.css';
-@import 'torchlight.css';
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+@import '../../../../vendor/filament-themes/minimal';
+@import './torchlight.css';
 @import '../../calendar.css';
 
-@config 'tailwind.config.js';
+@source '../../../../app/Filament/App/**/*';
+@source '../../../../resources/views/filament/**/*';
+@source '../../../../resources/views/forms/components/**/*';
+@source '../../../../resources/views/livewire/app/**/*';
+@source '../../../../resources/views/components/**/*';
+@source '../../../../vendor/guava/filament-icon-picker/resources/**/*';
+@source '../../../../vendor/archilex/filament-filter-sets/resources/css/**/*';
 
 .user-cover-photo {
     @apply flex-1 items-center justify-center

@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace App\Filament\Admin\Pages\Auth;
 
 use App\Filament\Forms\Components\Turnstile;
-use Filament\Forms\Form;
-use Filament\Pages\Auth\Login as BaseLogin;
+use Filament\Schemas\Schema;
 
-class Login extends BaseLogin
+class Login extends \Filament\Auth\Pages\Login
 {
-    public function form(Form $form): Form
+    public function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
+        return $schema
+            ->components([
                 $this->getEmailFormComponent(),
                 $this->getPasswordFormComponent(),
                 Turnstile::make('turnstile'),

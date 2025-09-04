@@ -4,70 +4,86 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\SlotResource\Pages;
+use App\Filament\App\Resources\SlotResource\Pages\CreateSlot;
+use App\Filament\App\Resources\SlotResource\Pages\EditSlot;
+use App\Filament\App\Resources\SlotResource\Pages\ListSlots;
 use App\Models\Enums\RosterMode;
 use App\Models\Scopes\HiddenScope;
 use App\Models\Scopes\VisibleScope;
 use App\Models\Slot;
 use App\Settings\DashboardSettings;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Columns\ToggleColumn;
+use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class SlotResource extends BaseResource
 {
     protected static ?string $model = Slot::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-cursor-arrow-rays';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-cursor-arrow-rays';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Slot')
+                        Tab::make('Slot')
                             ->icon('heroicon-o-cursor-arrow-rays')
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the slot.')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the slot.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Assignment')
+                        Tab::make('Assignment')
                             ->icon('heroicon-o-rectangle-stack')
                             ->schema([
-                                Forms\Components\Select::make('position_id')
+                                Select::make('position_id')
                                     ->helperText('If selected, a user will be assigned the position when an assignment record is created for the slot.')
                                     ->preload()
                                     ->relationship(name: 'position', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => PositionResource::form($form)),
-                                Forms\Components\Select::make('specialty_id')
+                                    ->createOptionForm(fn ($form): Schema => PositionResource::form($form)),
+                                Select::make('specialty_id')
                                     ->helperText('If selected, a user will be assigned the specialty when an assignment record is created for the slot.')
                                     ->preload()
                                     ->relationship(name: 'specialty', titleAttribute: 'name')
                                     ->searchable()
-                                    ->createOptionForm(fn ($form): Form => SpecialtyResource::form($form)),
+                                    ->createOptionForm(fn ($form): Schema => SpecialtyResource::form($form)),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Roster')
+                        Tab::make('Roster')
                             ->icon('heroicon-o-queue-list')
                             ->schema([
-                                Forms\Components\RichEditor::make('empty')
+                                RichEditor::make('empty')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->label('Empty Message')
                                     ->helperText('Display a message when no users occupy the slot.')
                                     ->nullable()
@@ -82,32 +98,32 @@ class SlotResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('position.name')
+                TextColumn::make('position.name')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('specialty.name')
+                TextColumn::make('specialty.name')
                     ->sortable(),
-                Tables\Columns\ToggleColumn::make('hidden')
+                ToggleColumn::make('hidden')
                     ->sortable(),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('hidden'),
+                TernaryFilter::make('hidden'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+            ->toolbarActions([
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ])
             ->reorderable('slots.order');
@@ -125,9 +141,9 @@ class SlotResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSlots::route('/'),
-            'create' => Pages\CreateSlot::route('/create'),
-            'edit' => Pages\EditSlot::route('/{record}/edit'),
+            'index' => ListSlots::route('/'),
+            'create' => CreateSlot::route('/create'),
+            'edit' => EditSlot::route('/{record}/edit'),
         ];
     }
 

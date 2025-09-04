@@ -17,8 +17,10 @@ use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
 /**
@@ -28,11 +30,11 @@ use Illuminate\Support\Str;
  * @property string $color
  * @property bool $global
  * @property bool $enabled
- * @property \Illuminate\Support\Carbon|null $expires_at
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property Carbon|null $expires_at
+ * @property Carbon|null $created_at
+ * @property Carbon|null $updated_at
  * @property-read string $label
- * @property-read \Illuminate\Database\Eloquent\Collection<int, ModelNotification> $modelNotifications
+ * @property-read Collection<int, ModelNotification> $modelNotifications
  * @property-read int|null $model_notifications_count
  * @property-read string|null $relative_url
  * @property-read string|null $url
@@ -104,9 +106,6 @@ class Announcement extends Model implements Enableable, HasColor, HasLabel, Send
         );
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

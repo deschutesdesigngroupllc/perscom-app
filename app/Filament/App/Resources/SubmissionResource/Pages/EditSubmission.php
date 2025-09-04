@@ -7,7 +7,10 @@ namespace App\Filament\App\Resources\SubmissionResource\Pages;
 use App\Filament\App\Resources\SubmissionResource;
 use App\Models\Submission;
 use App\Traits\Filament\InteractsWithFields;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\ActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\ViewAction;
 use Filament\Resources\Pages\EditRecord;
 
 class EditSubmission extends EditRecord
@@ -28,10 +31,10 @@ class EditSubmission extends EditRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\ViewAction::make(),
-            Actions\DeleteAction::make(),
-            Actions\ActionGroup::make([
-                Actions\Action::make('mark-as-unread')
+            ViewAction::make(),
+            DeleteAction::make(),
+            ActionGroup::make([
+                Action::make('mark-as-unread')
                     ->label('Mark As Unread')
                     ->visible(fn (Submission $record) => filled($record->read_at))
                     ->icon('heroicon-o-envelope-open')

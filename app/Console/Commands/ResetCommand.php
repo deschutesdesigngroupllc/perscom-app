@@ -11,8 +11,10 @@ use Database\Seeders\FireServiceSeeder;
 use Database\Seeders\MilitarySeeder;
 use Database\Seeders\TenantDatabaseSeeder;
 use Database\Seeders\TenantSeeder;
+use Exception;
 use Illuminate\Console\Command;
 use Illuminate\Contracts\Console\Isolatable;
+use Illuminate\Support\Facades\Schema;
 use Stancl\Tenancy\Exceptions\DatabaseManagerNotRegisteredException;
 
 class ResetCommand extends Command implements Isolatable
@@ -33,6 +35,19 @@ class ResetCommand extends Command implements Isolatable
         };
     }
 
+    protected function ensureInitialMigrationsRun(): void
+    {
+        try {
+            if (! Schema::hasTable('migrations') || ! Schema::hasTable('tenants')) {
+                $this->info('Initial migrations not found. Running initial migration setup...');
+                $this->call('migrate', ['--step' => true]);
+            }
+        } catch (Exception) {
+            $this->info('Database not properly initialized. Running initial migration setup...');
+            $this->call('migrate', ['--step' => true]);
+        }
+    }
+
     protected function resetDemoEnvironment(): int
     {
         if (! app()->environment('demo', 'testing', 'local')) {
@@ -40,6 +55,8 @@ class ResetCommand extends Command implements Isolatable
 
             return static::FAILURE;
         }
+
+        $this->ensureInitialMigrationsRun();
 
         $seeder = match (true) {
             $this->option('seeder') === 'fire' => FireServiceSeeder::class,
@@ -82,6 +99,8 @@ class ResetCommand extends Command implements Isolatable
 
             return static::FAILURE;
         }
+
+        $this->ensureInitialMigrationsRun();
 
         tenancy()->runForMultiple(Tenant::all(), function (Tenant $tenant): void {
             if (filled($tenant->tenancy_db_name) && $tenant->database()->manager()->databaseExists($tenant->tenancy_db_name)) {

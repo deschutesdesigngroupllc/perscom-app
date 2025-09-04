@@ -32,7 +32,7 @@ trait InteractsWithBatchRecords
 
     protected function getRedirectUrl(): string
     {
-        $users = collect($this->getOldFormState('data.user_id'));
+        $users = collect($this->getOldSchemaState('data.user_id'));
 
         if ($users->count() > 1) {
             $resource = static::getResource();

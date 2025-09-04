@@ -7,7 +7,8 @@ namespace App\Filament\Admin\Resources\TenantResource\Pages;
 use App\Filament\Admin\Actions\TenantLoginAction;
 use App\Filament\Admin\Resources\TenantResource;
 use App\Models\Tenant;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
 use Filament\Resources\Pages\EditRecord;
 use Filament\Support\Colors\Color;
 
@@ -19,12 +20,12 @@ class EditTenant extends EditRecord
     {
         return [
             TenantLoginAction::make(),
-            Actions\Action::make('stripe')
-                ->color(Color::hex('#5167FC'))
+            Action::make('stripe')
+                ->color(Color::generateV3Palette('#5167FC'))
                 ->visible(fn (Tenant $record) => $record->hasStripeId())
                 ->openUrlInNewTab()
                 ->url(fn (Tenant $record) => $record->stripe_url),
-            Actions\DeleteAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

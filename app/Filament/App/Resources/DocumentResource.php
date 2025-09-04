@@ -4,70 +4,81 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\DocumentResource\Pages;
+use App\Filament\App\Resources\DocumentResource\Pages\CreateDocument;
+use App\Filament\App\Resources\DocumentResource\Pages\EditDocument;
+use App\Filament\App\Resources\DocumentResource\Pages\ListDocuments;
 use App\Filament\Exports\DocumentExporter;
 use App\Models\Document;
-use Filament\Forms;
-use Filament\Forms\Components\Actions\Action;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\Action;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class DocumentResource extends BaseResource
 {
     protected static ?string $model = Document::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-document';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-document';
 
-    protected static ?string $navigationGroup = 'Organization';
+    protected static string|UnitEnum|null $navigationGroup = 'Organization';
 
     protected static ?int $navigationSort = 3;
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Section::make('Document Information')
-                    ->schema([
-                        Forms\Components\TextInput::make('name')
-                            ->helperText('The name of the document.')
-                            ->required()
-                            ->maxLength(255)
-                            ->columnSpanFull(),
-                        Forms\Components\RichEditor::make('description')
-                            ->helperText('A brief description of the document.')
-                            ->nullable()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Forms\Components\RichEditor::make('content')
-                            ->helperText('The content of the document. Use content tags to dynamically inject data from attached resources.')
-                            ->hintIconTooltip('View available content tags.')
-                            ->hint('Content Tags')
-                            ->hintColor('gray')
-                            ->hintIcon('heroicon-o-tag')
-                            ->hintAction(Action::make('view')
-                                ->color('gray')
-                                ->modalHeading('Content Tags')
-                                ->modalContent(view('app.model-tags'))
-                                ->modalSubmitAction(false)
-                                ->modalCancelActionLabel('Close')
-                                ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
-                                ->slideOver())
-                            ->required()
-                            ->maxLength(65535)
-                            ->columnSpanFull(),
-                        Forms\Components\Select::make('author_id')
-                            ->preload()
-                            ->default(Auth::user()->getAuthIdentifier())
-                            ->helperText('The author of the document.')
-                            ->required()
-                            ->relationship('author', 'name')
-                            ->columnSpanFull()
-                            ->createOptionForm(fn ($form): Form => UserResource::form($form)),
-                    ]),
+        return $schema
+            ->columns(1)
+            ->components([
+                TextInput::make('name')
+                    ->helperText('The name of the document.')
+                    ->required()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the document.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                RichEditor::make('content')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('The content of the document. Use content tags to dynamically inject data from attached resources.')
+                    ->hintIconTooltip('View available content tags.')
+                    ->hint('Content Tags')
+                    ->hintColor('gray')
+                    ->hintIcon('heroicon-o-tag')
+                    ->hintAction(Action::make('view')
+                        ->color('gray')
+                        ->modalHeading('Content Tags')
+                        ->modalContent(view('app.model-tags'))
+                        ->modalSubmitAction(false)
+                        ->modalCancelActionLabel('Close')
+                        ->modalDescription('Content tags provide a way for you to dynamically insert data into a body of text. The tags will be replaced with relevant data from whatever resource the content is attached to.')
+                        ->slideOver())
+                    ->required()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
+                Select::make('author_id')
+                    ->preload()
+                    ->default(Auth::user()->getAuthIdentifier())
+                    ->helperText('The author of the document.')
+                    ->required()
+                    ->relationship('author', 'name')
+                    ->columnSpanFull()
+                    ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
             ]);
     }
 
@@ -75,32 +86,32 @@ class DocumentResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->searchable()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->filters([
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(DocumentExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -108,9 +119,9 @@ class DocumentResource extends BaseResource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListDocuments::route('/'),
-            'create' => Pages\CreateDocument::route('/create'),
-            'edit' => Pages\EditDocument::route('/{record}/edit'),
+            'index' => ListDocuments::route('/'),
+            'create' => CreateDocument::route('/create'),
+            'edit' => EditDocument::route('/{record}/edit'),
         ];
     }
 

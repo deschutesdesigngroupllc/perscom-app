@@ -15,18 +15,12 @@ use Illuminate\Support\HigherOrderTapProxy;
  */
 trait SocialRelationships
 {
-    /**
-     * @return HasOne<SocialiteUser, $this>
-     */
     public function discordUser(): HasOne
     {
         return $this->hasOne(SocialiteUser::class)
             ->where('provider', 'discord');
     }
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function discordConnected(): Attribute
     {
         return Attribute::get(fn (): bool => filled($this->discord_user_id))
@@ -44,18 +38,12 @@ trait SocialRelationships
         });
     }
 
-    /**
-     * @return HasOne<SocialiteUser, $this>
-     */
     public function facebookUser(): HasOne
     {
         return $this->hasOne(SocialiteUser::class)
             ->where('provider', 'facebook');
     }
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function facebookConnected(): Attribute
     {
         return Attribute::get(fn (): bool => filled($this->facebook_user_id))
@@ -72,18 +60,12 @@ trait SocialRelationships
         });
     }
 
-    /**
-     * @return HasOne<SocialiteUser, $this>
-     */
     public function githubUser(): HasOne
     {
         return $this->hasOne(SocialiteUser::class)
             ->where('provider', 'github');
     }
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function githubConnected(): Attribute
     {
         return Attribute::get(fn (): bool => filled($this->github_user_id))
@@ -100,18 +82,12 @@ trait SocialRelationships
         });
     }
 
-    /**
-     * @return HasOne<SocialiteUser, $this>
-     */
     public function googleUser(): HasOne
     {
         return $this->hasOne(SocialiteUser::class)
             ->where('provider', 'google');
     }
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function googleConnected(): Attribute
     {
         return Attribute::get(fn (): bool => filled($this->google_user_id))

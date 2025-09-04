@@ -7,7 +7,9 @@ namespace App\Filament\App\Resources\EventResource\Pages;
 use App\Filament\App\Actions\Events\RsvpAction;
 use App\Filament\App\Resources\EventResource;
 use App\Models\Event;
-use Filament\Actions;
+use Filament\Actions\Action;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
 use Filament\Resources\Pages\ViewRecord;
 
 class ViewEvent extends ViewRecord
@@ -17,14 +19,14 @@ class ViewEvent extends ViewRecord
     protected function getHeaderActions(): array
     {
         return [
-            Actions\Action::make('url')
+            Action::make('url')
                 ->url(fn (?Event $record) => $record->url)
                 ->openUrlInNewTab()
                 ->color('gray')
                 ->label('Open'),
             RsvpAction::make(),
-            Actions\EditAction::make(),
-            Actions\DeleteAction::make(),
+            EditAction::make(),
+            DeleteAction::make(),
         ];
     }
 }

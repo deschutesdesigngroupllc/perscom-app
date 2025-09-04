@@ -14,9 +14,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 trait HasLikes
 {
-    /**
-     * @return MorphToMany<User, $this>
-     */
     public function likes(): MorphToMany
     {
         return $this->morphToMany(User::class, 'model', 'model_has_likes')

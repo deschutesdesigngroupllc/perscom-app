@@ -4,26 +4,45 @@ declare(strict_types=1);
 
 namespace App\Filament\App\Resources;
 
-use App\Filament\App\Resources\FormResource\Pages;
-use App\Filament\App\Resources\FormResource\RelationManagers;
+use App\Filament\App\Resources\FormResource\Pages\CreateForm;
+use App\Filament\App\Resources\FormResource\Pages\EditForm;
+use App\Filament\App\Resources\FormResource\Pages\ListForms;
+use App\Filament\App\Resources\FormResource\RelationManagers\FieldsRelationManager;
 use App\Filament\Exports\FormExporter;
 use App\Forms\Components\ModelNotification;
 use App\Models\Form as FormModel;
-use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Tables;
+use BackedEnum;
+use Filament\Actions\BulkActionGroup;
+use Filament\Actions\DeleteAction;
+use Filament\Actions\DeleteBulkAction;
+use Filament\Actions\EditAction;
+use Filament\Actions\ExportBulkAction;
+use Filament\Forms\Components\RichEditor;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Components\Toggle;
+use Filament\Schemas\Components\Tabs;
+use Filament\Schemas\Components\Tabs\Tab;
+use Filament\Schemas\Components\Utilities\Set;
+use Filament\Schemas\Schema;
+use Filament\Tables\Columns\IconColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\TernaryFilter;
+use Filament\Tables\Grouping\Group;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
 use Illuminate\Support\Str;
+use UnitEnum;
 
 class FormResource extends BaseResource
 {
     protected static ?string $model = FormModel::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-pencil-square';
+    protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-pencil-square';
 
-    protected static ?string $navigationGroup = 'Forms';
+    protected static string|UnitEnum|null $navigationGroup = 'Forms';
 
     protected static ?int $navigationSort = 2;
 
@@ -32,65 +51,67 @@ class FormResource extends BaseResource
         return 'submission.created';
     }
 
-    public static function form(Form $form): Form
+    public static function form(Schema $schema): Schema
     {
-        return $form
-            ->schema([
-                Forms\Components\Tabs::make()
+        return $schema
+            ->components([
+                Tabs::make()
                     ->columnSpanFull()
                     ->tabs([
-                        Forms\Components\Tabs\Tab::make('Form')
+                        Tab::make('Form')
                             ->icon('heroicon-o-pencil-square')
                             ->columns()
                             ->schema([
-                                Forms\Components\TextInput::make('name')
+                                TextInput::make('name')
                                     ->helperText('The name of the form.')
                                     ->lazy()
-                                    ->afterStateUpdated(function (Forms\Set $set, $state, $operation): void {
+                                    ->afterStateUpdated(function (Set $set, $state, $operation): void {
                                         if ($operation === 'create') {
                                             $set('slug', Str::slug($state));
                                         }
                                     })
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\TextInput::make('slug')
+                                TextInput::make('slug')
                                     ->helperText('The slug will be used in the URL to access the form. Allowed characters: 0-9, a-z, A-Z, or hyphen.')
                                     ->unique(ignoreRecord: true)
                                     ->regex('/^[a-zA-Z0-9-]+$/')
                                     ->required()
                                     ->maxLength(255),
-                                Forms\Components\RichEditor::make('description')
+                                RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the form.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\RichEditor::make('instructions')
+                                RichEditor::make('instructions')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Any instructions the user filling out the form should follow.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
-                                Forms\Components\Toggle::make('is_public')
+                                Toggle::make('is_public')
                                     ->label('Public')
                                     ->helperText('Enable to allow guest submissions.')
                                     ->required(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Submission')
+                        Tab::make('Submission')
                             ->icon('heroicon-o-folder-plus')
                             ->schema([
-                                Forms\Components\Select::make('submission_status_id')
+                                Select::make('submission_status_id')
                                     ->preload()
                                     ->label('Status')
                                     ->relationship('submission_status', 'name')
                                     ->helperText('The default status of the submission when it is submitted.')
-                                    ->createOptionForm(fn ($form): Form => StatusResource::form($form)),
-                                Forms\Components\Textarea::make('success_message')
+                                    ->createOptionForm(fn ($form): Schema => StatusResource::form($form)),
+                                Textarea::make('success_message')
                                     ->label('Message')
                                     ->nullable()
                                     ->helperText('The message displayed when the form is successfully submitted.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                             ]),
-                        Forms\Components\Tabs\Tab::make('Notifications')
+                        Tab::make('Notifications')
                             ->icon('heroicon-o-bell')
                             ->schema([
                                 ModelNotification::make(
@@ -105,45 +126,45 @@ class FormResource extends BaseResource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('name')
+                TextColumn::make('name')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('slug')
+                TextColumn::make('slug')
                     ->badge()
                     ->color('gray')
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\TextColumn::make('description')
+                TextColumn::make('description')
                     ->formatStateUsing(fn ($state) => Str::limit($state))
                     ->html()
                     ->wrap()
                     ->sortable()
                     ->searchable(),
-                Tables\Columns\IconColumn::make('is_public')
+                IconColumn::make('is_public')
                     ->sortable()
                     ->label('Public'),
-                Tables\Columns\TextColumn::make('created_at')
+                TextColumn::make('created_at')
                     ->sortable(),
-                Tables\Columns\TextColumn::make('updated_at')
+                TextColumn::make('updated_at')
                     ->sortable(),
             ])
             ->groups([
-                Tables\Grouping\Group::make('is_public')->label('Public'),
+                Group::make('is_public')->label('Public'),
             ])
             ->filters([
-                Tables\Filters\TernaryFilter::make('is_public')
+                TernaryFilter::make('is_public')
                     ->label('Public'),
             ])
-            ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+            ->recordActions([
+                EditAction::make(),
+                DeleteAction::make(),
             ])
-            ->bulkActions([
-                Tables\Actions\ExportBulkAction::make()
+            ->toolbarActions([
+                ExportBulkAction::make()
                     ->exporter(FormExporter::class)
                     ->icon('heroicon-o-document-arrow-down'),
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                BulkActionGroup::make([
+                    DeleteBulkAction::make(),
                 ]),
             ]);
     }
@@ -151,16 +172,16 @@ class FormResource extends BaseResource
     public static function getRelations(): array
     {
         return [
-            RelationManagers\FieldsRelationManager::class,
+            FieldsRelationManager::class,
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListForms::route('/'),
-            'create' => Pages\CreateForm::route('/create'),
-            'edit' => Pages\EditForm::route('/{record}/edit'),
+            'index' => ListForms::route('/'),
+            'create' => CreateForm::route('/create'),
+            'edit' => EditForm::route('/{record}/edit'),
         ];
     }
 
