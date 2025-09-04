@@ -24,7 +24,6 @@ use App\Traits\HasSpecialty;
 use App\Traits\HasStatus;
 use App\Traits\HasUnit;
 use App\Traits\HasUser;
-use Database\Factories\AssignmentRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -72,17 +71,17 @@ use Illuminate\Support\Carbon;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static Builder<static>|AssignmentRecord author(User $user)
- * @method static Builder<static>|AssignmentRecord document(Document $document)
- * @method static AssignmentRecordFactory factory($count = null, $state = [])
+ * @method static Builder<static>|AssignmentRecord author(\App\Models\User $user)
+ * @method static Builder<static>|AssignmentRecord document(\App\Models\Document $document)
+ * @method static \Database\Factories\AssignmentRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|AssignmentRecord newModelQuery()
  * @method static Builder<static>|AssignmentRecord newQuery()
- * @method static Builder<static>|AssignmentRecord position(Position $position)
+ * @method static Builder<static>|AssignmentRecord position(\App\Models\Position $position)
  * @method static Builder<static>|AssignmentRecord query()
- * @method static Builder<static>|AssignmentRecord specialty(Specialty $specialty)
- * @method static Builder<static>|AssignmentRecord status(Status $status)
- * @method static Builder<static>|AssignmentRecord unit(Unit $unit)
- * @method static Builder<static>|AssignmentRecord user(User $user)
+ * @method static Builder<static>|AssignmentRecord specialty(\App\Models\Specialty $specialty)
+ * @method static Builder<static>|AssignmentRecord status(\App\Models\Status $status)
+ * @method static Builder<static>|AssignmentRecord unit(\App\Models\Unit $unit)
+ * @method static Builder<static>|AssignmentRecord user(\App\Models\User $user)
  * @method static Builder<static>|AssignmentRecord whereAuthorId($value)
  * @method static Builder<static>|AssignmentRecord whereCreatedAt($value)
  * @method static Builder<static>|AssignmentRecord whereDocumentId($value)

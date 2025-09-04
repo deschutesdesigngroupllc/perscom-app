@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\ActivityFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -30,11 +29,11 @@ use Spatie\Activitylog\Models\Activity as BaseActivity;
  * @property-read Collection $changes
  * @property-read Model|null $subject
  *
- * @method static Builder<static>|Activity causedBy(Model $causer)
- * @method static ActivityFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Activity causedBy(\Illuminate\Database\Eloquent\Model $causer)
+ * @method static \Database\Factories\ActivityFactory factory($count = null, $state = [])
  * @method static Builder<static>|Activity forBatch(string $batchUuid)
  * @method static Builder<static>|Activity forEvent(string $event)
- * @method static Builder<static>|Activity forSubject(Model $subject)
+ * @method static Builder<static>|Activity forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder<static>|Activity hasBatch()
  * @method static Builder<static>|Activity inLog(...$logNames)
  * @method static Builder<static>|Activity newModelQuery()

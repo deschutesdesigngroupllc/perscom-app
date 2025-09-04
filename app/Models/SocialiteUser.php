@@ -20,7 +20,6 @@ use Laravel\Socialite\Contracts\User as SocialiteUserContract;
  * @property string $provider_id
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
- * @property-read User $user
  *
  * @method static Builder<static>|SocialiteUser newModelQuery()
  * @method static Builder<static>|SocialiteUser newQuery()

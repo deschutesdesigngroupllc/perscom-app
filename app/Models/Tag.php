@@ -7,7 +7,6 @@ namespace App\Models;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
-use Database\Factories\TagFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -21,7 +20,7 @@ use Illuminate\Support\Carbon;
  * @property Carbon|null $updated_at
  * @property-read string $label
  *
- * @method static TagFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\TagFactory factory($count = null, $state = [])
  * @method static Builder<static>|Tag newModelQuery()
  * @method static Builder<static>|Tag newQuery()
  * @method static Builder<static>|Tag query()

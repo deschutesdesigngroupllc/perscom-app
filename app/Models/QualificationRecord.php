@@ -19,7 +19,6 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
-use Database\Factories\QualificationRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -58,13 +57,13 @@ use Illuminate\Support\Carbon;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static Builder<static>|QualificationRecord author(User $user)
- * @method static Builder<static>|QualificationRecord document(Document $document)
- * @method static QualificationRecordFactory factory($count = null, $state = [])
+ * @method static Builder<static>|QualificationRecord author(\App\Models\User $user)
+ * @method static Builder<static>|QualificationRecord document(\App\Models\Document $document)
+ * @method static \Database\Factories\QualificationRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|QualificationRecord newModelQuery()
  * @method static Builder<static>|QualificationRecord newQuery()
  * @method static Builder<static>|QualificationRecord query()
- * @method static Builder<static>|QualificationRecord user(User $user)
+ * @method static Builder<static>|QualificationRecord user(\App\Models\User $user)
  * @method static Builder<static>|QualificationRecord whereAuthorId($value)
  * @method static Builder<static>|QualificationRecord whereCreatedAt($value)
  * @method static Builder<static>|QualificationRecord whereDocumentId($value)

@@ -10,7 +10,6 @@ use App\Services\ScheduleService;
 use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use Carbon\CarbonInterval;
-use Database\Factories\ScheduleFactory;
 use Eloquent;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -46,7 +45,7 @@ use Illuminate\Support\Collection;
  * @property-read CarbonInterval $length
  * @property-read Model|Eloquent|null $repeatable
  *
- * @method static ScheduleFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\ScheduleFactory factory($count = null, $state = [])
  * @method static Builder<static>|Schedule newModelQuery()
  * @method static Builder<static>|Schedule newQuery()
  * @method static Builder<static>|Schedule query()

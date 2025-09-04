@@ -8,7 +8,6 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAuthor;
 use App\Traits\HasResourceLabel;
-use Database\Factories\CommentFactory;
 use Eloquent;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
@@ -29,8 +28,8 @@ use Illuminate\Support\Carbon;
  * @property-read Model|Eloquent|null $commentable
  * @property-read string $label
  *
- * @method static Builder<static>|Comment author(User $user)
- * @method static CommentFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Comment author(\App\Models\User $user)
+ * @method static \Database\Factories\CommentFactory factory($count = null, $state = [])
  * @method static Builder<static>|Comment newModelQuery()
  * @method static Builder<static>|Comment newQuery()
  * @method static Builder<static>|Comment query()

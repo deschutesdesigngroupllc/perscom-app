@@ -15,7 +15,6 @@ use App\Traits\HasIcon;
 use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\GroupFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -50,7 +49,7 @@ use Staudenmeir\EloquentHasManyDeep\HasManyDeep;
  * @property-read int|null $units_count
  * @property-read string|null $url
  *
- * @method static GroupFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\GroupFactory factory($count = null, $state = [])
  * @method static Builder<static>|Group forAutomaticRoster(?string $groupId = null)
  * @method static Builder<static>|Group forManualRoster(?string $groupId = null)
  * @method static Builder<static>|Group hidden()

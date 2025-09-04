@@ -11,7 +11,6 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Carbon;
 use Laravel\Passport\AuthCode;
 use Laravel\Passport\Client as BaseClientModel;
-use Laravel\Passport\Database\Factories\ClientFactory;
 
 /**
  * @property string $id
@@ -39,7 +38,7 @@ use Laravel\Passport\Database\Factories\ClientFactory;
  * @property-read int|null $tokens_count
  * @property-read User|null $user
  *
- * @method static ClientFactory factory($count = null, $state = [])
+ * @method static \Laravel\Passport\Database\Factories\ClientFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportClient newModelQuery()
  * @method static Builder<static>|PassportClient newQuery()
  * @method static Builder<static>|PassportClient query()

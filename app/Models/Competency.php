@@ -9,7 +9,6 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasCategories;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\CompetencyFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -33,7 +32,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $training_records_count
  * @property-read string|null $url
  *
- * @method static CompetencyFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\CompetencyFactory factory($count = null, $state = [])
  * @method static Builder<static>|Competency newModelQuery()
  * @method static Builder<static>|Competency newQuery()
  * @method static Builder<static>|Competency query()

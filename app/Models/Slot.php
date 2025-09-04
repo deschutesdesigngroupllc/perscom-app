@@ -15,7 +15,6 @@ use App\Traits\HasPosition;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasSpecialty;
 use App\Traits\HasUsers;
-use Database\Factories\SlotFactory;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -52,14 +51,14 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
- * @method static SlotFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\SlotFactory factory($count = null, $state = [])
  * @method static Builder<static>|Slot hidden()
  * @method static Builder<static>|Slot newModelQuery()
  * @method static Builder<static>|Slot newQuery()
  * @method static Builder<static>|Slot ordered(string $direction = 'asc')
- * @method static Builder<static>|Slot position(Position $position)
+ * @method static Builder<static>|Slot position(\App\Models\Position $position)
  * @method static Builder<static>|Slot query()
- * @method static Builder<static>|Slot specialty(Specialty $specialty)
+ * @method static Builder<static>|Slot specialty(\App\Models\Specialty $specialty)
  * @method static Builder<static>|Slot visible()
  * @method static Builder<static>|Slot whereCreatedAt($value)
  * @method static Builder<static>|Slot whereDescription($value)

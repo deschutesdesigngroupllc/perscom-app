@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
  * @property-read Document $document
  * @property-read mixed $document_parsed
  *
- * @method static Builder<static>|DocumentTag document(Document $document)
+ * @method static Builder<static>|DocumentTag document(\App\Models\Document $document)
  * @method static Builder<static>|DocumentTag newModelQuery()
  * @method static Builder<static>|DocumentTag newQuery()
  * @method static Builder<static>|DocumentTag query()

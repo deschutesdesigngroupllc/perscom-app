@@ -29,7 +29,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|ModelLike newModelQuery()
  * @method static Builder<static>|ModelLike newQuery()
  * @method static Builder<static>|ModelLike query()
- * @method static Builder<static>|ModelLike user(User $user)
+ * @method static Builder<static>|ModelLike user(\App\Models\User $user)
  * @method static Builder<static>|ModelLike whereCreatedAt($value)
  * @method static Builder<static>|ModelLike whereId($value)
  * @method static Builder<static>|ModelLike whereModelId($value)

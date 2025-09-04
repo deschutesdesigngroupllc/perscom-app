@@ -18,7 +18,6 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasServiceRecords;
 use App\Traits\HasTags;
-use Database\Factories\DocumentFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Contracts\Support\Htmlable;
 use Illuminate\Database\Eloquent\Builder;
@@ -64,8 +63,8 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $tags_count
  * @property-read string|null $url
  *
- * @method static Builder<static>|Document author(User $user)
- * @method static DocumentFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Document author(\App\Models\User $user)
+ * @method static \Database\Factories\DocumentFactory factory($count = null, $state = [])
  * @method static Builder<static>|Document newModelQuery()
  * @method static Builder<static>|Document newQuery()
  * @method static Builder<static>|Document query()

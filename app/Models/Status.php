@@ -13,7 +13,6 @@ use App\Traits\HasColorField;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
-use Database\Factories\StatusFactory;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -46,7 +45,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
- * @method static StatusFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\StatusFactory factory($count = null, $state = [])
  * @method static Builder<static>|Status newModelQuery()
  * @method static Builder<static>|Status newQuery()
  * @method static Builder<static>|Status ordered(string $direction = 'asc')

@@ -18,7 +18,6 @@ use App\Traits\HasImages;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
-use Database\Factories\UnitFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -65,7 +64,7 @@ use Staudenmeir\EloquentHasManyDeep\HasRelationships;
  * @property-read Collection|User[] $usersViaSecondaryAssignmentRecords
  * @property-read int|null $users_via_secondary_assignment_records_count
  *
- * @method static UnitFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\UnitFactory factory($count = null, $state = [])
  * @method static Builder<static>|Unit hidden()
  * @method static Builder<static>|Unit newModelQuery()
  * @method static Builder<static>|Unit newQuery()

@@ -6,7 +6,6 @@ namespace App\Models;
 
 use App\Observers\DomainObserver;
 use App\Traits\ClearsResponseCache;
-use Database\Factories\DomainFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -28,7 +27,7 @@ use Stancl\Tenancy\Database\Models\Domain as BaseDomain;
  * @property-read Tenant $tenant
  * @property-read string $url
  *
- * @method static DomainFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\DomainFactory factory($count = null, $state = [])
  * @method static Builder<static>|Domain newModelQuery()
  * @method static Builder<static>|Domain newQuery()
  * @method static Builder<static>|Domain query()

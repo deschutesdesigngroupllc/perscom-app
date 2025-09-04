@@ -17,7 +17,6 @@ use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
 use App\Traits\HasTags;
 use Carbon\CarbonInterval;
-use Database\Factories\EventFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -71,8 +70,8 @@ use Illuminate\Support\Collection;
  * @property-read \Illuminate\Database\Eloquent\Collection<int, Tag> $tags
  * @property-read int|null $tags_count
  *
- * @method static Builder<static>|Event author(User $user)
- * @method static EventFactory factory($count = null, $state = [])
+ * @method static Builder<static>|Event author(\App\Models\User $user)
+ * @method static \Database\Factories\EventFactory factory($count = null, $state = [])
  * @method static Builder<static>|Event newModelQuery()
  * @method static Builder<static>|Event newQuery()
  * @method static Builder<static>|Event query()

@@ -19,7 +19,6 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
-use Database\Factories\CombatRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -55,13 +54,13 @@ use Illuminate\Support\Carbon;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static Builder<static>|CombatRecord author(User $user)
- * @method static Builder<static>|CombatRecord document(Document $document)
- * @method static CombatRecordFactory factory($count = null, $state = [])
+ * @method static Builder<static>|CombatRecord author(\App\Models\User $user)
+ * @method static Builder<static>|CombatRecord document(\App\Models\Document $document)
+ * @method static \Database\Factories\CombatRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|CombatRecord newModelQuery()
  * @method static Builder<static>|CombatRecord newQuery()
  * @method static Builder<static>|CombatRecord query()
- * @method static Builder<static>|CombatRecord user(User $user)
+ * @method static Builder<static>|CombatRecord user(\App\Models\User $user)
  * @method static Builder<static>|CombatRecord whereAuthorId($value)
  * @method static Builder<static>|CombatRecord whereCreatedAt($value)
  * @method static Builder<static>|CombatRecord whereDocumentId($value)

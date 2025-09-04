@@ -8,7 +8,6 @@ use App\Models\Enums\SubscriptionPlanType;
 use App\Models\Enums\SubscriptionStatus;
 use App\Observers\TenantObserver;
 use App\Traits\ClearsResponseCache;
-use Database\Factories\TenantFactory;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -78,7 +77,7 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @property string|null $tenancy_db_name
  *
  * @method static TenantCollection<int, static> all($columns = ['*'])
- * @method static TenantFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\TenantFactory factory($count = null, $state = [])
  * @method static TenantCollection<int, static> get($columns = ['*'])
  * @method static Builder<static>|Tenant hasExpiredGenericTrial()
  * @method static Builder<static>|Tenant newModelQuery()

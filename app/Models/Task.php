@@ -9,7 +9,6 @@ use App\Traits\ClearsResponseCache;
 use App\Traits\HasAttachments;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\TaskFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -37,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
- * @method static TaskFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\TaskFactory factory($count = null, $state = [])
  * @method static Builder<static>|Task newModelQuery()
  * @method static Builder<static>|Task newQuery()
  * @method static Builder<static>|Task query()

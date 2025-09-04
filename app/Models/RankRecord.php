@@ -21,7 +21,6 @@ use App\Traits\HasRank;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
-use Database\Factories\RankRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -60,14 +59,14 @@ use Illuminate\Support\Carbon;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static Builder<static>|RankRecord author(User $user)
- * @method static Builder<static>|RankRecord document(Document $document)
- * @method static RankRecordFactory factory($count = null, $state = [])
+ * @method static Builder<static>|RankRecord author(\App\Models\User $user)
+ * @method static Builder<static>|RankRecord document(\App\Models\Document $document)
+ * @method static \Database\Factories\RankRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|RankRecord newModelQuery()
  * @method static Builder<static>|RankRecord newQuery()
  * @method static Builder<static>|RankRecord query()
- * @method static Builder<static>|RankRecord rank(Rank $rank)
- * @method static Builder<static>|RankRecord user(User $user)
+ * @method static Builder<static>|RankRecord rank(\App\Models\Rank $rank)
+ * @method static Builder<static>|RankRecord user(\App\Models\User $user)
  * @method static Builder<static>|RankRecord whereAuthorId($value)
  * @method static Builder<static>|RankRecord whereCreatedAt($value)
  * @method static Builder<static>|RankRecord whereDocumentId($value)

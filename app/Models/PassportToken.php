@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\PassportTokenFactory;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
@@ -17,7 +16,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @property string $client_id
  * @property string|null $name
  * @property array<array-key, mixed>|null $scopes
- * @property mixed|null $token
+ * @property string|null $token
  * @property bool $revoked
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -26,7 +25,7 @@ use Laravel\Passport\Token as BaseTokenModel;
  * @property-read RefreshToken|null $refreshToken
  * @property-read User|null $user
  *
- * @method static PassportTokenFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\PassportTokenFactory factory($count = null, $state = [])
  * @method static Builder<static>|PassportToken newModelQuery()
  * @method static Builder<static>|PassportToken newQuery()
  * @method static Builder<static>|PassportToken query()

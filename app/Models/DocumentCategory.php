@@ -19,7 +19,7 @@ use Illuminate\Support\Carbon;
  * @property-read Document $document
  * @property-read mixed $document_parsed
  *
- * @method static Builder<static>|DocumentCategory document(Document $document)
+ * @method static Builder<static>|DocumentCategory document(\App\Models\Document $document)
  * @method static Builder<static>|DocumentCategory newModelQuery()
  * @method static Builder<static>|DocumentCategory newQuery()
  * @method static Builder<static>|DocumentCategory query()

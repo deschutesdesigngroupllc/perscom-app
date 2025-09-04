@@ -8,7 +8,6 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\ImageFactory;
 use Eloquent;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
@@ -38,7 +37,7 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *
- * @method static ImageFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\ImageFactory factory($count = null, $state = [])
  * @method static Builder<static>|Image newModelQuery()
  * @method static Builder<static>|Image newQuery()
  * @method static Builder<static>|Image query()

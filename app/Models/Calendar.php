@@ -11,7 +11,6 @@ use App\Traits\HasColorField;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasTags;
-use Database\Factories\CalendarFactory;
 use Filament\Support\Contracts\HasColor;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
@@ -37,7 +36,7 @@ use Illuminate\Support\Carbon;
  * @property-read int|null $tags_count
  * @property-read string|null $url
  *
- * @method static CalendarFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\CalendarFactory factory($count = null, $state = [])
  * @method static Builder<static>|Calendar newModelQuery()
  * @method static Builder<static>|Calendar newQuery()
  * @method static Builder<static>|Calendar query()

@@ -19,7 +19,6 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
-use Database\Factories\AwardRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -58,13 +57,13 @@ use Illuminate\Support\Carbon;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static Builder<static>|AwardRecord author(User $user)
- * @method static Builder<static>|AwardRecord document(Document $document)
- * @method static AwardRecordFactory factory($count = null, $state = [])
+ * @method static Builder<static>|AwardRecord author(\App\Models\User $user)
+ * @method static Builder<static>|AwardRecord document(\App\Models\Document $document)
+ * @method static \Database\Factories\AwardRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|AwardRecord newModelQuery()
  * @method static Builder<static>|AwardRecord newQuery()
  * @method static Builder<static>|AwardRecord query()
- * @method static Builder<static>|AwardRecord user(User $user)
+ * @method static Builder<static>|AwardRecord user(\App\Models\User $user)
  * @method static Builder<static>|AwardRecord whereAuthorId($value)
  * @method static Builder<static>|AwardRecord whereAwardId($value)
  * @method static Builder<static>|AwardRecord whereCreatedAt($value)

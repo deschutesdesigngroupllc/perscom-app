@@ -12,7 +12,6 @@ use App\Traits\HasAssignmentRecords;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
-use Database\Factories\PositionFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -41,7 +40,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property-read Collection<int, User> $users
  * @property-read int|null $users_count
  *
- * @method static PositionFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\PositionFactory factory($count = null, $state = [])
  * @method static Builder<static>|Position newModelQuery()
  * @method static Builder<static>|Position newQuery()
  * @method static Builder<static>|Position ordered(string $direction = 'asc')

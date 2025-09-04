@@ -21,7 +21,7 @@ use Illuminate\Support\Carbon;
  * @method static Builder<static>|RankCategory newModelQuery()
  * @method static Builder<static>|RankCategory newQuery()
  * @method static Builder<static>|RankCategory query()
- * @method static Builder<static>|RankCategory rank(Rank $rank)
+ * @method static Builder<static>|RankCategory rank(\App\Models\Rank $rank)
  * @method static Builder<static>|RankCategory whereCategoryId($value)
  * @method static Builder<static>|RankCategory whereCreatedAt($value)
  * @method static Builder<static>|RankCategory whereId($value)

@@ -19,7 +19,6 @@ use App\Traits\HasModelNotifications;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUser;
-use Database\Factories\ServiceRecordFactory;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Attributes\ScopedBy;
@@ -55,13 +54,13 @@ use Illuminate\Support\Carbon;
  * @property-read string|null $url
  * @property-read User|null $user
  *
- * @method static Builder<static>|ServiceRecord author(User $user)
- * @method static Builder<static>|ServiceRecord document(Document $document)
- * @method static ServiceRecordFactory factory($count = null, $state = [])
+ * @method static Builder<static>|ServiceRecord author(\App\Models\User $user)
+ * @method static Builder<static>|ServiceRecord document(\App\Models\Document $document)
+ * @method static \Database\Factories\ServiceRecordFactory factory($count = null, $state = [])
  * @method static Builder<static>|ServiceRecord newModelQuery()
  * @method static Builder<static>|ServiceRecord newQuery()
  * @method static Builder<static>|ServiceRecord query()
- * @method static Builder<static>|ServiceRecord user(User $user)
+ * @method static Builder<static>|ServiceRecord user(\App\Models\User $user)
  * @method static Builder<static>|ServiceRecord whereAuthorId($value)
  * @method static Builder<static>|ServiceRecord whereCreatedAt($value)
  * @method static Builder<static>|ServiceRecord whereDocumentId($value)

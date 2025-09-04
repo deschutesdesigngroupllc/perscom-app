@@ -8,7 +8,6 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
-use Database\Factories\AttachmentFactory;
 use Eloquent;
 use Filament\Facades\Filament;
 use Filament\Resources\Resource;
@@ -37,7 +36,7 @@ use Illuminate\Support\Facades\Storage;
  * @property-read string|null $relative_url
  * @property-read string|null $url
  *
- * @method static AttachmentFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\AttachmentFactory factory($count = null, $state = [])
  * @method static Builder<static>|Attachment newModelQuery()
  * @method static Builder<static>|Attachment newQuery()
  * @method static Builder<static>|Attachment query()

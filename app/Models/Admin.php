@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use Database\Factories\AdminFactory;
 use Exception;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Panel;
@@ -30,7 +29,7 @@ use Stancl\Tenancy\Database\Concerns\CentralConnection;
  * @property-read DatabaseNotificationCollection<int, DatabaseNotification> $notifications
  * @property-read int|null $notifications_count
  *
- * @method static AdminFactory factory($count = null, $state = [])
+ * @method static \Database\Factories\AdminFactory factory($count = null, $state = [])
  * @method static Builder<static>|Admin newModelQuery()
  * @method static Builder<static>|Admin newQuery()
  * @method static Builder<static>|Admin query()

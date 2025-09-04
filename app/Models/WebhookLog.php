@@ -39,10 +39,10 @@ use Illuminate\Support\Collection;
  * @property-read Model|null $subject
  * @property-read string|null $trace_id
  *
- * @method static Builder<static>|WebhookLog causedBy(Model $causer)
+ * @method static Builder<static>|WebhookLog causedBy(\Illuminate\Database\Eloquent\Model $causer)
  * @method static Builder<static>|WebhookLog forBatch(string $batchUuid)
  * @method static Builder<static>|WebhookLog forEvent(string $event)
- * @method static Builder<static>|WebhookLog forSubject(Model $subject)
+ * @method static Builder<static>|WebhookLog forSubject(\Illuminate\Database\Eloquent\Model $subject)
  * @method static Builder<static>|WebhookLog hasBatch()
  * @method static Builder<static>|WebhookLog inLog(...$logNames)
  * @method static Builder<static>|WebhookLog newModelQuery()
