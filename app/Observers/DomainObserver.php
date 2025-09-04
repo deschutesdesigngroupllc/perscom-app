@@ -24,7 +24,7 @@ class DomainObserver
         Notification::send($domain->tenant, new DomainUpdated($domain));
     }
 
-    public function deleted(Domain $domain): void
+    public function deleting(Domain $domain): void
     {
         Notification::send($domain->tenant, new DomainDeleted($domain->url, $domain->tenant->url));
     }
