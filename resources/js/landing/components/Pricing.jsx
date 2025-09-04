@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import clsx from 'clsx'
 import { ButtonLink } from './Button'
 import { Container } from './Container'
@@ -7,56 +7,59 @@ import PropTypes from 'prop-types'
 function Plan({ name, price, description, href, features, featured = false }) {
   return (
     <section
-      className={clsx('flex flex-col rounded-3xl px-6 sm:px-8', {
-        'order-first bg-blue-600 py-8 lg:order-0': featured,
-        'lg:py-8': !featured
+      className={clsx('flex w-full flex-col rounded-3xl px-6 py-8 sm:px-8 lg:flex-row lg:px-12', {
+        'bg-blue-600': featured,
+        'bg-gray-800': !featured
       })}
     >
-      <h3 className='mt-5 text-lg text-white'>{name}</h3>
-      <p
-        className={clsx('mt-2 text-base', {
-          'text-white': featured,
-          'text-gray-400': !featured
-        })}
-      >
-        {description}
-      </p>
-      <p className='order-first text-5xl font-light tracking-tight text-white'>{price}</p>
-      <ul
-        className={clsx('order-last mt-10 space-y-3', {
-          'text-white': featured,
-          'text-gray-200': !featured
-        })}
-      >
-        {features.map((feature) => (
-          <li key={feature} className='flex'>
-            <svg
-              aria-hidden='true'
-              className={clsx('h-6 w-6 flex-none', {
-                'fill-white stroke-white': featured,
-                'fill-gray-400 stroke-gray-400': !featured
-              })}
-            >
-              <path
-                d='M9.307 12.248a.75.75 0 1 0-1.114 1.004l1.114-1.004ZM11 15.25l-.557.502a.75.75 0 0 0 1.15-.043L11 15.25Zm4.844-5.041a.75.75 0 0 0-1.188-.918l1.188.918Zm-7.651 3.043 2.25 2.5 1.114-1.004-2.25-2.5-1.114 1.004Zm3.4 2.457 4.25-5.5-1.187-.918-4.25 5.5 1.188.918Z'
-                strokeWidth={0}
-              />
-              <circle cx={12} cy={12} r={8.25} fill='none' strokeWidth={1.5} strokeLinecap='round' strokeLinejoin='round' />
-            </svg>
-            <span className='ml-4 text-sm text-white'>{feature}</span>
-          </li>
-        ))}
-      </ul>
-      <ButtonLink
-        href={href}
-        variant={featured ? 'solid' : 'outline'}
-        color='white'
-        className='mt-8'
-        aria-label={`Get started with ${name} plan for ${price}`}
-      >
-        {' '}
-        Get started{' '}
-      </ButtonLink>
+      <div className='lg:w-1/2 lg:pr-8'>
+        <p className='text-5xl font-light tracking-tight text-white'>{price}</p>
+        <h3 className='mt-5 text-lg font-semibold text-white'>{name}</h3>
+        <p
+          className={clsx('mt-2 text-base', {
+            'text-white': featured,
+            'text-gray-400': !featured
+          })}
+        >
+          {description}
+        </p>
+        <ButtonLink
+          href={href}
+          variant={featured ? 'solid' : 'outline'}
+          color='white'
+          className='mt-8'
+          aria-label={`Get started with ${name} plan for ${price}`}
+        >
+          Get started
+        </ButtonLink>
+      </div>
+      <div className='mt-8 lg:mt-0 lg:flex lg:w-1/2 lg:items-center'>
+        <ul
+          className={clsx('grid w-full grid-cols-1 gap-3 sm:grid-cols-2', {
+            'text-white': featured,
+            'text-gray-200': !featured
+          })}
+        >
+          {features.map((feature) => (
+            <li key={feature} className='flex'>
+              <svg
+                aria-hidden='true'
+                className={clsx('h-6 w-6 flex-none', {
+                  'fill-white stroke-white': featured,
+                  'fill-gray-400 stroke-gray-400': !featured
+                })}
+              >
+                <path
+                  d='M9.307 12.248a.75.75 0 1 0-1.114 1.004l1.114-1.004ZM11 15.25l-.557.502a.75.75 0 0 0 1.15-.043L11 15.25Zm4.844-5.041a.75.75 0 0 0-1.188-.918l1.188.918Zm-7.651 3.043 2.25 2.5 1.114-1.004-2.25-2.5-1.114 1.004Zm3.4 2.457 4.25-5.5-1.187-.918-4.25 5.5 1.188.918Z'
+                  strokeWidth={0}
+                />
+                <circle cx={12} cy={12} r={8.25} fill='none' strokeWidth={1.5} strokeLinecap='round' strokeLinejoin='round' />
+              </svg>
+              <span className='ml-4 text-sm text-white'>{feature}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
     </section>
   )
 }
@@ -71,6 +74,19 @@ Plan.propTypes = {
 }
 
 export function Pricing() {
+  const [isYearly, setIsYearly] = useState(false)
+
+  const allFeatures = [
+    'Access to powerful API',
+    'Automated account backups',
+    'Custom subdomain',
+    'Quality records management',
+    'Real-time webhooks',
+    'Single sign-on integration',
+    'Social login support',
+    'Widgets and website integration'
+  ]
+
   return (
     <section id='pricing' aria-labelledby='pricing-title' className='bg-gray-900 py-20 sm:py-32'>
       <Container className='relative'>
@@ -93,50 +109,43 @@ export function Pricing() {
             </span>{' '}
             for everyone.
           </h2>
-          <p className='mx-auto mt-4 text-base text-gray-400'>
-            We have pricing options for all organizations. Scale up and down as your needs change.
-          </p>
+          <p className='mx-auto mt-4 text-base text-gray-400'>One plan with everything included. Choose monthly or yearly billing.</p>
         </div>
-        <div className='-mx-4 mt-16 grid max-w-2xl grid-cols-1 gap-y-10 sm:mx-auto lg:-mx-8 lg:max-w-none lg:grid-cols-3 xl:mx-0 xl:gap-x-8'>
-          <Plan
-            name='Basic'
-            price='$9'
-            description='For small organizations who need core personnel management services without the need to share and exchange personnel data.'
-            href={route('web.register.index')}
-            features={[
-              'All core features',
-              'No premium features',
-              'Social login support',
-              'Application provided subdomain',
-              'Community support'
-            ]}
-          />{' '}
+
+        <div className='mt-16 flex justify-center'>
+          <div className='relative rounded-lg bg-gray-800 p-1'>
+            <button
+              className={clsx('relative w-32 py-2 text-sm font-medium transition-all', {
+                'rounded-md bg-blue-600 text-white shadow-sm': !isYearly,
+                'text-gray-400 hover:text-white': isYearly
+              })}
+              onClick={() => setIsYearly(false)}
+            >
+              Monthly
+            </button>
+            <button
+              className={clsx('relative w-28 py-2 text-sm font-medium transition-all', {
+                'rounded-md bg-blue-600 text-white shadow-sm': isYearly,
+                'text-gray-400 hover:text-white': !isYearly
+              })}
+              onClick={() => setIsYearly(true)}
+            >
+              Yearly
+              <span className='absolute -top-5 left-1/2 -translate-x-1/2 transform rounded bg-green-500 px-2 py-1 text-xs text-nowrap text-white'>
+                Save 17%
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <div className='mt-16'>
           <Plan
             featured
-            name='Pro'
-            price='$15'
-            description='For growing organizations who wish to integrate their personnel data into third-party services without enterprise level complexity.'
+            name='Professional'
+            price={isYearly ? '$200/year' : '$20/month'}
+            description='Complete personnel management solution with all features included. Perfect for organizations of any size.'
             href={route('web.register.index')}
-            features={[
-              'Access to powerful API',
-              'Optional paid premium features',
-              'Widgets and website integration',
-              'Custom subdomain',
-              'Ticket and email support'
-            ]}
-          />{' '}
-          <Plan
-            name='Enterprise'
-            price='$39'
-            description='For large organizations that rely on powerful personnel manangement services and require personnel data communication between essential business services.'
-            href={route('web.register.index')}
-            features={[
-              'All premium features included',
-              'Export and backup all account data',
-              'Webhooks and real-time app notifications',
-              'Single sign-on integration',
-              'Priority support'
-            ]}
+            features={allFeatures}
           />
         </div>
       </Container>
