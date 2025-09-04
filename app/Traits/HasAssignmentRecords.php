@@ -14,9 +14,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 trait HasAssignmentRecords
 {
-    /**
-     * @return HasMany<AssignmentRecord, $this>
-     */
     public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class);

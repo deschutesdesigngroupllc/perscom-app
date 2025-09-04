@@ -111,9 +111,6 @@ class Field extends Model implements HasLabel, Hideable
         'updated_at',
     ];
 
-    /**
-     * @return Attribute<ArrayObject, never>
-     */
     public function options(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ArrayObject {
@@ -135,9 +132,6 @@ class Field extends Model implements HasLabel, Hideable
         })->shouldCache();
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function validationRules(): Attribute
     {
         return Attribute::make(
@@ -159,9 +153,6 @@ class Field extends Model implements HasLabel, Hideable
         )->shouldCache();
     }
 
-    /**
-     * @return MorphToMany<Form, $this>
-     */
     public function forms(): MorphToMany
     {
         return $this->morphedByMany(Form::class, 'model', 'model_has_fields')
@@ -170,9 +161,6 @@ class Field extends Model implements HasLabel, Hideable
             ->withTimestamps();
     }
 
-    /**
-     * @return MorphToMany<User, $this>
-     */
     public function users(): MorphToMany
     {
         return $this->morphedByMany(User::class, 'model', 'model_has_fields')
@@ -181,9 +169,6 @@ class Field extends Model implements HasLabel, Hideable
             ->withTimestamps();
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

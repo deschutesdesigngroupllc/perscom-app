@@ -23,9 +23,6 @@ trait HasLogs
 {
     use LogsActivity;
 
-    /**
-     * @return MorphMany<Activity, $this>
-     */
     public function logs(): MorphMany
     {
         return $this->morphMany(Activity::class, 'subject');

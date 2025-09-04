@@ -14,7 +14,6 @@ class AccessToken extends PassportAccessToken
 {
     use AccessTokenTrait;
 
-    // @phpstan-ignore-next-line
     private function convertToJWT(): Token
     {
         $this->initJwtConfiguration();

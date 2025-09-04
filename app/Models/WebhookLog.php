@@ -106,9 +106,6 @@ class WebhookLog extends Activity
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function resourceUrl(): Attribute
     {
         return Attribute::get(function (): ?string {

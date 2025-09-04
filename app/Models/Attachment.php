@@ -73,9 +73,6 @@ class Attachment extends Model implements HasLabel
         'attachment_url',
     ];
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function attachmentUrl(): Attribute
     {
         return Attribute::make(
@@ -83,9 +80,6 @@ class Attachment extends Model implements HasLabel
         );
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function modelUrl(): Attribute
     {
         return Attribute::get(function (): ?string {

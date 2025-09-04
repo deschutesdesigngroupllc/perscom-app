@@ -16,7 +16,6 @@ use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasSchedule;
 use App\Traits\HasTags;
-use Carbon\CarbonInterval;
 use Filament\Support\Contracts\HasLabel;
 use Illuminate\Database\Eloquent\Attributes\ObservedBy;
 use Illuminate\Database\Eloquent\Builder;
@@ -141,9 +140,6 @@ class Event extends Model implements HasLabel
         'updated_at',
     ];
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function hasPassed(): Attribute
     {
         return Attribute::make(
@@ -159,9 +155,6 @@ class Event extends Model implements HasLabel
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?CarbonInterval, never>
-     */
     public function length(): Attribute
     {
         return Attribute::get(
@@ -169,9 +162,6 @@ class Event extends Model implements HasLabel
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<string, never>
-     */
     public function url(): Attribute
     {
         return Attribute::get(function ($value): string {
@@ -191,9 +181,6 @@ class Event extends Model implements HasLabel
         return $this->belongsTo(Calendar::class);
     }
 
-    /**
-     * @return BelongsToMany<User, $this>
-     */
     public function registrations(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'events_registrations')

@@ -16,9 +16,6 @@ class SubmissionRequest extends Request
 
     public function commonRules(): array
     {
-        /**
-         * @return string[]
-         */
         return array_merge([
             'form_id' => 'integer|exists:forms,id',
             'user_id' => 'integer|nullable|exists:users,id',
@@ -27,9 +24,6 @@ class SubmissionRequest extends Request
         ], $this->getFieldRules());
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         $rules = [];

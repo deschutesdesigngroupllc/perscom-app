@@ -118,9 +118,6 @@ class Slot extends Model implements Hideable, Sortable
             ->where('records_assignments.type', AssignmentRecordType::SECONDARY);
     }
 
-    /**
-     * @return BelongsToMany<Unit, $this>
-     */
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'units_slots')

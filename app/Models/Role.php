@@ -51,30 +51,13 @@ class Role extends \Spatie\Permission\Models\Role
         'is_application_role',
     ];
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function isCustomRole(): Attribute
     {
         return Attribute::get(fn (): bool => ! $this->is_application_role)->shouldCache();
     }
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function isApplicationRole(): Attribute
     {
         return Attribute::get(fn ($value, $attributes = null): bool => data_get($attributes, 'name') === Utils::getSuperAdminName())->shouldCache();
-    }
-
-    /**
-     * @return string[]
-     */
-    protected function casts(): array
-    {
-        return [
-            'is_custom_role' => 'boolean',
-            'is_application_role' => 'boolean',
-        ];
     }
 }

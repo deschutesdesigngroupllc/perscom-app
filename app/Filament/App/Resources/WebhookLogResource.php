@@ -14,6 +14,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
+use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Panel;
 use Filament\Schemas\Components\Tabs;
@@ -29,7 +30,7 @@ use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
-use Parallax\FilamentSyntaxEntry\SyntaxEntry;
+use Phiki\Grammar\Grammar;
 use UnitEnum;
 
 class WebhookLogResource extends BaseResource
@@ -221,10 +222,10 @@ class WebhookLogResource extends BaseResource
                     Tab::make('Payload')
                         ->icon('heroicon-o-code-bracket')
                         ->schema([
-                            SyntaxEntry::make('payload')
+                            CodeEntry::make('payload')
                                 ->getStateUsing(fn (WebhookLog $record): mixed => $record->getExtraProperty('payload'))
                                 ->hiddenLabel()
-                                ->language('json'),
+                                ->grammar(Grammar::Json),
                         ]),
                 ]),
         ]);

@@ -67,9 +67,6 @@ class Calendar extends Model implements HasColor, HasLabel
         'updated_at',
     ];
 
-    /**
-     * @return HasMany<Event, $this>
-     */
     public function events(): HasMany
     {
         return $this->hasMany(Event::class);

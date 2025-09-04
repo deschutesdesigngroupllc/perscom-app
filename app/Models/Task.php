@@ -76,9 +76,6 @@ class Task extends Model implements HasLabel
         return $this->belongsTo(Form::class);
     }
 
-    /**
-     * @return BelongsToMany<User, $this>
-     */
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, 'users_tasks')

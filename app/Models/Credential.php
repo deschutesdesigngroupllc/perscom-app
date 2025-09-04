@@ -77,9 +77,6 @@ class Credential extends Model implements HasLabel, Sortable
         return $this->belongsTo(Issuer::class);
     }
 
-    /**
-     * @return BelongsToMany<TrainingRecord, $this>
-     */
     public function training_records(): BelongsToMany
     {
         return $this->belongsToMany(TrainingRecord::class, 'records_trainings_credentials')

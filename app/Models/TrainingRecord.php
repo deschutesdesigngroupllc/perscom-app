@@ -95,18 +95,12 @@ class TrainingRecord extends Model
         'text',
     ];
 
-    /**
-     * @return BelongsToMany<Competency, $this>
-     */
     public function competencies(): BelongsToMany
     {
         return $this->belongsToMany(Competency::class, 'records_trainings_competencies')
             ->using(TrainingRecordCompetency::class);
     }
 
-    /**
-     * @return BelongsToMany<Credential, $this>
-     */
     public function credentials(): BelongsToMany
     {
         return $this->belongsToMany(Credential::class, 'records_trainings_credentials')

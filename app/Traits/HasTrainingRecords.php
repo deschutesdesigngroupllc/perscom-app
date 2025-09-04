@@ -18,17 +18,11 @@ trait HasTrainingRecords
 {
     use HasRelationships;
 
-    /**
-     * @return HasMany<TrainingRecord, $this>
-     */
     public function training_records(): HasMany
     {
         return $this->hasMany(TrainingRecord::class);
     }
 
-    /**
-     * @return HasManyDeep<Credential, $this>
-     */
     public function credentials(): HasManyDeep
     {
         return $this->hasManyDeep(

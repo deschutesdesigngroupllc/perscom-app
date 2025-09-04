@@ -13,9 +13,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 trait HasServiceRecords
 {
-    /**
-     * @return HasMany<ServiceRecord, $this>
-     */
     public function service_records(): HasMany
     {
         return $this->hasMany(ServiceRecord::class);

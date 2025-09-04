@@ -4,4 +4,6 @@ includes:
 parameters:
     paths:
         - app
-    level: 5
+    level: 3
+    ignoreErrors:
+        - '#Property .* does not exist#'

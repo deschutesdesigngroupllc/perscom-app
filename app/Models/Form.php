@@ -88,25 +88,16 @@ class Form extends Model implements HasLabel, SendsModelNotifications
         'updated_at',
     ];
 
-    /**
-     * @return HasMany<Submission, $this>
-     */
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
-    /**
-     * @return BelongsTo<Status, $this>
-     */
     public function submission_status(): BelongsTo
     {
         return $this->belongsTo(Status::class);
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

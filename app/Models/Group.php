@@ -153,9 +153,6 @@ class Group extends Model implements HasLabel, Hideable, Sortable
             ]);
     }
 
-    /**
-     * @return BelongsToMany<Unit, $this>
-     */
     public function units(): BelongsToMany
     {
         return $this->belongsToMany(Unit::class, 'units_groups')

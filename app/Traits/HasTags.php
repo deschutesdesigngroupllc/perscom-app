@@ -16,9 +16,6 @@ trait HasTags
 {
     public static ?string $tagsAccessor = null;
 
-    /**
-     * @return BelongsToMany<Tag, $this>
-     */
     public function tags(): BelongsToMany
     {
         $relationship = $this->belongsToMany(Tag::class, "{$this->getTable()}_tags")

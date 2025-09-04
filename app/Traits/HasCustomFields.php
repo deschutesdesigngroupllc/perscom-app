@@ -14,9 +14,6 @@ use Illuminate\Database\Eloquent\Relations\MorphToMany;
  */
 trait HasCustomFields
 {
-    /**
-     * @return MorphToMany<Field, $this>
-     */
     public function fields(): MorphToMany
     {
         return $this->morphToMany(Field::class, 'model', 'model_has_fields')

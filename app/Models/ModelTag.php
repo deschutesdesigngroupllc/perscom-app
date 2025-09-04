@@ -29,9 +29,6 @@ class ModelTag extends Model
 {
     use Sushi;
 
-    /**
-     * @return array<array<string,string>>
-     */
     protected function getRows(): array
     {
         return [
@@ -243,9 +240,6 @@ class ModelTag extends Model
         ];
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

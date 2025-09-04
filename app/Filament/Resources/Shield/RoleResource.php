@@ -12,7 +12,6 @@ use App\Models\Role;
 use BezhanSalleh\FilamentShield\Contracts\HasShieldPermissions;
 use BezhanSalleh\FilamentShield\Facades\FilamentShield;
 use BezhanSalleh\FilamentShield\FilamentShieldPlugin;
-use BezhanSalleh\FilamentShield\Forms\ShieldSelectAllToggle;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
@@ -69,11 +68,6 @@ class RoleResource extends Resource implements HasShieldPermissions
                                     ->hidden()
                                     ->nullable()
                                     ->maxLength(255),
-                                ShieldSelectAllToggle::make('select_all')
-                                    ->label(__('filament-shield::filament-shield.field.select_all.name'))
-                                    ->helperText(fn (): HtmlString => new HtmlString(__('filament-shield::filament-shield.field.select_all.message')))
-                                    ->dehydrated(fn ($state): bool => $state),
-
                             ])
                             ->columns([
                                 'sm' => 2,
@@ -381,7 +375,7 @@ class RoleResource extends Resource implements HasShieldPermissions
     public static function getCheckboxListFormComponent(string $name, array $options, bool $searchable = true): Component
     {
         return CheckboxList::make($name)
-            ->label('')
+            ->hiddenLabel()
             ->options(fn (): array => $options)
             ->searchable($searchable)
             ->afterStateHydrated(

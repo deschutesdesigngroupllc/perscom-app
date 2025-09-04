@@ -72,9 +72,6 @@ class Image extends Model implements HasLabel
 
     protected $appends = ['image_url'];
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function imageUrl(): Attribute
     {
         return Attribute::make(
@@ -82,9 +79,6 @@ class Image extends Model implements HasLabel
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function modelUrl(): Attribute
     {
         return Attribute::get(function (): ?string {

@@ -58,9 +58,6 @@ class Competency extends Model implements HasLabel
         'description',
     ];
 
-    /**
-     * @return BelongsToMany<TrainingRecord, $this>
-     */
     public function training_records(): BelongsToMany
     {
         return $this->belongsToMany(TrainingRecord::class, 'records_trainings_competencies')

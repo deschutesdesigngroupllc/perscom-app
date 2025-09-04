@@ -466,9 +466,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         )->shouldCache();
     }
 
-    /**
-     * @return BelongsToMany<Event, $this>
-     */
     public function events(): BelongsToMany
     {
         return $this->belongsToMany(Event::class, 'events_registrations')
@@ -478,17 +475,11 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             ->using(EventRegistration::class);
     }
 
-    /**
-     * @return HasMany<Submission, $this>
-     */
     public function submissions(): HasMany
     {
         return $this->hasMany(Submission::class);
     }
 
-    /**
-     * @return BelongsToMany<Task, $this>
-     */
     public function tasks(): BelongsToMany
     {
         return $this->belongsToMany(Task::class, 'users_tasks')
@@ -498,9 +489,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
             ->withTimestamps();
     }
 
-    /**
-     * @return BelongsTo<UnitSlot, $this>
-     */
     public function unit_slot(): BelongsTo
     {
         return $this->belongsTo(UnitSlot::class);
@@ -511,9 +499,6 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, HasLabel,
         return 'web';
     }
 
-    /**
-     * @return string[]
-     */
     protected function casts(): array
     {
         return [

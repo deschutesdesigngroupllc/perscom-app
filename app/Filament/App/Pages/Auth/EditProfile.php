@@ -43,6 +43,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                                     ->default('UTC')
                                     ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($value, $key): array => [$value => $value]))
                                     ->required(),
+                                /** @phpstan-ignore method.notFound */
                                 $this->getEmailFormComponent()
                                     ->label('Email'),
                                 TextInput::make('phone_number')
@@ -156,6 +157,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                                 $this->getPasswordFormComponent()
                                     ->helperText('Set a new password for your account.')
                                     ->label('New Password'),
+                                /** @phpstan-ignore method.notFound */
                                 $this->getPasswordConfirmationFormComponent()
                                     ->label('Confirm New Password'),
                             ]),

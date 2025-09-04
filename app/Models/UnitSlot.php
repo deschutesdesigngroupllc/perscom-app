@@ -47,9 +47,6 @@ class UnitSlot extends Pivot
 
     protected $table = 'units_slots';
 
-    /**
-     * @return HasMany<AssignmentRecord, $this>
-     */
     public function assignment_records(): HasMany
     {
         return $this->hasMany(AssignmentRecord::class, 'unit_slot_id');

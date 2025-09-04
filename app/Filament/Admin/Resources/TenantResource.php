@@ -325,12 +325,17 @@ class TenantResource extends Resource
      */
     public static function getGlobalSearchResultDetails(Model $record): array
     {
-        return [
-            'ID' => $record->id,
+        $data = [
+            'ID' => (string) $record->id,
             'Tenant' => $record->name,
             'Email' => $record->email,
-            'URL' => $record->url,
         ];
+
+        if ($record->url) {
+            $data['URL'] = $record->url;
+        }
+
+        return $data;
     }
 
     public static function getGlobalSearchEloquentQuery(): Builder

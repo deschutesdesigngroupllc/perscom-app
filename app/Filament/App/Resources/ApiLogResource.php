@@ -369,10 +369,10 @@ class ApiLogResource extends BaseResource
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         return [
-            'ID' => $record->id,
-            'Endpoint' => $record->endpoint,
-            'Method' => $record->method,
-            'Status' => $record->status,
+            'ID' => (string) $record->id,
+            'Endpoint' => $record->endpoint ?? 'Unknown',
+            'Method' => $record->method ?? 'Unknown',
+            'Status' => (string) $record->status,
         ];
     }
 

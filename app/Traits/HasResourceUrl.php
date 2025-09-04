@@ -19,14 +19,14 @@ trait HasResourceUrl
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->getKey(), fn () => optional(tenant(), fn (Tenant $tenant) => optional(Filament::getModelResource($this), function ($class) use ($tenant) {
-                /** @var resource $class */
+                /** @var class-string<resource> $class */
                 if ($class::hasPage('view')) {
                     return $class::getUrl('view', [
                         'record' => $this,
                         'tenant' => $tenant,
                     ], panel: 'app');
                 }
-                /** @var resource $class */
+                /** @var class-string<resource> $class */
                 if ($class::hasPage('edit')) {
                     return $class::getUrl('edit', [
                         'record' => $this,
@@ -43,14 +43,14 @@ trait HasResourceUrl
     {
         return Attribute::make(
             get: fn (): ?string => optional($this->getKey(), fn () => optional(tenant(), fn (Tenant $tenant) => optional(Filament::getModelResource($this), function ($class) use ($tenant) {
-                /** @var resource $class */
+                /** @var class-string<resource> $class */
                 if ($class::hasPage('view')) {
                     return $class::getUrl('view', [
                         'record' => $this,
                         'tenant' => $tenant,
                     ], isAbsolute: false, panel: 'app');
                 }
-                /** @var resource $class */
+                /** @var class-string<resource> $class */
                 if ($class::hasPage('edit')) {
                     return $class::getUrl('edit', [
                         'record' => $this,

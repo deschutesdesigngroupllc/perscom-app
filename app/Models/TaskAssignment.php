@@ -82,7 +82,6 @@ class TaskAssignment extends Pivot
     ];
 
     protected $appends = [
-        'complete',
         'expired',
         'past_due',
         'status',

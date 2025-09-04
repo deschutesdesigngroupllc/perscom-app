@@ -73,7 +73,7 @@ use Stancl\Tenancy\Database\TenantCollection;
  * @property-read SubscriptionStatus $subscription_status
  * @property-read Collection<int, Subscription> $subscriptions
  * @property-read int|null $subscriptions_count
- * @property-read Optional|string|null|null $url
+ * @property-read string|null $url
  * @property string|null $tenancy_db_name
  *
  * @method static TenantCollection<int, static> all($columns = ['*'])
@@ -159,9 +159,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         ];
     }
 
-    /**
-     * @return Attribute<string, never>
-     */
     public function databaseStatus(): Attribute
     {
         return Attribute::make(
@@ -169,9 +166,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?Domain, never>
-     */
     public function customDomain(): Attribute
     {
         return Attribute::make(
@@ -181,9 +175,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?Domain, never>
-     */
     public function fallbackDomain(): Attribute
     {
         return Attribute::make(
@@ -193,9 +184,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?Domain, never>
-     */
     public function domain(): Attribute
     {
         return Attribute::make(
@@ -203,9 +191,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<Optional|string|null, never>
-     */
     public function customUrl(): Attribute
     {
         return Attribute::make(
@@ -213,9 +198,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<Optional|string|null, never>
-     */
     public function fallbackUrl(): Attribute
     {
         return Attribute::make(
@@ -223,18 +205,12 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<bool, never>
-     */
     public function setupCompleted(): Attribute
     {
         return Attribute::get(fn (): bool => ! is_null($this->setup_completed_at))
             ->shouldCache();
     }
 
-    /**
-     * @return Attribute<Optional|string|null, never>
-     */
     public function slug(): Attribute
     {
         return Attribute::make(
@@ -242,9 +218,6 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
         )->shouldCache();
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function stripeUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
@@ -260,12 +233,12 @@ class Tenant extends BaseTenant implements FeatureScopeable, TenantWithDatabase
     }
 
     /**
-     * @return Attribute<Optional|string|null, never>
+     * @return Attribute<string|null, never>
      */
     public function url(): Attribute
     {
         return Attribute::make(
-            get: fn (): Optional|string|null => $this->custom_url ?? $this->fallback_url
+            get: fn (): ?string => $this->custom_url ?? $this->fallback_url
         )->shouldCache();
     }
 

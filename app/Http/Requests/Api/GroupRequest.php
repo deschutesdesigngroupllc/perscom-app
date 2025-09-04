@@ -8,9 +8,6 @@ use Orion\Http\Requests\Request;
 
 class GroupRequest extends Request
 {
-    /**
-     * @return string[]
-     */
     public function commonRules(): array
     {
         return [
@@ -24,9 +21,6 @@ class GroupRequest extends Request
         ];
     }
 
-    /**
-     * @return string[]
-     */
     public function storeRules(): array
     {
         return [

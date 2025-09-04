@@ -76,9 +76,6 @@ class Subscription extends BaseSubscription
         return true;
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function stripePrice(): Attribute
     {
         return Attribute::get(function ($value, $attributes = null): ?string {
@@ -97,9 +94,6 @@ class Subscription extends BaseSubscription
         })->shouldCache();
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function stripeUrl(): Attribute
     {
         return Attribute::get(function (): ?string {
@@ -114,9 +108,6 @@ class Subscription extends BaseSubscription
         });
     }
 
-    /**
-     * @return Attribute<?string, never>
-     */
     public function renewalTerm(): Attribute
     {
         return Attribute::get(function (): ?string {
