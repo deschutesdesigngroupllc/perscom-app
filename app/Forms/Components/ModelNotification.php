@@ -147,11 +147,11 @@ class ModelNotification
                                     ->searchable()
                                     ->bulkToggleable()
                                     ->descriptions(fn () => collect(NotificationChannel::cases())
-                                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])
+                                        ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])
                                         ->toArray())
                                     ->options(fn () => collect(NotificationChannel::cases())
                                         ->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())
-                                        ->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])
+                                        ->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])
                                         ->toArray()),
                             ]),
                     ]),

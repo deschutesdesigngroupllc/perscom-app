@@ -304,7 +304,7 @@ class ApiLogResource extends BaseResource
                                         'x-csrf-token',
                                         'x-xsrf-token',
                                     ]))
-                                    ->mapWithKeys(fn ($value, $header) => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->toArray()
+                                    ->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->map(fn ($value) => Str::limit($value))->join(', ')])->toArray()
                                 ),
                             CodeEntry::make('body')
                                 ->copyable()
@@ -324,7 +324,7 @@ class ApiLogResource extends BaseResource
                                 ->label('Headers')
                                 ->keyLabel('Header')
                                 ->valueLabel('Value')
-                                ->getStateUsing(fn (?ApiLog $record) => collect($record->response_headers)->mapWithKeys(fn ($value, $header) => [$header => collect($value)->join(', ')])->toArray()),
+                                ->getStateUsing(fn (?ApiLog $record) => collect($record->response_headers)->mapWithKeys(fn ($value, $header): array => [$header => collect($value)->join(', ')])->toArray()),
                             CodeEntry::make('content')
                                 ->copyable()
                                 ->grammar(Grammar::Json),

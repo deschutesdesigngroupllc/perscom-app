@@ -67,10 +67,10 @@ class AlertResource extends Resource
                                     ->required()
                                     ->bulkToggleable()
                                     ->descriptions(fn () => collect(AlertChannel::cases())
-                                        ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getDescription()])
+                                        ->mapWithKeys(fn (AlertChannel $channel): array => [$channel->value => $channel->getDescription()])
                                         ->toArray())
                                     ->options(fn () => collect(AlertChannel::cases())
-                                        ->mapWithKeys(fn (AlertChannel $channel) => [$channel->value => $channel->getLabel()])
+                                        ->mapWithKeys(fn (AlertChannel $channel): array => [$channel->value => $channel->getLabel()])
                                         ->toArray()),
                             ]),
                         Tab::make('Link')

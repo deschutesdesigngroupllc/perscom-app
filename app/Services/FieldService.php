@@ -13,6 +13,6 @@ class FieldService
     {
         return collect($fields)
             ->filter(fn (Field $field) => filled($field->validation_rules))
-            ->mapWithKeys(fn (Field $field) => [$field->key => $field->validation_rules]);
+            ->mapWithKeys(fn (Field $field): array => [$field->key => $field->validation_rules]);
     }
 }

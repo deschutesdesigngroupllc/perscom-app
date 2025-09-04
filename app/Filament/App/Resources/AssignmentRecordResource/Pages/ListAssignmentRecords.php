@@ -24,7 +24,7 @@ class ListAssignmentRecords extends ListRecords
 
     public function getPresetViews(): array
     {
-        return Collection::make(AssignmentRecordType::cases())->mapWithKeys(fn (AssignmentRecordType $recordType) => [
+        return Collection::make(AssignmentRecordType::cases())->mapWithKeys(fn (AssignmentRecordType $recordType): array => [
             $recordType->value => PresetView::make()
                 ->favorite()
                 ->label($recordType->getLabel())

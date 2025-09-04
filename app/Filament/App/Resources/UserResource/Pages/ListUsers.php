@@ -23,7 +23,7 @@ class ListUsers extends ListRecords
 
     public function getPresetViews(): array
     {
-        return Status::all()->mapWithKeys(fn (Status $status) => [
+        return Status::all()->mapWithKeys(fn (Status $status): array => [
             $status->id => PresetView::make()
                 ->favorite()
                 ->label($status->name)

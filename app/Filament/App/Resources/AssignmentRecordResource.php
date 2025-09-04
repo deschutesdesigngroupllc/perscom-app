@@ -146,7 +146,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->label('Slot')
                                     ->preload()
                                     ->searchable()
-                                    ->options(fn () => Unit::ordered()->with('slots')->get()->mapWithKeys(fn (Unit $unit) => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()])->toArray()),
+                                    ->options(fn () => Unit::ordered()->with('slots')->get()->mapWithKeys(fn (Unit $unit): array => [$unit->name => $unit->slots->pluck('name', 'pivot.id')->toArray()])->toArray()),
                                 Select::make('status_id')
                                     ->helperText('If selected, the user(s) will be assigned the status when the record is created.')
                                     ->preload()

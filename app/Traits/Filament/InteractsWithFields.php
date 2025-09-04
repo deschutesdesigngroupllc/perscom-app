@@ -75,7 +75,7 @@ trait InteractsWithFields
             if ($field->type === FieldType::FIELD_TIMEZONE && $filamentField instanceof Select) {
                 $filamentField = $filamentField
                     ->searchable()
-                    ->options(collect(timezone_identifiers_list())->mapWithKeys(fn ($timezone) => [$timezone => $timezone]));
+                    ->options(collect(timezone_identifiers_list())->mapWithKeys(fn ($timezone): array => [$timezone => $timezone]));
             }
 
             if ($field->type === FieldType::FIELD_FILE && $filamentField instanceof FileUpload) {

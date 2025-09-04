@@ -73,7 +73,7 @@ class Integration extends SettingsPage
                                     ->preload()
                                     ->live(onBlur: true)
                                     ->label('Server')
-                                    ->options(fn () => collect(DiscordService::getGuilds())->mapWithKeys(fn ($data) => [data_get($data, 'id') => data_get($data, 'name')]))
+                                    ->options(fn () => collect(DiscordService::getGuilds())->mapWithKeys(fn ($data): array => [data_get($data, 'id') => data_get($data, 'name')]))
                                     ->helperText(fn (): string => 'Use the button to the right to add the PERSCOM bot to your community Discord server to send automated notifications for everyone to see.'),
                                 Select::make('discord_settings.discord_channel')
                                     ->visible(fn (Get $get): bool => $get('discord_settings.discord_enabled'))
@@ -89,7 +89,7 @@ class Integration extends SettingsPage
 
                                         return collect(DiscordService::getChannels($guildId))
                                             ->filter(fn ($data): bool => (string) data_get($data, 'type') === '0')
-                                            ->mapWithKeys(fn ($data) => [data_get($data, 'id') => data_get($data, 'name')]);
+                                            ->mapWithKeys(fn ($data): array => [data_get($data, 'id') => data_get($data, 'name')]);
                                     })
                                     ->helperText('Select the channel the notifications will be posted to.'),
                             ]),

@@ -100,7 +100,7 @@ class Schedule
                                     'monthOverflow' => false,
                                 ]));
 
-                                return $period->mapWithKeys(fn ($value) => [$value->format('j') => $value->format('jS')]);
+                                return $period->mapWithKeys(fn ($value): array => [$value->format('j') => $value->format('jS')]);
                             })
                             ->hidden(fn (Get $get): bool => $get('frequency') === 'DAILY' || $get('frequency') === 'WEEKLY' || $get('frequency') === 'YEARLY'),
                         Select::make('by_month')

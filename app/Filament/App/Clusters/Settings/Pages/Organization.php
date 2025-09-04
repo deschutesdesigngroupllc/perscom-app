@@ -67,7 +67,7 @@ class Organization extends SettingsPage
                                 Select::make('timezone')
                                     ->searchable()
                                     ->preload()
-                                    ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($timezone) => [$timezone => $timezone])->all())
+                                    ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($timezone): array => [$timezone => $timezone])->all())
                                     ->required()
                                     ->helperText('The timezone that will be used for all dates and times. Note: A user can still override the system timezone on a per-account basis.'),
                             ]),

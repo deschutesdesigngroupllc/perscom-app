@@ -16,7 +16,7 @@ class SettingsResource extends Resource
         $resource = $this->resource;
 
         return $this->toArrayWithMerge($request, [
-            'payload' => json_decode($resource->payload),
+            'payload' => json_decode((string) $resource->payload),
         ]);
     }
 }

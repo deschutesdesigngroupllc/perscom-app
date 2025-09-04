@@ -24,7 +24,7 @@ class ListRankRecords extends ListRecords
 
     public function getPresetViews(): array
     {
-        return Collection::wrap(RankRecordType::cases())->mapWithKeys(fn (RankRecordType $type) => [
+        return Collection::wrap(RankRecordType::cases())->mapWithKeys(fn (RankRecordType $type): array => [
             $type->value => PresetView::make()
                 ->favorite()
                 ->icon($type->getIcon())

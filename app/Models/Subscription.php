@@ -121,7 +121,7 @@ class Subscription extends BaseSubscription
     public function renewalTerm(): Attribute
     {
         return Attribute::get(function (): ?string {
-            $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan) => [$plan->id => $plan->interval]);
+            $plans = collect(Spark::plans('tenant'))->mapWithKeys(fn (Plan $plan): array => [$plan->id => $plan->interval]);
 
             return data_get($plans, $this->stripe_price);
         })->shouldCache();

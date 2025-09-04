@@ -128,7 +128,7 @@ class Field extends Model implements HasLabel, Hideable
 
             if (data_get($attributes, 'type') === FieldType::FIELD_TIMEZONE->value) {
                 return new ArrayObject(Collection::wrap(timezone_identifiers_list())
-                    ->mapWithKeys(fn ($timezone) => [$timezone => $timezone])
+                    ->mapWithKeys(fn ($timezone): array => [$timezone => $timezone])
                     ->toArray(), ArrayObjectAlias::ARRAY_AS_PROPS);
             }
 

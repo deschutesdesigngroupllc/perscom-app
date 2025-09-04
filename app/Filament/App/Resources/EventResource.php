@@ -224,8 +224,8 @@ class EventResource extends BaseResource
                                     ->label('Channels')
                                     ->requiredIf('notifications_enabled', true)
                                     ->bulkToggleable()
-                                    ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getDescription()])->toArray())
-                                    ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel) => [$channel->value => $channel->getLabel()])->toArray()),
+                                    ->descriptions(fn () => collect(NotificationChannel::cases())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getDescription()])->toArray())
+                                    ->options(fn () => collect(NotificationChannel::cases())->filter(fn (NotificationChannel $channel): bool => $channel->getEnabled())->mapWithKeys(fn (NotificationChannel $channel): array => [$channel->value => $channel->getLabel()])->toArray()),
                             ]),
                         Tab::make('Schedule')
                             ->icon('heroicon-o-arrow-path')

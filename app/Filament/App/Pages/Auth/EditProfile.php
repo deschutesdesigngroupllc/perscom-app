@@ -41,7 +41,7 @@ class EditProfile extends \Filament\Auth\Pages\EditProfile
                                     ->preload()
                                     ->searchable()
                                     ->default('UTC')
-                                    ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($value, $key) => [$value => $value]))
+                                    ->options(collect(DateTimeZone::listIdentifiers())->mapWithKeys(fn ($value, $key): array => [$value => $value]))
                                     ->required(),
                                 $this->getEmailFormComponent()
                                     ->label('Email'),
