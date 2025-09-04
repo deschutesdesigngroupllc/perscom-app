@@ -74,6 +74,7 @@ class ServiceRecordResource extends BaseResource
                                     ->columnSpanFull()
                                     ->createOptionForm(fn ($form): Schema => UserResource::form($form)),
                                 RichEditor::make('text')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->required()
                                     ->helperText('Information about the record.')
                                     ->maxLength(65535)

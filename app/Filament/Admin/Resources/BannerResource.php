@@ -83,6 +83,7 @@ class BannerResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no alerts to display.')
             ->columns([
                 TextColumn::make('title')
                     ->searchable()

@@ -91,6 +91,7 @@ class TrainingRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn ($form): Schema => CredentialResource::form($form)),
                                 RichEditor::make('text')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Information about the record.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),

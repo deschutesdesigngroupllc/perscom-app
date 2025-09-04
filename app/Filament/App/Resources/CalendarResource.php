@@ -49,6 +49,7 @@ class CalendarResource extends BaseResource
                             ->required()
                             ->maxLength(255),
                         RichEditor::make('description')
+                            ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                             ->helperText('The description of the calendar.')
                             ->nullable()
                             ->maxLength(65535)

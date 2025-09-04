@@ -46,6 +46,7 @@ class PositionResource extends BaseResource
                             ->required()
                             ->maxLength(255),
                         RichEditor::make('description')
+                            ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                             ->helperText('A brief description of the position.')
                             ->nullable()
                             ->maxLength(65535)

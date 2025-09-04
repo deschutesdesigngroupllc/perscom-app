@@ -79,11 +79,13 @@ class FormResource extends BaseResource
                                     ->required()
                                     ->maxLength(255),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the form.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                                 RichEditor::make('instructions')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Any instructions the user filling out the form should follow.')
                                     ->nullable()
                                     ->maxLength(65535)

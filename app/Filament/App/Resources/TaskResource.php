@@ -53,11 +53,13 @@ class TaskResource extends BaseResource
                                     ->required()
                                     ->maxLength(255),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the task.')
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
                                 RichEditor::make('instructions')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Instructions for completing the task.')
                                     ->nullable()
                                     ->maxLength(65535)

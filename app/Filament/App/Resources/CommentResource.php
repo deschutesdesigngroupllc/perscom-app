@@ -34,6 +34,7 @@ class CommentResource extends Resource
         return $schema
             ->components([
                 RichEditor::make('comment')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->columnSpanFull()
                     ->required()
                     ->maxLength(65535),

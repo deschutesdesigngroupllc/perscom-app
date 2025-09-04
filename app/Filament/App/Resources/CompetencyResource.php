@@ -65,6 +65,7 @@ class CompetencyResource extends BaseResource
                                         'resource' => Competency::class,
                                     ]))->getKey()),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the competency.')
                                     ->nullable()
                                     ->maxLength(65535)

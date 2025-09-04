@@ -112,6 +112,7 @@ class FieldResource extends BaseResource
                                     ->visible(fn (Get $get): bool => $get('type') === FieldType::FIELD_SELECT->value && $get('options_type') === FieldOptionsType::Model->value)
                                     ->requiredIf('options_type', FieldOptionsType::Model->value),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A optional brief description of the field.')
                                     ->nullable()
                                     ->maxLength(65535)

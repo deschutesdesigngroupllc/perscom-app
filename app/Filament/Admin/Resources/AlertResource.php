@@ -55,6 +55,7 @@ class AlertResource extends Resource
                                     ->required()
                                     ->maxLength(255),
                                 RichEditor::make('message')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->maxLength(65535)
                                     ->required()
                                     ->columnSpanFull(),
@@ -91,6 +92,7 @@ class AlertResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no alerts to display.')
             ->columns([
                 TextColumn::make('title')
                     ->sortable()

@@ -57,6 +57,7 @@ class SlotResource extends BaseResource
                                     ->required()
                                     ->maxLength(255),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the slot.')
                                     ->nullable()
                                     ->maxLength(65535)
@@ -82,6 +83,7 @@ class SlotResource extends BaseResource
                             ->icon('heroicon-o-queue-list')
                             ->schema([
                                 RichEditor::make('empty')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->label('Empty Message')
                                     ->helperText('Display a message when no users occupy the slot.')
                                     ->nullable()

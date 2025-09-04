@@ -30,7 +30,7 @@ export function RegisterLayout({ children, position = 'justify-center' }) {
             <img
               src={backgroundImage}
               alt=''
-              className='w-100 absolute inset-0 m-auto box-border block h-0 max-h-full min-h-full w-0 min-w-full max-w-full border-none object-cover p-0'
+              className='absolute inset-0 m-auto box-border block h-0 max-h-full min-h-full w-0 w-100 max-w-full min-w-full border-none object-cover p-0'
             />
           )}
         </span>

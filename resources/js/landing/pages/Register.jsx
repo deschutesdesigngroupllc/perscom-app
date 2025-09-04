@@ -28,7 +28,7 @@ export default function Register() {
       <div className='flex flex-col items-start justify-start'>
         <div className='flex w-full items-center justify-center'>
           <a href={route('web.landing.home')}>
-            <Logo className='sm:h-18 mb-2 h-16 w-auto md:h-20' />
+            <Logo className='mb-2 h-16 w-auto sm:h-18 md:h-20' />
           </a>
         </div>
         <h1 className='mt-10 text-xl font-bold tracking-tight text-gray-800'>Get started for free</h1>

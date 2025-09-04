@@ -55,6 +55,7 @@ class NewsfeedResource extends BaseResource
                     ->required()
                     ->maxValue(255),
                 RichEditor::make('text')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                     ->columnSpanFull()
                     ->helperText('The newsfeed item\'s content.')
                     ->required()
@@ -121,7 +122,7 @@ class NewsfeedResource extends BaseResource
                     ->hiddenLabel()
                     ->size(TextSize::Small)
                     ->extraAttributes([
-                        'class' => '-mt-6 !text-gray-700',
+                        'class' => '-mt-6 text-gray-700!',
                     ]),
                 TextEntry::make('text')
                     ->hiddenLabel()

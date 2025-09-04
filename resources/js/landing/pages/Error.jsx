@@ -40,9 +40,9 @@ export default function Error({ status, title = null, message = null, back = nul
     'We received an unknown error in the last request.'
 
   return (
-    <div className='flex min-h-full flex-col bg-gray-100 pb-12 pt-16'>
-      <main className='mx-auto flex w-full max-w-7xl flex-grow flex-col justify-center px-4 sm:px-6 lg:px-8'>
-        <div className='flex flex-shrink-0 justify-center'>
+    <div className='flex min-h-full flex-col bg-gray-100 pt-16 pb-12'>
+      <main className='mx-auto flex w-full max-w-7xl grow flex-col justify-center px-4 sm:px-6 lg:px-8'>
+        <div className='flex shrink-0 justify-center'>
           <a href='/' className='inline-flex'>
             <span className='sr-only'>PERSCOM</span>
             <Logo className='h-12 w-auto' />
@@ -50,7 +50,7 @@ export default function Error({ status, title = null, message = null, back = nul
         </div>
         <div className='py-16'>
           <div className='text-center'>
-            <p className='text-sm font-semibold uppercase tracking-wide text-blue-600'>{status} error</p>
+            <p className='text-sm font-semibold tracking-wide text-blue-600 uppercase'>{status} error</p>
             <h1 className='mt-2 text-4xl font-extrabold tracking-tight text-black text-gray-800 sm:text-5xl'>{header}</h1>
             <p className='mx-auto mt-2 text-base'>{description}</p>
             {showLink && (
@@ -63,7 +63,7 @@ export default function Error({ status, title = null, message = null, back = nul
           </div>
         </div>
       </main>
-      <footer className='mx-auto w-full max-w-7xl flex-shrink-0 px-4 sm:px-6 lg:px-8'>
+      <footer className='mx-auto w-full max-w-7xl shrink-0 px-4 sm:px-6 lg:px-8'>
         <nav className='flex flex-col items-center justify-center space-x-4 sm:flex-row'>
           <a href='https://docs.perscom.io' className='rounded-lg px-2 py-1 text-sm hover:bg-gray-200' target='_blank' rel='noreferrer'>
             Documentation

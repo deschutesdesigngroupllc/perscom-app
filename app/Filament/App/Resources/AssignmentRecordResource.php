@@ -88,6 +88,7 @@ class AssignmentRecordResource extends BaseResource
                                     ->options(AssignmentRecordType::class)
                                     ->default(AssignmentRecordType::PRIMARY),
                                 RichEditor::make('text')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Optional information about the record.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),

@@ -89,6 +89,7 @@ class RankRecordResource extends BaseResource
                                     ->required()
                                     ->default(RankRecordType::PROMOTION),
                                 RichEditor::make('text')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Optional information about the record.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),

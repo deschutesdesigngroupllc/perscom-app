@@ -63,6 +63,7 @@ class CredentialResource extends BaseResource
                                     ->relationship('issuer', 'name')
                                     ->required(),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the credential.')
                                     ->nullable()
                                     ->maxLength(65535)

@@ -55,6 +55,7 @@ class AwardResource extends BaseResource
                                     ->maxLength(255)
                                     ->columnSpanFull(),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the award.')
                                     ->nullable()
                                     ->maxLength(65535)

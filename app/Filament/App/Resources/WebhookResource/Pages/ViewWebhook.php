@@ -11,8 +11,8 @@ use App\Services\WebhookService;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\CodeEditor;
 use Filament\Resources\Pages\ViewRecord;
-use Wiebenieuwenhuis\FilamentCodeEditor\Components\CodeEditor;
 
 class ViewWebhook extends ViewRecord
 {

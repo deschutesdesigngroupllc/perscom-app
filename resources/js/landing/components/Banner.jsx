@@ -6,15 +6,15 @@ export function Banner({ banner }) {
   return (
     <div
       style={{ backgroundColor: banner.background_color }}
-      className={clsx('flex items-center justify-center gap-x-6 bg-gray-900 px-4 py-2.5 text-center dark:bg-gray-800 sm:px-3.5', {
+      className={clsx('flex items-center justify-center gap-x-6 bg-gray-900 px-4 py-2.5 text-center sm:px-3.5 dark:bg-gray-800', {
         'sm:before:flex-1': banner.link_url,
-        '!bg-blue-600': !banner.background_color
+        'bg-blue-600!': !banner.background_color
       })}
     >
       <div
         style={{ color: banner.text_color }}
         className={clsx('text-sm leading-6', {
-          '!text-white': !banner.text_color
+          'text-white!': !banner.text_color
         })}
       >
         <strong className='font-semibold'>{banner.title}</strong>
@@ -25,11 +25,11 @@ export function Banner({ banner }) {
       </div>
       {banner.link_url && (
         <div className='flex flex-1 justify-end'>
-          <a href={banner.link_url} target='_blank' className='-m-3 flex items-center space-x-1 p-3 focus-visible:outline-offset-[-4px]'>
+          <a href={banner.link_url} target='_blank' className='-m-3 flex items-center space-x-1 p-3 focus-visible:-outline-offset-4'>
             <strong
               style={{ color: banner.text_color }}
-              className={clsx('text-sm font-semibold leading-6', {
-                '!text-white': !banner.text_color
+              className={clsx('text-sm leading-6 font-semibold', {
+                'text-white!': !banner.text_color
               })}
             >
               {banner.link_text}

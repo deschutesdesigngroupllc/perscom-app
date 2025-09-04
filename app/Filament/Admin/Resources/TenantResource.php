@@ -21,6 +21,7 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
+use Filament\Forms\Components\CodeEditor;
 use Filament\Forms\Components\DateTimePicker;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -38,7 +39,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use UnitEnum;
-use Wiebenieuwenhuis\FilamentCodeEditor\Components\CodeEditor;
 
 class TenantResource extends Resource
 {
@@ -187,6 +187,7 @@ class TenantResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no tenants to display.')
             ->columns([
                 TextColumn::make('id')
                     ->label(__('PERSCOM ID'))

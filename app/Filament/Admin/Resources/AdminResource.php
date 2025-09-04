@@ -39,6 +39,7 @@ class AdminResource extends Resource
         return $schema
             ->components([
                 Section::make('Admin Information')
+                    ->columnSpanFull()
                     ->schema([
                         TextInput::make('name')
                             ->required()
@@ -73,6 +74,7 @@ class AdminResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no admins to display.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

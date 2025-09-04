@@ -133,6 +133,7 @@ class MessageResource extends BaseResource
     {
         return [
             RichEditor::make('message')
+                ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                 ->helperText('Enter the message you would like to send.')
                 ->required()
                 ->hiddenLabel(),

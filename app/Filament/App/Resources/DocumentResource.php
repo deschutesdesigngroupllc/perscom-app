@@ -50,11 +50,13 @@ class DocumentResource extends BaseResource
                             ->maxLength(255)
                             ->columnSpanFull(),
                         RichEditor::make('description')
+                            ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                             ->helperText('A brief description of the document.')
                             ->nullable()
                             ->maxLength(65535)
                             ->columnSpanFull(),
                         RichEditor::make('content')
+                            ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                             ->helperText('The content of the document. Use content tags to dynamically inject data from attached resources.')
                             ->hintIconTooltip('View available content tags.')
                             ->hint('Content Tags')

@@ -52,7 +52,7 @@ const faqs = [
 export function Faqs() {
   return (
     <section id='faq' aria-labelledby='faq-title' className='relative overflow-hidden bg-gray-50 py-20 sm:py-32'>
-      <div className='-trangray-x-[30%] -trangray-y-[25%] absolute left-1/2 top-0'>
+      <div className='-trangray-x-[30%] -trangray-y-[25%] absolute top-0 left-1/2'>
         <img src={backgroundImage} alt='' width={1558} height={946} aria-hidden='true' />
       </div>
       <Container className='relative'>

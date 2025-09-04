@@ -73,6 +73,7 @@ class Alert extends Model implements Enableable, Sortable
         'order',
         'url',
         'link_text',
+        'channels',
         'created_at',
         'updated_at',
     ];

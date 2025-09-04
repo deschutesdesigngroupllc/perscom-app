@@ -61,6 +61,7 @@ class ImageResource extends BaseResource
                                     ->helperText('The name of the image.')
                                     ->maxLength(255),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the image.')
                                     ->nullable()
                                     ->maxLength(65535)

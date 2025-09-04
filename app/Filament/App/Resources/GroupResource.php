@@ -31,8 +31,8 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Columns\ToggleColumn;
 use Filament\Tables\Filters\TernaryFilter;
 use Filament\Tables\Table;
-use Guava\FilamentIconPicker\Forms\IconPicker;
-use Guava\FilamentIconPicker\Tables\IconColumn;
+use Guava\IconPicker\Forms\Components\IconPicker;
+use Guava\IconPicker\Tables\Columns\IconColumn;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\HtmlString;
@@ -64,6 +64,7 @@ class GroupResource extends BaseResource
                                     ->required()
                                     ->maxLength(255),
                                 RichEditor::make('description')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('A brief description of the group.')
                                     ->nullable()
                                     ->maxLength(65535)
@@ -98,6 +99,7 @@ class GroupResource extends BaseResource
                                 IconPicker::make('icon')
                                     ->helperText(new HtmlString('An optional icon for the group. A list of icons can be found <a href="https://heroicons.com/" target="_blank" class="underline">here</a>.')),
                                 RichEditor::make('empty')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->label('Empty Message')
                                     ->helperText('Display a message when no units occupy the group.')
                                     ->nullable()
@@ -133,7 +135,7 @@ class GroupResource extends BaseResource
                     ->sortable(),
             ])
             ->recordClasses(fn (?Group $record): ?string => match ($record->hidden) {
-                true => '!border-s-2 !border-s-red-600',
+                true => 'border-s-2! border-s-red-600!',
                 default => null,
             })
             ->groups(['hidden'])

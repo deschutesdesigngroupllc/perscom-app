@@ -64,6 +64,7 @@ class DomainResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no domains to display.')
             ->columns([
                 TextColumn::make('tenant.name')
                     ->searchable()

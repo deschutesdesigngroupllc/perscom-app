@@ -20,6 +20,7 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Infolists\Components\TextEntry;
@@ -31,7 +32,6 @@ use Filament\Schemas\Components\Utilities\Set;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use FilamentTiptapEditor\TiptapEditor;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
@@ -69,7 +69,7 @@ class MailResource extends Resource
                                 TextInput::make('subject')
                                     ->required()
                                     ->maxLength(255),
-                                TiptapEditor::make('content')
+                                RichEditor::make('content')
                                     ->extraInputAttributes(['style' => 'min-height: 20rem;'])
                                     ->required(),
                                 Checkbox::make('send_now')
@@ -93,6 +93,7 @@ class MailResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no emails to display.')
             ->columns([
                 TextColumn::make('subject')
                     ->searchable(['subject', 'content'])

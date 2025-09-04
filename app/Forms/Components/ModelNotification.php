@@ -117,6 +117,7 @@ class ModelNotification
                                     ])
                                     ->helperText('The subject to use with the notification.'),
                                 RichEditor::make('message')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->default(data_get($defaults, 'message'))
                                     ->hintIconTooltip('View available content tags.')
                                     ->hint('Content Tags')

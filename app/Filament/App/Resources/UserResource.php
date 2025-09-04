@@ -196,6 +196,7 @@ class UserResource extends BaseResource
                                     ->visible(fn ($state) => filled($state))
                                     ->content(fn (?User $record) => optional($record?->notes_updated_at, fn (CarbonInterface $date) => $date->longRelativeToNowDiffForHumans())),
                                 RichEditor::make('notes')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->nullable()
                                     ->maxLength(65535)
                                     ->columnSpanFull()

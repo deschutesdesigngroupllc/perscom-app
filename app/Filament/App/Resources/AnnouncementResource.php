@@ -68,6 +68,7 @@ class AnnouncementResource extends BaseResource
                                     ->required()
                                     ->maxLength(255),
                                 RichEditor::make('content')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->afterStateUpdated(fn (Set $set, $state): mixed => $set('model_notifications.message', $state))
                                     ->live(onBlur: true)
                                     ->helperText('The announcement content.')
@@ -135,7 +136,7 @@ class AnnouncementResource extends BaseResource
                     ->sortable(),
             ])
             ->recordClasses(fn (?Announcement $record): ?string => match ($record->enabled) {
-                false => '!border-s-2 !border-s-red-600',
+                false => 'border-s-2! border-s-red-600!',
                 default => null,
             })
             ->groups(['enabled', 'global'])

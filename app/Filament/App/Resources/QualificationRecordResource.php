@@ -82,6 +82,7 @@ class QualificationRecordResource extends BaseResource
                                     ->searchable()
                                     ->createOptionForm(fn ($form): Schema => QualificationResource::form($form)),
                                 RichEditor::make('text')
+                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
                                     ->helperText('Optional information about the record.')
                                     ->maxLength(65535)
                                     ->columnSpanFull(),
