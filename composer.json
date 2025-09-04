@@ -154,7 +154,7 @@
     ],
     "shield:seeder": "php artisan tenants:run --tenants=1 shield:seeder --option=force=1",
     "analyze": "vendor/bin/phpstan analyse --memory-limit=2G -v",
-    "cs-fix": "vendor/bin/pint",
+    "cs-fix": "vendor/bin/pint --parallel",
     "dev": [
       "Composer\\Config::disableProcessTimeout",
       "npx concurrently -k -c \"#2563eb,#d4d4d8,#4f46e5\" \"php artisan horizon\" \"php artisan pail\" \"npm run dev\" --names=queue,logs,vite"
