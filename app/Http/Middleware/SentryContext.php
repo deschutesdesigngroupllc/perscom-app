@@ -34,6 +34,7 @@ class SentryContext
                 $scope->setTag('request.route', (string) Route::currentRouteName());
                 $scope->setTag('request.method', $request->method());
                 $scope->setTag('request.url', $request->url());
+                $scope->setTag('request.referer', $request->headers->get('referer', 'none'));
             });
 
             configureScope(function (Scope $scope): void {
