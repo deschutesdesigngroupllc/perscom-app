@@ -10,7 +10,6 @@ use Archilex\AdvancedTables\AdvancedTables;
 use Archilex\AdvancedTables\Components\PresetView;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use Filament\Support\Colors\Color;
 use Illuminate\Database\Eloquent\Builder;
 
 class ListUsers extends ListRecords
@@ -27,7 +26,7 @@ class ListUsers extends ListRecords
             $status->id => PresetView::make()
                 ->favorite()
                 ->label($status->name)
-                ->color(Color::generatePalette($status->color))
+                ->icon($status->icon)
                 ->modifyQueryUsing(fn (Builder $query) => $query->where('status_id', $status->id)),
         ])->toArray();
     }

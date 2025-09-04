@@ -22,6 +22,8 @@ use Filament\Support\Colors\Color;
 use Filament\Tables\Columns\ColorColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
+use Guava\IconPicker\Forms\Components\IconPicker;
+use Guava\IconPicker\Tables\Columns\IconColumn;
 use Illuminate\Database\Eloquent\Model;
 use UnitEnum;
 
@@ -38,16 +40,16 @@ class StatusResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
-            ->columns(1)
             ->components([
                 TextInput::make('name')
                     ->helperText('The name of the status.')
                     ->required()
-                    ->maxLength(255)
-                    ->columnSpanFull(),
+                    ->maxLength(255),
                 ColorPicker::make('color')
                     ->helperText('The color of the status.')
                     ->required(),
+                IconPicker::make('icon')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -63,6 +65,8 @@ class StatusResource extends BaseResource
                 ColorColumn::make('color')
                     ->sortable()
                     ->searchable(),
+                IconColumn::make('icon')
+                    ->sortable(),
                 TextColumn::make('created_at')
                     ->sortable(),
                 TextColumn::make('updated_at')

@@ -2,6 +2,8 @@
 @import '../../../vendor/archilex/filament-filter-sets/resources/css/plugin.css';
 @import '../calendar.css';
 
+@source '../../views/components/**/*';
+
 @layer base {
     :root {
         --font-family: 'Inter';

@@ -440,6 +440,7 @@ class UserResource extends BaseResource
                     ->hidden(fn (): bool => in_array('rank_id', $hiddenFields))
                     ->sortable(),
                 TextColumn::make('status.name')
+                    ->icon(fn (User $record): ?string => $record->status?->icon)
                     ->hidden(fn (): bool => in_array('status_id', $hiddenFields))
                     ->badge()
                     ->color(fn (?User $record): array => Color::generateV3Palette($record->status->color ?? '#2563eb'))

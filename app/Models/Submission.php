@@ -38,7 +38,7 @@ use Stringable;
  * @property-read Form $form
  * @property-read string $label
  * @property-read string|null $relative_url
- * @property-read Model|Status $status
+ * @property-read Model|Status|null|null $status
  * @property-read StatusRecord|null $record
  * @property-read Collection<int, Status> $statuses
  * @property-read int|null $statuses_count

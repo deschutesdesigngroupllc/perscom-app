@@ -149,6 +149,8 @@ class Widgets extends Page
 
     protected function generateCodeSnippet(?string $widget = null, ?string $apiKey = null, string $darkMode = 'false'): string
     {
+        $widgetUrl = config('app.widget_url');
+
         return <<<HTML
 <div id="perscom_widget_wrapper">
     <script
@@ -156,7 +158,7 @@ class Widgets extends Page
         data-apikey="$apiKey"
         data-widget="$widget"
         data-dark="$darkMode"
-        src="https://widget.perscom.io/widget.js"
+        src="$widgetUrl"
         type="text/javascript"
     ></script>
 </div>

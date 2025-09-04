@@ -361,6 +361,7 @@ class MilitarySeeder extends Seeder
                 [
                     'name' => 'Active',
                     'color' => '#16a34a',
+                    'icon' => 'heroicon-o-fire',
                 ], [
                     'name' => 'Inactive',
                     'color' => '#dc2626',

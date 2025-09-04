@@ -36,13 +36,13 @@ class InitializeTenancyByRequestData extends BaseInitializeTenancyByRequestData
     {
         $tenant = null;
 
-        if (static::$queryParameter && $request->has(static::$queryParameter)) {
-            $tenant = $this->getTenantFromToken($request->query('apikey'));
-        } elseif (static::$header && $request->hasHeader(static::$header)) {
+        if (static::$queryParameter && $request->has(static::$queryParameter) && filled($request->query(static::$queryParameter))) {
+            $tenant = $this->getTenantFromToken($request->query(static::$queryParameter));
+        } elseif (static::$header && $request->hasHeader(static::$header) && filled($request->header(static::$header))) {
             $tenant = $request->header(static::$header);
         } elseif ($jwt = $request->bearerToken()) {
             $tenant = $this->getTenantFromToken($jwt);
-        } elseif ($request->hasCookie('perscom_api_key')) {
+        } elseif ($request->hasCookie(Passport::$cookie)) {
             $tenant = $this->getTenantFromToken($request->cookie(Passport::$cookie));
         }
 

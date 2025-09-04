@@ -10,6 +10,7 @@ use App\Traits\ClearsApiCache;
 use App\Traits\ClearsResponseCache;
 use App\Traits\HasAssignmentRecords;
 use App\Traits\HasColorField;
+use App\Traits\HasIcon;
 use App\Traits\HasResourceLabel;
 use App\Traits\HasResourceUrl;
 use App\Traits\HasUsers;
@@ -28,6 +29,7 @@ use Spatie\EloquentSortable\Sortable;
  * @property int $id
  * @property string $name
  * @property string $color
+ * @property string|null $icon
  * @property int $order
  * @property Carbon|null $created_at
  * @property Carbon|null $updated_at
@@ -52,6 +54,7 @@ use Spatie\EloquentSortable\Sortable;
  * @method static Builder<static>|Status query()
  * @method static Builder<static>|Status whereColor($value)
  * @method static Builder<static>|Status whereCreatedAt($value)
+ * @method static Builder<static>|Status whereIcon($value)
  * @method static Builder<static>|Status whereId($value)
  * @method static Builder<static>|Status whereName($value)
  * @method static Builder<static>|Status whereOrder($value)
@@ -68,6 +71,7 @@ class Status extends Model implements HasColor, HasLabel, Sortable
     use HasAssignmentRecords;
     use HasColorField;
     use HasFactory;
+    use HasIcon;
     use HasResourceLabel;
     use HasResourceUrl;
     use HasUsers;
