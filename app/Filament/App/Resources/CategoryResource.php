@@ -8,10 +8,9 @@ use App\Models\Category;
 use BackedEnum;
 use Filament\Forms\Components\Hidden;
 use Filament\Forms\Components\TextInput;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 
-class CategoryResource extends Resource
+class CategoryResource extends BaseResource
 {
     protected static ?string $model = Category::class;
 

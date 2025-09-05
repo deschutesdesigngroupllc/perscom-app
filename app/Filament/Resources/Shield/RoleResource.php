@@ -55,6 +55,7 @@ class RoleResource extends Resource implements HasShieldPermissions
                 Grid::make()
                     ->schema([
                         Section::make()
+                            ->columnSpanFull()
                             ->schema([
                                 TextInput::make('name')
                                     ->columnSpanFull()

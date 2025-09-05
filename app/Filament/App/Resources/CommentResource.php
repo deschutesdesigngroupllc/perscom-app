@@ -15,13 +15,12 @@ use Filament\Actions\DeleteAction;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\RichEditor;
-use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 
-class CommentResource extends Resource
+class CommentResource extends BaseResource
 {
     protected static ?string $model = Comment::class;
 
