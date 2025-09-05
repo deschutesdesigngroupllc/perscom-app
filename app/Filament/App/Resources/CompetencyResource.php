@@ -19,8 +19,6 @@ use Filament\Actions\ExportBulkAction;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
-use Filament\Schemas\Components\Tabs;
-use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
@@ -40,38 +38,30 @@ class CompetencyResource extends BaseResource
     public static function form(Schema $schema): Schema
     {
         return $schema
+            ->columns(1)
             ->components([
-                Tabs::make()
+                TextInput::make('name')
+                    ->helperText('The name of the competency.')
+                    ->required()
+                    ->maxLength(255)
+                    ->columnSpanFull(),
+                Select::make('categories')
+                    ->helperText('An optional category for the competency to assist with organization.')
                     ->columnSpanFull()
-                    ->tabs([
-                        Tab::make('Competency')
-                            ->columns()
-                            ->icon('heroicon-o-numbered-list')
-                            ->schema([
-                                TextInput::make('name')
-                                    ->helperText('The name of the competency.')
-                                    ->required()
-                                    ->maxLength(255)
-                                    ->columnSpanFull(),
-                                Select::make('categories')
-                                    ->helperText('An optional category for the competency to assist with organization.')
-                                    ->columnSpanFull()
-                                    ->relationship('categories', 'name')
-                                    ->preload()
-                                    ->searchable()
-                                    ->multiple()
-                                    ->createOptionForm(fn (Schema $schema): Schema => CategoryResource::form($schema))
-                                    ->createOptionUsing(fn (array $data) => Category::create(array_merge($data, [
-                                        'resource' => Competency::class,
-                                    ]))->getKey()),
-                                RichEditor::make('description')
-                                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
-                                    ->helperText('A brief description of the competency.')
-                                    ->nullable()
-                                    ->maxLength(65535)
-                                    ->columnSpanFull(),
-                            ]),
-                    ]),
+                    ->relationship('categories', 'name')
+                    ->preload()
+                    ->searchable()
+                    ->multiple()
+                    ->createOptionForm(fn (Schema $schema): Schema => CategoryResource::form($schema))
+                    ->createOptionUsing(fn (array $data) => Category::create(array_merge($data, [
+                        'resource' => Competency::class,
+                    ]))->getKey()),
+                RichEditor::make('description')
+                    ->extraInputAttributes(['style' => 'min-height: 10rem;'])
+                    ->helperText('A brief description of the competency.')
+                    ->nullable()
+                    ->maxLength(65535)
+                    ->columnSpanFull(),
             ]);
     }
 
