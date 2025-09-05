@@ -153,6 +153,7 @@ class AppPanelProvider extends PanelProvider
                 FilamentSocialitePlugin::make()
                     ->socialiteUserModelClass(SocialiteUser::class)
                     ->registration()
+                    ->slug('app')
                     ->providers($socialProviders),
             ])
             ->databaseNotifications()
