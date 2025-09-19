@@ -1,6 +1,6 @@
 <x-filament-widgets::widget class="fi-filament-info-widget">
   <x-filament::section>
-    <div class="flex items-center gap-x-3">
+    <div class="flex items-center justify-between gap-x-3 w-full">
       <div class="flex-1">
         <div class="font-bold leading-6 tracking-tight">
           {{ $this->title }}
