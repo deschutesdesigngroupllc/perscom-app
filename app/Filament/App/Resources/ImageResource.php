@@ -135,6 +135,7 @@ class ImageResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no images to view. Create one to get started.')
             ->columns([
                 TextColumn::make('name')
                     ->sortable()

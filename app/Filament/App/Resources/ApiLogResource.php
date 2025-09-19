@@ -15,7 +15,6 @@ use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\KeyValueEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Panel;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -44,16 +43,11 @@ class ApiLogResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $navigationLabel = 'Logs';
 
-    protected static ?string $label = 'API Logs';
-
-    public static function isTenantSubscriptionRequired(Panel $panel): bool
-    {
-        return false;
-    }
+    protected static ?string $label = 'API log';
 
     public static function table(Table $table): Table
     {
@@ -63,7 +57,7 @@ class ApiLogResource extends BaseResource
                     ->label('New API key')
                     ->url(PassportTokenResource::getUrl('create')),
             ])
-            ->emptyStateDescription('Create your first API key to start integrating with PERSCOM\'s powerful API.')
+            ->emptyStateDescription('There are no API logs to view. Create your first API key to start integrating with PERSCOM\'s powerful API.')
             ->modifyQueryUsing(fn (Builder $query): Builder => $query->select(['id', 'log_name', 'created_at', 'causer_id', 'causer_type', 'event']))
             ->columns([
                 TextColumn::make('id')

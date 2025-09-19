@@ -37,7 +37,7 @@ class WebhookResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
     public static function form(Schema $schema): Schema
     {

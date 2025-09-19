@@ -8,7 +8,6 @@ use App;
 use BackedEnum;
 use BezhanSalleh\FilamentShield\Support\Utils;
 use Filament\Clusters\Cluster;
-use Filament\Panel;
 use Illuminate\Support\Facades\Auth;
 use UnitEnum;
 
@@ -19,11 +18,6 @@ class Settings extends Cluster
     protected static string|UnitEnum|null $navigationGroup = 'System';
 
     protected static ?int $navigationSort = 8;
-
-    public static function isTenantSubscriptionRequired(Panel $panel): bool
-    {
-        return false;
-    }
 
     public static function canAccess(): bool
     {

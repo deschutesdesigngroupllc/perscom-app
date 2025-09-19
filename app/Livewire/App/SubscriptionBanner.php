@@ -7,7 +7,6 @@ namespace App\Livewire\App;
 use App\Models\Tenant;
 use App\Services\UserSettingsService;
 use App\Settings\OrganizationSettings;
-use Filament\Facades\Filament;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Gate;
@@ -21,8 +20,12 @@ class SubscriptionBanner extends Component
 
     public function mount(): void
     {
-        /** @var Tenant $tenant */
-        $tenant = Filament::getTenant();
+        /** @var ?Tenant $tenant */
+        $tenant = tenant();
+
+        if (blank($tenant)) {
+            return;
+        }
 
         $timezone = UserSettingsService::get('timezone', function () {
             /** @var OrganizationSettings $settings */

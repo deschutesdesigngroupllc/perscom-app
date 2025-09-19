@@ -16,7 +16,6 @@ use Filament\Actions\EditAction;
 use Filament\Actions\ViewAction;
 use Filament\Infolists\Components\CodeEntry;
 use Filament\Infolists\Components\TextEntry;
-use Filament\Panel;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -43,16 +42,9 @@ class WebhookLogResource extends BaseResource
 
     protected static string|UnitEnum|null $navigationGroup = 'Integrations';
 
-    protected static ?int $navigationSort = 6;
+    protected static ?int $navigationSort = 7;
 
     protected static ?string $navigationLabel = 'Logs';
-
-    protected static ?string $label = 'Webhook Logs';
-
-    public static function isTenantSubscriptionRequired(Panel $panel): bool
-    {
-        return false;
-    }
 
     public static function table(Table $table): Table
     {
@@ -62,7 +54,7 @@ class WebhookLogResource extends BaseResource
                     ->label('New webhook')
                     ->url(WebhookResource::getUrl('create')),
             ])
-            ->emptyStateDescription('Create your first webhook to start sending real-time notifications.')
+            ->emptyStateDescription('There are no webhook logs to view. Create your first webhook to start sending real-time notifications.')
             ->columns([
                 TextColumn::make('request_id')
                     ->copyable()

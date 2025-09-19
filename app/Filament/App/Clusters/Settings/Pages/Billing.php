@@ -7,7 +7,6 @@ namespace App\Filament\App\Clusters\Settings\Pages;
 use App\Filament\App\Clusters\Settings;
 use BackedEnum;
 use Filament\Pages\Page;
-use Filament\Panel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Gate;
 
@@ -24,11 +23,6 @@ class Billing extends Page
     public static function getUrl(array $parameters = [], bool $isAbsolute = true, ?string $panel = null, ?Model $tenant = null): string
     {
         return route('spark.portal');
-    }
-
-    public static function isTenantSubscriptionRequired(Panel $panel): bool
-    {
-        return false;
     }
 
     public static function canAccess(): bool

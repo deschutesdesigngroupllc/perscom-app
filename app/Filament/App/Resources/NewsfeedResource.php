@@ -35,9 +35,7 @@ class NewsfeedResource extends BaseResource
 
     protected static string|BackedEnum|null $navigationIcon = 'heroicon-o-newspaper';
 
-    protected static ?string $modelLabel = 'item';
-
-    protected static ?string $pluralModelLabel = 'Newsfeed';
+    protected static ?string $label = 'newsfeed item';
 
     protected static ?string $navigationLabel = 'Newsfeed';
 
@@ -82,6 +80,7 @@ class NewsfeedResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no newsfeed items to view. Perform an action to get started.')
             ->columns([
                 TextColumn::make('headline'),
                 TextColumn::make('text')

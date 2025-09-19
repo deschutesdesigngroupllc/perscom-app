@@ -7,7 +7,6 @@ namespace App\Filament\App\Widgets;
 use App\Models\Tenant;
 use App\Services\VersionService;
 use App\Settings\DashboardSettings;
-use Filament\Facades\Filament;
 use Filament\Widgets\Widget;
 
 class OrganizationInfoWidget extends Widget
@@ -34,8 +33,13 @@ class OrganizationInfoWidget extends Widget
         $this->subtitle = $settings->subtitle;
         $this->version = VersionService::version();
 
-        /** @var Tenant $tenant */
-        $tenant = Filament::getTenant();
+        /** @var ?Tenant $tenant */
+        $tenant = tenant();
+
+        if (blank($tenant)) {
+            return;
+        }
+
         $this->plan = $tenant->subscription_plan->getLabel();
         $this->planColor = $tenant->subscription_plan->getColor();
     }

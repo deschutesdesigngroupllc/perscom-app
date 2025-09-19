@@ -12,6 +12,8 @@ class ListCalendars extends ListRecords
 {
     protected static string $resource = CalendarResource::class;
 
+    protected ?string $subheading = 'Manage your system-wide calendars.';
+
     protected function getHeaderActions(): array
     {
         return [

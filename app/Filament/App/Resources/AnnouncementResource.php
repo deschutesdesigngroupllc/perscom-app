@@ -103,6 +103,7 @@ class AnnouncementResource extends BaseResource
     public static function table(Table $table): Table
     {
         return $table
+            ->emptyStateDescription('There are no announcements to view. Create one to get started.')
             ->columns([
                 TextColumn::make('title')
                     ->sortable()

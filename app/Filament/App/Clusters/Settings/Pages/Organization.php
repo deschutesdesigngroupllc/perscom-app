@@ -12,7 +12,6 @@ use DateTimeZone;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Pages\SettingsPage;
-use Filament\Panel;
 use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Tabs\Tab;
 use Filament\Schemas\Schema;
@@ -32,11 +31,6 @@ class Organization extends SettingsPage
     protected static string $settings = OrganizationSettings::class;
 
     protected ?string $subheading = 'Account related settings specific to your organizational details.';
-
-    public static function isTenantSubscriptionRequired(Panel $panel): bool
-    {
-        return false;
-    }
 
     public static function canAccess(): bool
     {
